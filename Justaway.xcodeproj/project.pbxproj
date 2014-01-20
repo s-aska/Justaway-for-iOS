@@ -1,0 +1,496 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
+		6ADF7948188D6E2200632BA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */; };
+		6ADF794A188D6E2200632BA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7949188D6E2200632BA5 /* UIKit.framework */; };
+		6ADF7950188D6E2200632BA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6ADF794E188D6E2200632BA5 /* InfoPlist.strings */; };
+		6ADF7952188D6E2200632BA5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF7951188D6E2200632BA5 /* main.m */; };
+		6ADF7956188D6E2200632BA5 /* JustawayAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF7955188D6E2200632BA5 /* JustawayAppDelegate.m */; };
+		6ADF7959188D6E2200632BA5 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ADF7957188D6E2200632BA5 /* Main_iPhone.storyboard */; };
+		6ADF795C188D6E2200632BA5 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ADF795A188D6E2200632BA5 /* Main_iPad.storyboard */; };
+		6ADF795F188D6E2200632BA5 /* JustawayFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF795E188D6E2200632BA5 /* JustawayFirstViewController.m */; };
+		6ADF7962188D6E2200632BA5 /* JustawaySecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF7961188D6E2200632BA5 /* JustawaySecondViewController.m */; };
+		6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ADF7963188D6E2200632BA5 /* Images.xcassets */; };
+		6ADF796B188D6E2300632BA5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF796A188D6E2300632BA5 /* XCTest.framework */; };
+		6ADF796C188D6E2300632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
+		6ADF796D188D6E2300632BA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7949188D6E2200632BA5 /* UIKit.framework */; };
+		6ADF7975188D6E2300632BA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6ADF7973188D6E2300632BA5 /* InfoPlist.strings */; };
+		6ADF7977188D6E2300632BA5 /* JustawayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF7976188D6E2300632BA5 /* JustawayTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6ADF796E188D6E2300632BA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6ADF793A188D6E2200632BA5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6ADF7941188D6E2200632BA5;
+			remoteInfo = Justaway;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6ADF7942188D6E2200632BA5 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6ADF7945188D6E2200632BA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		6ADF7949188D6E2200632BA5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		6ADF794D188D6E2200632BA5 /* Justaway-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Justaway-Info.plist"; sourceTree = "<group>"; };
+		6ADF794F188D6E2200632BA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6ADF7951188D6E2200632BA5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6ADF7953188D6E2200632BA5 /* Justaway-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Justaway-Prefix.pch"; sourceTree = "<group>"; };
+		6ADF7954188D6E2200632BA5 /* JustawayAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JustawayAppDelegate.h; sourceTree = "<group>"; };
+		6ADF7955188D6E2200632BA5 /* JustawayAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JustawayAppDelegate.m; sourceTree = "<group>"; };
+		6ADF7958188D6E2200632BA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		6ADF795B188D6E2200632BA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		6ADF795D188D6E2200632BA5 /* JustawayFirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JustawayFirstViewController.h; sourceTree = "<group>"; };
+		6ADF795E188D6E2200632BA5 /* JustawayFirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JustawayFirstViewController.m; sourceTree = "<group>"; };
+		6ADF7960188D6E2200632BA5 /* JustawaySecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JustawaySecondViewController.h; sourceTree = "<group>"; };
+		6ADF7961188D6E2200632BA5 /* JustawaySecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JustawaySecondViewController.m; sourceTree = "<group>"; };
+		6ADF7963188D6E2200632BA5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6ADF7969188D6E2300632BA5 /* JustawayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustawayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6ADF796A188D6E2300632BA5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		6ADF7972188D6E2300632BA5 /* JustawayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JustawayTests-Info.plist"; sourceTree = "<group>"; };
+		6ADF7974188D6E2300632BA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6ADF7976188D6E2300632BA5 /* JustawayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JustawayTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6ADF793F188D6E2200632BA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6ADF7948188D6E2200632BA5 /* CoreGraphics.framework in Frameworks */,
+				6ADF794A188D6E2200632BA5 /* UIKit.framework in Frameworks */,
+				6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6ADF7966188D6E2300632BA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6ADF796B188D6E2300632BA5 /* XCTest.framework in Frameworks */,
+				6ADF796D188D6E2300632BA5 /* UIKit.framework in Frameworks */,
+				6ADF796C188D6E2300632BA5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6ADF7939188D6E2200632BA5 = {
+			isa = PBXGroup;
+			children = (
+				6ADF794B188D6E2200632BA5 /* Justaway */,
+				6ADF7970188D6E2300632BA5 /* JustawayTests */,
+				6ADF7944188D6E2200632BA5 /* Frameworks */,
+				6ADF7943188D6E2200632BA5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6ADF7943188D6E2200632BA5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6ADF7942188D6E2200632BA5 /* Justaway.app */,
+				6ADF7969188D6E2300632BA5 /* JustawayTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6ADF7944188D6E2200632BA5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6ADF7945188D6E2200632BA5 /* Foundation.framework */,
+				6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */,
+				6ADF7949188D6E2200632BA5 /* UIKit.framework */,
+				6ADF796A188D6E2300632BA5 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6ADF794B188D6E2200632BA5 /* Justaway */ = {
+			isa = PBXGroup;
+			children = (
+				6ADF7954188D6E2200632BA5 /* JustawayAppDelegate.h */,
+				6ADF7955188D6E2200632BA5 /* JustawayAppDelegate.m */,
+				6ADF7957188D6E2200632BA5 /* Main_iPhone.storyboard */,
+				6ADF795A188D6E2200632BA5 /* Main_iPad.storyboard */,
+				6ADF795D188D6E2200632BA5 /* JustawayFirstViewController.h */,
+				6ADF795E188D6E2200632BA5 /* JustawayFirstViewController.m */,
+				6ADF7960188D6E2200632BA5 /* JustawaySecondViewController.h */,
+				6ADF7961188D6E2200632BA5 /* JustawaySecondViewController.m */,
+				6ADF7963188D6E2200632BA5 /* Images.xcassets */,
+				6ADF794C188D6E2200632BA5 /* Supporting Files */,
+			);
+			path = Justaway;
+			sourceTree = "<group>";
+		};
+		6ADF794C188D6E2200632BA5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6ADF794D188D6E2200632BA5 /* Justaway-Info.plist */,
+				6ADF794E188D6E2200632BA5 /* InfoPlist.strings */,
+				6ADF7951188D6E2200632BA5 /* main.m */,
+				6ADF7953188D6E2200632BA5 /* Justaway-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6ADF7970188D6E2300632BA5 /* JustawayTests */ = {
+			isa = PBXGroup;
+			children = (
+				6ADF7976188D6E2300632BA5 /* JustawayTests.m */,
+				6ADF7971188D6E2300632BA5 /* Supporting Files */,
+			);
+			path = JustawayTests;
+			sourceTree = "<group>";
+		};
+		6ADF7971188D6E2300632BA5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6ADF7972188D6E2300632BA5 /* JustawayTests-Info.plist */,
+				6ADF7973188D6E2300632BA5 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6ADF7941188D6E2200632BA5 /* Justaway */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6ADF797A188D6E2300632BA5 /* Build configuration list for PBXNativeTarget "Justaway" */;
+			buildPhases = (
+				6ADF793E188D6E2200632BA5 /* Sources */,
+				6ADF793F188D6E2200632BA5 /* Frameworks */,
+				6ADF7940188D6E2200632BA5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Justaway;
+			productName = Justaway;
+			productReference = 6ADF7942188D6E2200632BA5 /* Justaway.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6ADF7968188D6E2300632BA5 /* JustawayTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6ADF797D188D6E2300632BA5 /* Build configuration list for PBXNativeTarget "JustawayTests" */;
+			buildPhases = (
+				6ADF7965188D6E2300632BA5 /* Sources */,
+				6ADF7966188D6E2300632BA5 /* Frameworks */,
+				6ADF7967188D6E2300632BA5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6ADF796F188D6E2300632BA5 /* PBXTargetDependency */,
+			);
+			name = JustawayTests;
+			productName = JustawayTests;
+			productReference = 6ADF7969188D6E2300632BA5 /* JustawayTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6ADF793A188D6E2200632BA5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = Justaway;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Shinichiro Aska";
+				TargetAttributes = {
+					6ADF7968188D6E2300632BA5 = {
+						TestTargetID = 6ADF7941188D6E2200632BA5;
+					};
+				};
+			};
+			buildConfigurationList = 6ADF793D188D6E2200632BA5 /* Build configuration list for PBXProject "Justaway" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6ADF7939188D6E2200632BA5;
+			productRefGroup = 6ADF7943188D6E2200632BA5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6ADF7941188D6E2200632BA5 /* Justaway */,
+				6ADF7968188D6E2300632BA5 /* JustawayTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6ADF7940188D6E2200632BA5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6ADF795C188D6E2200632BA5 /* Main_iPad.storyboard in Resources */,
+				6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */,
+				6ADF7959188D6E2200632BA5 /* Main_iPhone.storyboard in Resources */,
+				6ADF7950188D6E2200632BA5 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6ADF7967188D6E2300632BA5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6ADF7975188D6E2300632BA5 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6ADF793E188D6E2200632BA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6ADF7962188D6E2200632BA5 /* JustawaySecondViewController.m in Sources */,
+				6ADF795F188D6E2200632BA5 /* JustawayFirstViewController.m in Sources */,
+				6ADF7956188D6E2200632BA5 /* JustawayAppDelegate.m in Sources */,
+				6ADF7952188D6E2200632BA5 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6ADF7965188D6E2300632BA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6ADF7977188D6E2300632BA5 /* JustawayTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6ADF796F188D6E2300632BA5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6ADF7941188D6E2200632BA5 /* Justaway */;
+			targetProxy = 6ADF796E188D6E2300632BA5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6ADF794E188D6E2200632BA5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6ADF794F188D6E2200632BA5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		6ADF7957188D6E2200632BA5 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6ADF7958188D6E2200632BA5 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		6ADF795A188D6E2200632BA5 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6ADF795B188D6E2200632BA5 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		6ADF7973188D6E2300632BA5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6ADF7974188D6E2300632BA5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6ADF7978188D6E2300632BA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6ADF7979188D6E2300632BA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6ADF797B188D6E2300632BA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Justaway/Justaway-Prefix.pch";
+				INFOPLIST_FILE = "Justaway/Justaway-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		6ADF797C188D6E2300632BA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Justaway/Justaway-Prefix.pch";
+				INFOPLIST_FILE = "Justaway/Justaway-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		6ADF797E188D6E2300632BA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Justaway.app/Justaway";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Justaway/Justaway-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "JustawayTests/JustawayTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		6ADF797F188D6E2300632BA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Justaway.app/Justaway";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Justaway/Justaway-Prefix.pch";
+				INFOPLIST_FILE = "JustawayTests/JustawayTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6ADF793D188D6E2200632BA5 /* Build configuration list for PBXProject "Justaway" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6ADF7978188D6E2300632BA5 /* Debug */,
+				6ADF7979188D6E2300632BA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6ADF797A188D6E2300632BA5 /* Build configuration list for PBXNativeTarget "Justaway" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6ADF797B188D6E2300632BA5 /* Debug */,
+				6ADF797C188D6E2300632BA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		6ADF797D188D6E2300632BA5 /* Build configuration list for PBXNativeTarget "JustawayTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6ADF797E188D6E2300632BA5 /* Debug */,
+				6ADF797F188D6E2300632BA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6ADF793A188D6E2200632BA5 /* Project object */;
+}
