@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22194C00EF13418F82A85B42 /* libPods.a */; };
+		6A9C989F18BB89D500CF4F84 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C989E18BB89D500CF4F84 /* Podfile */; };
 		6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
 		6ADF7948188D6E2200632BA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */; };
 		6ADF794A188D6E2200632BA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7949188D6E2200632BA5 /* UIKit.framework */; };
@@ -36,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		22194C00EF13418F82A85B42 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A9C989E18BB89D500CF4F84 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		6ADF7942188D6E2200632BA5 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ADF7945188D6E2200632BA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -58,6 +62,7 @@
 		6ADF7972188D6E2300632BA5 /* JustawayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JustawayTests-Info.plist"; sourceTree = "<group>"; };
 		6ADF7974188D6E2300632BA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6ADF7976188D6E2300632BA5 /* JustawayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JustawayTests.m; sourceTree = "<group>"; };
+		A4AADD2047B74C8D8ED7CB17 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +73,7 @@
 				6ADF7948188D6E2200632BA5 /* CoreGraphics.framework in Frameworks */,
 				6ADF794A188D6E2200632BA5 /* UIKit.framework in Frameworks */,
 				6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */,
+				5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,10 +93,12 @@
 		6ADF7939188D6E2200632BA5 = {
 			isa = PBXGroup;
 			children = (
+				6A9C989E18BB89D500CF4F84 /* Podfile */,
 				6ADF794B188D6E2200632BA5 /* Justaway */,
 				6ADF7970188D6E2300632BA5 /* JustawayTests */,
 				6ADF7944188D6E2200632BA5 /* Frameworks */,
 				6ADF7943188D6E2200632BA5 /* Products */,
+				A4AADD2047B74C8D8ED7CB17 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -110,6 +118,7 @@
 				6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */,
 				6ADF7949188D6E2200632BA5 /* UIKit.framework */,
 				6ADF796A188D6E2300632BA5 /* XCTest.framework */,
+				22194C00EF13418F82A85B42 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -167,9 +176,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6ADF797A188D6E2300632BA5 /* Build configuration list for PBXNativeTarget "Justaway" */;
 			buildPhases = (
+				69E7175E65364894AB6DD783 /* Check Pods Manifest.lock */,
 				6ADF793E188D6E2200632BA5 /* Sources */,
 				6ADF793F188D6E2200632BA5 /* Frameworks */,
 				6ADF7940188D6E2200632BA5 /* Resources */,
+				67ED6904DE1B4579B530B02F /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -237,6 +248,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A9C989F18BB89D500CF4F84 /* Podfile in Resources */,
 				6ADF795C188D6E2200632BA5 /* Main_iPad.storyboard in Resources */,
 				6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */,
 				6ADF7959188D6E2200632BA5 /* Main_iPhone.storyboard in Resources */,
@@ -253,6 +265,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		67ED6904DE1B4579B530B02F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		69E7175E65364894AB6DD783 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6ADF793E188D6E2200632BA5 /* Sources */ = {
@@ -396,7 +441,9 @@
 		};
 		6ADF797B188D6E2300632BA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4AADD2047B74C8D8ED7CB17 /* Pods.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -409,7 +456,9 @@
 		};
 		6ADF797C188D6E2300632BA5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4AADD2047B74C8D8ED7CB17 /* Pods.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -481,6 +530,7 @@
 				6ADF797C188D6E2300632BA5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6ADF797D188D6E2300632BA5 /* Build configuration list for PBXNativeTarget "JustawayTests" */ = {
 			isa = XCConfigurationList;
@@ -489,6 +539,7 @@
 				6ADF797F188D6E2300632BA5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
