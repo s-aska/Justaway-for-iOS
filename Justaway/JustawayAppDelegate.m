@@ -7,12 +7,24 @@
 //
 
 #import "JustawayAppDelegate.h"
+#import "JustawayFirstViewController.h"
 
 @implementation JustawayAppDelegate
+
+@synthesize twitter;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+
+    // Supporting Files/secret.plist からAPIの設定を読み込む
+    NSBundle* bundle = [NSBundle mainBundle];
+    NSString* path = [bundle pathForResource:@"secret" ofType:@"plist"];
+    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:path];
+
+    // STTwitterAPIのインスタンスをセット
+    self.twitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:[dictionary objectForKey:@"consumer_key"]
+                                                 consumerSecret:[dictionary objectForKey:@"consumer_secret"]];
     return YES;
 }
 							
@@ -41,6 +53,43 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (NSDictionary *)parametersDictionaryFromQueryString:(NSString *)queryString {
+    
+    NSMutableDictionary *md = [NSMutableDictionary dictionary];
+    
+    NSArray *queryComponents = [queryString componentsSeparatedByString:@"&"];
+    
+    for (NSString *s in queryComponents) {
+        NSArray *pair = [s componentsSeparatedByString:@"="];
+        if([pair count] != 2) continue;
+        
+        NSString *key = pair[0];
+        NSString *value = pair[1];
+        
+        md[key] = value;
+    }
+    
+    return md;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    
+    if ([[url scheme] isEqualToString:@"justaway"] == NO) return NO;
+    
+    // callback_urlから必要なパラメーター取得し、JustawayFirstViewControllerに投げます
+    NSDictionary *d = [self parametersDictionaryFromQueryString:[url query]];
+    NSString *token = d[@"oauth_token"];
+    NSString *verifier = d[@"oauth_verifier"];
+    NSString* viewIdentifier = @"JustawayFirstViewController";
+    UIStoryboard* sb = [[[self window] rootViewController] storyboard];
+    JustawayFirstViewController* vc = [[JustawayFirstViewController alloc] init];
+    vc = [sb instantiateViewControllerWithIdentifier:viewIdentifier];
+    [vc setOAuthToken:token oauthVerifier:verifier];
+    
+    return YES;
 }
 
 @end

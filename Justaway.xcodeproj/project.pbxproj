@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22194C00EF13418F82A85B42 /* libPods.a */; };
 		6A9C989F18BB89D500CF4F84 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C989E18BB89D500CF4F84 /* Podfile */; };
+		6A9C997318BD091D00CF4F84 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C997218BD091D00CF4F84 /* secret.plist */; };
 		6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
 		6ADF7948188D6E2200632BA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */; };
 		6ADF794A188D6E2200632BA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7949188D6E2200632BA5 /* UIKit.framework */; };
@@ -40,6 +41,7 @@
 /* Begin PBXFileReference section */
 		22194C00EF13418F82A85B42 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A9C989E18BB89D500CF4F84 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		6A9C997218BD091D00CF4F84 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = secret.plist; sourceTree = "<group>"; };
 		6ADF7942188D6E2200632BA5 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ADF7945188D6E2200632BA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -147,6 +149,7 @@
 				6ADF794E188D6E2200632BA5 /* InfoPlist.strings */,
 				6ADF7951188D6E2200632BA5 /* main.m */,
 				6ADF7953188D6E2200632BA5 /* Justaway-Prefix.pch */,
+				6A9C997218BD091D00CF4F84 /* secret.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				6ADF795C188D6E2200632BA5 /* Main_iPad.storyboard in Resources */,
 				6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */,
 				6ADF7959188D6E2200632BA5 /* Main_iPhone.storyboard in Resources */,
+				6A9C997318BD091D00CF4F84 /* secret.plist in Resources */,
 				6ADF7950188D6E2200632BA5 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

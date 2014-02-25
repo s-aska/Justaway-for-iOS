@@ -10,4 +10,12 @@
 
 @interface JustawayFirstViewController : UIViewController
 
+@property (nonatomic, strong) NSArray *statuses;
+
+@property (weak, nonatomic) IBOutlet UILabel *loginStatusLabel;
+
+- (IBAction)loginInSafariAction:(id)sender;
+
+- (void)setOAuthToken:(NSString *)token oauthVerifier:(NSString *)verfier;
+
 @end

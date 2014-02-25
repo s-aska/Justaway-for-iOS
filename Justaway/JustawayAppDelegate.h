@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "STTwitter.h"
 
 @interface JustawayAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) STTwitterAPI *twitter;
 
 @end
