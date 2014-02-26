@@ -13,5 +13,8 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) STTwitterAPI *twitter;
+@property (strong, nonatomic) NSMutableArray *accounts;
+
+- (STTwitterAPI *)getTwitterByIndex:(NSInteger *)index;
 
 @end

@@ -19,6 +19,20 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+
+    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+
+    // 通知センターにオブザーバ（通知を受け取るオブジェクト）を追加
+    [nc addObserver:self
+           selector:@selector(receiveAccessToken:)
+               name:@"receiveAccessToken"
+             object:delegate];
+    
+    NSLog(@"-- find accounts: %lu", (unsigned long)[delegate.accounts count]);
+    
+    self.accountsPickerView.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -27,7 +41,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)loginInSafariAction:(id)sender {
+- (void)finalize
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    
+    // 通知の登録を解除
+    [nc removeObserver:self];
+    
+    [super finalize];
+}
+
+- (IBAction)loginInSafariAction:(id)sender
+{
 
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
 
@@ -47,46 +72,58 @@
                     }];
 }
 
-- (void)setOAuthToken:(NSString *)token oauthVerifier:(NSString *)verifier {
+- (IBAction)postAction:(id)sender {
+
+    NSLog(@"postAction status:%@", [_statusTextField text]);
+
+    NSInteger selectedRow = [_accountsPickerView selectedRowInComponent:0];
+
+    NSLog(@"postAction selectedRow:%ld", (long)selectedRow);
+
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
-    [delegate.twitter postAccessTokenRequestWithPIN:verifier successBlock:^(NSString *oauthToken, NSString *oauthTokenSecret, NSString *userID, NSString *screenName) {
-        NSLog(@"-- screenName: %@", screenName);
-        
-        _loginStatusLabel.text = screenName;
-        
-        /*
-         At this point, the user can use the API and you can read his access tokens with:
-         
-         _twitter.oauthAccessToken;
-         _twitter.oauthAccessTokenSecret;
-         
-         You can store these tokens (in user default, or in keychain) so that the user doesn't need to authenticate again on next launches.
-         
-         Next time, just instanciate STTwitter with the class method:
-         
-         +[STTwitterAPI twitterAPIWithOAuthConsumerKey:consumerSecret:oauthToken:oauthTokenSecret:]
-         
-         Don't forget to call the -[STTwitter verifyCredentialsWithSuccessBlock:errorBlock:] after that.
-         */
-        
-//        [delegate.twitter postStatusUpdate:@"あなたも Justaway for iOS いますぐダウンロー\nド"
-//                inReplyToStatusID:nil
-//                         latitude:nil
-//                        longitude:nil
-//                          placeID:nil
-//               displayCoordinates:nil
-//                         trimUser:nil
-//                     successBlock:^(NSDictionary *status) {
-//                         // ...
-//                     } errorBlock:^(NSError *error) {
-//                         // ...
-//                     }];
+
+    STTwitterAPI *twitter = [delegate getTwitterByIndex:&selectedRow];
+
+    [twitter postStatusUpdate:[_statusTextField text]
+            inReplyToStatusID:nil
+                     latitude:nil
+                    longitude:nil
+                      placeID:nil
+           displayCoordinates:nil
+                     trimUser:nil
+                 successBlock:^(NSDictionary *status) {
+                     // ...
+                 } errorBlock:^(NSError *error) {
+                     // ...
+                 }];
+}
+
+- (void)receiveAccessToken:(NSNotification *)center
+{
+    NSString *userID = [center.userInfo objectForKey:@"userID"];
+    NSString *screenName = [center.userInfo objectForKey:@"screenName"];
     
-    } errorBlock:^(NSError *error) {
-        
-        _loginStatusLabel.text = [error localizedDescription];
-        NSLog(@"-- %@", [error localizedDescription]);
-    }];
+    NSLog(@"receiveAccessToken userID:%@ screenName:%@", userID, screenName);
+
+    _loginStatusLabel.text = screenName;
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)accountsPickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)accountsPickerView numberOfRowsInComponent :(NSInteger)component
+{
+    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    return (unsigned long)[delegate.accounts count];
+}
+
+- (NSString *)pickerView:(UIPickerView *)accountsPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSDictionary *account = [delegate.accounts objectAtIndex:row];
+    return [account objectForKey:@"screenName"];
 }
 
 @end

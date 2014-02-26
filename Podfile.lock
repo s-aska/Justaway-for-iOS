@@ -1,10 +1,13 @@
 PODS:
+  - SSKeychain (1.2.1)
   - STTwitter (0.0.9)
 
 DEPENDENCIES:
+  - SSKeychain
   - STTwitter
 
 SPEC CHECKSUMS:
+  SSKeychain: d18926838c2e7cd342e2a49e9f869858e49f035a
   STTwitter: f155851b9b4d1a544740c2f4ae64918cd42235e2
 
 COCOAPODS: 0.29.0

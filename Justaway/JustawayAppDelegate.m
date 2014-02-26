@@ -8,10 +8,13 @@
 
 #import "JustawayAppDelegate.h"
 #import "JustawayFirstViewController.h"
+#import <SSKeychain/SSKeychain.h>
 
 @implementation JustawayAppDelegate
 
 @synthesize twitter;
+
+static NSString * const JFI_SERVICE = @"JustawayService";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -25,9 +28,56 @@
     // STTwitterAPIのインスタンスをセット
     self.twitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:[dictionary objectForKey:@"consumer_key"]
                                                  consumerSecret:[dictionary objectForKey:@"consumer_secret"]];
+
+    NSArray* dictionaries = [SSKeychain accountsForService:JFI_SERVICE];
+    
+    NSLog(@"-- dictionaries: %lu", (unsigned long)[dictionaries count]);
+
+    self.accounts = [[NSMutableArray alloc] init];
+    for (NSDictionary *dictionary in dictionaries) {
+
+        NSLog(@"-- account: %@", [dictionary objectForKey:@"acct"]);
+
+        // KeyChain => NSString
+        NSString *jsonString = [SSKeychain passwordForService:JFI_SERVICE
+                                                      account:[dictionary objectForKey:@"acct"]
+                                                        error:nil];
+
+        // NSString => NSData
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+
+        // NSData => NSDictionary
+        NSDictionary *account = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                         options:NSJSONReadingAllowFragments
+                                                           error:nil];
+
+        [self.accounts addObject:account];
+        
+        NSLog(@"-- data: %@", jsonString);
+        NSLog(@"-- userID: %@", [account objectForKey:@"userID"]);
+        NSLog(@"-- screenName: %@", [account objectForKey:@"screenName"]);
+        NSLog(@"-- oauthToken: %@", [account objectForKey:@"oauthToken"]);
+        NSLog(@"-- oauthTokenSecret: %@", [account objectForKey:@"oauthTokenSecret"]);
+    }
+    
     return YES;
 }
-							
+
+- (STTwitterAPI *)getTwitterByIndex:(NSInteger *)index
+{
+    // Supporting Files/secret.plist からAPIの設定を読み込む
+    NSBundle* bundle = [NSBundle mainBundle];
+    NSString* path = [bundle pathForResource:@"secret" ofType:@"plist"];
+    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:path];
+
+    NSDictionary *account = [self.accounts objectAtIndex:*index];
+    
+    return [STTwitterAPI twitterAPIWithOAuthConsumerKey:[dictionary objectForKey:@"consumer_key"]
+                                         consumerSecret:[dictionary objectForKey:@"consumer_secret"]
+                                             oauthToken:[account objectForKey:@"oauthToken"]
+                                       oauthTokenSecret:[account objectForKey:@"oauthTokenSecret"]];
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -81,17 +131,55 @@
     
     // callback_urlから必要なパラメーター取得し、JustawayFirstViewControllerに投げます
     NSDictionary *d = [self parametersDictionaryFromQueryString:[url query]];
-    NSString *token = d[@"oauth_token"];
+//    NSString *token = d[@"oauth_token"];
     NSString *verifier = d[@"oauth_verifier"];
 
-    // TODO: postAccessTokenRequestWithPIN はここでやって Notification するように書き換える
-    // http://www.objectivec-iphone.com/foundation/NSNotification/postNotificationName.html
-    UITabBarController *tabbarVC = (UITabBarController *)self.window.rootViewController;
-    if ([tabbarVC.selectedViewController isKindOfClass:[JustawayFirstViewController class]]) {
-        JustawayFirstViewController *justawayVC = (JustawayFirstViewController *)tabbarVC.selectedViewController;
-        [justawayVC setOAuthToken:token oauthVerifier:verifier];
-    }
-    
+//    UITabBarController *tabbarVC = (UITabBarController *)self.window.rootViewController;
+//    if ([tabbarVC.selectedViewController isKindOfClass:[JustawayFirstViewController class]]) {
+//        JustawayFirstViewController *justawayVC = (JustawayFirstViewController *)tabbarVC.selectedViewController;
+//        [justawayVC setOAuthToken:token oauthVerifier:verifier];
+//    }
+
+    [twitter postAccessTokenRequestWithPIN:verifier successBlock:^(NSString *oauthToken, NSString *oauthTokenSecret, NSString *userID, NSString *screenName) {
+        NSLog(@"-- screenName: %@", screenName);
+        
+        // 通知先に渡すデータをセット
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  userID, @"userID",
+                                  screenName, @"screenName", nil];
+        
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        
+        // 通知する
+        [nc postNotificationName:@"receiveAccessToken"
+                          object:self
+                        userInfo:userInfo];
+
+        // アカウント情報
+        NSDictionary *account = @{
+                               @"userID" : userID,
+                               @"screenName" : screenName,
+                               @"oauthToken" : oauthToken,
+                               @"oauthTokenSecret" : oauthTokenSecret
+                               };
+
+        // アカウント情報 => NSData
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:account
+                                                           options:kNilOptions error:nil];
+
+        // NSData => NSString
+        NSString *jsonString= [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+        // NSString => KeyChain
+        [SSKeychain setPassword:jsonString
+                     forService:JFI_SERVICE
+                        account:screenName
+                          error:nil];
+        
+    } errorBlock:^(NSError *error) {
+        NSLog(@"-- %@", [error localizedDescription]);
+    }];
+
     return YES;
 }
 
