@@ -83,11 +83,14 @@
     NSDictionary *d = [self parametersDictionaryFromQueryString:[url query]];
     NSString *token = d[@"oauth_token"];
     NSString *verifier = d[@"oauth_verifier"];
-    NSString* viewIdentifier = @"JustawayFirstViewController";
-    UIStoryboard* sb = [[[self window] rootViewController] storyboard];
-    JustawayFirstViewController* vc = [[JustawayFirstViewController alloc] init];
-    vc = [sb instantiateViewControllerWithIdentifier:viewIdentifier];
-    [vc setOAuthToken:token oauthVerifier:verifier];
+
+    // TODO: postAccessTokenRequestWithPIN はここでやって Notification するように書き換える
+    // http://www.objectivec-iphone.com/foundation/NSNotification/postNotificationName.html
+    UITabBarController *tabbarVC = (UITabBarController *)self.window.rootViewController;
+    if ([tabbarVC.selectedViewController isKindOfClass:[JustawayFirstViewController class]]) {
+        JustawayFirstViewController *justawayVC = (JustawayFirstViewController *)tabbarVC.selectedViewController;
+        [justawayVC setOAuthToken:token oauthVerifier:verifier];
+    }
     
     return YES;
 }
