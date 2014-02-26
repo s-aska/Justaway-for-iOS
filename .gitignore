@@ -17,6 +17,9 @@ DerivedData
 *.hmap
 *.xccheckout
 
-#CocoaPods
+# CocoaPods
 Pods
 Justaway.xcworkspace
+
+# Secret
+Justaway/secret.plist
