@@ -33,7 +33,7 @@ static NSString * const JFI_SERVICE = @"JustawayService";
     
     NSLog(@"-- dictionaries: %lu", (unsigned long)[dictionaries count]);
 
-    self.accounts = [[NSMutableArray alloc] init];
+    self.accounts = [@[] mutableCopy];
     for (NSDictionary *dictionary in dictionaries) {
 
         NSLog(@"-- account: %@", [dictionary objectForKey:@"acct"]);
