@@ -29,11 +29,15 @@ static NSString * const JFI_SERVICE = @"JustawayService";
     self.twitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:[dictionary objectForKey:@"consumer_key"]
                                                  consumerSecret:[dictionary objectForKey:@"consumer_secret"]];
 
+    // KeyChainから全アカウント情報を取得
     NSArray* dictionaries = [SSKeychain accountsForService:JFI_SERVICE];
     
     NSLog(@"-- dictionaries: %lu", (unsigned long)[dictionaries count]);
 
+    // アカウントリスト初期化
     self.accounts = [@[] mutableCopy];
+
+    // KeyChain上のアカウント情報はJSONでシリアライズしているので、これをデシリアライズする
     for (NSDictionary *dictionary in dictionaries) {
 
         NSLog(@"-- account: %@", [dictionary objectForKey:@"acct"]);
@@ -45,12 +49,13 @@ static NSString * const JFI_SERVICE = @"JustawayService";
 
         // NSString => NSData
         NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-
+        
         // NSData => NSDictionary
         NSDictionary *account = [NSJSONSerialization JSONObjectWithData:jsonData
                                                          options:NSJSONReadingAllowFragments
                                                            error:nil];
 
+        // 最後にpush
         [self.accounts addObject:account];
         
         NSLog(@"-- data: %@", jsonString);
@@ -105,7 +110,8 @@ static NSString * const JFI_SERVICE = @"JustawayService";
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-- (NSDictionary *)parametersDictionaryFromQueryString:(NSString *)queryString {
+- (NSDictionary *)parametersDictionaryFromQueryString:(NSString *)queryString
+{
     
     NSMutableDictionary *md = [NSMutableDictionary dictionary];
     
@@ -125,25 +131,21 @@ static NSString * const JFI_SERVICE = @"JustawayService";
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    // スキーマチェック
+    if ([[url scheme] isEqualToString:@"justaway"] == NO) {
+        return NO;
+    }
     
-    if ([[url scheme] isEqualToString:@"justaway"] == NO) return NO;
-    
-    // callback_urlから必要なパラメーター取得し、JustawayFirstViewControllerに投げます
+    // callback_urlから必要なパラメーター取得し
     NSDictionary *d = [self parametersDictionaryFromQueryString:[url query]];
-//    NSString *token = d[@"oauth_token"];
-    NSString *verifier = d[@"oauth_verifier"];
 
-//    UITabBarController *tabbarVC = (UITabBarController *)self.window.rootViewController;
-//    if ([tabbarVC.selectedViewController isKindOfClass:[JustawayFirstViewController class]]) {
-//        JustawayFirstViewController *justawayVC = (JustawayFirstViewController *)tabbarVC.selectedViewController;
-//        [justawayVC setOAuthToken:token oauthVerifier:verifier];
-//    }
-
-    [twitter postAccessTokenRequestWithPIN:verifier successBlock:^(NSString *oauthToken, NSString *oauthTokenSecret, NSString *userID, NSString *screenName) {
+    // AccessToken取得
+    [twitter postAccessTokenRequestWithPIN:d[@"oauth_verifier"] successBlock:^(NSString *oauthToken, NSString *oauthTokenSecret, NSString *userID, NSString *screenName) {
         NSLog(@"-- screenName: %@", screenName);
         
-        // 通知先に渡すデータをセット
+        // 通知先に渡すデータを生成
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   userID, @"userID",
                                   screenName, @"screenName", nil];
@@ -157,11 +159,11 @@ static NSString * const JFI_SERVICE = @"JustawayService";
 
         // アカウント情報
         NSDictionary *account = @{
-                               @"userID" : userID,
-                               @"screenName" : screenName,
-                               @"oauthToken" : oauthToken,
-                               @"oauthTokenSecret" : oauthTokenSecret
-                               };
+                                  @"userID" : userID,
+                                  @"screenName" : screenName,
+                                  @"oauthToken" : oauthToken,
+                                  @"oauthTokenSecret" : oauthTokenSecret
+                                  };
 
         // アカウント情報 => NSData
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:account
