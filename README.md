@@ -6,8 +6,8 @@
 
 1. Install Pods
 
-	gem install cocoapods
-	pod install
-	open Justaway.xcworkspace
+		gem install cocoapods
+		pod install
+		open Justaway.xcworkspace
 
 2. Build Pods
