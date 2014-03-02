@@ -9,6 +9,8 @@
 #import "JustawayAppDelegate.h"
 #import "JustawayFirstViewController.h"
 #import "JFIStatusCell.h"
+#import "ISDiskCache.h"
+#import "ISMemoryCache.h"
 
 @interface JustawayFirstViewController ()
 
@@ -30,6 +32,27 @@
     [_tableView registerNib:[UINib nibWithNibName:@"JFIStatusCell" bundle:nil] forCellReuseIdentifier:_JFICellId];
     _tableView.dataSource = self;
     _tableView.delegate = self;
+
+    self.operationQueue = [[NSOperationQueue alloc] init];
+    [self.operationQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
+
+    
+    NSURL *url = [NSURL URLWithString:@"http://pbs.twimg.com/profile_images/418049488645677056/o2cmo8o2_normal.jpeg"];
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    UIImage *image = [UIImage imageWithData:data];
+    self.imageView.image = image;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == self.operationQueue && [keyPath isEqualToString:@"operationCount"]) {
+        NSInteger count = [self.operationQueue operationCount];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = count > 0;
+        });
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,6 +80,51 @@
     cell.statusTextView.text = [status valueForKey:@"text"];
     cell.createdAtLabel.text = [status valueForKey:@"created_at"];
     
+    NSURL *URL = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
+//    NSData *data = [NSData dataWithContentsOfURL:URL];
+//    UIImage *image = [UIImage imageWithData:data];
+//    cell.imageView.image = image;
+
+//    ISDiskCache *diskCache = [ISDiskCache sharedCache];
+    
+//    cell.imageView.image = [[ISMemoryCache sharedCache] objectForKey:URL];
+//    if (cell.imageView.image == nil) {
+//        if ([[ISDiskCache sharedCache] hasObjectForKey:URL]) {
+//            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//            dispatch_async(queue, ^{
+//                UIImage *image = [diskCache objectForKey:URL];
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//                    cell.imageView.image = image;
+//                });
+//            });
+//        } else {
+            NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+            [NSURLConnection sendAsynchronousRequest:request
+                                               queue:self.operationQueue
+                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                                       UIImage *image = [UIImage imageWithData:data];
+                                       if (image) {
+                                           NSLog(@"-- sendAsynchronousRequest: success");
+                                           dispatch_queue_t q_grobal = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+                                           dispatch_queue_t q_main = dispatch_get_main_queue();
+                                           dispatch_async(q_grobal, ^{
+                                               dispatch_async(q_main, ^{
+                                                   NSLog(@"-- sendAsynchronousRequest: %@ %@", cell.imageView, URL);
+                                                   self.imageView.image = image;
+                                                   cell.imageView.image = image;
+                                                   cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
+                                                   cell.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                                               });
+                                           });
+                                       } else {
+                                           NSLog(@"-- sendAsynchronousRequest: fail");
+                                       }
+                                   }];
+            
+//        }
+//    }
+
     return cell;
 }
 
@@ -79,7 +147,7 @@
     STTwitterAPI *twitter = [delegate getTwitterByIndex:&index];
 
     [twitter getHomeTimelineSinceID:nil
-                               count:20
+                               count:3
                         successBlock:^(NSArray *statuses) {
                             NSLog(@"-- statuses: %@", statuses);
                             self.statuses = statuses;

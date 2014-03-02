@@ -1,3 +1,5 @@
 pod 'STTwitter'
 pod 'SSKeychain'
+pod 'ISDiskCache'
+pod 'ISMemoryCache'
 platform :ios, '7.0'

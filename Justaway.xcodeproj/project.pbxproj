@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22194C00EF13418F82A85B42 /* libPods.a */; };
+		6A21291018C3485A00AD2953 /* JFIStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21290E18C3485A00AD2953 /* JFIStatusCell.m */; };
+		6A21291118C3485A00AD2953 /* JFIStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A21290F18C3485A00AD2953 /* JFIStatusCell.xib */; };
 		6A9C989F18BB89D500CF4F84 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C989E18BB89D500CF4F84 /* Podfile */; };
 		6A9C997318BD091D00CF4F84 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C997218BD091D00CF4F84 /* secret.plist */; };
 		6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
@@ -40,6 +42,9 @@
 
 /* Begin PBXFileReference section */
 		22194C00EF13418F82A85B42 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A21290D18C3485A00AD2953 /* JFIStatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIStatusCell.h; sourceTree = "<group>"; };
+		6A21290E18C3485A00AD2953 /* JFIStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIStatusCell.m; sourceTree = "<group>"; };
+		6A21290F18C3485A00AD2953 /* JFIStatusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIStatusCell.xib; sourceTree = "<group>"; };
 		6A9C989E18BB89D500CF4F84 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		6A9C997218BD091D00CF4F84 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = secret.plist; sourceTree = "<group>"; };
 		6ADF7942188D6E2200632BA5 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,6 +133,9 @@
 		6ADF794B188D6E2200632BA5 /* Justaway */ = {
 			isa = PBXGroup;
 			children = (
+				6A21290D18C3485A00AD2953 /* JFIStatusCell.h */,
+				6A21290E18C3485A00AD2953 /* JFIStatusCell.m */,
+				6A21290F18C3485A00AD2953 /* JFIStatusCell.xib */,
 				6ADF7954188D6E2200632BA5 /* JustawayAppDelegate.h */,
 				6ADF7955188D6E2200632BA5 /* JustawayAppDelegate.m */,
 				6ADF7957188D6E2200632BA5 /* Main_iPhone.storyboard */,
@@ -257,6 +265,7 @@
 				6ADF7959188D6E2200632BA5 /* Main_iPhone.storyboard in Resources */,
 				6A9C997318BD091D00CF4F84 /* secret.plist in Resources */,
 				6ADF7950188D6E2200632BA5 /* InfoPlist.strings in Resources */,
+				6A21291118C3485A00AD2953 /* JFIStatusCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +319,7 @@
 			files = (
 				6ADF7962188D6E2200632BA5 /* JustawaySecondViewController.m in Sources */,
 				6ADF795F188D6E2200632BA5 /* JustawayFirstViewController.m in Sources */,
+				6A21291018C3485A00AD2953 /* JFIStatusCell.m in Sources */,
 				6ADF7956188D6E2200632BA5 /* JustawayAppDelegate.m in Sources */,
 				6ADF7952188D6E2200632BA5 /* main.m in Sources */,
 			);

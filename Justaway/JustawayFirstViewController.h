@@ -10,7 +10,9 @@
 
 @interface JustawayFirstViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) NSArray *statuses;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (IBAction)loadAction:(id)sender;
