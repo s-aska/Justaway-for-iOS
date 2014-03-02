@@ -31,8 +31,6 @@
              object:delegate];
     
     NSLog(@"-- find accounts: %lu", (unsigned long)[delegate.accounts count]);
-    
-    self.accountsPickerView.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,79 +49,5 @@
     [super finalize];
 }
 
-- (IBAction)loginInSafariAction:(id)sender
-{
-
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
-
-    _loginStatusLabel.text = @"Trying to login with Safari...";
-
-    [delegate.twitter postTokenRequest:^(NSURL *url, NSString *oauthToken) {
-        NSLog(@"-- url: %@", url);
-        NSLog(@"-- oauthToken: %@", oauthToken);
-        
-        [[UIApplication sharedApplication] openURL:url];
-    } forceLogin:@(YES)
-                    screenName:nil
-                 oauthCallback:@"justaway://twitter_access_tokens/"
-                    errorBlock:^(NSError *error) {
-                        NSLog(@"-- error: %@", error);
-                        _loginStatusLabel.text = [error localizedDescription];
-                    }];
-}
-
-- (IBAction)postAction:(id)sender {
-
-    NSLog(@"postAction status:%@", [_statusTextField text]);
-
-    NSInteger selectedRow = [_accountsPickerView selectedRowInComponent:0];
-
-    NSLog(@"postAction selectedRow:%ld", (long)selectedRow);
-
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
-
-    STTwitterAPI *twitter = [delegate getTwitterByIndex:&selectedRow];
-
-    [twitter postStatusUpdate:[_statusTextField text]
-            inReplyToStatusID:nil
-                     latitude:nil
-                    longitude:nil
-                      placeID:nil
-           displayCoordinates:nil
-                     trimUser:nil
-                 successBlock:^(NSDictionary *status) {
-                     // ...
-                 } errorBlock:^(NSError *error) {
-                     // ...
-                 }];
-}
-
-- (void)receiveAccessToken:(NSNotification *)center
-{
-    NSString *userID = [center.userInfo objectForKey:@"userID"];
-    NSString *screenName = [center.userInfo objectForKey:@"screenName"];
-    
-    NSLog(@"receiveAccessToken userID:%@ screenName:%@", userID, screenName);
-
-    _loginStatusLabel.text = screenName;
-}
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)accountsPickerView
-{
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)accountsPickerView numberOfRowsInComponent :(NSInteger)component
-{
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
-    return (unsigned long)[delegate.accounts count];
-}
-
-- (NSString *)pickerView:(UIPickerView *)accountsPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSDictionary *account = [delegate.accounts objectAtIndex:row];
-    return [account objectForKey:@"screenName"];
-}
 
 @end

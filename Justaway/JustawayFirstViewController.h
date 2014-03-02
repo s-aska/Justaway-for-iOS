@@ -8,15 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JustawayFirstViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
+@interface JustawayFirstViewController : UIViewController
 
 @property (nonatomic, strong) NSArray *statuses;
-
 @property (weak, nonatomic) IBOutlet UILabel *loginStatusLabel;
-@property (weak, nonatomic) IBOutlet UIPickerView *accountsPickerView;
-@property (weak, nonatomic) IBOutlet UITextField *statusTextField;
-
-- (IBAction)loginInSafariAction:(id)sender;
-- (IBAction)postAction:(id)sender;
 
 @end
