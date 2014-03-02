@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JustawayFirstViewController : UIViewController
+@interface JustawayFirstViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSArray *statuses;
-@property (weak, nonatomic) IBOutlet UILabel *loginStatusLabel;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+- (IBAction)loadAction:(id)sender;
 
 @end

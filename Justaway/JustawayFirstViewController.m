@@ -8,10 +8,13 @@
 
 #import "JustawayAppDelegate.h"
 #import "JustawayFirstViewController.h"
+#import "JFIStatusCell.h"
 
 @interface JustawayFirstViewController ()
 
 @end
+
+#define _JFICellId @"Cell"
 
 @implementation JustawayFirstViewController
 
@@ -19,18 +22,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-
+    
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
-
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-
-    // 通知センターにオブザーバ（通知を受け取るオブジェクト）を追加
-    [nc addObserver:self
-           selector:@selector(receiveAccessToken:)
-               name:@"receiveAccessToken"
-             object:delegate];
     
     NSLog(@"-- find accounts: %lu", (unsigned long)[delegate.accounts count]);
+
+    [_tableView registerNib:[UINib nibWithNibName:@"JFIStatusCell" bundle:nil] forCellReuseIdentifier:_JFICellId];
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -39,15 +38,55 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)finalize
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    
-    // 通知の登録を解除
-    [nc removeObserver:self];
-    
-    [super finalize];
+    if (self.statuses == nil) {
+        return 0;
+    } else {
+        return [self.statuses count];
+    }
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    JFIStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:_JFICellId forIndexPath:indexPath];
+    NSDictionary *status = [self.statuses objectAtIndex:indexPath.row];
+    
+    cell.displayNameLabel.text = [status valueForKeyPath:@"user.name"];
+    cell.screenNameLabel.text = [status valueForKeyPath:@"user.screen_name"];
+    cell.statusTextView.text = [status valueForKey:@"text"];
+    cell.createdAtLabel.text = [status valueForKey:@"created_at"];
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 85;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// Statusを選択された時の処理
+}
+
+- (IBAction)loadAction:(id)sender {
+    
+    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    // 必ず先頭のアカウントの情報を引いてくる罪深い処理
+    NSInteger index = 0;
+    STTwitterAPI *twitter = [delegate getTwitterByIndex:&index];
+
+    [twitter getHomeTimelineSinceID:nil
+                               count:20
+                        successBlock:^(NSArray *statuses) {
+                            NSLog(@"-- statuses: %@", statuses);
+                            self.statuses = statuses;
+                            [self.tableView reloadData];
+                        } errorBlock:^(NSError *error) {
+                            NSLog(@"-- error: %@", [error localizedDescription]);
+                        }];
+}
 
 @end
