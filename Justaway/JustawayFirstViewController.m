@@ -81,12 +81,12 @@
     if (self.statuses == nil) {
         cell.displayNameLabel.text = @"Shinichiro Aska";
         cell.screenNameLabel.text = @"@su_aska";
-        cell.statusTextView.text = @"Hello world.";
+        cell.statusTextView.text = @"今日は鯖味噌の日。";
         cell.createdAtLabel.text = @"2014/02/14 12:30";
         URL = [NSURL URLWithString:@"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"];
     } else {
         cell.displayNameLabel.text = [status valueForKeyPath:@"user.name"];
-        cell.screenNameLabel.text = [status valueForKeyPath:@"user.screen_name"];
+        cell.screenNameLabel.text = [@"@" stringByAppendingString:[status valueForKeyPath:@"user.screen_name"]];
         cell.statusTextView.text = [status valueForKey:@"text"];
         cell.createdAtLabel.text = [status valueForKey:@"created_at"];
         URL = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
@@ -156,7 +156,7 @@
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     // 必ず先頭のアカウントの情報を引いてくる罪深い処理
-    NSInteger index = 1;
+    NSInteger index = 0;
     STTwitterAPI *twitter = [delegate getTwitterByIndex:&index];
     
     [twitter getHomeTimelineSinceID:nil
