@@ -87,8 +87,8 @@
 
 //    ISDiskCache *diskCache = [ISDiskCache sharedCache];
     
-//    cell.imageView.image = [[ISMemoryCache sharedCache] objectForKey:URL];
-//    if (cell.imageView.image == nil) {
+    cell.imageView.image = [[ISMemoryCache sharedCache] objectForKey:URL];
+    if (cell.imageView.image == nil) {
 //        if ([[ISDiskCache sharedCache] hasObjectForKey:URL]) {
 //            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 //            dispatch_async(queue, ^{
@@ -105,16 +105,18 @@
                                    completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                        UIImage *image = [UIImage imageWithData:data];
                                        if (image) {
+                                           [[ISMemoryCache sharedCache] setObject:image forKey:URL];
                                            NSLog(@"-- sendAsynchronousRequest: success");
                                            dispatch_queue_t q_grobal = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
                                            dispatch_queue_t q_main = dispatch_get_main_queue();
                                            dispatch_async(q_grobal, ^{
                                                dispatch_async(q_main, ^{
                                                    NSLog(@"-- sendAsynchronousRequest: %@ %@", cell.imageView, URL);
-                                                   self.imageView.image = image;
-                                                   cell.imageView.image = image;
-                                                   cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
-                                                   cell.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//                                                   self.imageView.image = image;
+//                                                   cell.imageView.image = image;
+//                                                   cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
+//                                                   cell.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                                                   [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                                                });
                                            });
                                        } else {
@@ -123,7 +125,7 @@
                                    }];
             
 //        }
-//    }
+    }
 
     return cell;
 }
@@ -149,7 +151,7 @@
     [twitter getHomeTimelineSinceID:nil
                                count:3
                         successBlock:^(NSArray *statuses) {
-                            NSLog(@"-- statuses: %@", statuses);
+//                            NSLog(@"-- statuses: %@", statuses);
                             self.statuses = statuses;
                             [self.tableView reloadData];
                         } errorBlock:^(NSError *error) {
