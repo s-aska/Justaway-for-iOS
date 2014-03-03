@@ -12,49 +12,44 @@
 
 @implementation JustawayAppDelegate
 
-@synthesize twitter;
-
 static NSString * const JFI_SERVICE = @"JustawayService";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    // アカウント情報をKeyChainから読み込み
+    [self loadAccounts];
+    
+    return YES;
+}
 
-    // Supporting Files/secret.plist からAPIの設定を読み込む
-    NSBundle* bundle = [NSBundle mainBundle];
-    NSString* path = [bundle pathForResource:@"secret" ofType:@"plist"];
-    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:path];
-
-    // STTwitterAPIのインスタンスをセット
-    self.twitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:[dictionary objectForKey:@"consumer_key"]
-                                                 consumerSecret:[dictionary objectForKey:@"consumer_secret"]];
-
+- (void)loadAccounts
+{
     // KeyChainから全アカウント情報を取得
     NSArray* dictionaries = [SSKeychain accountsForService:JFI_SERVICE];
     
     NSLog(@"-- dictionaries: %lu", (unsigned long)[dictionaries count]);
-
+    
     // アカウントリスト初期化
     self.accounts = [@[] mutableCopy];
-
+    
     // KeyChain上のアカウント情報はJSONでシリアライズしているので、これをデシリアライズする
     for (NSDictionary *dictionary in dictionaries) {
-
+        
         NSLog(@"-- account: %@", [dictionary objectForKey:@"acct"]);
-
+        
         // KeyChain => NSString
         NSString *jsonString = [SSKeychain passwordForService:JFI_SERVICE
                                                       account:[dictionary objectForKey:@"acct"]
                                                         error:nil];
-
+        
         // NSString => NSData
         NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
         
         // NSData => NSDictionary
         NSDictionary *account = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                         options:NSJSONReadingAllowFragments
-                                                           error:nil];
-
+                                                                options:NSJSONReadingAllowFragments
+                                                                  error:nil];
+        
         // 最後にpush
         [self.accounts addObject:account];
         
@@ -65,20 +60,56 @@ static NSString * const JFI_SERVICE = @"JustawayService";
         NSLog(@"-- oauthTokenSecret: %@", [account objectForKey:@"oauthTokenSecret"]);
     }
     
-    return YES;
+    // 通知する
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"loadAccounts"
+                                                        object:self
+                                                      userInfo:nil];
 }
 
-- (STTwitterAPI *)getTwitterByIndex:(NSInteger *)index
+- (NSDictionary *)getSecret
 {
     // Supporting Files/secret.plist からAPIの設定を読み込む
     NSBundle* bundle = [NSBundle mainBundle];
     NSString* path = [bundle pathForResource:@"secret" ofType:@"plist"];
-    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:path];
+    return [NSDictionary dictionaryWithContentsOfFile:path];
+}
 
+- (void)clearAccounts
+{
+    NSArray* dictionaries = [SSKeychain accountsForService:JFI_SERVICE];
+    for (NSDictionary *dictionary in dictionaries) {
+        [SSKeychain deletePasswordForService:JFI_SERVICE account:[dictionary objectForKey:@"acct"]];
+    }
+    self.accounts = [@[] mutableCopy];
+}
+
+- (void)postTokenRequest
+{
+    NSDictionary *secret = [self getSecret];
+    
+    // STTwitterAPIのインスタンスをセット
+    _loginTwitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:[secret objectForKey:@"consumer_key"]
+                                                  consumerSecret:[secret objectForKey:@"consumer_secret"]];
+    
+    [_loginTwitter postTokenRequest:^(NSURL *url, NSString *oauthToken) {
+        NSLog(@"-- url: %@", url);
+        NSLog(@"-- oauthToken: %@", oauthToken);
+        [[UIApplication sharedApplication] openURL:url];
+    } forceLogin:@(YES)
+                         screenName:nil
+                      oauthCallback:@"justaway://twitter_access_tokens/"
+                         errorBlock:^(NSError *error) {
+                             NSLog(@"-- error: %@", error);
+                         }];
+}
+
+- (STTwitterAPI *)getTwitterByIndex:(NSInteger *)index
+{
+    NSDictionary *secret = [self getSecret];
     NSDictionary *account = [self.accounts objectAtIndex:*index];
     
-    return [STTwitterAPI twitterAPIWithOAuthConsumerKey:[dictionary objectForKey:@"consumer_key"]
-                                         consumerSecret:[dictionary objectForKey:@"consumer_secret"]
+    return [STTwitterAPI twitterAPIWithOAuthConsumerKey:[secret objectForKey:@"consumer_key"]
+                                         consumerSecret:[secret objectForKey:@"consumer_secret"]
                                              oauthToken:[account objectForKey:@"oauthToken"]
                                        oauthTokenSecret:[account objectForKey:@"oauthTokenSecret"]];
 }
@@ -91,7 +122,7 @@ static NSString * const JFI_SERVICE = @"JustawayService";
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
@@ -140,23 +171,11 @@ static NSString * const JFI_SERVICE = @"JustawayService";
     
     // callback_urlから必要なパラメーター取得し
     NSDictionary *d = [self parametersDictionaryFromQueryString:[url query]];
-
+    
     // AccessToken取得
-    [twitter postAccessTokenRequestWithPIN:d[@"oauth_verifier"] successBlock:^(NSString *oauthToken, NSString *oauthTokenSecret, NSString *userID, NSString *screenName) {
+    [_loginTwitter postAccessTokenRequestWithPIN:d[@"oauth_verifier"] successBlock:^(NSString *oauthToken, NSString *oauthTokenSecret, NSString *userID, NSString *screenName) {
         NSLog(@"-- screenName: %@", screenName);
         
-        // 通知先に渡すデータを生成
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  userID, @"userID",
-                                  screenName, @"screenName", nil];
-        
-        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        
-        // 通知する
-        [nc postNotificationName:@"receiveAccessToken"
-                          object:self
-                        userInfo:userInfo];
-
         // アカウント情報
         NSDictionary *account = @{
                                   @"userID" : userID,
@@ -164,24 +183,40 @@ static NSString * const JFI_SERVICE = @"JustawayService";
                                   @"oauthToken" : oauthToken,
                                   @"oauthTokenSecret" : oauthTokenSecret
                                   };
-
+        
         // アカウント情報 => NSData
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:account
                                                            options:kNilOptions error:nil];
-
+        
         // NSData => NSString
         NSString *jsonString= [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-
-        // NSString => KeyChain
+        
+        // NSString => KeyChain (insert or update?)
         [SSKeychain setPassword:jsonString
                      forService:JFI_SERVICE
                         account:screenName
                           error:nil];
         
+        // アカウント情報をKeyChainから再読み込み
+        [self loadAccounts];
+        
+        /* 今は使ってないが将来「◯◯さんようこそ！！！」みたいなメッセージ出す場合は復活
+         
+         // 通知先に渡すデータを生成
+         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+         userID, @"userID",
+         screenName, @"screenName", nil];
+         
+         // 通知する
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"receiveAccessToken"
+         object:self
+         userInfo:userInfo];
+         
+         */
     } errorBlock:^(NSError *error) {
         NSLog(@"-- %@", [error localizedDescription]);
     }];
-
+    
     return YES;
 }
 

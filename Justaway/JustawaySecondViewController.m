@@ -19,16 +19,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-
+    
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    
     // 通知センターにオブザーバ（通知を受け取るオブジェクト）を追加
-    [nc addObserver:self
-           selector:@selector(receiveAccessToken:)
-               name:@"receiveAccessToken"
-             object:delegate];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveLoadAccounts:)
+                                                 name:@"loadAccounts"
+                                               object:delegate];
     
     self.accountsPickerView.delegate = self;
     
@@ -36,7 +34,7 @@
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSoftKeyboard)];
     [self.view addGestureRecognizer:gestureRecognizer];
     
-    // 枠をつける
+    // 投稿欄に枠をつける
     self.statusTextField.layer.borderWidth = 1;
     self.statusTextField.layer.borderColor = [[UIColor blackColor] CGColor];
 }
@@ -49,39 +47,31 @@
 
 - (void)finalize
 {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    
     // 通知の登録を解除
-    [nc removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [super finalize];
 }
 
+// アカウント追加アクション
 - (IBAction)loginInSafariAction:(id)sender
 {
-    
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
-    
-    [delegate.twitter postTokenRequest:^(NSURL *url, NSString *oauthToken) {
-        NSLog(@"-- url: %@", url);
-        NSLog(@"-- oauthToken: %@", oauthToken);
-        
-        [[UIApplication sharedApplication] openURL:url];
-    } forceLogin:@(YES)
-                            screenName:nil
-                         oauthCallback:@"justaway://twitter_access_tokens/"
-                            errorBlock:^(NSError *error) {
-                                NSLog(@"-- error: %@", error);
-                            }];
+    [delegate postTokenRequest];
 }
 
+// アカウント情報全削除アクション
+- (IBAction)clearAction:(id)sender
+{
+    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    [delegate clearAccounts];
+    [_accountsPickerView reloadAllComponents];
+}
+
+// 投稿アクション
 - (IBAction)postAction:(id)sender {
     
-    NSLog(@"postAction status:%@", [_statusTextField text]);
-    
     NSInteger selectedRow = [_accountsPickerView selectedRowInComponent:0];
-    
-    NSLog(@"postAction selectedRow:%ld", (long)selectedRow);
     
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
     
@@ -101,25 +91,26 @@
                  }];
 }
 
-- (void)receiveAccessToken:(NSNotification *)center
+// アカウント情報がリセットされたらピッカーもリロードする
+- (void)receiveLoadAccounts:(NSNotification *)center
 {
-    NSString *userID = [center.userInfo objectForKey:@"userID"];
-    NSString *screenName = [center.userInfo objectForKey:@"screenName"];
-    
-    NSLog(@"receiveAccessToken userID:%@ screenName:%@", userID, screenName);
+    [self.accountsPickerView reloadAllComponents];
 }
 
+// ピッカーの列数は1固定
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)accountsPickerView
 {
     return 1;
 }
 
+// ピッカーの行数はアカウント数
 - (NSInteger)pickerView:(UIPickerView *)accountsPickerView numberOfRowsInComponent :(NSInteger)component
 {
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
     return (unsigned long)[delegate.accounts count];
 }
 
+// ピッカーのラベルはscreen_name
 - (NSString *)pickerView:(UIPickerView *)accountsPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];

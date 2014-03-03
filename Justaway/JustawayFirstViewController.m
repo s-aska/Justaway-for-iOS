@@ -28,14 +28,14 @@
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     NSLog(@"-- find accounts: %lu", (unsigned long)[delegate.accounts count]);
-
+    
     [_tableView registerNib:[UINib nibWithNibName:@"JFIStatusCell" bundle:nil] forCellReuseIdentifier:_JFICellId];
     _tableView.dataSource = self;
     _tableView.delegate = self;
-
+    
     self.operationQueue = [[NSOperationQueue alloc] init];
     [self.operationQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
-
+    
     
     NSURL *url = [NSURL URLWithString:@"http://pbs.twimg.com/profile_images/418049488645677056/o2cmo8o2_normal.jpeg"];
     NSData *data = [NSData dataWithContentsOfURL:url];
@@ -81,14 +81,14 @@
     cell.createdAtLabel.text = [status valueForKey:@"created_at"];
     
     NSURL *URL = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
-
+    
     ISMemoryCache *memCache = [ISMemoryCache sharedCache];
     ISDiskCache *diskCache = [ISDiskCache sharedCache];
-
+    
     cell.imageView.image = [memCache objectForKey:URL];
-
+    
     if (cell.imageView.image == nil) {
-
+        
         if ([diskCache hasObjectForKey:URL]) {
             NSLog(@"-- from disk %@", URL);
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -125,7 +125,7 @@
     } else {
         NSLog(@"-- from memory %@", URL);
     }
-
+    
     return cell;
 }
 
@@ -144,18 +144,17 @@
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     // 必ず先頭のアカウントの情報を引いてくる罪深い処理
-    NSInteger index = 2;
+    NSInteger index = 0;
     STTwitterAPI *twitter = [delegate getTwitterByIndex:&index];
-
+    
     [twitter getHomeTimelineSinceID:nil
-                               count:3
-                        successBlock:^(NSArray *statuses) {
-//                            NSLog(@"-- statuses: %@", statuses);
-                            self.statuses = statuses;
-                            [self.tableView reloadData];
-                        } errorBlock:^(NSError *error) {
-                            NSLog(@"-- error: %@", [error localizedDescription]);
-                        }];
+                              count:20
+                       successBlock:^(NSArray *statuses) {
+                           self.statuses = statuses;
+                           [self.tableView reloadData];
+                       } errorBlock:^(NSError *error) {
+                           NSLog(@"-- error: %@", [error localizedDescription]);
+                       }];
 }
 
 @end
