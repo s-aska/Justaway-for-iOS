@@ -14,6 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
 @property (weak, nonatomic) IBOutlet UITextView *statusTextView;
 @property (weak, nonatomic) IBOutlet UILabel *createdAtLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 
 @end

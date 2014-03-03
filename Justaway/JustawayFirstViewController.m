@@ -64,7 +64,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.statuses == nil) {
-        return 0;
+        return 3;
     } else {
         return [self.statuses count];
     }
@@ -73,21 +73,33 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     JFIStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:_JFICellId forIndexPath:indexPath];
+
+    NSURL *URL;
     NSDictionary *status = [self.statuses objectAtIndex:indexPath.row];
+
+    // 起動時はダミーデータを表示（レイアウト調整の度にAPI呼ばない為）
+    if (self.statuses == nil) {
+        cell.displayNameLabel.text = @"Shinichiro Aska";
+        cell.screenNameLabel.text = @"@su_aska";
+        cell.statusTextView.text = @"Hello world.";
+        cell.createdAtLabel.text = @"2014/02/14 12:30";
+        URL = [NSURL URLWithString:@"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"];
+    } else {
+        cell.displayNameLabel.text = [status valueForKeyPath:@"user.name"];
+        cell.screenNameLabel.text = [status valueForKeyPath:@"user.screen_name"];
+        cell.statusTextView.text = [status valueForKey:@"text"];
+        cell.createdAtLabel.text = [status valueForKey:@"created_at"];
+        URL = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
+    }
     
-    cell.displayNameLabel.text = [status valueForKeyPath:@"user.name"];
-    cell.screenNameLabel.text = [status valueForKeyPath:@"user.screen_name"];
-    cell.statusTextView.text = [status valueForKey:@"text"];
-    cell.createdAtLabel.text = [status valueForKey:@"created_at"];
-    
-    NSURL *URL = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
-    
+    [cell.displayNameLabel sizeToFit];
+
     ISMemoryCache *memCache = [ISMemoryCache sharedCache];
     ISDiskCache *diskCache = [ISDiskCache sharedCache];
     
-    cell.imageView.image = [memCache objectForKey:URL];
+    cell.iconImageView.image = [memCache objectForKey:URL];
     
-    if (cell.imageView.image == nil) {
+    if (cell.iconImageView.image == nil) {
         
         if ([diskCache hasObjectForKey:URL]) {
             NSLog(@"-- from disk %@", URL);
@@ -95,7 +107,7 @@
                 UIImage *image = [diskCache objectForKey:URL];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     JFIStatusCell *cell = (JFIStatusCell *) [tableView cellForRowAtIndexPath:indexPath];
-                    cell.imageView.image = image;
+                    cell.iconImageView.image = image;
                     [cell setNeedsLayout];
                 });
             });
@@ -112,7 +124,7 @@
                                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                dispatch_async(dispatch_get_main_queue(), ^{
                                                    JFIStatusCell *cell = (JFIStatusCell *) [tableView cellForRowAtIndexPath:indexPath];
-                                                   cell.imageView.image = image;
+                                                   cell.iconImageView.image = image;
                                                    [cell setNeedsLayout];
                                                });
                                            });
@@ -131,7 +143,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 85;
+    return 100;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -144,7 +156,7 @@
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     // 必ず先頭のアカウントの情報を引いてくる罪深い処理
-    NSInteger index = 0;
+    NSInteger index = 1;
     STTwitterAPI *twitter = [delegate getTwitterByIndex:&index];
     
     [twitter getHomeTimelineSinceID:nil
