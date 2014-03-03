@@ -81,42 +81,39 @@
     cell.createdAtLabel.text = [status valueForKey:@"created_at"];
     
     NSURL *URL = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
-//    NSData *data = [NSData dataWithContentsOfURL:URL];
-//    UIImage *image = [UIImage imageWithData:data];
-//    cell.imageView.image = image;
 
-//    ISDiskCache *diskCache = [ISDiskCache sharedCache];
-    
-    cell.imageView.image = [[ISMemoryCache sharedCache] objectForKey:URL];
+    ISMemoryCache *memCache = [ISMemoryCache sharedCache];
+    ISDiskCache *diskCache = [ISDiskCache sharedCache];
+
+    cell.imageView.image = [memCache objectForKey:URL];
+
     if (cell.imageView.image == nil) {
-//        if ([[ISDiskCache sharedCache] hasObjectForKey:URL]) {
-//            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-//            dispatch_async(queue, ^{
-//                UIImage *image = [diskCache objectForKey:URL];
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//                    cell.imageView.image = image;
-//                });
-//            });
-//        } else {
+
+        if ([diskCache hasObjectForKey:URL]) {
+            NSLog(@"-- from disk %@", URL);
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                UIImage *image = [diskCache objectForKey:URL];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    JFIStatusCell *cell = (JFIStatusCell *) [tableView cellForRowAtIndexPath:indexPath];
+                    cell.imageView.image = image;
+                    [cell setNeedsLayout];
+                });
+            });
+        } else {
+            NSLog(@"-- from network %@", URL);
             NSURLRequest *request = [NSURLRequest requestWithURL:URL];
             [NSURLConnection sendAsynchronousRequest:request
                                                queue:self.operationQueue
                                    completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                        UIImage *image = [UIImage imageWithData:data];
                                        if (image) {
-                                           [[ISMemoryCache sharedCache] setObject:image forKey:URL];
-                                           NSLog(@"-- sendAsynchronousRequest: success");
-                                           dispatch_queue_t q_grobal = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-                                           dispatch_queue_t q_main = dispatch_get_main_queue();
-                                           dispatch_async(q_grobal, ^{
-                                               dispatch_async(q_main, ^{
-                                                   NSLog(@"-- sendAsynchronousRequest: %@ %@", cell.imageView, URL);
-//                                                   self.imageView.image = image;
-//                                                   cell.imageView.image = image;
-//                                                   cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
-//                                                   cell.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                                                   [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                                           [memCache setObject:image forKey:URL];
+                                           [diskCache setObject:image forKey:URL];
+                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                   JFIStatusCell *cell = (JFIStatusCell *) [tableView cellForRowAtIndexPath:indexPath];
+                                                   cell.imageView.image = image;
+                                                   [cell setNeedsLayout];
                                                });
                                            });
                                        } else {
@@ -124,7 +121,9 @@
                                        }
                                    }];
             
-//        }
+        }
+    } else {
+        NSLog(@"-- from memory %@", URL);
     }
 
     return cell;
@@ -145,7 +144,7 @@
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     // 必ず先頭のアカウントの情報を引いてくる罪深い処理
-    NSInteger index = 0;
+    NSInteger index = 2;
     STTwitterAPI *twitter = [delegate getTwitterByIndex:&index];
 
     [twitter getHomeTimelineSinceID:nil
