@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 20D352DB18C9A63D00CC8C80 /* JFIAccount.m */; };
+		20D352DD18C9A63D00CC8C80 /* JFIAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 20D352DB18C9A63D00CC8C80 /* JFIAccount.m */; };
 		5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22194C00EF13418F82A85B42 /* libPods.a */; };
 		6A21291018C3485A00AD2953 /* JFIStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21290E18C3485A00AD2953 /* JFIStatusCell.m */; };
 		6A21291118C3485A00AD2953 /* JFIStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A21290F18C3485A00AD2953 /* JFIStatusCell.xib */; };
@@ -41,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		20D352DA18C9A63D00CC8C80 /* JFIAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIAccount.h; sourceTree = "<group>"; };
+		20D352DB18C9A63D00CC8C80 /* JFIAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIAccount.m; sourceTree = "<group>"; };
 		22194C00EF13418F82A85B42 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A21290D18C3485A00AD2953 /* JFIStatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIStatusCell.h; sourceTree = "<group>"; };
 		6A21290E18C3485A00AD2953 /* JFIStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIStatusCell.m; sourceTree = "<group>"; };
@@ -136,6 +140,8 @@
 				6A21290D18C3485A00AD2953 /* JFIStatusCell.h */,
 				6A21290E18C3485A00AD2953 /* JFIStatusCell.m */,
 				6A21290F18C3485A00AD2953 /* JFIStatusCell.xib */,
+				20D352DA18C9A63D00CC8C80 /* JFIAccount.h */,
+				20D352DB18C9A63D00CC8C80 /* JFIAccount.m */,
 				6ADF7954188D6E2200632BA5 /* JustawayAppDelegate.h */,
 				6ADF7955188D6E2200632BA5 /* JustawayAppDelegate.m */,
 				6ADF7957188D6E2200632BA5 /* Main_iPhone.storyboard */,
@@ -322,6 +328,7 @@
 				6A21291018C3485A00AD2953 /* JFIStatusCell.m in Sources */,
 				6ADF7956188D6E2200632BA5 /* JustawayAppDelegate.m in Sources */,
 				6ADF7952188D6E2200632BA5 /* main.m in Sources */,
+				20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,6 +337,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6ADF7977188D6E2300632BA5 /* JustawayTests.m in Sources */,
+				20D352DD18C9A63D00CC8C80 /* JFIAccount.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
