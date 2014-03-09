@@ -1,11 +1,3 @@
-//
-//  JustawayFirstViewController.m
-//  Justaway
-//
-//  Created by Shinichiro Aska on 2014/01/20.
-//  Copyright (c) 2014年 Shinichiro Aska. All rights reserved.
-//
-
 #import "JustawayAppDelegate.h"
 #import "JustawayFirstViewController.h"
 #import "JFIStatusCell.h"
@@ -16,7 +8,8 @@
 
 @end
 
-#define _JFICellId @"Cell"
+NSString *const JFI_CellId = @"Cell";
+NSString *const JFI_CellForHeightId = @"CellForHeight";
 
 @implementation JustawayFirstViewController
 
@@ -29,9 +22,20 @@
     
     NSLog(@"-- find accounts: %lu", (unsigned long)[delegate.accounts count]);
     
-    [_tableView registerNib:[UINib nibWithNibName:@"JFIStatusCell" bundle:nil] forCellReuseIdentifier:_JFICellId];
+    // xibファイル名を指定しUINibオブジェクトを生成する
+    UINib *nib = [UINib nibWithNibName:@"JFIStatusCell" bundle:nil];
+    
+    // UITableView#registerNib:forCellReuseIdentifierで、使用するセルを登録
+    [_tableView registerNib:nib forCellReuseIdentifier:JFI_CellId];
+    
+    // 高さの計算用のセルを登録
+    [_tableView registerNib:nib forCellReuseIdentifier:JFI_CellForHeightId];
+    
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    
+    // セルの高さ計算用のオブジェクトをあらかじめ生成して変数に保持しておく
+    _cellForHeight = [_tableView dequeueReusableCellWithIdentifier:JFI_CellForHeightId];
     
     self.operationQueue = [[NSOperationQueue alloc] init];
     [self.operationQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
@@ -41,6 +45,32 @@
     NSData *data = [NSData dataWithContentsOfURL:url];
     UIImage *image = [UIImage imageWithData:data];
     self.imageView.image = image;
+    
+    NSDictionary *status1 = @{
+                              @"user.name": @"Shinichiro Aska",
+                              @"user.screen_name": @"su_aska",
+                              @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。\n今日は鯖味噌の日。",
+                              @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
+                              @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
+                              };
+    
+    NSDictionary *status2 = @{
+                              @"user.name": @"Shinichiro Aska",
+                              @"user.screen_name": @"su_aska",
+                              @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。",
+                              @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
+                              @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
+                              };
+    
+    NSDictionary *status3 = @{
+                              @"user.name": @"Shinichiro Aska",
+                              @"user.screen_name": @"su_aska",
+                              @"text": @"今日は鯖味噌の日。",
+                              @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
+                              @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
+                              };
+    
+    self.statuses = @[status1, status2, status3];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -64,7 +94,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.statuses == nil) {
-        return 3;
+        return 0;
     } else {
         return [self.statuses count];
     }
@@ -72,28 +102,30 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    JFIStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:_JFICellId forIndexPath:indexPath];
-
+    NSLog(@"-- cellForRowAtIndexPath %@", indexPath);
+    JFIStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:JFI_CellId forIndexPath:indexPath];
     NSURL *URL;
-    NSDictionary *status = [self.statuses objectAtIndex:indexPath.row];
-
+    NSDictionary *status;
+    
     // 起動時はダミーデータを表示（レイアウト調整の度にAPI呼ばない為）
     if (self.statuses == nil) {
-        cell.displayNameLabel.text = @"Shinichiro Aska";
-        cell.screenNameLabel.text = @"@su_aska";
-        cell.statusTextView.text = @"今日は鯖味噌の日。";
-        cell.createdAtLabel.text = @"2014/02/14 12:30";
-        URL = [NSURL URLWithString:@"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"];
+        status = @{
+                   @"user.name": @"Shinichiro Aska",
+                   @"user.screen_name": @"@su_aska",
+                   @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。",
+                   @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
+                   @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
+                   };
     } else {
-        cell.displayNameLabel.text = [status valueForKeyPath:@"user.name"];
-        cell.screenNameLabel.text = [@"@" stringByAppendingString:[status valueForKeyPath:@"user.screen_name"]];
-        cell.statusTextView.text = [status valueForKey:@"text"];
-        cell.createdAtLabel.text = [status valueForKey:@"created_at"];
-        URL = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
+        status = [self.statuses objectAtIndex:indexPath.row];
     }
     
+    URL = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
+    
+    [cell setLabelTexts:status];
+    
     [cell.displayNameLabel sizeToFit];
-
+    
     ISMemoryCache *memCache = [ISMemoryCache sharedCache];
     ISDiskCache *diskCache = [ISDiskCache sharedCache];
     
@@ -132,7 +164,6 @@
                                            NSLog(@"-- sendAsynchronousRequest: fail");
                                        }
                                    }];
-            
         }
     } else {
         NSLog(@"-- from memory %@", URL);
@@ -141,9 +172,35 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 100;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.statuses == nil) {
+        return 100;
+    }
+    _cellForHeight.frame = _tableView.bounds;
+    
+    // これでもよいが、上記の方が記述が楽。高さは自動計算するので、ここでは適当で良い。
+    // _cellForHeight.frame = CGRectMake(0, 0, _tableView.bounds.size.width, 0);
+    
+    // indexPathに応じた文字列を設定
+    [_cellForHeight setLabelTexts:[self.statuses objectAtIndex:indexPath.row]];
+    [_cellForHeight.contentView setNeedsLayout];
+    [_cellForHeight.contentView layoutIfNeeded];
+    
+    // 適切なサイズをAuto Layoutによって自動計算する
+    CGSize size = [_cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    
+    NSLog(@"-- heightForRowAtIndexPath height:%f", size.height);
+    NSLog(@"-- heightForRowAtIndexPath width:%f", size.width);
+    
+    // 自動計算で得られた高さを返す
+    return size.height;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -151,7 +208,8 @@
 	// Statusを選択された時の処理
 }
 
-- (IBAction)loadAction:(id)sender {
+- (IBAction)loadAction:(id)sender
+{
     
     JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
     

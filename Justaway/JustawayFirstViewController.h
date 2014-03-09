@@ -1,12 +1,5 @@
-//
-//  JustawayFirstViewController.h
-//  Justaway
-//
-//  Created by Shinichiro Aska on 2014/01/20.
-//  Copyright (c) 2014年 Shinichiro Aska. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
+#import "JFIStatusCell.h"
 
 @interface JustawayFirstViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
@@ -14,6 +7,7 @@
 @property (nonatomic, strong) NSArray *statuses;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) JFIStatusCell *cellForHeight;
 
 - (IBAction)loadAction:(id)sender;
 

@@ -1,11 +1,3 @@
-//
-//  JFIAccount.h
-//  Justaway
-//
-//  Created by 木村圭佑 on 2014/03/07.
-//  Copyright (c) 2014年 Shinichiro Aska. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 @class JFIAccount;
