@@ -4,14 +4,16 @@
 #import "ISDiskCache.h"
 #import "ISMemoryCache.h"
 
+NSString *const JFI_CellId = @"Cell";
+NSString *const JFI_CellForHeightId = @"CellForHeight";
+
 @interface JustawayFirstViewController ()
 
 @end
 
-NSString *const JFI_CellId = @"Cell";
-NSString *const JFI_CellForHeightId = @"CellForHeight";
-
 @implementation JustawayFirstViewController
+
+#pragma mark - ViewController
 
 - (void)viewDidLoad
 {
@@ -37,15 +39,11 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
     // セルの高さ計算用のオブジェクトをあらかじめ生成して変数に保持しておく
     _cellForHeight = [_tableView dequeueReusableCellWithIdentifier:JFI_CellForHeightId];
     
-    self.operationQueue = [[NSOperationQueue alloc] init];
+    // 画像読み込み中にローディングアピする為に
+    self.operationQueue = NSOperationQueue.new;
     [self.operationQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
     
-    
-    NSURL *url = [NSURL URLWithString:@"http://pbs.twimg.com/profile_images/418049488645677056/o2cmo8o2_normal.jpeg"];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    UIImage *image = [UIImage imageWithData:data];
-    self.imageView.image = image;
-    
+    // レイアウト確認用のダミーデータ
     NSDictionary *status1 = @{
                               @"user.name": @"Shinichiro Aska",
                               @"user.screen_name": @"su_aska",
@@ -73,6 +71,15 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
     self.statuses = @[status1, status2, status3];
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Observer
+
+// 画像読み込み中にステータスバーでネットワーク接続をアピール
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (object == self.operationQueue && [keyPath isEqualToString:@"operationCount"]) {
@@ -85,11 +92,7 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -104,7 +107,7 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
 {
     NSLog(@"-- cellForRowAtIndexPath %@", indexPath);
     JFIStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:JFI_CellId forIndexPath:indexPath];
-    NSURL *URL;
+    NSURL *url;
     NSDictionary *status;
     
     // 起動時はダミーデータを表示（レイアウト調整の度にAPI呼ばない為）
@@ -120,7 +123,7 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
         status = [self.statuses objectAtIndex:indexPath.row];
     }
     
-    URL = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
+    url = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
     
     [cell setLabelTexts:status];
     
@@ -129,33 +132,33 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
     ISMemoryCache *memCache = [ISMemoryCache sharedCache];
     ISDiskCache *diskCache = [ISDiskCache sharedCache];
     
-    cell.iconImageView.image = [memCache objectForKey:URL];
+    cell.iconImageView.image = [memCache objectForKey:url];
     
     if (cell.iconImageView.image == nil) {
         
-        if ([diskCache hasObjectForKey:URL]) {
-            NSLog(@"-- from disk %@", URL);
+        if ([diskCache hasObjectForKey:url]) {
+            NSLog(@"-- from disk %@", url);
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                UIImage *image = [diskCache objectForKey:URL];
+                UIImage *image = [diskCache objectForKey:url];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    JFIStatusCell *cell = (JFIStatusCell *) [tableView cellForRowAtIndexPath:indexPath];
+                    JFIStatusCell *cell = (id)[tableView cellForRowAtIndexPath:indexPath];
                     cell.iconImageView.image = image;
                     [cell setNeedsLayout];
                 });
             });
         } else {
-            NSLog(@"-- from network %@", URL);
-            NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+            NSLog(@"-- from network %@", url);
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
             [NSURLConnection sendAsynchronousRequest:request
                                                queue:self.operationQueue
                                    completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                        UIImage *image = [UIImage imageWithData:data];
                                        if (image) {
-                                           [memCache setObject:image forKey:URL];
-                                           [diskCache setObject:image forKey:URL];
+                                           [memCache setObject:image forKey:url];
+                                           [diskCache setObject:image forKey:url];
                                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                dispatch_async(dispatch_get_main_queue(), ^{
-                                                   JFIStatusCell *cell = (JFIStatusCell *) [tableView cellForRowAtIndexPath:indexPath];
+                                                   JFIStatusCell *cell = (id)[tableView cellForRowAtIndexPath:indexPath];
                                                    cell.iconImageView.image = image;
                                                    [cell setNeedsLayout];
                                                });
@@ -166,12 +169,13 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
                                    }];
         }
     } else {
-        NSLog(@"-- from memory %@", URL);
+        NSLog(@"-- from memory %@", url);
     }
     
     return cell;
 }
 
+#pragma mark - UITableViewDataSource
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -180,9 +184,6 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.statuses == nil) {
-        return 100;
-    }
     _cellForHeight.frame = _tableView.bounds;
     
     // これでもよいが、上記の方が記述が楽。高さは自動計算するので、ここでは適当で良い。
@@ -207,6 +208,8 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
 {
 	// Statusを選択された時の処理
 }
+
+#pragma mark - IBAction
 
 - (IBAction)loadAction:(id)sender
 {

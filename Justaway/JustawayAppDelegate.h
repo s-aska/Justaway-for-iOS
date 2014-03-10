@@ -3,9 +3,9 @@
 
 @interface JustawayAppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) STTwitterAPI *loginTwitter; // アカウント追加（Twitter認証）専用Twitterインスタンス
-@property (strong, nonatomic) NSMutableArray *accounts;
+@property (nonatomic) UIWindow *window;
+@property (nonatomic) STTwitterAPI *loginTwitter; // アカウント追加（Twitter認証）専用Twitterインスタンス
+@property (nonatomic) NSMutableArray *accounts;
 
 - (STTwitterAPI *)getTwitterByIndex:(NSInteger *)index;
 - (void)clearAccounts;

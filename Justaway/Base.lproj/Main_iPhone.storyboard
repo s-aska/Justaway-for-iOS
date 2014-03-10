@@ -27,6 +27,7 @@
                                 <rect key="frame" x="0.0" y="106" width="320" height="411"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NOv-Lw-qiJ">
                                 <rect key="frame" x="20" y="58" width="35" height="30"/>
@@ -38,10 +39,6 @@
                                     <action selector="loadAction:" destination="CZ4-MO-1fc" eventType="touchUpInside" id="fR8-yT-B3q"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WO4-Jf-hNn">
-                                <rect key="frame" x="276" y="44" width="44" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -51,8 +48,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="First" image="first" id="u1e-5L-l1D"/>
                     <connections>
-                        <outlet property="imageView" destination="WO4-Jf-hNn" id="gHY-cr-AJf"/>
-                        <outlet property="tableView" destination="UMv-wv-WAD" id="dGO-mx-4Hv"/>
+                        <outlet property="tableView" destination="UMv-wv-WAD" id="qjq-ib-YgW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qh2-T1-AhA" sceneMemberID="firstResponder"/>
