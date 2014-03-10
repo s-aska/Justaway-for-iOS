@@ -232,7 +232,7 @@
 		6ADF793A188D6E2200632BA5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = Justaway;
+				CLASSPREFIX = JFI;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Shinichiro Aska";
 				TargetAttributes = {
