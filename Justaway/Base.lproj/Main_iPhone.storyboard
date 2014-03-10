@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--Justaway First View Controller - First-->
+        <!--First View Controller - First-->
         <scene sceneID="W3I-pn-N6e">
             <objects>
-                <viewController storyboardIdentifier="JustawayFirstViewController" title="First" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CZ4-MO-1fc" customClass="JustawayFirstViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="JustawayFirstViewController" title="First" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CZ4-MO-1fc" customClass="JFIFirstViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Gvl-vF-5LS"/>
                         <viewControllerLayoutGuide type="bottom" id="hvR-zn-C42"/>
@@ -55,10 +55,10 @@
             </objects>
             <point key="canvasLocation" x="653" y="-156"/>
         </scene>
-        <!--Justaway Second View Controller - Second-->
+        <!--Second View Controller - Second-->
         <scene sceneID="ot8-2e-RuS">
             <objects>
-                <viewController title="Second" id="QUy-BD-bpt" customClass="JustawaySecondViewController" sceneMemberID="viewController">
+                <viewController title="Second" id="QUy-BD-bpt" customClass="JFISecondViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KjG-uj-AWH"/>
                         <viewControllerLayoutGuide type="bottom" id="9Jl-9Z-8co"/>

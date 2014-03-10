@@ -19,11 +19,11 @@
 		6ADF794A188D6E2200632BA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7949188D6E2200632BA5 /* UIKit.framework */; };
 		6ADF7950188D6E2200632BA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6ADF794E188D6E2200632BA5 /* InfoPlist.strings */; };
 		6ADF7952188D6E2200632BA5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF7951188D6E2200632BA5 /* main.m */; };
-		6ADF7956188D6E2200632BA5 /* JustawayAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF7955188D6E2200632BA5 /* JustawayAppDelegate.m */; };
+		6ADF7956188D6E2200632BA5 /* JFIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF7955188D6E2200632BA5 /* JFIAppDelegate.m */; };
 		6ADF7959188D6E2200632BA5 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ADF7957188D6E2200632BA5 /* Main_iPhone.storyboard */; };
 		6ADF795C188D6E2200632BA5 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ADF795A188D6E2200632BA5 /* Main_iPad.storyboard */; };
-		6ADF795F188D6E2200632BA5 /* JustawayFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF795E188D6E2200632BA5 /* JustawayFirstViewController.m */; };
-		6ADF7962188D6E2200632BA5 /* JustawaySecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF7961188D6E2200632BA5 /* JustawaySecondViewController.m */; };
+		6ADF795F188D6E2200632BA5 /* JFIFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF795E188D6E2200632BA5 /* JFIFirstViewController.m */; };
+		6ADF7962188D6E2200632BA5 /* JFISecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF7961188D6E2200632BA5 /* JFISecondViewController.m */; };
 		6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ADF7963188D6E2200632BA5 /* Images.xcassets */; };
 		6ADF796B188D6E2300632BA5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF796A188D6E2300632BA5 /* XCTest.framework */; };
 		6ADF796C188D6E2300632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
@@ -59,14 +59,14 @@
 		6ADF794F188D6E2200632BA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6ADF7951188D6E2200632BA5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6ADF7953188D6E2200632BA5 /* Justaway-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Justaway-Prefix.pch"; sourceTree = "<group>"; };
-		6ADF7954188D6E2200632BA5 /* JustawayAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JustawayAppDelegate.h; sourceTree = "<group>"; };
-		6ADF7955188D6E2200632BA5 /* JustawayAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JustawayAppDelegate.m; sourceTree = "<group>"; };
+		6ADF7954188D6E2200632BA5 /* JFIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JFIAppDelegate.h; sourceTree = "<group>"; };
+		6ADF7955188D6E2200632BA5 /* JFIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JFIAppDelegate.m; sourceTree = "<group>"; };
 		6ADF7958188D6E2200632BA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		6ADF795B188D6E2200632BA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		6ADF795D188D6E2200632BA5 /* JustawayFirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JustawayFirstViewController.h; sourceTree = "<group>"; };
-		6ADF795E188D6E2200632BA5 /* JustawayFirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JustawayFirstViewController.m; sourceTree = "<group>"; };
-		6ADF7960188D6E2200632BA5 /* JustawaySecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JustawaySecondViewController.h; sourceTree = "<group>"; };
-		6ADF7961188D6E2200632BA5 /* JustawaySecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JustawaySecondViewController.m; sourceTree = "<group>"; };
+		6ADF795D188D6E2200632BA5 /* JFIFirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JFIFirstViewController.h; sourceTree = "<group>"; };
+		6ADF795E188D6E2200632BA5 /* JFIFirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JFIFirstViewController.m; sourceTree = "<group>"; };
+		6ADF7960188D6E2200632BA5 /* JFISecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JFISecondViewController.h; sourceTree = "<group>"; };
+		6ADF7961188D6E2200632BA5 /* JFISecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JFISecondViewController.m; sourceTree = "<group>"; };
 		6ADF7963188D6E2200632BA5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6ADF7969188D6E2300632BA5 /* JustawayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustawayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ADF796A188D6E2300632BA5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -137,19 +137,19 @@
 		6ADF794B188D6E2200632BA5 /* Justaway */ = {
 			isa = PBXGroup;
 			children = (
+				20D352DA18C9A63D00CC8C80 /* JFIAccount.h */,
+				20D352DB18C9A63D00CC8C80 /* JFIAccount.m */,
+				6ADF7954188D6E2200632BA5 /* JFIAppDelegate.h */,
+				6ADF7955188D6E2200632BA5 /* JFIAppDelegate.m */,
+				6ADF795D188D6E2200632BA5 /* JFIFirstViewController.h */,
+				6ADF795E188D6E2200632BA5 /* JFIFirstViewController.m */,
+				6ADF7960188D6E2200632BA5 /* JFISecondViewController.h */,
+				6ADF7961188D6E2200632BA5 /* JFISecondViewController.m */,
 				6A21290D18C3485A00AD2953 /* JFIStatusCell.h */,
 				6A21290E18C3485A00AD2953 /* JFIStatusCell.m */,
 				6A21290F18C3485A00AD2953 /* JFIStatusCell.xib */,
-				20D352DA18C9A63D00CC8C80 /* JFIAccount.h */,
-				20D352DB18C9A63D00CC8C80 /* JFIAccount.m */,
-				6ADF7954188D6E2200632BA5 /* JustawayAppDelegate.h */,
-				6ADF7955188D6E2200632BA5 /* JustawayAppDelegate.m */,
 				6ADF7957188D6E2200632BA5 /* Main_iPhone.storyboard */,
 				6ADF795A188D6E2200632BA5 /* Main_iPad.storyboard */,
-				6ADF795D188D6E2200632BA5 /* JustawayFirstViewController.h */,
-				6ADF795E188D6E2200632BA5 /* JustawayFirstViewController.m */,
-				6ADF7960188D6E2200632BA5 /* JustawaySecondViewController.h */,
-				6ADF7961188D6E2200632BA5 /* JustawaySecondViewController.m */,
 				6ADF7963188D6E2200632BA5 /* Images.xcassets */,
 				6ADF794C188D6E2200632BA5 /* Supporting Files */,
 			);
@@ -323,10 +323,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6ADF7962188D6E2200632BA5 /* JustawaySecondViewController.m in Sources */,
-				6ADF795F188D6E2200632BA5 /* JustawayFirstViewController.m in Sources */,
+				6ADF7962188D6E2200632BA5 /* JFISecondViewController.m in Sources */,
+				6ADF795F188D6E2200632BA5 /* JFIFirstViewController.m in Sources */,
 				6A21291018C3485A00AD2953 /* JFIStatusCell.m in Sources */,
-				6ADF7956188D6E2200632BA5 /* JustawayAppDelegate.m in Sources */,
+				6ADF7956188D6E2200632BA5 /* JFIAppDelegate.m in Sources */,
 				6ADF7952188D6E2200632BA5 /* main.m in Sources */,
 				20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */,
 			);

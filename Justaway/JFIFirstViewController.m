@@ -1,5 +1,5 @@
-#import "JustawayAppDelegate.h"
-#import "JustawayFirstViewController.h"
+#import "JFIAppDelegate.h"
+#import "JFIFirstViewController.h"
 #import "JFIStatusCell.h"
 #import "ISDiskCache.h"
 #import "ISMemoryCache.h"
@@ -7,11 +7,11 @@
 NSString *const JFI_CellId = @"Cell";
 NSString *const JFI_CellForHeightId = @"CellForHeight";
 
-@interface JustawayFirstViewController ()
+@interface JFIFirstViewController ()
 
 @end
 
-@implementation JustawayFirstViewController
+@implementation JFIFirstViewController
 
 #pragma mark - ViewController
 
@@ -20,7 +20,7 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     NSLog(@"-- find accounts: %lu", (unsigned long)[delegate.accounts count]);
     
@@ -214,7 +214,7 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
 - (IBAction)loadAction:(id)sender
 {
     
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     // 必ず先頭のアカウントの情報を引いてくる罪深い処理
     NSInteger index = 0;

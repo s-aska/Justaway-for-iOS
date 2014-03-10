@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@interface JustawaySecondViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
+@interface JFISecondViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property (nonatomic, weak) IBOutlet UIPickerView *accountsPickerView;
 @property (nonatomic, weak) IBOutlet UITextView *statusTextField;

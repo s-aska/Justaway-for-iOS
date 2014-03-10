@@ -1,18 +1,18 @@
-#import "JustawayAppDelegate.h"
-#import "JustawaySecondViewController.h"
+#import "JFIAppDelegate.h"
+#import "JFISecondViewController.h"
 
-@interface JustawaySecondViewController ()
+@interface JFISecondViewController ()
 
 @end
 
-@implementation JustawaySecondViewController
+@implementation JFISecondViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     // 通知センターにオブザーバ（通知を受け取るオブジェクト）を追加
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -48,14 +48,14 @@
 // アカウント追加アクション
 - (IBAction)loginInSafariAction:(id)sender
 {
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     [delegate postTokenRequest];
 }
 
 // アカウント情報全削除アクション
 - (IBAction)clearAction:(id)sender
 {
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     [delegate clearAccounts];
     [_accountsPickerView reloadAllComponents];
 }
@@ -65,7 +65,7 @@
     
     NSInteger selectedRow = [_accountsPickerView selectedRowInComponent:0];
     
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     STTwitterAPI *twitter = [delegate getTwitterByIndex:&selectedRow];
     
@@ -98,14 +98,14 @@
 // ピッカーの行数はアカウント数
 - (NSInteger)pickerView:(UIPickerView *)accountsPickerView numberOfRowsInComponent :(NSInteger)component
 {
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     return (unsigned long)[delegate.accounts count];
 }
 
 // ピッカーのラベルはscreen_name
 - (NSString *)pickerView:(UIPickerView *)accountsPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    JustawayAppDelegate *delegate = (JustawayAppDelegate *) [[UIApplication sharedApplication] delegate];
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     NSDictionary *account = [delegate.accounts objectAtIndex:row];
     return [account objectForKey:@"screenName"];
 }

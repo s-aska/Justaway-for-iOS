@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "STTwitter.h"
 
-@interface JustawayAppDelegate : UIResponder <UIApplicationDelegate>
+@interface JFIAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic) UIWindow *window;
 @property (nonatomic) STTwitterAPI *loginTwitter; // アカウント追加（Twitter認証）専用Twitterインスタンス

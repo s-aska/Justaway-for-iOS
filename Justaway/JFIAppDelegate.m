@@ -1,8 +1,8 @@
-#import "JustawayAppDelegate.h"
-#import "JustawayFirstViewController.h"
+#import "JFIAppDelegate.h"
+#import "JFIFirstViewController.h"
 #import <SSKeychain/SSKeychain.h>
 
-@implementation JustawayAppDelegate
+@implementation JFIAppDelegate
 
 static NSString * const JFI_SERVICE = @"JustawayService";
 
