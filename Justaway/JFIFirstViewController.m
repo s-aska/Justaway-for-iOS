@@ -69,6 +69,11 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
                               };
     
     self.statuses = @[status1, status2, status3];
+
+    // pull down to refresh
+    _refreshControl = UIRefreshControl.new;
+    [_refreshControl addTarget:self action:@selector(handleRefresh) forControlEvents:UIControlEventValueChanged];
+    [_tableView addSubview:_refreshControl];
 }
 
 - (void)didReceiveMemoryWarning
@@ -209,24 +214,28 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
 	// Statusを選択された時の処理
 }
 
-#pragma mark - IBAction
+#pragma mark - UIRefreshControl
 
-- (IBAction)loadAction:(id)sender
+- (void)handleRefresh
 {
-    
+    NSLog(@"refresh");
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     // 必ず先頭のアカウントの情報を引いてくる罪深い処理
     NSInteger index = 0;
     STTwitterAPI *twitter = [delegate getTwitterByIndex:&index];
+
+    [_refreshControl beginRefreshing];
     
     [twitter getHomeTimelineSinceID:nil
                               count:20
                        successBlock:^(NSArray *statuses) {
                            self.statuses = statuses;
                            [self.tableView reloadData];
+                           [_refreshControl endRefreshing];
                        } errorBlock:^(NSError *error) {
                            NSLog(@"-- error: %@", [error localizedDescription]);
+                           [_refreshControl endRefreshing];
                        }];
 }
 

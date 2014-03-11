@@ -5,9 +5,8 @@
 
 @property (nonatomic) NSOperationQueue *operationQueue;
 @property (nonatomic) NSArray *statuses;
+@property (nonatomic) UIRefreshControl *refreshControl;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic) JFIStatusCell *cellForHeight;
-
-- (IBAction)loadAction:(id)sender;
 
 @end
