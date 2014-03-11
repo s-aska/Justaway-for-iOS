@@ -24,7 +24,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="UMv-wv-WAD">
-                                <rect key="frame" x="0.0" y="51" width="320" height="517"/>
+                                <rect key="frame" x="0.0" y="51" width="320" height="468"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -37,7 +37,7 @@
                             <constraint firstItem="Zhg-ve-WU7" firstAttribute="leading" secondItem="2VE-Yg-loa" secondAttribute="leading" constant="20" symbolic="YES" id="JQj-gp-vk2"/>
                             <constraint firstItem="UMv-wv-WAD" firstAttribute="top" secondItem="Zhg-ve-WU7" secondAttribute="bottom" id="Vrg-kf-aPH"/>
                             <constraint firstAttribute="trailing" secondItem="Zhg-ve-WU7" secondAttribute="trailing" constant="20" symbolic="YES" id="eHs-J5-0HT"/>
-                            <constraint firstAttribute="bottom" secondItem="UMv-wv-WAD" secondAttribute="bottom" id="omh-1a-Jqb"/>
+                            <constraint firstItem="hvR-zn-C42" firstAttribute="top" secondItem="UMv-wv-WAD" secondAttribute="bottom" id="fUZ-kJ-pcW"/>
                             <constraint firstItem="Zhg-ve-WU7" firstAttribute="top" secondItem="Gvl-vF-5LS" secondAttribute="bottom" id="uyx-bj-qLd"/>
                         </constraints>
                     </view>
