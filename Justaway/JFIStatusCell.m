@@ -37,6 +37,21 @@
     self.screenNameLabel.text = [@"@" stringByAppendingString:[status valueForKeyPath:@"user.screen_name"]];
     self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:[status valueForKey:@"text"]
                                                                       attributes:JFIStatusCell.statusAttribute];
+
+    NSString *source = [status valueForKey:@"source"];
+    NSError *error = nil;
+    NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:@"rel=\"nofollow\">(.+)</a>" options:0 error:&error];
+    if (error != nil) {
+        NSLog(@"%@", error);
+    } else {
+        NSTextCheckingResult *match = [regexp firstMatchInString:source options:0 range:NSMakeRange(0, source.length)];
+        if (match.numberOfRanges > 0) {
+            self.sourceLabel.text = [source substringWithRange:[match rangeAtIndex:1]];
+        } else {
+            self.sourceLabel.text = source;
+        }
+    }
+
     self.createdAtLabel.text = [status valueForKey:@"created_at"];
 }
 

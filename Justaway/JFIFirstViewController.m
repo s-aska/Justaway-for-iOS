@@ -48,6 +48,7 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
                               @"user.name": @"Shinichiro Aska",
                               @"user.screen_name": @"su_aska",
                               @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。\n今日は鯖味噌の日。",
+                              @"source": @"web",
                               @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
                               @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
                               };
@@ -56,6 +57,7 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
                               @"user.name": @"Shinichiro Aska",
                               @"user.screen_name": @"su_aska",
                               @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。",
+                              @"source": @"StS",
                               @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
                               @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
                               };
@@ -64,6 +66,7 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
                               @"user.name": @"Shinichiro Aska",
                               @"user.screen_name": @"su_aska",
                               @"text": @"今日は鯖味噌の日。",
+                              @"source": @"<a href=\"http://justaway.info\" rel=\"nofollow\">Justaway for iOS</a>",
                               @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
                               @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
                               };
