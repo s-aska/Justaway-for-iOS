@@ -72,7 +72,7 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
 
     // pull down to refresh
     _refreshControl = UIRefreshControl.new;
-    [_refreshControl addTarget:self action:@selector(handleRefresh) forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
 }
 
@@ -216,9 +216,8 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
 
 #pragma mark - UIRefreshControl
 
-- (void)handleRefresh
+- (void)onRefresh
 {
-    NSLog(@"refresh");
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     // 必ず先頭のアカウントの情報を引いてくる罪深い処理
