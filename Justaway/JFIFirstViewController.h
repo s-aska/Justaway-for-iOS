@@ -4,7 +4,7 @@
 @interface JFIFirstViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) NSOperationQueue *operationQueue;
-@property (nonatomic) NSArray *statuses;
+@property (nonatomic) NSMutableArray *statuses;
 @property (nonatomic) UIRefreshControl *refreshControl;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic) JFIStatusCell *cellForHeight;

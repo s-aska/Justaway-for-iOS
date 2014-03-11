@@ -71,12 +71,45 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
                               @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
                               };
     
-    self.statuses = @[status1, status2, status3];
-
+    self.statuses = [NSMutableArray array];
+    [self.statuses addObjectsFromArray:@[status1, status2, status3]];
+    
     // pull down to refresh
     _refreshControl = UIRefreshControl.new;
     [_refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
+    
+    if ([delegate.accounts count] == 0) {
+        return;
+    }
+    
+    // 必ず先頭のアカウントの情報を引いてくる罪深い処理
+    NSInteger index = 0;
+    STTwitterAPI *twitter = [delegate getTwitterByIndex:&index];
+    id request = [twitter getUserStreamDelimited:nil
+                                   stallWarnings:nil
+             includeMessagesFromFollowedAccounts:nil
+                                  includeReplies:nil
+                                 keywordsToTrack:nil
+                           locationBoundingBoxes:nil
+                                   progressBlock:^(id response) {
+                                       if ([response valueForKey:@"text"]) {
+                                           NSDictionary *status = @{
+                                                                    @"user.name": [response valueForKeyPath:@"user.name"],
+                                                                    @"user.screen_name": [response valueForKeyPath:@"user.screen_name"],
+                                                                    @"text": [response valueForKey:@"text"],
+                                                                    @"source": [response valueForKey:@"source"],
+                                                                    @"created_at": [response valueForKey:@"created_at"],
+                                                                    @"user.profile_image_url": [response valueForKeyPath:@"user.profile_image_url"]
+                                                                    };
+                                           // 先頭に追加
+                                           [self.statuses insertObject:status atIndex:0];
+                                           [self.tableView reloadData];
+                                       }
+                                   } stallWarningBlock:nil
+                                      errorBlock:^(NSError *error) {
+                                          NSLog(@"-- error: %@", [error localizedDescription]);
+                                      }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -226,13 +259,14 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
     // 必ず先頭のアカウントの情報を引いてくる罪深い処理
     NSInteger index = 0;
     STTwitterAPI *twitter = [delegate getTwitterByIndex:&index];
-
+    
     [_refreshControl beginRefreshing];
     
     [twitter getHomeTimelineSinceID:nil
                               count:20
                        successBlock:^(NSArray *statuses) {
-                           self.statuses = statuses;
+                           self.statuses = [NSMutableArray array];
+                           [self.statuses addObjectsFromArray:statuses];
                            [self.tableView reloadData];
                            [_refreshControl endRefreshing];
                        } errorBlock:^(NSError *error) {
