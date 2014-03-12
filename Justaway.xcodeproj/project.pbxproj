@@ -236,6 +236,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Shinichiro Aska";
 				TargetAttributes = {
+					6ADF7941188D6E2200632BA5 = {
+						DevelopmentTeam = ERYSSE5R77;
+					};
 					6ADF7968188D6E2300632BA5 = {
 						TestTargetID = 6ADF7941188D6E2200632BA5;
 					};
@@ -468,10 +471,13 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Justaway/Justaway-Prefix.pch";
 				INFOPLIST_FILE = "Justaway/Justaway-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -483,10 +489,13 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Justaway/Justaway-Prefix.pch";
 				INFOPLIST_FILE = "Justaway/Justaway-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -29,7 +29,7 @@
 }
 
 // セルにステータスを反映する奴
-- (void) setLabelTexts:(NSDictionary *)status
+- (void)setLabelTexts:(NSDictionary *)status
 {
     NSLog(@"-- setLabelTexts ---------------");
     NSLog(@"-- setLabelTexts name:%@", [status valueForKeyPath:@"user.name"]);
@@ -38,6 +38,19 @@
     self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:[status valueForKey:@"text"]
                                                                       attributes:JFIStatusCell.statusAttribute];
 
+    // NsDate => NSString変換用のフォーマッタを作成
+
+//    [df setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"]]; // Localeの指定
+//    [df setDateFormat:];
+    
+    // 日付(NSDate) => 文字列(NSString)に変換
+//    NSDate *now = [NSDate date];
+//    NSString *strNow = [df stringFromDate:now];
+    
+    
+    
+    
+    
     NSString *source = [status valueForKey:@"source"];
     NSError *error = nil;
     NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:@"rel=\"nofollow\">(.+)</a>" options:0 error:&error];
@@ -52,7 +65,17 @@
         }
     }
 
-    self.createdAtLabel.text = [status valueForKey:@"created_at"];
+    //
+    NSDateFormatter *formatterFromString = NSDateFormatter.new;
+    formatterFromString.dateFormat = @"E MMM dd HH:mm:ss z yyyy";
+    NSDate *created_at = [formatterFromString dateFromString:[status valueForKey:@"created_at"]];
+
+    NSDateFormatter *formatterToString = NSDateFormatter.new;
+    formatterToString.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"];
+    formatterToString.dateFormat = @"yyyy/MM/dd HH:mm:ss";
+
+    self.createdAtRelativeLabel.text = [self getRelativeTime:created_at];
+    self.createdAtLabel.text = [formatterToString stringFromDate:created_at];
 }
 
 - (void) layoutSubviews
@@ -70,6 +93,22 @@
                                         self.statusLabel.frame.origin.y,
                                         self.statusLabel.frame.size.width,
                                         statusSize.height);
+}
+
+- (NSString *)getRelativeTime:(NSDate *)date
+{
+    float diff = [[NSDate date] timeIntervalSinceDate:date];
+    if (diff < 1) {
+        return @"now";
+    } else if (diff < 60) {
+        return [NSString stringWithFormat:@"%.0fs", diff];
+    } else if (diff < 3600) {
+        return [NSString stringWithFormat:@"%.0fm", (diff / 60)];
+    } else if (diff < 86400) {
+        return [NSString stringWithFormat:@"%.0fh", (diff / 3600)];
+    } else {
+        return [NSString stringWithFormat:@"%.0fd", (diff / 86400)];
+    }
 }
 
 @end

@@ -6,6 +6,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *displayNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *statusLabel;
 @property (nonatomic, weak) IBOutlet UILabel *sourceLabel;
+@property (nonatomic, weak) IBOutlet UILabel *createdAtRelativeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *createdAtLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
 
