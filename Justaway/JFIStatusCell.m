@@ -1,7 +1,5 @@
 #import "JFIStatusCell.h"
-#import "NSDateFormatter+STTwitter.h"
-
-static NSDateFormatter *absoluteFormatter = nil;
+#import "NSDate+Justaway.h"
 
 @implementation JFIStatusCell
 
@@ -34,8 +32,6 @@ static NSDateFormatter *absoluteFormatter = nil;
 // セルにステータスを反映する奴
 - (void)setLabelTexts:(NSDictionary *)status
 {
-    NSLog(@"-- setLabelTexts ---------------");
-    NSLog(@"-- setLabelTexts name:%@", [status valueForKeyPath:@"user.name"]);
     self.displayNameLabel.text = [status valueForKeyPath:@"user.name"];
     self.screenNameLabel.text = [@"@" stringByAppendingString:[status valueForKeyPath:@"user.screen_name"]];
     self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:[status valueForKey:@"text"]
@@ -57,9 +53,9 @@ static NSDateFormatter *absoluteFormatter = nil;
     }
     
     // 投稿日時
-    NSDate *created_at = [NSDateFormatter.stTwitterDateFormatter dateFromString:[status valueForKey:@"created_at"]];
-    self.createdAtRelativeLabel.text = [self getRelativeFromDate:created_at];
-    self.createdAtLabel.text = [self getAbsoluteFromDate:created_at];
+    NSDate *createdAt = [NSDate dateWithString:[status valueForKey:@"created_at"]];
+    self.createdAtRelativeLabel.text = [createdAt relativeDescription];
+    self.createdAtLabel.text = [createdAt absoluteDescription];
 }
 
 - (void) layoutSubviews
@@ -69,37 +65,26 @@ static NSDateFormatter *absoluteFormatter = nil;
     CGSize statusSize = [self.statusLabel.attributedText boundingRectWithSize:CGSizeMake(self.statusLabel.frame.size.width, MAXFLOAT)
                                                                       options:NSStringDrawingUsesLineFragmentOrigin
                                                                       context:nil].size;
-
+    
     self.statusLabel.frame = CGRectMake(self.statusLabel.frame.origin.x,
                                         self.statusLabel.frame.origin.y,
                                         self.statusLabel.frame.size.width,
                                         statusSize.height);
 }
 
-- (NSString *)getAbsoluteFromDate:(NSDate *)date
+- (NSString *)getClientNameFromSource:(NSString *)source
 {
-    if (absoluteFormatter == nil) {
-        absoluteFormatter = NSDateFormatter.new;
-        absoluteFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"];
-        absoluteFormatter.dateFormat = @"yyyy/MM/dd HH:mm:ss";
-    }
-    return [absoluteFormatter stringFromDate:date];
-}
-
-- (NSString *)getRelativeFromDate:(NSDate *)date
-{
-    NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:date];
-    if (diff < 1) {
-        return @"now";
-    } else if (diff < 60) {
-        return [NSString stringWithFormat:@"%ds", (int) diff];
-    } else if (diff < 3600) {
-        return [NSString stringWithFormat:@"%dm", (int) (diff / 60)];
-    } else if (diff < 86400) {
-        return [NSString stringWithFormat:@"%dh", (int) (diff / 3600)];
+    NSError *error = nil;
+    NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:@"rel=\"nofollow\">(.+)</a>" options:0 error:&error];
+    if (error != nil) {
+        NSLog(@"%@", error);
     } else {
-        return [NSString stringWithFormat:@"%dd", (int) (diff / 86400)];
+        NSTextCheckingResult *match = [regexp firstMatchInString:source options:0 range:NSMakeRange(0, source.length)];
+        if (match.numberOfRanges > 0) {
+            return [source substringWithRange:[match rangeAtIndex:1]];
+        }
     }
+    return source;
 }
 
 @end

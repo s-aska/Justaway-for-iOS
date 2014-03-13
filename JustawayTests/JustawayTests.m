@@ -1,11 +1,3 @@
-//
-//  JustawayTests.m
-//  JustawayTests
-//
-//  Created by Shinichiro Aska on 2014/01/20.
-//  Copyright (c) 2014年 Shinichiro Aska. All rights reserved.
-//
-
 #import <XCTest/XCTest.h>
 
 @interface JustawayTests : XCTestCase
@@ -28,7 +20,6 @@
 
 - (void)testExample
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
 }
 
 @end

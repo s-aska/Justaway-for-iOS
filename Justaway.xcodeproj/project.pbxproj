@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 20D352DB18C9A63D00CC8C80 /* JFIAccount.m */; };
-		20D352DD18C9A63D00CC8C80 /* JFIAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 20D352DB18C9A63D00CC8C80 /* JFIAccount.m */; };
+		383D7DB418D1968F00D36678 /* NSDate+Justaway.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DB318D1968F00D36678 /* NSDate+Justaway.m */; };
+		383D7DB518D1968F00D36678 /* NSDate+Justaway.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DB318D1968F00D36678 /* NSDate+Justaway.m */; };
+		383D7DB818D1A3C000D36678 /* NSDate+Justaway.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DB718D1A3C000D36678 /* NSDate+Justaway.m */; };
 		5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22194C00EF13418F82A85B42 /* libPods.a */; };
 		6A21291018C3485A00AD2953 /* JFIStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21290E18C3485A00AD2953 /* JFIStatusCell.m */; };
 		6A21291118C3485A00AD2953 /* JFIStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A21290F18C3485A00AD2953 /* JFIStatusCell.xib */; };
@@ -46,6 +48,9 @@
 		20D352DA18C9A63D00CC8C80 /* JFIAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIAccount.h; sourceTree = "<group>"; };
 		20D352DB18C9A63D00CC8C80 /* JFIAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIAccount.m; sourceTree = "<group>"; };
 		22194C00EF13418F82A85B42 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		383D7DB218D1968F00D36678 /* NSDate+Justaway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Justaway.h"; sourceTree = "<group>"; };
+		383D7DB318D1968F00D36678 /* NSDate+Justaway.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Justaway.m"; sourceTree = "<group>"; };
+		383D7DB718D1A3C000D36678 /* NSDate+Justaway.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Justaway.m"; sourceTree = "<group>"; };
 		6A21290D18C3485A00AD2953 /* JFIStatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIStatusCell.h; sourceTree = "<group>"; };
 		6A21290E18C3485A00AD2953 /* JFIStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIStatusCell.m; sourceTree = "<group>"; };
 		6A21290F18C3485A00AD2953 /* JFIStatusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIStatusCell.xib; sourceTree = "<group>"; };
@@ -101,6 +106,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		383D7DB618D19A0A00D36678 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				383D7DB218D1968F00D36678 /* NSDate+Justaway.h */,
+				383D7DB318D1968F00D36678 /* NSDate+Justaway.m */,
+			);
+			name = Category;
+			sourceTree = "<group>";
+		};
+		383D7DB918D1A53B00D36678 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				383D7DB718D1A3C000D36678 /* NSDate+Justaway.m */,
+			);
+			name = Category;
+			sourceTree = "<group>";
+		};
 		6ADF7939188D6E2200632BA5 = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +174,7 @@
 				6ADF795A188D6E2200632BA5 /* Main_iPad.storyboard */,
 				6ADF7963188D6E2200632BA5 /* Images.xcassets */,
 				6ADF794C188D6E2200632BA5 /* Supporting Files */,
+				383D7DB618D19A0A00D36678 /* Category */,
 			);
 			path = Justaway;
 			sourceTree = "<group>";
@@ -172,6 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				6ADF7976188D6E2300632BA5 /* JustawayTests.m */,
+				383D7DB918D1A53B00D36678 /* Category */,
 				6ADF7971188D6E2300632BA5 /* Supporting Files */,
 			);
 			path = JustawayTests;
@@ -332,6 +356,7 @@
 				6ADF7956188D6E2200632BA5 /* JFIAppDelegate.m in Sources */,
 				6ADF7952188D6E2200632BA5 /* main.m in Sources */,
 				20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */,
+				383D7DB418D1968F00D36678 /* NSDate+Justaway.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,8 +364,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				383D7DB818D1A3C000D36678 /* NSDate+Justaway.m in Sources */,
+				383D7DB518D1968F00D36678 /* NSDate+Justaway.m in Sources */,
 				6ADF7977188D6E2300632BA5 /* JustawayTests.m in Sources */,
-				20D352DD18C9A63D00CC8C80 /* JFIAccount.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
