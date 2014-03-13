@@ -29,9 +29,8 @@
     XCTAssertEqualObjects([[NSDate dateWithTimeIntervalSinceNow:-3*60*60*24] relativeDescription], @"3d");
     
     // absoluteDescription
-    NSDate *createdAt = [NSDate dateWithString:@"Wed Jun 06 20:07:10 +0000 2012"];
-    NSString *absoluteDescription = [createdAt absoluteDescription];
-    XCTAssertEqualObjects(absoluteDescription, @"2012/06/07 05:07:10", );
+    XCTAssertEqualObjects([[NSDate dateWithString:@"Wed Jun 06 20:07:10 +0900 2012"] absoluteDescription], @"2012/06/06 20:07:10");
+    XCTAssertEqualObjects([[NSDate dateWithString:@"Wed Jun 06 20:07:10 +0000 2012"] absoluteDescription], @"2012/06/07 05:07:10");
 }
 
 @end
