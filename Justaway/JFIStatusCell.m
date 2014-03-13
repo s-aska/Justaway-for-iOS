@@ -37,20 +37,8 @@
     self.screenNameLabel.text = [@"@" stringByAppendingString:[status valueForKeyPath:@"user.screen_name"]];
     self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:[status valueForKey:@"text"]
                                                                       attributes:JFIStatusCell.statusAttribute];
-
-    // NsDate => NSString変換用のフォーマッタを作成
-
-//    [df setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"]]; // Localeの指定
-//    [df setDateFormat:];
     
-    // 日付(NSDate) => 文字列(NSString)に変換
-//    NSDate *now = [NSDate date];
-//    NSString *strNow = [df stringFromDate:now];
-    
-    
-    
-    
-    
+    // via名
     NSString *source = [status valueForKey:@"source"];
     NSError *error = nil;
     NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:@"rel=\"nofollow\">(.+)</a>" options:0 error:&error];
@@ -64,50 +52,49 @@
             self.sourceLabel.text = source;
         }
     }
-
-    //
+    
+    // 投稿日時
+    // TODO: 毎回 locale や dateFormat 設定するの無駄なので考える
     NSDateFormatter *formatterFromString = NSDateFormatter.new;
-    formatterFromString.dateFormat = @"E MMM dd HH:mm:ss z yyyy";
+    formatterFromString.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    formatterFromString.dateFormat = @"E MMM dd HH:mm:ss Z yyyy";
     NSDate *created_at = [formatterFromString dateFromString:[status valueForKey:@"created_at"]];
-
+    
     NSDateFormatter *formatterToString = NSDateFormatter.new;
     formatterToString.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"];
     formatterToString.dateFormat = @"yyyy/MM/dd HH:mm:ss";
-
-    self.createdAtRelativeLabel.text = [self getRelativeTime:created_at];
+    
+    self.createdAtRelativeLabel.text = [self getRelativeFromDate:created_at];
     self.createdAtLabel.text = [formatterToString stringFromDate:created_at];
 }
 
 - (void) layoutSubviews
 {
     [super layoutSubviews];
-    NSLog(@"-- layoutSubviews ---------------");
-    NSLog(@"-- layoutSubviews height:%f", self.statusLabel.frame.size.height);
-    NSLog(@"-- layoutSubviews width:%f", self.statusLabel.frame.size.width);
     
     CGSize statusSize = [self.statusLabel.attributedText boundingRectWithSize:CGSizeMake(self.statusLabel.frame.size.width, MAXFLOAT)
                                                                       options:NSStringDrawingUsesLineFragmentOrigin
                                                                       context:nil].size;
-    NSLog(@"-- layoutSubviews newHeight:%f", statusSize.height);
+
     self.statusLabel.frame = CGRectMake(self.statusLabel.frame.origin.x,
                                         self.statusLabel.frame.origin.y,
                                         self.statusLabel.frame.size.width,
                                         statusSize.height);
 }
 
-- (NSString *)getRelativeTime:(NSDate *)date
+- (NSString *)getRelativeFromDate:(NSDate *)date
 {
-    float diff = [[NSDate date] timeIntervalSinceDate:date];
+    NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:date];
     if (diff < 1) {
         return @"now";
     } else if (diff < 60) {
-        return [NSString stringWithFormat:@"%.0fs", diff];
+        return [NSString stringWithFormat:@"%ds", (int) diff];
     } else if (diff < 3600) {
-        return [NSString stringWithFormat:@"%.0fm", (diff / 60)];
+        return [NSString stringWithFormat:@"%dm", (int) (diff / 60)];
     } else if (diff < 86400) {
-        return [NSString stringWithFormat:@"%.0fh", (diff / 3600)];
+        return [NSString stringWithFormat:@"%dh", (int) (diff / 3600)];
     } else {
-        return [NSString stringWithFormat:@"%.0fd", (diff / 86400)];
+        return [NSString stringWithFormat:@"%dd", (int) (diff / 86400)];
     }
 }
 
