@@ -1,4 +1,7 @@
 #import "JFIStatusCell.h"
+#import "NSDateFormatter+STTwitter.h"
+
+static NSDateFormatter *absoluteFormatter = nil;
 
 @implementation JFIStatusCell
 
@@ -54,18 +57,9 @@
     }
     
     // 投稿日時
-    // TODO: 毎回 locale や dateFormat 設定するの無駄なので考える
-    NSDateFormatter *formatterFromString = NSDateFormatter.new;
-    formatterFromString.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-    formatterFromString.dateFormat = @"E MMM dd HH:mm:ss Z yyyy";
-    NSDate *created_at = [formatterFromString dateFromString:[status valueForKey:@"created_at"]];
-    
-    NSDateFormatter *formatterToString = NSDateFormatter.new;
-    formatterToString.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"];
-    formatterToString.dateFormat = @"yyyy/MM/dd HH:mm:ss";
-    
+    NSDate *created_at = [NSDateFormatter.stTwitterDateFormatter dateFromString:[status valueForKey:@"created_at"]];
     self.createdAtRelativeLabel.text = [self getRelativeFromDate:created_at];
-    self.createdAtLabel.text = [formatterToString stringFromDate:created_at];
+    self.createdAtLabel.text = [self getAbsoluteFromDate:created_at];
 }
 
 - (void) layoutSubviews
@@ -80,6 +74,16 @@
                                         self.statusLabel.frame.origin.y,
                                         self.statusLabel.frame.size.width,
                                         statusSize.height);
+}
+
+- (NSString *)getAbsoluteFromDate:(NSDate *)date
+{
+    if (absoluteFormatter == nil) {
+        absoluteFormatter = NSDateFormatter.new;
+        absoluteFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"];
+        absoluteFormatter.dateFormat = @"yyyy/MM/dd HH:mm:ss";
+    }
+    return [absoluteFormatter stringFromDate:date];
 }
 
 - (NSString *)getRelativeFromDate:(NSDate *)date
