@@ -53,7 +53,7 @@
     }
     
     // 投稿日時
-    NSDate *createdAt = [NSDate dateWithString:[status valueForKey:@"created_at"]];
+    NSDate *createdAt = [NSDate dateWithTwitterDate:[status valueForKey:@"created_at"]];
     self.createdAtRelativeLabel.text = [createdAt relativeDescription];
     self.createdAtLabel.text = [createdAt absoluteDescription];
 }

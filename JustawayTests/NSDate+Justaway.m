@@ -21,6 +21,10 @@
 
 - (void)testExample
 {
+    // dateWithString
+    XCTAssertEqualWithAccuracy([[NSDate dateWithTwitterDate:@"Wed Jun 06 20:07:10 +0900 2012"] timeIntervalSince1970], 1338980830, 0.000000001);
+    XCTAssertEqualWithAccuracy([[NSDate dateWithTwitterDate:@"Wed Jun 06 20:07:10 +0000 2012"] timeIntervalSince1970], 1339013230, 0.000000001);
+    
     // relativeDescription
     XCTAssertEqualObjects([[NSDate date] relativeDescription], @"now");
     XCTAssertEqualObjects([[NSDate dateWithTimeIntervalSinceNow:-3] relativeDescription], @"3s");
@@ -29,8 +33,9 @@
     XCTAssertEqualObjects([[NSDate dateWithTimeIntervalSinceNow:-3*60*60*24] relativeDescription], @"3d");
     
     // absoluteDescription
-    XCTAssertEqualObjects([[NSDate dateWithString:@"Wed Jun 06 20:07:10 +0900 2012"] absoluteDescription], @"2012/06/06 20:07:10");
-    XCTAssertEqualObjects([[NSDate dateWithString:@"Wed Jun 06 20:07:10 +0000 2012"] absoluteDescription], @"2012/06/07 05:07:10");
+    NSDateFormatter *formatter = NSDateFormatter.new;
+    formatter.dateFormat = @"yyyy/MM/dd HH:mm:ss";
+    XCTAssertEqualObjects([[NSDate date] absoluteDescription], [formatter stringFromDate:[NSDate date]]);
 }
 
 @end

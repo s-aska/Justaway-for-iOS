@@ -2,7 +2,7 @@
 
 @interface NSDate (Justaway)
 
-+ (instancetype)dateWithString:(NSString *)string;
++ (instancetype)dateWithTwitterDate:(NSString *)string;
 - (NSString *)absoluteDescription;
 - (NSString *)relativeDescription;
 

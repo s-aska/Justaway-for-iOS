@@ -2,13 +2,14 @@
 
 @implementation NSDate (Justaway)
 
-+ (instancetype)dateWithString:(NSString *)string
++ (instancetype)dateWithTwitterDate:(NSString *)string
 {
     static NSDateFormatter *formatter;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         formatter = NSDateFormatter.new;
         formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        formatter.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         formatter.dateFormat = @"EEE MMM dd HH:mm:ss Z yyyy";
     });
     
@@ -20,8 +21,9 @@
     static NSDateFormatter *formatter;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        formatter = [[NSDateFormatter alloc] init];
-        formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"];
+        formatter = NSDateFormatter.new;
+        formatter.locale = [NSLocale currentLocale];
+        formatter.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         formatter.dateFormat = @"yyyy/MM/dd HH:mm:ss";
     });
     
