@@ -21,7 +21,7 @@
 
 - (void)testExample
 {
-    // dateWithString
+    // dateWithTwitterDate
     XCTAssertEqualWithAccuracy([[NSDate dateWithTwitterDate:@"Wed Jun 06 20:07:10 +0900 2012"] timeIntervalSince1970], 1338980830, 0.000000001);
     XCTAssertEqualWithAccuracy([[NSDate dateWithTwitterDate:@"Wed Jun 06 20:07:10 +0000 2012"] timeIntervalSince1970], 1339013230, 0.000000001);
     
