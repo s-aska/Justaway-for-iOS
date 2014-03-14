@@ -78,6 +78,13 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
     _refreshControl = UIRefreshControl.new;
     [_refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
+
+    [self startStreaming];
+}
+
+- (void)startStreaming
+{
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     if ([delegate.accounts count] == 0) {
         return;
@@ -86,30 +93,41 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
     // 必ず先頭のアカウントの情報を引いてくる罪深い処理
     NSInteger index = 0;
     STTwitterAPI *twitter = [delegate getTwitterByIndex:&index];
-    id request = [twitter getUserStreamDelimited:nil
-                                   stallWarnings:nil
-             includeMessagesFromFollowedAccounts:nil
-                                  includeReplies:nil
-                                 keywordsToTrack:nil
-                           locationBoundingBoxes:nil
-                                   progressBlock:^(id response) {
-                                       if ([response valueForKey:@"text"]) {
-                                           NSDictionary *status = @{
-                                                                    @"user.name": [response valueForKeyPath:@"user.name"],
-                                                                    @"user.screen_name": [response valueForKeyPath:@"user.screen_name"],
-                                                                    @"text": [response valueForKey:@"text"],
-                                                                    @"source": [response valueForKey:@"source"],
-                                                                    @"created_at": [response valueForKey:@"created_at"],
-                                                                    @"user.profile_image_url": [response valueForKeyPath:@"user.profile_image_url"]
-                                                                    };
-                                           // 先頭に追加
-                                           [self.statuses insertObject:status atIndex:0];
-                                           [self.tableView reloadData];
-                                       }
-                                   } stallWarningBlock:nil
-                                      errorBlock:^(NSError *error) {
-                                          NSLog(@"-- error: %@", [error localizedDescription]);
-                                      }];
+    self.streamingRequest = [twitter getUserStreamDelimited:nil
+                                              stallWarnings:nil
+                        includeMessagesFromFollowedAccounts:nil
+                                             includeReplies:nil
+                                            keywordsToTrack:nil
+                                      locationBoundingBoxes:nil
+                                              progressBlock:^(id response) {
+                                                  if ([response valueForKey:@"text"]) {
+                                                      NSDictionary *status = @{
+                                                                               @"user.name": [response valueForKeyPath:@"user.name"],
+                                                                               @"user.screen_name": [response valueForKeyPath:@"user.screen_name"],
+                                                                               @"text": [response valueForKey:@"text"],
+                                                                               @"source": [response valueForKey:@"source"],
+                                                                               @"created_at": [response valueForKey:@"created_at"],
+                                                                               @"user.profile_image_url": [response valueForKeyPath:@"user.profile_image_url"]
+                                                                               };
+                                                      // 先頭に追加
+                                                      [self.statuses insertObject:status atIndex:0];
+                                                      [self.tableView reloadData];
+                                                  }
+                                              } stallWarningBlock:nil
+                                                 errorBlock:^(NSError *error) {
+                                                     NSLog(@"-- error: %@", [error localizedDescription]);
+                                                     UIAlertView *alert = [[UIAlertView alloc]
+                                                                           initWithTitle:@"disconnect"
+                                                                           message:[error localizedDescription]
+                                                                           delegate:nil
+                                                                           cancelButtonTitle:nil
+                                                                           otherButtonTitles:@"OK", nil
+                                                                           ];
+                                                     [alert show];
+                                                     if([[error domain] isEqualToString:NSURLErrorDomain] && [error code] == NSURLErrorNetworkConnectionLost) {
+                                                         // TODO: 失敗回数に応じて間隔を広げながら再接続処理する
+                                                     }
+                                                 }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -247,7 +265,7 @@ NSString *const JFI_CellForHeightId = @"CellForHeight";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// Statusを選択された時の処理
+    // Statusを選択された時の処理
 }
 
 #pragma mark - UIRefreshControl

@@ -58,7 +58,7 @@
     self.createdAtLabel.text = [createdAt absoluteDescription];
 }
 
-- (void) layoutSubviews
+- (void)layoutSubviews
 {
     [super layoutSubviews];
     
