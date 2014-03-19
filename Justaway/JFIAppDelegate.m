@@ -9,7 +9,7 @@ static NSString * const JFI_SERVICE = @"JustawayService";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // アカウント情報をKeyChainから読み込み
-    [self loadAccounts];
+//    [self loadAccounts];
     
     return YES;
 }

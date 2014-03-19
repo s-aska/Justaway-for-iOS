@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="wNg-Mg-XeS">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <scenes>
+        <!--Main View Controller-->
+        <scene sceneID="Buu-RA-sG5">
+            <objects>
+                <viewController id="ixp-68-Kbk" customClass="JFIMainViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1cU-c2-SLE"/>
+                        <viewControllerLayoutGuide type="bottom" id="5LT-7V-FLx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="11y-bf-UL7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ivN-aE-Jrd">
+                                <rect key="frame" x="10" y="528" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="認">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CvT-HE-uuZ">
+                                <rect key="frame" x="280" y="528" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="筆">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="postAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="ojx-xQ-QPP"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ready..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o5w-H4-X92">
+                                <rect key="frame" x="10" y="30" width="62" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="o5w-H4-X92" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" constant="10" id="5U2-by-zxv"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="ivN-aE-Jrd" secondAttribute="bottom" constant="10" id="6HX-i1-Xkl"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="CvT-HE-uuZ" secondAttribute="bottom" constant="10" id="JKM-Xc-nb6"/>
+                            <constraint firstItem="ivN-aE-Jrd" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" constant="10" id="Tyh-vG-Rrj"/>
+                            <constraint firstItem="o5w-H4-X92" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" constant="10" id="YRR-a4-CZ4"/>
+                            <constraint firstAttribute="trailing" secondItem="CvT-HE-uuZ" secondAttribute="trailing" constant="10" id="e4x-zC-DyW"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="qsH-sc-JDp"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rhR-F2-fzL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="253" y="-14"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="q3L-Jm-eJU">
+            <objects>
+                <navigationController definesPresentationContext="YES" navigationBarHidden="YES" id="wNg-Mg-XeS" sceneMemberID="viewController">
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mTA-2c-79P">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="ixp-68-Kbk" kind="relationship" relationship="rootViewController" id="QOm-uA-HAX"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8BD-H2-daq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-198" y="-14"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

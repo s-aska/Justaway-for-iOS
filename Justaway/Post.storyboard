@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ExX-Cj-3If">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <scenes>
+        <!--Post View Controller-->
+        <scene sceneID="Xce-6D-tbb">
+            <objects>
+                <viewController storyboardIdentifier="JFIPostViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ExX-Cj-3If" customClass="JFIPostViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NWT-5c-PPE"/>
+                        <viewControllerLayoutGuide type="bottom" id="Be5-hl-EwV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="UPE-Wc-sgJ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="@justawayfactory" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ykt-nh-9dm">
+                                <rect key="frame" x="10" y="30" width="300" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" text="now..." translatesAutoresizingMaskIntoConstraints="NO" id="YBd-Jz-O6G">
+                                <rect key="frame" x="5" y="57" width="310" height="210"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B3f-N3-reU">
+                                <rect key="frame" x="280" y="267" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="投">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="postAction:" destination="ExX-Cj-3If" eventType="touchUpInside" id="Qmv-7b-aqz"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cd4-g0-eyU">
+                                <rect key="frame" x="10" y="267" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="戻">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backAction:" destination="ExX-Cj-3If" eventType="touchUpInside" id="wgh-MO-QXZ"/>
+                                    <action selector="postAction:" destination="ExX-Cj-3If" eventType="touchUpInside" id="b3B-1Y-geI"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Cd4-g0-eyU" firstAttribute="top" secondItem="YBd-Jz-O6G" secondAttribute="bottom" id="96S-su-ZFI"/>
+                            <constraint firstAttribute="trailing" secondItem="YBd-Jz-O6G" secondAttribute="trailing" constant="5" id="I96-Ru-D69"/>
+                            <constraint firstAttribute="trailing" secondItem="YBd-Jz-O6G" secondAttribute="trailing" constant="5" id="Ph1-0a-PEl"/>
+                            <constraint firstItem="ykt-nh-9dm" firstAttribute="top" secondItem="NWT-5c-PPE" secondAttribute="bottom" constant="10" id="Qvd-Q8-0g0"/>
+                            <constraint firstItem="YBd-Jz-O6G" firstAttribute="top" secondItem="ykt-nh-9dm" secondAttribute="bottom" constant="10" id="ZTa-9Z-b1q"/>
+                            <constraint firstAttribute="trailing" secondItem="ykt-nh-9dm" secondAttribute="trailing" constant="10" id="aGm-ak-ueq"/>
+                            <constraint firstItem="ykt-nh-9dm" firstAttribute="leading" secondItem="UPE-Wc-sgJ" secondAttribute="leading" constant="10" id="jjB-aO-6AL"/>
+                            <constraint firstItem="Cd4-g0-eyU" firstAttribute="leading" secondItem="UPE-Wc-sgJ" secondAttribute="leading" constant="10" id="l8B-KC-Zw2"/>
+                            <constraint firstItem="B3f-N3-reU" firstAttribute="top" secondItem="YBd-Jz-O6G" secondAttribute="bottom" id="xW5-ZC-ElZ"/>
+                            <constraint firstAttribute="trailing" secondItem="B3f-N3-reU" secondAttribute="trailing" constant="10" id="xpS-KB-ccx"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vEM-04-KXQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="64" y="-108"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
