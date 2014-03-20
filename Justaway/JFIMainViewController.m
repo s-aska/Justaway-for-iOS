@@ -78,33 +78,14 @@
 
 #pragma mark - Action
 
-- (IBAction)timelineAction:(id)sender
+- (IBAction)changePageAction:(id)sender
 {
+    NSLog(@"[JFIMainViewController] changePageAction tag:%i", [sender tag]);
     [UIView animateWithDuration:.3
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         [self.scrollView setContentOffset:CGPointMake(0, 0) animated:NO];
-                     } completion:nil];
-}
-
-- (IBAction)notificationAction:(id)sender
-{
-    [UIView animateWithDuration:.3
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         [self.scrollView setContentOffset:CGPointMake(320, 0) animated:NO];
-                     } completion:nil];
-}
-
-- (IBAction)directMessageAction:(id)sender
-{
-    [UIView animateWithDuration:.3
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         [self.scrollView setContentOffset:CGPointMake(320 * 2, 0) animated:NO];
+                         [self.scrollView setContentOffset:CGPointMake(320 * [sender tag], 0) animated:NO];
                      } completion:nil];
 }
 
