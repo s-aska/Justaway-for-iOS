@@ -19,9 +19,12 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ivN-aE-Jrd">
                                 <rect key="frame" x="10" y="528" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="認">
+                                <state key="normal" title="流">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="timelineAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="5Xj-hV-u1e"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CvT-HE-uuZ">
                                 <rect key="frame" x="280" y="528" width="30" height="30"/>
@@ -40,18 +43,62 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ek-3n-dTm">
+                                <rect key="frame" x="0.0" y="59" width="320" height="461"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POk-aP-yJH">
+                                <rect key="frame" x="242" y="528" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="認">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5PL-9a-hUM">
+                                <rect key="frame" x="48" y="528" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="響">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="notificationAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="rQm-WI-VEb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MkS-3K-xmb">
+                                <rect key="frame" x="86" y="528" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="文">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="directMessageAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="JT0-Uo-6m2"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="CvT-HE-uuZ" firstAttribute="top" secondItem="3Ek-3n-dTm" secondAttribute="bottom" constant="8" id="1Gd-qg-USE"/>
                             <constraint firstItem="o5w-H4-X92" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" constant="10" id="5U2-by-zxv"/>
                             <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="ivN-aE-Jrd" secondAttribute="bottom" constant="10" id="6HX-i1-Xkl"/>
+                            <constraint firstItem="3Ek-3n-dTm" firstAttribute="top" secondItem="o5w-H4-X92" secondAttribute="bottom" constant="8" id="7w1-pD-xkT"/>
+                            <constraint firstItem="3Ek-3n-dTm" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="8H3-Ds-OH7"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="5PL-9a-hUM" secondAttribute="bottom" constant="10" id="BU3-z2-ZFr"/>
+                            <constraint firstItem="MkS-3K-xmb" firstAttribute="leading" secondItem="5PL-9a-hUM" secondAttribute="trailing" constant="8" id="CcY-6I-4iz"/>
                             <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="CvT-HE-uuZ" secondAttribute="bottom" constant="10" id="JKM-Xc-nb6"/>
+                            <constraint firstItem="5PL-9a-hUM" firstAttribute="leading" secondItem="ivN-aE-Jrd" secondAttribute="trailing" constant="8" id="TNo-RB-TqR"/>
                             <constraint firstItem="ivN-aE-Jrd" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" constant="10" id="Tyh-vG-Rrj"/>
                             <constraint firstItem="o5w-H4-X92" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" constant="10" id="YRR-a4-CZ4"/>
+                            <constraint firstItem="CvT-HE-uuZ" firstAttribute="leading" secondItem="POk-aP-yJH" secondAttribute="trailing" constant="8" id="ata-ux-58I"/>
+                            <constraint firstAttribute="trailing" secondItem="3Ek-3n-dTm" secondAttribute="trailing" id="bpQ-ZE-nJd"/>
                             <constraint firstAttribute="trailing" secondItem="CvT-HE-uuZ" secondAttribute="trailing" constant="10" id="e4x-zC-DyW"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="POk-aP-yJH" secondAttribute="bottom" constant="10" id="hoT-Sv-fdP"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="MkS-3K-xmb" secondAttribute="bottom" constant="10" id="sgQ-Qh-Ns7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qsH-sc-JDp"/>
+                    <connections>
+                        <outlet property="scrollView" destination="3Ek-3n-dTm" id="vHb-na-oxq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rhR-F2-fzL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
