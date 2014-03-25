@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="TNK-3b-Yls">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <scenes>
+        <!--Account View Controller-->
+        <scene sceneID="bUR-Aw-dep">
+            <objects>
+                <viewController storyboardIdentifier="JFIAccountViewController" id="TNK-3b-Yls" customClass="JFIAccountViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ioi-wS-N7g"/>
+                        <viewControllerLayoutGuide type="bottom" id="w2k-30-Aa2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="q1g-us-rIK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w52-5P-7Lx">
+                                <rect key="frame" x="205" y="528" width="105" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="アカウント追加">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginInSafariAction:" destination="TNK-3b-Yls" eventType="touchUpInside" id="fTQ-re-8r8"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="アカウント管理" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1q5-iy-nVp">
+                                <rect key="frame" x="10" y="30" width="105" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="1X2-Tw-7FO">
+                                <rect key="frame" x="0.0" y="56" width="320" height="464"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gkt-8A-YES">
+                                <rect key="frame" x="10" y="528" width="45" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="閉じる">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="closeAction:" destination="TNK-3b-Yls" eventType="touchUpInside" id="Gy8-34-vSB"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RnY-L9-K4e">
+                                <rect key="frame" x="250" y="25" width="60" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="リセット">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetAction:" destination="TNK-3b-Yls" eventType="touchUpInside" id="gkA-Pp-tEm"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="1X2-Tw-7FO" firstAttribute="leading" secondItem="q1g-us-rIK" secondAttribute="leading" id="2QD-4d-2he"/>
+                            <constraint firstAttribute="trailing" secondItem="RnY-L9-K4e" secondAttribute="trailing" constant="10" id="4mO-5m-P3y"/>
+                            <constraint firstItem="1q5-iy-nVp" firstAttribute="leading" secondItem="q1g-us-rIK" secondAttribute="leading" constant="10" id="8tq-ar-Ibi"/>
+                            <constraint firstItem="RnY-L9-K4e" firstAttribute="top" secondItem="Ioi-wS-N7g" secondAttribute="bottom" constant="5" id="Asy-tm-7Kj"/>
+                            <constraint firstItem="Gkt-8A-YES" firstAttribute="leading" secondItem="q1g-us-rIK" secondAttribute="leading" constant="10" id="KFH-c5-691"/>
+                            <constraint firstAttribute="trailing" secondItem="1X2-Tw-7FO" secondAttribute="trailing" id="OHT-CC-0qR"/>
+                            <constraint firstItem="1X2-Tw-7FO" firstAttribute="top" secondItem="1q5-iy-nVp" secondAttribute="bottom" constant="8" id="T8q-jk-BxY"/>
+                            <constraint firstItem="w52-5P-7Lx" firstAttribute="top" secondItem="1X2-Tw-7FO" secondAttribute="bottom" constant="8" id="hCg-mf-HUT"/>
+                            <constraint firstItem="w2k-30-Aa2" firstAttribute="top" secondItem="w52-5P-7Lx" secondAttribute="bottom" constant="10" id="jDv-I6-xRf"/>
+                            <constraint firstItem="1q5-iy-nVp" firstAttribute="top" secondItem="Ioi-wS-N7g" secondAttribute="bottom" constant="10" id="moS-ej-SmU"/>
+                            <constraint firstItem="w2k-30-Aa2" firstAttribute="top" secondItem="Gkt-8A-YES" secondAttribute="bottom" constant="10" id="nFv-dJ-kFI"/>
+                            <constraint firstAttribute="trailing" secondItem="w52-5P-7Lx" secondAttribute="trailing" constant="10" id="qYa-Pk-D5E"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="1X2-Tw-7FO" id="b2J-ws-yxw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qD7-if-vQN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="157" y="-65"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
