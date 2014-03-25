@@ -1,11 +1,11 @@
 desc 'Setup with example files'
 task :setup do
-	#Copy Secrets
-	 puts 'Copying secret.plist example into place...'
+	# Copy Secrets
+	 puts 'Copying JFISecret.h example into place...'
 
-	 `cp Justaway/secret.plist.SAMPLE Justaway/secret.plist`
-	 
-	 #Done
+	 `cp Justaway/JFISecret.h.SAMPLE Justaway/JFISecret.h`
+
+	 # Done
 	 puts "Done! You\'re ready to get started!"
 end
 
