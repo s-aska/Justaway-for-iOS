@@ -17,9 +17,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w52-5P-7Lx">
-                                <rect key="frame" x="205" y="528" width="105" height="30"/>
+                                <rect key="frame" x="219" y="528" width="91" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="アカウント追加">
+                                <state key="normal" title="追加（Web）">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -59,6 +59,16 @@
                                     <action selector="resetAction:" destination="TNK-3b-Yls" eventType="touchUpInside" id="gkA-Pp-tEm"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ywe-im-nSI">
+                                <rect key="frame" x="126" y="528" width="85" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="追加（iOS）">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginWithiOSAction:" destination="TNK-3b-Yls" eventType="touchUpInside" id="NGc-3j-L1h"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -74,6 +84,8 @@
                             <constraint firstItem="1q5-iy-nVp" firstAttribute="top" secondItem="Ioi-wS-N7g" secondAttribute="bottom" constant="10" id="moS-ej-SmU"/>
                             <constraint firstItem="w2k-30-Aa2" firstAttribute="top" secondItem="Gkt-8A-YES" secondAttribute="bottom" constant="10" id="nFv-dJ-kFI"/>
                             <constraint firstAttribute="trailing" secondItem="w52-5P-7Lx" secondAttribute="trailing" constant="10" id="qYa-Pk-D5E"/>
+                            <constraint firstItem="w2k-30-Aa2" firstAttribute="top" secondItem="ywe-im-nSI" secondAttribute="bottom" constant="10" id="vnD-9Z-T78"/>
+                            <constraint firstItem="w52-5P-7Lx" firstAttribute="leading" secondItem="ywe-im-nSI" secondAttribute="trailing" constant="8" id="xCJ-DV-2cv"/>
                         </constraints>
                     </view>
                     <connections>

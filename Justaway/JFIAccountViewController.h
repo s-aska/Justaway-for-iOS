@@ -7,6 +7,7 @@
 
 - (IBAction)resetAction:(id)sender;
 - (IBAction)loginInSafariAction:(id)sender;
+- (IBAction)loginWithiOSAction:(id)sender;
 - (IBAction)closeAction:(id)sender;
 
 @end

@@ -1,6 +1,7 @@
 #import "JFIAppDelegate.h"
 #import "JFIAccountViewController.h"
 #import "JFIAccountCell.h"
+#import "JFIAccount.h"
 #import "ISDiskCache.h"
 #import "ISMemoryCache.h"
 
@@ -165,6 +166,12 @@ NSString *const JFI_Account_CellId = @"Cell";
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     [delegate postTokenRequest];
+}
+
+- (IBAction)loginWithiOSAction:(id)sender
+{
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    [delegate loginUsingIOSAccount];
 }
 
 - (IBAction)closeAction:(id)sender

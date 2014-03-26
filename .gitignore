@@ -24,4 +24,4 @@ Pods
 Justaway.xcworkspace
 
 # Secret
-Justaway/JFISecret.h
+Justaway/JFISecret.m

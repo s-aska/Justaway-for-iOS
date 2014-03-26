@@ -1,3 +1,4 @@
+#import "JFISecret.h"
 #import "JFIAccount.h"
 
 #import <STTwitter.h>
@@ -6,6 +7,7 @@ NSString const* JFI_KeyOAuthToken = @"oauthToken";
 NSString const* JFI_KeyOAuthTokenSecret = @"oauthTokenSecret";
 NSString const* JFI_KeyUserID = @"userID";
 NSString const* JFI_KeyScreenName = @"screenName";
+NSString const* JFI_KeyProfileImageUrl = @"profileImageUrl";
 NSString const* JFI_KeyConsumerKey = @"consumer_key";
 NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
 
@@ -15,22 +17,13 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
 @property (nonatomic, copy, readwrite) NSString *oAuthTokenSecret;
 @property (nonatomic, copy, readwrite) NSString *userID;
 @property (nonatomic, copy, readwrite) NSString *screenName;
+@property (nonatomic, copy, readwrite) NSString *profileImageUrl;
 
 @end
 
 @implementation JFIAccount
 
 #pragma mark Initializer
-
-+ (instancetype)newWithDictionary:(NSDictionary *)dictionary
-{
-    return [[JFIAccount alloc] initWithDictionary:dictionary];
-}
-
-+ (instancetype)newWithJsonString:(NSString *)jsonString
-{
-    return [[JFIAccount alloc] initWithJsonString:jsonString];
-}
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
@@ -40,6 +33,7 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
         self.oAuthTokenSecret = dictionary[JFI_KeyOAuthTokenSecret];
         self.userID = dictionary[JFI_KeyUserID];
         self.screenName = dictionary[JFI_KeyScreenName];
+        self.profileImageUrl = dictionary[JFI_KeyProfileImageUrl];
     }
     return self;
 }
@@ -56,8 +50,8 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
     return [self initWithDictionary:accountDictionary];
 }
 
-#pragma mark -
-#pragma mark NSCopying Methods
+#pragma mark - NSCopying Methods
+
 - (id)copyWithZone:(NSZone *)zone
 {
     JFIAccount *account = [[[self class] allocWithZone:zone] init];
@@ -66,18 +60,20 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
     [account setOAuthTokenSecret:self.oAuthTokenSecret];
     [account setUserID:self.userID];
     [account setScreenName:self.screenName];
+    [account setProfileImageUrl:self.profileImageUrl];
     
     return account;
 }
 
-#pragma mark -
-#pragma mark Representation Methods
+#pragma mark - Representation Methods
+
 - (NSDictionary *)dictionaryRepresentation
 {
     return @{JFI_KeyOAuthToken : self.oAuthToken,
              JFI_KeyOAuthTokenSecret : self.oAuthTokenSecret,
              JFI_KeyUserID : self.userID,
-             JFI_KeyScreenName : self.screenName};
+             JFI_KeyScreenName : self.screenName,
+             JFI_KeyProfileImageUrl : self.profileImageUrl};
 }
 
 - (NSString *)jsonStringRepresentation
@@ -85,27 +81,24 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[self dictionaryRepresentation]
                                                        options:kNilOptions error:nil];
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-
+    
 }
-#pragma mark -
-#pragma mark description
+#pragma mark - description
+
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"%@",[self dictionaryRepresentation]];
 }
 
-#pragma mark -
-#pragma mark Login Methods
+#pragma mark - Login Methods
 
-+ (void)loginUsingIOSAccountWithSuccessBlock:(JFILoginSuccessBlock)successBlock errorBlock:(JFILoginErrorBlock)errorBlock
++ (void)loginUsingIOSAccountWithSuccessBlock:(void(^)(JFIAccount *account))successBlock errorBlock:(void(^)(NSError *error))errorBlock
 {
-    
-    NSDictionary *secret = [self secretFromPlist];
     
     // STTwitterAPIのインスタンスをセット
     STTwitterAPI *loginTwitterAPI = [STTwitterAPI twitterAPIWithOAuthConsumerName:nil
-                                                                      consumerKey:secret[JFI_KeyConsumerKey]
-                                                                   consumerSecret:secret[JFI_KeyConsumerSecret]];
+                                                                      consumerKey:JFI_ConsumerKey
+                                                                   consumerSecret:JFI_ConsumerSecret];
     
     [loginTwitterAPI postReverseOAuthTokenRequest:^(NSString *authenticationHeader) {
         STTwitterAPI *twitterAPIOS = [STTwitterAPI twitterAPIOSWithFirstAccount];
@@ -113,13 +106,19 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
         [twitterAPIOS verifyCredentialsWithSuccessBlock:^(NSString *username) {
             void(^accessTokenSuccessBlock)(NSString *, NSString *, NSString *, NSString *) =
             ^(NSString *oAuthToken, NSString *oAuthTokenSecret, NSString *userID, NSString *screenName) {
-                JFIAccount *account = [JFIAccount new];
-                account.oAuthToken = oAuthToken;
-                account.oAuthTokenSecret = oAuthTokenSecret;
-                account.userID = userID;
-                account.screenName = screenName;
-                
-                successBlock(account);
+                [loginTwitterAPI getUsersShowForUserID:userID
+                                          orScreenName:nil
+                                       includeEntities:nil
+                                          successBlock:^(NSDictionary *user) {
+                                              JFIAccount *account = [JFIAccount new];
+                                              account.oAuthToken = oAuthToken;
+                                              account.oAuthTokenSecret = oAuthTokenSecret;
+                                              account.userID = userID;
+                                              account.screenName = screenName;
+                                              account.profileImageUrl = [user valueForKey:@"profile_image_url"];
+                                              successBlock(account);
+                                          }
+                                            errorBlock:errorBlock];
             };
             [twitterAPIOS postReverseAuthAccessTokenWithAuthenticationHeader:authenticationHeader
                                                                 successBlock:accessTokenSuccessBlock
@@ -127,13 +126,6 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
         } errorBlock:errorBlock];
     } errorBlock:errorBlock];
     
-}
-
-+ (NSDictionary *)secretFromPlist
-{
-    NSBundle* bundle = [NSBundle mainBundle];
-    NSString* path = [bundle pathForResource:@"secret" ofType:@"plist"];
-    return [NSDictionary dictionaryWithContentsOfFile:path];
 }
 
 @end

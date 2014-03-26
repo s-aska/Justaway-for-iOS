@@ -11,6 +11,7 @@
 - (STTwitterAPI *)getTwitterByIndex:(NSInteger *)index;
 - (void)clearAccounts;
 - (void)postTokenRequest;
+- (void)loginUsingIOSAccount;
 - (BOOL)enableStreaming;
 
 @end
