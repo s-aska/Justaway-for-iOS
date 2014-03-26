@@ -35,9 +35,7 @@ static NSString * const JFI_SERVICE = @"JustawayService";
                                                       account:[dictionary objectForKey:@"acct"]
                                                         error:nil];
         
-        JFIAccount *account_ = [[JFIAccount alloc] initWithJsonString:jsonString];
-        
-        NSDictionary *account = [account_ dictionaryRepresentation];
+        JFIAccount *account = [[JFIAccount alloc] initWithJsonString:jsonString];
         
         // 最後にpush
         [self.accounts addObject:account];
@@ -105,12 +103,12 @@ static NSString * const JFI_SERVICE = @"JustawayService";
 
 - (STTwitterAPI *)getTwitterByIndex:(NSInteger *)index
 {
-    NSDictionary *account = [self.accounts objectAtIndex:*index];
+    JFIAccount *account = [self.accounts objectAtIndex:*index];
     
     return [STTwitterAPI twitterAPIWithOAuthConsumerKey:JFI_ConsumerKey
                                          consumerSecret:JFI_ConsumerSecret
-                                             oauthToken:[account objectForKey:@"oauthToken"]
-                                       oauthTokenSecret:[account objectForKey:@"oauthTokenSecret"]];
+                                             oauthToken:account.oAuthToken
+                                       oauthTokenSecret:account.oAuthTokenSecret];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -182,11 +180,12 @@ static NSString * const JFI_SERVICE = @"JustawayService";
                              includeEntities:nil
                                 successBlock:^(NSDictionary *user) {
                                     NSDictionary *directory =@{
-                                                               @"userID" : userID,
-                                                               @"screenName" : screenName,
-                                                               @"profileImageUrl" : [user valueForKey:@"profile_image_url"],
-                                                               @"oauthToken" : oauthToken,
-                                                               @"oauthTokenSecret" : oauthTokenSecret
+                                                               JFI_KeyUserID : userID,
+                                                               JFI_KeyScreenName : screenName,
+                                                               JFI_KeyDisplayName : user[@"name"],
+                                                               JFI_KeyProfileImageUrl : user[@"profile_image_url"],
+                                                               JFI_KeyOAuthToken : oauthToken,
+                                                               JFI_KeyOAuthTokenSecret : oauthTokenSecret
                                                                };
                                     [self saveAccount:[[JFIAccount alloc] initWithDictionary:directory]];
                                 } errorBlock:errorBlock];

@@ -236,12 +236,12 @@
 				38DA5F6918E29CAA006F484C /* JFISecret.m */,
 				6ADF7954188D6E2200632BA5 /* JFIAppDelegate.h */,
 				6ADF7955188D6E2200632BA5 /* JFIAppDelegate.m */,
+				383D7DB618D19A0A00D36678 /* Category */,
 				38DA5F6F18E30D82006F484C /* Models */,
 				38DA5F6D18E30D5B006F484C /* Views */,
 				38DA5F6B18E30D10006F484C /* ViewControllers */,
 				6ADF7963188D6E2200632BA5 /* Images.xcassets */,
 				6ADF794C188D6E2200632BA5 /* Supporting Files */,
-				383D7DB618D19A0A00D36678 /* Category */,
 			);
 			path = Justaway;
 			sourceTree = "<group>";

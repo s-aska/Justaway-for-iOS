@@ -1,4 +1,5 @@
 #import "JFIAccountCell.h"
+#import "JFIAccount.h"
 
 @implementation JFIAccountCell
 
@@ -14,9 +15,10 @@
     // Configure the view for the selected state
 }
 
-- (void)setLabelTexts:(NSDictionary *)account
+- (void)setLabelTexts:(JFIAccount *)account
 {
-    self.screenNameLabel.text = [@"@" stringByAppendingString:[account valueForKeyPath:@"screenName"]];
+    self.displayNameLabel.text = account.displayName;
+    self.screenNameLabel.text = [@"@" stringByAppendingString:account.screenName];
 }
 
 @end

@@ -6,6 +6,7 @@ NSString const* JFI_KeyOAuthToken = @"oauthToken";
 NSString const* JFI_KeyOAuthTokenSecret = @"oauthTokenSecret";
 NSString const* JFI_KeyUserID = @"userID";
 NSString const* JFI_KeyScreenName = @"screenName";
+NSString const* JFI_KeyDisplayName = @"displayName";
 NSString const* JFI_KeyProfileImageUrl = @"profileImageUrl";
 NSString const* JFI_KeyConsumerKey = @"consumer_key";
 NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
@@ -16,23 +17,28 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
 @property (nonatomic, copy, readwrite) NSString *oAuthTokenSecret;
 @property (nonatomic, copy, readwrite) NSString *userID;
 @property (nonatomic, copy, readwrite) NSString *screenName;
+@property (nonatomic, copy, readwrite) NSString *displayName;
 @property (nonatomic, copy, readwrite) NSString *profileImageUrl;
 
 @end
 
 @implementation JFIAccount
 
-#pragma mark Initializer
+#pragma mark - Initializer
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
     self = [super init];
-    if(self){
+    if (self) {
         self.oAuthToken = dictionary[JFI_KeyOAuthToken];
         self.oAuthTokenSecret = dictionary[JFI_KeyOAuthTokenSecret];
         self.userID = dictionary[JFI_KeyUserID];
         self.screenName = dictionary[JFI_KeyScreenName];
+        self.displayName = dictionary[JFI_KeyDisplayName];
         self.profileImageUrl = dictionary[JFI_KeyProfileImageUrl];
+        if (self.displayName == nil) {
+            self.displayName = @"-";
+        }
     }
     return self;
 }
@@ -59,6 +65,7 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
     [account setOAuthTokenSecret:self.oAuthTokenSecret];
     [account setUserID:self.userID];
     [account setScreenName:self.screenName];
+    [account setDisplayName:self.displayName];
     [account setProfileImageUrl:self.profileImageUrl];
     
     return account;
@@ -72,6 +79,7 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
              JFI_KeyOAuthTokenSecret : self.oAuthTokenSecret,
              JFI_KeyUserID : self.userID,
              JFI_KeyScreenName : self.screenName,
+             JFI_KeyDisplayName : self.displayName,
              JFI_KeyProfileImageUrl : self.profileImageUrl};
 }
 
@@ -82,6 +90,7 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
 }
+
 #pragma mark - description
 
 - (NSString *)description
@@ -114,7 +123,8 @@ NSString const* JFI_KeyConsumerSecret = @"consumer_secret";
                                               account.oAuthTokenSecret = oAuthTokenSecret;
                                               account.userID = userID;
                                               account.screenName = screenName;
-                                              account.profileImageUrl = [user valueForKey:@"profile_image_url"];
+                                              account.displayName = user[@"name"];
+                                              account.profileImageUrl = user[@"profile_image_url"];
                                               successBlock(account);
                                           }
                                             errorBlock:errorBlock];

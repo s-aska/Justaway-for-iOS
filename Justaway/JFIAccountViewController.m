@@ -71,9 +71,9 @@ NSString *const JFI_Account_CellId = @"Cell";
     
     JFIAccountCell *cell = [tableView dequeueReusableCellWithIdentifier:JFI_Account_CellId forIndexPath:indexPath];
     
-    NSDictionary *account = [delegate.accounts objectAtIndex:indexPath.row];
+    JFIAccount *account = [delegate.accounts objectAtIndex:indexPath.row];
     
-    NSURL *url = [NSURL URLWithString:[account valueForKeyPath:@"profileImageUrl"]];
+    NSURL *url = [NSURL URLWithString:account.profileImageUrl];
     
     [cell setLabelTexts:account];
     
@@ -137,7 +137,7 @@ NSString *const JFI_Account_CellId = @"Cell";
     // 選択された時の処理
 }
 
-#pragma mark Observer
+#pragma mark - Observer
 
 - (void)receiveAccessToken:(NSNotification *)center
 {
