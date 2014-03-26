@@ -1,6 +1,5 @@
 #import "JFISecret.h"
 #import "JFIAccount.h"
-
 #import <STTwitter.h>
 
 NSString const* JFI_KeyOAuthToken = @"oauthToken";

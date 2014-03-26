@@ -1,7 +1,6 @@
 #import "JFISecret.h"
 #import "JFIAccount.h"
 #import "JFIAppDelegate.h"
-#import "JFIFirstViewController.h"
 #import <SSKeychain/SSKeychain.h>
 
 @implementation JFIAppDelegate
