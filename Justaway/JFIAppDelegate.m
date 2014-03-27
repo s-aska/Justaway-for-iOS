@@ -1,11 +1,10 @@
 #import "JFISecret.h"
+#import "JFIConstants.h"
 #import "JFIAccount.h"
 #import "JFIAppDelegate.h"
 #import <SSKeychain/SSKeychain.h>
 
 @implementation JFIAppDelegate
-
-static NSString * const JFI_SERVICE = @"JustawayService";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -18,9 +17,9 @@ static NSString * const JFI_SERVICE = @"JustawayService";
 - (void)loadAccounts
 {
     // KeyChainから全アカウント情報を取得
-    NSArray *dictionaries = [SSKeychain accountsForService:JFI_SERVICE];
+    NSArray *dictionaries = [SSKeychain accountsForService:JFIAccessTokenService];
     
-    NSLog(@"[JFIAppDelegate] dictionaries: %lu", (unsigned long)[dictionaries count]);
+    NSLog(@"[JFIAppDelegate] loadAccounts accounts:%lu", (unsigned long)[dictionaries count]);
     
     // アカウントリスト初期化
     self.accounts = [@[] mutableCopy];
@@ -31,7 +30,7 @@ static NSString * const JFI_SERVICE = @"JustawayService";
         NSLog(@"-- account: %@", [dictionary objectForKey:@"acct"]);
         
         // KeyChain => NSString
-        NSString *jsonString = [SSKeychain passwordForService:JFI_SERVICE
+        NSString *jsonString = [SSKeychain passwordForService:JFIAccessTokenService
                                                       account:[dictionary objectForKey:@"acct"]
                                                         error:nil];
         
@@ -50,7 +49,7 @@ static NSString * const JFI_SERVICE = @"JustawayService";
 - (void)saveAccount:(JFIAccount *)account
 {
     [SSKeychain setPassword:[account jsonStringRepresentation]
-                 forService:JFI_SERVICE
+                 forService:JFIAccessTokenService
                     account:account.screenName
                       error:nil];
     
@@ -63,17 +62,17 @@ static NSString * const JFI_SERVICE = @"JustawayService";
 
 - (void)clearAccounts
 {
-    NSArray *dictionaries = [SSKeychain accountsForService:JFI_SERVICE];
+    NSArray *dictionaries = [SSKeychain accountsForService:JFIAccessTokenService];
     for (NSDictionary *dictionary in dictionaries) {
-        [SSKeychain deletePasswordForService:JFI_SERVICE account:[dictionary objectForKey:@"acct"]];
+        [SSKeychain deletePasswordForService:JFIAccessTokenService account:[dictionary objectForKey:@"acct"]];
     }
     self.accounts = [@[] mutableCopy];
 }
 
 - (void)postTokenRequest
 {
-    _loginTwitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:JFI_ConsumerKey
-                                                  consumerSecret:JFI_ConsumerSecret];
+    _loginTwitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:JFITwitterConsumerKey
+                                                  consumerSecret:JFITwitterConsumerSecret];
     
     [_loginTwitter postTokenRequest:^(NSURL *url, NSString *oauthToken) {
         [[UIApplication sharedApplication] openURL:url];
@@ -105,8 +104,8 @@ static NSString * const JFI_SERVICE = @"JustawayService";
 {
     JFIAccount *account = [self.accounts objectAtIndex:*index];
     
-    return [STTwitterAPI twitterAPIWithOAuthConsumerKey:JFI_ConsumerKey
-                                         consumerSecret:JFI_ConsumerSecret
+    return [STTwitterAPI twitterAPIWithOAuthConsumerKey:JFITwitterConsumerKey
+                                         consumerSecret:JFITwitterConsumerSecret
                                              oauthToken:account.oAuthToken
                                        oauthTokenSecret:account.oAuthTokenSecret];
 }
@@ -166,7 +165,7 @@ static NSString * const JFI_SERVICE = @"JustawayService";
         return NO;
     }
     
-    // callback_urlから必要なパラメーター取得し
+    // callback_urlから必要なパラメーター取得
     NSDictionary *d = [self parametersDictionaryFromQueryString:[url query]];
     
     // AccessToken取得
@@ -179,17 +178,18 @@ static NSString * const JFI_SERVICE = @"JustawayService";
                                 orScreenName:nil
                              includeEntities:nil
                                 successBlock:^(NSDictionary *user) {
-                                    NSDictionary *directory =@{
-                                                               JFI_KeyUserID : userID,
-                                                               JFI_KeyScreenName : screenName,
-                                                               JFI_KeyDisplayName : user[@"name"],
-                                                               JFI_KeyProfileImageUrl : user[@"profile_image_url"],
-                                                               JFI_KeyOAuthToken : oauthToken,
-                                                               JFI_KeyOAuthTokenSecret : oauthTokenSecret
-                                                               };
+                                    
+                                    NSDictionary *directory = @{JFIAccountUserIDKey          : userID,
+                                                                JFIAccountScreenNameKey      : screenName,
+                                                                JFIAccountDisplayNameKey     : user[@"name"],
+                                                                JFIAccountProfileImageURLKey : user[@"profile_image_url"],
+                                                                JFIAccountOAuthTokenKey      : oauthToken,
+                                                                JFIAccountOAuthTokenSecretKey: oauthTokenSecret};
+                                    
                                     [self saveAccount:[[JFIAccount alloc] initWithDictionary:directory]];
                                 } errorBlock:errorBlock];
     };
+    
     [_loginTwitter postAccessTokenRequestWithPIN:d[@"oauth_verifier"]
                                     successBlock:accessTokenSuccessBlock
                                       errorBlock:errorBlock];

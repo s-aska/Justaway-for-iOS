@@ -88,7 +88,6 @@
 
 - (IBAction)changePageAction:(id)sender
 {
-    NSLog(@"[JFIMainViewController] changePageAction tag:%i", [sender tag]);
     [UIView animateWithDuration:.3
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut

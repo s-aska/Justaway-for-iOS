@@ -1,2 +1,2 @@
-extern NSString *const JFI_ConsumerKey;
-extern NSString *const JFI_ConsumerSecret;
+extern NSString *const JFITwitterConsumerKey;
+extern NSString *const JFITwitterConsumerSecret;
