@@ -1,6 +1,7 @@
 #import "JFISecret.h"
 #import "JFIConstants.h"
 #import "JFIAccount.h"
+#import "NSDictionary+Default.h"
 #import <STTwitter.h>
 
 @interface JFIAccount ()
@@ -26,11 +27,8 @@
         self.oAuthTokenSecret = dictionary[JFIAccountOAuthTokenSecretKey];
         self.userID = dictionary[JFIAccountUserIDKey];
         self.screenName = dictionary[JFIAccountScreenNameKey];
-        self.displayName = dictionary[JFIAccountDisplayNameKey];
+        self.displayName = [dictionary objectForKey:JFIAccountDisplayNameKey defaultObject:@"-"];
         self.profileImageUrl = dictionary[JFIAccountProfileImageURLKey];
-        if (self.displayName == nil) {
-            self.displayName = @"-";
-        }
     }
     return self;
 }
@@ -104,7 +102,7 @@
         STTwitterAPI *twitterAPIOS = [STTwitterAPI twitterAPIOSWithFirstAccount];
         
         [twitterAPIOS verifyCredentialsWithSuccessBlock:^(NSString *username) {
-
+            
             void(^accessTokenSuccessBlock)(NSString *, NSString *, NSString *, NSString *) =
             ^(NSString *oAuthToken, NSString *oAuthTokenSecret, NSString *userID, NSString *screenName) {
                 [loginTwitterAPI getUsersShowForUserID:userID
@@ -122,7 +120,7 @@
                                           }
                                             errorBlock:errorBlock];
             };
-
+            
             [twitterAPIOS postReverseAuthAccessTokenWithAuthenticationHeader:authenticationHeader
                                                                 successBlock:accessTokenSuccessBlock
                                                                   errorBlock:errorBlock];

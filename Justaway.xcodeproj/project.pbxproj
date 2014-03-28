@@ -21,6 +21,7 @@
 		383D7DE118E1957A00D36678 /* JFIAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DE018E1957A00D36678 /* JFIAccountViewController.m */; };
 		383D7DE518E1AF5C00D36678 /* JFIAccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DE318E1AF5C00D36678 /* JFIAccountCell.m */; };
 		383D7DE618E1AF5C00D36678 /* JFIAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DE418E1AF5C00D36678 /* JFIAccountCell.xib */; };
+		3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */ = {isa = PBXBuildFile; fileRef = 3882594318E5511200F50117 /* NSDictionary+Default.m */; };
 		38DA5F6A18E29CAA006F484C /* JFISecret.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA5F6918E29CAA006F484C /* JFISecret.m */; };
 		38DA5F7218E447DE006F484C /* JFIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA5F7118E447DE006F484C /* JFIConstants.m */; };
 		5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22194C00EF13418F82A85B42 /* libPods.a */; };
@@ -73,6 +74,8 @@
 		383D7DE218E1AF5C00D36678 /* JFIAccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIAccountCell.h; sourceTree = "<group>"; };
 		383D7DE318E1AF5C00D36678 /* JFIAccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIAccountCell.m; sourceTree = "<group>"; };
 		383D7DE418E1AF5C00D36678 /* JFIAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIAccountCell.xib; sourceTree = "<group>"; };
+		3882594218E5511200F50117 /* NSDictionary+Default.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Default.h"; sourceTree = "<group>"; };
+		3882594318E5511200F50117 /* NSDictionary+Default.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Default.m"; sourceTree = "<group>"; };
 		38DA5F6818E29CAA006F484C /* JFISecret.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFISecret.h; sourceTree = "<group>"; };
 		38DA5F6918E29CAA006F484C /* JFISecret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFISecret.m; sourceTree = "<group>"; };
 		38DA5F7018E447DE006F484C /* JFIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIConstants.h; sourceTree = "<group>"; };
@@ -130,6 +133,8 @@
 			children = (
 				383D7DB218D1968F00D36678 /* NSDate+Justaway.h */,
 				383D7DB318D1968F00D36678 /* NSDate+Justaway.m */,
+				3882594218E5511200F50117 /* NSDictionary+Default.h */,
+				3882594318E5511200F50117 /* NSDictionary+Default.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -428,6 +433,7 @@
 				6A21291018C3485A00AD2953 /* JFIStatusCell.m in Sources */,
 				38DA5F7218E447DE006F484C /* JFIConstants.m in Sources */,
 				6ADF7956188D6E2200632BA5 /* JFIAppDelegate.m in Sources */,
+				3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */,
 				383D7DC918D9675200D36678 /* JFIPostViewController.m in Sources */,
 				6ADF7952188D6E2200632BA5 /* main.m in Sources */,
 				20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */,

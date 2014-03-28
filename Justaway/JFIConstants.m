@@ -10,4 +10,4 @@ NSString *const JFIAccountProfileImageURLKey  = @"profileImageUrl";
 
 #pragma mark - keychain const
 
-NSString *const JFIAccessTokenService = @"";
+NSString *const JFIAccessTokenService = @"JustawayService";
