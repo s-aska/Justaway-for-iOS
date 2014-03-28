@@ -2,8 +2,7 @@
 #import "JFIAccountViewController.h"
 #import "JFIAccountCell.h"
 #import "JFIAccount.h"
-#import "ISDiskCache.h"
-#import "ISMemoryCache.h"
+#import "JFIHTTPImageOperation.h"
 
 @interface JFIAccountViewController ()
 
@@ -26,7 +25,7 @@ NSString *const JFI_Account_CellId = @"Cell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     // アカウントが追加されたらリロードする
@@ -34,9 +33,9 @@ NSString *const JFI_Account_CellId = @"Cell";
                                              selector:@selector(receiveAccessToken:)
                                                  name:@"receiveAccessToken"
                                                object:delegate];
-
+    
     self.operationQueue = NSOperationQueue.new;
-
+    
     // xibファイル名を指定しUINibオブジェクトを生成する
     UINib *nib = [UINib nibWithNibName:@"JFIAccountCell" bundle:nil];
     
@@ -77,50 +76,13 @@ NSString *const JFI_Account_CellId = @"Cell";
     
     [cell setLabelTexts:account];
     
-//    [cell.displayNameLabel sizeToFit];
-
-    ISMemoryCache *memCache = [ISMemoryCache sharedCache];
-    ISDiskCache *diskCache = [ISDiskCache sharedCache];
+    //    [cell.displayNameLabel sizeToFit];
     
-    cell.iconImageView.image = [memCache objectForKey:url];
-    
-    if (cell.iconImageView.image == nil) {
-        
-        if ([diskCache hasObjectForKey:url]) {
-            NSLog(@"-- from disk %@", url);
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                UIImage *image = [diskCache objectForKey:url];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    JFIAccountCell *cell = (id)[tableView cellForRowAtIndexPath:indexPath];
-                    cell.iconImageView.image = image;
-                    [cell setNeedsLayout];
-                });
-            });
-        } else {
-            NSLog(@"-- from network %@", url);
-            NSURLRequest *request = [NSURLRequest requestWithURL:url];
-            [NSURLConnection sendAsynchronousRequest:request
-                                               queue:self.operationQueue
-                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                                       UIImage *image = [UIImage imageWithData:data];
-                                       if (image) {
-                                           [memCache setObject:image forKey:url];
-                                           [diskCache setObject:image forKey:url];
-                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                               dispatch_async(dispatch_get_main_queue(), ^{
-                                                   JFIAccountCell *cell = (id)[tableView cellForRowAtIndexPath:indexPath];
-                                                   cell.iconImageView.image = image;
-                                                   [cell setNeedsLayout];
-                                               });
-                                           });
-                                       } else {
-                                           NSLog(@"-- sendAsynchronousRequest: fail");
-                                       }
-                                   }];
-        }
-    } else {
-        NSLog(@"-- from memory %@", url);
-    }
+    [JFIHTTPImageOperation loadURL:url
+                           handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
+                               JFIAccountCell *cell = (JFIAccountCell *)[tableView cellForRowAtIndexPath:indexPath];
+                               cell.iconImageView.image = image;
+                           }];
     
     return cell;
 }

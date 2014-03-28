@@ -1,8 +1,7 @@
 #import "JFIAppDelegate.h"
 #import "JFITimelineViewController.h"
 #import "JFIStatusCell.h"
-#import "ISDiskCache.h"
-#import "ISMemoryCache.h"
+#import "JFIHTTPImageOperation.h"
 
 NSString *const JFI_Timeline_CellId = @"Cell";
 NSString *const JFI_Timeline_CellForHeightId = @"CellForHeight";
@@ -167,48 +166,11 @@ NSString *const JFI_Timeline_CellForHeightId = @"CellForHeight";
     
     [cell.displayNameLabel sizeToFit];
     
-    ISMemoryCache *memCache = [ISMemoryCache sharedCache];
-    ISDiskCache *diskCache = [ISDiskCache sharedCache];
-    
-    cell.iconImageView.image = [memCache objectForKey:url];
-    
-    if (cell.iconImageView.image == nil) {
-        
-        if ([diskCache hasObjectForKey:url]) {
-            NSLog(@"-- from disk %@", url);
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                UIImage *image = [diskCache objectForKey:url];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    JFIStatusCell *cell = (id)[tableView cellForRowAtIndexPath:indexPath];
-                    cell.iconImageView.image = image;
-                    [cell setNeedsLayout];
-                });
-            });
-        } else {
-            NSLog(@"-- from network %@", url);
-            NSURLRequest *request = [NSURLRequest requestWithURL:url];
-            [NSURLConnection sendAsynchronousRequest:request
-                                               queue:self.operationQueue
-                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                                       UIImage *image = [UIImage imageWithData:data];
-                                       if (image) {
-                                           [memCache setObject:image forKey:url];
-                                           [diskCache setObject:image forKey:url];
-                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                               dispatch_async(dispatch_get_main_queue(), ^{
-                                                   JFIStatusCell *cell = (id)[tableView cellForRowAtIndexPath:indexPath];
-                                                   cell.iconImageView.image = image;
-                                                   [cell setNeedsLayout];
-                                               });
-                                           });
-                                       } else {
-                                           NSLog(@"-- sendAsynchronousRequest: fail");
-                                       }
-                                   }];
-        }
-    } else {
-        NSLog(@"-- from memory %@", url);
-    }
+    [JFIHTTPImageOperation loadURL:url
+                           handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
+                               JFIStatusCell *cell = (JFIStatusCell *)[tableView cellForRowAtIndexPath:indexPath];
+                               cell.iconImageView.image = image;
+                           }];
     
     return cell;
 }
