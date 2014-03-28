@@ -28,11 +28,11 @@
 - (void)main
 {
     @autoreleasepool {
-        UIImage *cachedImage = [[ISDiskCache sharedCache] objectForKey:self.cacheKey];
+        ISMemoryCache *memoryCache = [ISMemoryCache sharedCache];
+        UIImage *cachedImage = [memoryCache objectForKey:self.cacheKey];
         
         if (cachedImage) {
-            ISMemoryCache *cache = [ISMemoryCache sharedCache];
-            [cache setObject:cachedImage forKey:self.cacheKey];
+            [memoryCache setObject:cachedImage forKey:self.cacheKey];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self.handler) {
@@ -62,7 +62,7 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    id object = [self processData:[self data]];
+    id object = [self processData:self.data];
     if (object && self.handler) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.handler(self.response, object, nil);
