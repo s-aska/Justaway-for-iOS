@@ -54,7 +54,7 @@
     // TODO: マルチアカウント対応
     STTwitterAPI *twitter = [delegate getTwitter];
     
-    [twitter postStatusUpdate:[_statusTextField text]
+    [twitter postStatusUpdate:[self.statusTextField text]
             inReplyToStatusID:nil
                      latitude:nil
                     longitude:nil

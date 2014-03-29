@@ -1,10 +1,8 @@
+#import "JFIConstants.h"
 #import "JFIAppDelegate.h"
 #import "JFITimelineViewController.h"
 #import "JFIStatusCell.h"
 #import "JFIHTTPImageOperation.h"
-
-NSString *const JFI_Timeline_CellId = @"Cell";
-NSString *const JFI_Timeline_CellForHeightId = @"CellForHeight";
 
 @interface JFITimelineViewController ()
 
@@ -36,57 +34,50 @@ NSString *const JFI_Timeline_CellForHeightId = @"CellForHeight";
     UINib *nib = [UINib nibWithNibName:@"JFIStatusCell" bundle:nil];
     
     // UITableView#registerNib:forCellReuseIdentifierで、使用するセルを登録
-    [_tableView registerNib:nib forCellReuseIdentifier:JFI_Timeline_CellId];
+    [self.tableView registerNib:nib forCellReuseIdentifier:JFICellID];
     
     // 高さの計算用のセルを登録
-    [_tableView registerNib:nib forCellReuseIdentifier:JFI_Timeline_CellForHeightId];
+    [self.tableView registerNib:nib forCellReuseIdentifier:JFICellForHeightID];
     
-    _tableView.dataSource = self;
-    _tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     
     // セルの高さ計算用のオブジェクトをあらかじめ生成して変数に保持しておく
-    _cellForHeight = [_tableView dequeueReusableCellWithIdentifier:JFI_Timeline_CellForHeightId];
-    
+    self.cellForHeight = [self.tableView dequeueReusableCellWithIdentifier:JFICellForHeightID];
     
     // pull down to refresh
-    _refreshControl = UIRefreshControl.new;
-    [_refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
-    [_tableView addSubview:_refreshControl];
+    self.refreshControl = UIRefreshControl.new;
+    [self.refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.refreshControl];
     
     if ([delegate.accounts count] > 0) {
         [self onRefresh];
     } else {
         // レイアウト確認用のダミーデータ
-        NSDictionary *status1 = @{
-                                  @"user.name": @"Shinichiro Aska",
+        NSDictionary *status1 = @{@"user.name": @"Shinichiro Aska",
                                   @"user.screen_name": @"su_aska",
                                   @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。\n今日は鯖味噌の日。",
                                   @"source": @"web",
                                   @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
-                                  @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
-                                  };
+                                  @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"};
         
-        NSDictionary *status2 = @{
-                                  @"user.name": @"Shinichiro Aska",
+        NSDictionary *status2 = @{@"user.name": @"Shinichiro Aska",
                                   @"user.screen_name": @"su_aska",
                                   @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。",
                                   @"source": @"StS",
                                   @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
-                                  @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
-                                  };
+                                  @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"};
         
-        NSDictionary *status3 = @{
-                                  @"user.name": @"Shinichiro Aska",
+        NSDictionary *status3 = @{@"user.name": @"Shinichiro Aska",
                                   @"user.screen_name": @"su_aska",
                                   @"text": @"今日は鯖味噌の日。",
                                   @"source": @"<a href=\"http://justaway.info\" rel=\"nofollow\">Justaway for iOS</a>",
                                   @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
-                                  @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
-                                  };
+                                  @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"};
         
         self.statuses = [NSMutableArray array];
         [self.statuses addObjectsFromArray:@[status1, status2, status3]];
-        [_tableView reloadData];
+        [self.tableView reloadData];
     }
     
     if (delegate.enableStreaming) {
@@ -111,14 +102,12 @@ NSString *const JFI_Timeline_CellForHeightId = @"CellForHeight";
                                       locationBoundingBoxes:nil
                                               progressBlock:^(id response) {
                                                   if ([response valueForKey:@"text"]) {
-                                                      NSDictionary *status = @{
-                                                                               @"user.name": [response valueForKeyPath:@"user.name"],
-                                                                               @"user.screen_name": [response valueForKeyPath:@"user.screen_name"],
-                                                                               @"text": [response valueForKey:@"text"],
-                                                                               @"source": [response valueForKey:@"source"],
-                                                                               @"created_at": [response valueForKey:@"created_at"],
-                                                                               @"user.profile_image_url": [response valueForKeyPath:@"user.profile_image_url"]
-                                                                               };
+                                                      NSDictionary *status = @{@"user.name":              [response valueForKeyPath:@"user.name"],
+                                                                               @"user.screen_name":       [response valueForKeyPath:@"user.screen_name"],
+                                                                               @"text":                   [response valueForKey:@"text"],
+                                                                               @"source":                 [response valueForKey:@"source"],
+                                                                               @"created_at":             [response valueForKey:@"created_at"],
+                                                                               @"user.profile_image_url": [response valueForKeyPath:@"user.profile_image_url"]};
                                                       // 先頭に追加
                                                       [self.statuses insertObject:status atIndex:0];
                                                       [self.tableView reloadData];
@@ -155,8 +144,8 @@ NSString *const JFI_Timeline_CellForHeightId = @"CellForHeight";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"-- cellForRowAtIndexPath %@", indexPath);
-    JFIStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:JFI_Timeline_CellId forIndexPath:indexPath];
+    //    NSLog(@"-- cellForRowAtIndexPath %@", indexPath);
+    JFIStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:JFICellID forIndexPath:indexPath];
     
     NSDictionary *status = [self.statuses objectAtIndex:indexPath.row];
     
@@ -184,21 +173,21 @@ NSString *const JFI_Timeline_CellForHeightId = @"CellForHeight";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _cellForHeight.frame = _tableView.bounds;
+    self.cellForHeight.frame = self.tableView.bounds;
     
     // これでもよいが、上記の方が記述が楽。高さは自動計算するので、ここでは適当で良い。
     // _cellForHeight.frame = CGRectMake(0, 0, _tableView.bounds.size.width, 0);
     
     // indexPathに応じた文字列を設定
-    [_cellForHeight setLabelTexts:[self.statuses objectAtIndex:indexPath.row]];
-    [_cellForHeight.contentView setNeedsLayout];
-    [_cellForHeight.contentView layoutIfNeeded];
+    [self.cellForHeight setLabelTexts:[self.statuses objectAtIndex:indexPath.row]];
+    [self.cellForHeight.contentView setNeedsLayout];
+    [self.cellForHeight.contentView layoutIfNeeded];
     
     // 適切なサイズをAuto Layoutによって自動計算する
     CGSize size = [_cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     
-    NSLog(@"-- heightForRowAtIndexPath height:%f", size.height);
-    NSLog(@"-- heightForRowAtIndexPath width:%f", size.width);
+    //    NSLog(@"-- heightForRowAtIndexPath height:%f", size.height);
+    //    NSLog(@"-- heightForRowAtIndexPath width:%f", size.width);
     
     // 自動計算で得られた高さを返す
     return size.height;
@@ -216,7 +205,7 @@ NSString *const JFI_Timeline_CellForHeightId = @"CellForHeight";
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     if ([delegate.accounts count]  == 0) {
-        [_refreshControl endRefreshing];
+        [self.refreshControl endRefreshing];
         UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle:@"disconnect"
                               message:@"「認」ボタンからアカウントを追加して下さい。"
@@ -228,7 +217,7 @@ NSString *const JFI_Timeline_CellForHeightId = @"CellForHeight";
         return;
     }
     
-    [_refreshControl beginRefreshing];
+    [self.refreshControl beginRefreshing];
     
     STTwitterAPI *twitter = [delegate getTwitter];
     [twitter getHomeTimelineSinceID:nil
@@ -237,10 +226,10 @@ NSString *const JFI_Timeline_CellForHeightId = @"CellForHeight";
                            self.statuses = [NSMutableArray array];
                            [self.statuses addObjectsFromArray:statuses];
                            [self.tableView reloadData];
-                           [_refreshControl endRefreshing];
+                           [self.refreshControl endRefreshing];
                        } errorBlock:^(NSError *error) {
                            NSLog(@"-- error: %@", [error localizedDescription]);
-                           [_refreshControl endRefreshing];
+                           [self.refreshControl endRefreshing];
                        }];
 }
 

@@ -1,3 +1,4 @@
+#import "JFIConstants.h"
 #import "JFIAppDelegate.h"
 #import "JFIAccountViewController.h"
 #import "JFIAccountCell.h"
@@ -7,8 +8,6 @@
 @interface JFIAccountViewController ()
 
 @end
-
-NSString *const JFI_Account_CellId = @"Cell";
 
 @implementation JFIAccountViewController
 
@@ -31,7 +30,7 @@ NSString *const JFI_Account_CellId = @"Cell";
     // アカウントが追加されたらリロードする
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receiveAccessToken:)
-                                                 name:@"receiveAccessToken"
+                                                 name:JFIReceiveAccessTokenNotification
                                                object:delegate];
     
     self.operationQueue = NSOperationQueue.new;
@@ -40,10 +39,10 @@ NSString *const JFI_Account_CellId = @"Cell";
     UINib *nib = [UINib nibWithNibName:@"JFIAccountCell" bundle:nil];
     
     // UITableView#registerNib:forCellReuseIdentifierで、使用するセルを登録
-    [_tableView registerNib:nib forCellReuseIdentifier:JFI_Account_CellId];
+    [self.tableView registerNib:nib forCellReuseIdentifier:JFICellID];
     
-    _tableView.dataSource = self;
-    _tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     
     [self loadAccounts];
 }
@@ -66,9 +65,9 @@ NSString *const JFI_Account_CellId = @"Cell";
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    NSLog(@"[JFIAccountViewController] cellForRowAtIndexPath %@", indexPath);
+    //    NSLog(@"[JFIAccountViewController] cellForRowAtIndexPath %@", indexPath);
     
-    JFIAccountCell *cell = [tableView dequeueReusableCellWithIdentifier:JFI_Account_CellId forIndexPath:indexPath];
+    JFIAccountCell *cell = [tableView dequeueReusableCellWithIdentifier:JFICellID forIndexPath:indexPath];
     
     JFIAccount *account = [delegate.accounts objectAtIndex:indexPath.row];
     

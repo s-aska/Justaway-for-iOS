@@ -55,7 +55,7 @@
     
     [self loadAccounts];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"receiveAccessToken"
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveAccessTokenNotification
                                                         object:self
                                                       userInfo:[account dictionaryRepresentation]];
 }
@@ -71,18 +71,18 @@
 
 - (void)postTokenRequest
 {
-    _loginTwitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:JFITwitterConsumerKey
-                                                  consumerSecret:JFITwitterConsumerSecret];
+    self.loginTwitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:JFITwitterConsumerKey
+                                                      consumerSecret:JFITwitterConsumerSecret];
     
-    [_loginTwitter postTokenRequest:^(NSURL *url, NSString *oauthToken) {
+    [self.loginTwitter postTokenRequest:^(NSURL *url, NSString *oauthToken) {
         [[UIApplication sharedApplication] openURL:url];
     }
-                         forceLogin:@(YES)
-                         screenName:nil
-                      oauthCallback:@"justaway://twitter_access_tokens/"
-                         errorBlock:^(NSError *error) {
-                             NSLog(@"-- error: %@", error);
-                         }];
+                             forceLogin:@(YES)
+                             screenName:nil
+                          oauthCallback:@"justaway://twitter_access_tokens/"
+                             errorBlock:^(NSError *error) {
+                                 NSLog(@"-- error: %@", error);
+                             }];
 }
 
 - (void)loginUsingIOSAccount

@@ -3,6 +3,7 @@
 
 @interface JFIMainViewController : UIViewController <UIScrollViewDelegate>
 
+@property (nonatomic, weak) IBOutlet UILabel *streamingStatusLabel;
 @property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
 @property (nonatomic) JFITimelineViewController *timeline;
 
