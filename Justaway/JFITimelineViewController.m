@@ -184,7 +184,7 @@
     [self.cellForHeight.contentView layoutIfNeeded];
     
     // 適切なサイズをAuto Layoutによって自動計算する
-    CGSize size = [_cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    CGSize size = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     
     //    NSLog(@"-- heightForRowAtIndexPath height:%f", size.height);
     //    NSLog(@"-- heightForRowAtIndexPath width:%f", size.width);

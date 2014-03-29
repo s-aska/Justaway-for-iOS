@@ -174,25 +174,25 @@
     };
     void(^accessTokenSuccessBlock)(NSString *, NSString *, NSString *, NSString *) =
     ^(NSString *oauthToken, NSString *oauthTokenSecret, NSString *userID, NSString *screenName) {
-        [_loginTwitter getUsersShowForUserID:userID
-                                orScreenName:nil
-                             includeEntities:nil
-                                successBlock:^(NSDictionary *user) {
-                                    
-                                    NSDictionary *directory = @{JFIAccountUserIDKey          : userID,
-                                                                JFIAccountScreenNameKey      : screenName,
-                                                                JFIAccountDisplayNameKey     : user[@"name"],
-                                                                JFIAccountProfileImageURLKey : user[@"profile_image_url"],
-                                                                JFIAccountOAuthTokenKey      : oauthToken,
-                                                                JFIAccountOAuthTokenSecretKey: oauthTokenSecret};
-                                    
-                                    [self saveAccount:[[JFIAccount alloc] initWithDictionary:directory]];
-                                } errorBlock:errorBlock];
+        [self.loginTwitter getUsersShowForUserID:userID
+                                    orScreenName:nil
+                                 includeEntities:nil
+                                    successBlock:^(NSDictionary *user) {
+                                        
+                                        NSDictionary *directory = @{JFIAccountUserIDKey          : userID,
+                                                                    JFIAccountScreenNameKey      : screenName,
+                                                                    JFIAccountDisplayNameKey     : user[@"name"],
+                                                                    JFIAccountProfileImageURLKey : user[@"profile_image_url"],
+                                                                    JFIAccountOAuthTokenKey      : oauthToken,
+                                                                    JFIAccountOAuthTokenSecretKey: oauthTokenSecret};
+                                        
+                                        [self saveAccount:[[JFIAccount alloc] initWithDictionary:directory]];
+                                    } errorBlock:errorBlock];
     };
     
-    [_loginTwitter postAccessTokenRequestWithPIN:d[@"oauth_verifier"]
-                                    successBlock:accessTokenSuccessBlock
-                                      errorBlock:errorBlock];
+    [self.loginTwitter postAccessTokenRequestWithPIN:d[@"oauth_verifier"]
+                                        successBlock:accessTokenSuccessBlock
+                                          errorBlock:errorBlock];
     
     return YES;
 }
