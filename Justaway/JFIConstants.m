@@ -15,7 +15,10 @@ NSString *const JFICellForHeightID = @"JFICellForHeightID";
 
 #pragma mark - notification const
 
-NSString *const JFIReceiveAccessTokenNotification = @"JFIReceiveAccessTokenNotification";
+NSString *const JFIReceiveAccessTokenNotification  = @"JFIReceiveAccessTokenNotification";
+NSString *const JFIReceiveStatusNotification       = @"JFIReceiveStatusNotification";
+NSString *const JFIStreamingConnectNotification    = @"JFIStreamingConnectNotification";
+NSString *const JFIStreamingDisconnectNotification = @"JFIStreamingDisconnectNotification";
 
 #pragma mark - keychain const
 

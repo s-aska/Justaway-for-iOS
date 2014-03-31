@@ -16,6 +16,9 @@ extern NSString *const JFICellForHeightID;
 #pragma mark - notification const
 
 extern NSString *const JFIReceiveAccessTokenNotification;
+extern NSString *const JFIReceiveStatusNotification;
+extern NSString *const JFIStreamingConnectNotification;
+extern NSString *const JFIStreamingDisconnectNotification;
 
 #pragma mark - keychain const
 

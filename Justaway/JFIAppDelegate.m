@@ -2,7 +2,14 @@
 #import "JFIConstants.h"
 #import "JFIAccount.h"
 #import "JFIAppDelegate.h"
+#import "STHTTPRequest+STTwitter.h"
 #import <SSKeychain/SSKeychain.h>
+
+@interface JFIAppDelegate ()
+
+@property (nonatomic) STHTTPRequest *streamingRequest;
+
+@end
 
 @implementation JFIAppDelegate
 
@@ -197,9 +204,88 @@
     return YES;
 }
 
+#pragma mark - Streaming
+
 - (BOOL)enableStreaming
 {
     return NO;
 }
+
+- (void)startStreaming
+{
+    NSLog(@"[JFIAppDelegate] startStreaming");
+    if (self.onlineStreaming) {
+        [self stopStreaming];
+    }
+    if ([self.accounts count] == 0) {
+        return;
+    }
+    
+    STTwitterAPI *twitter = [self getTwitter];
+    self.streamingRequest = [twitter getUserStreamDelimited:nil
+                                              stallWarnings:nil
+                        includeMessagesFromFollowedAccounts:nil
+                                             includeReplies:nil
+                                            keywordsToTrack:nil
+                                      locationBoundingBoxes:nil
+                                              progressBlock:^(id response) {
+                                                  if (!self.onlineStreaming) {
+                                                      NSLog(@"[JFIAppDelegate] connect streaming");
+                                                      self.onlineStreaming = true;
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingConnectNotification
+                                                                                                          object:self
+                                                                                                        userInfo:nil];
+                                                  }
+                                                  if ([response valueForKey:@"text"]) {
+                                                      NSDictionary *status = @{@"user.name":              [response valueForKeyPath:@"user.name"],
+                                                                               @"user.screen_name":       [response valueForKeyPath:@"user.screen_name"],
+                                                                               @"text":                   [response valueForKey:@"text"],
+                                                                               @"source":                 [response valueForKey:@"source"],
+                                                                               @"created_at":             [response valueForKey:@"created_at"],
+                                                                               @"user.profile_image_url": [response valueForKeyPath:@"user.profile_image_url"]};
+                                                      
+                                                      if ([response valueForKey:@"text"] == nil) {
+                                                          return;
+                                                      }
+                                                      
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveStatusNotification
+                                                                                                          object:self
+                                                                                                        userInfo:status];
+                                                      
+                                                  }
+                                              } stallWarningBlock:nil
+                                                 errorBlock:^(NSError *error) {
+                                                     NSLog(@"-- error: %@", [error localizedDescription]);
+                                                     UIAlertView *alert = [[UIAlertView alloc]
+                                                                           initWithTitle:@"disconnect"
+                                                                           message:[error localizedDescription]
+                                                                           delegate:nil
+                                                                           cancelButtonTitle:nil
+                                                                           otherButtonTitles:@"OK", nil
+                                                                           ];
+                                                     [alert show];
+                                                     if([[error domain] isEqualToString:NSURLErrorDomain] && [error code] == NSURLErrorNetworkConnectionLost) {
+                                                         NSLog(@"[JFIAppDelegate] disconnect streaming");
+                                                         [self stopStreaming];
+                                                         // TODO: 失敗回数に応じて間隔を広げながら再接続処理する
+                                                     }
+                                                 }];
+}
+
+- (void)stopStreaming
+{
+    if (self.onlineStreaming) {
+        [self.streamingRequest cancel];
+        self.onlineStreaming = false;
+    }
+    NSLog(@"[JFIAppDelegate] stopStreaming");
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingDisconnectNotification
+                                                        object:self
+                                                      userInfo:nil];
+}
+
+
+
+
 
 @end
