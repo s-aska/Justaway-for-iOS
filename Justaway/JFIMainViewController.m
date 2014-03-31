@@ -84,6 +84,7 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
     
     JFIHomeViewController *homeViewController = [[JFIHomeViewController alloc]
                                                  initWithNibName:NSStringFromClass([JFIHomeViewController class]) bundle:nil];
+    homeViewController.view.frame = CGRectMake(s.width * 0, 0, s.width, s.height);
     UIView *homeView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 0, 0, s.width, s.height)];
     [homeView addSubview:homeViewController.view];
     [self.contentView addSubview:homeView];
@@ -92,6 +93,7 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
     
     JFINotificationsViewController *notificationsViewController = [[JFINotificationsViewController alloc]
                                                                    initWithNibName:NSStringFromClass([JFINotificationsViewController class]) bundle:nil];
+    notificationsViewController.view.frame = CGRectMake(0, 0, s.width, s.height);
     UIView *notificationsView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 1, 0, s.width, s.height)];
     [notificationsView addSubview:notificationsViewController.view];
     [self.contentView addSubview:notificationsView];
@@ -100,6 +102,7 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
     
     JFIMessagesViewController *messagesViewController = [[JFIMessagesViewController alloc]
                                                          initWithNibName:NSStringFromClass([JFIMessagesViewController class]) bundle:nil];
+    messagesViewController.view.frame = CGRectMake(0, 0, s.width, s.height);
     UIView *messagesView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 2, 0, s.width, s.height)];
     [messagesView addSubview:messagesViewController.view];
     [self.contentView addSubview:messagesView];
