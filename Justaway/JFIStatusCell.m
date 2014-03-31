@@ -8,7 +8,7 @@
 + (NSDictionary *)statusAttribute
 {
     return @{ NSForegroundColorAttributeName : [UIColor darkGrayColor],
-              NSFontAttributeName : [UIFont fontWithName:@"Avenir Next" size:12] };
+              NSFontAttributeName : [UIFont systemFontOfSize:12] };
 }
 
 // 自動生成されたやつ

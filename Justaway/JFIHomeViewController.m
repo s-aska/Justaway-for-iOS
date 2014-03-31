@@ -1,7 +1,6 @@
 #import "JFIConstants.h"
 #import "JFIAppDelegate.h"
 #import "JFIHomeViewController.h"
-#import "JFIStatusCell.h"
 #import "JFIHTTPImageOperation.h"
 
 @interface JFIHomeViewController ()
@@ -32,8 +31,6 @@
                                                object:delegate];
     
     NSLog(@"[JFIHomeViewController] viewDidLoad accounts:%lu", (unsigned long)[delegate.accounts count]);
-    
-    self.operationQueue = NSOperationQueue.new;
     
     // xibファイル名を指定しUINibオブジェクトを生成する
     UINib *nib = [UINib nibWithNibName:@"JFIStatusCell" bundle:nil];
@@ -140,7 +137,7 @@
     CGSize size = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     
     // 自動計算で得られた高さを返す
-    return size.height;
+    return size.height + 2;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -154,7 +151,7 @@
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    if ([delegate.accounts count]  == 0) {
+    if ([delegate.accounts count] == 0) {
         [self.refreshControl endRefreshing];
         UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle:@"disconnect"
@@ -185,6 +182,7 @@
 }
 
 #pragma mark - NSNotificationCenter handler
+
 - (void)receiveStatus:(NSNotification *)center
 {
     [self.statuses insertObject:center.userInfo atIndex:0];
