@@ -141,7 +141,6 @@
                                [self.statuses addObjectsFromArray:statuses];
                                [self.tableView reloadData];
                                [self.refreshControl endRefreshing];
-                               [delegate startStreaming];
                            } errorBlock:^(NSError *error) {
                                NSLog(@"-- error: %@", [error localizedDescription]);
                                [self.refreshControl endRefreshing];
