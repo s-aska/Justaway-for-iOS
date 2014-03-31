@@ -2,7 +2,7 @@
 #import "JFIStatusCell.h"
 #import "STHTTPRequest+STTwitter.h"
 
-@interface JFITimelineViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface JFIHomeViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) NSOperationQueue *operationQueue;
 @property (nonatomic) NSMutableArray *statuses;

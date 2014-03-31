@@ -2,8 +2,12 @@
 #import "JFIAppDelegate.h"
 #import "JFIMainViewController.h"
 #import "JFIPostViewController.h"
+#import "JFINotificationsViewController.h"
+#import "JFIMessagesViewController.h"
 
 @interface JFIMainViewController ()
+
+@property (nonatomic) int currentPage;
 
 @end
 
@@ -35,6 +39,9 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
     [super viewDidLoad];
     NSLog(@"[JFIMainViewController] viewDidLoad");
     
+    self.viewControllers = NSMutableArray.new;
+    self.views = NSMutableArray.new;
+    
     // 通知設定
     self.streamingStatusLabel.userInteractionEnabled = YES;
     self.streamingStatusLabel.tag = JFIStreamingStatusLabelTag;
@@ -55,60 +62,55 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    
     NSLog(@"[JFIMainViewController] viewDidLayoutSubviews");
+    NSLog(@"[JFIMainViewController] scrollWrapperView width:%f height:%f", self.scrollWrapperView.frame.size.width, self.scrollWrapperView.frame.size.height);
+    NSLog(@"[JFIMainViewController] scrollView width:%f height:%f", self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     
-    //    self.scrollView.frame = self.view.bounds;
-    self.scrollView.pagingEnabled = YES;
-    self.scrollView.backgroundColor = [UIColor greenColor];
-    //    self.contentView.backgroundColor = [UIColor blueColor];
-    //    return;
-    //    self.scrollView.translatesAutoresizingMaskIntoConstraints = YES;
-    //    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.scrollView.frame.size.width)];
-    
-    //    self.scrollView.frame.size = CGSizeMake(self.view.frame.size.width, self.scrollView.frame.size.height);
-    //    [self.scrollView setLayoutWidth:self.view.frame.size.width];
-    //    self.scrollView.contentSize = CGSizeMake(width * 3, self.scrollView.frame.size.height);
-    
-    NSLog(@"[JFIMainViewController] scrollWrapperView width:%f", self.scrollWrapperView.frame.size.width);
-    NSLog(@"[JFIMainViewController] scrollView width:%f", self.scrollView.frame.size.width);
-    NSLog(@"[JFIMainViewController] scrollWrapperView height:%f", self.scrollWrapperView.frame.size.height);
-    NSLog(@"[JFIMainViewController] scrollView height:%f", self.scrollView.frame.size.height);
-    /*
-     UIView *contentView = [[UIView alloc]
-     initWithFrame:CGRectMake(0,0,self.scrollView.contentSize.width,self.scrollView.contentSize.height)];
-     */
     // UIScrollViewに表示するコンテンツViewを作成する。
-    //    CGSize s = CGSizeMake(self.view.frame.size.width, self.scrollView.frame.size.height);
     CGSize s = self.scrollWrapperView.frame.size;
-    CGRect contentRect = CGRectMake(0, 0, s.width * 3, s.height);
-    UIView *contentView = [[UIView alloc] initWithFrame:contentRect];
-    //    UIView *contentView = self.contentView;
+    if ([self.views count] > 0) {
+        NSInteger index = 0;
+        for (UIView *view in self.views) {
+            view.frame = CGRectMake(s.width * index, 0, s.width, s.height);
+            index++;
+        }
+        self.scrollView.contentSize = CGSizeMake(s.width * index, s.height);
+        self.contentView.frame = CGRectMake(0, 0, s.width * index, s.height);
+        return;
+    }
     
-    // コンテンツViewに表示する緑色Viewを追加する。
-    UIView *subContent1View = [[UIView alloc] initWithFrame:CGRectMake(s.width * 0, 0, s.width, s.height)];
-    subContent1View.backgroundColor = [UIColor greenColor];
+    self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, s.width * 3, s.height)];
     
-    self.timeline = [[JFITimelineViewController alloc] initWithNibName:@"JFITimelineViewController" bundle:nil];
-    self.timeline.view.frame = self.scrollWrapperView.bounds;
-    [subContent1View addSubview:self.timeline.view];
-    [contentView addSubview:subContent1View];
+    JFIHomeViewController *homeViewController = [[JFIHomeViewController alloc]
+                                                 initWithNibName:NSStringFromClass([JFIHomeViewController class]) bundle:nil];
+    UIView *homeView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 0, 0, s.width, s.height)];
+    [homeView addSubview:homeViewController.view];
+    [self.contentView addSubview:homeView];
+    [self.viewControllers addObject:homeViewController];
+    [self.views addObject:homeView];
     
-    // コンテンツViewに表示する青色Viewを追加する。
-    UIView *subContent2View = [[UIView alloc] initWithFrame:CGRectMake(s.width * 1, 0, s.width, s.height)];
-    subContent2View.backgroundColor = [UIColor blueColor];
-    [contentView addSubview:subContent2View];
+    JFINotificationsViewController *notificationsViewController = [[JFINotificationsViewController alloc]
+                                                                   initWithNibName:NSStringFromClass([JFINotificationsViewController class]) bundle:nil];
+    UIView *notificationsView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 1, 0, s.width, s.height)];
+    [notificationsView addSubview:notificationsViewController.view];
+    [self.contentView addSubview:notificationsView];
+    [self.viewControllers addObject:notificationsViewController];
+    [self.views addObject:notificationsView];
     
-    // コンテンツViewに表示する赤色Viewを追加する。
-    UIView *subContent3View = [[UIView alloc] initWithFrame:CGRectMake(s.width * 2, 0, s.width, s.height)];
-    subContent3View.backgroundColor = [UIColor redColor];
-    [contentView addSubview:subContent3View];
+    JFIMessagesViewController *messagesViewController = [[JFIMessagesViewController alloc]
+                                                         initWithNibName:NSStringFromClass([JFIMessagesViewController class]) bundle:nil];
+    UIView *messagesView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 2, 0, s.width, s.height)];
+    [messagesView addSubview:messagesViewController.view];
+    [self.contentView addSubview:messagesView];
+    [self.viewControllers addObject:messagesViewController];
+    [self.views addObject:messagesView];
     
-    // スクロールViewにコンテンツViewを追加する。
-    [self.scrollView addSubview:contentView];
+    [self.scrollView addSubview:self.contentView];
     
-    self.scrollView.contentSize = contentView.frame.size;
-    
+    self.scrollView.contentSize = self.contentView.frame.size;
     self.scrollView.delegate = self;
+    self.scrollView.pagingEnabled = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -121,20 +123,12 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
-    // 現在の表示位置（左上）のx座標とUIScrollViewの表示幅(320px)を
-    // 用いて現在のページ番号を計算します。
-    //    CGPoint offset = scrollView.contentOffset;
-    //    int page = (offset.x + 160) / 320;
+    CGPoint offset = scrollView.contentOffset;
+    int page = (offset.x + 160) / 320;
     
-    //    NSLog(@"[JFIMainViewController] scrollViewDidScroll page:%i", page);
-    
-    // 現在表示しているページ番号と異なる場合には、
-    // ページ切り替わりと判断し、処理を呼び出します。
-    // currentPageは、現在ページ数を保持するフィールド変数。
-    //    if (currentPage != page) {
-    //        doSomethingWhenPagingOccurred();
-    //        currentPage = page;
-    //    }
+    if (self.currentPage != page) {
+        self.currentPage = page;
+    }
 }
 
 #pragma mark - Action

@@ -1,14 +1,14 @@
 #import "JFIConstants.h"
 #import "JFIAppDelegate.h"
-#import "JFITimelineViewController.h"
+#import "JFIHomeViewController.h"
 #import "JFIStatusCell.h"
 #import "JFIHTTPImageOperation.h"
 
-@interface JFITimelineViewController ()
+@interface JFIHomeViewController ()
 
 @end
 
-@implementation JFITimelineViewController
+@implementation JFIHomeViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,7 +31,7 @@
                                                  name:JFIReceiveStatusNotification
                                                object:delegate];
     
-    NSLog(@"[JFITimelineViewController] viewDidLoad accounts:%lu", (unsigned long)[delegate.accounts count]);
+    NSLog(@"[JFIHomeViewController] viewDidLoad accounts:%lu", (unsigned long)[delegate.accounts count]);
     
     self.operationQueue = NSOperationQueue.new;
     
@@ -132,19 +132,12 @@
 {
     self.cellForHeight.frame = self.tableView.bounds;
     
-    // これでもよいが、上記の方が記述が楽。高さは自動計算するので、ここでは適当で良い。
-    // _cellForHeight.frame = CGRectMake(0, 0, _tableView.bounds.size.width, 0);
-    
-    // indexPathに応じた文字列を設定
     [self.cellForHeight setLabelTexts:[self.statuses objectAtIndex:indexPath.row]];
     [self.cellForHeight.contentView setNeedsLayout];
     [self.cellForHeight.contentView layoutIfNeeded];
     
     // 適切なサイズをAuto Layoutによって自動計算する
     CGSize size = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    
-    //    NSLog(@"-- heightForRowAtIndexPath height:%f", size.height);
-    //    NSLog(@"-- heightForRowAtIndexPath width:%f", size.width);
     
     // 自動計算で得られた高さを返す
     return size.height;

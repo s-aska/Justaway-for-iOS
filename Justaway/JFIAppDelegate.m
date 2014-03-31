@@ -215,7 +215,7 @@
 {
     NSLog(@"[JFIAppDelegate] startStreaming");
     if (self.onlineStreaming) {
-        [self stopStreaming];
+        return;
     }
     if ([self.accounts count] == 0) {
         return;
