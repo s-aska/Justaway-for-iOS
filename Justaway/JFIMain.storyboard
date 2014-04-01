@@ -31,8 +31,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ivN-aE-Jrd">
-                                <rect key="frame" x="10" y="528" width="30" height="30"/>
+                                <rect key="frame" x="0.0" y="520" width="45" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
                                 <state key="normal" title="流">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -41,8 +42,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CvT-HE-uuZ">
-                                <rect key="frame" x="280" y="528" width="30" height="30"/>
+                                <rect key="frame" x="275" y="520" width="45" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
                                 <state key="normal" title="筆">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -68,8 +70,9 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POk-aP-yJH">
-                                <rect key="frame" x="242" y="528" width="30" height="30"/>
+                                <rect key="frame" x="230" y="520" width="45" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
                                 <state key="normal" title="認">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -78,8 +81,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5PL-9a-hUM">
-                                <rect key="frame" x="48" y="528" width="30" height="30"/>
+                                <rect key="frame" x="45" y="520" width="45" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
                                 <state key="normal" title="響">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -88,8 +92,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MkS-3K-xmb">
-                                <rect key="frame" x="86" y="528" width="30" height="30"/>
+                                <rect key="frame" x="90" y="520" width="45" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
                                 <state key="normal" title="文">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -100,24 +105,24 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="ivN-aE-Jrd" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="0WF-e2-JU6"/>
+                            <constraint firstAttribute="trailing" secondItem="CvT-HE-uuZ" secondAttribute="trailing" id="3b8-Mm-K2u"/>
                             <constraint firstItem="o5w-H4-X92" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" constant="10" id="5U2-by-zxv"/>
-                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="ivN-aE-Jrd" secondAttribute="bottom" constant="10" id="6HX-i1-Xkl"/>
-                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="5PL-9a-hUM" secondAttribute="bottom" constant="10" id="BU3-z2-ZFr"/>
-                            <constraint firstItem="MkS-3K-xmb" firstAttribute="leading" secondItem="5PL-9a-hUM" secondAttribute="trailing" constant="8" id="CcY-6I-4iz"/>
-                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="CvT-HE-uuZ" secondAttribute="bottom" constant="10" id="JKM-Xc-nb6"/>
+                            <constraint firstItem="CvT-HE-uuZ" firstAttribute="leading" secondItem="POk-aP-yJH" secondAttribute="trailing" id="5aX-YA-Oby"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="CvT-HE-uuZ" secondAttribute="bottom" id="A0g-6v-zIN"/>
+                            <constraint firstItem="5PL-9a-hUM" firstAttribute="leading" secondItem="ivN-aE-Jrd" secondAttribute="trailing" id="EhN-aJ-k31"/>
                             <constraint firstAttribute="trailing" secondItem="Y7r-sP-G23" secondAttribute="trailing" constant="10" id="Kpp-DQ-Wcu"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="5PL-9a-hUM" secondAttribute="bottom" id="SGo-z7-Spg"/>
                             <constraint firstItem="Y7r-sP-G23" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" constant="10" id="SRf-J0-J8I"/>
                             <constraint firstAttribute="trailing" secondItem="fgT-2n-FvJ" secondAttribute="trailing" id="SSx-hq-FxP"/>
-                            <constraint firstItem="5PL-9a-hUM" firstAttribute="leading" secondItem="ivN-aE-Jrd" secondAttribute="trailing" constant="8" id="TNo-RB-TqR"/>
-                            <constraint firstItem="ivN-aE-Jrd" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" constant="10" id="Tyh-vG-Rrj"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="POk-aP-yJH" secondAttribute="bottom" id="WWB-M0-PAb"/>
                             <constraint firstItem="fgT-2n-FvJ" firstAttribute="top" secondItem="o5w-H4-X92" secondAttribute="bottom" constant="8" id="WpN-he-DPZ"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="MkS-3K-xmb" secondAttribute="bottom" id="XdL-5e-YJf"/>
                             <constraint firstItem="o5w-H4-X92" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" constant="10" id="YRR-a4-CZ4"/>
-                            <constraint firstItem="CvT-HE-uuZ" firstAttribute="leading" secondItem="POk-aP-yJH" secondAttribute="trailing" constant="8" id="ata-ux-58I"/>
                             <constraint firstItem="fgT-2n-FvJ" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="dSw-96-hxq"/>
-                            <constraint firstAttribute="trailing" secondItem="CvT-HE-uuZ" secondAttribute="trailing" constant="10" id="e4x-zC-DyW"/>
-                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="POk-aP-yJH" secondAttribute="bottom" constant="10" id="hoT-Sv-fdP"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="ivN-aE-Jrd" secondAttribute="bottom" id="gII-BY-nG8"/>
                             <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="fgT-2n-FvJ" secondAttribute="bottom" constant="48" id="mQZ-SF-8IH"/>
-                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="MkS-3K-xmb" secondAttribute="bottom" constant="10" id="sgQ-Qh-Ns7"/>
+                            <constraint firstItem="MkS-3K-xmb" firstAttribute="leading" secondItem="5PL-9a-hUM" secondAttribute="trailing" id="usk-TG-iVZ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qsH-sc-JDp"/>
