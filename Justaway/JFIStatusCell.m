@@ -49,11 +49,32 @@
     NSDate *createdAt = [NSDate dateWithTwitterDate:[status valueForKey:@"created_at"]];
     self.createdAtRelativeLabel.text = [createdAt relativeDescription];
     self.createdAtLabel.text = [createdAt absoluteDescription];
+    
+    // RT数
+    if (![[[status valueForKey:@"retweet_count"] stringValue] isEqual:@"0"]) {
+        self.retweetCountLabel.text = [[status valueForKey:@"retweet_count"] stringValue];
+    } else {
+        self.retweetCountLabel.text = @"";
+    }
+    
+    // ふぁぼ数
+    if (![[[status valueForKey:@"favorite_count"] stringValue] isEqual:@"0"]) {
+        self.favoriteCountLabel.text = [[status valueForKey:@"favorite_count"] stringValue];
+    } else {
+        self.favoriteCountLabel.text = @"";
+    }
+    
+    self.status = status;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    UIFont *font = [UIFont fontWithName:@"fontello" size:15];
+    [self.replyButton.titleLabel setFont:font];
+    [self.retweetButton.titleLabel setFont:font];
+    [self.favoriteButton.titleLabel setFont:font];
     
     CGSize statusSize = [self.statusLabel.attributedText boundingRectWithSize:CGSizeMake(self.statusLabel.frame.size.width, MAXFLOAT)
                                                                       options:NSStringDrawingUsesLineFragmentOrigin
@@ -63,6 +84,11 @@
                                         self.statusLabel.frame.origin.y,
                                         self.statusLabel.frame.size.width,
                                         statusSize.height);
+}
+
+- (void)setIndexPath:(NSIndexPath *)indexPath
+{
+    
 }
 
 - (NSString *)getClientNameFromSource:(NSString *)source
@@ -78,6 +104,21 @@
         }
     }
     return source;
+}
+
+- (IBAction)replyAction:(id)sender
+{
+    NSLog(@"reply status:%@", self.status);
+}
+
+- (IBAction)retweetAction:(id)sender
+{
+    NSLog(@"retweet status:%@", self.status);
+}
+
+- (IBAction)favoriteAction:(id)sender
+{
+    NSLog(@"favorite status:%@", self.status);
 }
 
 @end

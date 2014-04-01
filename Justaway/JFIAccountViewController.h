@@ -4,6 +4,7 @@
 
 @property (nonatomic) NSOperationQueue *operationQueue;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UIButton *closeButton;
 
 - (IBAction)resetAction:(id)sender;
 - (IBAction)loginInSafariAction:(id)sender;

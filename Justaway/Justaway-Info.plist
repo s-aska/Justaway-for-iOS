@@ -37,6 +37,10 @@
 	<string>0.0.4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>fontello.ttf</string>
+	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>JFIMain</string>
 	<key>UIMainStoryboardFile~ipad</key>
