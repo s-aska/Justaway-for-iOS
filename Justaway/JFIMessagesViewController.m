@@ -67,6 +67,7 @@
 {
     JFIMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:JFICellID forIndexPath:indexPath];
     
+    // リロードの際に落ちることがあったので付けている
     if ([self.messages count] == 0) {
         return cell;
     }
@@ -92,7 +93,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 59;
+    return 59; /* xibにてメッセージが1行に収まった場合の高さを入れている、あまり逸脱した値にするとスクロールが不安定になる */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -140,22 +141,32 @@
     
     STTwitterAPI *twitter = [delegate getTwitter];
     
+    // エラー処理
     void(^errorBlock)(NSError *) =
     ^(NSError *error) {
         NSLog(@"-- error: %@", [error localizedDescription]);
         [self.refreshControl endRefreshing];
     };
     
+    /*
+     * ネストを深くしたくないが為に実行順と記述順が逆になるな書き方をしてしまった
+     */
+    
+    // (3) 送信したDM一覧取得後の処理
     void(^sentSuccessBlock)(NSArray *) =
     ^(NSArray *messages) {
+        
+        // 受信したDM一覧と送信したDM一覧を混ぜて並び替える
         [self.messages addObjectsFromArray:messages];
         NSSortDescriptor *sortDispNo = [[NSSortDescriptor alloc] initWithKey:@"created_at" ascending:NO];
         NSArray *sortDescArray = [NSArray arrayWithObjects:sortDispNo, nil];
         self.messages = [[self.messages sortedArrayUsingDescriptors:sortDescArray] mutableCopy];
+        
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
     };
     
+    // (2) 受信したDM一覧取得後の処理
     void(^receiveSuccessBlock)(NSArray *) =
     ^(NSArray *messages) {
         [self.messages addObjectsFromArray:messages];
@@ -169,6 +180,7 @@
         
     };
     
+    // (1) 受信したDM一覧取得
     [twitter getDirectMessagesSinceID:nil
                                 count:20
                          successBlock:receiveSuccessBlock
