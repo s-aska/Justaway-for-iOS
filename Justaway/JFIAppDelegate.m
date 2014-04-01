@@ -256,19 +256,28 @@
                                               } stallWarningBlock:nil
                                                  errorBlock:^(NSError *error) {
                                                      NSLog(@"-- error: %@", [error localizedDescription]);
+                                                     // 自分で止めた時 ... Connection was cancelled.
+                                                     // 機内モード ... The network connection was lost.
+                                                     NSString *title;
+                                                     if([[error domain] isEqualToString:NSURLErrorDomain] && [error code] == NSURLErrorNetworkConnectionLost) {
+                                                         NSLog(@"[JFIAppDelegate] disconnect streaming");
+                                                         self.onlineStreaming = false;
+                                                         [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingDisconnectNotification
+                                                                                                             object:self
+                                                                                                           userInfo:nil];
+                                                         // TODO: 失敗回数に応じて間隔を広げながら再接続処理する
+                                                         title = @"disconnect";
+                                                     } else {
+                                                         title = @"unknown error";
+                                                     }
                                                      UIAlertView *alert = [[UIAlertView alloc]
-                                                                           initWithTitle:@"disconnect"
+                                                                           initWithTitle:title
                                                                            message:[error localizedDescription]
                                                                            delegate:nil
                                                                            cancelButtonTitle:nil
                                                                            otherButtonTitles:@"OK", nil
                                                                            ];
                                                      [alert show];
-                                                     if([[error domain] isEqualToString:NSURLErrorDomain] && [error code] == NSURLErrorNetworkConnectionLost) {
-                                                         NSLog(@"[JFIAppDelegate] disconnect streaming");
-                                                         [self stopStreaming];
-                                                         // TODO: 失敗回数に応じて間隔を広げながら再接続処理する
-                                                     }
                                                  }];
 }
 

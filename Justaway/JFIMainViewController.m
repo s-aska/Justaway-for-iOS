@@ -178,7 +178,6 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    return;
     UITouch *touch = [[event allTouches] anyObject];
     if (touch.view.tag == self.streamingStatusLabel.tag) {
         JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
