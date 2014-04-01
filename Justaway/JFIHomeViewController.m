@@ -50,7 +50,7 @@
     // pull down to refresh
     self.refreshControl = UIRefreshControl.new;
     [self.refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:self.refreshControl];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
     
     if ([delegate.accounts count] > 0) {
         [self onRefresh];
