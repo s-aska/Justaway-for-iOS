@@ -26,7 +26,7 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
     return self;
 }
 
--(void)viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     self.contentView.frame = CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
@@ -176,7 +176,7 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
 
 #pragma mark - UIViewController
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [[event allTouches] anyObject];
     if (touch.view.tag == self.streamingStatusLabel.tag) {
