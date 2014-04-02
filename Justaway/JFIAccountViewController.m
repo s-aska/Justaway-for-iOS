@@ -25,9 +25,6 @@
 {
     [super viewDidLoad];
     
-    UIFont *font = [UIFont fontWithName:@"fontello" size:20];
-    [self.closeButton.titleLabel setFont:font];
-    
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     // アカウントが追加されたらリロードする

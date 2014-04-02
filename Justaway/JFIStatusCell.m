@@ -71,11 +71,6 @@
 {
     [super layoutSubviews];
     
-    UIFont *font = [UIFont fontWithName:@"fontello" size:15];
-    [self.replyButton.titleLabel setFont:font];
-    [self.retweetButton.titleLabel setFont:font];
-    [self.favoriteButton.titleLabel setFont:font];
-    
     CGSize statusSize = [self.statusLabel.attributedText boundingRectWithSize:CGSizeMake(self.statusLabel.frame.size.width, MAXFLOAT)
                                                                       options:NSStringDrawingUsesLineFragmentOrigin
                                                                       context:nil].size;

@@ -20,10 +20,6 @@
 {
     [super viewDidLoad];
     
-    UIFont *font = [UIFont fontWithName:@"fontello" size:20];
-    [self.backButton.titleLabel setFont:font];
-    [self.postButton.titleLabel setFont:font];
-    
     // 背景をタップしたら、キーボードを隠す
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSoftKeyboard)];
     [self.view addGestureRecognizer:gestureRecognizer];

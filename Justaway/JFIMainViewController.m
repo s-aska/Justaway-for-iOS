@@ -39,13 +39,6 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
     [super viewDidLoad];
     NSLog(@"[JFIMainViewController] viewDidLoad");
     
-    UIFont *font = [UIFont fontWithName:@"fontello" size:20];
-    [self.homeButton.titleLabel setFont:font];
-    [self.notificationsButton.titleLabel setFont:font];
-    [self.messagesButton.titleLabel setFont:font];
-    [self.accountButton.titleLabel setFont:font];
-    [self.postButton.titleLabel setFont:font];
-    
     self.viewControllers = NSMutableArray.new;
     self.views = NSMutableArray.new;
     
