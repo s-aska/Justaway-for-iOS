@@ -81,8 +81,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="backButton" destination="Cd4-g0-eyU" id="w2v-V9-YxX"/>
-                        <outlet property="postButton" destination="B3f-N3-reU" id="O8y-fo-eHn"/>
                         <outlet property="statusTextField" destination="YBd-Jz-O6G" id="kTh-fl-yFh"/>
                     </connections>
                 </viewController>

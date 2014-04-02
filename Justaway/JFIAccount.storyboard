@@ -91,7 +91,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="closeButton" destination="Gkt-8A-YES" id="dRf-vP-EMc"/>
                         <outlet property="tableView" destination="1X2-Tw-7FO" id="b2J-ws-yxw"/>
                     </connections>
                 </viewController>

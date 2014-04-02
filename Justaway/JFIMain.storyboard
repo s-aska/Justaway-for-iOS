@@ -133,11 +133,6 @@
                     <navigationItem key="navigationItem" id="qsH-sc-JDp"/>
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
-                        <outlet property="accountButton" destination="POk-aP-yJH" id="yeU-VM-FUF"/>
-                        <outlet property="homeButton" destination="ivN-aE-Jrd" id="F6Q-SK-W5M"/>
-                        <outlet property="messagesButton" destination="MkS-3K-xmb" id="5PY-y4-ERp"/>
-                        <outlet property="notificationsButton" destination="5PL-9a-hUM" id="VXo-9g-dng"/>
-                        <outlet property="postButton" destination="CvT-HE-uuZ" id="BWJ-th-67Y"/>
                         <outlet property="scrollView" destination="3Ek-3n-dTm" id="vHb-na-oxq"/>
                         <outlet property="scrollWrapperView" destination="fgT-2n-FvJ" id="i6D-XG-JHW"/>
                         <outlet property="streamingStatusLabel" destination="Y7r-sP-G23" id="LF7-Y7-tPm"/>
