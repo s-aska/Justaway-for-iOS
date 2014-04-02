@@ -61,21 +61,27 @@
                                   @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。\n今日は鯖味噌の日。",
                                   @"source": @"web",
                                   @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
-                                  @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"};
+                                  @"user.profile_image_url": @"https://pbs.twimg.com/profile_images/450683047495471105/2Qq3AXYv_bigger.png",
+                                  @"retweet_count": @10000,
+                                  @"favorite_count": @20000};
         
         NSDictionary *status2 = @{@"user.name": @"Shinichiro Aska",
                                   @"user.screen_name": @"su_aska",
                                   @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。",
                                   @"source": @"StS",
                                   @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
-                                  @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"};
+                                  @"user.profile_image_url": @"https://pbs.twimg.com/profile_images/450683047495471105/2Qq3AXYv_bigger.png",
+                                  @"retweet_count": @100,
+                                  @"favorite_count": @200};
         
         NSDictionary *status3 = @{@"user.name": @"Shinichiro Aska",
                                   @"user.screen_name": @"su_aska",
                                   @"text": @"今日は鯖味噌の日。",
                                   @"source": @"<a href=\"http://justaway.info\" rel=\"nofollow\">Justaway for iOS</a>",
                                   @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
-                                  @"user.profile_image_url": @"http://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"};
+                                  @"user.profile_image_url": @"https://pbs.twimg.com/profile_images/450683047495471105/2Qq3AXYv_bigger.png",
+                                  @"retweet_count": @0,
+                                  @"favorite_count": @0};
         
         self.statuses = [NSMutableArray array];
         [self.statuses addObjectsFromArray:@[status1, status2, status3]];
