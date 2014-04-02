@@ -192,7 +192,21 @@
 - (void)receiveStatus:(NSNotification *)center
 {
     [self.statuses insertObject:center.userInfo atIndex:0];
-    [self.tableView reloadData];
+    
+    if (self.tableView.contentOffset.y > 0 && [self.tableView.visibleCells count] > 0) {
+        // スクロール状態では画面を動かさずに追加
+        UITableViewCell *referenceCell = [self.tableView.visibleCells lastObject];
+        CGFloat offset = referenceCell.frame.origin.y - self.tableView.contentOffset.y;
+        [UIView setAnimationsEnabled:NO];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView setContentOffset:CGPointMake(0.0, referenceCell.frame.origin.y - offset) animated:NO];
+        [UIView setAnimationsEnabled:YES];
+    } else {
+        // スクロール位置が最上位の場合はアニメーションしながら追加
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+    }
 }
 
 @end
