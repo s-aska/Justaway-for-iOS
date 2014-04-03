@@ -17,7 +17,7 @@
 @property (nonatomic) NSDictionary *status;
 
 - (void)setLabelTexts:(NSDictionary *)status;
-- (void)loadImages;
+- (void)loadImages:(BOOL)scrolling;
 
 - (IBAction)replyAction:(id)sender;
 - (IBAction)retweetAction:(id)sender;

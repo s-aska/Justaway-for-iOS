@@ -1,6 +1,7 @@
 #import "JFIStatusCell.h"
 #import "JFIHTTPImageOperation.h"
 #import "NSDate+Justaway.h"
+#import <ISMemoryCache/ISMemoryCache.h>
 
 @implementation JFIStatusCell
 
@@ -68,24 +69,42 @@
     self.status = status;
 }
 
-- (void)loadImages
+- (void)loadImages:(BOOL)scrolling
 {
     NSDictionary *status = self.status;
     NSURL *url = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
+    
+    UIImage *image = [[ISMemoryCache sharedCache] objectForKey:url];
+    if (image) {
+        self.iconImageView.image = image;
+        return;
+    }
+    
+    self.iconImageView.image = nil;
+    
     [JFIHTTPImageOperation loadURL:url
                            handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
                                // 読み込みから表示までの間にスクロールなどによって表示内容が変わっている場合スキップ
                                if (self.status != status) {
                                    return;
                                }
-                               self.iconImageView.alpha = 0;
-                               self.iconImageView.image = image;
-                               [UIView animateWithDuration:0.1
-                                                     delay:0
-                                                   options:UIViewAnimationOptionCurveEaseIn
-                                                animations:^{ self.iconImageView.alpha = 1; }
-                                                completion:^(BOOL finished){}
-                                ];
+                               // 読み込み済の場合スキップ（瞬き防止）
+                               if (self.iconImageView.image != nil) {
+                                   return;
+                               }
+                               // ネットワークからの読み込み時のみフェードイン
+                               if (response) {
+                                   self.iconImageView.alpha = 0;
+                                   self.iconImageView.image = image;
+                                   [UIView animateWithDuration:0.2
+                                                         delay:0
+                                                       options:UIViewAnimationOptionCurveEaseIn
+                                                    animations:^{ self.iconImageView.alpha = 1; }
+                                                    completion:^(BOOL finished){}
+                                    ];
+                               } else {
+                                   self.iconImageView.image = image;
+                               }
                            }];
 }
 

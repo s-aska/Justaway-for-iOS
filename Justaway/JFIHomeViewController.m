@@ -117,11 +117,7 @@
     
     [cell.displayNameLabel sizeToFit];
     
-    cell.iconImageView.image = nil;
-    
-    if (!self.scrolling) {
-        [cell loadImages];
-    }
+    [cell loadImages:self.scrolling];
     
     return cell;
 }
@@ -171,7 +167,7 @@
     }
     for (JFIStatusCell *cell in self.tableView.visibleCells) {
         if (cell.iconImageView.image == nil) {
-            [cell loadImages];
+            [cell loadImages:NO];
         }
     }
 }
