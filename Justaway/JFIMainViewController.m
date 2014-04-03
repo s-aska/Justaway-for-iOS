@@ -11,8 +11,6 @@
 
 @end
 
-static const NSInteger JFIStreamingStatusLabelTag = 100;
-
 @implementation JFIMainViewController
 
 - (id)initWithCoder:(NSCoder*)coder
@@ -43,9 +41,6 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
     self.views = NSMutableArray.new;
     
     // 通知設定
-    self.streamingStatusLabel.userInteractionEnabled = YES;
-    self.streamingStatusLabel.tag = JFIStreamingStatusLabelTag;
-    
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -146,6 +141,34 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
                      } completion:nil];
 }
 
+- (IBAction)streamingAction:(id)sender
+{
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    if (delegate.onlineStreaming) {
+        /* TODO: Toast的な奴で置き換える
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"connect"
+                              message:@"ストリーミングを終了します"
+                              delegate:nil
+                              cancelButtonTitle:nil
+                              otherButtonTitles:@"OK", nil
+                              ];
+        [alert show];
+         */
+        [delegate stopStreaming];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"connect"
+                              message:@"ストリーミングを開始します"
+                              delegate:nil
+                              cancelButtonTitle:nil
+                              otherButtonTitles:@"OK", nil
+                              ];
+        [alert show];
+        [delegate startStreaming];
+    }
+}
+
 - (IBAction)postAction:(id)sender
 {
     NSLog(@"[JFIMainViewController] postAction");
@@ -174,47 +197,18 @@ static const NSInteger JFIStreamingStatusLabelTag = 100;
     [self presentViewController:accountViewController animated:YES completion:nil];
 }
 
-#pragma mark - UIViewController
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [[event allTouches] anyObject];
-    if (touch.view.tag == self.streamingStatusLabel.tag) {
-        JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-        if (delegate.onlineStreaming) {
-            UIAlertView *alert = [[UIAlertView alloc]
-                                  initWithTitle:@"connect"
-                                  message:@"ストリーミングを終了します"
-                                  delegate:nil
-                                  cancelButtonTitle:nil
-                                  otherButtonTitles:@"OK", nil
-                                  ];
-            [alert show];
-            [delegate stopStreaming];
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc]
-                                  initWithTitle:@"connect"
-                                  message:@"ストリーミングを開始します"
-                                  delegate:nil
-                                  cancelButtonTitle:nil
-                                  otherButtonTitles:@"OK", nil
-                                  ];
-            [alert show];
-            [delegate startStreaming];
-        }
-    }
-}
-
 #pragma mark - NSNotificationCenter handler
 
 - (void)connectStreamingHandler:(NSNotification *)center
 {
-    self.streamingStatusLabel.text = @"( ◠‿◠ )";
+    NSLog(@"[JFIMainViewController] connectStreamingHandler");
+    [self.streamingButton setTitle:@"( ◠‿◠ )" forState:UIControlStateNormal];
 }
 
 - (void)disconnectStreamingHandler:(NSNotification *)center
 {
-    self.streamingStatusLabel.text = @"(◞‸◟)";
+    NSLog(@"[JFIMainViewController] disconnectStreamingHandler");
+    [self.streamingButton setTitle:@"(◞‸◟)" forState:UIControlStateNormal];
 }
 
 @end

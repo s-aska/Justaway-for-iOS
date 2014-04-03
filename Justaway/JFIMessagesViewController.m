@@ -89,7 +89,7 @@
     return cell;
 }
 
-#pragma mark - UITableViewDataSource
+#pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

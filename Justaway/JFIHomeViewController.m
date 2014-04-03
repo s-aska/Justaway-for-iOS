@@ -5,6 +5,8 @@
 
 @interface JFIHomeViewController ()
 
+@property (nonatomic) BOOL scrolling;
+
 @end
 
 @implementation JFIHomeViewController
@@ -14,6 +16,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.stacks = [@[] mutableCopy];
     }
     return self;
 }
@@ -124,7 +127,7 @@
     return cell;
 }
 
-#pragma mark - UITableViewDataSource
+#pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -149,6 +152,25 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Statusを選択された時の処理
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    NSLog(@"scrollViewWillBeginDragging");
+    self.scrolling = YES;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSLog(@"scrollViewDidEndDecelerating stack count:%i", [self.stacks count]);
+    self.scrolling = NO;
+    if ([self.stacks count] > 0) {
+//        [self.statuses addObjectsFromArray:self.stacks];
+        for (NSDictionary *status in self.stacks) {
+            [self renderStatus:status];
+        }
+        self.stacks = [@[] mutableCopy];
+    }
 }
 
 #pragma mark - UIRefreshControl
@@ -191,7 +213,17 @@
 
 - (void)receiveStatus:(NSNotification *)center
 {
-    [self.statuses insertObject:center.userInfo atIndex:0];
+    NSDictionary *status = center.userInfo;
+    if (self.scrolling) {
+        [self.stacks addObject:status];
+    } else {
+        [self renderStatus:status];
+    }
+}
+
+- (void)renderStatus:(NSDictionary *)status
+{
+    [self.statuses insertObject:status atIndex:0];
     
     if (self.tableView.contentOffset.y > 0 && [self.tableView.visibleCells count] > 0) {
         // スクロール状態では画面を動かさずに追加
