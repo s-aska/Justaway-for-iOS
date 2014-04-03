@@ -22,8 +22,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YBd-Jz-O6G">
-                                <rect key="frame" x="5" y="57" width="310" height="210"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YBd-Jz-O6G">
+                                <rect key="frame" x="5" y="58" width="310" height="210"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
@@ -75,9 +75,8 @@
                             <constraint firstItem="Cd4-g0-eyU" firstAttribute="leading" secondItem="UPE-Wc-sgJ" secondAttribute="leading" id="iC2-Kt-Lx6"/>
                             <constraint firstItem="ykt-nh-9dm" firstAttribute="leading" secondItem="UPE-Wc-sgJ" secondAttribute="leading" constant="10" id="jjB-aO-6AL"/>
                             <constraint firstItem="YBd-Jz-O6G" firstAttribute="leading" secondItem="UPE-Wc-sgJ" secondAttribute="leading" constant="5" id="ow6-c1-gRs"/>
-                            <constraint firstItem="B3f-N3-reU" firstAttribute="top" secondItem="YBd-Jz-O6G" secondAttribute="bottom" constant="4" id="xW5-ZC-ElZ"/>
+                            <constraint firstItem="B3f-N3-reU" firstAttribute="top" secondItem="YBd-Jz-O6G" secondAttribute="bottom" id="xJO-YI-Qck"/>
                             <constraint firstAttribute="trailing" secondItem="B3f-N3-reU" secondAttribute="trailing" id="xpS-KB-ccx"/>
-                            <constraint firstItem="B3f-N3-reU" firstAttribute="top" secondItem="YBd-Jz-O6G" secondAttribute="bottom" id="ym3-Of-SZH"/>
                         </constraints>
                     </view>
                     <connections>

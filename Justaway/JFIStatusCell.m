@@ -1,4 +1,5 @@
 #import "JFIStatusCell.h"
+#import "JFIHTTPImageOperation.h"
 #import "NSDate+Justaway.h"
 
 @implementation JFIStatusCell
@@ -65,6 +66,27 @@
     }
     
     self.status = status;
+}
+
+- (void)loadImages
+{
+    NSDictionary *status = self.status;
+    NSURL *url = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
+    [JFIHTTPImageOperation loadURL:url
+                           handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
+                               // 読み込みから表示までの間にスクロールなどによって表示内容が変わっている場合スキップ
+                               if (self.status != status) {
+                                   return;
+                               }
+                               self.iconImageView.alpha = 0;
+                               self.iconImageView.image = image;
+                               [UIView animateWithDuration:0.1
+                                                     delay:0
+                                                   options:UIViewAnimationOptionCurveEaseIn
+                                                animations:^{ self.iconImageView.alpha = 1; }
+                                                completion:^(BOOL finished){}
+                                ];
+                           }];
 }
 
 - (void)layoutSubviews

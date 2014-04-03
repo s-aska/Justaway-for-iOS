@@ -1,4 +1,5 @@
 #import "JFIHTTPImageOperation.h"
+#import "UIImage+Processing.h"
 #import <ISMemoryCache/ISMemoryCache.h>
 #import <ISDiskCache/ISDiskCache.h>
 
@@ -54,10 +55,13 @@
     ISMemoryCache *memoryCache = [ISMemoryCache sharedCache];
     ISDiskCache *diskCache = [ISDiskCache sharedCache];
     
-    [memoryCache setObject:image forKey:self.cacheKey];
-    [diskCache setObject:image forKey:self.cacheKey];
+    UIImage *processedImage = [image resizedImageForSize:CGSizeMake(42.f, 42.f) cornerRadius:5.f];
+    if (processedImage) {
+        [memoryCache setObject:processedImage forKey:self.cacheKey];
+        [diskCache setObject:processedImage forKey:self.cacheKey];
+    }
     
-    return image;
+    return processedImage;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection

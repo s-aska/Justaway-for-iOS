@@ -1,7 +1,6 @@
 #import "JFIConstants.h"
 #import "JFIAppDelegate.h"
 #import "JFIHomeViewController.h"
-#import "JFIHTTPImageOperation.h"
 
 @interface JFIHomeViewController ()
 
@@ -95,7 +94,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - UITableViewDataSource
@@ -107,22 +105,23 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    NSLog(@"-- cellForRowAtIndexPath %@", indexPath);
     JFIStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:JFICellID forIndexPath:indexPath];
     
     NSDictionary *status = [self.statuses objectAtIndex:indexPath.row];
     
-    NSURL *url = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
+    if (cell.status == status) {
+        return cell;
+    }
     
     [cell setLabelTexts:status];
     
     [cell.displayNameLabel sizeToFit];
     
-    [JFIHTTPImageOperation loadURL:url
-                           handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
-                               JFIStatusCell *cell = (JFIStatusCell *)[tableView cellForRowAtIndexPath:indexPath];
-                               cell.iconImageView.image = image;
-                           }];
+    cell.iconImageView.image = nil;
+    
+    if (!self.scrolling) {
+        [cell loadImages];
+    }
     
     return cell;
 }
@@ -165,11 +164,15 @@
     NSLog(@"scrollViewDidEndDecelerating stack count:%i", [self.stacks count]);
     self.scrolling = NO;
     if ([self.stacks count] > 0) {
-//        [self.statuses addObjectsFromArray:self.stacks];
         for (NSDictionary *status in self.stacks) {
             [self renderStatus:status];
         }
         self.stacks = [@[] mutableCopy];
+    }
+    for (JFIStatusCell *cell in self.tableView.visibleCells) {
+        if (cell.iconImageView.image == nil) {
+            [cell loadImages];
+        }
     }
 }
 
@@ -227,12 +230,12 @@
     
     if (self.tableView.contentOffset.y > 0 && [self.tableView.visibleCells count] > 0) {
         // スクロール状態では画面を動かさずに追加
-        UITableViewCell *referenceCell = [self.tableView.visibleCells lastObject];
-        CGFloat offset = referenceCell.frame.origin.y - self.tableView.contentOffset.y;
+        UITableViewCell *lastCell = [self.tableView.visibleCells lastObject];
+        CGFloat offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
         [UIView setAnimationsEnabled:NO];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [self.tableView setContentOffset:CGPointMake(0.0, referenceCell.frame.origin.y - offset) animated:NO];
+        [self.tableView setContentOffset:CGPointMake(0.0, lastCell.frame.origin.y - offset) animated:NO];
         [UIView setAnimationsEnabled:YES];
     } else {
         // スクロール位置が最上位の場合はアニメーションしながら追加
