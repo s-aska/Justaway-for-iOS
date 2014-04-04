@@ -86,7 +86,9 @@
                                   @"favorite_count": @0};
         
         self.statuses = [NSMutableArray array];
-        [self.statuses addObjectsFromArray:@[status1, status2, status3]];
+        [self.statuses addObject:[status1 mutableCopy]];
+        [self.statuses addObject:[status2 mutableCopy]];
+        [self.statuses addObject:[status3 mutableCopy]];
         [self.tableView reloadData];
     }
 }
