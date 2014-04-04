@@ -1,3 +1,4 @@
+#import "JFIAppDelegate.h"
 #import "JFIStatusCell.h"
 #import "JFIHTTPImageOperation.h"
 #import "NSDate+Justaway.h"
@@ -154,7 +155,17 @@
 
 - (IBAction)favoriteAction:(id)sender
 {
-    NSLog(@"favorite status:%@", self.status);
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    STTwitterAPI *twitter = [delegate getTwitter];
+    [twitter postFavoriteState:YES
+                   forStatusID:[self.status valueForKey:@"id_str"]
+                  successBlock:^(NSDictionary *status){
+                      [self.favoriteButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+                  }
+                    errorBlock:^(NSError *error){
+                        
+                  }];
+    
 }
 
 @end
