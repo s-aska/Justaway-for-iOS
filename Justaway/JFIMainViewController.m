@@ -133,12 +133,26 @@
 
 - (IBAction)changePageAction:(id)sender
 {
-    [UIView animateWithDuration:.3
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * [sender tag], 0) animated:NO];
-                     } completion:nil];
+    if (self.currentPage == [sender tag]) {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        if (self.currentPage == 0) {
+            JFIHomeViewController *home = (JFIHomeViewController *) self.viewControllers[0];
+            [home.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        } else if (self.currentPage == 1) {
+            JFINotificationsViewController *home = (JFINotificationsViewController *) self.viewControllers[1];
+            [home.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        } else if (self.currentPage == 2) {
+            JFIMessagesViewController *home = (JFIMessagesViewController *) self.viewControllers[2];
+            [home.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+    } else {
+        [UIView animateWithDuration:.3
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * [sender tag], 0) animated:NO];
+                         } completion:nil];
+    }
 }
 
 - (IBAction)streamingAction:(id)sender
