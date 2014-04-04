@@ -131,14 +131,25 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSMutableDictionary *status = [self.statuses objectAtIndex:indexPath.row];
+    
+    // 高さの計算結果をキャッシュから参照
+    NSNumber *height = [status objectForKey:@"height"];
+    if (height != nil) {
+        return [height floatValue] + 2;
+    }
+    
     self.cellForHeight.frame = self.tableView.bounds;
     
-    [self.cellForHeight setLabelTexts:[self.statuses objectAtIndex:indexPath.row]];
+    [self.cellForHeight setLabelTexts:status];
     [self.cellForHeight.contentView setNeedsLayout];
     [self.cellForHeight.contentView layoutIfNeeded];
     
     // 適切なサイズをAuto Layoutによって自動計算する
     CGSize size = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    
+    // 高さの計算結果をキャッシュ
+    [status setObject:@(size.height) forKey:@"height"];
     
     // 自動計算で得られた高さを返す
     return size.height + 2;
@@ -198,7 +209,10 @@
                               count:20
                        successBlock:^(NSArray *statuses) {
                            self.statuses = [NSMutableArray array];
-                           [self.statuses addObjectsFromArray:statuses];
+                           for (NSDictionary *dictionaly in statuses) {
+                               [self.statuses addObject:[dictionaly mutableCopy]];
+                           }
+                           
                            [self.tableView reloadData];
                            [self.refreshControl endRefreshing];
                            [delegate startStreaming];
@@ -215,6 +229,7 @@
     NSDictionary *status = center.userInfo;
     if (self.scrolling) {
         [self.stacks addObject:status];
+        NSLog(@"receiveStatus push stack count:%i", [self.stacks count]);
     } else {
         [self renderStatus:status];
     }
@@ -222,7 +237,7 @@
 
 - (void)renderStatus:(NSDictionary *)status
 {
-    [self.statuses insertObject:status atIndex:0];
+    [self.statuses insertObject:[status mutableCopy] atIndex:0];
     
     if (self.tableView.contentOffset.y > 0 && [self.tableView.visibleCells count] > 0) {
         // スクロール状態では画面を動かさずに追加
