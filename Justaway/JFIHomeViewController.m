@@ -167,6 +167,7 @@
 {
     NSLog(@"scrollViewWillBeginDragging");
     self.scrolling = YES;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(finalize) object:nil];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
