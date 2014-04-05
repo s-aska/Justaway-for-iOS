@@ -237,7 +237,8 @@
                                                                                                         userInfo:nil];
                                                   }
                                                   if ([response valueForKey:@"text"]) {
-                                                      NSDictionary *status = @{@"user.name":              [response valueForKeyPath:@"user.name"],
+                                                      NSDictionary *status = @{@"id_str":                 [response valueForKey:@"id_str"],
+                                                                               @"user.name":              [response valueForKeyPath:@"user.name"],
                                                                                @"user.screen_name":       [response valueForKeyPath:@"user.screen_name"],
                                                                                @"text":                   [response valueForKey:@"text"],
                                                                                @"source":                 [response valueForKey:@"source"],

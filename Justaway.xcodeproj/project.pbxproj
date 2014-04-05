@@ -39,6 +39,7 @@
 		6A21291118C3485A00AD2953 /* JFIStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A21290F18C3485A00AD2953 /* JFIStatusCell.xib */; };
 		6A3DE96318EB32D900F045A7 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */; };
 		6A9C989F18BB89D500CF4F84 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C989E18BB89D500CF4F84 /* Podfile */; };
+		6ADE906818EFE02A004AE545 /* JFIDiningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADE906718EFE02A004AE545 /* JFIDiningViewController.m */; };
 		6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
 		6ADF7948188D6E2200632BA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */; };
 		6ADF794A188D6E2200632BA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7949188D6E2200632BA5 /* UIKit.framework */; };
@@ -112,6 +113,8 @@
 		6A21290E18C3485A00AD2953 /* JFIStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIStatusCell.m; sourceTree = "<group>"; };
 		6A21290F18C3485A00AD2953 /* JFIStatusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIStatusCell.xib; sourceTree = "<group>"; };
 		6A9C989E18BB89D500CF4F84 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		6ADE906618EFE02A004AE545 /* JFIDiningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIDiningViewController.h; sourceTree = "<group>"; };
+		6ADE906718EFE02A004AE545 /* JFIDiningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIDiningViewController.m; sourceTree = "<group>"; };
 		6ADF7942188D6E2200632BA5 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ADF7945188D6E2200632BA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -198,6 +201,7 @@
 		38DA5F6B18E30D10006F484C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6ADE906A18EFEC34004AE545 /* Components */,
 				383D7DC218D6B64A00D36678 /* JFIMainViewController.h */,
 				383D7DC318D6B64A00D36678 /* JFIMainViewController.m */,
 				383D7DC518D6B66D00D36678 /* JFIMain.storyboard */,
@@ -278,6 +282,15 @@
 				6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */,
 			);
 			name = font;
+			sourceTree = "<group>";
+		};
+		6ADE906A18EFEC34004AE545 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				6ADE906618EFE02A004AE545 /* JFIDiningViewController.h */,
+				6ADE906718EFE02A004AE545 /* JFIDiningViewController.m */,
+			);
+			name = Components;
 			sourceTree = "<group>";
 		};
 		6ADF7939188D6E2200632BA5 = {
@@ -527,6 +540,7 @@
 				3828D5B518EBC6F500170374 /* JFIButton.m in Sources */,
 				383D7DE518E1AF5C00D36678 /* JFIAccountCell.m in Sources */,
 				383D7DC418D6B64A00D36678 /* JFIMainViewController.m in Sources */,
+				6ADE906818EFE02A004AE545 /* JFIDiningViewController.m in Sources */,
 				6A0DD81F18E9AE7300B9B9E6 /* JFINotificationsViewController.m in Sources */,
 				383D7DB418D1968F00D36678 /* NSDate+Justaway.m in Sources */,
 			);

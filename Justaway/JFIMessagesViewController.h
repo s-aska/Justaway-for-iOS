@@ -1,7 +1,8 @@
 #import <UIKit/UIKit.h>
+#import "JFIDiningViewController.h"
 #import "JFIMessageCell.h"
 
-@interface JFIMessagesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface JFIMessagesViewController : JFIDiningViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) NSMutableArray *messages;
 @property (nonatomic) UIRefreshControl *refreshControl;

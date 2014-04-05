@@ -53,12 +53,18 @@
     self.createdAtRelativeLabel.text = [createdAt relativeDescription];
     self.createdAtLabel.text = [createdAt absoluteDescription];
     
+    // RT状態
+    [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    
     // RT数
     if (![[[status valueForKey:@"retweet_count"] stringValue] isEqual:@"0"]) {
         self.retweetCountLabel.text = [[status valueForKey:@"retweet_count"] stringValue];
     } else {
         self.retweetCountLabel.text = @"";
     }
+    
+    // ふぁぼ状態
+    [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     // ふぁぼ数
     if (![[[status valueForKey:@"favorite_count"] stringValue] isEqual:@"0"]) {
@@ -155,16 +161,16 @@
 
 - (IBAction)favoriteAction:(id)sender
 {
+    [self.favoriteButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
     [twitter postFavoriteState:YES
                    forStatusID:[self.status valueForKey:@"id_str"]
                   successBlock:^(NSDictionary *status){
-                      [self.favoriteButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
                   }
                     errorBlock:^(NSError *error){
-                        
-                  }];
+                        // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
+                    }];
     
 }
 

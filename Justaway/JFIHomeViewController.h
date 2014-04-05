@@ -1,7 +1,8 @@
 #import <UIKit/UIKit.h>
+#import "JFIDiningViewController.h"
 #import "JFIStatusCell.h"
 
-@interface JFIHomeViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface JFIHomeViewController : JFIDiningViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) NSMutableArray *statuses;
 @property (nonatomic) NSMutableArray *stacks;

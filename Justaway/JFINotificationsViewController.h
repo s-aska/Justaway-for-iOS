@@ -1,7 +1,8 @@
 #import <UIKit/UIKit.h>
+#import "JFIDiningViewController.h"
 #import "JFIStatusCell.h"
 
-@interface JFINotificationsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface JFINotificationsViewController : JFIDiningViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) NSMutableArray *statuses;
 @property (nonatomic) UIRefreshControl *refreshControl;

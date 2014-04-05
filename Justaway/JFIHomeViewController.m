@@ -14,7 +14,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
         self.stacks = [@[] mutableCopy];
     }
     return self;
@@ -23,7 +22,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
@@ -134,6 +132,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableDictionary *status = [self.statuses objectAtIndex:indexPath.row];
+    if (status == nil) {
+        return 0;
+    }
     
     // 高さの計算結果をキャッシュから参照
     NSNumber *height = [status objectForKey:@"height"];
@@ -170,19 +171,8 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    NSLog(@"scrollViewDidEndDecelerating stack count:%i", [self.stacks count]);
-    self.scrolling = NO;
-    if ([self.stacks count] > 0) {
-        for (NSDictionary *status in self.stacks) {
-            [self renderStatus:status];
-        }
-        self.stacks = [@[] mutableCopy];
-    }
-    for (JFIStatusCell *cell in self.tableView.visibleCells) {
-        if (cell.iconImageView.image == nil) {
-            [cell loadImages:NO];
-        }
-    }
+    NSLog(@"scrollViewDidEndDecelerating");
+    [self finalizeWithDebounce:.5f];
 }
 
 #pragma mark - UIRefreshControl
@@ -214,7 +204,6 @@
                            for (NSDictionary *dictionaly in statuses) {
                                [self.statuses addObject:[dictionaly mutableCopy]];
                            }
-                           
                            [self.tableView reloadData];
                            [self.refreshControl endRefreshing];
                            [delegate startStreaming];
@@ -229,31 +218,64 @@
 - (void)receiveStatus:(NSNotification *)center
 {
     NSDictionary *status = center.userInfo;
-    if (self.scrolling) {
-        [self.stacks addObject:status];
-        NSLog(@"receiveStatus push stack count:%i", [self.stacks count]);
-    } else {
-        [self renderStatus:status];
+    [self.stacks addObject:status];
+    
+    NSLog(@"receiveStatus stack count:%lu", (unsigned long)[self.stacks count]);
+    
+    if (!self.scrolling) {
+        [self finalizeWithDebounce:.5f];
     }
 }
 
-- (void)renderStatus:(NSDictionary *)status
+#pragma mark -
+
+/*
+ * イベントの発火に合わせてゴリゴリUIブロックするとAnimationが突っかかったりするのでdebounceする
+ * 今はおよそスクロール終了やストリーミング受信（非スクロール時）に0.5秒delayでレンダリング処理を仕込んでいる
+ */
+- (void)finalizeWithDebounce:(CGFloat)delay
 {
-    [self.statuses insertObject:[status mutableCopy] atIndex:0];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(finalize) object:nil];
+    [self performSelector:@selector(finalize) withObject:nil afterDelay:delay];
+}
+
+- (void)finalize
+{
+    NSLog(@"finalize stack count:%lu", (unsigned long)[self.stacks count]);
     
-    if (self.tableView.contentOffset.y > 0 && [self.tableView.visibleCells count] > 0) {
-        // スクロール状態では画面を動かさずに追加
-        UITableViewCell *lastCell = [self.tableView.visibleCells lastObject];
-        CGFloat offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
-        [UIView setAnimationsEnabled:NO];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [self.tableView setContentOffset:CGPointMake(0.0, lastCell.frame.origin.y - offset) animated:NO];
-        [UIView setAnimationsEnabled:YES];
-    } else {
-        // スクロール位置が最上位の場合はアニメーションしながら追加
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+    self.scrolling = NO;
+    
+    // スタック内容をレンダリングする
+    if ([self.stacks count] > 0) {
+        
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        int index = 0;
+        for (NSDictionary *status in self.stacks) {
+            [self.statuses insertObject:[status mutableCopy] atIndex:0];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+            index++;
+        }
+        
+        if (self.tableView.contentOffset.y > 0 && [self.tableView.visibleCells count] > 0) {
+            // スクロール状態では画面を動かさずに追加
+            UITableViewCell *lastCell = [self.tableView.visibleCells lastObject];
+            CGFloat offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
+            [UIView setAnimationsEnabled:NO];
+            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView setContentOffset:CGPointMake(0.0, lastCell.frame.origin.y - offset) animated:NO];
+            [UIView setAnimationsEnabled:YES];
+        } else {
+            // スクロール位置が最上位の場合はアニメーションしながら追加
+            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+        }
+        
+        self.stacks = [@[] mutableCopy];
+    }
+    
+    for (JFIStatusCell *cell in self.tableView.visibleCells) {
+        if (cell.iconImageView.image == nil) {
+            [cell loadImages:NO];
+        }
     }
 }
 
