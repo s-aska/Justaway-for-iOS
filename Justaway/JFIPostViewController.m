@@ -77,8 +77,8 @@
 
 #pragma mark -
 
-// キーボードを隠す処理
-- (void)closeSoftKeyboard {
+- (void)closeSoftKeyboard
+{
     [self.view endEditing:YES];
 }
 

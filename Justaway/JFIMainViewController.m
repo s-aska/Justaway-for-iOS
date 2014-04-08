@@ -24,6 +24,60 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    // 背景をタップしたら、キーボードを隠す
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSoftKeyboard)];
+    [self.view addGestureRecognizer:gestureRecognizer];
+    
+    
+    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleEditorAction:)];
+    [self.postButton addGestureRecognizer:longPressGesture];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    CGRect keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    [UIView animateWithDuration:duration animations:^{
+        CGAffineTransform transform = CGAffineTransformMakeTranslation(0, -keyboardRect.size.height);
+        self.view.transform = transform;
+    } completion:NULL];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    __weak typeof(self) _self = self;
+    [UIView animateWithDuration:duration animations:^{
+        _self.view.transform = CGAffineTransformIdentity;
+    } completion:NULL];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)closeSoftKeyboard {
+    [self.view endEditing:YES];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -131,21 +185,6 @@
 
 #pragma mark - Action
 
-- (IBAction)changePageAction:(id)sender
-{
-    if (self.currentPage == [sender tag]) {
-        JFIDiningViewController *viewController = (JFIDiningViewController *) self.viewControllers[self.currentPage];
-        [viewController.tableView setContentOffset:CGPointZero animated:YES];
-    } else {
-        [UIView animateWithDuration:.3
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * [sender tag], 0) animated:NO];
-                         } completion:nil];
-    }
-}
-
 - (IBAction)streamingAction:(id)sender
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
@@ -174,6 +213,29 @@
     }
 }
 
+- (IBAction)changePageAction:(id)sender
+{
+    if (self.currentPage == [sender tag]) {
+        JFIDiningViewController *viewController = (JFIDiningViewController *) self.viewControllers[self.currentPage];
+        [viewController.tableView setContentOffset:CGPointZero animated:YES];
+    } else {
+        [UIView animateWithDuration:.3
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             [self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * [sender tag], 0) animated:NO];
+                         } completion:nil];
+    }
+}
+
+- (IBAction)accountAction:(id)sender
+{
+    NSLog(@"[JFIMainViewController] accountAction");
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIAccount" bundle:nil];
+    JFIPostViewController *accountViewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIAccountViewController"];
+    [self presentViewController:accountViewController animated:YES completion:nil];
+}
+
 - (IBAction)postAction:(id)sender
 {
     NSLog(@"[JFIMainViewController] postAction");
@@ -194,12 +256,55 @@
     }
 }
 
-- (IBAction)accountAction:(id)sender
+- (void)toggleEditorAction:(UILongPressGestureRecognizer *)sender
 {
-    NSLog(@"[JFIMainViewController] accountAction");
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIAccount" bundle:nil];
-    JFIPostViewController *accountViewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIAccountViewController"];
-    [self presentViewController:accountViewController animated:YES completion:nil];
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan:
+            self.editorView.hidden = !self.editorView.hidden;
+            break;
+        case UIGestureRecognizerStateEnded:
+            break;
+        case UIGestureRecognizerStateChanged:
+            break;
+        case UIGestureRecognizerStateCancelled:
+            break;
+        case UIGestureRecognizerStatePossible:
+            break;
+        case UIGestureRecognizerStateFailed:
+            break;
+    }
+}
+
+- (IBAction)tweetAction:(id)sender
+{
+    NSLog(@"[JFIMainViewController] tweetAction");
+    
+    // TODO: 入力チェック
+    
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    // TODO: マルチアカウント対応
+    STTwitterAPI *twitter = [delegate getTwitter];
+    
+    [twitter postStatusUpdate:[self.editorTextField text]
+            inReplyToStatusID:nil
+                     latitude:nil
+                    longitude:nil
+                      placeID:nil
+           displayCoordinates:nil
+                     trimUser:nil
+                 successBlock:^(NSDictionary *status) {
+                     [self.editorTextField setText:@""];
+                 } errorBlock:^(NSError *error) {
+                     NSLog(@"[JFIMainViewController] tweetAction error:%@", [error localizedDescription]);
+                     [[[UIAlertView alloc]
+                       initWithTitle:@"disconnect"
+                       message:[error localizedDescription]
+                       delegate:nil
+                       cancelButtonTitle:nil
+                       otherButtonTitles:@"OK", nil
+                       ] show];
+                 }];
 }
 
 #pragma mark - NSNotificationCenter handler

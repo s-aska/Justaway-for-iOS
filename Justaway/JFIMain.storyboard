@@ -23,28 +23,14 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ivN-aE-Jrd" customClass="JFIButton">
-                                <rect key="frame" x="0.0" y="514" width="53" height="54"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jC-ic-wcd">
+                                <rect key="frame" x="267" y="30" width="43" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                                <state key="normal" title="">
+                                <state key="normal" title="( ｡ωﾟ)">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="changePageAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="YR9-VP-nBa"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CvT-HE-uuZ" customClass="JFIButton">
-                                <rect key="frame" x="267" y="514" width="53" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                                <state key="normal" title="">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="postAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="ojx-xQ-QPP"/>
+                                    <action selector="streamingAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="gvp-fg-51F"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fgT-2n-FvJ">
@@ -64,78 +50,142 @@
                                     <constraint firstItem="3Ek-3n-dTm" firstAttribute="leading" secondItem="fgT-2n-FvJ" secondAttribute="leading" id="zT4-nP-e8g"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POk-aP-yJH" customClass="JFIButton">
-                                <rect key="frame" x="214" y="514" width="53" height="54"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1F-mf-7hv">
+                                <rect key="frame" x="0.0" y="466" width="320" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                                <state key="normal" title="">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="accountAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="5EO-Jo-xIb"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5PL-9a-hUM" customClass="JFIButton">
-                                <rect key="frame" x="53" y="514" width="53" height="54"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tcZ-5x-2RN">
+                                        <rect key="frame" x="20" y="12" width="251" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JCl-5P-df3" customClass="JFIButton">
+                                        <rect key="frame" x="267" y="0.0" width="53" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                                        <state key="normal" title="">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tweetAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="S9N-fL-6rD"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="JCl-5P-df3" secondAttribute="bottom" id="XXe-jh-B2Q"/>
+                                    <constraint firstItem="JCl-5P-df3" firstAttribute="top" secondItem="y1F-mf-7hv" secondAttribute="top" id="hqh-ic-shj"/>
+                                    <constraint firstAttribute="trailing" secondItem="JCl-5P-df3" secondAttribute="trailing" id="mhF-FH-64L"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="svU-vp-0tM">
+                                <rect key="frame" x="0.0" y="517" width="320" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                                <state key="normal" title="">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="changePageAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="hF7-jz-fOT"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MkS-3K-xmb" customClass="JFIButton">
-                                <rect key="frame" x="106" y="514" width="53" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                                <state key="normal" title="">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="changePageAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="cmy-0d-z1y"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jC-ic-wcd">
-                                <rect key="frame" x="267" y="30" width="43" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="( ｡ωﾟ)">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="streamingAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="gvp-fg-51F"/>
-                                </connections>
-                            </button>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ivN-aE-Jrd" customClass="JFIButton">
+                                        <rect key="frame" x="0.0" y="-3" width="53" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                                        <state key="normal" title="">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="changePageAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="YR9-VP-nBa"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5PL-9a-hUM" customClass="JFIButton">
+                                        <rect key="frame" x="53" y="-3" width="53" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                                        <state key="normal" title="">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="changePageAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="hF7-jz-fOT"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MkS-3K-xmb" customClass="JFIButton">
+                                        <rect key="frame" x="106" y="-3" width="53" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                                        <state key="normal" title="">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="changePageAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="cmy-0d-z1y"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POk-aP-yJH" customClass="JFIButton">
+                                        <rect key="frame" x="214" y="-3" width="53" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                                        <state key="normal" title="">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="accountAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="5EO-Jo-xIb"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CvT-HE-uuZ" customClass="JFIButton">
+                                        <rect key="frame" x="267" y="-3" width="53" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                                        <state key="normal" title="">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="postAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="ojx-xQ-QPP"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="ivN-aE-Jrd" secondAttribute="bottom" id="4WA-wa-MFA"/>
+                                    <constraint firstAttribute="height" constant="51" id="CXo-jc-LZ1"/>
+                                    <constraint firstAttribute="bottom" secondItem="CvT-HE-uuZ" secondAttribute="bottom" id="Hwh-OK-JE2"/>
+                                    <constraint firstAttribute="trailing" secondItem="CvT-HE-uuZ" secondAttribute="trailing" id="Ob6-YY-GvU"/>
+                                    <constraint firstItem="CvT-HE-uuZ" firstAttribute="leading" secondItem="POk-aP-yJH" secondAttribute="trailing" id="RHP-8U-Ra7"/>
+                                    <constraint firstItem="5PL-9a-hUM" firstAttribute="leading" secondItem="ivN-aE-Jrd" secondAttribute="trailing" id="ZeW-Yi-Rcx"/>
+                                    <constraint firstAttribute="bottom" secondItem="POk-aP-yJH" secondAttribute="bottom" id="aQK-eM-Gmv"/>
+                                    <constraint firstAttribute="bottom" secondItem="5PL-9a-hUM" secondAttribute="bottom" id="cA0-eF-XZs"/>
+                                    <constraint firstAttribute="bottom" secondItem="MkS-3K-xmb" secondAttribute="bottom" id="dfd-Ci-Jcf"/>
+                                    <constraint firstItem="MkS-3K-xmb" firstAttribute="leading" secondItem="5PL-9a-hUM" secondAttribute="trailing" id="eZb-cx-WFv"/>
+                                    <constraint firstItem="ivN-aE-Jrd" firstAttribute="leading" secondItem="svU-vp-0tM" secondAttribute="leading" id="f18-St-aWc"/>
+                                    <constraint firstItem="ivN-aE-Jrd" firstAttribute="leading" secondItem="svU-vp-0tM" secondAttribute="leading" id="gEP-bZ-Gqs"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ivN-aE-Jrd" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="0WF-e2-JU6"/>
-                            <constraint firstAttribute="trailing" secondItem="CvT-HE-uuZ" secondAttribute="trailing" id="3b8-Mm-K2u"/>
                             <constraint firstItem="o5w-H4-X92" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" constant="10" id="5U2-by-zxv"/>
-                            <constraint firstItem="CvT-HE-uuZ" firstAttribute="leading" secondItem="POk-aP-yJH" secondAttribute="trailing" id="5aX-YA-Oby"/>
-                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="CvT-HE-uuZ" secondAttribute="bottom" id="A0g-6v-zIN"/>
-                            <constraint firstItem="5PL-9a-hUM" firstAttribute="leading" secondItem="ivN-aE-Jrd" secondAttribute="trailing" id="EhN-aJ-k31"/>
+                            <constraint firstAttribute="trailing" secondItem="svU-vp-0tM" secondAttribute="trailing" id="JRf-ar-1YW"/>
                             <constraint firstItem="4jC-ic-wcd" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" constant="10" id="OKq-b2-Xip"/>
-                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="5PL-9a-hUM" secondAttribute="bottom" id="SGo-z7-Spg"/>
+                            <constraint firstItem="svU-vp-0tM" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="OuK-Cc-OVP"/>
                             <constraint firstAttribute="trailing" secondItem="fgT-2n-FvJ" secondAttribute="trailing" id="SSx-hq-FxP"/>
-                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="POk-aP-yJH" secondAttribute="bottom" id="WWB-M0-PAb"/>
+                            <constraint firstItem="y1F-mf-7hv" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="Uon-3Z-erx"/>
                             <constraint firstItem="fgT-2n-FvJ" firstAttribute="top" secondItem="o5w-H4-X92" secondAttribute="bottom" constant="8" id="WpN-he-DPZ"/>
-                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="MkS-3K-xmb" secondAttribute="bottom" id="XdL-5e-YJf"/>
+                            <constraint firstAttribute="trailing" secondItem="y1F-mf-7hv" secondAttribute="trailing" id="Xz8-iB-Etv"/>
                             <constraint firstItem="o5w-H4-X92" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" constant="10" id="YRR-a4-CZ4"/>
                             <constraint firstAttribute="trailing" secondItem="4jC-ic-wcd" secondAttribute="trailing" constant="10" id="YuU-1G-mgg"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="svU-vp-0tM" secondAttribute="bottom" id="ZVc-r2-ver"/>
                             <constraint firstItem="fgT-2n-FvJ" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="dSw-96-hxq"/>
-                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="ivN-aE-Jrd" secondAttribute="bottom" id="gII-BY-nG8"/>
                             <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="fgT-2n-FvJ" secondAttribute="bottom" constant="48" id="mQZ-SF-8IH"/>
-                            <constraint firstItem="MkS-3K-xmb" firstAttribute="leading" secondItem="5PL-9a-hUM" secondAttribute="trailing" id="usk-TG-iVZ"/>
+                            <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="y1F-mf-7hv" secondAttribute="bottom" constant="48" id="ukg-5e-LcR"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qsH-sc-JDp"/>
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
+                        <outlet property="editorTextField" destination="tcZ-5x-2RN" id="ggl-YC-W2o"/>
+                        <outlet property="editorView" destination="y1F-mf-7hv" id="B4p-Td-nap"/>
+                        <outlet property="postButton" destination="CvT-HE-uuZ" id="Cf5-0O-Tjq"/>
                         <outlet property="scrollView" destination="3Ek-3n-dTm" id="vHb-na-oxq"/>
                         <outlet property="scrollWrapperView" destination="fgT-2n-FvJ" id="i6D-XG-JHW"/>
                         <outlet property="streamingButton" destination="4jC-ic-wcd" id="gJM-61-1Kv"/>
