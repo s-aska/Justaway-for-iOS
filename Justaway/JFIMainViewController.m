@@ -25,8 +25,32 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    NSLog(@"[JFIMainViewController] viewDidLoad");
+    
+    self.viewControllers = NSMutableArray.new;
+    self.views = NSMutableArray.new;
+    
+    self.editorTextView.delegate = self;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    // Streamingの接続状況に応じて
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(connectStreamingHandler:)
+                                                 name:JFIStreamingConnectNotification
+                                               object:delegate];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(disconnectStreamingHandler:)
+                                                 name:JFIStreamingDisconnectNotification
+                                               object:delegate];
     
     // キーボードの開閉に応じて
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -48,44 +72,6 @@
     UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
                                                                                                    action:@selector(toggleEditorAction:)];
     [self.postButton addGestureRecognizer:longPressGesture];
-    
-    self.editorTextView.delegate = self;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    CGRect keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
-    self.defaultEditorBottomConstraint = self.editorBottomConstraint.constant;
-    self.editorBottomConstraint.constant = keyboardRect.size.height;
-    
-    [UIView animateWithDuration:duration animations:^{
-        [self.view layoutIfNeeded];
-    }];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
-    self.editorBottomConstraint.constant = self.defaultEditorBottomConstraint;
-    
-    [UIView animateWithDuration:duration animations:^{
-        [self.view layoutIfNeeded];
-    }];
-}
-
-- (void)closeSoftKeyboard {
-    [self.view endEditing:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -96,26 +82,11 @@
     NSLog(@"[JFIMainViewController] viewDidAppear scrollWrapperView width:%f", self.scrollWrapperView.frame.size.width);
 }
 
-- (void)viewDidLoad
+- (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewDidLoad];
-    NSLog(@"[JFIMainViewController] viewDidLoad");
+    [super viewWillDisappear:animated];
     
-    self.viewControllers = NSMutableArray.new;
-    self.views = NSMutableArray.new;
-    
-    // 通知設定
-    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(connectStreamingHandler:)
-                                                 name:JFIStreamingConnectNotification
-                                               object:delegate];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(disconnectStreamingHandler:)
-                                                 name:JFIStreamingDisconnectNotification
-                                               object:delegate];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -197,15 +168,12 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    // contentSizeは自動的に変わる為この値を利用する、最低54pxを確保する
-    CGFloat height = textView.contentSize.height > 54 ? textView.contentSize.height : 54;
-    
-    // frameの高さを上書き
     CGRect frame = textView.frame;
+    CGFloat height = textView.contentSize.height > 54 ? textView.contentSize.height : 54;
     frame.size.height = height;
     textView.frame = frame;
     
-    // 制約を使いこれを更新しないとViewがキーボード下にめり込む
+    // これがないと下にめり込む
     self.editorHeightConstraint.constant = height;
 }
 
@@ -333,7 +301,38 @@
                  }];
 }
 
+#pragma mark -
+
+- (void)closeSoftKeyboard {
+    [self.view endEditing:YES];
+}
+
 #pragma mark - NSNotificationCenter handler
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    CGRect keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    self.defaultEditorBottomConstraint = self.editorBottomConstraint.constant;
+    self.editorBottomConstraint.constant = keyboardRect.size.height;
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    self.editorBottomConstraint.constant = self.defaultEditorBottomConstraint;
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
 
 - (void)connectStreamingHandler:(NSNotification *)center
 {
