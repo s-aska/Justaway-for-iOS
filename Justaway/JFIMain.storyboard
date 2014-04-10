@@ -183,6 +183,7 @@
                     <navigationItem key="navigationItem" id="qsH-sc-JDp"/>
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
+                        <outlet property="editorBottomConstraint" destination="ukg-5e-LcR" id="dhA-my-M2L"/>
                         <outlet property="editorTextField" destination="tcZ-5x-2RN" id="ggl-YC-W2o"/>
                         <outlet property="editorView" destination="y1F-mf-7hv" id="B4p-Td-nap"/>
                         <outlet property="postButton" destination="CvT-HE-uuZ" id="Cf5-0O-Tjq"/>

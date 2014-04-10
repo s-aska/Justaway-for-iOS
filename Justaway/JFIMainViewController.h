@@ -6,9 +6,10 @@
 @property (nonatomic, weak) IBOutlet UIButton *streamingButton;
 @property (nonatomic, weak) IBOutlet UIView *scrollWrapperView;
 @property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, weak) IBOutlet UITextField *editorTextField;
-@property (nonatomic, weak) IBOutlet UIButton *postButton;
 @property (nonatomic, weak) IBOutlet UIView *editorView;
+@property (nonatomic, weak) IBOutlet UITextField *editorTextField;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *editorBottomConstraint;
+@property (nonatomic, weak) IBOutlet UIButton *postButton;
 @property (nonatomic) UIView *contentView;
 @property (nonatomic) NSMutableArray *views;
 @property (nonatomic) NSMutableArray *viewControllers;

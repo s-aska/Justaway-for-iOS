@@ -8,6 +8,7 @@
 @interface JFIMainViewController ()
 
 @property (nonatomic) int currentPage;
+@property (nonatomic) int defaultEditorBottomConstraint;
 
 @end
 
@@ -52,20 +53,23 @@
     
     NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
+    self.defaultEditorBottomConstraint = self.editorBottomConstraint.constant;
+    self.editorBottomConstraint.constant = keyboardRect.size.height;
+    
     [UIView animateWithDuration:duration animations:^{
-        CGAffineTransform transform = CGAffineTransformMakeTranslation(0, -keyboardRect.size.height);
-        self.view.transform = transform;
-    } completion:NULL];
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
-    __weak typeof(self) _self = self;
+    self.editorBottomConstraint.constant = self.defaultEditorBottomConstraint;
+    
     [UIView animateWithDuration:duration animations:^{
-        _self.view.transform = CGAffineTransformIdentity;
-    } completion:NULL];
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
