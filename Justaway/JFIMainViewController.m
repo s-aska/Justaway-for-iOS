@@ -34,6 +34,8 @@
     self.views = NSMutableArray.new;
     
     self.editorTextView.delegate = self;
+    
+    self.defaultEditorBottomConstraint = self.editorBottomConstraint.constant;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -169,7 +171,7 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     CGRect frame = textView.frame;
-    CGFloat height = textView.contentSize.height > 54 ? textView.contentSize.height : 54;
+    CGFloat height = textView.contentSize.height > 34 ? textView.contentSize.height : 34;
     frame.size.height = height;
     textView.frame = frame;
     
@@ -315,7 +317,6 @@
     
     NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
-    self.defaultEditorBottomConstraint = self.editorBottomConstraint.constant;
     self.editorBottomConstraint.constant = keyboardRect.size.height;
     
     [UIView animateWithDuration:duration animations:^{
