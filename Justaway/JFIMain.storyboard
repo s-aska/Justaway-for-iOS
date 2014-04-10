@@ -54,12 +54,6 @@
                                 <rect key="frame" x="0.0" y="466" width="320" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tcZ-5x-2RN">
-                                        <rect key="frame" x="20" y="12" width="251" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JCl-5P-df3" customClass="JFIButton">
                                         <rect key="frame" x="267" y="0.0" width="53" height="54"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -72,12 +66,23 @@
                                             <action selector="tweetAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="S9N-fL-6rD"/>
                                         </connections>
                                     </button>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BdM-VG-XQE">
+                                        <rect key="frame" x="0.0" y="0.0" width="267" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
+                                    <constraint firstItem="BdM-VG-XQE" firstAttribute="top" secondItem="y1F-mf-7hv" secondAttribute="top" id="Mwn-I2-9Nb"/>
                                     <constraint firstAttribute="bottom" secondItem="JCl-5P-df3" secondAttribute="bottom" id="XXe-jh-B2Q"/>
+                                    <constraint firstAttribute="bottom" secondItem="BdM-VG-XQE" secondAttribute="bottom" id="dSZ-Kk-jbx"/>
                                     <constraint firstItem="JCl-5P-df3" firstAttribute="top" secondItem="y1F-mf-7hv" secondAttribute="top" id="hqh-ic-shj"/>
                                     <constraint firstAttribute="trailing" secondItem="JCl-5P-df3" secondAttribute="trailing" id="mhF-FH-64L"/>
+                                    <constraint firstItem="JCl-5P-df3" firstAttribute="leading" secondItem="BdM-VG-XQE" secondAttribute="trailing" id="oGl-Vs-6ye"/>
+                                    <constraint firstItem="BdM-VG-XQE" firstAttribute="leading" secondItem="y1F-mf-7hv" secondAttribute="leading" id="qyu-ph-1js"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="svU-vp-0tM">
@@ -184,7 +189,7 @@
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
                         <outlet property="editorBottomConstraint" destination="ukg-5e-LcR" id="dhA-my-M2L"/>
-                        <outlet property="editorTextField" destination="tcZ-5x-2RN" id="ggl-YC-W2o"/>
+                        <outlet property="editorTextView" destination="BdM-VG-XQE" id="eQu-YW-H2q"/>
                         <outlet property="editorView" destination="y1F-mf-7hv" id="B4p-Td-nap"/>
                         <outlet property="postButton" destination="CvT-HE-uuZ" id="Cf5-0O-Tjq"/>
                         <outlet property="scrollView" destination="3Ek-3n-dTm" id="vHb-na-oxq"/>

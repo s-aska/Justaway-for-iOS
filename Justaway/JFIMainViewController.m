@@ -28,16 +28,28 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    // キーボードの開閉に応じて
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
     
     // 背景をタップしたら、キーボードを隠す
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSoftKeyboard)];
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                        action:@selector(closeSoftKeyboard)];
     [self.view addGestureRecognizer:gestureRecognizer];
     
-    
-    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(toggleEditorAction:)];
+    // 投稿ボタンをロングタップでクイックツイートモード
+    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                                   action:@selector(toggleEditorAction:)];
     [self.postButton addGestureRecognizer:longPressGesture];
+    
+    self.editorTextView.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -70,12 +82,6 @@
     [UIView animateWithDuration:duration animations:^{
         [self.view layoutIfNeeded];
     }];
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    return YES;
 }
 
 - (void)closeSoftKeyboard {
@@ -187,6 +193,25 @@
     }
 }
 
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    UIFont *labelFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    CGRect totalRect = [textView.text boundingRectWithSize:CGSizeMake(textView.frame.size.width, CGFLOAT_MAX)
+                                                   options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                                attributes:[NSDictionary dictionaryWithObject:labelFont forKey:NSFontAttributeName]
+                                                   context:nil];
+    
+    textView.frame = CGRectMake(textView.frame.origin.x,
+                                self.postButton.frame.origin.y + self.postButton.frame.size.height - totalRect.size.height,
+                                textView.frame.size.width,
+                                totalRect.size.height);
+    
+    [self.view setNeedsLayout];
+    [self.view layoutIfNeeded];
+}
+
 #pragma mark - Action
 
 - (IBAction)streamingAction:(id)sender
@@ -194,14 +219,14 @@
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     if (delegate.onlineStreaming) {
         /* TODO: Toast的な奴で置き換える
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:@"connect"
-                              message:@"ストリーミングを終了します"
-                              delegate:nil
-                              cancelButtonTitle:nil
-                              otherButtonTitles:@"OK", nil
-                              ];
-        [alert show];
+         UIAlertView *alert = [[UIAlertView alloc]
+         initWithTitle:@"connect"
+         message:@"ストリーミングを終了します"
+         delegate:nil
+         cancelButtonTitle:nil
+         otherButtonTitles:@"OK", nil
+         ];
+         [alert show];
          */
         [delegate stopStreaming];
     } else {
@@ -290,7 +315,7 @@
     // TODO: マルチアカウント対応
     STTwitterAPI *twitter = [delegate getTwitter];
     
-    [twitter postStatusUpdate:[self.editorTextField text]
+    [twitter postStatusUpdate:[self.editorTextView text]
             inReplyToStatusID:nil
                      latitude:nil
                     longitude:nil
@@ -298,7 +323,7 @@
            displayCoordinates:nil
                      trimUser:nil
                  successBlock:^(NSDictionary *status) {
-                     [self.editorTextField setText:@""];
+                     [self.editorTextView setText:@""];
                  } errorBlock:^(NSError *error) {
                      NSLog(@"[JFIMainViewController] tweetAction error:%@", [error localizedDescription]);
                      [[[UIAlertView alloc]
