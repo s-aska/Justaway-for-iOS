@@ -197,19 +197,16 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    UIFont *labelFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    CGRect totalRect = [textView.text boundingRectWithSize:CGSizeMake(textView.frame.size.width, CGFLOAT_MAX)
-                                                   options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
-                                                attributes:[NSDictionary dictionaryWithObject:labelFont forKey:NSFontAttributeName]
-                                                   context:nil];
+    // contentSizeは自動的に変わる為この値を利用する、最低54pxを確保する
+    CGFloat height = textView.contentSize.height > 54 ? textView.contentSize.height : 54;
     
-    textView.frame = CGRectMake(textView.frame.origin.x,
-                                self.postButton.frame.origin.y + self.postButton.frame.size.height - totalRect.size.height,
-                                textView.frame.size.width,
-                                totalRect.size.height);
+    // frameの高さを上書き
+    CGRect frame = textView.frame;
+    frame.size.height = height;
+    textView.frame = frame;
     
-    [self.view setNeedsLayout];
-    [self.view layoutIfNeeded];
+    // 制約を使いこれを更新しないとViewがキーボード下にめり込む
+    self.editorHeightConstraint.constant = height;
 }
 
 #pragma mark - Action

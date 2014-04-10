@@ -50,11 +50,11 @@
                                     <constraint firstItem="3Ek-3n-dTm" firstAttribute="leading" secondItem="fgT-2n-FvJ" secondAttribute="leading" id="zT4-nP-e8g"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1F-mf-7hv">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y1F-mf-7hv">
                                 <rect key="frame" x="0.0" y="466" width="320" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JCl-5P-df3" customClass="JFIButton">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JCl-5P-df3" customClass="JFIButton">
                                         <rect key="frame" x="267" y="0.0" width="53" height="54"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -67,22 +67,25 @@
                                         </connections>
                                     </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BdM-VG-XQE">
-                                        <rect key="frame" x="0.0" y="0.0" width="267" height="54"/>
+                                        <rect key="frame" x="10" y="10" width="257" height="54"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="54" id="AeF-IL-lVe"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="BdM-VG-XQE" firstAttribute="top" secondItem="y1F-mf-7hv" secondAttribute="top" id="Mwn-I2-9Nb"/>
+                                    <constraint firstItem="BdM-VG-XQE" firstAttribute="leading" secondItem="y1F-mf-7hv" secondAttribute="leading" constant="10" id="5Vc-bJ-vDs"/>
+                                    <constraint firstItem="BdM-VG-XQE" firstAttribute="top" secondItem="y1F-mf-7hv" secondAttribute="top" constant="10" id="GEo-hV-rcV"/>
                                     <constraint firstAttribute="bottom" secondItem="JCl-5P-df3" secondAttribute="bottom" id="XXe-jh-B2Q"/>
-                                    <constraint firstAttribute="bottom" secondItem="BdM-VG-XQE" secondAttribute="bottom" id="dSZ-Kk-jbx"/>
                                     <constraint firstItem="JCl-5P-df3" firstAttribute="top" secondItem="y1F-mf-7hv" secondAttribute="top" id="hqh-ic-shj"/>
+                                    <constraint firstItem="JCl-5P-df3" firstAttribute="leading" secondItem="BdM-VG-XQE" secondAttribute="trailing" id="lIQ-T4-fht"/>
                                     <constraint firstAttribute="trailing" secondItem="JCl-5P-df3" secondAttribute="trailing" id="mhF-FH-64L"/>
-                                    <constraint firstItem="JCl-5P-df3" firstAttribute="leading" secondItem="BdM-VG-XQE" secondAttribute="trailing" id="oGl-Vs-6ye"/>
-                                    <constraint firstItem="BdM-VG-XQE" firstAttribute="leading" secondItem="y1F-mf-7hv" secondAttribute="leading" id="qyu-ph-1js"/>
+                                    <constraint firstAttribute="bottom" secondItem="BdM-VG-XQE" secondAttribute="bottom" constant="10" id="pge-lf-AI6"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="svU-vp-0tM">
@@ -189,6 +192,7 @@
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
                         <outlet property="editorBottomConstraint" destination="ukg-5e-LcR" id="dhA-my-M2L"/>
+                        <outlet property="editorHeightConstraint" destination="AeF-IL-lVe" id="FwU-Gp-t3s"/>
                         <outlet property="editorTextView" destination="BdM-VG-XQE" id="eQu-YW-H2q"/>
                         <outlet property="editorView" destination="y1F-mf-7hv" id="B4p-Td-nap"/>
                         <outlet property="postButton" destination="CvT-HE-uuZ" id="Cf5-0O-Tjq"/>

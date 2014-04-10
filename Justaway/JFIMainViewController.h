@@ -9,6 +9,7 @@
 @property (nonatomic, weak) IBOutlet UIView *editorView;
 @property (nonatomic, weak) IBOutlet UITextView *editorTextView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *editorBottomConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *editorHeightConstraint;
 @property (nonatomic, weak) IBOutlet UIButton *postButton;
 @property (nonatomic) UIView *contentView;
 @property (nonatomic) NSMutableArray *views;
