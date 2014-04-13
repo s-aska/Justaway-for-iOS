@@ -171,7 +171,7 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     CGRect frame = textView.frame;
-    CGFloat height = textView.contentSize.height > 34 ? textView.contentSize.height : 34;
+    CGFloat height = [[textView text] isEqualToString:@""] || textView.contentSize.height < 34 ? 34 : textView.contentSize.height;
     frame.size.height = height;
     textView.frame = frame;
     
@@ -291,6 +291,7 @@
                      trimUser:nil
                  successBlock:^(NSDictionary *status) {
                      [self.editorTextView setText:@""];
+                     [self textViewDidChange:self.editorTextView];
                  } errorBlock:^(NSError *error) {
                      NSLog(@"[JFIMainViewController] tweetAction error:%@", [error localizedDescription]);
                      [[[UIAlertView alloc]
