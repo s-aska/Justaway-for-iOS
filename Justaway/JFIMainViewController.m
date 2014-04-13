@@ -9,6 +9,7 @@
 
 @property (nonatomic) int currentPage;
 @property (nonatomic) int defaultEditorBottomConstraint;
+@property (nonatomic) NSString *inReplyToStatusId;
 
 @end
 
@@ -64,6 +65,12 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    
+    // 引用
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(editorHandler:)
+                                                 name:JFIEditorNotification
+                                               object:delegate];
     
     // 背景をタップしたら、キーボードを隠す
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -283,15 +290,14 @@
     STTwitterAPI *twitter = [delegate getTwitter];
     
     [twitter postStatusUpdate:[self.editorTextView text]
-            inReplyToStatusID:nil
+            inReplyToStatusID:self.inReplyToStatusId
                      latitude:nil
                     longitude:nil
                       placeID:nil
            displayCoordinates:nil
                      trimUser:nil
                  successBlock:^(NSDictionary *status) {
-                     [self.editorTextView setText:@""];
-                     [self textViewDidChange:self.editorTextView];
+                     [self resetEditor];
                  } errorBlock:^(NSError *error) {
                      NSLog(@"[JFIMainViewController] tweetAction error:%@", [error localizedDescription]);
                      [[[UIAlertView alloc]
@@ -306,11 +312,37 @@
 
 #pragma mark -
 
-- (void)closeSoftKeyboard {
+- (void)closeSoftKeyboard
+{
+    [self resetEditor];
     [self.view endEditing:YES];
 }
 
+- (void)resetEditor
+{
+    [self.editorTextView setText:@""];
+    [self textViewDidChange:self.editorTextView];
+    self.inReplyToStatusId = nil;
+}
+
 #pragma mark - NSNotificationCenter handler
+
+- (void)editorHandler:(NSNotification *)notification
+{
+    if (self.editorView.hidden) {
+        // TODO: PostViewControllerへディスパッチ
+    } else {
+        NSDictionary *userInfo = [notification userInfo];
+        [self.editorTextView setText:[userInfo objectForKey:@"text"]];
+        [self.editorTextView becomeFirstResponder];
+        if ([userInfo objectForKey:@"range_location"] != nil) {
+            NSRange range = NSMakeRange([[userInfo objectForKey:@"range_location"] intValue],
+                                        [[userInfo objectForKey:@"range_length"] intValue]);
+            self.editorTextView.selectedRange = range;
+        }
+        self.inReplyToStatusId = [userInfo objectForKey:@"in_reply_to_status_id"];
+    }
+}
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
@@ -319,11 +351,15 @@
     NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (orientation == UIDeviceOrientationLandscapeLeft ||
-        orientation == UIDeviceOrientationLandscapeRight) {
-        self.editorBottomConstraint.constant = keyboardRect.size.width;
-    } else {
-        self.editorBottomConstraint.constant = keyboardRect.size.height;
+    switch (orientation) {
+        case UIDeviceOrientationLandscapeLeft:
+        case UIDeviceOrientationLandscapeRight:
+            self.editorBottomConstraint.constant = keyboardRect.size.width;
+            break;
+            
+        default:
+            self.editorBottomConstraint.constant = keyboardRect.size.height;
+            break;
     }
     
     [UIView animateWithDuration:duration animations:^{

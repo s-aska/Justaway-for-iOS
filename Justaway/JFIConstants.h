@@ -19,6 +19,7 @@ extern NSString *const JFIReceiveAccessTokenNotification;
 extern NSString *const JFIReceiveStatusNotification;
 extern NSString *const JFIStreamingConnectNotification;
 extern NSString *const JFIStreamingDisconnectNotification;
+extern NSString *const JFIEditorNotification;
 
 #pragma mark - keychain const
 

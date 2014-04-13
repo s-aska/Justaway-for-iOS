@@ -1,3 +1,4 @@
+#import "JFIConstants.h"
 #import "JFIAppDelegate.h"
 #import "JFIStatusCell.h"
 #import "JFIHTTPImageOperation.h"
@@ -5,6 +6,11 @@
 #import <ISMemoryCache/ISMemoryCache.h>
 
 @implementation JFIStatusCell
+
+typedef NS_ENUM(char, Type) {
+    ButtonIndexRetweet = 0,
+    ButtonIndexQuote   = 1,
+};
 
 // ステータス（ツイートメッセージ）のスタイル
 // 一時的にここで定義しているが後で移動する
@@ -151,12 +157,23 @@
 
 - (IBAction)replyAction:(id)sender
 {
-    NSLog(@"reply status:%@", self.status);
+    NSString *text = [NSString stringWithFormat:@"@%@ ", [self.status valueForKeyPath:@"user.screen_name"]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:@{@"text": text,
+                                                                 @"in_reply_to_status_id": [self.status valueForKey:@"id_str"]}];
 }
 
 - (IBAction)retweetAction:(id)sender
 {
-    NSLog(@"retweet status:%@", self.status);
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    [actionSheet addButtonWithTitle:@"公式RT"];
+    [actionSheet addButtonWithTitle:@"引用"];
+    [actionSheet addButtonWithTitle:@"キャンセル"];
+    actionSheet.delegate = self;
+    actionSheet.tag = 1;
+    actionSheet.cancelButtonIndex = 2;
+    [actionSheet showInView:self.contentView];
 }
 
 - (IBAction)favoriteAction:(id)sender
@@ -171,7 +188,42 @@
                     errorBlock:^(NSError *error){
                         // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
                     }];
-    
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"clickedButtonAtIndex tag:%i buttonIndex:%i %@", actionSheet.tag, buttonIndex, [self.status valueForKey:@"text"]);
+    switch (buttonIndex) {
+        case ButtonIndexRetweet:
+        {
+            JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+            STTwitterAPI *twitter = [delegate getTwitter];
+            [self.retweetButton setTitleColor:[UIColor colorWithRed:0.60 green:0.80 blue:0.00 alpha:1.0] forState:UIControlStateNormal];
+            [twitter postStatusRetweetWithID:[self.status valueForKey:@"id_str"]
+                                successBlock:^(NSDictionary *status){
+                                }
+                                  errorBlock:^(NSError *error){
+                                      // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
+                                  }];
+            break;
+        }
+        case ButtonIndexQuote:
+        {
+            NSString *text = [NSString stringWithFormat:@" https://twitter.com/%@/status/%@",
+                              [self.status valueForKeyPath:@"user.screen_name"],
+                              [self.status valueForKey:@"id_str"]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
+                                                                object:[[UIApplication sharedApplication] delegate]
+                                                              userInfo:@{@"text": text,
+                                                                         @"range_location": @0,
+                                                                         @"range_length": @0}];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 @end

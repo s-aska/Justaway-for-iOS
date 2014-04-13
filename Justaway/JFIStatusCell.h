@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@interface JFIStatusCell : UITableViewCell
+@interface JFIStatusCell : UITableViewCell <UIActionSheetDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *screenNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *displayNameLabel;
