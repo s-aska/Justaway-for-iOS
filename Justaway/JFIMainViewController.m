@@ -317,7 +317,13 @@
     
     NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
-    self.editorBottomConstraint.constant = keyboardRect.size.height;
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (orientation == UIDeviceOrientationLandscapeLeft ||
+        orientation == UIDeviceOrientationLandscapeRight) {
+        self.editorBottomConstraint.constant = keyboardRect.size.width;
+    } else {
+        self.editorBottomConstraint.constant = keyboardRect.size.height;
+    }
     
     [UIView animateWithDuration:duration animations:^{
         [self.view layoutIfNeeded];
