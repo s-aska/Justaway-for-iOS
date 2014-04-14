@@ -2,4 +2,7 @@
 
 @interface JFIButton : UIButton
 
+- (void)setColorDefault;
+- (void)setColorActive;
+
 @end

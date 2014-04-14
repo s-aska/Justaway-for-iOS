@@ -10,6 +10,7 @@
 @property (nonatomic) int currentPage;
 @property (nonatomic) int defaultEditorBottomConstraint;
 @property (nonatomic) NSString *inReplyToStatusId;
+@property (nonatomic) UIImage *image;
 
 @end
 
@@ -36,9 +37,9 @@
     
     self.editorTextView.delegate = self;
     /*
-    self.editorTextView.layer.borderWidth = 1.0f;
-    self.editorTextView.layer.borderColor = [[UIColor grayColor] CGColor];
-    */
+     self.editorTextView.layer.borderWidth = 1.0f;
+     self.editorTextView.layer.borderColor = [[UIColor grayColor] CGColor];
+     */
     self.editorView.hidden = YES;
     
     self.defaultEditorBottomConstraint = self.editorBottomConstraint.constant;
@@ -191,6 +192,18 @@
     self.editorHeightConstraint.constant = height;
 }
 
+#pragma mark - UIImagePickerControllerDelegate
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *originalImage = (UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage];
+    if (originalImage) {
+        self.image = originalImage;
+        [self.imageButton setColorActive];
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Action
 
 - (IBAction)streamingAction:(id)sender
@@ -255,22 +268,22 @@
         self.editorView.hidden = YES;
     }
     /*
-    NSLog(@"[JFIMainViewController] postAction");
-    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-    if ([delegate.accounts count] > 0) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIPost" bundle:nil];
-        JFIPostViewController *postViewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIPostViewController"];
-        [self.navigationController pushViewController:postViewController animated:YES];
-    } else {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:@"error"
-                              message:@"「認」ボタンからアカウントを追加して下さい。"
-                              delegate:nil
-                              cancelButtonTitle:nil
-                              otherButtonTitles:@"OK", nil
-                              ];
-        [alert show];
-    }
+     NSLog(@"[JFIMainViewController] postAction");
+     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+     if ([delegate.accounts count] > 0) {
+     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIPost" bundle:nil];
+     JFIPostViewController *postViewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIPostViewController"];
+     [self.navigationController pushViewController:postViewController animated:YES];
+     } else {
+     UIAlertView *alert = [[UIAlertView alloc]
+     initWithTitle:@"error"
+     message:@"「認」ボタンからアカウントを追加して下さい。"
+     delegate:nil
+     cancelButtonTitle:nil
+     otherButtonTitles:@"OK", nil
+     ];
+     [alert show];
+     }
      */
 }
 
@@ -298,6 +311,16 @@
     [self closeEditor];
 }
 
+- (IBAction)imageAction:(id)sender
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        UIImagePickerController *imagePickerController = UIImagePickerController.new;
+        [imagePickerController setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [imagePickerController setDelegate:self];
+        [self presentViewController:imagePickerController animated:YES completion:nil];
+    }
+}
+
 - (IBAction)tweetAction:(id)sender
 {
     NSLog(@"[JFIMainViewController] tweetAction");
@@ -308,6 +331,29 @@
     
     // TODO: マルチアカウント対応
     STTwitterAPI *twitter = [delegate getTwitter];
+    
+    if (self.image) {
+        NSData *data = UIImageJPEGRepresentation(self.image, 0.8f);
+        [twitter postStatusUpdate:[self.editorTextView text]
+                   mediaDataArray:@[data]
+                possiblySensitive:nil
+                inReplyToStatusID:self.inReplyToStatusId
+                         latitude:nil
+                        longitude:nil
+                          placeID:nil
+               displayCoordinates:nil
+              uploadProgressBlock:^(NSInteger bytesWritten, NSInteger totalBytesWritten, NSInteger totalBytesExpectedToWrite) {
+                  // TODO: ProgressBar
+              }
+                     successBlock:^(NSDictionary *status) {
+                         [self closeEditor];
+                     }
+                       errorBlock:^(NSError *error) {
+                           ;
+                       }
+        ];
+        return;
+    }
     
     [twitter postStatusUpdate:[self.editorTextView text]
             inReplyToStatusID:self.inReplyToStatusId
@@ -330,10 +376,12 @@
                  }];
 }
 
-#pragma mark -
+#pragma mark - private methods
 
 - (void)resetEditor
 {
+    self.image = nil;
+    [self.imageButton setColorDefault];
     self.inReplyToStatusId = nil;
     [self.editorTextView setText:@""];
     [self textViewDidChange:self.editorTextView];
@@ -341,6 +389,8 @@
 
 - (void)closeEditor
 {
+    self.image = nil;
+    [self.imageButton setColorDefault];
     self.inReplyToStatusId = nil;
     [self.editorTextView setText:@""];
     [self textViewDidChange:self.editorTextView];
