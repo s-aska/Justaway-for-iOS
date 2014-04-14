@@ -20,6 +20,7 @@
 - (IBAction)streamingAction:(id)sender;
 - (IBAction)accountAction:(id)sender;
 - (IBAction)postAction:(id)sender;
+- (IBAction)closeAction:(id)sender;
 - (IBAction)tweetAction:(id)sender;
 
 @end

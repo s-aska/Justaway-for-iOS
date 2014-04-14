@@ -35,6 +35,11 @@
     self.views = NSMutableArray.new;
     
     self.editorTextView.delegate = self;
+    /*
+    self.editorTextView.layer.borderWidth = 1.0f;
+    self.editorTextView.layer.borderColor = [[UIColor grayColor] CGColor];
+    */
+    self.editorView.hidden = YES;
     
     self.defaultEditorBottomConstraint = self.editorBottomConstraint.constant;
 }
@@ -74,7 +79,7 @@
     
     // 背景をタップしたら、キーボードを隠す
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                        action:@selector(closeSoftKeyboard)];
+                                                                                        action:@selector(closeEditor)];
     [self.view addGestureRecognizer:gestureRecognizer];
     
     // 投稿ボタンをロングタップでクイックツイートモード
@@ -241,6 +246,15 @@
 
 - (IBAction)postAction:(id)sender
 {
+    if (self.editorView.hidden) {
+        self.editorView.hidden = NO;
+        [self.editorTextView becomeFirstResponder];
+    } else {
+        [self resetEditor];
+        [self.view endEditing:YES];
+        self.editorView.hidden = YES;
+    }
+    /*
     NSLog(@"[JFIMainViewController] postAction");
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     if ([delegate.accounts count] > 0) {
@@ -257,6 +271,7 @@
                               ];
         [alert show];
     }
+     */
 }
 
 - (void)toggleEditorAction:(UILongPressGestureRecognizer *)sender
@@ -278,6 +293,11 @@
     }
 }
 
+- (IBAction)closeAction:(id)sender
+{
+    [self closeEditor];
+}
+
 - (IBAction)tweetAction:(id)sender
 {
     NSLog(@"[JFIMainViewController] tweetAction");
@@ -297,7 +317,7 @@
            displayCoordinates:nil
                      trimUser:nil
                  successBlock:^(NSDictionary *status) {
-                     [self resetEditor];
+                     [self closeEditor];
                  } errorBlock:^(NSError *error) {
                      NSLog(@"[JFIMainViewController] tweetAction error:%@", [error localizedDescription]);
                      [[[UIAlertView alloc]
@@ -312,17 +332,20 @@
 
 #pragma mark -
 
-- (void)closeSoftKeyboard
-{
-    [self resetEditor];
-    [self.view endEditing:YES];
-}
-
 - (void)resetEditor
 {
+    self.inReplyToStatusId = nil;
     [self.editorTextView setText:@""];
     [self textViewDidChange:self.editorTextView];
+}
+
+- (void)closeEditor
+{
     self.inReplyToStatusId = nil;
+    [self.editorTextView setText:@""];
+    [self textViewDidChange:self.editorTextView];
+    [self.editorTextView resignFirstResponder];
+    self.editorView.hidden = YES;
 }
 
 #pragma mark - NSNotificationCenter handler
@@ -330,18 +353,17 @@
 - (void)editorHandler:(NSNotification *)notification
 {
     if (self.editorView.hidden) {
-        // TODO: PostViewControllerへディスパッチ
-    } else {
-        NSDictionary *userInfo = [notification userInfo];
-        [self.editorTextView setText:[userInfo objectForKey:@"text"]];
-        [self.editorTextView becomeFirstResponder];
-        if ([userInfo objectForKey:@"range_location"] != nil) {
-            NSRange range = NSMakeRange([[userInfo objectForKey:@"range_location"] intValue],
-                                        [[userInfo objectForKey:@"range_length"] intValue]);
-            self.editorTextView.selectedRange = range;
-        }
-        self.inReplyToStatusId = [userInfo objectForKey:@"in_reply_to_status_id"];
+        self.editorView.hidden = NO;
     }
+    NSDictionary *userInfo = [notification userInfo];
+    [self.editorTextView setText:[userInfo objectForKey:@"text"]];
+    [self.editorTextView becomeFirstResponder];
+    if ([userInfo objectForKey:@"range_location"] != nil) {
+        NSRange range = NSMakeRange([[userInfo objectForKey:@"range_location"] intValue],
+                                    [[userInfo objectForKey:@"range_length"] intValue]);
+        self.editorTextView.selectedRange = range;
+    }
+    self.inReplyToStatusId = [userInfo objectForKey:@"in_reply_to_status_id"];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
