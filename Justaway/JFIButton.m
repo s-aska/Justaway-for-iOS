@@ -1,4 +1,5 @@
 #import "JFIButton.h"
+#import "JFITheme.h"
 
 @implementation JFIButton
 
@@ -20,21 +21,13 @@
 - (void)setDefault
 {
     [self.titleLabel setFont:[UIFont fontWithName:@"fontello" size:self.titleLabel.font.pointSize]];
-    [self setColorDefault];
+    self.active = NO;
 }
 
-- (void)setColorDefault
+- (void)setActive:(BOOL)active
 {
-    [self setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [self setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    [self setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
-}
-
-- (void)setColorActive
-{
-    [self setTitleColor:[UIColor colorWithRed:0.00 green:0.60 blue:0.80 alpha:1.0] forState:UIControlStateNormal];
-    [self setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    [self setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+    [[JFITheme sharedTheme] setColorForMenuButton:self active:active];
+    _active = active;
 }
 
 @end

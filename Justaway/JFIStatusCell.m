@@ -1,5 +1,7 @@
 #import "JFIConstants.h"
+#import "JFITheme.h"
 #import "JFIAppDelegate.h"
+#import "JFIActionStatus.h"
 #import "JFIStatusCell.h"
 #import "JFIHTTPImageOperation.h"
 #import "NSDate+Justaway.h"
@@ -60,7 +62,8 @@ typedef NS_ENUM(char, Type) {
     self.createdAtLabel.text = [createdAt absoluteDescription];
     
     // RT状態
-    [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self.replyButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [self.retweetButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     // RT数
     if (![[[status valueForKey:@"retweet_count"] stringValue] isEqual:@"0"]) {
@@ -85,8 +88,15 @@ typedef NS_ENUM(char, Type) {
 - (void)loadImages:(BOOL)scrolling
 {
     NSDictionary *status = self.status;
-    NSURL *url = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
     
+    JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
+    JFITheme *theme = [JFITheme sharedTheme];
+    
+    NSString *statusId = [status objectForKey:@"id_str"];
+    [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:statusId]];
+    [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:statusId]];
+    
+    NSURL *url = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
     UIImage *image = [[ISMemoryCache sharedCache] objectForKey:url];
     if (image) {
         self.iconImageView.image = image;
@@ -178,15 +188,25 @@ typedef NS_ENUM(char, Type) {
 
 - (IBAction)favoriteAction:(id)sender
 {
-    [self.favoriteButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    
+    NSString *statusId = [self.status objectForKey:@"id_str"];
+    
+    [self.favoriteButton setTitleColor:[JFITheme orangeDark] forState:UIControlStateNormal];
+    
+    JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
+    [sharedActionStatus setFavorite:statusId];
+    
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
     [twitter postFavoriteState:YES
-                   forStatusID:[self.status valueForKey:@"id_str"]
+                   forStatusID:statusId
                   successBlock:^(NSDictionary *status){
+                      
                   }
                     errorBlock:^(NSError *error){
                         // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
+                        [sharedActionStatus removeFavorite:statusId];
+                        [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
                     }];
 }
 
@@ -194,13 +214,13 @@ typedef NS_ENUM(char, Type) {
 
 - (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"clickedButtonAtIndex tag:%i buttonIndex:%i %@", actionSheet.tag, buttonIndex, [self.status valueForKey:@"text"]);
+    //    NSLog(@"clickedButtonAtIndex tag:%i buttonIndex:%i %@", actionSheet.tag, buttonIndex, [self.status valueForKey:@"text"]);
     switch (buttonIndex) {
         case ButtonIndexRetweet:
         {
             JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
             STTwitterAPI *twitter = [delegate getTwitter];
-            [self.retweetButton setTitleColor:[UIColor colorWithRed:0.60 green:0.80 blue:0.00 alpha:1.0] forState:UIControlStateNormal];
+            [self.retweetButton setTitleColor:[JFITheme greenDark] forState:UIControlStateNormal];
             [twitter postStatusRetweetWithID:[self.status valueForKey:@"id_str"]
                                 successBlock:^(NSDictionary *status){
                                 }

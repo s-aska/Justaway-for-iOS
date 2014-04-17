@@ -2,7 +2,6 @@
 
 @interface JFIButton : UIButton
 
-- (void)setColorDefault;
-- (void)setColorActive;
+@property (nonatomic, setter = setActive:) BOOL active;
 
 @end

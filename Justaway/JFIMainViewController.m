@@ -21,8 +21,6 @@
     self = [super initWithCoder:coder];
     if (self) {
         // Custom initialization
-        NSLog(@"[JFIMainViewController] initWithCoder");
-        self.title = @"Main";
     }
     return self;
 }
@@ -199,12 +197,13 @@
     UIImage *originalImage = (UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage];
     if (originalImage) {
         self.image = originalImage;
-        [self.imageButton setColorActive];
+        self.imageButton.active = YES;
+        [self.editorTextView becomeFirstResponder];
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - Action
+#pragma mark - IBAction
 
 - (IBAction)streamingAction:(id)sender
 {
@@ -261,6 +260,7 @@
 {
     if (self.editorView.hidden) {
         self.editorView.hidden = NO;
+        self.editorView.alpha = 0;
         [self.editorTextView becomeFirstResponder];
     } else {
         [self resetEditor];
@@ -381,7 +381,7 @@
 - (void)resetEditor
 {
     self.image = nil;
-    [self.imageButton setColorDefault];
+    self.imageButton.active = NO;
     self.inReplyToStatusId = nil;
     [self.editorTextView setText:@""];
     [self textViewDidChange:self.editorTextView];
@@ -390,12 +390,14 @@
 - (void)closeEditor
 {
     self.image = nil;
-    [self.imageButton setColorDefault];
+    self.imageButton.active = NO;
     self.inReplyToStatusId = nil;
     [self.editorTextView setText:@""];
     [self textViewDidChange:self.editorTextView];
+    
+    // ちょっと薄くしてフォーカス外した後そのまま消してもらえるようアピール
+    self.editorView.alpha = 0.99;
     [self.editorTextView resignFirstResponder];
-    self.editorView.hidden = YES;
 }
 
 #pragma mark - NSNotificationCenter handler
@@ -421,6 +423,7 @@
     CGRect keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
     NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [[[notification userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     switch (orientation) {
@@ -434,20 +437,34 @@
             break;
     }
     
-    [UIView animateWithDuration:duration animations:^{
+    [UIView animateWithDuration:duration delay:0.0 options:(curve << 16) animations:^{
+        if (self.editorView.alpha == 0) {
+            self.editorView.alpha = 1.0;
+        }
         [self.view layoutIfNeeded];
-    }];
+    } completion:nil];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     NSTimeInterval duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
+    UIViewAnimationCurve curve = [[[notification userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
     self.editorBottomConstraint.constant = self.defaultEditorBottomConstraint;
     
-    [UIView animateWithDuration:duration animations:^{
-        [self.view layoutIfNeeded];
-    }];
+    if (self.editorView.alpha < 1) {
+        // 薄くなってる時はそのまま消す
+        [UIView animateWithDuration:duration delay:0.0 options:(curve << 16) animations:^{
+            self.editorView.alpha = 0;
+            [self.view layoutIfNeeded];
+        } completion:^(BOOL finished){
+            self.editorView.hidden = YES;
+        }];
+    } else {
+        // 画像選択などでフォーカスが外れた時は下げるだけ
+        [UIView animateWithDuration:duration delay:0.0 options:(curve << 16) animations:^{
+            [self.view layoutIfNeeded];
+        } completion:nil];
+    }
 }
 
 - (void)connectStreamingHandler:(NSNotification *)center
