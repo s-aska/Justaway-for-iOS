@@ -1,7 +1,7 @@
 #import "JFIConstants.h"
 #import "JFIAppDelegate.h"
 #import "JFIMainViewController.h"
-#import "JFIPostViewController.h"
+#import "JFIAccountViewController.h"
 #import "JFINotificationsViewController.h"
 #import "JFIMessagesViewController.h"
 
@@ -252,7 +252,7 @@
 {
     NSLog(@"[JFIMainViewController] accountAction");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIAccount" bundle:nil];
-    JFIPostViewController *accountViewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIAccountViewController"];
+    JFIAccountViewController *accountViewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIAccountViewController"];
     [self presentViewController:accountViewController animated:YES completion:nil];
 }
 

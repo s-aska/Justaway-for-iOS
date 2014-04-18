@@ -17,8 +17,6 @@
 		383D7DB818D1A3C000D36678 /* NSDate+Justaway.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DB718D1A3C000D36678 /* NSDate+Justaway.m */; };
 		383D7DC418D6B64A00D36678 /* JFIMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DC318D6B64A00D36678 /* JFIMainViewController.m */; };
 		383D7DC618D6B66D00D36678 /* JFIMain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DC518D6B66D00D36678 /* JFIMain.storyboard */; };
-		383D7DC918D9675200D36678 /* JFIPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DC818D9675200D36678 /* JFIPostViewController.m */; };
-		383D7DCB18D9677200D36678 /* JFIPost.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DCA18D9677200D36678 /* JFIPost.storyboard */; };
 		383D7DDB18E139B500D36678 /* JFIHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DD918E139B500D36678 /* JFIHomeViewController.m */; };
 		383D7DDC18E139B500D36678 /* JFIHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DDA18E139B500D36678 /* JFIHomeViewController.xib */; };
 		383D7DDE18E1925700D36678 /* JFIAccount.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DDD18E1925700D36678 /* JFIAccount.storyboard */; };
@@ -37,7 +35,6 @@
 		6A0DD82018E9AE7300B9B9E6 /* JFINotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD81E18E9AE7300B9B9E6 /* JFINotificationsViewController.xib */; };
 		6A0DD82418E9AEB500B9B9E6 /* JFIMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0DD82218E9AEB500B9B9E6 /* JFIMessagesViewController.m */; };
 		6A0DD82518E9AEB500B9B9E6 /* JFIMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD82318E9AEB500B9B9E6 /* JFIMessagesViewController.xib */; };
-		6A0DD82718EB25ED00B9B9E6 /* JFIStatus.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD82618EB25ED00B9B9E6 /* JFIStatus.storyboard */; };
 		6A21291018C3485A00AD2953 /* JFIStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21290E18C3485A00AD2953 /* JFIStatusCell.m */; };
 		6A3DE96318EB32D900F045A7 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */; };
 		6A9C989F18BB89D500CF4F84 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C989E18BB89D500CF4F84 /* Podfile */; };
@@ -83,9 +80,6 @@
 		383D7DC218D6B64A00D36678 /* JFIMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIMainViewController.h; sourceTree = "<group>"; };
 		383D7DC318D6B64A00D36678 /* JFIMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIMainViewController.m; sourceTree = "<group>"; };
 		383D7DC518D6B66D00D36678 /* JFIMain.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JFIMain.storyboard; sourceTree = "<group>"; };
-		383D7DC718D9675200D36678 /* JFIPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIPostViewController.h; sourceTree = "<group>"; };
-		383D7DC818D9675200D36678 /* JFIPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIPostViewController.m; sourceTree = "<group>"; };
-		383D7DCA18D9677200D36678 /* JFIPost.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JFIPost.storyboard; sourceTree = "<group>"; };
 		383D7DD818E139B500D36678 /* JFIHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIHomeViewController.h; sourceTree = "<group>"; };
 		383D7DD918E139B500D36678 /* JFIHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIHomeViewController.m; sourceTree = "<group>"; };
 		383D7DDA18E139B500D36678 /* JFIHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIHomeViewController.xib; sourceTree = "<group>"; };
@@ -114,7 +108,6 @@
 		6A0DD82118E9AEB500B9B9E6 /* JFIMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIMessagesViewController.h; sourceTree = "<group>"; };
 		6A0DD82218E9AEB500B9B9E6 /* JFIMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIMessagesViewController.m; sourceTree = "<group>"; };
 		6A0DD82318E9AEB500B9B9E6 /* JFIMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIMessagesViewController.xib; sourceTree = "<group>"; };
-		6A0DD82618EB25ED00B9B9E6 /* JFIStatus.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JFIStatus.storyboard; sourceTree = "<group>"; };
 		6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		6A21290D18C3485A00AD2953 /* JFIStatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIStatusCell.h; sourceTree = "<group>"; };
 		6A21290E18C3485A00AD2953 /* JFIStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIStatusCell.m; sourceTree = "<group>"; };
@@ -214,10 +207,6 @@
 				383D7DDF18E1957A00D36678 /* JFIAccountViewController.h */,
 				383D7DE018E1957A00D36678 /* JFIAccountViewController.m */,
 				383D7DDD18E1925700D36678 /* JFIAccount.storyboard */,
-				383D7DC718D9675200D36678 /* JFIPostViewController.h */,
-				383D7DC818D9675200D36678 /* JFIPostViewController.m */,
-				383D7DCA18D9677200D36678 /* JFIPost.storyboard */,
-				6A0DD82618EB25ED00B9B9E6 /* JFIStatus.storyboard */,
 				38DA5F6C18E30D27006F484C /* Main */,
 			);
 			name = ViewControllers;
@@ -474,8 +463,6 @@
 				383D7DDC18E139B500D36678 /* JFIHomeViewController.xib in Resources */,
 				6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */,
 				383D7DE618E1AF5C00D36678 /* JFIAccountCell.xib in Resources */,
-				383D7DCB18D9677200D36678 /* JFIPost.storyboard in Resources */,
-				6A0DD82718EB25ED00B9B9E6 /* JFIStatus.storyboard in Resources */,
 				6A0DD82018E9AE7300B9B9E6 /* JFINotificationsViewController.xib in Resources */,
 				383D7DDE18E1925700D36678 /* JFIAccount.storyboard in Resources */,
 				6ADF7950188D6E2200632BA5 /* InfoPlist.strings in Resources */,
@@ -543,7 +530,6 @@
 				6A0DD82418E9AEB500B9B9E6 /* JFIMessagesViewController.m in Sources */,
 				3828D5B018EADCBB00170374 /* JFIMessageCell.m in Sources */,
 				3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */,
-				383D7DC918D9675200D36678 /* JFIPostViewController.m in Sources */,
 				6ADF7952188D6E2200632BA5 /* main.m in Sources */,
 				38D1B96F18FD0B2400DED578 /* JFITheme.m in Sources */,
 				20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */,
