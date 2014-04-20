@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "JFIButton.h"
-#import "JFIHomeViewController.h"
+#import "JFITabViewController.h"
 
 @interface JFIMainViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 

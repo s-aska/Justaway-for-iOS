@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 20D352DB18C9A63D00CC8C80 /* JFIAccount.m */; };
-		3828D5B018EADCBB00170374 /* JFIMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3828D5AE18EADCBB00170374 /* JFIMessageCell.m */; };
-		3828D5B118EADCBB00170374 /* JFIMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3828D5AF18EADCBB00170374 /* JFIMessageCell.xib */; };
 		3828D5B518EBC6F500170374 /* JFIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3828D5B418EBC6F500170374 /* JFIButton.m */; };
 		3828D5BB18ED24FF00170374 /* UIImage+Processing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3828D5BA18ED24FF00170374 /* UIImage+Processing.m */; };
 		383D7DB418D1968F00D36678 /* NSDate+Justaway.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DB318D1968F00D36678 /* NSDate+Justaway.m */; };
@@ -17,8 +15,8 @@
 		383D7DB818D1A3C000D36678 /* NSDate+Justaway.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DB718D1A3C000D36678 /* NSDate+Justaway.m */; };
 		383D7DC418D6B64A00D36678 /* JFIMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DC318D6B64A00D36678 /* JFIMainViewController.m */; };
 		383D7DC618D6B66D00D36678 /* JFIMain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DC518D6B66D00D36678 /* JFIMain.storyboard */; };
-		383D7DDB18E139B500D36678 /* JFIHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DD918E139B500D36678 /* JFIHomeViewController.m */; };
-		383D7DDC18E139B500D36678 /* JFIHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DDA18E139B500D36678 /* JFIHomeViewController.xib */; };
+		383D7DDB18E139B500D36678 /* JFITabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DD918E139B500D36678 /* JFITabViewController.m */; };
+		383D7DDC18E139B500D36678 /* JFITabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DDA18E139B500D36678 /* JFITabViewController.xib */; };
 		383D7DDE18E1925700D36678 /* JFIAccount.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DDD18E1925700D36678 /* JFIAccount.storyboard */; };
 		383D7DE118E1957A00D36678 /* JFIAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DE018E1957A00D36678 /* JFIAccountViewController.m */; };
 		383D7DE518E1AF5C00D36678 /* JFIAccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DE318E1AF5C00D36678 /* JFIAccountCell.m */; };
@@ -31,14 +29,9 @@
 		38DA5F6A18E29CAA006F484C /* JFISecret.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA5F6918E29CAA006F484C /* JFISecret.m */; };
 		38DA5F7218E447DE006F484C /* JFIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA5F7118E447DE006F484C /* JFIConstants.m */; };
 		5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22194C00EF13418F82A85B42 /* libPods.a */; };
-		6A0DD81F18E9AE7300B9B9E6 /* JFINotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0DD81D18E9AE7300B9B9E6 /* JFINotificationsViewController.m */; };
-		6A0DD82018E9AE7300B9B9E6 /* JFINotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD81E18E9AE7300B9B9E6 /* JFINotificationsViewController.xib */; };
-		6A0DD82418E9AEB500B9B9E6 /* JFIMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0DD82218E9AEB500B9B9E6 /* JFIMessagesViewController.m */; };
-		6A0DD82518E9AEB500B9B9E6 /* JFIMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD82318E9AEB500B9B9E6 /* JFIMessagesViewController.xib */; };
 		6A21291018C3485A00AD2953 /* JFIStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21290E18C3485A00AD2953 /* JFIStatusCell.m */; };
 		6A3DE96318EB32D900F045A7 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */; };
 		6A9C989F18BB89D500CF4F84 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C989E18BB89D500CF4F84 /* Podfile */; };
-		6ADE906818EFE02A004AE545 /* JFIDiningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADE906718EFE02A004AE545 /* JFIDiningViewController.m */; };
 		6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
 		6ADF7948188D6E2200632BA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */; };
 		6ADF794A188D6E2200632BA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7949188D6E2200632BA5 /* UIKit.framework */; };
@@ -67,9 +60,6 @@
 		20D352DA18C9A63D00CC8C80 /* JFIAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIAccount.h; sourceTree = "<group>"; };
 		20D352DB18C9A63D00CC8C80 /* JFIAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIAccount.m; sourceTree = "<group>"; };
 		22194C00EF13418F82A85B42 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		3828D5AD18EADCBB00170374 /* JFIMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIMessageCell.h; sourceTree = "<group>"; };
-		3828D5AE18EADCBB00170374 /* JFIMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIMessageCell.m; sourceTree = "<group>"; };
-		3828D5AF18EADCBB00170374 /* JFIMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIMessageCell.xib; sourceTree = "<group>"; };
 		3828D5B318EBC6F500170374 /* JFIButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIButton.h; sourceTree = "<group>"; };
 		3828D5B418EBC6F500170374 /* JFIButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIButton.m; sourceTree = "<group>"; };
 		3828D5B918ED24FF00170374 /* UIImage+Processing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Processing.h"; sourceTree = "<group>"; };
@@ -80,9 +70,9 @@
 		383D7DC218D6B64A00D36678 /* JFIMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIMainViewController.h; sourceTree = "<group>"; };
 		383D7DC318D6B64A00D36678 /* JFIMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIMainViewController.m; sourceTree = "<group>"; };
 		383D7DC518D6B66D00D36678 /* JFIMain.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JFIMain.storyboard; sourceTree = "<group>"; };
-		383D7DD818E139B500D36678 /* JFIHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIHomeViewController.h; sourceTree = "<group>"; };
-		383D7DD918E139B500D36678 /* JFIHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIHomeViewController.m; sourceTree = "<group>"; };
-		383D7DDA18E139B500D36678 /* JFIHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIHomeViewController.xib; sourceTree = "<group>"; };
+		383D7DD818E139B500D36678 /* JFITabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFITabViewController.h; sourceTree = "<group>"; };
+		383D7DD918E139B500D36678 /* JFITabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFITabViewController.m; sourceTree = "<group>"; };
+		383D7DDA18E139B500D36678 /* JFITabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFITabViewController.xib; sourceTree = "<group>"; };
 		383D7DDD18E1925700D36678 /* JFIAccount.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JFIAccount.storyboard; sourceTree = "<group>"; };
 		383D7DDF18E1957A00D36678 /* JFIAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIAccountViewController.h; sourceTree = "<group>"; };
 		383D7DE018E1957A00D36678 /* JFIAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIAccountViewController.m; sourceTree = "<group>"; };
@@ -102,18 +92,10 @@
 		38DA5F6918E29CAA006F484C /* JFISecret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFISecret.m; sourceTree = "<group>"; };
 		38DA5F7018E447DE006F484C /* JFIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIConstants.h; sourceTree = "<group>"; };
 		38DA5F7118E447DE006F484C /* JFIConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIConstants.m; sourceTree = "<group>"; };
-		6A0DD81C18E9AE7300B9B9E6 /* JFINotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFINotificationsViewController.h; sourceTree = "<group>"; };
-		6A0DD81D18E9AE7300B9B9E6 /* JFINotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFINotificationsViewController.m; sourceTree = "<group>"; };
-		6A0DD81E18E9AE7300B9B9E6 /* JFINotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFINotificationsViewController.xib; sourceTree = "<group>"; };
-		6A0DD82118E9AEB500B9B9E6 /* JFIMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIMessagesViewController.h; sourceTree = "<group>"; };
-		6A0DD82218E9AEB500B9B9E6 /* JFIMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIMessagesViewController.m; sourceTree = "<group>"; };
-		6A0DD82318E9AEB500B9B9E6 /* JFIMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIMessagesViewController.xib; sourceTree = "<group>"; };
 		6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		6A21290D18C3485A00AD2953 /* JFIStatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIStatusCell.h; sourceTree = "<group>"; };
 		6A21290E18C3485A00AD2953 /* JFIStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIStatusCell.m; sourceTree = "<group>"; };
 		6A9C989E18BB89D500CF4F84 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		6ADE906618EFE02A004AE545 /* JFIDiningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIDiningViewController.h; sourceTree = "<group>"; };
-		6ADE906718EFE02A004AE545 /* JFIDiningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIDiningViewController.m; sourceTree = "<group>"; };
 		6ADF7942188D6E2200632BA5 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ADF7945188D6E2200632BA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -200,7 +182,6 @@
 		38DA5F6B18E30D10006F484C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				6ADE906A18EFEC34004AE545 /* Components */,
 				383D7DC218D6B64A00D36678 /* JFIMainViewController.h */,
 				383D7DC318D6B64A00D36678 /* JFIMainViewController.m */,
 				383D7DC518D6B66D00D36678 /* JFIMain.storyboard */,
@@ -215,15 +196,9 @@
 		38DA5F6C18E30D27006F484C /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				383D7DD818E139B500D36678 /* JFIHomeViewController.h */,
-				383D7DD918E139B500D36678 /* JFIHomeViewController.m */,
-				383D7DDA18E139B500D36678 /* JFIHomeViewController.xib */,
-				6A0DD81C18E9AE7300B9B9E6 /* JFINotificationsViewController.h */,
-				6A0DD81D18E9AE7300B9B9E6 /* JFINotificationsViewController.m */,
-				6A0DD81E18E9AE7300B9B9E6 /* JFINotificationsViewController.xib */,
-				6A0DD82118E9AEB500B9B9E6 /* JFIMessagesViewController.h */,
-				6A0DD82218E9AEB500B9B9E6 /* JFIMessagesViewController.m */,
-				6A0DD82318E9AEB500B9B9E6 /* JFIMessagesViewController.xib */,
+				383D7DD818E139B500D36678 /* JFITabViewController.h */,
+				383D7DD918E139B500D36678 /* JFITabViewController.m */,
+				383D7DDA18E139B500D36678 /* JFITabViewController.xib */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -246,9 +221,6 @@
 				383D7DE218E1AF5C00D36678 /* JFIAccountCell.h */,
 				383D7DE318E1AF5C00D36678 /* JFIAccountCell.m */,
 				383D7DE418E1AF5C00D36678 /* JFIAccountCell.xib */,
-				3828D5AD18EADCBB00170374 /* JFIMessageCell.h */,
-				3828D5AE18EADCBB00170374 /* JFIMessageCell.m */,
-				3828D5AF18EADCBB00170374 /* JFIMessageCell.xib */,
 			);
 			name = TableViewCells;
 			sourceTree = "<group>";
@@ -279,15 +251,6 @@
 				6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */,
 			);
 			name = font;
-			sourceTree = "<group>";
-		};
-		6ADE906A18EFEC34004AE545 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				6ADE906618EFE02A004AE545 /* JFIDiningViewController.h */,
-				6ADE906718EFE02A004AE545 /* JFIDiningViewController.m */,
-			);
-			name = Components;
 			sourceTree = "<group>";
 		};
 		6ADF7939188D6E2200632BA5 = {
@@ -459,14 +422,11 @@
 			files = (
 				6A3DE96318EB32D900F045A7 /* fontello.ttf in Resources */,
 				6A9C989F18BB89D500CF4F84 /* Podfile in Resources */,
-				3828D5B118EADCBB00170374 /* JFIMessageCell.xib in Resources */,
-				383D7DDC18E139B500D36678 /* JFIHomeViewController.xib in Resources */,
+				383D7DDC18E139B500D36678 /* JFITabViewController.xib in Resources */,
 				6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */,
 				383D7DE618E1AF5C00D36678 /* JFIAccountCell.xib in Resources */,
-				6A0DD82018E9AE7300B9B9E6 /* JFINotificationsViewController.xib in Resources */,
 				383D7DDE18E1925700D36678 /* JFIAccount.storyboard in Resources */,
 				6ADF7950188D6E2200632BA5 /* InfoPlist.strings in Resources */,
-				6A0DD82518E9AEB500B9B9E6 /* JFIMessagesViewController.xib in Resources */,
 				383D7DC618D6B66D00D36678 /* JFIMain.storyboard in Resources */,
 				38D1B97718FE441900DED578 /* JFIStatusCell.xib in Resources */,
 			);
@@ -527,19 +487,15 @@
 				6A21291018C3485A00AD2953 /* JFIStatusCell.m in Sources */,
 				38DA5F7218E447DE006F484C /* JFIConstants.m in Sources */,
 				6ADF7956188D6E2200632BA5 /* JFIAppDelegate.m in Sources */,
-				6A0DD82418E9AEB500B9B9E6 /* JFIMessagesViewController.m in Sources */,
-				3828D5B018EADCBB00170374 /* JFIMessageCell.m in Sources */,
 				3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */,
 				6ADF7952188D6E2200632BA5 /* main.m in Sources */,
 				38D1B96F18FD0B2400DED578 /* JFITheme.m in Sources */,
 				20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */,
 				3882594818E55F3600F50117 /* JFIHTTPImageOperation.m in Sources */,
-				383D7DDB18E139B500D36678 /* JFIHomeViewController.m in Sources */,
+				383D7DDB18E139B500D36678 /* JFITabViewController.m in Sources */,
 				3828D5B518EBC6F500170374 /* JFIButton.m in Sources */,
 				383D7DE518E1AF5C00D36678 /* JFIAccountCell.m in Sources */,
 				383D7DC418D6B64A00D36678 /* JFIMainViewController.m in Sources */,
-				6ADE906818EFE02A004AE545 /* JFIDiningViewController.m in Sources */,
-				6A0DD81F18E9AE7300B9B9E6 /* JFINotificationsViewController.m in Sources */,
 				383D7DB418D1968F00D36678 /* NSDate+Justaway.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

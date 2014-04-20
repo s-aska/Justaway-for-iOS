@@ -1,9 +1,8 @@
 #import "JFIConstants.h"
 #import "JFIAppDelegate.h"
 #import "JFIMainViewController.h"
+#import "JFITabViewController.h"
 #import "JFIAccountViewController.h"
-#import "JFINotificationsViewController.h"
-#import "JFIMessagesViewController.h"
 
 @interface JFIMainViewController ()
 
@@ -34,10 +33,6 @@
     self.views = NSMutableArray.new;
     
     self.editorTextView.delegate = self;
-    /*
-     self.editorTextView.layer.borderWidth = 1.0f;
-     self.editorTextView.layer.borderColor = [[UIColor grayColor] CGColor];
-     */
     self.editorView.hidden = YES;
     
     self.defaultEditorBottomConstraint = self.editorBottomConstraint.constant;
@@ -77,8 +72,8 @@
                                                object:delegate];
     
     // 背景をタップしたら、キーボードを隠す
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                        action:@selector(closeEditor)];
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.editorTextView
+                                                                                        action:@selector(resignFirstResponder)];
     [self.view addGestureRecognizer:gestureRecognizer];
     
     // 投稿ボタンをロングタップでクイックツイートモード
@@ -125,32 +120,46 @@
     
     self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, s.width * 3, s.height)];
     
-    JFIHomeViewController *homeViewController = [[JFIHomeViewController alloc]
-                                                 initWithNibName:NSStringFromClass([JFIHomeViewController class]) bundle:nil];
-    homeViewController.view.frame = CGRectMake(s.width * 0, 0, s.width, s.height);
-    UIView *homeView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 0, 0, s.width, s.height)];
-    [homeView addSubview:homeViewController.view];
-    [self.contentView addSubview:homeView];
-    [self.viewControllers addObject:homeViewController];
-    [self.views addObject:homeView];
+    NSArray *tabs = @[[[NSNumber alloc] initWithInteger:TabTypeHome],
+                      [[NSNumber alloc] initWithInteger:TabTypeNotifications],
+                      [[NSNumber alloc] initWithInteger:TabTypeMessages]];
     
-    JFINotificationsViewController *notificationsViewController = [[JFINotificationsViewController alloc]
-                                                                   initWithNibName:NSStringFromClass([JFINotificationsViewController class]) bundle:nil];
-    notificationsViewController.view.frame = CGRectMake(0, 0, s.width, s.height);
-    UIView *notificationsView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 1, 0, s.width, s.height)];
-    [notificationsView addSubview:notificationsViewController.view];
-    [self.contentView addSubview:notificationsView];
-    [self.viewControllers addObject:notificationsViewController];
-    [self.views addObject:notificationsView];
+    int count = 0;
+    for (NSNumber *tab in tabs) {
+        JFITabViewController *viewController = [[JFITabViewController alloc] initWithNibName:NSStringFromClass([JFITabViewController class])
+                                                                                      bundle:nil
+                                                                                     tabType:[tab intValue]];
+        viewController.view.frame = CGRectMake(0, 0, s.width, s.height);
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(s.width * count, 0, s.width, s.height)];
+        [view addSubview:viewController.view];
+        [self.contentView addSubview:view];
+        [self.viewControllers addObject:viewController];
+        [self.views addObject:view];
+        count++;
+    }
     
-    JFIMessagesViewController *messagesViewController = [[JFIMessagesViewController alloc]
-                                                         initWithNibName:NSStringFromClass([JFIMessagesViewController class]) bundle:nil];
-    messagesViewController.view.frame = CGRectMake(0, 0, s.width, s.height);
-    UIView *messagesView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 2, 0, s.width, s.height)];
-    [messagesView addSubview:messagesViewController.view];
-    [self.contentView addSubview:messagesView];
-    [self.viewControllers addObject:messagesViewController];
-    [self.views addObject:messagesView];
+    // TabTypeHome
+    
+    
+    /*
+     JFINotificationsViewController *notificationsViewController = [[JFINotificationsViewController alloc]
+     initWithNibName:NSStringFromClass([JFINotificationsViewController class]) bundle:nil];
+     notificationsViewController.view.frame = CGRectMake(0, 0, s.width, s.height);
+     UIView *notificationsView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 1, 0, s.width, s.height)];
+     [notificationsView addSubview:notificationsViewController.view];
+     [self.contentView addSubview:notificationsView];
+     [self.viewControllers addObject:notificationsViewController];
+     [self.views addObject:notificationsView];
+     
+     JFIMessagesViewController *messagesViewController = [[JFIMessagesViewController alloc]
+     initWithNibName:NSStringFromClass([JFIMessagesViewController class]) bundle:nil];
+     messagesViewController.view.frame = CGRectMake(0, 0, s.width, s.height);
+     UIView *messagesView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 2, 0, s.width, s.height)];
+     [messagesView addSubview:messagesViewController.view];
+     [self.contentView addSubview:messagesView];
+     [self.viewControllers addObject:messagesViewController];
+     [self.views addObject:messagesView];
+     */
     
     [self.scrollView addSubview:self.contentView];
     
@@ -236,8 +245,8 @@
 - (IBAction)changePageAction:(id)sender
 {
     if (self.currentPage == [sender tag]) {
-        JFIDiningViewController *viewController = (JFIDiningViewController *) self.viewControllers[self.currentPage];
-        [viewController.tableView setContentOffset:CGPointZero animated:YES];
+        JFITabViewController *viewController = (JFITabViewController *) self.viewControllers[self.currentPage];
+        [viewController.tableView setContentOffset:CGPointZero animated:NO];
     } else {
         [UIView animateWithDuration:.3
                               delay:0
@@ -351,7 +360,7 @@
                        errorBlock:^(NSError *error) {
                            ;
                        }
-        ];
+         ];
         return;
     }
     
@@ -395,9 +404,14 @@
     [self.editorTextView setText:@""];
     [self textViewDidChange:self.editorTextView];
     
-    // ちょっと薄くしてフォーカス外した後そのまま消してもらえるようアピール
-    self.editorView.alpha = 0.99;
-    [self.editorTextView resignFirstResponder];
+    if ([self.editorTextView isFirstResponder]) {
+        // ちょっと薄くしてフォーカス外した後そのまま消してもらえるようアピール
+        self.editorView.alpha = 0.99;
+        [self.editorTextView resignFirstResponder];
+    } else {
+        // キーボードを表示していないモードではアニメーションせず隠す
+        self.editorView.hidden = YES;
+    }
 }
 
 #pragma mark - NSNotificationCenter handler
