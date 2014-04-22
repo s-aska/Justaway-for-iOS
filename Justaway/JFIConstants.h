@@ -24,3 +24,10 @@ extern NSString *const JFIEditorNotification;
 #pragma mark - keychain const
 
 extern NSString *const JFIAccessTokenService;
+
+typedef NS_ENUM(NSInteger, TabType) {
+    TabTypeHome,
+    TabTypeNotifications,
+    TabTypeMessages,
+    TabTypeUserList,
+};

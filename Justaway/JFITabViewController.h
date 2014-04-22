@@ -1,12 +1,6 @@
 #import <UIKit/UIKit.h>
+#import "JFIConstants.h"
 #import "JFIStatusCell.h"
-
-typedef NS_ENUM(NSInteger, TabType) {
-    TabTypeHome,
-    TabTypeNotifications,
-    TabTypeMessages,
-    TabTypeUserList,
-};
 
 @interface JFITabViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
@@ -16,7 +10,10 @@ typedef NS_ENUM(NSInteger, TabType) {
 @property (nonatomic) UIRefreshControl *refreshControl;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic) JFIStatusCell *cellForHeight;
+@property (nonatomic) BOOL scrolling;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil tabType:(TabType)tabType;
+- (void)finalizeWithDebounce:(CGFloat)delay;
+- (void)receiveStatus:(NSNotification *)center;
 
 @end

@@ -2,7 +2,11 @@
 #import "JFIAppDelegate.h"
 #import "JFIMainViewController.h"
 #import "JFITabViewController.h"
+#import "JFIHomeViewController.h"
+#import "JFINotificationsViewController.h"
+#import "JFIMessagesViewController.h"
 #import "JFIAccountViewController.h"
+#import "JFITab.h"
 
 @interface JFIMainViewController ()
 
@@ -120,15 +124,13 @@
     
     self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, s.width * 3, s.height)];
     
-    NSArray *tabs = @[[[NSNumber alloc] initWithInteger:TabTypeHome],
-                      [[NSNumber alloc] initWithInteger:TabTypeNotifications],
-                      [[NSNumber alloc] initWithInteger:TabTypeMessages]];
+    NSArray *tabs = @[[[JFITab alloc] initWithType:TabTypeHome],
+                      [[JFITab alloc] initWithType:TabTypeNotifications],
+                      [[JFITab alloc] initWithType:TabTypeMessages]];
     
     int count = 0;
-    for (NSNumber *tab in tabs) {
-        JFITabViewController *viewController = [[JFITabViewController alloc] initWithNibName:NSStringFromClass([JFITabViewController class])
-                                                                                      bundle:nil
-                                                                                     tabType:[tab intValue]];
+    for (JFITab *tab in tabs) {
+        JFITabViewController *viewController = [tab loadViewConroller];
         viewController.view.frame = CGRectMake(0, 0, s.width, s.height);
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(s.width * count, 0, s.width, s.height)];
         [view addSubview:viewController.view];
@@ -138,31 +140,7 @@
         count++;
     }
     
-    // TabTypeHome
-    
-    
-    /*
-     JFINotificationsViewController *notificationsViewController = [[JFINotificationsViewController alloc]
-     initWithNibName:NSStringFromClass([JFINotificationsViewController class]) bundle:nil];
-     notificationsViewController.view.frame = CGRectMake(0, 0, s.width, s.height);
-     UIView *notificationsView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 1, 0, s.width, s.height)];
-     [notificationsView addSubview:notificationsViewController.view];
-     [self.contentView addSubview:notificationsView];
-     [self.viewControllers addObject:notificationsViewController];
-     [self.views addObject:notificationsView];
-     
-     JFIMessagesViewController *messagesViewController = [[JFIMessagesViewController alloc]
-     initWithNibName:NSStringFromClass([JFIMessagesViewController class]) bundle:nil];
-     messagesViewController.view.frame = CGRectMake(0, 0, s.width, s.height);
-     UIView *messagesView = [[UIView alloc] initWithFrame:CGRectMake(s.width * 2, 0, s.width, s.height)];
-     [messagesView addSubview:messagesViewController.view];
-     [self.contentView addSubview:messagesView];
-     [self.viewControllers addObject:messagesViewController];
-     [self.views addObject:messagesView];
-     */
-    
     [self.scrollView addSubview:self.contentView];
-    
     self.scrollView.contentSize = self.contentView.frame.size;
     self.scrollView.delegate = self;
     self.scrollView.pagingEnabled = YES;
@@ -218,16 +196,6 @@
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     if (delegate.onlineStreaming) {
-        /* TODO: Toast的な奴で置き換える
-         UIAlertView *alert = [[UIAlertView alloc]
-         initWithTitle:@"connect"
-         message:@"ストリーミングを終了します"
-         delegate:nil
-         cancelButtonTitle:nil
-         otherButtonTitles:@"OK", nil
-         ];
-         [alert show];
-         */
         [delegate stopStreaming];
     } else {
         UIAlertView *alert = [[UIAlertView alloc]
@@ -276,24 +244,6 @@
         [self.view endEditing:YES];
         self.editorView.hidden = YES;
     }
-    /*
-     NSLog(@"[JFIMainViewController] postAction");
-     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-     if ([delegate.accounts count] > 0) {
-     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIPost" bundle:nil];
-     JFIPostViewController *postViewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIPostViewController"];
-     [self.navigationController pushViewController:postViewController animated:YES];
-     } else {
-     UIAlertView *alert = [[UIAlertView alloc]
-     initWithTitle:@"error"
-     message:@"「認」ボタンからアカウントを追加して下さい。"
-     delegate:nil
-     cancelButtonTitle:nil
-     otherButtonTitles:@"OK", nil
-     ];
-     [alert show];
-     }
-     */
 }
 
 - (void)toggleEditorAction:(UILongPressGestureRecognizer *)sender
