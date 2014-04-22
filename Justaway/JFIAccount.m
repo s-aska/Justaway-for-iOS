@@ -11,7 +11,7 @@
 @property (nonatomic, copy, readwrite) NSString *userID;
 @property (nonatomic, copy, readwrite) NSString *screenName;
 @property (nonatomic, copy, readwrite) NSString *displayName;
-@property (nonatomic, copy, readwrite) NSString *profileImageUrl;
+@property (nonatomic, copy, readwrite) NSString *profileImageURL;
 
 @end
 
@@ -28,7 +28,7 @@
         self.userID = dictionary[JFIAccountUserIDKey];
         self.screenName = dictionary[JFIAccountScreenNameKey];
         self.displayName = [dictionary objectForKey:JFIAccountDisplayNameKey defaultObject:@"-"];
-        self.profileImageUrl = dictionary[JFIAccountProfileImageURLKey];
+        self.profileImageURL = dictionary[JFIAccountProfileImageURLKey];
     }
     return self;
 }
@@ -56,7 +56,7 @@
     [account setUserID:self.userID];
     [account setScreenName:self.screenName];
     [account setDisplayName:self.displayName];
-    [account setProfileImageUrl:self.profileImageUrl];
+    [account setProfileImageURL:self.profileImageURL];
     
     return account;
 }
@@ -70,7 +70,7 @@
              JFIAccountUserIDKey:           self.userID,
              JFIAccountScreenNameKey:       self.screenName,
              JFIAccountDisplayNameKey:      self.displayName,
-             JFIAccountProfileImageURLKey:  self.profileImageUrl};
+             JFIAccountProfileImageURLKey:  self.profileImageURL};
 }
 
 - (NSString *)jsonStringRepresentation
@@ -115,7 +115,7 @@
                                               account.userID           = userID;
                                               account.screenName       = screenName;
                                               account.displayName      = user[@"name"];
-                                              account.profileImageUrl  = user[@"profile_image_url"];
+                                              account.profileImageURL  = user[@"profile_image_url"];
                                               successBlock(account);
                                           }
                                             errorBlock:errorBlock];

@@ -9,7 +9,7 @@
 @property (nonatomic, copy, readonly) NSString *userID;
 @property (nonatomic, copy, readonly) NSString *screenName;
 @property (nonatomic, copy, readonly) NSString *displayName;
-@property (nonatomic, copy, readonly) NSString *profileImageUrl;
+@property (nonatomic, copy, readonly) NSString *profileImageURL;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 - (instancetype)initWithJsonString:(NSString *)jsonString;

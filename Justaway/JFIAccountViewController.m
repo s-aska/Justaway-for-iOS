@@ -71,7 +71,7 @@
     
     JFIAccount *account = [delegate.accounts objectAtIndex:indexPath.row];
     
-    NSURL *url = [NSURL URLWithString:account.profileImageUrl];
+    NSURL *url = [NSURL URLWithString:account.profileImageURL];
     
     [cell setLabelTexts:account];
     

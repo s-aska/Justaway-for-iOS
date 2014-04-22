@@ -43,6 +43,8 @@ typedef NS_ENUM(char, Type) {
 // セルにステータスを反映する奴
 - (void)setLabelTexts:(NSDictionary *)status
 {
+    self.status = status;
+    
     // 表示名
     self.displayNameLabel.text = [status valueForKeyPath:@"user.name"];
     
@@ -61,12 +63,20 @@ typedef NS_ENUM(char, Type) {
     self.createdAtRelativeLabel.text = [createdAt relativeDescription];
     self.createdAtLabel.text = [createdAt absoluteDescription];
     
+    if ([status valueForKey:@"is_message"] != nil) {
+        self.retweetCountLabel.hidden = YES;
+        self.retweetButton.hidden = YES;
+        self.favoriteCountLabel.hidden = YES;
+        self.favoriteButton.hidden = YES;
+        return;
+    }
+    
     // RT状態
     [self.replyButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     [self.retweetButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     // RT数
-    if (![[[status valueForKey:@"retweet_count"] stringValue] isEqual:@"0"]) {
+    if ([status valueForKey:@"retweet_count"] > 0) {
         self.retweetCountLabel.text = [[status valueForKey:@"retweet_count"] stringValue];
     } else {
         self.retweetCountLabel.text = @"";
@@ -76,13 +86,11 @@ typedef NS_ENUM(char, Type) {
     [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     // ふぁぼ数
-    if (![[[status valueForKey:@"favorite_count"] stringValue] isEqual:@"0"]) {
+    if ([status valueForKey:@"favorite_count"] > 0) {
         self.favoriteCountLabel.text = [[status valueForKey:@"favorite_count"] stringValue];
     } else {
         self.favoriteCountLabel.text = @"";
     }
-    
-    self.status = status;
 }
 
 - (void)loadImages:(BOOL)scrolling
@@ -168,6 +176,7 @@ typedef NS_ENUM(char, Type) {
 - (IBAction)replyAction:(id)sender
 {
     NSString *text = [NSString stringWithFormat:@"@%@ ", [self.status valueForKeyPath:@"user.screen_name"]];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:@{@"text": text,
