@@ -44,7 +44,8 @@
                                      @"created_at": [dictionaly valueForKey:@"created_at"],
                                      @"user.profile_image_url": [dictionaly valueForKeyPath:@"sender.profile_image_url"],
                                      @"retweet_count": @0,
-                                     @"favorite_count": @0};
+                                     @"favorite_count": @0,
+                                     @"is_message": @1};
             [self.statuses addObject:[status mutableCopy]];
         }
         [self.tableView reloadData];

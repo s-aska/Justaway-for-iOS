@@ -40,6 +40,32 @@
     self.editorView.hidden = YES;
     
     self.defaultEditorBottomConstraint = self.editorBottomConstraint.constant;
+    
+    // タブを作る
+    CGSize s = self.scrollWrapperView.frame.size;
+    
+    self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, s.width * 3, s.height)];
+    
+    NSArray *tabs = @[[[JFITab alloc] initWithType:TabTypeHome],
+                      [[JFITab alloc] initWithType:TabTypeNotifications],
+                      [[JFITab alloc] initWithType:TabTypeMessages]];
+    
+    int count = 0;
+    for (JFITab *tab in tabs) {
+        JFITabViewController *viewController = [tab loadViewConroller];
+        viewController.view.frame = CGRectMake(0, 0, s.width, s.height);
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(s.width * count, 0, s.width, s.height)];
+        [view addSubview:viewController.view];
+        [self.contentView addSubview:view];
+        [self.viewControllers addObject:viewController];
+        [self.views addObject:view];
+        count++;
+    }
+    
+    [self.scrollView addSubview:self.contentView];
+    self.scrollView.contentSize = self.contentView.frame.size;
+    self.scrollView.delegate = self;
+    self.scrollView.pagingEnabled = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -89,9 +115,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    self.contentView.frame = CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-    NSLog(@"[JFIMainViewController] viewDidAppear scrollView width:%f", self.scrollView.frame.size.width);
-    NSLog(@"[JFIMainViewController] viewDidAppear scrollWrapperView width:%f", self.scrollWrapperView.frame.size.width);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -105,51 +128,27 @@
 {
     [super viewDidLayoutSubviews];
     
+    // とりあえず回転無効化しているので不要
+    return;
+    
     NSLog(@"[JFIMainViewController] viewDidLayoutSubviews");
     NSLog(@"[JFIMainViewController] scrollWrapperView width:%f height:%f", self.scrollWrapperView.frame.size.width, self.scrollWrapperView.frame.size.height);
     NSLog(@"[JFIMainViewController] scrollView width:%f height:%f", self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     
-    // UIScrollViewに表示するコンテンツViewを作成する。
+    // 回転への対応
     CGSize s = self.scrollWrapperView.frame.size;
-    if ([self.views count] > 0) {
-        NSInteger index = 0;
-        for (UIView *view in self.views) {
-            view.frame = CGRectMake(s.width * index, 0, s.width, s.height);
-            index++;
-        }
-        self.scrollView.contentSize = CGSizeMake(s.width * index, s.height);
-        self.contentView.frame = CGRectMake(0, 0, s.width * index, s.height);
-        return;
+    NSInteger index = 0;
+    for (UIView *view in self.views) {
+        view.frame = CGRectMake(s.width * index, 0, s.width, s.height);
+        index++;
     }
-    
-    self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, s.width * 3, s.height)];
-    
-    NSArray *tabs = @[[[JFITab alloc] initWithType:TabTypeHome],
-                      [[JFITab alloc] initWithType:TabTypeNotifications],
-                      [[JFITab alloc] initWithType:TabTypeMessages]];
-    
-    int count = 0;
-    for (JFITab *tab in tabs) {
-        JFITabViewController *viewController = [tab loadViewConroller];
-        viewController.view.frame = CGRectMake(0, 0, s.width, s.height);
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(s.width * count, 0, s.width, s.height)];
-        [view addSubview:viewController.view];
-        [self.contentView addSubview:view];
-        [self.viewControllers addObject:viewController];
-        [self.views addObject:view];
-        count++;
-    }
-    
-    [self.scrollView addSubview:self.contentView];
-    self.scrollView.contentSize = self.contentView.frame.size;
-    self.scrollView.delegate = self;
-    self.scrollView.pagingEnabled = YES;
+    self.scrollView.contentSize = CGSizeMake(s.width * index, s.height);
+    self.contentView.frame = CGRectMake(0, 0, s.width * index, s.height);
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - UIScrollViewDelegate
