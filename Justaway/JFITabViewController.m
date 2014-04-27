@@ -1,4 +1,5 @@
 #import "JFIConstants.h"
+#import "JFIEntity.h"
 #import "JFIAppDelegate.h"
 #import "JFITabViewController.h"
 
@@ -45,7 +46,7 @@
     NSLog(@"[JFIHomeViewController] viewDidLoad accounts:%lu", (unsigned long)[delegate.accounts count]);
     
     // xibファイル名を指定しUINibオブジェクトを生成する
-    UINib *nib = [UINib nibWithNibName:@"JFIStatusCell" bundle:nil];
+    UINib *nib = [UINib nibWithNibName:@"JFIEntityCell" bundle:nil];
     
     // UITableView#registerNib:forCellReuseIdentifierで、使用するセルを登録
     [self.tableView registerNib:nib forCellReuseIdentifier:JFICellID];
@@ -68,7 +69,8 @@
         [self onRefresh];
     } else if (self.tabType == TabTypeHome) {
         // レイアウト確認用のダミーデータ
-        NSDictionary *status1 = @{@"user.name": @"Shinichiro Aska",
+        NSDictionary *status1 = @{@"id_str": @"1",
+                                  @"user.name": @"Shinichiro Aska",
                                   @"user.screen_name": @"su_aska",
                                   @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。\n今日は鯖味噌の日。",
                                   @"source": @"web",
@@ -77,7 +79,8 @@
                                   @"retweet_count": @10000,
                                   @"favorite_count": @20000};
         
-        NSDictionary *status2 = @{@"user.name": @"Shinichiro Aska",
+        NSDictionary *status2 = @{@"id_str": @"2",
+                                  @"user.name": @"Shinichiro Aska",
                                   @"user.screen_name": @"su_aska",
                                   @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。",
                                   @"source": @"StS",
@@ -86,7 +89,8 @@
                                   @"retweet_count": @100,
                                   @"favorite_count": @200};
         
-        NSDictionary *status3 = @{@"user.name": @"Shinichiro Aska",
+        NSDictionary *status3 = @{@"id_str": @"3",
+                                  @"user.name": @"Shinichiro Aska",
                                   @"user.screen_name": @"su_aska",
                                   @"text": @"今日は鯖味噌の日。",
                                   @"source": @"<a href=\"http://justaway.info\" rel=\"nofollow\">Justaway for iOS</a>",
@@ -95,10 +99,10 @@
                                   @"retweet_count": @0,
                                   @"favorite_count": @0};
         
-        self.statuses = [NSMutableArray array];
-        [self.statuses addObject:[status1 mutableCopy]];
-        [self.statuses addObject:[status2 mutableCopy]];
-        [self.statuses addObject:[status3 mutableCopy]];
+        self.entities = [NSMutableArray array];
+        [self.entities addObject:[[JFIEntity alloc] initWithStatus:status1]];
+        [self.entities addObject:[[JFIEntity alloc] initWithStatus:status2]];
+        [self.entities addObject:[[JFIEntity alloc] initWithStatus:status3]];
         [self.tableView reloadData];
     }
 }
@@ -112,20 +116,20 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.statuses count];
+    return [self.entities count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    JFIStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:JFICellID forIndexPath:indexPath];
+    JFIEntityCell *cell = [tableView dequeueReusableCellWithIdentifier:JFICellID forIndexPath:indexPath];
     
-    NSDictionary *status = [self.statuses objectAtIndex:indexPath.row];
+    JFIEntity *tweet = [self.entities objectAtIndex:indexPath.row];
     
-    if (cell.status == status) {
+    if (cell.tweet == tweet) {
         return cell;
     }
     
-    [cell setLabelTexts:status];
+    [cell setLabelTexts:tweet];
     
     [cell.displayNameLabel sizeToFit];
     
@@ -143,20 +147,19 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableDictionary *status = [self.statuses objectAtIndex:indexPath.row];
-    if (status == nil) {
+    JFIEntity *tweet = [self.entities objectAtIndex:indexPath.row];
+    if (tweet == nil) {
         return 0;
     }
     
     // 高さの計算結果をキャッシュから参照
-    NSNumber *height = [status objectForKey:@"height"];
-    if (height != nil) {
-        return [height floatValue] + 2;
+    if (tweet.height != nil) {
+        return [tweet.height floatValue] + 2;
     }
     
     self.cellForHeight.frame = self.tableView.bounds;
     
-    [self.cellForHeight setLabelTexts:status];
+    [self.cellForHeight setLabelTexts:tweet];
     [self.cellForHeight.contentView setNeedsLayout];
     [self.cellForHeight.contentView layoutIfNeeded];
     
@@ -164,7 +167,7 @@
     CGSize size = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     
     // 高さの計算結果をキャッシュ
-    [status setObject:@(size.height) forKey:@"height"];
+    tweet.height = @(size.height);
     
     // 自動計算で得られた高さを返す
     return size.height + 2;
@@ -244,8 +247,8 @@
         
         NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
         int index = 0;
-        for (NSDictionary *status in self.stacks) {
-            [self.statuses insertObject:[status mutableCopy] atIndex:0];
+        for (JFIEntity *tweet in self.stacks) {
+            [self.entities insertObject:tweet atIndex:0];
             [indexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
             index++;
         }
@@ -266,7 +269,7 @@
         self.stacks = [@[] mutableCopy];
     }
     
-    for (JFIStatusCell *cell in self.tableView.visibleCells) {
+    for (JFIEntityCell *cell in self.tableView.visibleCells) {
         if (cell.iconImageView.image == nil) {
             [cell loadImages:NO];
         }
@@ -277,8 +280,8 @@
 
 - (void)receiveStatus:(NSNotification *)center
 {
-    NSDictionary *status = center.userInfo;
-    [self.stacks addObject:status];
+    JFIEntity *tweet = [center.userInfo valueForKey:@"tweet"];
+    [self.stacks addObject:tweet];
     
     NSLog(@"receiveStatus stack count:%lu", (unsigned long)[self.stacks count]);
     

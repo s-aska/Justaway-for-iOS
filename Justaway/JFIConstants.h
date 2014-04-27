@@ -31,3 +31,9 @@ typedef NS_ENUM(NSInteger, TabType) {
     TabTypeMessages,
     TabTypeUserList,
 };
+
+typedef NS_ENUM(NSInteger, EntityType) {
+    EntityTypeStatus,
+    EntityTypeFavorite,
+    EntityTypeMessage,
+};

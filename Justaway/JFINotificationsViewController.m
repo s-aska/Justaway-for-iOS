@@ -1,3 +1,4 @@
+#import "JFIEntity.h"
 #import "JFIAppDelegate.h"
 #import "JFINotificationsViewController.h"
 
@@ -16,9 +17,9 @@
     [twitter getMentionsTimelineSinceID:nil
                                   count:20
                            successBlock:^(NSArray *statuses) {
-                               self.statuses = [NSMutableArray array];
+                               self.entities = [NSMutableArray array];
                                for (NSDictionary *dictionaly in statuses) {
-                                   [self.statuses addObject:[dictionaly mutableCopy]];
+                                   [self.entities addObject:[[JFIEntity alloc] initWithStatus:dictionaly]];
                                }
                                [self.tableView reloadData];
                                [self.refreshControl endRefreshing];

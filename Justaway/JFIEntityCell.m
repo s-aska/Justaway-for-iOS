@@ -2,12 +2,12 @@
 #import "JFITheme.h"
 #import "JFIAppDelegate.h"
 #import "JFIActionStatus.h"
-#import "JFIStatusCell.h"
+#import "JFIEntityCell.h"
 #import "JFIHTTPImageOperation.h"
 #import "NSDate+Justaway.h"
 #import <ISMemoryCache/ISMemoryCache.h>
 
-@implementation JFIStatusCell
+@implementation JFIEntityCell
 
 typedef NS_ENUM(char, Type) {
     ButtonIndexRetweet = 0,
@@ -41,29 +41,26 @@ typedef NS_ENUM(char, Type) {
 }
 
 // セルにステータスを反映する奴
-- (void)setLabelTexts:(NSDictionary *)status
+- (void)setLabelTexts:(JFIEntity *)tweet
 {
-    self.status = status;
+    self.tweet = tweet;
     
     // 表示名
-    self.displayNameLabel.text = [status valueForKeyPath:@"user.name"];
+    self.displayNameLabel.text = tweet.displayName;
     
     // screen_name
-    self.screenNameLabel.text = [@"@" stringByAppendingString:[status valueForKeyPath:@"user.screen_name"]];
+    self.screenNameLabel.text = [@"@" stringByAppendingString:tweet.screenName];
     
     // ツイート
-    self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:[status valueForKey:@"text"]
-                                                                      attributes:JFIStatusCell.statusAttribute];
-    
-    // via名
-    self.sourceLabel.text = [self getClientNameFromSource:[status valueForKey:@"source"]];
+    self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:tweet.text
+                                                                      attributes:JFIEntityCell.statusAttribute];
     
     // 投稿日時
-    NSDate *createdAt = [NSDate dateWithTwitterDate:[status valueForKey:@"created_at"]];
+    NSDate *createdAt = [NSDate dateWithTwitterDate:tweet.createdAt];
     self.createdAtRelativeLabel.text = [createdAt relativeDescription];
     self.createdAtLabel.text = [createdAt absoluteDescription];
     
-    if ([status valueForKey:@"is_message"] != nil) {
+    if (tweet.type == EntityTypeMessage) {
         self.retweetCountLabel.hidden = YES;
         self.retweetButton.hidden = YES;
         self.favoriteCountLabel.hidden = YES;
@@ -71,13 +68,16 @@ typedef NS_ENUM(char, Type) {
         return;
     }
     
+    // via名
+    self.sourceLabel.text = tweet.clientName;
+    
     // RT状態
     [self.replyButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     [self.retweetButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     // RT数
-    if ([status valueForKey:@"retweet_count"] > 0) {
-        self.retweetCountLabel.text = [[status valueForKey:@"retweet_count"] stringValue];
+    if (tweet.retweetCount > 0) {
+        self.retweetCountLabel.text = [tweet.retweetCount stringValue];
     } else {
         self.retweetCountLabel.text = @"";
     }
@@ -86,8 +86,8 @@ typedef NS_ENUM(char, Type) {
     [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     // ふぁぼ数
-    if ([status valueForKey:@"favorite_count"] > 0) {
-        self.favoriteCountLabel.text = [[status valueForKey:@"favorite_count"] stringValue];
+    if (tweet.favoriteCount > 0) {
+        self.favoriteCountLabel.text = [tweet.favoriteCount stringValue];
     } else {
         self.favoriteCountLabel.text = @"";
     }
@@ -95,17 +95,15 @@ typedef NS_ENUM(char, Type) {
 
 - (void)loadImages:(BOOL)scrolling
 {
-    NSDictionary *status = self.status;
+    JFIEntity *tweet = self.tweet;
     
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
     JFITheme *theme = [JFITheme sharedTheme];
     
-    NSString *statusId = [status objectForKey:@"id_str"];
-    [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:statusId]];
-    [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:statusId]];
+    [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:tweet.statusID]];
+    [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:tweet.statusID]];
     
-    NSURL *url = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
-    UIImage *image = [[ISMemoryCache sharedCache] objectForKey:url];
+    UIImage *image = [[ISMemoryCache sharedCache] objectForKey:tweet.profileImageURL];
     if (image) {
         self.iconImageView.image = image;
         return;
@@ -113,10 +111,10 @@ typedef NS_ENUM(char, Type) {
     
     self.iconImageView.image = nil;
     
-    [JFIHTTPImageOperation loadURL:url
+    [JFIHTTPImageOperation loadURL:tweet.profileImageURL
                            handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
                                // 読み込みから表示までの間にスクロールなどによって表示内容が変わっている場合スキップ
-                               if (self.status != status) {
+                               if (self.tweet != tweet) {
                                    return;
                                }
                                // 読み込み済の場合スキップ（瞬き防止）
@@ -158,29 +156,14 @@ typedef NS_ENUM(char, Type) {
     
 }
 
-- (NSString *)getClientNameFromSource:(NSString *)source
-{
-    NSError *error = nil;
-    NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:@"rel=\"nofollow\">(.+)</a>" options:0 error:&error];
-    if (error != nil) {
-        NSLog(@"%@", error);
-    } else {
-        NSTextCheckingResult *match = [regexp firstMatchInString:source options:0 range:NSMakeRange(0, source.length)];
-        if (match.numberOfRanges > 0) {
-            return [source substringWithRange:[match rangeAtIndex:1]];
-        }
-    }
-    return source;
-}
-
 - (IBAction)replyAction:(id)sender
 {
-    NSString *text = [NSString stringWithFormat:@"@%@ ", [self.status valueForKeyPath:@"user.screen_name"]];
+    NSString *text = [NSString stringWithFormat:@"@%@ ", self.tweet.screenName];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:@{@"text": text,
-                                                                 @"in_reply_to_status_id": [self.status valueForKey:@"id_str"]}];
+                                                                 @"in_reply_to_status_id": self.tweet.statusID}];
 }
 
 - (IBAction)retweetAction:(id)sender
@@ -198,23 +181,21 @@ typedef NS_ENUM(char, Type) {
 - (IBAction)favoriteAction:(id)sender
 {
     
-    NSString *statusId = [self.status objectForKey:@"id_str"];
-    
     [self.favoriteButton setTitleColor:[JFITheme orangeDark] forState:UIControlStateNormal];
     
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
-    [sharedActionStatus setFavorite:statusId];
+    [sharedActionStatus setFavorite:self.tweet.statusID];
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
     [twitter postFavoriteState:YES
-                   forStatusID:statusId
+                   forStatusID:self.tweet.statusID
                   successBlock:^(NSDictionary *status){
                       
                   }
                     errorBlock:^(NSError *error){
                         // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
-                        [sharedActionStatus removeFavorite:statusId];
+                        [sharedActionStatus removeFavorite:self.tweet.statusID];
                         [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
                     }];
 }
@@ -230,7 +211,7 @@ typedef NS_ENUM(char, Type) {
             JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
             STTwitterAPI *twitter = [delegate getTwitter];
             [self.retweetButton setTitleColor:[JFITheme greenDark] forState:UIControlStateNormal];
-            [twitter postStatusRetweetWithID:[self.status valueForKey:@"id_str"]
+            [twitter postStatusRetweetWithID:self.tweet.statusID
                                 successBlock:^(NSDictionary *status){
                                 }
                                   errorBlock:^(NSError *error){
@@ -240,12 +221,9 @@ typedef NS_ENUM(char, Type) {
         }
         case ButtonIndexQuote:
         {
-            NSString *text = [NSString stringWithFormat:@" https://twitter.com/%@/status/%@",
-                              [self.status valueForKeyPath:@"user.screen_name"],
-                              [self.status valueForKey:@"id_str"]];
             [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
                                                                 object:[[UIApplication sharedApplication] delegate]
-                                                              userInfo:@{@"text": text,
+                                                              userInfo:@{@"text": self.tweet.statusURL,
                                                                          @"range_location": @0,
                                                                          @"range_length": @0}];
             break;

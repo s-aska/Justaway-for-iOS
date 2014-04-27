@@ -1,3 +1,4 @@
+#import "JFIEntity.h"
 #import "JFIAppDelegate.h"
 #import "JFIMessagesViewController.h"
 
@@ -34,19 +35,9 @@
         NSSortDescriptor *sortDispNo = [[NSSortDescriptor alloc] initWithKey:@"created_at" ascending:NO];
         NSArray *sortDescArray = [NSArray arrayWithObjects:sortDispNo, nil];
         NSArray *statuses = [[receivedRows sortedArrayUsingDescriptors:sortDescArray] mutableCopy];
-        self.statuses = [NSMutableArray array];
+        self.entities = [NSMutableArray array];
         for (NSDictionary *dictionaly in statuses) {
-            NSDictionary *status = @{@"id_str": [dictionaly valueForKey:@"id_str"],
-                                     @"user.name": [dictionaly valueForKeyPath:@"sender.name"],
-                                     @"user.screen_name": [dictionaly valueForKeyPath:@"sender.screen_name"],
-                                     @"text": [dictionaly valueForKey:@"text"],
-                                     @"source": @"",
-                                     @"created_at": [dictionaly valueForKey:@"created_at"],
-                                     @"user.profile_image_url": [dictionaly valueForKeyPath:@"sender.profile_image_url"],
-                                     @"retweet_count": @0,
-                                     @"favorite_count": @0,
-                                     @"is_message": @1};
-            [self.statuses addObject:[status mutableCopy]];
+            [self.entities addObject:[[JFIEntity alloc] initWithMessage:dictionaly]];
         }
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];

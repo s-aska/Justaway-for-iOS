@@ -1,6 +1,7 @@
 #import "JFISecret.h"
 #import "JFIConstants.h"
 #import "JFIAccount.h"
+#import "JFIEntity.h"
 #import "JFIAppDelegate.h"
 #import "STHTTPRequest+STTwitter.h"
 #import <SSKeychain/SSKeychain.h>
@@ -237,21 +238,13 @@
                                                                                                         userInfo:nil];
                                                   }
                                                   if ([response valueForKey:@"text"]) {
-                                                      NSDictionary *status = @{@"id_str":                 [response valueForKey:@"id_str"],
-                                                                               @"user.name":              [response valueForKeyPath:@"user.name"],
-                                                                               @"user.screen_name":       [response valueForKeyPath:@"user.screen_name"],
-                                                                               @"text":                   [response valueForKey:@"text"],
-                                                                               @"source":                 [response valueForKey:@"source"],
-                                                                               @"created_at":             [response valueForKey:@"created_at"],
-                                                                               @"user.profile_image_url": [response valueForKeyPath:@"user.profile_image_url"]};
-                                                      
                                                       if ([response valueForKey:@"text"] == nil) {
                                                           return;
                                                       }
-                                                      
+                                                      JFIEntity *tweet = [[JFIEntity alloc] initWithStatus:response];
                                                       [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveStatusNotification
                                                                                                           object:self
-                                                                                                        userInfo:status];
+                                                                                                        userInfo:@{@"tweet": tweet}];
                                                       
                                                   }
                                               } stallWarningBlock:nil

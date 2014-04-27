@@ -1,6 +1,7 @@
+#import "JFIEntity.h"
 #import <UIKit/UIKit.h>
 
-@interface JFIStatusCell : UITableViewCell <UIActionSheetDelegate>
+@interface JFIEntityCell : UITableViewCell <UIActionSheetDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *screenNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *displayNameLabel;
@@ -14,9 +15,9 @@
 @property (nonatomic, weak) IBOutlet UIButton *favoriteButton;
 @property (nonatomic, weak) IBOutlet UILabel *retweetCountLabel;
 @property (nonatomic, weak) IBOutlet UILabel *favoriteCountLabel;
-@property (nonatomic) NSDictionary *status;
+@property (nonatomic) JFIEntity *tweet;
 
-- (void)setLabelTexts:(NSDictionary *)status;
+- (void)setLabelTexts:(JFIEntity *)tweet;
 - (void)loadImages:(BOOL)scrolling;
 
 - (IBAction)replyAction:(id)sender;
