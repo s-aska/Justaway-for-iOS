@@ -2,17 +2,13 @@
 #import "JFITheme.h"
 #import "JFIAppDelegate.h"
 #import "JFIActionStatus.h"
+#import "JFIRetweetActionSheet.h"
 #import "JFIEntityCell.h"
 #import "JFIHTTPImageOperation.h"
 #import "NSDate+Justaway.h"
 #import <ISMemoryCache/ISMemoryCache.h>
 
 @implementation JFIEntityCell
-
-typedef NS_ENUM(char, Type) {
-    ButtonIndexRetweet = 0,
-    ButtonIndexQuote   = 1,
-};
 
 // ステータス（ツイートメッセージ）のスタイル
 // 一時的にここで定義しているが後で移動する
@@ -41,26 +37,26 @@ typedef NS_ENUM(char, Type) {
 }
 
 // セルにステータスを反映する奴
-- (void)setLabelTexts:(JFIEntity *)tweet
+- (void)setLabelTexts:(JFIEntity *)entity
 {
-    self.tweet = tweet;
+    self.entity = entity;
     
     // 表示名
-    self.displayNameLabel.text = tweet.displayName;
+    self.displayNameLabel.text = entity.displayName;
     
     // screen_name
-    self.screenNameLabel.text = [@"@" stringByAppendingString:tweet.screenName];
+    self.screenNameLabel.text = [@"@" stringByAppendingString:entity.screenName];
     
     // ツイート
-    self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:tweet.text
+    self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:entity.text
                                                                       attributes:JFIEntityCell.statusAttribute];
     
     // 投稿日時
-    NSDate *createdAt = [NSDate dateWithTwitterDate:tweet.createdAt];
+    NSDate *createdAt = [NSDate dateWithTwitterDate:entity.createdAt];
     self.createdAtRelativeLabel.text = [createdAt relativeDescription];
     self.createdAtLabel.text = [createdAt absoluteDescription];
     
-    if (tweet.type == EntityTypeMessage) {
+    if (entity.type == EntityTypeMessage) {
         self.retweetCountLabel.hidden = YES;
         self.retweetButton.hidden = YES;
         self.favoriteCountLabel.hidden = YES;
@@ -69,15 +65,15 @@ typedef NS_ENUM(char, Type) {
     }
     
     // via名
-    self.sourceLabel.text = tweet.clientName;
+    self.sourceLabel.text = entity.clientName;
     
     // RT状態
     [self.replyButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     [self.retweetButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     // RT数
-    if (tweet.retweetCount > 0) {
-        self.retweetCountLabel.text = [tweet.retweetCount stringValue];
+    if (entity.retweetCount > 0) {
+        self.retweetCountLabel.text = [entity.retweetCount stringValue];
     } else {
         self.retweetCountLabel.text = @"";
     }
@@ -86,8 +82,8 @@ typedef NS_ENUM(char, Type) {
     [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     // ふぁぼ数
-    if (tweet.favoriteCount > 0) {
-        self.favoriteCountLabel.text = [tweet.favoriteCount stringValue];
+    if (entity.favoriteCount > 0) {
+        self.favoriteCountLabel.text = [entity.favoriteCount stringValue];
     } else {
         self.favoriteCountLabel.text = @"";
     }
@@ -95,7 +91,7 @@ typedef NS_ENUM(char, Type) {
 
 - (void)loadImages:(BOOL)scrolling
 {
-    JFIEntity *tweet = self.tweet;
+    JFIEntity *tweet = self.entity;
     
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
     JFITheme *theme = [JFITheme sharedTheme];
@@ -114,7 +110,7 @@ typedef NS_ENUM(char, Type) {
     [JFIHTTPImageOperation loadURL:tweet.profileImageURL
                            handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
                                // 読み込みから表示までの間にスクロールなどによって表示内容が変わっている場合スキップ
-                               if (self.tweet != tweet) {
+                               if (self.entity != tweet) {
                                    return;
                                }
                                // 読み込み済の場合スキップ（瞬き防止）
@@ -158,79 +154,38 @@ typedef NS_ENUM(char, Type) {
 
 - (IBAction)replyAction:(id)sender
 {
-    NSString *text = [NSString stringWithFormat:@"@%@ ", self.tweet.screenName];
+    NSString *text = [NSString stringWithFormat:@"@%@ ", self.entity.screenName];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:@{@"text": text,
-                                                                 @"in_reply_to_status_id": self.tweet.statusID}];
+                                                                 @"in_reply_to_status_id": self.entity.statusID}];
 }
 
 - (IBAction)retweetAction:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
-    [actionSheet addButtonWithTitle:@"公式RT"];
-    [actionSheet addButtonWithTitle:@"引用"];
-    [actionSheet addButtonWithTitle:@"キャンセル"];
-    actionSheet.delegate = self;
-    actionSheet.tag = 1;
-    actionSheet.cancelButtonIndex = 2;
-    [actionSheet showInView:self.contentView];
+    [[[JFIRetweetActionSheet alloc] initWithEntity:self.entity] showInView:self.contentView];
 }
 
 - (IBAction)favoriteAction:(id)sender
 {
-    
     [self.favoriteButton setTitleColor:[JFITheme orangeDark] forState:UIControlStateNormal];
     
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
-    [sharedActionStatus setFavorite:self.tweet.statusID];
+    [sharedActionStatus setFavorite:self.entity.statusID];
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
     [twitter postFavoriteState:YES
-                   forStatusID:self.tweet.statusID
+                   forStatusID:self.entity.statusID
                   successBlock:^(NSDictionary *status){
                       
                   }
                     errorBlock:^(NSError *error){
                         // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
-                        [sharedActionStatus removeFavorite:self.tweet.statusID];
+                        [sharedActionStatus removeFavorite:self.entity.statusID];
                         [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
                     }];
-}
-
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    //    NSLog(@"clickedButtonAtIndex tag:%i buttonIndex:%i %@", actionSheet.tag, buttonIndex, [self.status valueForKey:@"text"]);
-    switch (buttonIndex) {
-        case ButtonIndexRetweet:
-        {
-            JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-            STTwitterAPI *twitter = [delegate getTwitter];
-            [self.retweetButton setTitleColor:[JFITheme greenDark] forState:UIControlStateNormal];
-            [twitter postStatusRetweetWithID:self.tweet.statusID
-                                successBlock:^(NSDictionary *status){
-                                }
-                                  errorBlock:^(NSError *error){
-                                      // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
-                                  }];
-            break;
-        }
-        case ButtonIndexQuote:
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
-                                                                object:[[UIApplication sharedApplication] delegate]
-                                                              userInfo:@{@"text": self.tweet.statusURL,
-                                                                         @"range_location": @0,
-                                                                         @"range_length": @0}];
-            break;
-        }
-        default:
-            break;
-    }
 }
 
 @end

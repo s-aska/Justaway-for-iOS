@@ -2,6 +2,7 @@
 #import "JFIEntity.h"
 #import "JFIAppDelegate.h"
 #import "JFITabViewController.h"
+#import "JFIStatusActionSheet.h"
 
 @interface JFITabViewController ()
 
@@ -125,7 +126,7 @@
     
     JFIEntity *tweet = [self.entities objectAtIndex:indexPath.row];
     
-    if (cell.tweet == tweet) {
+    if (cell.entity == tweet) {
         return cell;
     }
     
@@ -147,19 +148,19 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    JFIEntity *tweet = [self.entities objectAtIndex:indexPath.row];
-    if (tweet == nil) {
+    JFIEntity *entity = [self.entities objectAtIndex:indexPath.row];
+    if (entity == nil) {
         return 0;
     }
     
     // 高さの計算結果をキャッシュから参照
-    if (tweet.height != nil) {
-        return [tweet.height floatValue] + 2;
+    if (entity.height != nil) {
+        return [entity.height floatValue] + 2;
     }
     
     self.cellForHeight.frame = self.tableView.bounds;
     
-    [self.cellForHeight setLabelTexts:tweet];
+    [self.cellForHeight setLabelTexts:entity];
     [self.cellForHeight.contentView setNeedsLayout];
     [self.cellForHeight.contentView layoutIfNeeded];
     
@@ -167,7 +168,7 @@
     CGSize size = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     
     // 高さの計算結果をキャッシュ
-    tweet.height = @(size.height);
+    entity.height = @(size.height);
     
     // 自動計算で得られた高さを返す
     return size.height + 2;
@@ -175,7 +176,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Statusを選択された時の処理
+    NSLog(@"didSelectRowAtIndexPath");
+    JFIEntity *entity = [self.entities objectAtIndex:indexPath.row];
+    if (entity == nil) {
+        return;
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIOpenStatusNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:@{@"entity": entity}];
+//    [[[JFIStatusActionSheet alloc] initWithEntity:entity] showInView:self.view];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView

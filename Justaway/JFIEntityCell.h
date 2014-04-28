@@ -15,9 +15,9 @@
 @property (nonatomic, weak) IBOutlet UIButton *favoriteButton;
 @property (nonatomic, weak) IBOutlet UILabel *retweetCountLabel;
 @property (nonatomic, weak) IBOutlet UILabel *favoriteCountLabel;
-@property (nonatomic) JFIEntity *tweet;
+@property (nonatomic) JFIEntity *entity;
 
-- (void)setLabelTexts:(JFIEntity *)tweet;
+- (void)setLabelTexts:(JFIEntity *)entity;
 - (void)loadImages:(BOOL)scrolling;
 
 - (IBAction)replyAction:(id)sender;

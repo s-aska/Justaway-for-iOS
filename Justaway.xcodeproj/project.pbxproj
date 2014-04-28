@@ -35,7 +35,9 @@
 		5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22194C00EF13418F82A85B42 /* libPods.a */; };
 		6A21291018C3485A00AD2953 /* JFIEntityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21290E18C3485A00AD2953 /* JFIEntityCell.m */; };
 		6A3DE96318EB32D900F045A7 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */; };
-		6A52D244190CE8C900C78B4D /* JFIStatusActionSheetDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D243190CE8C900C78B4D /* JFIStatusActionSheetDelegate.m */; };
+		6A52D248190D1F1F00C78B4D /* JFIRetweetActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D247190D1F1F00C78B4D /* JFIRetweetActionSheet.m */; };
+		6A52D24B190D43EE00C78B4D /* JFIActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D24A190D43EE00C78B4D /* JFIActionSheet.m */; };
+		6A52D24F190D4A7800C78B4D /* JFIStatusActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D24E190D4A7800C78B4D /* JFIStatusActionSheet.m */; };
 		6A9C989F18BB89D500CF4F84 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C989E18BB89D500CF4F84 /* Podfile */; };
 		6AB9C8C619041716002FD422 /* JFIEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB9C8C519041716002FD422 /* JFIEntity.m */; };
 		6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
@@ -109,8 +111,12 @@
 		6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		6A21290D18C3485A00AD2953 /* JFIEntityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIEntityCell.h; sourceTree = "<group>"; };
 		6A21290E18C3485A00AD2953 /* JFIEntityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntityCell.m; sourceTree = "<group>"; };
-		6A52D242190CE8C900C78B4D /* JFIStatusActionSheetDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIStatusActionSheetDelegate.h; sourceTree = "<group>"; };
-		6A52D243190CE8C900C78B4D /* JFIStatusActionSheetDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIStatusActionSheetDelegate.m; sourceTree = "<group>"; };
+		6A52D246190D1F1F00C78B4D /* JFIRetweetActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIRetweetActionSheet.h; sourceTree = "<group>"; };
+		6A52D247190D1F1F00C78B4D /* JFIRetweetActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIRetweetActionSheet.m; sourceTree = "<group>"; };
+		6A52D249190D43EE00C78B4D /* JFIActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIActionSheet.h; sourceTree = "<group>"; };
+		6A52D24A190D43EE00C78B4D /* JFIActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIActionSheet.m; sourceTree = "<group>"; };
+		6A52D24D190D4A7800C78B4D /* JFIStatusActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIStatusActionSheet.h; sourceTree = "<group>"; };
+		6A52D24E190D4A7800C78B4D /* JFIStatusActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIStatusActionSheet.m; sourceTree = "<group>"; };
 		6A9C989E18BB89D500CF4F84 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6AB9C8C419041716002FD422 /* JFIEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIEntity.h; sourceTree = "<group>"; };
 		6AB9C8C519041716002FD422 /* JFIEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntity.m; sourceTree = "<group>"; };
@@ -230,6 +236,7 @@
 		38DA5F6D18E30D5B006F484C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6A52D24C190D4A1500C78B4D /* ActionSheets */,
 				3828D5B218EBC6C400170374 /* Controls */,
 				38DA5F6E18E30D6C006F484C /* TableViewCells */,
 			);
@@ -281,21 +288,17 @@
 			name = font;
 			sourceTree = "<group>";
 		};
-		6A52D240190CE88600C78B4D /* Delegate */ = {
+		6A52D24C190D4A1500C78B4D /* ActionSheets */ = {
 			isa = PBXGroup;
 			children = (
-				6A52D241190CE89300C78B4D /* ActionSheet */,
+				6A52D249190D43EE00C78B4D /* JFIActionSheet.h */,
+				6A52D24A190D43EE00C78B4D /* JFIActionSheet.m */,
+				6A52D246190D1F1F00C78B4D /* JFIRetweetActionSheet.h */,
+				6A52D247190D1F1F00C78B4D /* JFIRetweetActionSheet.m */,
+				6A52D24D190D4A7800C78B4D /* JFIStatusActionSheet.h */,
+				6A52D24E190D4A7800C78B4D /* JFIStatusActionSheet.m */,
 			);
-			name = Delegate;
-			sourceTree = "<group>";
-		};
-		6A52D241190CE89300C78B4D /* ActionSheet */ = {
-			isa = PBXGroup;
-			children = (
-				6A52D242190CE8C900C78B4D /* JFIStatusActionSheetDelegate.h */,
-				6A52D243190CE8C900C78B4D /* JFIStatusActionSheetDelegate.m */,
-			);
-			name = ActionSheet;
+			name = ActionSheets;
 			sourceTree = "<group>";
 		};
 		6ADF7939188D6E2200632BA5 = {
@@ -334,7 +337,6 @@
 		6ADF794B188D6E2200632BA5 /* Justaway */ = {
 			isa = PBXGroup;
 			children = (
-				6A52D240190CE88600C78B4D /* Delegate */,
 				6A0DD82818EB2D5600B9B9E6 /* Resources */,
 				38DA5F6818E29CAA006F484C /* JFISecret.h */,
 				38DA5F6918E29CAA006F484C /* JFISecret.m */,
@@ -530,7 +532,7 @@
 				38DA5F6A18E29CAA006F484C /* JFISecret.m in Sources */,
 				38108F2E19069C4100C99F00 /* JFINotificationsViewController.m in Sources */,
 				3828D5BB18ED24FF00170374 /* UIImage+Processing.m in Sources */,
-				6A52D244190CE8C900C78B4D /* JFIStatusActionSheetDelegate.m in Sources */,
+				6A52D24B190D43EE00C78B4D /* JFIActionSheet.m in Sources */,
 				6AB9C8C619041716002FD422 /* JFIEntity.m in Sources */,
 				38D1B97518FD42F700DED578 /* JFIActionStatus.m in Sources */,
 				6A21291018C3485A00AD2953 /* JFIEntityCell.m in Sources */,
@@ -544,8 +546,10 @@
 				38108F2B1906984F00C99F00 /* JFIHomeViewController.m in Sources */,
 				3882594818E55F3600F50117 /* JFIHTTPImageOperation.m in Sources */,
 				383D7DDB18E139B500D36678 /* JFITabViewController.m in Sources */,
+				6A52D248190D1F1F00C78B4D /* JFIRetweetActionSheet.m in Sources */,
 				3828D5B518EBC6F500170374 /* JFIButton.m in Sources */,
 				383D7DE518E1AF5C00D36678 /* JFIAccountCell.m in Sources */,
+				6A52D24F190D4A7800C78B4D /* JFIStatusActionSheet.m in Sources */,
 				383D7DC418D6B64A00D36678 /* JFIMainViewController.m in Sources */,
 				38108F341906A14400C99F00 /* JFITab.m in Sources */,
 				383D7DB418D1968F00D36678 /* NSDate+Justaway.m in Sources */,

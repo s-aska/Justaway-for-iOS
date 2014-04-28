@@ -102,9 +102,11 @@
                                                object:delegate];
     
     // 背景をタップしたら、キーボードを隠す
+    /*
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.editorTextView
                                                                                         action:@selector(resignFirstResponder)];
     [self.view addGestureRecognizer:gestureRecognizer];
+     */
     
     // 投稿ボタンをロングタップでクイックツイートモード
     UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
