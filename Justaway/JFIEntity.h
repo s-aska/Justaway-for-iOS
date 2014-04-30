@@ -4,7 +4,6 @@
 @interface JFIEntity : NSObject
 
 @property (nonatomic) EntityType type;
-@property (nonatomic) NSString *statusID;
 @property (nonatomic) NSString *userID;
 @property (nonatomic) NSString *screenName;
 @property (nonatomic) NSString *displayName;
@@ -14,9 +13,19 @@
 @property (nonatomic) NSString *clientName;
 @property (nonatomic) NSNumber *retweetCount;
 @property (nonatomic) NSNumber *favoriteCount;
+@property (nonatomic) NSArray *urls;
+@property (nonatomic) NSArray *userMentions;
+@property (nonatomic) NSArray *hashtags;
+
+// Status only
+@property (nonatomic) NSString *statusID;
+
+// Message only
+@property (nonatomic) NSString *messageID;
+
+// Cell
 @property (nonatomic) NSNumber *height;
 
-@property (nonatomic) NSString *messageID;
 
 
 - (instancetype)initWithStatus:(NSDictionary *)status;

@@ -6,5 +6,6 @@
 @property (nonatomic) NSMutableDictionary *objects;
 
 - (void)addButtonWithTitle:(NSString *)title action:(SEL)selector;
+- (void)addButtonWithTitle:(NSString *)title action:(SEL)selector object:(id)object;
 
 @end

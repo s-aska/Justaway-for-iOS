@@ -7,6 +7,7 @@
 #import "JFIMessagesViewController.h"
 #import "JFIAccountViewController.h"
 #import "JFITab.h"
+#import "JFIStatusActionSheet.h"
 
 @interface JFIMainViewController ()
 
@@ -99,6 +100,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(editorHandler:)
                                                  name:JFIEditorNotification
+                                               object:delegate];
+    
+    // ステータス用のコンテキストメニュー表示
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(openStatusHandler:)
+                                                 name:JFIOpenStatusNotification
                                                object:delegate];
     
     // 背景をタップしたら、キーボードを隠す
@@ -381,6 +388,14 @@
         self.editorTextView.selectedRange = range;
     }
     self.inReplyToStatusId = [userInfo objectForKey:@"in_reply_to_status_id"];
+}
+
+- (void)openStatusHandler:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    if ([userInfo objectForKey:@"entity"] != nil) {
+        [[[JFIStatusActionSheet alloc] initWithEntity:[userInfo objectForKey:@"entity"]] showInView:self.view];
+    }
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification

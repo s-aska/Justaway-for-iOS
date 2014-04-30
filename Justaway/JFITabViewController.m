@@ -2,7 +2,6 @@
 #import "JFIEntity.h"
 #import "JFIAppDelegate.h"
 #import "JFITabViewController.h"
-#import "JFIStatusActionSheet.h"
 
 @interface JFITabViewController ()
 
@@ -184,7 +183,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIOpenStatusNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:@{@"entity": entity}];
-//    [[[JFIStatusActionSheet alloc] initWithEntity:entity] showInView:self.view];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView

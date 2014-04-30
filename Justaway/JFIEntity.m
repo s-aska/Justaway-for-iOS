@@ -17,6 +17,9 @@
         self.clientName = [self getClientName:[status valueForKey:@"source"]];
         self.retweetCount = [status valueForKey:@"retweet_count"];
         self.favoriteCount = [status valueForKey:@"favorite_count"];
+        self.urls = [status valueForKeyPath:@"entities.urls"];
+        self.userMentions = [status valueForKeyPath:@"entities.user_mentions"];
+        self.hashtags = [status valueForKeyPath:@"entities.hashtags"];
     }
     return self;
 }
@@ -33,21 +36,19 @@
         self.profileImageURL = [[NSURL alloc] initWithString:[message valueForKeyPath:@"sender.profile_image_url"]];
         self.text = [message valueForKey:@"text"];
         self.createdAt = [message valueForKey:@"created_at"];
+        self.urls = [message valueForKeyPath:@"entities.urls"];
+        self.userMentions = [message valueForKeyPath:@"entities.user_mentions"];
+        self.hashtags = [message valueForKeyPath:@"entities.hashtags"];
     }
     return self;
 }
 
 - (NSString *)getClientName:(NSString *)source
 {
-    NSError *error = nil;
-    NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:@"rel=\"nofollow\">(.+)</a>" options:0 error:&error];
-    if (error != nil) {
-        NSLog(@"%@", error);
-    } else {
-        NSTextCheckingResult *match = [regexp firstMatchInString:source options:0 range:NSMakeRange(0, source.length)];
-        if (match.numberOfRanges > 0) {
-            return [source substringWithRange:[match rangeAtIndex:1]];
-        }
+    NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:@"rel=\"nofollow\">(.+)</a>" options:0 error:nil];
+    NSTextCheckingResult *match = [regexp firstMatchInString:source options:0 range:NSMakeRange(0, source.length)];
+    if (match.numberOfRanges > 0) {
+        return [source substringWithRange:[match rangeAtIndex:1]];
     }
     return source;
 }

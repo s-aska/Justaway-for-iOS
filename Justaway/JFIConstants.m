@@ -25,3 +25,7 @@ NSString *const JFIOpenStatusNotification          = @"JFIOpenStatusNotification
 #pragma mark - keychain const
 
 NSString *const JFIAccessTokenService = @"JustawayService";
+
+#pragma mark - Regexp
+
+NSString *const JFIURLPattern = @"(?:http://|https://)[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+";

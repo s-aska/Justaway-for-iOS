@@ -14,6 +14,8 @@
 		38108F341906A14400C99F00 /* JFITab.m in Sources */ = {isa = PBXBuildFile; fileRef = 38108F331906A14400C99F00 /* JFITab.m */; };
 		3828D5B518EBC6F500170374 /* JFIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3828D5B418EBC6F500170374 /* JFIButton.m */; };
 		3828D5BB18ED24FF00170374 /* UIImage+Processing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3828D5BA18ED24FF00170374 /* UIImage+Processing.m */; };
+		3839D5891911242500B1F28E /* JFIEntityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839D5881911242500B1F28E /* JFIEntityTests.m */; };
+		3839D58A191125DB00B1F28E /* JFIEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB9C8C519041716002FD422 /* JFIEntity.m */; };
 		383D7DB418D1968F00D36678 /* NSDate+Justaway.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DB318D1968F00D36678 /* NSDate+Justaway.m */; };
 		383D7DB518D1968F00D36678 /* NSDate+Justaway.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DB318D1968F00D36678 /* NSDate+Justaway.m */; };
 		383D7DB818D1A3C000D36678 /* NSDate+Justaway.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DB718D1A3C000D36678 /* NSDate+Justaway.m */; };
@@ -80,6 +82,7 @@
 		3828D5B418EBC6F500170374 /* JFIButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIButton.m; sourceTree = "<group>"; };
 		3828D5B918ED24FF00170374 /* UIImage+Processing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Processing.h"; sourceTree = "<group>"; };
 		3828D5BA18ED24FF00170374 /* UIImage+Processing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Processing.m"; sourceTree = "<group>"; };
+		3839D5881911242500B1F28E /* JFIEntityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntityTests.m; sourceTree = "<group>"; };
 		383D7DB218D1968F00D36678 /* NSDate+Justaway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Justaway.h"; sourceTree = "<group>"; };
 		383D7DB318D1968F00D36678 /* NSDate+Justaway.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Justaway.m"; sourceTree = "<group>"; };
 		383D7DB718D1A3C000D36678 /* NSDate+Justaway.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Justaway.m"; sourceTree = "<group>"; };
@@ -171,6 +174,14 @@
 				3828D5B418EBC6F500170374 /* JFIButton.m */,
 			);
 			name = Controls;
+			sourceTree = "<group>";
+		};
+		3839D5871911240200B1F28E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3839D5881911242500B1F28E /* JFIEntityTests.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		383D7DB618D19A0A00D36678 /* Category */ = {
@@ -372,6 +383,7 @@
 			children = (
 				6ADF7976188D6E2300632BA5 /* JustawayTests.m */,
 				383D7DB918D1A53B00D36678 /* Category */,
+				3839D5871911240200B1F28E /* Models */,
 				6ADF7971188D6E2300632BA5 /* Supporting Files */,
 			);
 			path = JustawayTests;
@@ -560,6 +572,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3839D58A191125DB00B1F28E /* JFIEntity.m in Sources */,
+				3839D5891911242500B1F28E /* JFIEntityTests.m in Sources */,
 				383D7DB818D1A3C000D36678 /* NSDate+Justaway.m in Sources */,
 				383D7DB518D1968F00D36678 /* NSDate+Justaway.m in Sources */,
 				6ADF7977188D6E2300632BA5 /* JustawayTests.m in Sources */,
