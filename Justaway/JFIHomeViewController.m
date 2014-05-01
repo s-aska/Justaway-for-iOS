@@ -10,7 +10,7 @@
 
 #pragma mark - JFITabViewController
 
-- (void)load
+- (void)loadEntities
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
@@ -23,7 +23,7 @@
                            }
                            [self.tableView reloadData];
                            [self.refreshControl endRefreshing];
-                           // [delegate startStreaming];
+                           [delegate startStreaming];
                        } errorBlock:^(NSError *error) {
                            NSLog(@"-- error: %@", [error localizedDescription]);
                            [self.refreshControl endRefreshing];

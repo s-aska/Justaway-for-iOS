@@ -10,7 +10,7 @@
 
 #pragma mark - JFITabViewController
 
-- (void)load
+- (void)loadEntities
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];

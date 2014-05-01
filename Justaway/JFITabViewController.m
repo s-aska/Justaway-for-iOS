@@ -228,7 +228,7 @@
     
     [self.refreshControl beginRefreshing];
     
-    [self load];
+    [self loadEntities];
 }
 
 #pragma mark -
@@ -299,7 +299,7 @@
 
 #pragma mark - JFITabViewController
 
-- (void)load
+- (void)loadEntities
 {
     [NSException raise:NSInternalInconsistencyException format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
 }
