@@ -25,6 +25,13 @@
     return self;
 }
 
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFICloseStatusNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:nil];
+}
+
 - (void)favoriteRetweet
 {
     [self favorite];

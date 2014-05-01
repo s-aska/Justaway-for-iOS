@@ -43,6 +43,12 @@
             break;
     }
     
+    // UIActionSheetが閉じたら選択解除
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(closeStatus:)
+                                                 name:JFICloseStatusNotification
+                                               object:delegate];
+    
     NSLog(@"[JFIHomeViewController] viewDidLoad accounts:%lu", (unsigned long)[delegate.accounts count]);
     
     // xibファイル名を指定しUINibオブジェクトを生成する
@@ -295,6 +301,12 @@
     if (!self.scrolling) {
         [self finalizeWithDebounce:.5f];
     }
+}
+
+- (void)closeStatus:(NSNotification *)center
+{
+    NSLog(@"closeStatus");
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 #pragma mark - JFITabViewController
