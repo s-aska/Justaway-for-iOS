@@ -31,13 +31,14 @@
                              @"retweet_count": @10000,
                              @"favorite_count": @20000,
                              @"entities": @{
-                                     @"urls": @[@{
-                                                    @"expanded_url": @"https://dev.twitter.com/terms/display-guidelines",
-                                                    @"url": @"https://t.co/Ed4omjYs",
-                                                    @"display_url": @"dev.twitter.com/terms/display-\u2026"
-                                                    }],
+                                     @"urls": @[@{@"expanded_url": @"https://dev.twitter.com/terms/display-guidelines",
+                                                  @"url": @"https://t.co/Ed4omjYs",
+                                                  @"display_url": @"dev.twitter.com/terms/display-\u2026"}],
                                      @"user_mentions": @[@"su_aska"],
-                                     @"hashtags": @[@"justaway"]
+                                     @"hashtags": @[@"justaway"],
+                                     @"media": @[@{@"display_url": @"pic.twitter.com/lX5LVZO",
+                                                   @"expanded_url": @"http://twitter.com/fakekurrik/status/244204973972410368/photo/1",
+                                                   @"media_url": @"http://pbs.twimg.com/media/A2OXIUcCUAAXj9k.png"}]
                                      }};
     
     JFIEntity *entity = [[JFIEntity alloc] initWithStatus:status];
@@ -45,6 +46,9 @@
     XCTAssertEqualObjects([[entity.urls objectAtIndex:0] objectForKey:@"expanded_url"], @"https://dev.twitter.com/terms/display-guidelines");
     XCTAssertEqualObjects([[entity.urls objectAtIndex:0] objectForKey:@"display_url"], @"dev.twitter.com/terms/display-\u2026");
     XCTAssertEqualObjects([[entity.urls objectAtIndex:0] objectForKey:@"url"], @"https://t.co/Ed4omjYs");
+    XCTAssertEqualObjects([[entity.media objectAtIndex:0] objectForKey:@"display_url"], @"pic.twitter.com/lX5LVZO");
+    XCTAssertEqualObjects([[entity.media objectAtIndex:0] objectForKey:@"expanded_url"], @"http://twitter.com/fakekurrik/status/244204973972410368/photo/1");
+    XCTAssertEqualObjects([[entity.media objectAtIndex:0] objectForKey:@"media_url"], @"http://pbs.twimg.com/media/A2OXIUcCUAAXj9k.png");
 }
 
 @end

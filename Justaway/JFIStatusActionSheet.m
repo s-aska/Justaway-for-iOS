@@ -18,6 +18,11 @@
                               action:@selector(openURL:)
                               object:[[NSURL alloc] initWithString:[url objectForKey:@"expanded_url"]]];
         }
+        for (NSDictionary *url in entity.media) {
+            [self addButtonWithTitle:[url objectForKey:@"display_url"]
+                              action:@selector(openURL:)
+                              object:[[NSURL alloc] initWithString:[url objectForKey:@"media_url"]]];
+        }
         self.entity = entity;
         self.cancelButtonIndex = [self addButtonWithTitle:@"キャンセル"];
         NSLog(@"cancelButtonIndex:%i", self.cancelButtonIndex);

@@ -16,6 +16,7 @@
 @property (nonatomic) NSArray *urls;
 @property (nonatomic) NSArray *userMentions;
 @property (nonatomic) NSArray *hashtags;
+@property (nonatomic) NSArray *media;
 
 // Status only
 @property (nonatomic) NSString *statusID;

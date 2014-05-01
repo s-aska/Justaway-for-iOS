@@ -20,6 +20,7 @@
         self.urls = [status valueForKeyPath:@"entities.urls"];
         self.userMentions = [status valueForKeyPath:@"entities.user_mentions"];
         self.hashtags = [status valueForKeyPath:@"entities.hashtags"];
+        self.media = [status valueForKeyPath:@"entities.media"];
     }
     return self;
 }
@@ -39,6 +40,7 @@
         self.urls = [message valueForKeyPath:@"entities.urls"];
         self.userMentions = [message valueForKeyPath:@"entities.user_mentions"];
         self.hashtags = [message valueForKeyPath:@"entities.hashtags"];
+        self.media = [message valueForKeyPath:@"entities.media"];
     }
     return self;
 }
