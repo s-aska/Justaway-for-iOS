@@ -9,14 +9,18 @@
 
 @implementation JFITabViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil tabType:(TabType)tabType
+- (id)initWithType:(TabType)tabType
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super init];
     if (self) {
         self.stacks = [@[] mutableCopy];
         self.tabType = tabType;
     }
     return self;
+}
+
+- (void)loadView {
+	[super loadView];
 }
 
 - (void)viewDidLoad
@@ -60,16 +64,12 @@
     // 高さの計算用のセルを登録
     [self.tableView registerNib:nib forCellReuseIdentifier:JFICellForHeightID];
     
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    
     // セルの高さ計算用のオブジェクトをあらかじめ生成して変数に保持しておく
     self.cellForHeight = [self.tableView dequeueReusableCellWithIdentifier:JFICellForHeightID];
     
     // pull down to refresh
     self.refreshControl = UIRefreshControl.new;
     [self.refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
-    [self.tableView insertSubview:self.refreshControl atIndex:0];
     
     if ([delegate.accounts count] > 0) {
         [self onRefresh];

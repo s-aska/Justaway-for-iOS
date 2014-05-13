@@ -22,7 +22,6 @@
 		383D7DC418D6B64A00D36678 /* JFIMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DC318D6B64A00D36678 /* JFIMainViewController.m */; };
 		383D7DC618D6B66D00D36678 /* JFIMain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DC518D6B66D00D36678 /* JFIMain.storyboard */; };
 		383D7DDB18E139B500D36678 /* JFITabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DD918E139B500D36678 /* JFITabViewController.m */; };
-		383D7DDC18E139B500D36678 /* JFITabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DDA18E139B500D36678 /* JFITabViewController.xib */; };
 		383D7DDE18E1925700D36678 /* JFIAccount.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DDD18E1925700D36678 /* JFIAccount.storyboard */; };
 		383D7DE118E1957A00D36678 /* JFIAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DE018E1957A00D36678 /* JFIAccountViewController.m */; };
 		383D7DE518E1AF5C00D36678 /* JFIAccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DE318E1AF5C00D36678 /* JFIAccountCell.m */; };
@@ -91,7 +90,6 @@
 		383D7DC518D6B66D00D36678 /* JFIMain.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JFIMain.storyboard; sourceTree = "<group>"; };
 		383D7DD818E139B500D36678 /* JFITabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFITabViewController.h; sourceTree = "<group>"; };
 		383D7DD918E139B500D36678 /* JFITabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFITabViewController.m; sourceTree = "<group>"; };
-		383D7DDA18E139B500D36678 /* JFITabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFITabViewController.xib; sourceTree = "<group>"; };
 		383D7DDD18E1925700D36678 /* JFIAccount.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JFIAccount.storyboard; sourceTree = "<group>"; };
 		383D7DDF18E1957A00D36678 /* JFIAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIAccountViewController.h; sourceTree = "<group>"; };
 		383D7DE018E1957A00D36678 /* JFIAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIAccountViewController.m; sourceTree = "<group>"; };
@@ -233,7 +231,6 @@
 			children = (
 				383D7DD818E139B500D36678 /* JFITabViewController.h */,
 				383D7DD918E139B500D36678 /* JFITabViewController.m */,
-				383D7DDA18E139B500D36678 /* JFITabViewController.xib */,
 				38108F291906984F00C99F00 /* JFIHomeViewController.h */,
 				38108F2A1906984F00C99F00 /* JFIHomeViewController.m */,
 				38108F2C19069C4100C99F00 /* JFINotificationsViewController.h */,
@@ -482,7 +479,6 @@
 			files = (
 				6A3DE96318EB32D900F045A7 /* fontello.ttf in Resources */,
 				6A9C989F18BB89D500CF4F84 /* Podfile in Resources */,
-				383D7DDC18E139B500D36678 /* JFITabViewController.xib in Resources */,
 				6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */,
 				383D7DE618E1AF5C00D36678 /* JFIAccountCell.xib in Resources */,
 				383D7DDE18E1925700D36678 /* JFIAccount.storyboard in Resources */,
