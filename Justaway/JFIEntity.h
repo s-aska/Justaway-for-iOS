@@ -17,6 +17,10 @@
 @property (nonatomic) NSArray *userMentions;
 @property (nonatomic) NSArray *hashtags;
 @property (nonatomic) NSArray *media;
+@property (nonatomic) NSString *actionedUserID;
+@property (nonatomic) NSString *actionedScreenName;
+@property (nonatomic) NSString *actionedDisplayName;
+@property (nonatomic) NSURL *actionedProfileImageURL;
 
 // Status only
 @property (nonatomic) NSString *statusID;

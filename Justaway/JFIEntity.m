@@ -7,20 +7,30 @@
     self = [super init];
     if (self) {
         self.type = EntityTypeStatus;
-        self.statusID = [status valueForKey:@"id_str"];
-        self.userID = [status valueForKeyPath:@"user.id_str"];
-        self.screenName = [status valueForKeyPath:@"user.screen_name"];
-        self.displayName = [status valueForKeyPath:@"user.name"];
-        self.profileImageURL = [[NSURL alloc] initWithString:[status valueForKeyPath:@"user.profile_image_url"]];
-        self.text = [status valueForKey:@"text"];
-        self.createdAt = [status valueForKey:@"created_at"];
-        self.clientName = [self getClientName:[status valueForKey:@"source"]];
-        self.retweetCount = [status valueForKey:@"retweet_count"];
-        self.favoriteCount = [status valueForKey:@"favorite_count"];
-        self.urls = [status valueForKeyPath:@"entities.urls"];
-        self.userMentions = [status valueForKeyPath:@"entities.user_mentions"];
-        self.hashtags = [status valueForKeyPath:@"entities.hashtags"];
-        self.media = [status valueForKeyPath:@"entities.media"];
+        NSDictionary *source;
+        if ([status valueForKey:@"retweeted_status"] == nil) {
+            source = status;
+        } else {
+            source = [status valueForKey:@"retweeted_status"];
+            self.actionedUserID = [status valueForKeyPath:@"user.id_str"];
+            self.actionedScreenName = [status valueForKeyPath:@"user.screen_name"];
+            self.actionedDisplayName = [status valueForKeyPath:@"user.name"];
+            self.actionedProfileImageURL = [[NSURL alloc] initWithString:[status valueForKeyPath:@"user.profile_image_url"]];
+        }
+        self.statusID = [source valueForKey:@"id_str"];
+        self.userID = [source valueForKeyPath:@"user.id_str"];
+        self.screenName = [source valueForKeyPath:@"user.screen_name"];
+        self.displayName = [source valueForKeyPath:@"user.name"];
+        self.profileImageURL = [[NSURL alloc] initWithString:[source valueForKeyPath:@"user.profile_image_url"]];
+        self.text = [source valueForKey:@"text"];
+        self.createdAt = [source valueForKey:@"created_at"];
+        self.clientName = [self getClientName:[source valueForKey:@"source"]];
+        self.retweetCount = [source valueForKey:@"retweet_count"];
+        self.favoriteCount = [source valueForKey:@"favorite_count"];
+        self.urls = [source valueForKeyPath:@"entities.urls"];
+        self.userMentions = [source valueForKeyPath:@"entities.user_mentions"];
+        self.hashtags = [source valueForKeyPath:@"entities.hashtags"];
+        self.media = [source valueForKeyPath:@"entities.media"];
     }
     return self;
 }
