@@ -25,7 +25,6 @@
         }
         self.entity = entity;
         self.cancelButtonIndex = [self addButtonWithTitle:@"キャンセル"];
-        NSLog(@"cancelButtonIndex:%i", self.cancelButtonIndex);
     }
     return self;
 }
