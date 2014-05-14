@@ -87,6 +87,16 @@
     } else {
         self.favoriteCountLabel.text = @"";
     }
+    
+    // RT
+    if (entity.actionedUserID != nil) {
+        self.actionedLabel.text = [NSString stringWithFormat:@"RT by @%@(%@)", self.entity.actionedDisplayName, self.entity.actionedScreenName];
+        self.actionedView.hidden = NO;
+        self.createdAtLabelHeightConstraint.constant = 26.f;
+    } else {
+        self.actionedView.hidden = YES;
+        self.createdAtLabelHeightConstraint.constant = 5.f;
+    }
 }
 
 - (void)loadImages:(BOOL)scrolling
@@ -99,38 +109,46 @@
     [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:tweet.statusID]];
     [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:tweet.statusID]];
     
-    UIImage *image = [[ISMemoryCache sharedCache] objectForKey:tweet.profileImageURL];
-    if (image) {
-        self.iconImageView.image = image;
-        return;
+    [self loadImage:self.iconImageView imageURL:tweet.profileImageURL];
+    
+    if (self.entity.actionedProfileImageURL != nil) {
+        [self loadImage:self.actionedIconImageView imageURL:tweet.actionedProfileImageURL];
     }
-    
-    self.iconImageView.image = nil;
-    
-    [JFIHTTPImageOperation loadURL:tweet.profileImageURL
-                           handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
-                               // 読み込みから表示までの間にスクロールなどによって表示内容が変わっている場合スキップ
-                               if (self.entity != tweet) {
-                                   return;
-                               }
-                               // 読み込み済の場合スキップ（瞬き防止）
-                               if (self.iconImageView.image != nil) {
-                                   return;
-                               }
-                               // ネットワークからの読み込み時のみフェードイン
-                               if (response) {
-                                   self.iconImageView.alpha = 0;
-                                   self.iconImageView.image = image;
-                                   [UIView animateWithDuration:0.2
-                                                         delay:0
-                                                       options:UIViewAnimationOptionCurveEaseIn
-                                                    animations:^{ self.iconImageView.alpha = 1; }
-                                                    completion:^(BOOL finished){}
-                                    ];
-                               } else {
-                                   self.iconImageView.image = image;
-                               }
-                           }];
+}
+
+- (void)loadImage:(UIImageView *)imageView imageURL:(NSURL *)imageURL
+{
+    UIImage *image = [[ISMemoryCache sharedCache] objectForKey:imageURL];
+    if (image) {
+        imageView.image = image;
+    } else {
+        imageView.image = nil;
+        NSString *statusID = self.entity.statusID;
+        [JFIHTTPImageOperation loadURL:imageURL
+                               handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
+                                   // 読み込みから表示までの間にスクロールなどによって表示内容が変わっている場合スキップ
+                                   if (self.entity.statusID != statusID) {
+                                       return;
+                                   }
+                                   // 読み込み済の場合スキップ（瞬き防止）
+                                   if (imageView.image != nil) {
+                                       return;
+                                   }
+                                   // ネットワークからの読み込み時のみフェードイン
+                                   if (response) {
+                                       imageView.alpha = 0;
+                                       imageView.image = image;
+                                       [UIView animateWithDuration:0.2
+                                                             delay:0
+                                                           options:UIViewAnimationOptionCurveEaseIn
+                                                        animations:^{ imageView.alpha = 1; }
+                                                        completion:^(BOOL finished){}
+                                        ];
+                                   } else {
+                                       imageView.image = image;
+                                   }
+                               }];
+    }
 }
 
 - (void)layoutSubviews

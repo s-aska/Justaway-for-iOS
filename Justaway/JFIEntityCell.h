@@ -9,12 +9,16 @@
 @property (nonatomic, weak) IBOutlet UILabel *sourceLabel;
 @property (nonatomic, weak) IBOutlet UILabel *createdAtRelativeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *createdAtLabel;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *createdAtLabelHeightConstraint;
 @property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
 @property (nonatomic, weak) IBOutlet UIButton *replyButton;
 @property (nonatomic, weak) IBOutlet UIButton *retweetButton;
 @property (nonatomic, weak) IBOutlet UIButton *favoriteButton;
 @property (nonatomic, weak) IBOutlet UILabel *retweetCountLabel;
 @property (nonatomic, weak) IBOutlet UILabel *favoriteCountLabel;
+@property (nonatomic, weak) IBOutlet UIView *actionedView;
+@property (nonatomic, weak) IBOutlet UIImageView *actionedIconImageView;
+@property (nonatomic, weak) IBOutlet UILabel *actionedLabel;
 @property (nonatomic) JFIEntity *entity;
 
 - (void)setLabelTexts:(JFIEntity *)entity;
