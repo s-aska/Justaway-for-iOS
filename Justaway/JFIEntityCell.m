@@ -92,7 +92,7 @@
     if (entity.actionedUserID != nil) {
         self.actionedLabel.text = [NSString stringWithFormat:@"RT by @%@(%@)", self.entity.actionedDisplayName, self.entity.actionedScreenName];
         self.actionedView.hidden = NO;
-        self.createdAtLabelHeightConstraint.constant = 26.f;
+        self.createdAtLabelHeightConstraint.constant = 21.f;
     } else {
         self.actionedView.hidden = YES;
         self.createdAtLabelHeightConstraint.constant = 5.f;

@@ -27,6 +27,8 @@
 {
     [super viewDidLoad];
     
+    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     switch (self.tabType) {
