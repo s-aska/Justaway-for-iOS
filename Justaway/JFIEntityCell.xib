@@ -29,7 +29,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="screen_name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KTS-bX-sb7">
-                        <rect key="frame" x="69" y="6" width="63" height="12"/>
+                        <rect key="frame" x="69" y="8" width="63" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -129,9 +129,9 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RT by xxx" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gXQ-pt-0lN">
-                                <rect key="frame" x="21" y="2" width="47" height="12"/>
+                                <rect key="frame" x="21" y="3" width="34" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="8"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -140,7 +140,7 @@
                         <constraints>
                             <constraint firstItem="gXQ-pt-0lN" firstAttribute="leading" secondItem="gdD-aa-oK4" secondAttribute="trailing" constant="5" id="Aam-7q-AQm"/>
                             <constraint firstAttribute="bottom" secondItem="gdD-aa-oK4" secondAttribute="bottom" constant="5" id="CLi-JM-ZQQ"/>
-                            <constraint firstItem="gXQ-pt-0lN" firstAttribute="top" secondItem="4NV-2e-3mq" secondAttribute="top" constant="2" id="J34-D9-WmR"/>
+                            <constraint firstItem="gXQ-pt-0lN" firstAttribute="top" secondItem="4NV-2e-3mq" secondAttribute="top" constant="3" id="J34-D9-WmR"/>
                             <constraint firstItem="gdD-aa-oK4" firstAttribute="top" secondItem="4NV-2e-3mq" secondAttribute="top" id="NwP-e1-Dco"/>
                             <constraint firstItem="gdD-aa-oK4" firstAttribute="leading" secondItem="4NV-2e-3mq" secondAttribute="leading" id="hhf-sA-8Gn"/>
                         </constraints>
@@ -159,7 +159,7 @@
                     <constraint firstAttribute="trailing" secondItem="Rnh-iT-Y6o" secondAttribute="trailing" constant="5" id="IY7-Kr-MTG"/>
                     <constraint firstItem="FFj-LN-eTz" firstAttribute="leading" secondItem="qvj-mQ-z3Y" secondAttribute="trailing" constant="-7" id="K1p-56-yWI"/>
                     <constraint firstItem="JHj-d0-E4U" firstAttribute="top" secondItem="cRH-Ro-xhF" secondAttribute="bottom" constant="-2" id="LWd-Dq-nwt"/>
-                    <constraint firstItem="KTS-bX-sb7" firstAttribute="top" secondItem="wE1-tL-X9I" secondAttribute="top" constant="6" id="MRu-8V-OEm"/>
+                    <constraint firstItem="KTS-bX-sb7" firstAttribute="top" secondItem="wE1-tL-X9I" secondAttribute="top" constant="8" id="MRu-8V-OEm"/>
                     <constraint firstItem="4NV-2e-3mq" firstAttribute="leading" secondItem="wE1-tL-X9I" secondAttribute="leading" constant="56" id="PpY-HM-Obx"/>
                     <constraint firstItem="FFj-LN-eTz" firstAttribute="top" secondItem="cRH-Ro-xhF" secondAttribute="bottom" constant="11" id="Rbj-hE-l6v"/>
                     <constraint firstItem="yWz-SK-07r" firstAttribute="top" secondItem="wE1-tL-X9I" secondAttribute="top" constant="6" id="VkM-vu-zfA"/>
