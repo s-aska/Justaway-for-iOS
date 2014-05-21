@@ -77,40 +77,10 @@
         [self onRefresh];
     } else if (self.tabType == TabTypeHome) {
         // レイアウト確認用のダミーデータ
-        NSDictionary *status1 = @{@"id_str": @"1",
-                                  @"user.name": @"Shinichiro Aska",
-                                  @"user.screen_name": @"su_aska",
-                                  @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。\n今日は鯖味噌の日。",
-                                  @"source": @"web",
-                                  @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
-                                  @"user.profile_image_url": @"https://pbs.twimg.com/profile_images/450683047495471105/2Qq3AXYv_bigger.png",
-                                  @"retweet_count": @10000,
-                                  @"favorite_count": @20000};
-        
-        NSDictionary *status2 = @{@"id_str": @"2",
-                                  @"user.name": @"Shinichiro Aska",
-                                  @"user.screen_name": @"su_aska",
-                                  @"text": @"今日は鯖味噌の日。\n今日は鯖味噌の日。",
-                                  @"source": @"StS",
-                                  @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
-                                  @"user.profile_image_url": @"https://pbs.twimg.com/profile_images/450683047495471105/2Qq3AXYv_bigger.png",
-                                  @"retweet_count": @100,
-                                  @"favorite_count": @200};
-        
-        NSDictionary *status3 = @{@"id_str": @"3",
-                                  @"user.name": @"Shinichiro Aska",
-                                  @"user.screen_name": @"su_aska",
-                                  @"text": @"今日は鯖味噌の日。",
-                                  @"source": @"<a href=\"http://justaway.info\" rel=\"nofollow\">Justaway for iOS</a>",
-                                  @"created_at": @"Wed Jun 06 20:07:10 +0000 2012",
-                                  @"user.profile_image_url": @"https://pbs.twimg.com/profile_images/450683047495471105/2Qq3AXYv_bigger.png",
-                                  @"retweet_count": @0,
-                                  @"favorite_count": @0};
-        
         self.entities = [NSMutableArray array];
-        [self.entities addObject:[[JFIEntity alloc] initWithStatus:status1]];
-        [self.entities addObject:[[JFIEntity alloc] initWithStatus:status2]];
-        [self.entities addObject:[[JFIEntity alloc] initWithStatus:status3]];
+        [self.entities addObject:[[JFIEntity alloc] initDummy]];
+        [self.entities addObject:[[JFIEntity alloc] initDummy]];
+        [self.entities addObject:[[JFIEntity alloc] initDummy]];
         [self.tableView reloadData];
     }
 }
@@ -150,35 +120,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    /*
+     * 現在表示しているスクロール位置より上の場合は厳密に計算しないとscrollToTopが正しく動作しない
+     */
+    JFIEntity *entity = [self.entities objectAtIndex:indexPath.row];
+
+    // 高さの計算結果をキャッシュから参照
+    if (entity.height != nil) {
+        return [entity.height floatValue] + 2;
+    }
+
+    NSLog(@"estimatedHeightForRowAtIndexPath dummy");
     return 100;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     JFIEntity *entity = [self.entities objectAtIndex:indexPath.row];
-    if (entity == nil) {
-        return 0;
-    }
-    
-    // 高さの計算結果をキャッシュから参照
-    if (entity.height != nil) {
-        return [entity.height floatValue] + 2;
-    }
-    
-    self.cellForHeight.frame = self.tableView.bounds;
-    
-    [self.cellForHeight setLabelTexts:entity];
-    [self.cellForHeight.contentView setNeedsLayout];
-    [self.cellForHeight.contentView layoutIfNeeded];
-    
-    // 適切なサイズをAuto Layoutによって自動計算する
-    CGSize size = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    
-    // 高さの計算結果をキャッシュ
-    entity.height = @(size.height);
-    
-    // 自動計算で得られた高さを返す
-    return size.height + 2;
+    return [self heightForEntity:entity];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -241,6 +200,38 @@
 
 #pragma mark -
 
+- (CGFloat)heightForEntity:(JFIEntity *)entity
+{
+    if (entity == nil) {
+        return 0;
+    }
+    
+    // 高さの計算結果をキャッシュから参照
+    if (entity.height != nil) {
+        return [entity.height floatValue] + 2;
+    }
+    
+    self.cellForHeight.frame = self.tableView.bounds;
+    
+    [self.cellForHeight setLabelTexts:entity];
+    [self.cellForHeight.contentView setNeedsLayout];
+    [self.cellForHeight.contentView layoutIfNeeded];
+    
+    // 適切なサイズをAuto Layoutによって自動計算する
+    CGSize size = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    
+    // 高さの計算結果をキャッシュ
+    entity.height = @(size.height);
+    
+    // 自動計算で得られた高さを返す
+    return size.height + 2;
+}
+
+- (void)scrollToTop
+{
+    [self.tableView setContentOffset:CGPointZero animated:YES];
+}
+
 /*
  * イベントの発火に合わせてゴリゴリUIブロックするとAnimationが突っかかったりするのでdebounceする
  * 今はおよそスクロール終了やストリーミング受信（非スクロール時）に0.5秒delayでレンダリング処理を仕込んでいる
@@ -263,6 +254,8 @@
         NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
         int index = 0;
         for (JFIEntity *tweet in self.stacks) {
+            // ここで高さ計算してキャッシュしておかないとscrollToTopが正しく動作しない
+            [self heightForEntity:tweet];
             [self.entities insertObject:tweet atIndex:0];
             [indexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
             index++;

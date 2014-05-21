@@ -32,7 +32,7 @@
 @property (nonatomic) NSNumber *height;
 
 
-
+- (instancetype)initDummy;
 - (instancetype)initWithStatus:(NSDictionary *)status;
 - (instancetype)initWithMessage:(NSDictionary *)message;
 

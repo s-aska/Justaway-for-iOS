@@ -187,7 +187,7 @@
 
 #pragma mark - UIImagePickerControllerDelegate
 
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     UIImage *originalImage = (UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage];
     if (originalImage) {
@@ -203,6 +203,13 @@
 - (IBAction)streamingAction:(id)sender
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    if ([delegate.accounts count] == 0) {
+        JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+        JFIEntity *tweet = [[JFIEntity alloc] initDummy];
+        [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveStatusNotification
+                                                            object:delegate
+                                                          userInfo:@{@"tweet": tweet}];
+    }
     if (delegate.onlineStreaming) {
         [delegate stopStreaming];
     } else {
@@ -222,7 +229,7 @@
 {
     if (self.currentPage == [sender tag]) {
         JFITabViewController *viewController = (JFITabViewController *) self.viewControllers[self.currentPage];
-        [viewController.tableView setContentOffset:CGPointZero animated:NO];
+        [viewController scrollToTop];
     } else {
         [UIView animateWithDuration:.3
                               delay:0

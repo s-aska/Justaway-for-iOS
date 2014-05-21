@@ -2,6 +2,29 @@
 
 @implementation JFIEntity
 
+- (instancetype)initDummy
+{
+    self = [super init];
+    if (self) {
+        self.type = EntityTypeStatus;
+        self.statusID = @"1";
+        self.userID = @"1";
+        self.screenName = @"su_aska";
+        self.displayName = @"Shinichiro Aska";
+        self.profileImageURL = [[NSURL alloc] initWithString:@""];
+        self.text = @"今日は鯖味噌の日。\n今日は鯖味噌の日。\n今日は鯖味噌の日。";
+        self.createdAt = @"Wed Jun 06 20:07:10 +0000 2012";
+        self.clientName = @"web";
+        self.retweetCount = @10000;
+        self.favoriteCount = @20000;
+        self.urls = NSArray.new;
+        self.userMentions = NSArray.new;
+        self.hashtags = NSArray.new;
+        self.media = NSArray.new;
+    }
+    return self;
+}
+
 - (instancetype)initWithStatus:(NSDictionary *)status
 {
     self = [super init];
