@@ -11,7 +11,7 @@
         self.userID = @"1";
         self.screenName = @"su_aska";
         self.displayName = @"Shinichiro Aska";
-        self.profileImageURL = [[NSURL alloc] initWithString:@""];
+        self.profileImageURL = [[NSURL alloc] initWithString:@"https://pbs.twimg.com/profile_images/450683047495471105/2Qq3AXYv_bigger.png"];
         self.text = @"今日は鯖味噌の日。\n今日は鯖味噌の日。\n今日は鯖味噌の日。";
         self.createdAt = @"Wed Jun 06 20:07:10 +0000 2012";
         self.clientName = @"web";

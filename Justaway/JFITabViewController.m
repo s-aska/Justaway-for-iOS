@@ -78,9 +78,9 @@
     } else if (self.tabType == TabTypeHome) {
         // レイアウト確認用のダミーデータ
         self.entities = [NSMutableArray array];
-        [self.entities addObject:[[JFIEntity alloc] initDummy]];
-        [self.entities addObject:[[JFIEntity alloc] initDummy]];
-        [self.entities addObject:[[JFIEntity alloc] initDummy]];
+        for (NSInteger i = 0; i < 40; i++) {
+            [self.entities addObject:[[JFIEntity alloc] initDummy]];
+        }
         [self.tableView reloadData];
     }
 }
@@ -117,22 +117,6 @@
 }
 
 #pragma mark - UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    /*
-     * 現在表示しているスクロール位置より上の場合は厳密に計算しないとscrollToTopが正しく動作しない
-     */
-    JFIEntity *entity = [self.entities objectAtIndex:indexPath.row];
-
-    // 高さの計算結果をキャッシュから参照
-    if (entity.height != nil) {
-        return [entity.height floatValue] + 2;
-    }
-
-    NSLog(@"estimatedHeightForRowAtIndexPath dummy");
-    return 100;
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -210,6 +194,8 @@
     if (entity.height != nil) {
         return [entity.height floatValue] + 2;
     }
+    
+    NSLog(@"[JFITabViewController] heightForEntity no cache:%@", entity.statusID);
     
     self.cellForHeight.frame = self.tableView.bounds;
     

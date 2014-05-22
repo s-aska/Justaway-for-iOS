@@ -11,6 +11,7 @@
 @property (nonatomic) BOOL scrolling;
 
 - (id)initWithType:(TabType)tabType;
+- (CGFloat)heightForEntity:(JFIEntity *)entity;
 - (void)scrollToTop;
 - (void)finalizeWithDebounce:(CGFloat)delay;
 - (void)receiveStatus:(NSNotification *)center;

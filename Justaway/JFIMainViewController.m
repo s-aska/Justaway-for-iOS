@@ -209,6 +209,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveStatusNotification
                                                             object:delegate
                                                           userInfo:@{@"tweet": tweet}];
+        return;
     }
     if (delegate.onlineStreaming) {
         [delegate stopStreaming];

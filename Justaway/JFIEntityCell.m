@@ -10,14 +10,6 @@
 
 @implementation JFIEntityCell
 
-// ステータス（ツイートメッセージ）のスタイル
-// 一時的にここで定義しているが後で移動する
-+ (NSDictionary *)statusAttribute
-{
-    return @{ NSForegroundColorAttributeName : [UIColor darkGrayColor],
-              NSFontAttributeName : [UIFont systemFontOfSize:12] };
-}
-
 // 自動生成されたやつ
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -48,8 +40,7 @@
     self.screenNameLabel.text = [@"@" stringByAppendingString:entity.screenName];
     
     // ツイート
-    self.statusLabel.attributedText = [[NSAttributedString alloc] initWithString:entity.text
-                                                                      attributes:JFIEntityCell.statusAttribute];
+    self.statusLabel.text = entity.text;
     
     // 投稿日時
     NSDate *createdAt = [NSDate dateWithTwitterDate:entity.createdAt];
@@ -149,20 +140,6 @@
                                    }
                                }];
     }
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    CGSize statusSize = [self.statusLabel.attributedText boundingRectWithSize:CGSizeMake(self.statusLabel.frame.size.width, MAXFLOAT)
-                                                                      options:NSStringDrawingUsesLineFragmentOrigin
-                                                                      context:nil].size;
-    
-    self.statusLabel.frame = CGRectMake(self.statusLabel.frame.origin.x,
-                                        self.statusLabel.frame.origin.y,
-                                        self.statusLabel.frame.size.width,
-                                        statusSize.height);
 }
 
 - (void)setIndexPath:(NSIndexPath *)indexPath
