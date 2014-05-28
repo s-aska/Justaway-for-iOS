@@ -19,6 +19,7 @@
 @property (nonatomic, weak) IBOutlet UIView *actionedView;
 @property (nonatomic, weak) IBOutlet UIImageView *actionedIconImageView;
 @property (nonatomic, weak) IBOutlet UILabel *actionedLabel;
+@property (nonatomic, weak) IBOutlet UIView *imagesView;
 @property (nonatomic) JFIEntity *entity;
 
 - (void)setLabelTexts:(JFIEntity *)entity;

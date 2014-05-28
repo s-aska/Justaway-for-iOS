@@ -7,16 +7,18 @@
 
 @property (nonatomic) NSData *data;
 @property (nonatomic) NSHTTPURLResponse *response;
+@property (nonatomic) ImageProcessType processType;
 
 @end
 
 @implementation JFIHTTPImageOperation
 
-+ (void)loadURL:(NSURL *)URL handler:(void (^)(NSHTTPURLResponse *, UIImage *, NSError *))handler
++ (void)loadURL:(NSURL *)URL processType:(ImageProcessType)processType handler:(void (^)(NSHTTPURLResponse *, UIImage *, NSError *))handler
 {
     NSURLRequest *request = [NSURLRequest requestWithURL:URL];
     JFIHTTPImageOperation *operation = [[JFIHTTPImageOperation alloc] initWithRequest:request
                                                                               handler:handler];
+    operation.processType = processType;
     operation.queuePriority = 0;
     [[ISHTTPOperationQueue defaultQueue] addOperation:operation];
 }
@@ -55,7 +57,20 @@
     ISMemoryCache *memoryCache = [ISMemoryCache sharedCache];
     ISDiskCache *diskCache = [ISDiskCache sharedCache];
     
-    UIImage *processedImage = [image resizedImageForSize:CGSizeMake(42.f, 42.f) cornerRadius:5.f];
+    UIImage *processedImage;
+    switch (self.processType) {
+        case ImageProcessTypeIcon:
+            processedImage = [image resizedImageForSize:CGSizeMake(42.f, 42.f) cornerRadius:5.f];
+            break;
+
+        case ImageProcessTypeThumbnail:
+            processedImage = [image resizedImageForSize:CGSizeMake(75.f, 75.f)];
+            break;
+            
+        default:
+            break;
+    }
+    
     if (processedImage) {
         [memoryCache setObject:processedImage forKey:self.cacheKey];
         [diskCache setObject:processedImage forKey:self.cacheKey];

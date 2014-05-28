@@ -33,6 +33,11 @@ extern NSString *const JFIURLPattern;
 
 #pragma mark - ENUM
 
+typedef NS_ENUM(NSInteger, ImageProcessType) {
+    ImageProcessTypeIcon,
+    ImageProcessTypeThumbnail,
+};
+
 typedef NS_ENUM(NSInteger, StreamingStatus) {
     StreamingConnecting,
     StreamingConnected,

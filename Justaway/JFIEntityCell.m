@@ -79,6 +79,21 @@
         self.favoriteCountLabel.text = @"";
     }
     
+    for (UIView* subview in self.imagesView.subviews) {
+        [subview removeFromSuperview];
+    }
+    if ([entity.media count] > 0) {
+        self.imagesView.frame = CGRectMake(self.imagesView.frame.origin.x,
+                                           self.imagesView.frame.origin.y,
+                                           75.f,
+                                           [entity.media count] * 75 + 5);
+    } else {
+        self.imagesView.frame = CGRectMake(self.imagesView.frame.origin.x,
+                                           self.imagesView.frame.origin.y,
+                                           0,
+                                           0);
+    }
+    
     // RT
     if (entity.actionedUserID != nil) {
         self.actionedLabel.text = [NSString stringWithFormat:@"RT by %@ (@%@)", self.entity.actionedDisplayName, self.entity.actionedScreenName];
@@ -92,22 +107,31 @@
 
 - (void)loadImages:(BOOL)scrolling
 {
-    JFIEntity *tweet = self.entity;
+    JFIEntity *entity = self.entity;
     
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
     JFITheme *theme = [JFITheme sharedTheme];
     
-    [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:tweet.statusID]];
-    [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:tweet.statusID]];
+    [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:entity.statusID]];
+    [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:entity.statusID]];
     
-    [self loadImage:self.iconImageView imageURL:tweet.profileImageURL];
+    [self loadImage:self.iconImageView imageURL:entity.profileImageURL processType:ImageProcessTypeIcon];
     
     if (self.entity.actionedProfileImageURL != nil) {
-        [self loadImage:self.actionedIconImageView imageURL:tweet.actionedProfileImageURL];
+        [self loadImage:self.actionedIconImageView imageURL:entity.actionedProfileImageURL processType:ImageProcessTypeIcon];
+    }
+    
+    if ([entity.media count] > 0) {
+        for (NSDictionary *media in entity.media) {
+            NSURL *url = [[NSURL alloc] initWithString:[[media valueForKey:@"media_url"] stringByAppendingString:@":thumb"]];
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 75.f, 75.f)];
+            [self.imagesView addSubview:imageView];
+            [self loadImage:imageView imageURL:url processType:ImageProcessTypeThumbnail];
+        }
     }
 }
 
-- (void)loadImage:(UIImageView *)imageView imageURL:(NSURL *)imageURL
+- (void)loadImage:(UIImageView *)imageView imageURL:(NSURL *)imageURL processType:(ImageProcessType)processType
 {
     UIImage *image = [[ISMemoryCache sharedCache] objectForKey:imageURL];
     if (image) {
@@ -116,6 +140,7 @@
         imageView.image = nil;
         NSString *statusID = self.entity.statusID;
         [JFIHTTPImageOperation loadURL:imageURL
+                           processType:processType
                                handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
                                    // 読み込みから表示までの間にスクロールなどによって表示内容が変わっている場合スキップ
                                    if (self.entity.statusID != statusID) {

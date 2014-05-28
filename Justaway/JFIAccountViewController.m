@@ -78,6 +78,7 @@
     //    [cell.displayNameLabel sizeToFit];
     
     [JFIHTTPImageOperation loadURL:url
+                       processType:ImageProcessTypeIcon
                            handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
                                JFIAccountCell *cell = (JFIAccountCell *)[tableView cellForRowAtIndexPath:indexPath];
                                cell.iconImageView.image = image;

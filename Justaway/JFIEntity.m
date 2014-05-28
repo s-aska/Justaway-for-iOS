@@ -20,7 +20,23 @@
         self.urls = NSArray.new;
         self.userMentions = NSArray.new;
         self.hashtags = NSArray.new;
-        self.media = NSArray.new;
+        self.media = @[@{
+                           @"display_url": @"pic.twitter.com/rJC5Pxsu",
+                           @"expanded_url": @"http://twitter.com/yunorno/status/114080493036773378/photo/1",
+                           @"id": @114080493040967680,
+                           @"id_str": @"114080493040967680",
+                           @"media_url": @"http://pbs.twimg.com/media/BoXV1KSIgAAHJpZ.png",
+                           @"media_url_https": @"https://pbs.twimg.com/media/BoXV1KSIgAAHJpZ.png",
+                           @"type": @"photo",
+                           @"url": @"http://t.co/rJC5Pxsu",
+                           @"sizes": @{
+                                   @"large": @{
+                                           @"h": @238,
+                                           @"resize": @"fit",
+                                           @"w": @226
+                                           }
+                                   }
+                           }];
     }
     return self;
 }
