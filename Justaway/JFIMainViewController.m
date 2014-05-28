@@ -110,9 +110,9 @@
     
     // 背景をタップしたら、キーボードを隠す
     /*
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.editorTextView
-                                                                                        action:@selector(resignFirstResponder)];
-    [self.view addGestureRecognizer:gestureRecognizer];
+     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.editorTextView
+     action:@selector(resignFirstResponder)];
+     [self.view addGestureRecognizer:gestureRecognizer];
      */
     
     // 投稿ボタンをロングタップでクイックツイートモード
@@ -211,18 +211,45 @@
                                                           userInfo:@{@"tweet": tweet}];
         return;
     }
-    if (delegate.onlineStreaming) {
-        [delegate stopStreaming];
-    } else {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:@"connect"
-                              message:@"ストリーミングを開始します"
-                              delegate:nil
-                              cancelButtonTitle:nil
-                              otherButtonTitles:@"OK", nil
-                              ];
-        [alert show];
-        [delegate startStreaming];
+    
+    switch (delegate.streamingStatus) {
+        case StreamingConnecting:
+            [[[UIAlertView alloc]
+              initWithTitle:@"connect"
+              message:@"ストリーミング接続中です。ﾟ(ﾟ∩´﹏`∩ﾟ)ﾟ。"
+              delegate:nil
+              cancelButtonTitle:nil
+              otherButtonTitles:@"OK", nil
+              ] show];
+            break;
+            
+        case StreamingConnected:
+            [delegate stopStreaming];
+            break;
+            
+        case StreamingDisconnecting:
+            [[[UIAlertView alloc]
+              initWithTitle:@"connect"
+              message:@"ストリーミング切断中です。ﾟ(ﾟ∩´﹏`∩ﾟ)ﾟ。"
+              delegate:nil
+              cancelButtonTitle:nil
+              otherButtonTitles:@"OK", nil
+              ] show];
+            break;
+            
+        case StreamingDisconnected:
+            [[[UIAlertView alloc]
+              initWithTitle:@"connect"
+              message:@"ストリーミング接続します。"
+              delegate:nil
+              cancelButtonTitle:nil
+              otherButtonTitles:@"OK", nil
+              ] show];
+            [delegate startStreaming];
+            break;
+            
+        default:
+            break;
     }
 }
 

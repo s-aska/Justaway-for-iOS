@@ -33,6 +33,13 @@ extern NSString *const JFIURLPattern;
 
 #pragma mark - ENUM
 
+typedef NS_ENUM(NSInteger, StreamingStatus) {
+    StreamingConnecting,
+    StreamingConnected,
+    StreamingDisconnecting,
+    StreamingDisconnected,
+};
+
 typedef NS_ENUM(NSInteger, TabType) {
     TabTypeHome,
     TabTypeNotifications,

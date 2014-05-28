@@ -1,5 +1,4 @@
 #import "JFISecret.h"
-#import "JFIConstants.h"
 #import "JFIAccount.h"
 #import "JFIEntity.h"
 #import "JFIAppDelegate.h"
@@ -16,6 +15,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.streamingStatus = StreamingDisconnected;
+    
     // アカウント情報をKeyChainから読み込み
     [self loadAccounts];
     
@@ -215,12 +216,22 @@
 - (void)startStreaming
 {
     NSLog(@"[JFIAppDelegate] startStreaming");
-    if (self.onlineStreaming) {
+    if (self.streamingStatus == StreamingConnecting ||
+        self.streamingStatus == StreamingConnected) {
+        NSLog(@"[JFIAppDelegate] streaming is coonnected or connecting.");
         return;
     }
     if ([self.accounts count] == 0) {
         return;
     }
+    
+    self.streamingStatus = StreamingConnecting;
+    
+    UIApplication *app = [UIApplication sharedApplication];
+    self.backgroundTaskIdentifier = [app beginBackgroundTaskWithExpirationHandler:^{
+        [app endBackgroundTask:self.backgroundTaskIdentifier];
+        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+    }];
     
     STTwitterAPI *twitter = [self getTwitter];
     self.streamingRequest = [twitter getUserStreamDelimited:nil
@@ -230,9 +241,9 @@
                                             keywordsToTrack:nil
                                       locationBoundingBoxes:nil
                                               progressBlock:^(id response) {
-                                                  if (!self.onlineStreaming) {
+                                                  if (self.streamingStatus != StreamingConnected) {
                                                       NSLog(@"[JFIAppDelegate] connect streaming");
-                                                      self.onlineStreaming = true;
+                                                      self.streamingStatus = StreamingConnected;
                                                       [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingConnectNotification
                                                                                                           object:self
                                                                                                         userInfo:nil];
@@ -255,7 +266,6 @@
                                                      NSString *title;
                                                      if([[error domain] isEqualToString:NSURLErrorDomain] && [error code] == NSURLErrorNetworkConnectionLost) {
                                                          NSLog(@"[JFIAppDelegate] disconnect streaming");
-                                                         self.onlineStreaming = false;
                                                          [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingDisconnectNotification
                                                                                                              object:self
                                                                                                            userInfo:nil];
@@ -264,6 +274,7 @@
                                                      } else {
                                                          title = @"unknown error";
                                                      }
+                                                     self.streamingStatus = StreamingDisconnected;
                                                      UIAlertView *alert = [[UIAlertView alloc]
                                                                            initWithTitle:title
                                                                            message:[error localizedDescription]
@@ -277,10 +288,17 @@
 
 - (void)stopStreaming
 {
-    if (self.onlineStreaming) {
+    if (self.streamingStatus) {
+        self.streamingStatus = StreamingDisconnecting;
         [self.streamingRequest cancel];
-        self.onlineStreaming = false;
     }
+    
+    UIApplication *app = [UIApplication sharedApplication];
+    if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+        [app endBackgroundTask:self.backgroundTaskIdentifier];
+        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+    }
+    
     NSLog(@"[JFIAppDelegate] stopStreaming");
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingDisconnectNotification
                                                         object:self
