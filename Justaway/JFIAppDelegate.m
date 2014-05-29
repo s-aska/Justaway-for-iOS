@@ -18,6 +18,7 @@
 {
     self.streamingStatus = StreamingDisconnected;
     self.streamingMode = YES;
+    self.currentAccountIndex = 0;
     
     // アカウント情報をKeyChainから読み込み
     [self loadAccounts];
@@ -74,6 +75,11 @@
     
     [self loadAccounts];
     
+    self.currentAccountIndex = [self.accounts count] - 1;
+    
+    if (self.streamingMode) {
+        [self restartStreaming];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveAccessTokenNotification
                                                         object:self
                                                       userInfo:[account dictionaryRepresentation]];
@@ -115,13 +121,12 @@
 
 - (STTwitterAPI *)getTwitter
 {
-    NSInteger index = 0;
-    return [self getTwitterByIndex:&index];
+    return [self getTwitterByIndex:self.currentAccountIndex];
 }
 
-- (STTwitterAPI *)getTwitterByIndex:(NSInteger *)index
+- (STTwitterAPI *)getTwitterByIndex:(NSInteger)index
 {
-    JFIAccount *account = [self.accounts objectAtIndex:*index];
+    JFIAccount *account = [self.accounts objectAtIndex:index];
     
     return [STTwitterAPI twitterAPIWithOAuthConsumerKey:JFITwitterConsumerKey
                                          consumerSecret:JFITwitterConsumerSecret
@@ -254,7 +259,6 @@
         return;
     }
     
-    self.streamingMode = YES;
     self.streamingStatus = StreamingConnecting;
     
     UIApplication *app = [UIApplication sharedApplication];
@@ -309,7 +313,6 @@
         return;
     }
     
-    self.streamingMode = NO;
     self.streamingStatus = StreamingDisconnecting;
     [self.streamingRequest cancel];
     
@@ -323,6 +326,12 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingDisconnectNotification
                                                         object:self
                                                       userInfo:nil];
+}
+
+- (void)restartStreaming
+{
+    [self stopStreaming];
+    [self performSelector:@selector(startStreaming) withObject:nil afterDelay:2.f];
 }
 
 @end

@@ -15,6 +15,7 @@ extern NSString *const JFICellForHeightID;
 
 #pragma mark - NSNotification
 
+extern NSString *const JFISelectAccessTokenNotification;
 extern NSString *const JFIReceiveAccessTokenNotification;
 extern NSString *const JFIReceiveStatusNotification;
 extern NSString *const JFIStreamingConnectNotification;

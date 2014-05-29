@@ -85,7 +85,7 @@
     return cell;
 }
 
-#pragma mark - UITableViewDataSource
+#pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -94,7 +94,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // 選択された時の処理
+    NSLog(@"[JFIAccountViewController] didSelectRowAtIndexPath");
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    delegate.currentAccountIndex = indexPath.row;
+    if (delegate.streamingMode) {
+        [delegate restartStreaming];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFISelectAccessTokenNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:nil];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Observer

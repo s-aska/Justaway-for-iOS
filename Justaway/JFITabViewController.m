@@ -49,6 +49,16 @@
             break;
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onRefresh)
+                                                 name:JFISelectAccessTokenNotification
+                                               object:delegate];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onRefresh)
+                                                 name:JFIReceiveAccessTokenNotification
+                                               object:delegate];
+    
     // UIActionSheetが閉じたら選択解除
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(closeStatus:)

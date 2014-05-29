@@ -25,7 +25,9 @@
                            }
                            [self.tableView reloadData];
                            [self.refreshControl endRefreshing];
-                           [delegate startStreaming];
+                           if (delegate.streamingMode) {
+                               [delegate startStreaming];
+                           }
                        } errorBlock:^(NSError *error) {
                            NSLog(@"-- error: %@", [error localizedDescription]);
                            [self.refreshControl endRefreshing];

@@ -224,6 +224,7 @@
             break;
             
         case StreamingConnected:
+            delegate.streamingMode = NO;
             [delegate stopStreaming];
             break;
             
@@ -245,6 +246,7 @@
               cancelButtonTitle:nil
               otherButtonTitles:@"OK", nil
               ] show];
+            delegate.streamingMode = YES;
             [delegate startStreaming];
             break;
             
