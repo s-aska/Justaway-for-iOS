@@ -98,6 +98,7 @@
 {
     text = [text stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
     text = [text stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+    text = [text stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
     return text;
 }
 
