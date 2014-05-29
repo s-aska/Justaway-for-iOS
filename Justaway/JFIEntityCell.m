@@ -52,6 +52,8 @@
         self.retweetButton.hidden = YES;
         self.favoriteCountLabel.hidden = YES;
         self.favoriteButton.hidden = YES;
+        self.actionedView.hidden = YES;
+        self.createdAtLabelHeightConstraint.constant = 5.f;
         return;
     }
     
@@ -167,12 +169,17 @@
 
 - (IBAction)replyAction:(id)sender
 {
-    NSString *text = [NSString stringWithFormat:@"@%@ ", self.entity.screenName];
-    
+    NSDictionary *userInfo;
+    if (self.entity.type == EntityTypeMessage) {
+        userInfo = @{@"text": [NSString stringWithFormat:@"D %@ ", self.entity.screenName],
+                     @"in_reply_to_status_id": @""};
+    } else {
+        userInfo = @{@"text": [NSString stringWithFormat:@"@%@ ", self.entity.screenName],
+                     @"in_reply_to_status_id": self.entity.statusID};
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
                                                         object:[[UIApplication sharedApplication] delegate]
-                                                      userInfo:@{@"text": text,
-                                                                 @"in_reply_to_status_id": self.entity.statusID}];
+                                                      userInfo:userInfo];
 }
 
 - (IBAction)retweetAction:(id)sender
