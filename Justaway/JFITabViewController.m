@@ -204,13 +204,16 @@
     [self.cellForHeight.contentView layoutIfNeeded];
     
     // 適切なサイズをAuto Layoutによって自動計算する
-    CGSize size = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    float height = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    if ([entity.media count] > 0) {
+        height+= [entity.media count] * 75 + 5;
+    }
     
     // 高さの計算結果をキャッシュ
-    entity.height = @(size.height);
+    entity.height =  @(height);
     
     // 自動計算で得られた高さを返す
-    return size.height + 2;
+    return height + 2;
 }
 
 - (void)scrollToTop

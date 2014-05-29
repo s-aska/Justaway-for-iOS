@@ -82,17 +82,6 @@
     for (UIView* subview in self.imagesView.subviews) {
         [subview removeFromSuperview];
     }
-    if ([entity.media count] > 0) {
-        self.imagesView.frame = CGRectMake(self.imagesView.frame.origin.x,
-                                           self.imagesView.frame.origin.y,
-                                           75.f,
-                                           [entity.media count] * 75 + 5);
-    } else {
-        self.imagesView.frame = CGRectMake(self.imagesView.frame.origin.x,
-                                           self.imagesView.frame.origin.y,
-                                           0,
-                                           0);
-    }
     
     // RT
     if (entity.actionedUserID != nil) {
@@ -128,6 +117,10 @@
             [self.imagesView addSubview:imageView];
             [self loadImage:imageView imageURL:url processType:ImageProcessTypeThumbnail];
         }
+        self.imagesView.frame = CGRectMake(self.imagesView.frame.origin.x,
+                                           self.imagesView.frame.origin.y,
+                                           75.f,
+                                           [entity.media count] * 75 + 5);
     }
 }
 
