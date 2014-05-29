@@ -15,7 +15,7 @@
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
     [twitter getHomeTimelineSinceID:nil
-                              count:200
+                              count:20
                        successBlock:^(NSArray *statuses) {
                            self.entities = [NSMutableArray array];
                            for (NSDictionary *dictionaly in statuses) {

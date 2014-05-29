@@ -76,13 +76,8 @@
     
     // Streamingの接続状況に応じて
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(connectStreamingHandler:)
-                                                 name:JFIStreamingConnectNotification
-                                               object:delegate];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(disconnectStreamingHandler:)
-                                                 name:JFIStreamingDisconnectNotification
+                                             selector:@selector(streamingConnectionHandler:)
+                                                 name:JFIStreamingConnectionNotification
                                                object:delegate];
     
     // キーボードの開閉に応じて
@@ -338,6 +333,7 @@
     
     if (self.image) {
         NSData *data = UIImageJPEGRepresentation(self.image, 0.8f);
+        [self showIndicator];
         [twitter postStatusUpdate:[self.editorTextView text]
                    mediaDataArray:@[data]
                 possiblySensitive:nil
@@ -351,14 +347,16 @@
               }
                      successBlock:^(NSDictionary *status) {
                          [self closeEditor];
+                         [self hideIndicator];
                      }
                        errorBlock:^(NSError *error) {
-                           ;
+                           [self hideIndicator];
                        }
          ];
         return;
     }
     
+    [self showIndicator];
     [twitter postStatusUpdate:[self.editorTextView text]
             inReplyToStatusID:self.inReplyToStatusId
                      latitude:nil
@@ -368,8 +366,10 @@
                      trimUser:nil
                  successBlock:^(NSDictionary *status) {
                      [self closeEditor];
+                     [self hideIndicator];
                  } errorBlock:^(NSError *error) {
                      NSLog(@"[JFIMainViewController] tweetAction error:%@", [error localizedDescription]);
+                     [self hideIndicator];
                      [[[UIAlertView alloc]
                        initWithTitle:@"disconnect"
                        message:[error localizedDescription]
@@ -484,16 +484,44 @@
     }
 }
 
-- (void)connectStreamingHandler:(NSNotification *)center
+- (void)streamingConnectionHandler:(NSNotification *)center
 {
-    NSLog(@"[JFIMainViewController] connectStreamingHandler");
-    [self.streamingButton setTitle:@"( ◠‿◠ )" forState:UIControlStateNormal];
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    switch (delegate.streamingStatus) {
+        case StreamingConnected:
+            [self.streamingButton setTitle:@"connected" forState:UIControlStateNormal];
+            break;
+            
+        case StreamingConnecting:
+            [self.streamingButton setTitle:@"connecting..." forState:UIControlStateNormal];
+            break;
+            
+        case StreamingDisconnected:
+            [self.streamingButton setTitle:@"disconnected" forState:UIControlStateNormal];
+            break;
+            
+        case StreamingDisconnecting:
+            [self.streamingButton setTitle:@"disconnecting..." forState:UIControlStateNormal];
+            break;
+            
+        default:
+            break;
+    }
 }
 
-- (void)disconnectStreamingHandler:(NSNotification *)center
+- (void)showIndicator
 {
-    NSLog(@"[JFIMainViewController] disconnectStreamingHandler");
-    [self.streamingButton setTitle:@"(◞‸◟)" forState:UIControlStateNormal];
+    if (self.indicator == nil) {
+        self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.indicator.center = self.view.center;
+        [self.view addSubview:self.indicator];
+    }
+    [self.indicator startAnimating];
+}
+
+- (void)hideIndicator
+{
+    [self.indicator performSelectorOnMainThread:@selector(stopAnimating) withObject:nil waitUntilDone:YES];
 }
 
 @end

@@ -10,28 +10,33 @@
 
 @implementation JFIEntityCell
 
-// 自動生成されたやつ
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (void)awakeFromNib
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
+    [super awakeFromNib];
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
 }
 
-// 自動生成されたやつ
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-    
-    // Configure the view for the selected state
+    if (selected) {
+        self.backgroundColor = [UIColor darkGrayColor];
+    } else {
+        [UIView animateWithDuration:0.3
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseIn
+                         animations:^{ self.backgroundColor = [UIColor blackColor]; }
+                         completion:^(BOOL finished){}
+         ];
+    }
 }
 
 // セルにステータスを反映する奴
 - (void)setLabelTexts:(JFIEntity *)entity
 {
     self.entity = entity;
+//    JFIEntityCell *cell = [tableView dequeueReusableCellWithIdentifier:JFICellID forIndexPath:indexPath];
     
     // 表示名
     self.displayNameLabel.text = entity.displayName;
@@ -189,7 +194,7 @@
 
 - (IBAction)favoriteAction:(id)sender
 {
-    [self.favoriteButton setTitleColor:[JFITheme orangeDark] forState:UIControlStateNormal];
+    [self.favoriteButton setTitleColor:[JFITheme orangeLight] forState:UIControlStateNormal];
     
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
     [sharedActionStatus setFavorite:self.entity.statusID];

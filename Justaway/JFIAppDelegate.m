@@ -19,6 +19,7 @@
     self.streamingStatus = StreamingDisconnected;
     self.streamingMode = YES;
     self.currentAccountIndex = 0;
+    [application setStatusBarStyle:UIStatusBarStyleLightContent];
     
     // アカウント情報をKeyChainから読み込み
     [self loadAccounts];
@@ -260,6 +261,9 @@
     }
     
     self.streamingStatus = StreamingConnecting;
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingConnectionNotification
+                                                        object:self
+                                                      userInfo:nil];
     
     UIApplication *app = [UIApplication sharedApplication];
     self.backgroundTaskIdentifier = [app beginBackgroundTaskWithExpirationHandler:^{
@@ -278,7 +282,7 @@
                                                   if (self.streamingStatus != StreamingConnected) {
                                                       NSLog(@"[JFIAppDelegate] connect streaming");
                                                       self.streamingStatus = StreamingConnected;
-                                                      [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingConnectNotification
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingConnectionNotification
                                                                                                           object:self
                                                                                                         userInfo:nil];
                                                   }
@@ -298,10 +302,10 @@
                                                      // 機内モード ... The network connection was lost.
                                                      // ネットワークエラー ... The network connection was lost.
                                                      NSLog(@"[JFIAppDelegate] disconnect streaming [code:%i] %@", [error code], [error localizedDescription]);
-                                                     [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingDisconnectNotification
+                                                     self.streamingStatus = StreamingDisconnected;
+                                                     [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingConnectionNotification
                                                                                                          object:self
                                                                                                        userInfo:nil];
-                                                     self.streamingStatus = StreamingDisconnected;
                                                  }];
 }
 
@@ -323,7 +327,7 @@
     }
     
     NSLog(@"[JFIAppDelegate] stopStreaming");
-    [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingDisconnectNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingConnectionNotification
                                                         object:self
                                                       userInfo:nil];
 }

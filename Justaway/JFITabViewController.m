@@ -28,6 +28,8 @@
     [super viewDidLoad];
     
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
+    [self.tableView setBackgroundColor:[UIColor blackColor]];
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
@@ -187,7 +189,9 @@
         return;
     }
     
-    [self.refreshControl beginRefreshing];
+    if ([self.entities count] > 0) {
+        [self.refreshControl beginRefreshing];
+    }
     
     [self loadEntities];
 }

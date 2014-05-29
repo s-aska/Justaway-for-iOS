@@ -16,14 +16,17 @@
 @property (nonatomic) UIView *contentView;
 @property (nonatomic) NSMutableArray *views;
 @property (nonatomic) NSMutableArray *viewControllers;
+@property (nonatomic) UIActivityIndicatorView *indicator;
 
 - (IBAction)changePageAction:(id)sender;
-
 - (IBAction)streamingAction:(id)sender;
 - (IBAction)accountAction:(id)sender;
 - (IBAction)postAction:(id)sender;
 - (IBAction)closeAction:(id)sender;
 - (IBAction)imageAction:(id)sender;
 - (IBAction)tweetAction:(id)sender;
+
+- (void)showIndicator;
+- (void)hideIndicator;
 
 @end

@@ -60,21 +60,21 @@
 
 - (void)setColorForMenuButton:(UIButton *)button active:(BOOL)active
 {
-    UIColor *normalColor = active ? [JFITheme blueDark] : [UIColor grayColor];
+    UIColor *normalColor = active ? [JFITheme blueDark] : [UIColor whiteColor];
     [button setTitleColor:normalColor forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+    [button setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
 }
 
 - (void)setColorForFavoriteButton:(UIButton *)button active:(BOOL)active
 {
-    UIColor *color = active ? [JFITheme orangeDark] : [UIColor lightGrayColor];
+    UIColor *color = active ? [JFITheme orangeLight] : [UIColor lightGrayColor];
     [button setTitleColor:color forState:UIControlStateNormal];
 }
 
 - (void)setColorForRetweetButton:(UIButton *)button active:(BOOL)active
 {
-    UIColor *color = active ? [JFITheme greenDark] : [UIColor lightGrayColor];
+    UIColor *color = active ? [JFITheme greenLight] : [UIColor lightGrayColor];
     [button setTitleColor:color forState:UIControlStateNormal];
 }
 
