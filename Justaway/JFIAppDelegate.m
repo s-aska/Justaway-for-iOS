@@ -4,11 +4,12 @@
 #import "JFIAppDelegate.h"
 #import "STHTTPRequest+STTwitter.h"
 #import <SSKeychain/SSKeychain.h>
+#import "Reachability.h"
 
 @interface JFIAppDelegate ()
 
 @property (nonatomic) STHTTPRequest *streamingRequest;
-
+@property (nonatomic) Reachability *reachability;
 @end
 
 @implementation JFIAppDelegate
@@ -16,9 +17,18 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.streamingStatus = StreamingDisconnected;
+    self.streamingMode = YES;
     
     // アカウント情報をKeyChainから読み込み
     [self loadAccounts];
+    
+    // ネットワーク接続状況の監視
+    self.reachability = [Reachability reachabilityWithHostName:@"api.twitter.com"];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notifiedNetworkStatus:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    [self.reachability startNotifier];
     
     return YES;
 }
@@ -208,6 +218,23 @@
     return YES;
 }
 
+
+#pragma mark - Streaming
+
+- (void)notifiedNetworkStatus:(NSNotification *)notification
+{
+    NetworkStatus networkStatus = [self.reachability currentReachabilityStatus];
+    if (networkStatus != ReachableViaWiFi &&
+        networkStatus != ReachableViaWWAN) {
+        NSLog(@"[JFIAppDelegate] notifiedNetworkStatus disconnected.");
+        return;
+    }
+    NSLog(@"[JFIAppDelegate] notifiedNetworkStatus connected.");
+    if (self.streamingMode) {
+        [self startStreaming];
+    }
+}
+
 #pragma mark - Streaming
 
 - (BOOL)enableStreaming
@@ -220,13 +247,14 @@
     NSLog(@"[JFIAppDelegate] startStreaming");
     if (self.streamingStatus == StreamingConnecting ||
         self.streamingStatus == StreamingConnected) {
-        NSLog(@"[JFIAppDelegate] streaming is coonnected or connecting.");
+        NSLog(@"[JFIAppDelegate] streaming is connected or connecting.");
         return;
     }
     if ([self.accounts count] == 0) {
         return;
     }
     
+    self.streamingMode = YES;
     self.streamingStatus = StreamingConnecting;
     
     UIApplication *app = [UIApplication sharedApplication];
@@ -262,38 +290,28 @@
                                                   }
                                               } stallWarningBlock:nil
                                                  errorBlock:^(NSError *error) {
-                                                     NSLog(@"-- error: %@", [error localizedDescription]);
                                                      // 自分で止めた時 ... Connection was cancelled.
                                                      // 機内モード ... The network connection was lost.
-                                                     NSString *title;
-                                                     if([[error domain] isEqualToString:NSURLErrorDomain] && [error code] == NSURLErrorNetworkConnectionLost) {
-                                                         NSLog(@"[JFIAppDelegate] disconnect streaming");
-                                                         [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingDisconnectNotification
-                                                                                                             object:self
-                                                                                                           userInfo:nil];
-                                                         // TODO: 失敗回数に応じて間隔を広げながら再接続処理する
-                                                         title = @"disconnect";
-                                                     } else {
-                                                         title = @"unknown error";
-                                                     }
+                                                     // ネットワークエラー ... The network connection was lost.
+                                                     NSLog(@"[JFIAppDelegate] disconnect streaming [code:%i] %@", [error code], [error localizedDescription]);
+                                                     [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingDisconnectNotification
+                                                                                                         object:self
+                                                                                                       userInfo:nil];
                                                      self.streamingStatus = StreamingDisconnected;
-                                                     UIAlertView *alert = [[UIAlertView alloc]
-                                                                           initWithTitle:title
-                                                                           message:[error localizedDescription]
-                                                                           delegate:nil
-                                                                           cancelButtonTitle:nil
-                                                                           otherButtonTitles:@"OK", nil
-                                                                           ];
-                                                     [alert show];
                                                  }];
 }
 
 - (void)stopStreaming
 {
-    if (self.streamingStatus) {
-        self.streamingStatus = StreamingDisconnecting;
-        [self.streamingRequest cancel];
+    if (self.streamingStatus == StreamingDisconnecting ||
+        self.streamingStatus == StreamingDisconnected) {
+        NSLog(@"[JFIAppDelegate] streaming is disconnected or disconnecting.");
+        return;
     }
+    
+    self.streamingMode = NO;
+    self.streamingStatus = StreamingDisconnecting;
+    [self.streamingRequest cancel];
     
     UIApplication *app = [UIApplication sharedApplication];
     if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
@@ -306,9 +324,5 @@
                                                         object:self
                                                       userInfo:nil];
 }
-
-
-
-
 
 @end

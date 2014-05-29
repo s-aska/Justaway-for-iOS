@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 20D352DB18C9A63D00CC8C80 /* JFIAccount.m */; };
+		3808BA081937645300F7EF4A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3808BA071937645300F7EF4A /* Reachability.m */; };
 		38108F2B1906984F00C99F00 /* JFIHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38108F2A1906984F00C99F00 /* JFIHomeViewController.m */; };
 		38108F2E19069C4100C99F00 /* JFINotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38108F2D19069C4100C99F00 /* JFINotificationsViewController.m */; };
 		38108F3119069CB300C99F00 /* JFIMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38108F3019069CB300C99F00 /* JFIMessagesViewController.m */; };
@@ -69,6 +70,8 @@
 		20D352DA18C9A63D00CC8C80 /* JFIAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIAccount.h; sourceTree = "<group>"; };
 		20D352DB18C9A63D00CC8C80 /* JFIAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIAccount.m; sourceTree = "<group>"; };
 		22194C00EF13418F82A85B42 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3808BA061937645300F7EF4A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		3808BA071937645300F7EF4A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		38108F291906984F00C99F00 /* JFIHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIHomeViewController.h; sourceTree = "<group>"; };
 		38108F2A1906984F00C99F00 /* JFIHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIHomeViewController.m; sourceTree = "<group>"; };
 		38108F2C19069C4100C99F00 /* JFINotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFINotificationsViewController.h; sourceTree = "<group>"; };
@@ -354,6 +357,8 @@
 				38D1B96E18FD0B2400DED578 /* JFITheme.m */,
 				6ADF7954188D6E2200632BA5 /* JFIAppDelegate.h */,
 				6ADF7955188D6E2200632BA5 /* JFIAppDelegate.m */,
+				3808BA061937645300F7EF4A /* Reachability.h */,
+				3808BA071937645300F7EF4A /* Reachability.m */,
 				383D7DB618D19A0A00D36678 /* Category */,
 				38DA5F6F18E30D82006F484C /* Models */,
 				38DA5F6D18E30D5B006F484C /* Views */,
@@ -536,6 +541,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3808BA081937645300F7EF4A /* Reachability.m in Sources */,
 				383D7DE118E1957A00D36678 /* JFIAccountViewController.m in Sources */,
 				38DA5F6A18E29CAA006F484C /* JFISecret.m in Sources */,
 				38108F2E19069C4100C99F00 /* JFINotificationsViewController.m in Sources */,

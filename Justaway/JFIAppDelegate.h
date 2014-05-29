@@ -9,6 +9,7 @@
 @property (nonatomic) NSMutableArray *accounts;
 @property (nonatomic) StreamingStatus streamingStatus;
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
+@property (nonatomic) BOOL streamingMode;
 
 - (STTwitterAPI *)getTwitter;
 - (STTwitterAPI *)getTwitterByIndex:(NSInteger *)index;
