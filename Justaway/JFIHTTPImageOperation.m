@@ -25,7 +25,25 @@
 
 - (NSURL *)cacheKey
 {
-    return self.request.URL;
+    NSString *string;
+    switch (self.processType) {
+        case ImageProcessTypeIcon:
+            string = @"icon";
+            break;
+            
+        case ImageProcessTypeThumbnail:
+            string = @"thumbnail";
+            break;
+            
+        default:
+            string = @"";
+            break;
+    }
+    if (self.request.URL.query) {
+        return [NSURL URLWithString:[NSString stringWithFormat:@"%@&%@", [self.request.URL absoluteString], string]];
+    } else {
+        return [NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", [self.request.URL absoluteString], string]];
+    }
 }
 
 - (void)main
@@ -62,7 +80,7 @@
         case ImageProcessTypeIcon:
             processedImage = [image resizedImageForSize:CGSizeMake(42.f, 42.f) cornerRadius:5.f];
             break;
-
+            
         case ImageProcessTypeThumbnail:
             processedImage = [image resizedImageForSize:CGSizeMake(75.f, 75.f)];
             break;

@@ -71,13 +71,11 @@
     
     JFIAccount *account = [delegate.accounts objectAtIndex:indexPath.row];
     
-    NSURL *url = [NSURL URLWithString:account.profileImageURL];
-    
     [cell setLabelTexts:account];
     
     //    [cell.displayNameLabel sizeToFit];
     
-    [JFIHTTPImageOperation loadURL:url
+    [JFIHTTPImageOperation loadURL:account.profileImageBiggerURL
                        processType:ImageProcessTypeIcon
                            handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
                                JFIAccountCell *cell = (JFIAccountCell *)[tableView cellForRowAtIndexPath:indexPath];

@@ -104,7 +104,7 @@
     [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:entity.statusID]];
     [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:entity.statusID]];
     
-    [self loadImage:self.iconImageView imageURL:entity.profileImageURL processType:ImageProcessTypeIcon];
+    [self loadImage:self.iconImageView imageURL:entity.profileImageBiggerURL processType:ImageProcessTypeIcon];
     
     if (self.entity.actionedProfileImageURL != nil) {
         [self loadImage:self.actionedIconImageView imageURL:entity.actionedProfileImageURL processType:ImageProcessTypeIcon];

@@ -16,6 +16,7 @@
 
 - (NSDictionary *)dictionaryRepresentation;
 - (NSString *)jsonStringRepresentation;
+- (NSURL *)profileImageBiggerURL;
 
 + (void)loginUsingIOSAccountWithSuccessBlock:(void(^)(JFIAccount *account))successBlock
                                   errorBlock:(void(^)(NSError *error))errorBlock;

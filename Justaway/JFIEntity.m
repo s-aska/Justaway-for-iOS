@@ -11,7 +11,7 @@
         self.userID = @"1";
         self.screenName = @"su_aska";
         self.displayName = @"Shinichiro Aska";
-        self.profileImageURL = [[NSURL alloc] initWithString:@"https://pbs.twimg.com/profile_images/450683047495471105/2Qq3AXYv_bigger.png"];
+        self.profileImageURL = [NSURL URLWithString:@"https://pbs.twimg.com/profile_images/450683047495471105/2Qq3AXYv_normal.png"];
         self.text = @"今日は鯖味噌の日。\n今日は鯖味噌の日。\n今日は鯖味噌の日。";
         self.createdAt = @"Wed Jun 06 20:07:10 +0000 2012";
         self.clientName = @"web";
@@ -54,13 +54,13 @@
             self.actionedUserID = [status valueForKeyPath:@"user.id_str"];
             self.actionedScreenName = [status valueForKeyPath:@"user.screen_name"];
             self.actionedDisplayName = [status valueForKeyPath:@"user.name"];
-            self.actionedProfileImageURL = [[NSURL alloc] initWithString:[status valueForKeyPath:@"user.profile_image_url"]];
+            self.actionedProfileImageURL = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
         }
         self.statusID = [source valueForKey:@"id_str"];
         self.userID = [source valueForKeyPath:@"user.id_str"];
         self.screenName = [source valueForKeyPath:@"user.screen_name"];
         self.displayName = [source valueForKeyPath:@"user.name"];
-        self.profileImageURL = [[NSURL alloc] initWithString:[source valueForKeyPath:@"user.profile_image_url"]];
+        self.profileImageURL = [NSURL URLWithString:[source valueForKeyPath:@"user.profile_image_url"]];
         self.text = [self getText:[source valueForKey:@"text"]];
         self.createdAt = [source valueForKey:@"created_at"];
         self.clientName = [self getClientName:[source valueForKey:@"source"]];
@@ -83,7 +83,7 @@
         self.userID = [message valueForKeyPath:@"sender.id_str"];
         self.screenName = [message valueForKeyPath:@"sender.screen_name"];
         self.displayName = [message valueForKeyPath:@"sender.name"];
-        self.profileImageURL = [[NSURL alloc] initWithString:[message valueForKeyPath:@"sender.profile_image_url"]];
+        self.profileImageURL = [NSURL URLWithString:[message valueForKeyPath:@"sender.profile_image_url"]];
         self.text = [self getText:[message valueForKey:@"text"]];
         self.createdAt = [message valueForKey:@"created_at"];
         self.urls = [message valueForKeyPath:@"entities.urls"];
@@ -115,6 +115,11 @@
 - (NSString *)statusURL
 {
     return [NSString stringWithFormat:@" https://twitter.com/%@/status/%@", self.screenName, self.statusID];
+}
+
+- (NSURL *)profileImageBiggerURL
+{
+    return [NSURL URLWithString:[[self.profileImageURL absoluteString] stringByReplacingOccurrencesOfString:@"_normal.png" withString:@"_bigger.png"]];
 }
 
 @end

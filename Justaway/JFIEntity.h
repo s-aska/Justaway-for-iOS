@@ -37,5 +37,6 @@
 - (instancetype)initWithMessage:(NSDictionary *)message;
 
 - (NSString *)statusURL;
+- (NSURL *)profileImageBiggerURL;
 
 @end

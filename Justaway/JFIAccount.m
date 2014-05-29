@@ -88,6 +88,13 @@
     return [NSString stringWithFormat:@"%@",[self dictionaryRepresentation]];
 }
 
+#pragma mark - 
+
+- (NSURL *)profileImageBiggerURL
+{
+    return [NSURL URLWithString:[self.profileImageURL stringByReplacingOccurrencesOfString:@"_normal.png" withString:@"_bigger.png"]];
+}
+
 #pragma mark - Login Methods
 
 + (void)loginUsingIOSAccountWithSuccessBlock:(void(^)(JFIAccount *account))successBlock errorBlock:(void(^)(NSError *error))errorBlock

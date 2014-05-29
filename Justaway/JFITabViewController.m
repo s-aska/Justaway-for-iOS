@@ -195,7 +195,7 @@
         return [entity.height floatValue] + 2;
     }
     
-    NSLog(@"[JFITabViewController] heightForEntity no cache:%@", entity.statusID);
+    // NSLog(@"[JFITabViewController] heightForEntity no cache:%@", entity.statusID);
     
     self.cellForHeight.frame = self.tableView.bounds;
     
