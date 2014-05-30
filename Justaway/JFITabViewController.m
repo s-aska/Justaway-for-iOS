@@ -1,5 +1,6 @@
 #import "JFIConstants.h"
 #import "JFIEntity.h"
+#import "JFIAccount.h"
 #import "JFIAppDelegate.h"
 #import "JFITabViewController.h"
 
@@ -312,14 +313,20 @@
 
 - (void)destoryStatus:(NSNotification *)center
 {
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     NSString *statusID = [center.userInfo valueForKey:@"status_id"];
+    BOOL retweetedByMe = [center.userInfo valueForKey:@"retweeted_by_me"] == nil ? NO : YES;
     NSInteger position = 0;
     NSMutableArray *indexPaths = NSMutableArray.new;
     NSMutableArray *removeEntities = NSMutableArray.new;
+    JFIAccount *account = delegate.accounts[delegate.currentAccountIndex];
+    NSString *actionedUserID = retweetedByMe ? account.userID : @"";
     for (JFIEntity *entity in self.entities) {
         if ([entity.statusID isEqualToString:statusID]) {
-            [removeEntities addObject:entity];
-            [indexPaths addObject:[NSIndexPath indexPathForRow:position inSection:0]];
+            if (!retweetedByMe || [actionedUserID isEqualToString:entity.actionedUserID]) {
+                [removeEntities addObject:entity];
+                [indexPaths addObject:[NSIndexPath indexPathForRow:position inSection:0]];
+            }
         }
         position++;
     }

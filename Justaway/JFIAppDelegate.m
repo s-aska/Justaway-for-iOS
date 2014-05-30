@@ -10,6 +10,7 @@
 
 @property (nonatomic) STHTTPRequest *streamingRequest;
 @property (nonatomic) Reachability *reachability;
+
 @end
 
 @implementation JFIAppDelegate

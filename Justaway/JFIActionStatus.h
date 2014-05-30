@@ -8,9 +8,9 @@
 - (void)setFavorite:(NSString *)key;
 - (void)removeFavorite:(NSString *)key;
 - (BOOL)isRetweet:(NSString *)key;
-- (NSString *)getRetweetId:(NSString *)key;
+- (NSString *)getRetweetID:(NSString *)key;
 - (void)setRetweet:(NSString *)key;
-- (void)setRetweetId:(NSString *)key statusId:(NSString *)statusId;
+- (void)setRetweetID:(NSString *)key statusID:(NSString *)statusID;
 - (void)removeRetweet:(NSString *)key;
 
 @end

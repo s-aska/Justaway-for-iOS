@@ -35,6 +35,7 @@
 		38DA5F6A18E29CAA006F484C /* JFISecret.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA5F6918E29CAA006F484C /* JFISecret.m */; };
 		38DA5F7218E447DE006F484C /* JFIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA5F7118E447DE006F484C /* JFIConstants.m */; };
 		5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22194C00EF13418F82A85B42 /* libPods.a */; };
+		6A002A581938F6E00025EBCB /* JFITwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A002A571938F6E00025EBCB /* JFITwitter.m */; };
 		6A21291018C3485A00AD2953 /* JFIEntityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21290E18C3485A00AD2953 /* JFIEntityCell.m */; };
 		6A3DE96318EB32D900F045A7 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */; };
 		6A52D248190D1F1F00C78B4D /* JFIRetweetActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D247190D1F1F00C78B4D /* JFIRetweetActionSheet.m */; };
@@ -112,6 +113,8 @@
 		38DA5F6918E29CAA006F484C /* JFISecret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFISecret.m; sourceTree = "<group>"; };
 		38DA5F7018E447DE006F484C /* JFIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIConstants.h; sourceTree = "<group>"; };
 		38DA5F7118E447DE006F484C /* JFIConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIConstants.m; sourceTree = "<group>"; };
+		6A002A561938F6E00025EBCB /* JFITwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFITwitter.h; sourceTree = "<group>"; };
+		6A002A571938F6E00025EBCB /* JFITwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFITwitter.m; sourceTree = "<group>"; };
 		6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		6A21290D18C3485A00AD2953 /* JFIEntityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIEntityCell.h; sourceTree = "<group>"; };
 		6A21290E18C3485A00AD2953 /* JFIEntityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntityCell.m; sourceTree = "<group>"; };
@@ -279,6 +282,8 @@
 				38108F321906A14400C99F00 /* JFITab.h */,
 				38108F331906A14400C99F00 /* JFITab.m */,
 				3882594518E55F0700F50117 /* Networking */,
+				6A002A561938F6E00025EBCB /* JFITwitter.h */,
+				6A002A571938F6E00025EBCB /* JFITwitter.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -554,6 +559,7 @@
 				6ADF7956188D6E2200632BA5 /* JFIAppDelegate.m in Sources */,
 				3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */,
 				6ADF7952188D6E2200632BA5 /* main.m in Sources */,
+				6A002A581938F6E00025EBCB /* JFITwitter.m in Sources */,
 				38108F3119069CB300C99F00 /* JFIMessagesViewController.m in Sources */,
 				38D1B96F18FD0B2400DED578 /* JFITheme.m in Sources */,
 				20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */,

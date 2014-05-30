@@ -2,6 +2,7 @@
 #import "JFIActionStatus.h"
 #import "JFIStatusActionSheet.h"
 #import "JFIAccount.h"
+#import "JFITwitter.h"
 
 @implementation JFIStatusActionSheet
 
@@ -9,14 +10,25 @@
 {
     self = [super init];
     if (self) {
+        JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
         JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
         JFIAccount *account = [delegate.accounts objectAtIndex:delegate.currentAccountIndex];
         if ([account.userID isEqualToString:entity.userID]) {
             [self addButtonWithTitle:@"ツイ消し" action:@selector(destroyStatus)];
         }
-        [self addButtonWithTitle:@"公式RT" action:@selector(retweet)];
-        [self addButtonWithTitle:@"ふぁぼ" action:@selector(favorite)];
-        [self addButtonWithTitle:@"ふぁぼ＆公式RT" action:@selector(favoriteRetweet)];
+        if ([sharedActionStatus isRetweet:entity.statusID]) {
+            [self addButtonWithTitle:@"公式RT取り消し" action:@selector(destroyRetweet)];
+        } else {
+            [self addButtonWithTitle:@"公式RT" action:@selector(retweet)];
+        }
+        if ([sharedActionStatus isFavorite:entity.statusID]) {
+            [self addButtonWithTitle:@"あんふぁぼ" action:@selector(destroyFavorite)];
+        } else {
+            [self addButtonWithTitle:@"ふぁぼ" action:@selector(favorite)];
+        }
+        if (![sharedActionStatus isRetweet:entity.statusID] && ![sharedActionStatus isFavorite:entity.statusID]) {
+            [self addButtonWithTitle:@"ふぁぼ＆公式RT" action:@selector(favoriteRetweet)];
+        }
         [self addButtonWithTitle:@"引用" action:@selector(quote)];
         [self addButtonWithTitle:@"リプ" action:@selector(reply)];
         for (NSDictionary *url in entity.urls) {
@@ -50,17 +62,37 @@
 
 - (void)retweet
 {
-    JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
-    [sharedActionStatus setRetweet:self.entity.statusID];
-    
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
-    [twitter postStatusRetweetWithID:self.entity.statusID
-                        successBlock:^(NSDictionary *status){
-                        }
-                          errorBlock:^(NSError *error){
-                              // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
-                          }];
+    [JFITwitter createRetweet:twitter statusID:self.entity.statusID];
+}
+
+- (void)destroyRetweet
+{
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    STTwitterAPI *twitter = [delegate getTwitter];
+    [JFITwitter destroyRetweet:twitter statusID:self.entity.statusID];
+}
+
+- (void)favorite
+{
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    STTwitterAPI *twitter = [delegate getTwitter];
+    [JFITwitter createFavorite:twitter statusID:self.entity.statusID];
+}
+
+- (void)destroyFavorite
+{
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    STTwitterAPI *twitter = [delegate getTwitter];
+    [JFITwitter destroyFavorite:twitter statusID:self.entity.statusID];
+}
+
+- (void)destroyStatus
+{
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    STTwitterAPI *twitter = [delegate getTwitter];
+    [JFITwitter destroyStatus:twitter statusID:self.entity.statusID];
 }
 
 - (void)quote
@@ -70,27 +102,6 @@
                                                       userInfo:@{@"text": self.entity.statusURL,
                                                                  @"range_location": @0,
                                                                  @"range_length": @0}];
-}
-
-- (void)favorite
-{
-    JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
-    [sharedActionStatus setFavorite:self.entity.statusID];
-    
-    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-    STTwitterAPI *twitter = [delegate getTwitter];
-    [twitter postFavoriteState:YES
-                   forStatusID:self.entity.statusID
-                  successBlock:^(NSDictionary *status){
-                      
-                  }
-                    errorBlock:^(NSError *error){
-                        // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
-                        [sharedActionStatus removeFavorite:self.entity.statusID];
-                        /*
-                        [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-                         */
-                    }];
 }
 
 - (void)reply
@@ -105,21 +116,6 @@
 - (void)openURL:(NSURL *)url
 {
     [[UIApplication sharedApplication] openURL:url];
-}
-
-- (void)destroyStatus
-{
-    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-    STTwitterAPI *twitter = [delegate getTwitter];
-    [twitter postStatusesDestroy:self.entity.statusID
-                        trimUser:nil
-                    successBlock:^(NSDictionary *status){
-                        [[NSNotificationCenter defaultCenter] postNotificationName:JFIDestroyStatusNotification
-                                                                            object:delegate
-                                                                          userInfo:@{@"status_id": self.entity.statusID}];
-                    }
-                      errorBlock:^(NSError *error){
-                      }];
 }
 
 @end

@@ -57,7 +57,7 @@
     return [self.retweetDictionary objectForKey:key] != nil ? YES : NO;
 }
 
-- (NSString *)getRetweetId:(NSString *)key
+- (NSString *)getRetweetID:(NSString *)key
 {
     return [self.retweetDictionary objectForKey:key];
 }
@@ -70,9 +70,9 @@
                                                       userInfo:nil];
 }
 
-- (void)setRetweetId:(NSString *)key statusId:(NSString *)statusId
+- (void)setRetweetID:(NSString *)key statusID:(NSString *)statusID
 {
-    [self.retweetDictionary setObject:statusId forKey:key];
+    [self.retweetDictionary setObject:statusID forKey:key];
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIActionStatusNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];

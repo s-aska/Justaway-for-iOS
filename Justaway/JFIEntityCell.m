@@ -1,5 +1,6 @@
 #import "JFIConstants.h"
 #import "JFITheme.h"
+#import "JFITwitter.h"
 #import "JFIAppDelegate.h"
 #import "JFIActionStatus.h"
 #import "JFIRetweetActionSheet.h"
@@ -36,7 +37,6 @@
 - (void)setLabelTexts:(JFIEntity *)entity
 {
     self.entity = entity;
-//    JFIEntityCell *cell = [tableView dequeueReusableCellWithIdentifier:JFICellID forIndexPath:indexPath];
     
     // 表示名
     self.displayNameLabel.text = entity.displayName;
@@ -198,20 +198,14 @@
 
 - (IBAction)favoriteAction:(id)sender
 {
-    JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
-    [sharedActionStatus setFavorite:self.entity.statusID];
-    
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
-    [twitter postFavoriteState:YES
-                   forStatusID:self.entity.statusID
-                  successBlock:^(NSDictionary *status){
-                      
-                  }
-                    errorBlock:^(NSError *error){
-                        // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
-                        [sharedActionStatus removeFavorite:self.entity.statusID];
-                    }];
+    JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
+    if ([sharedActionStatus isFavorite:self.entity.statusID]) {
+        [JFITwitter destroyFavorite:twitter statusID:self.entity.statusID];
+    } else {
+        [JFITwitter createFavorite:twitter statusID:self.entity.statusID];
+    }
 }
 
 @end

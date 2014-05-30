@@ -2,6 +2,7 @@
 #import "JFIAppDelegate.h"
 #import "JFIActionStatus.h"
 #import "JFIRetweetActionSheet.h"
+#import "JFITwitter.h"
 
 @implementation JFIRetweetActionSheet
 
@@ -9,7 +10,12 @@
 {
     self = [super init];
     if (self) {
-        [self addButtonWithTitle:@"公式RT" action:@selector(retweet)];
+        JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
+        if ([sharedActionStatus isRetweet:entity.statusID]) {
+            [self addButtonWithTitle:@"公式RT取り消し" action:@selector(destroyRetweet)];
+        } else {
+            [self addButtonWithTitle:@"公式RT" action:@selector(retweet)];
+        }
         [self addButtonWithTitle:@"引用" action:@selector(quote)];
         self.entity = entity;
         self.cancelButtonIndex = [self addButtonWithTitle:@"キャンセル"];
@@ -17,20 +23,18 @@
     return self;
 }
 
-- (void)retweet
+- (void)destroyRetweet
 {
-    JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
-    [sharedActionStatus setRetweet:self.entity.statusID];
-    
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
-    // [self.retweetButton setTitleColor:[JFITheme greenDark] forState:UIControlStateNormal];
-    [twitter postStatusRetweetWithID:self.entity.statusID
-                        successBlock:^(NSDictionary *status){
-                        }
-                          errorBlock:^(NSError *error){
-                              // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
-                          }];
+    [JFITwitter destroyRetweet:twitter statusID:self.entity.statusID];
+}
+
+- (void)retweet
+{
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    STTwitterAPI *twitter = [delegate getTwitter];
+    [JFITwitter createRetweet:twitter statusID:self.entity.statusID];
 }
 
 - (void)quote
