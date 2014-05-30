@@ -1,6 +1,7 @@
 #import "JFIAppDelegate.h"
 #import "JFIActionStatus.h"
 #import "JFIStatusActionSheet.h"
+#import "JFIAccount.h"
 
 @implementation JFIStatusActionSheet
 
@@ -8,6 +9,11 @@
 {
     self = [super init];
     if (self) {
+        JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+        JFIAccount *account = [delegate.accounts objectAtIndex:delegate.currentAccountIndex];
+        if ([account.userID isEqualToString:entity.userID]) {
+            [self addButtonWithTitle:@"ツイ消し" action:@selector(destroyStatus)];
+        }
         [self addButtonWithTitle:@"公式RT" action:@selector(retweet)];
         [self addButtonWithTitle:@"ふぁぼ" action:@selector(favorite)];
         [self addButtonWithTitle:@"ふぁぼ＆公式RT" action:@selector(favoriteRetweet)];
@@ -99,6 +105,21 @@
 - (void)openURL:(NSURL *)url
 {
     [[UIApplication sharedApplication] openURL:url];
+}
+
+- (void)destroyStatus
+{
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    STTwitterAPI *twitter = [delegate getTwitter];
+    [twitter postStatusesDestroy:self.entity.statusID
+                        trimUser:nil
+                    successBlock:^(NSDictionary *status){
+                        [[NSNotificationCenter defaultCenter] postNotificationName:JFIDestroyStatusNotification
+                                                                            object:delegate
+                                                                          userInfo:@{@"status_id": self.entity.statusID}];
+                    }
+                      errorBlock:^(NSError *error){
+                      }];
 }
 
 @end

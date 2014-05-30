@@ -39,6 +39,10 @@
                                                      selector:@selector(receiveStatus:)
                                                          name:JFIReceiveStatusNotification
                                                        object:delegate];
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(destoryStatus:)
+                                                         name:JFIDestroyStatusNotification
+                                                       object:delegate];
             break;
         case TabTypeNotifications:
             break;
@@ -259,7 +263,7 @@
     // スタック内容をレンダリングする
     if ([self.stacks count] > 0) {
         
-        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        NSMutableArray *indexPaths = NSMutableArray.new;
         int index = 0;
         for (JFIEntity *tweet in self.stacks) {
             // ここで高さ計算してキャッシュしておかないとscrollToTopが正しく動作しない
@@ -303,6 +307,29 @@
     
     if (!self.scrolling) {
         [self finalizeWithDebounce:.5f];
+    }
+}
+
+- (void)destoryStatus:(NSNotification *)center
+{
+    NSString *statusID = [center.userInfo valueForKey:@"status_id"];
+    NSInteger position = 0;
+    NSMutableArray *indexPaths = NSMutableArray.new;
+    NSMutableArray *removeEntities = NSMutableArray.new;
+    for (JFIEntity *entity in self.entities) {
+        if ([entity.statusID isEqualToString:statusID]) {
+            [removeEntities addObject:entity];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:position inSection:0]];
+        }
+        position++;
+    }
+    if ([removeEntities count] > 0) {
+        [self.tableView beginUpdates];
+        for (JFIEntity *entity in removeEntities) {
+            [self.entities removeObject:entity];
+        }
+        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
     }
 }
 

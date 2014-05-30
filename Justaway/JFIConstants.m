@@ -23,6 +23,7 @@ NSString *const JFIEditorNotification              = @"JFIEditorNotification";
 NSString *const JFIOpenStatusNotification          = @"JFIOpenStatusNotification";
 NSString *const JFICloseStatusNotification         = @"JFICloseStatusNotification";
 NSString *const JFIActionStatusNotification        = @"JFIActionStatusNotification";
+NSString *const JFIDestroyStatusNotification       = @"JFIDestroyStatusNotification";
 
 #pragma mark - keychain const
 

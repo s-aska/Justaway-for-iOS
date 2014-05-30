@@ -23,6 +23,7 @@ extern NSString *const JFIEditorNotification;
 extern NSString *const JFIOpenStatusNotification;
 extern NSString *const JFICloseStatusNotification;
 extern NSString *const JFIActionStatusNotification;
+extern NSString *const JFIDestroyStatusNotification;
 
 #pragma mark - keychain const
 
