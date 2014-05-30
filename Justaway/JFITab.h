@@ -8,5 +8,6 @@
 
 - (JFITab *)initWithType:(TabType)tabType;
 - (JFITabViewController *)loadViewConroller;
+- (NSString *)title;
 
 @end

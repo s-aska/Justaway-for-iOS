@@ -4,6 +4,7 @@
 
 @interface JFIMainViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet JFIButton *streamingButton;
 @property (nonatomic, weak) IBOutlet UIView *scrollWrapperView;
 @property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
@@ -14,6 +15,7 @@
 @property (nonatomic, weak) IBOutlet JFIButton *postButton;
 @property (nonatomic, weak) IBOutlet JFIButton *imageButton;
 @property (nonatomic) UIView *contentView;
+@property (nonatomic) NSMutableArray *tabs;
 @property (nonatomic) NSMutableArray *views;
 @property (nonatomic) NSMutableArray *viewControllers;
 @property (nonatomic) UIActivityIndicatorView *indicator;

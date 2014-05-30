@@ -16,21 +16,46 @@
 
 - (JFITabViewController *)loadViewConroller
 {
+    JFITabViewController *viewController;
     switch (self.tabType) {
         case TabTypeHome:
-            return [[JFIHomeViewController alloc] initWithType:self.tabType];
+            viewController = [[JFIHomeViewController alloc] initWithType:self.tabType];
             break;
         case TabTypeNotifications:
-            return [[JFINotificationsViewController alloc] initWithType:self.tabType];
+            viewController = [[JFINotificationsViewController alloc] initWithType:self.tabType];
             break;
         case TabTypeMessages:
-            return [[JFIMessagesViewController alloc] initWithType:self.tabType];
+            viewController = [[JFIMessagesViewController alloc] initWithType:self.tabType];
             break;
             
         default:
             break;
     }
-    return nil;
+    return viewController;
+}
+
+- (NSString *)title
+{
+    NSString *title;
+    switch (self.tabType) {
+        case TabTypeHome:
+            title = @"Home";
+            break;
+        case TabTypeNotifications:
+            title = @"Notifications";
+            break;
+        case TabTypeMessages:
+            title = @"Messages";
+            break;
+        case TabTypeUserList:
+            title = @"";
+            break;
+            
+        default:
+            title = @"unknown";
+            break;
+    }
+    return title;
 }
 
 @end

@@ -47,12 +47,12 @@
     
     self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, s.width * 3, s.height)];
     
-    NSArray *tabs = @[[[JFITab alloc] initWithType:TabTypeHome],
-                      [[JFITab alloc] initWithType:TabTypeNotifications],
-                      [[JFITab alloc] initWithType:TabTypeMessages]];
+    self.tabs = [@[[[JFITab alloc] initWithType:TabTypeHome],
+                   [[JFITab alloc] initWithType:TabTypeNotifications],
+                   [[JFITab alloc] initWithType:TabTypeMessages]] mutableCopy];
     
     int count = 0;
-    for (JFITab *tab in tabs) {
+    for (JFITab *tab in self.tabs) {
         JFITabViewController *viewController = [tab loadViewConroller];
         viewController.view.frame = CGRectMake(0, 0, s.width, s.height);
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(s.width * count, 0, s.width, s.height)];
@@ -164,6 +164,8 @@
     
     if (self.currentPage != page) {
         self.currentPage = page;
+        JFITab *tab = self.tabs[page];
+        self.titleLabel.text = [tab title];
     }
 }
 

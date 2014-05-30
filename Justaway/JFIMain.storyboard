@@ -17,9 +17,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jC-ic-wcd">
-                                <rect key="frame" x="260" y="17" width="50" height="26"/>
+                                <rect key="frame" x="258" y="15" width="52" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
                                 <state key="normal" title="loading...">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -28,6 +28,13 @@
                                     <action selector="streamingAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="gvp-fg-51F"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3x3-bt-Xij">
+                                <rect key="frame" x="8" y="20" width="41" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="14"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fgT-2n-FvJ">
                                 <rect key="frame" x="0.0" y="40" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -194,14 +201,16 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="3x3-bt-Xij" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" constant="8" id="J5x-19-RN0"/>
                             <constraint firstAttribute="trailing" secondItem="svU-vp-0tM" secondAttribute="trailing" id="JRf-ar-1YW"/>
-                            <constraint firstItem="4jC-ic-wcd" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" constant="-3" id="OKq-b2-Xip"/>
+                            <constraint firstItem="4jC-ic-wcd" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" constant="-5" id="OKq-b2-Xip"/>
                             <constraint firstItem="svU-vp-0tM" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="OuK-Cc-OVP"/>
                             <constraint firstAttribute="trailing" secondItem="fgT-2n-FvJ" secondAttribute="trailing" id="SSx-hq-FxP"/>
                             <constraint firstItem="y1F-mf-7hv" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="Uon-3Z-erx"/>
                             <constraint firstAttribute="trailing" secondItem="y1F-mf-7hv" secondAttribute="trailing" id="Xz8-iB-Etv"/>
                             <constraint firstAttribute="trailing" secondItem="4jC-ic-wcd" secondAttribute="trailing" constant="10" id="YuU-1G-mgg"/>
                             <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="svU-vp-0tM" secondAttribute="bottom" id="ZVc-r2-ver"/>
+                            <constraint firstItem="3x3-bt-Xij" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" id="dSA-uf-KQe"/>
                             <constraint firstItem="fgT-2n-FvJ" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="dSw-96-hxq"/>
                             <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="fgT-2n-FvJ" secondAttribute="bottom" constant="48" id="mQZ-SF-8IH"/>
                             <constraint firstItem="fgT-2n-FvJ" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" constant="20" id="sbW-6B-4U4"/>
@@ -220,6 +229,7 @@
                         <outlet property="scrollView" destination="3Ek-3n-dTm" id="vHb-na-oxq"/>
                         <outlet property="scrollWrapperView" destination="fgT-2n-FvJ" id="i6D-XG-JHW"/>
                         <outlet property="streamingButton" destination="4jC-ic-wcd" id="gJM-61-1Kv"/>
+                        <outlet property="titleLabel" destination="3x3-bt-Xij" id="ZGi-8q-ZWB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rhR-F2-fzL" userLabel="First Responder" sceneMemberID="firstResponder"/>
