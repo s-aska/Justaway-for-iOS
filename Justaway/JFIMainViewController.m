@@ -190,9 +190,10 @@
     if (originalImage) {
         self.image = originalImage;
         self.imageButton.active = YES;
-        [self.editorTextView becomeFirstResponder];
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^(){
+        [self.editorTextView becomeFirstResponder];
+    }];
 }
 
 #pragma mark - IBAction
