@@ -36,6 +36,7 @@
 		38DA5F7218E447DE006F484C /* JFIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 38DA5F7118E447DE006F484C /* JFIConstants.m */; };
 		5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22194C00EF13418F82A85B42 /* libPods.a */; };
 		6A002A581938F6E00025EBCB /* JFITwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A002A571938F6E00025EBCB /* JFITwitter.m */; };
+		6A002A5B193905490025EBCB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6A002A5D193905490025EBCB /* Localizable.strings */; };
 		6A21291018C3485A00AD2953 /* JFIEntityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21290E18C3485A00AD2953 /* JFIEntityCell.m */; };
 		6A3DE96318EB32D900F045A7 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */; };
 		6A52D248190D1F1F00C78B4D /* JFIRetweetActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D247190D1F1F00C78B4D /* JFIRetweetActionSheet.m */; };
@@ -115,6 +116,8 @@
 		38DA5F7118E447DE006F484C /* JFIConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIConstants.m; sourceTree = "<group>"; };
 		6A002A561938F6E00025EBCB /* JFITwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFITwitter.h; sourceTree = "<group>"; };
 		6A002A571938F6E00025EBCB /* JFITwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFITwitter.m; sourceTree = "<group>"; };
+		6A002A5C193905490025EBCB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6A002A5E193905F90025EBCB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		6A21290D18C3485A00AD2953 /* JFIEntityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIEntityCell.h; sourceTree = "<group>"; };
 		6A21290E18C3485A00AD2953 /* JFIEntityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntityCell.m; sourceTree = "<group>"; };
@@ -381,6 +384,7 @@
 				6ADF794E188D6E2200632BA5 /* InfoPlist.strings */,
 				6ADF7951188D6E2200632BA5 /* main.m */,
 				6ADF7953188D6E2200632BA5 /* Justaway-Prefix.pch */,
+				6A002A5D193905490025EBCB /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -470,6 +474,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = 6ADF7939188D6E2200632BA5;
 			productRefGroup = 6ADF7943188D6E2200632BA5 /* Products */;
@@ -491,6 +496,7 @@
 				6A9C989F18BB89D500CF4F84 /* Podfile in Resources */,
 				6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */,
 				383D7DE618E1AF5C00D36678 /* JFIAccountCell.xib in Resources */,
+				6A002A5B193905490025EBCB /* Localizable.strings in Resources */,
 				383D7DDE18E1925700D36678 /* JFIAccount.storyboard in Resources */,
 				6ADF7950188D6E2200632BA5 /* InfoPlist.strings in Resources */,
 				383D7DC618D6B66D00D36678 /* JFIMain.storyboard in Resources */,
@@ -599,6 +605,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		6A002A5D193905490025EBCB /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6A002A5C193905490025EBCB /* en */,
+				6A002A5E193905F90025EBCB /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		6ADF794E188D6E2200632BA5 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -1,0 +1,9 @@
+"retweet" = "Retweet";
+"favorite" = "Favorite";
+"favorite_and_retweet" = "Favorite & Retweet";
+"quote" = "Link to this Tweet";
+"reply" = "Reply";
+"destroy_status" = "Delete";
+"destroy_retweet" = "Cancel retweet";
+"destroy_favorite" = "Cancel favorite";
+"cancel" = "Cancel";

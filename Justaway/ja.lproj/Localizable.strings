@@ -1,0 +1,9 @@
+"retweet" = "公式RT";
+"favorite" = "ふぁぼ";
+"favorite_and_retweet" = "ふぁぼ＆公式RT";
+"quote" = "URL引用";
+"reply" = "リプ";
+"destroy_status" = "ツイ消し";
+"destroy_retweet" = "公式RT取り消し";
+"destroy_favorite" = "あんふぁぼ";
+"cancel" = "キャンセル";

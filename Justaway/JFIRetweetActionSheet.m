@@ -12,13 +12,13 @@
     if (self) {
         JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
         if ([sharedActionStatus isRetweet:entity.statusID]) {
-            [self addButtonWithTitle:@"公式RT取り消し" action:@selector(destroyRetweet)];
+            [self addButtonWithTitle:NSLocalizedString(@"destroy_retweet", nil) action:@selector(destroyRetweet)];
         } else {
-            [self addButtonWithTitle:@"公式RT" action:@selector(retweet)];
+            [self addButtonWithTitle:NSLocalizedString(@"retweet", nil) action:@selector(retweet)];
         }
-        [self addButtonWithTitle:@"引用" action:@selector(quote)];
+        [self addButtonWithTitle:NSLocalizedString(@"quote", nil) action:@selector(quote)];
         self.entity = entity;
-        self.cancelButtonIndex = [self addButtonWithTitle:@"キャンセル"];
+        self.cancelButtonIndex = [self addButtonWithTitle:NSLocalizedString(@"cancel", nil)];
     }
     return self;
 }

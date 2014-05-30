@@ -14,23 +14,23 @@
         JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
         JFIAccount *account = [delegate.accounts objectAtIndex:delegate.currentAccountIndex];
         if ([account.userID isEqualToString:entity.userID]) {
-            [self addButtonWithTitle:@"ツイ消し" action:@selector(destroyStatus)];
+            [self addButtonWithTitle:NSLocalizedString(@"destroy_status", nil) action:@selector(destroyStatus)];
         }
         if ([sharedActionStatus isRetweet:entity.statusID]) {
-            [self addButtonWithTitle:@"公式RT取り消し" action:@selector(destroyRetweet)];
+            [self addButtonWithTitle:NSLocalizedString(@"destroy_retweet", nil) action:@selector(destroyRetweet)];
         } else {
-            [self addButtonWithTitle:@"公式RT" action:@selector(retweet)];
+            [self addButtonWithTitle:NSLocalizedString(@"retweet", nil) action:@selector(retweet)];
         }
         if ([sharedActionStatus isFavorite:entity.statusID]) {
-            [self addButtonWithTitle:@"あんふぁぼ" action:@selector(destroyFavorite)];
+            [self addButtonWithTitle:NSLocalizedString(@"destroy_favorite", nil) action:@selector(destroyFavorite)];
         } else {
-            [self addButtonWithTitle:@"ふぁぼ" action:@selector(favorite)];
+            [self addButtonWithTitle:NSLocalizedString(@"favorite", nil) action:@selector(favorite)];
         }
         if (![sharedActionStatus isRetweet:entity.statusID] && ![sharedActionStatus isFavorite:entity.statusID]) {
-            [self addButtonWithTitle:@"ふぁぼ＆公式RT" action:@selector(favoriteRetweet)];
+            [self addButtonWithTitle:NSLocalizedString(@"favorite_and_retweet", nil) action:@selector(favoriteRetweet)];
         }
-        [self addButtonWithTitle:@"引用" action:@selector(quote)];
-        [self addButtonWithTitle:@"リプ" action:@selector(reply)];
+        [self addButtonWithTitle:NSLocalizedString(@"quote", nil) action:@selector(quote)];
+        [self addButtonWithTitle:NSLocalizedString(@"reply", nil) action:@selector(reply)];
         for (NSDictionary *url in entity.urls) {
             [self addButtonWithTitle:[url objectForKey:@"display_url"]
                               action:@selector(openURL:)
@@ -42,7 +42,7 @@
                               object:[[NSURL alloc] initWithString:[url objectForKey:@"media_url"]]];
         }
         self.entity = entity;
-        self.cancelButtonIndex = [self addButtonWithTitle:@"キャンセル"];
+        self.cancelButtonIndex = [self addButtonWithTitle:NSLocalizedString(@"cancel", nil)];
     }
     return self;
 }
