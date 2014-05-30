@@ -13,17 +13,19 @@
     return self;
 }
 
-- (void)addButtonWithTitle:(NSString *)title action:(SEL)selector
+- (NSInteger)addButtonWithTitle:(NSString *)title action:(SEL)selector
 {
     NSInteger index = [self addButtonWithTitle:title];
     [self.actions insertObject:[NSValue valueWithPointer:selector] atIndex:index];
+    return index;
 }
 
-- (void)addButtonWithTitle:(NSString *)title action:(SEL)selector object:(id)object
+- (NSInteger)addButtonWithTitle:(NSString *)title action:(SEL)selector object:(id)object
 {
     NSInteger index = [self addButtonWithTitle:title];
     [self.actions insertObject:[NSValue valueWithPointer:selector] atIndex:index];
     [self.objects setObject:object forKey:@(index)];
+    return index;
 }
 
 #pragma mark - UIActionSheetDelegate

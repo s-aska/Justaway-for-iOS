@@ -13,9 +13,6 @@
         JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
         JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
         JFIAccount *account = [delegate.accounts objectAtIndex:delegate.currentAccountIndex];
-        if ([account.userID isEqualToString:entity.userID]) {
-            [self addButtonWithTitle:NSLocalizedString(@"destroy_status", nil) action:@selector(destroyStatus)];
-        }
         if ([sharedActionStatus isRetweet:entity.statusID]) {
             [self addButtonWithTitle:NSLocalizedString(@"destroy_retweet", nil) action:@selector(destroyRetweet)];
         } else {
@@ -41,8 +38,11 @@
                               action:@selector(openURL:)
                               object:[[NSURL alloc] initWithString:[url objectForKey:@"media_url"]]];
         }
-        self.entity = entity;
+        if ([account.userID isEqualToString:entity.userID]) {
+            self.destructiveButtonIndex = [self addButtonWithTitle:NSLocalizedString(@"destroy_status", nil) action:@selector(destroyStatus)];
+        }
         self.cancelButtonIndex = [self addButtonWithTitle:NSLocalizedString(@"cancel", nil)];
+        self.entity = entity;
     }
     return self;
 }
