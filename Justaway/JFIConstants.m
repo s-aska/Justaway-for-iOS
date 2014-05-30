@@ -22,6 +22,7 @@ NSString *const JFIStreamingConnectionNotification = @"JFIStreamingConnectionNot
 NSString *const JFIEditorNotification              = @"JFIEditorNotification";
 NSString *const JFIOpenStatusNotification          = @"JFIOpenStatusNotification";
 NSString *const JFICloseStatusNotification         = @"JFICloseStatusNotification";
+NSString *const JFIActionStatusNotification        = @"JFIActionStatusNotification";
 
 #pragma mark - keychain const
 

@@ -99,17 +99,21 @@
         self.actionedView.hidden = YES;
         self.createdAtLabelHeightConstraint.constant = 5.f;
     }
+    
+    [self setButtonColor];
+}
+
+- (void)setButtonColor
+{
+    JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
+    JFITheme *theme = [JFITheme sharedTheme];
+    [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:self.entity.statusID]];
+    [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:self.entity.statusID]];
 }
 
 - (void)loadImages:(BOOL)scrolling
 {
     JFIEntity *entity = self.entity;
-    
-    JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
-    JFITheme *theme = [JFITheme sharedTheme];
-    
-    [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:entity.statusID]];
-    [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:entity.statusID]];
     
     [self loadImage:self.iconImageView imageURL:entity.profileImageBiggerURL processType:ImageProcessTypeIcon];
     
@@ -194,8 +198,6 @@
 
 - (IBAction)favoriteAction:(id)sender
 {
-    [self.favoriteButton setTitleColor:[JFITheme orangeLight] forState:UIControlStateNormal];
-    
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
     [sharedActionStatus setFavorite:self.entity.statusID];
     
@@ -209,7 +211,6 @@
                     errorBlock:^(NSError *error){
                         // TODO: エラーコードを見て重複以外がエラーだったら色を戻す
                         [sharedActionStatus removeFavorite:self.entity.statusID];
-                        [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
                     }];
 }
 

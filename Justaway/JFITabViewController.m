@@ -67,6 +67,11 @@
                                                  name:JFICloseStatusNotification
                                                object:delegate];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(actionStatusChange)
+                                                 name:JFIActionStatusNotification
+                                               object:delegate];
+    
     NSLog(@"[JFIHomeViewController] viewDidLoad accounts:%lu", (unsigned long)[delegate.accounts count]);
     
     // xibファイル名を指定しUINibオブジェクトを生成する
@@ -305,6 +310,13 @@
 {
     NSLog(@"closeStatus");
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+}
+
+- (void)actionStatusChange
+{
+    for (JFIEntityCell *cell in self.tableView.visibleCells) {
+        [cell setButtonColor];
+    }
 }
 
 #pragma mark - JFITabViewController

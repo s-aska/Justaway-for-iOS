@@ -60,7 +60,7 @@
 
 - (void)setColorForMenuButton:(UIButton *)button active:(BOOL)active
 {
-    UIColor *normalColor = active ? [JFITheme blueDark] : [UIColor whiteColor];
+    UIColor *normalColor = active ? [JFITheme blueLight] : [UIColor whiteColor];
     [button setTitleColor:normalColor forState:UIControlStateNormal];
     [button setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
     [button setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];

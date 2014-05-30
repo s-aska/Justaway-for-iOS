@@ -44,9 +44,11 @@
 
 - (void)retweet
 {
+    JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
+    [sharedActionStatus setRetweet:self.entity.statusID];
+    
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
-    // [self.retweetButton setTitleColor:[JFITheme greenDark] forState:UIControlStateNormal];
     [twitter postStatusRetweetWithID:self.entity.statusID
                         successBlock:^(NSDictionary *status){
                         }

@@ -1,4 +1,5 @@
 #import "JFIActionStatus.h"
+#import "JFIConstants.h"
 
 @interface JFIActionStatus ()
 
@@ -38,11 +39,17 @@
 - (void)setFavorite:(NSString *)key
 {
     [self.favoriteDictionary setObject:@(1) forKey:key];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIActionStatusNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:nil];
 }
 
 - (void)removeFavorite:(NSString *)key
 {
     [self.favoriteDictionary removeObjectForKey:key];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIActionStatusNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:nil];
 }
 
 - (BOOL)isRetweet:(NSString *)key
@@ -58,16 +65,25 @@
 - (void)setRetweet:(NSString *)key
 {
     [self.retweetDictionary setObject:@"" forKey:key];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIActionStatusNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:nil];
 }
 
 - (void)setRetweetId:(NSString *)key statusId:(NSString *)statusId
 {
     [self.retweetDictionary setObject:statusId forKey:key];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIActionStatusNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:nil];
 }
 
 - (void)removeRetweet:(NSString *)key
 {
     [self.retweetDictionary removeObjectForKey:key];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIActionStatusNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:nil];
 }
 
 @end

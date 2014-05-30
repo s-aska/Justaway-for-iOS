@@ -1,5 +1,6 @@
 #import "JFIEntity.h"
 #import "JFIAppDelegate.h"
+#import "JFIActionStatus.h"
 #import "JFIRetweetActionSheet.h"
 
 @implementation JFIRetweetActionSheet
@@ -18,6 +19,9 @@
 
 - (void)retweet
 {
+    JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
+    [sharedActionStatus setRetweet:self.entity.statusID];
+    
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
     // [self.retweetButton setTitleColor:[JFITheme greenDark] forState:UIControlStateNormal];
