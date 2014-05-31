@@ -138,12 +138,11 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+    [application setIdleTimerDisabled:NO];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -152,7 +151,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    [application setIdleTimerDisabled:YES];
     
     if (self.streamingMode) {
         if (self.streamingStatus == StreamingDisconnecting || self.streamingStatus == StreamingDisconnected) {
