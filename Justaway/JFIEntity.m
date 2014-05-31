@@ -119,7 +119,7 @@
 
 - (NSURL *)profileImageBiggerURL
 {
-    return [NSURL URLWithString:[[self.profileImageURL absoluteString] stringByReplacingOccurrencesOfString:@"_normal.png" withString:@"_bigger.png"]];
+    return [NSURL URLWithString:[[self.profileImageURL absoluteString] stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"]];
 }
 
 @end
