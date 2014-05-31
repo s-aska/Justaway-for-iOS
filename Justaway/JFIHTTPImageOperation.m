@@ -27,6 +27,10 @@
 {
     NSString *string;
     switch (self.processType) {
+        case ImageProcessTypeNone:
+            string = @"none";
+            break;
+            
         case ImageProcessTypeIcon:
             string = @"icon";
             break;
@@ -77,6 +81,10 @@
     
     UIImage *processedImage;
     switch (self.processType) {
+        case ImageProcessTypeNone:
+            processedImage = image;
+            break;
+            
         case ImageProcessTypeIcon:
             processedImage = [image resizedImageForSize:CGSizeMake(42.f, 42.f) cornerRadius:5.f];
             break;

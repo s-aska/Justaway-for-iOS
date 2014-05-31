@@ -230,7 +230,7 @@
     // 適切なサイズをAuto Layoutによって自動計算する
     float height = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     if ([entity.media count] > 0) {
-        height+= [entity.media count] * 75 + 5;
+        height+= [entity.media count] * 80.f;
     }
     
     // 高さの計算結果をキャッシュ

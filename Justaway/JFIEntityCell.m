@@ -100,6 +100,13 @@
         self.createdAtLabelHeightConstraint.constant = 5.f;
     }
     
+    if ([entity.media count] > 0) {
+        self.imagesView.frame = CGRectMake(self.imagesView.frame.origin.x,
+                                           self.imagesView.frame.origin.y,
+                                           75.f,
+                                           [entity.media count] * 80.f);
+    }
+    
     [self setButtonColor];
 }
 
@@ -122,16 +129,23 @@
     }
     
     if ([entity.media count] > 0) {
+        NSInteger tag = 0;
         for (NSDictionary *media in entity.media) {
             NSURL *url = [[NSURL alloc] initWithString:[[media valueForKey:@"media_url"] stringByAppendingString:@":thumb"]];
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 75.f, 75.f)];
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 5.f, 75.f, 75.f)];
+            imageView.tag = tag;
+            imageView.userInteractionEnabled = YES;
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imageAction:)];
+            tapGesture.numberOfTapsRequired = 1;
+            [imageView addGestureRecognizer:tapGesture];
             [self.imagesView addSubview:imageView];
             [self loadImage:imageView imageURL:url processType:ImageProcessTypeThumbnail];
+            tag++;
         }
         self.imagesView.frame = CGRectMake(self.imagesView.frame.origin.x,
                                            self.imagesView.frame.origin.y,
                                            75.f,
-                                           [entity.media count] * 75 + 5);
+                                           [entity.media count] * 80.f);
     }
 }
 
@@ -206,6 +220,16 @@
     } else {
         [JFITwitter createFavorite:twitter statusID:self.entity.statusID];
     }
+}
+
+- (void)imageAction:(id)sender
+{
+    UIImageView *imageView = (UIImageView *)[sender view];
+    NSInteger tag = imageView.tag;
+    NSDictionary *media = self.entity.media[tag];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIOpenImageNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:@{@"media": media}];
 }
 
 @end

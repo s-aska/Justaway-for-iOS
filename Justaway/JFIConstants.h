@@ -24,6 +24,7 @@ extern NSString *const JFIOpenStatusNotification;
 extern NSString *const JFICloseStatusNotification;
 extern NSString *const JFIActionStatusNotification;
 extern NSString *const JFIDestroyStatusNotification;
+extern NSString *const JFIOpenImageNotification;
 
 #pragma mark - keychain const
 
@@ -36,6 +37,7 @@ extern NSString *const JFIURLPattern;
 #pragma mark - ENUM
 
 typedef NS_ENUM(NSInteger, ImageProcessType) {
+    ImageProcessTypeNone,
     ImageProcessTypeIcon,
     ImageProcessTypeThumbnail,
 };
