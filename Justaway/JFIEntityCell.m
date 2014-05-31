@@ -70,7 +70,7 @@
     [self.retweetButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     // RT数
-    if (entity.retweetCount > 0) {
+    if ([entity.retweetCount intValue] > 0) {
         self.retweetCountLabel.text = [entity.retweetCount stringValue];
     } else {
         self.retweetCountLabel.text = @"";
@@ -80,7 +80,7 @@
     [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     // ふぁぼ数
-    if (entity.favoriteCount > 0) {
+    if ([entity.favoriteCount intValue] > 0) {
         self.favoriteCountLabel.text = [entity.favoriteCount stringValue];
     } else {
         self.favoriteCountLabel.text = @"";
