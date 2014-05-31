@@ -205,6 +205,22 @@
     }];
 }
 
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    self.image = nil;
+    self.imageButton.active = NO;
+    [self dismissViewControllerAnimated:YES completion:^(){
+        [self.editorTextView becomeFirstResponder];
+    }];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+
 #pragma mark - IBAction
 
 - (IBAction)streamingAction:(id)sender
