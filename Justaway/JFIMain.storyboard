@@ -44,7 +44,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     </scrollView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="3Ek-3n-dTm" firstAttribute="top" secondItem="fgT-2n-FvJ" secondAttribute="top" id="MZi-wt-Hvi"/>
                                     <constraint firstAttribute="trailing" secondItem="3Ek-3n-dTm" secondAttribute="trailing" id="O2b-6m-ZC2"/>
