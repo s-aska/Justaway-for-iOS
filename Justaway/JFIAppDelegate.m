@@ -18,7 +18,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.streamingStatus = StreamingDisconnected;
-    self.streamingMode = YES;
+    self.streamingMode = NO;
     self.currentAccountIndex = 0;
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     
