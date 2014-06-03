@@ -274,17 +274,18 @@
             index++;
         }
         
-        if (self.tableView.contentOffset.y > 0 && [self.tableView.visibleCells count] > 0) {
-            // スクロール状態では画面を動かさずに追加
-            UITableViewCell *lastCell = [self.tableView.visibleCells lastObject];
-            CGFloat offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
-            [UIView setAnimationsEnabled:NO];
-            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-            [self.tableView setContentOffset:CGPointMake(0.0, lastCell.frame.origin.y - offset) animated:NO];
-            [UIView setAnimationsEnabled:YES];
-        } else {
-            // スクロール位置が最上位の場合はアニメーションしながら追加
-            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+        // 最上部表示時のみ自動スクロールする
+        BOOL autoScroll = self.tableView.contentOffset.y > 0 && [self.tableView.visibleCells count] > 0 ? NO : YES;
+        
+        UITableViewCell *lastCell = [self.tableView.visibleCells lastObject];
+        CGFloat offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
+        [UIView setAnimationsEnabled:NO];
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView setContentOffset:CGPointMake(0.0, lastCell.frame.origin.y - offset) animated:NO];
+        [UIView setAnimationsEnabled:YES];
+        
+        if (autoScroll) {
+            [self scrollToTop];
         }
         
         self.stacks = [@[] mutableCopy];
