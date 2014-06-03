@@ -11,8 +11,8 @@
         self.userID = @"1";
         self.screenName = @"su_aska";
         self.displayName = @"Shinichiro Aska";
-        self.profileImageURL = [NSURL URLWithString:@"https://pbs.twimg.com/profile_images/450683047495471105/2Qq3AXYv_normal.png"];
-        self.text = @"今日は鯖味噌の日。\n今日は鯖味噌の日。\n今日は鯖味噌の日。";
+        self.profileImageURL = [NSURL URLWithString:@"https://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"];
+        self.text = @"Please touch user icon.";
         self.createdAt = @"Wed Jun 06 20:07:10 +0000 2012";
         self.clientName = @"web";
         self.retweetCount = @10000;

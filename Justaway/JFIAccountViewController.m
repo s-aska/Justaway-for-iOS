@@ -114,6 +114,7 @@
     // TODO: 「◯◯さんこんにちわ！！！！１１」的な
     NSLog(@"[JFIAccountViewController] receiveAccessToken");
     [self loadAccounts];
+    [self closeAction:nil];
 }
 
 #pragma mark -

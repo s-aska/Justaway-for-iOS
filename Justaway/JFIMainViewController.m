@@ -70,6 +70,11 @@
     self.scrollView.contentSize = self.contentView.frame.size;
     self.scrollView.delegate = self;
     self.scrollView.pagingEnabled = YES;
+    
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    if ([delegate.accounts count] == 0) {
+        [self accountAction:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -239,7 +244,7 @@
         case StreamingConnecting:
             [[[UIAlertView alloc]
               initWithTitle:@"connect"
-              message:@"ストリーミング接続中です。ﾟ(ﾟ∩´﹏`∩ﾟ)ﾟ。"
+              message:@"connecting..."
               delegate:nil
               cancelButtonTitle:nil
               otherButtonTitles:@"OK", nil
@@ -254,7 +259,7 @@
         case StreamingDisconnecting:
             [[[UIAlertView alloc]
               initWithTitle:@"connect"
-              message:@"ストリーミング切断中です。ﾟ(ﾟ∩´﹏`∩ﾟ)ﾟ。"
+              message:@"disconnecting..."
               delegate:nil
               cancelButtonTitle:nil
               otherButtonTitles:@"OK", nil
@@ -264,7 +269,7 @@
         case StreamingDisconnected:
             [[[UIAlertView alloc]
               initWithTitle:@"connect"
-              message:@"ストリーミング接続します。"
+              message:@"Connect to the streaming"
               delegate:nil
               cancelButtonTitle:nil
               otherButtonTitles:@"OK", nil
