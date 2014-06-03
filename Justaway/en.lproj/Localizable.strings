@@ -7,3 +7,4 @@
 "destroy_retweet" = "Cancel retweet";
 "destroy_favorite" = "Cancel favorite";
 "cancel" = "Cancel";
+"streaming_rate_limited" = "Exceeded connection limit for user, turn off streaming mode.";

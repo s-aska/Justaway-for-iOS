@@ -18,7 +18,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.streamingStatus = StreamingDisconnected;
-    self.streamingMode = YES;
+    self.streamingMode = NO;
     self.currentAccountIndex = 0;
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     
@@ -302,10 +302,26 @@
                                                   }
                                               } stallWarningBlock:nil
                                                  errorBlock:^(NSError *error) {
+                                                     
                                                      // 自分で止めた時 ... Connection was cancelled.
                                                      // 機内モード ... The network connection was lost.
                                                      // ネットワークエラー ... The network connection was lost.
-                                                     NSLog(@"[JFIAppDelegate] disconnect streaming [code:%i] %@", [error code], [error localizedDescription]);
+                                                     // 接続制限(420) ... Exceeded connection limit for user
+                                                     NSLog(@"[JFIAppDelegate] disconnect streaming status code:%i error code:%i description:%@",
+                                                           self.streamingRequest.responseStatus,
+                                                           [error code],
+                                                           [error localizedDescription]);
+                                                     if (self.streamingRequest.responseStatus == 420) {
+                                                         self.streamingMode = NO;
+                                                         NSLog(@"[JFIAppDelegate] streamingMode:off");
+                                                         [[[UIAlertView alloc]
+                                                           initWithTitle:@"error"
+                                                           message:NSLocalizedString(@"streaming_rate_limited", nil)
+                                                           delegate:nil
+                                                           cancelButtonTitle:nil
+                                                           otherButtonTitles:@"OK", nil
+                                                           ] show];
+                                                     }
                                                      self.streamingStatus = StreamingDisconnected;
                                                      [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingConnectionNotification
                                                                                                          object:self
@@ -339,7 +355,7 @@
 - (void)restartStreaming
 {
     [self stopStreaming];
-    [self performSelector:@selector(startStreaming) withObject:nil afterDelay:2.f];
+    [self performSelector:@selector(startStreaming) withObject:nil afterDelay:10.f];
 }
 
 @end

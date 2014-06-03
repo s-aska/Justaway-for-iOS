@@ -1,0 +1,79 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('../font/fontello.eot?22566410');
+  src: url('../font/fontello.eot?22566410#iefix') format('embedded-opentype'),
+       url('../font/fontello.woff?22566410') format('woff'),
+       url('../font/fontello.ttf?22566410') format('truetype'),
+       url('../font/fontello.svg?22566410#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?22566410#fontello') format('svg');
+  }
+}
+*/
+ 
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+     
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.icon-search:before { content: '\63a2'; } /* '探' */
+.icon-sdd:before { content: '\9396'; } /* '鎖' */
+.icon-user:before { content: '\4eba'; } /* '人' */
+.icon-picture:before { content: '\753b'; } /* '画' */
+.icon-cancel:before { content: '\2613'; } /* '☓' */
+.icon-lock:before { content: '\9375'; } /* '鍵' */
+.icon-retweet:before { content: '\8f2a'; } /* '輪' */
+.icon-menu:before { content: '\4e09'; } /* '三' */
+.icon-down-open:before { content: '\4e0b'; } /* '下' */
+.icon-left-open:before { content: '\5de6'; } /* '左' */
+.icon-right-open:before { content: '\53f3'; } /* '右' */
+.icon-up-open:before { content: '\4e0a'; } /* '上' */
+.icon-undo:before { content: '\623b'; } /* '戻' */
+.icon-star:before { content: '\2605'; } /* '★' */
+.icon-list-bullet:before { content: '\6b04'; } /* '欄' */
+.icon-home:before { content: '\5bb6'; } /* '家' */
+.icon-reply:before { content: '\8fd4'; } /* '返' */
+.icon-archive:before { content: '\7bb1'; } /* '箱' */
+.icon-paper-plane:before { content: '\6295'; } /* '投' */
+.icon-at:before { content: '\40'; } /* '@' */
+.icon-location:before { content: '\6240'; } /* '所' */
+.icon-mail:before { content: '\6587'; } /* '文' */
+.icon-trash:before { content: '\6d88'; } /* '消' */
+.icon-twitter:before { content: '\9ce5'; } /* '鳥' */
+.icon-tag:before { content: '\672d'; } /* '札' */
+.icon-edit-alt:before { content: '\66f8'; } /* '書' */
+.icon-flash:before { content: '\96f7'; } /* '雷' */
