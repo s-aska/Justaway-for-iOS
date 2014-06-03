@@ -7,3 +7,4 @@
 "destroy_retweet" = "公式RT取り消し";
 "destroy_favorite" = "あんふぁぼ";
 "cancel" = "キャンセル";
+"streaming_rate_limited" = "ストリーミング接続が制限されました、ストリーミング接続をオフにします。";

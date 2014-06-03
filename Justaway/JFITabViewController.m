@@ -257,7 +257,7 @@
 
 - (void)finalize
 {
-    NSLog(@"finalize stack count:%lu", (unsigned long)[self.stacks count]);
+    // NSLog(@"finalize stack count:%lu", (unsigned long)[self.stacks count]);
     
     self.scrolling = NO;
     
@@ -305,7 +305,7 @@
     JFIEntity *tweet = [center.userInfo valueForKey:@"tweet"];
     [self.stacks addObject:tweet];
     
-    NSLog(@"receiveStatus stack count:%lu", (unsigned long)[self.stacks count]);
+    // NSLog(@"receiveStatus stack count:%lu", (unsigned long)[self.stacks count]);
     
     if (!self.scrolling) {
         [self finalizeWithDebounce:.5f];
