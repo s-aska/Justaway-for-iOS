@@ -166,6 +166,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    [self stopStreaming];
 }
 
 - (NSDictionary *)parametersDictionaryFromQueryString:(NSString *)queryString
