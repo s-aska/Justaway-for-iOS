@@ -281,6 +281,18 @@
         CGFloat offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
         [UIView setAnimationsEnabled:NO];
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        if ([self.entities count] > 1000) {
+            NSMutableArray *removeIndexPaths = NSMutableArray.new;
+            NSMutableArray *removeEntities = NSMutableArray.new;
+            for (NSInteger i = 1000; i < [self.entities count]; i++) {
+                [removeEntities addObject:self.entities[i]];
+                [removeIndexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+            }
+            for (JFIEntity *entity in removeEntities) {
+                [self.entities removeObject:entity];
+            }
+            [self.tableView deleteRowsAtIndexPaths:removeIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+        }
         [self.tableView setContentOffset:CGPointMake(0.0, lastCell.frame.origin.y - offset) animated:NO];
         [UIView setAnimationsEnabled:YES];
         
