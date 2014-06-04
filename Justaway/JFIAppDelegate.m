@@ -308,9 +308,9 @@
                                                      // 機内モード ... The network connection was lost.
                                                      // ネットワークエラー ... The network connection was lost.
                                                      // 接続制限(420) ... Exceeded connection limit for user
-                                                     NSLog(@"[JFIAppDelegate] disconnect streaming status code:%i error code:%i description:%@",
-                                                           self.streamingRequest.responseStatus,
-                                                           [error code],
+                                                     NSLog(@"[JFIAppDelegate] disconnect streaming status code:%li error code:%li description:%@",
+                                                           (long)self.streamingRequest.responseStatus,
+                                                           (long)[error code],
                                                            [error localizedDescription]);
                                                      if (self.streamingRequest.responseStatus == 420) {
                                                          self.streamingMode = NO;
