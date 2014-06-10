@@ -16,12 +16,12 @@
         if ([sharedActionStatus isRetweet:entity.statusID]) {
             [self addButtonWithTitle:NSLocalizedString(@"destroy_retweet", nil) action:@selector(destroyRetweet)];
         } else {
-            [self addButtonWithTitle:NSLocalizedString(@"retweet", nil) action:@selector(retweet)];
+            [self addButtonWithTitle:NSLocalizedString(@"retweet", nil) action:@selector(createRetweet)];
         }
         if ([sharedActionStatus isFavorite:entity.statusID]) {
             [self addButtonWithTitle:NSLocalizedString(@"destroy_favorite", nil) action:@selector(destroyFavorite)];
         } else {
-            [self addButtonWithTitle:NSLocalizedString(@"favorite", nil) action:@selector(favorite)];
+            [self addButtonWithTitle:NSLocalizedString(@"favorite", nil) action:@selector(createFavorite)];
         }
         if (![sharedActionStatus isRetweet:entity.statusID] && ![sharedActionStatus isFavorite:entity.statusID]) {
             [self addButtonWithTitle:NSLocalizedString(@"favorite_and_retweet", nil) action:@selector(favoriteRetweet)];
@@ -56,11 +56,11 @@
 
 - (void)favoriteRetweet
 {
-    [self favorite];
-    [self retweet];
+    [self createFavorite];
+    [self createRetweet];
 }
 
-- (void)retweet
+- (void)createRetweet
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
@@ -74,7 +74,7 @@
     [JFITwitter destroyRetweet:twitter statusID:self.entity.statusID];
 }
 
-- (void)favorite
+- (void)createFavorite
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];

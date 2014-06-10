@@ -14,7 +14,7 @@
         if ([sharedActionStatus isRetweet:entity.statusID]) {
             [self addButtonWithTitle:NSLocalizedString(@"destroy_retweet", nil) action:@selector(destroyRetweet)];
         } else {
-            [self addButtonWithTitle:NSLocalizedString(@"retweet", nil) action:@selector(retweet)];
+            [self addButtonWithTitle:NSLocalizedString(@"retweet", nil) action:@selector(createRetweet)];
         }
         [self addButtonWithTitle:NSLocalizedString(@"quote", nil) action:@selector(quote)];
         self.entity = entity;
@@ -30,7 +30,7 @@
     [JFITwitter destroyRetweet:twitter statusID:self.entity.statusID];
 }
 
-- (void)retweet
+- (void)createRetweet
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     STTwitterAPI *twitter = [delegate getTwitter];
