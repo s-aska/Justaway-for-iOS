@@ -114,7 +114,7 @@
 
 - (NSString *)statusURL
 {
-    return [NSString stringWithFormat:@" https://twitter.com/%@/status/%@", self.screenName, self.statusID];
+    return [NSString stringWithFormat:@"https://twitter.com/%@/status/%@", self.screenName, self.statusID];
 }
 
 - (NSURL *)profileImageBiggerURL

@@ -90,4 +90,23 @@
                       }];
 }
 
++ (void)quote:(JFIEntity *)entity
+{
+    NSString *text = [NSString stringWithFormat:@" @%@", entity.statusURL];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:@{@"text": text,
+                                                                 @"range_location": @0,
+                                                                 @"range_length": @0}];
+}
+
++ (void)reply:(JFIEntity *)entity
+{
+    NSString *text = [NSString stringWithFormat:@"@%@ ", entity.screenName];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:@{@"text": text,
+                                                                 @"in_reply_to_status_id": entity.statusID}];
+}
+
 @end

@@ -39,11 +39,7 @@
 
 - (void)quote
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
-                                                        object:[[UIApplication sharedApplication] delegate]
-                                                      userInfo:@{@"text": self.entity.statusURL,
-                                                                 @"range_location": @0,
-                                                                 @"range_length": @0}];
+    [JFITwitter quote:self.entity];
 }
 
 @end

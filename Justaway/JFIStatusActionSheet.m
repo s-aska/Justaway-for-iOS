@@ -97,20 +97,12 @@
 
 - (void)quote
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
-                                                        object:[[UIApplication sharedApplication] delegate]
-                                                      userInfo:@{@"text": self.entity.statusURL,
-                                                                 @"range_location": @0,
-                                                                 @"range_length": @0}];
+    [JFITwitter quote:self.entity];
 }
 
 - (void)reply
 {
-    NSString *text = [NSString stringWithFormat:@"@%@ ", self.entity.screenName];
-    [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
-                                                        object:[[UIApplication sharedApplication] delegate]
-                                                      userInfo:@{@"text": text,
-                                                                 @"in_reply_to_status_id": self.entity.statusID}];
+    [JFITwitter reply:self.entity];
 }
 
 - (void)openURL:(NSURL *)url
