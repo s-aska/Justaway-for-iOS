@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "JFIButton.h"
 #import "JFITabViewController.h"
+#import "JFIImageViewController.h"
 
 @interface JFIMainViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -19,6 +20,7 @@
 @property (nonatomic) NSMutableArray *views;
 @property (nonatomic) NSMutableArray *viewControllers;
 @property (nonatomic) UIActivityIndicatorView *indicator;
+@property (nonatomic) JFIImageViewController *imageViewController;
 
 - (IBAction)changePageAction:(id)sender;
 - (IBAction)streamingAction:(id)sender;

@@ -29,6 +29,8 @@
 		383D7DE618E1AF5C00D36678 /* JFIAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DE418E1AF5C00D36678 /* JFIAccountCell.xib */; };
 		3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */ = {isa = PBXBuildFile; fileRef = 3882594318E5511200F50117 /* NSDictionary+Default.m */; };
 		3882594818E55F3600F50117 /* JFIHTTPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3882594718E55F3600F50117 /* JFIHTTPImageOperation.m */; };
+		38C6769519480E89002DE676 /* JFIImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C6769319480E89002DE676 /* JFIImageViewController.m */; };
+		38C6769619480E89002DE676 /* JFIImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38C6769419480E89002DE676 /* JFIImageViewController.xib */; };
 		38D1B96F18FD0B2400DED578 /* JFITheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1B96E18FD0B2400DED578 /* JFITheme.m */; };
 		38D1B97518FD42F700DED578 /* JFIActionStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D1B97418FD42F700DED578 /* JFIActionStatus.m */; };
 		38D1B97718FE441900DED578 /* JFIEntityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38D1B97618FE441900DED578 /* JFIEntityCell.xib */; };
@@ -105,6 +107,9 @@
 		3882594318E5511200F50117 /* NSDictionary+Default.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Default.m"; sourceTree = "<group>"; };
 		3882594618E55F3600F50117 /* JFIHTTPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIHTTPImageOperation.h; sourceTree = "<group>"; };
 		3882594718E55F3600F50117 /* JFIHTTPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIHTTPImageOperation.m; sourceTree = "<group>"; };
+		38C6769219480E89002DE676 /* JFIImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIImageViewController.h; sourceTree = "<group>"; };
+		38C6769319480E89002DE676 /* JFIImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIImageViewController.m; sourceTree = "<group>"; };
+		38C6769419480E89002DE676 /* JFIImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIImageViewController.xib; sourceTree = "<group>"; };
 		38D1B96D18FD0B2400DED578 /* JFITheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFITheme.h; sourceTree = "<group>"; };
 		38D1B96E18FD0B2400DED578 /* JFITheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFITheme.m; sourceTree = "<group>"; };
 		38D1B97318FD42F700DED578 /* JFIActionStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIActionStatus.h; sourceTree = "<group>"; };
@@ -230,6 +235,9 @@
 				383D7DDF18E1957A00D36678 /* JFIAccountViewController.h */,
 				383D7DE018E1957A00D36678 /* JFIAccountViewController.m */,
 				383D7DDD18E1925700D36678 /* JFIAccount.storyboard */,
+				38C6769219480E89002DE676 /* JFIImageViewController.h */,
+				38C6769319480E89002DE676 /* JFIImageViewController.m */,
+				38C6769419480E89002DE676 /* JFIImageViewController.xib */,
 				38DA5F6C18E30D27006F484C /* Main */,
 			);
 			name = ViewControllers;
@@ -494,6 +502,7 @@
 			files = (
 				6A3DE96318EB32D900F045A7 /* fontello.ttf in Resources */,
 				6A9C989F18BB89D500CF4F84 /* Podfile in Resources */,
+				38C6769619480E89002DE676 /* JFIImageViewController.xib in Resources */,
 				6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */,
 				383D7DE618E1AF5C00D36678 /* JFIAccountCell.xib in Resources */,
 				6A002A5B193905490025EBCB /* Localizable.strings in Resources */,
@@ -578,6 +587,7 @@
 				6A52D24F190D4A7800C78B4D /* JFIStatusActionSheet.m in Sources */,
 				383D7DC418D6B64A00D36678 /* JFIMainViewController.m in Sources */,
 				38108F341906A14400C99F00 /* JFITab.m in Sources */,
+				38C6769519480E89002DE676 /* JFIImageViewController.m in Sources */,
 				383D7DB418D1968F00D36678 /* NSDate+Justaway.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

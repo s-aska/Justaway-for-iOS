@@ -31,9 +31,9 @@
                            @"url": @"http://t.co/rJC5Pxsu",
                            @"sizes": @{
                                    @"large": @{
-                                           @"h": @238,
+                                           @"h": @392,
                                            @"resize": @"fit",
-                                           @"w": @226
+                                           @"w": @596
                                            }
                                    }
                            }];

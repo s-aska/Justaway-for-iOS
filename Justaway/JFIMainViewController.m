@@ -8,9 +8,7 @@
 #import "JFIAccountViewController.h"
 #import "JFITab.h"
 #import "JFIStatusActionSheet.h"
-#import "JFIHTTPImageOperation.h"
-#import "UIImage+Processing.h"
-#import <ISMemoryCache/ISMemoryCache.h>
+#import "JFIImageViewController.h"
 
 @interface JFIMainViewController ()
 
@@ -472,59 +470,11 @@
 {
     NSDictionary *userInfo = [notification userInfo];
     NSDictionary *media = [userInfo objectForKey:@"media"];
-    NSURL *url = [[NSURL alloc] initWithString:[[media valueForKey:@"media_url"] stringByAppendingString:@":large"]];
-    float w = [[media valueForKeyPath:@"sizes.large.w"] floatValue];
-    float h = [[media valueForKeyPath:@"sizes.large.h"] floatValue];
-    NSLog(@"openImageHandler url:%@", url);
-    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-    BOOL resize = NO;
-    if (w > screenSize.width) {
-        h = h * ( screenSize.width / w );
-        w = screenSize.width;
-        resize = YES;
+    if (self.imageViewController == nil) {
+        self.imageViewController = [[JFIImageViewController alloc] init];
     }
-    if (h > screenSize.height) {
-        w = w * ( screenSize.height / h );
-        h = screenSize.height;
-        resize = YES;
-    }
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, w, h)];
-    imageView.center = self.view.center;
-    imageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeImageHandler:)];
-    tapGesture.numberOfTapsRequired = 1;
-    [imageView addGestureRecognizer:tapGesture];
-    [self.view addSubview:imageView];
-    UIImage *image = [[ISMemoryCache sharedCache] objectForKey:url];
-    if (image) {
-        imageView.image = image;
-    } else {
-        imageView.image = nil;
-        [self showIndicator];
-        [JFIHTTPImageOperation loadURL:url
-                           processType:ImageProcessTypeNone
-                               handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
-                                   [self hideIndicator];
-                                   if (image != nil && resize) {
-                                       [image resizedImageForSize:CGSizeMake(w, h)];
-                                   }
-                                   // ネットワークからの読み込み時のみフェードイン
-                                   if (response) {
-                                       imageView.alpha = 0;
-                                       imageView.image = image;
-                                       [UIView animateWithDuration:0.2
-                                                             delay:0
-                                                           options:UIViewAnimationOptionCurveEaseIn
-                                                        animations:^{ imageView.alpha = 1; }
-                                                        completion:^(BOOL finished){}
-                                        ];
-                                   } else {
-                                       imageView.image = image;
-                                   }
-                               }];
-
-    }
+    self.imageViewController.media = media;
+    [self.view addSubview:self.imageViewController.view];
 }
 
 - (void)closeImageHandler:(id)sender
@@ -623,6 +573,8 @@
 - (void)hideIndicator
 {
     [self.indicator performSelectorOnMainThread:@selector(stopAnimating) withObject:nil waitUntilDone:YES];
+    [self.indicator removeFromSuperview];
+    self.indicator = nil;
 }
 
 @end
