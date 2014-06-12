@@ -23,31 +23,35 @@
     [super viewDidLoad];
     
     // タップしたら消す
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self.view action:@selector(removeFromSuperview)];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeAction:)];
     tapGesture.numberOfTapsRequired = 1;
-    [self.view addGestureRecognizer:tapGesture];
+    [self.scrollView addGestureRecognizer:tapGesture];
     
     self.imageView.center = self.view.center;
     
     self.scrollView.delegate = self;
     self.scrollView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5]; // 透過黒背景
-    self.scrollView.contentMode = UIViewContentModeScaleAspectFit; // 縦横比維持
+    self.scrollView.contentMode = UIViewContentModeScaleAspectFit; // アスペクト比固定（ピンチイン・ピンチアウト時のアスペクト比）
+    self.imageView.contentMode = UIViewContentModeScaleAspectFit; // アスペクト比固定（何も指定しないとUIImageViewに合わせて伸長してしまう）
+    
+    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.indicator.center = self.view.center;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     // 消し損ねたインジケーターがないかチェック
-    if ([self.view.subviews count] > 1) {
-        [[self.view.subviews objectAtIndex:1] removeFromSuperview];
-    }
+    [self.indicator removeFromSuperview];
     
     NSURL *url = [[NSURL alloc] initWithString:[[self.media valueForKey:@"media_url"] stringByAppendingString:@":large"]];
     
     // 画面に収まる最大スケールを計算
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-    float scale_w = screenSize.width / [[self.media valueForKeyPath:@"sizes.large.w"] floatValue];
-    float scale_h = screenSize.width / [[self.media valueForKeyPath:@"sizes.large.h"] floatValue];
+    float w = [[self.media valueForKeyPath:@"sizes.large.w"] floatValue];
+    float h = [[self.media valueForKeyPath:@"sizes.large.h"] floatValue];
+    float scale_w = screenSize.width / w;
+    float scale_h = screenSize.width / h;
     float scale = scale_w > scale_h ? scale_h : scale_w;
     
     self.scrollView.zoomScale = scale;
@@ -55,14 +59,11 @@
     UIImage *image = [[ISMemoryCache sharedCache] objectForKey:url];
     if (image) {
         self.imageView.image = image;
-        [self.imageView sizeToFit];
     } else {
         
         // インジケーター表示
-        UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        indicator.center = self.view.center;
-        [self.view addSubview:indicator];
-        [indicator startAnimating];
+        [self.view addSubview:self.indicator];
+        [self.indicator startAnimating];
         
         self.imageView.image = nil;
         [JFIHTTPImageOperation loadURL:url
@@ -70,8 +71,8 @@
                                handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
                                    
                                    // インジケーター非表示
-                                   [indicator stopAnimating];
-                                   [indicator removeFromSuperview];
+                                   [self.indicator stopAnimating];
+                                   [self.indicator removeFromSuperview];
                                    
                                    if (response) {
                                        
@@ -87,8 +88,6 @@
                                    } else {
                                        self.imageView.image = image;
                                    }
-                                   
-                                   [self.imageView sizeToFit];
                                }];
         
     }
@@ -105,6 +104,45 @@
 {
     // ピンチイン・ピンチアウトで拡大・縮小させるUIView
     return self.imageView;
+}
+
+#pragma mark - UIButton
+
+- (IBAction)closeAction:(id)sender
+{
+    self.imageView.image = nil;
+    [self.indicator stopAnimating];
+    [self.indicator removeFromSuperview];
+    [self.view removeFromSuperview];
+}
+
+- (IBAction)saveAction:(id)sender
+{
+    // 読み込み前は無視
+    if (self.imageView.image == nil) {
+        return;
+    }
+    
+    // 読み込み中・保存中は無視（連打対策）
+    if ([self.indicator isAnimating]) {
+        return;
+    }
+    [self.view addSubview:self.indicator];
+    [self.indicator startAnimating];
+    UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(onCompleteSave:didFinishSavingWithError:contextInfo:), NULL);
+}
+
+// 画像保存完了時のセレクタ
+- (void)onCompleteSave:(UIImage *)screenImage didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    [self closeAction:nil];
+    NSString *message = error ? @"Failure" : @"Success";
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @""
+                                                    message: message
+                                                   delegate: nil
+                                          cancelButtonTitle: @"OK"
+                                          otherButtonTitles: nil];
+    [alert show];
 }
 
 @end

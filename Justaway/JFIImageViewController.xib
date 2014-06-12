@@ -17,21 +17,60 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.20000000000000001" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="OlQ-b1-GnB">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="518"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wle-ac-bH3">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="569"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </imageView>
                     </subviews>
                 </scrollView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vEg-Kp-rDQ">
+                    <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXu-tL-vBd" customClass="JFIButton">
+                            <rect key="frame" x="10" y="7" width="30" height="36"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <state key="normal" title="左">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="closeAction:" destination="-1" eventType="touchUpInside" id="ofu-5u-v9A"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="szc-eA-rV6" customClass="JFIButton">
+                            <rect key="frame" x="280" y="5" width="30" height="41"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                            <state key="normal" title="保">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="saveAction:" destination="-1" eventType="touchUpInside" id="phs-4Y-LgU"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="dXu-tL-vBd" secondAttribute="centerY" id="GEO-Qu-32E"/>
+                        <constraint firstAttribute="centerY" secondItem="szc-eA-rV6" secondAttribute="centerY" id="VOD-XJ-vjL"/>
+                        <constraint firstItem="dXu-tL-vBd" firstAttribute="leading" secondItem="vEg-Kp-rDQ" secondAttribute="leading" constant="10" id="VVE-iU-VZ0"/>
+                        <constraint firstAttribute="height" constant="50" id="qbO-9F-j1N"/>
+                        <constraint firstAttribute="trailing" secondItem="szc-eA-rV6" secondAttribute="trailing" constant="10" id="rRF-82-8Py"/>
+                    </constraints>
+                </view>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="OlQ-b1-GnB" secondAttribute="bottom" id="DA3-bp-t5O"/>
-                <constraint firstItem="OlQ-b1-GnB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Egf-rF-jw1"/>
-                <constraint firstItem="OlQ-b1-GnB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="pXC-7a-fsR"/>
-                <constraint firstAttribute="trailing" secondItem="OlQ-b1-GnB" secondAttribute="trailing" id="wsX-o4-ygb"/>
+                <constraint firstItem="vEg-Kp-rDQ" firstAttribute="top" secondItem="OlQ-b1-GnB" secondAttribute="bottom" id="CcG-64-nkc"/>
+                <constraint firstItem="OlQ-b1-GnB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="EZ6-oN-ND7"/>
+                <constraint firstAttribute="trailing" secondItem="OlQ-b1-GnB" secondAttribute="trailing" id="HcA-Vb-FDZ"/>
+                <constraint firstItem="OlQ-b1-GnB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="mKl-zi-Bh8"/>
+                <constraint firstAttribute="trailing" secondItem="vEg-Kp-rDQ" secondAttribute="trailing" id="pO3-k2-a5V"/>
+                <constraint firstAttribute="bottom" secondItem="vEg-Kp-rDQ" secondAttribute="bottom" id="txl-cq-pMa"/>
+                <constraint firstItem="vEg-Kp-rDQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zwl-PG-tKi"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
