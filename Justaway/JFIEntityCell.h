@@ -22,6 +22,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *actionedLabel;
 @property (nonatomic, weak) IBOutlet UIView *imagesView;
 @property (nonatomic) JFIEntity *entity;
+@property (nonatomic) NSString *themeName;
 
 - (void)setLabelTexts:(JFIEntity *)entity;
 - (void)setButtonColor;

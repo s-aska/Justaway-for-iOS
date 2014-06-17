@@ -1,6 +1,7 @@
 #import "JFISecret.h"
 #import "JFIAccount.h"
 #import "JFIEntity.h"
+#import "JFITheme.h"
 #import "JFIAppDelegate.h"
 #import "STHTTPRequest+STTwitter.h"
 #import <SSKeychain/SSKeychain.h>
@@ -20,10 +21,16 @@
     self.streamingStatus = StreamingDisconnected;
     self.streamingMode = NO;
     self.currentAccountIndex = 0;
-    [application setStatusBarStyle:UIStatusBarStyleLightContent];
+    [self setTheme];
     
     // アカウント情報をKeyChainから読み込み
     [self loadAccounts];
+    
+    // テーマ設定
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setTheme)
+                                                 name:JFISetThemeNotification
+                                               object:nil];
     
     // ネットワーク接続状況の監視
     self.reachability = [Reachability reachabilityWithHostName:@"api.twitter.com"];
@@ -230,7 +237,12 @@
 }
 
 
-#pragma mark - Streaming
+#pragma mark - NSNotification
+
+- (void)setTheme
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:[JFITheme sharedTheme].statusBarStyle];
+}
 
 - (void)notifiedNetworkStatus:(NSNotification *)notification
 {

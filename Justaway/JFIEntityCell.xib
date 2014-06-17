@@ -53,7 +53,7 @@
                         <rect key="frame" x="56" y="43" width="259" height="0.0"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JHj-d0-E4U" customClass="JFIButton">
+                    <button opaque="NO" tag="1000" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JHj-d0-E4U" customClass="JFIButton">
                         <rect key="frame" x="49" y="39" width="36" height="40"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -66,7 +66,7 @@
                             <action selector="replyAction:" destination="udE-nC-zE6" eventType="touchUpInside" id="Eu6-78-DvV"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qvj-mQ-z3Y" customClass="JFIButton">
+                    <button opaque="NO" tag="1001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qvj-mQ-z3Y" customClass="JFIButton">
                         <rect key="frame" x="103" y="38" width="37" height="41"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -79,7 +79,7 @@
                             <action selector="retweetAction:" destination="udE-nC-zE6" eventType="touchUpInside" id="PRE-cD-WNU"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a6s-Mp-xys" customClass="JFIButton">
+                    <button opaque="NO" tag="1002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a6s-Mp-xys" customClass="JFIButton">
                         <rect key="frame" x="158" y="41" width="34" height="37"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -186,7 +186,6 @@
                     <constraint firstAttribute="bottom" secondItem="4NV-2e-3mq" secondAttribute="bottom" id="zj5-MH-3hq"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
             <connections>
                 <outlet property="actionedIconImageView" destination="gdD-aa-oK4" id="Cdg-kH-bZL"/>
                 <outlet property="actionedLabel" destination="gXQ-pt-0lN" id="cH5-J3-wVt"/>

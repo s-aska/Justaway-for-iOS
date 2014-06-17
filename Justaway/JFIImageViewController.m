@@ -2,6 +2,7 @@
 #import "JFIHTTPImageOperation.h"
 #import "UIImage+Processing.h"
 #import <ISMemoryCache/ISMemoryCache.h>
+#import "JFITheme.h"
 
 @interface JFIImageViewController ()
 
@@ -40,6 +41,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    
+    JFITheme *theme = [JFITheme sharedTheme];
+    self.toolbarView.backgroundColor = theme.menuBackgroundColor;
     
     // 消し損ねたインジケーターがないかチェック
     [self.indicator removeFromSuperview];

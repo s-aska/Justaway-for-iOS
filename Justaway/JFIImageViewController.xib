@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="imageView" destination="wle-ac-bH3" id="LwP-Qt-vDg"/>
                 <outlet property="scrollView" destination="OlQ-b1-GnB" id="9V5-38-VW4"/>
+                <outlet property="toolbarView" destination="vEg-Kp-rDQ" id="p1I-T4-b4l"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -31,10 +32,11 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXu-tL-vBd" customClass="JFIButton">
-                            <rect key="frame" x="10" y="7" width="30" height="36"/>
+                            <rect key="frame" x="0.0" y="-2" width="53" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                            <state key="normal" title="左">
+                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                            <state key="normal" title="✖">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -42,9 +44,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="szc-eA-rV6" customClass="JFIButton">
-                            <rect key="frame" x="280" y="5" width="30" height="41"/>
+                            <rect key="frame" x="266" y="-5" width="54" height="59"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
                             <state key="normal" title="保">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -57,9 +60,9 @@
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="dXu-tL-vBd" secondAttribute="centerY" id="GEO-Qu-32E"/>
                         <constraint firstAttribute="centerY" secondItem="szc-eA-rV6" secondAttribute="centerY" id="VOD-XJ-vjL"/>
-                        <constraint firstItem="dXu-tL-vBd" firstAttribute="leading" secondItem="vEg-Kp-rDQ" secondAttribute="leading" constant="10" id="VVE-iU-VZ0"/>
+                        <constraint firstItem="dXu-tL-vBd" firstAttribute="leading" secondItem="vEg-Kp-rDQ" secondAttribute="leading" id="VVE-iU-VZ0"/>
                         <constraint firstAttribute="height" constant="50" id="qbO-9F-j1N"/>
-                        <constraint firstAttribute="trailing" secondItem="szc-eA-rV6" secondAttribute="trailing" constant="10" id="rRF-82-8Py"/>
+                        <constraint firstAttribute="trailing" secondItem="szc-eA-rV6" secondAttribute="trailing" id="rRF-82-8Py"/>
                     </constraints>
                 </view>
             </subviews>

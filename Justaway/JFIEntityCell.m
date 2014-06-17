@@ -16,18 +16,30 @@
     [super awakeFromNib];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    // テーマ設定
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setTheme)
+                                                 name:JFISetThemeNotification
+                                               object:nil];
+
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
+    JFITheme *theme = [JFITheme sharedTheme];
     if (selected) {
-        self.backgroundColor = [UIColor darkGrayColor];
+        self.backgroundColor = theme.mainHighlightBackgroundColor;
     } else {
         [UIView animateWithDuration:0.3
                               delay:0
                             options:UIViewAnimationOptionCurveEaseIn
-                         animations:^{ self.backgroundColor = [UIColor blackColor]; }
+                         animations:^{ self.backgroundColor = theme.mainBackgroundColor; }
                          completion:^(BOOL finished){}
          ];
     }
@@ -37,6 +49,8 @@
 - (void)setLabelTexts:(JFIEntity *)entity
 {
     self.entity = entity;
+    
+    [self setTheme];
     
     // 表示名
     self.displayNameLabel.text = entity.displayName;
@@ -65,19 +79,12 @@
     // via名
     self.sourceLabel.text = entity.clientName;
     
-    // RT状態
-    [self.replyButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-    [self.retweetButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-    
     // RT数
     if ([entity.retweetCount intValue] > 0) {
         self.retweetCountLabel.text = [entity.retweetCount stringValue];
     } else {
         self.retweetCountLabel.text = @"";
     }
-    
-    // ふぁぼ状態
-    [self.favoriteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     // ふぁぼ数
     if ([entity.favoriteCount intValue] > 0) {
@@ -113,9 +120,27 @@
 - (void)setButtonColor
 {
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
+//    JFITheme *theme = [JFITheme sharedTheme];
+    [self.favoriteButton setActive:[sharedActionStatus isFavorite:self.entity.statusID]];
+    [self.retweetButton setActive:[sharedActionStatus isRetweet:self.entity.statusID]];
+//    [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:self.entity.statusID]];
+//    [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:self.entity.statusID]];
+}
+
+- (void)setTheme
+{
     JFITheme *theme = [JFITheme sharedTheme];
-    [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:self.entity.statusID]];
-    [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:self.entity.statusID]];
+    if ([self.themeName isEqualToString:theme.name]) {
+        return;
+    }
+    self.themeName = theme.name;
+    [self setBackgroundColor:theme.mainBackgroundColor];
+    [self.displayNameLabel setTextColor:theme.displayNameTextColor];
+    [self.screenNameLabel setTextColor:theme.screenNameTextColor];
+    [self.createdAtRelativeLabel setTextColor:theme.relativeDateTextColor];
+    [self.createdAtLabel setTextColor:theme.absoluteDateTextColor];
+    [self.sourceLabel setTextColor:theme.clientNameTextColor];
+    [self.statusLabel setTextColor:theme.bodyTextColor];
 }
 
 - (void)loadImages:(BOOL)scrolling

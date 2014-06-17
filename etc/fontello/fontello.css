@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'fontello';
-  src: url('../font/fontello.eot?52385069');
-  src: url('../font/fontello.eot?52385069#iefix') format('embedded-opentype'),
-       url('../font/fontello.woff?52385069') format('woff'),
-       url('../font/fontello.ttf?52385069') format('truetype'),
-       url('../font/fontello.svg?52385069#fontello') format('svg');
+  src: url('../font/fontello.eot?329247');
+  src: url('../font/fontello.eot?329247#iefix') format('embedded-opentype'),
+       url('../font/fontello.woff?329247') format('woff'),
+       url('../font/fontello.ttf?329247') format('truetype'),
+       url('../font/fontello.svg?329247#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?52385069#fontello') format('svg');
+    src: url('../font/fontello.svg?329247#fontello') format('svg');
   }
 }
 */
@@ -50,9 +50,11 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
  
+.icon-plus:before { content: '\2b'; } /* '+' */
 .icon-at:before { content: '\40'; } /* '@' */
 .icon-star:before { content: '\2605'; } /* '★' */
-.icon-cancel:before { content: '\2613'; } /* '☓' */
+.icon-cancel:before { content: '\2716'; } /* '✖' */
+.icon-cog:before { content: '\2721'; } /* '✡' */
 .icon-menu:before { content: '\4e09'; } /* '三' */
 .icon-up-open:before { content: '\4e0a'; } /* '上' */
 .icon-down-open:before { content: '\4e0b'; } /* '下' */
@@ -62,19 +64,14 @@
 .icon-home:before { content: '\5bb6'; } /* '家' */
 .icon-left-open:before { content: '\5de6'; } /* '左' */
 .icon-undo:before { content: '\623b'; } /* '戻' */
-.icon-location:before { content: '\6240'; } /* '所' */
 .icon-paper-plane:before { content: '\6295'; } /* '投' */
 .icon-search:before { content: '\63a2'; } /* '探' */
 .icon-mail:before { content: '\6587'; } /* '文' */
 .icon-edit-alt:before { content: '\66f8'; } /* '書' */
-.icon-tag:before { content: '\672d'; } /* '札' */
 .icon-list-bullet:before { content: '\6b04'; } /* '欄' */
-.icon-trash:before { content: '\6d88'; } /* '消' */
 .icon-picture:before { content: '\753b'; } /* '画' */
-.icon-archive:before { content: '\7bb1'; } /* '箱' */
 .icon-retweet:before { content: '\8f2a'; } /* '輪' */
 .icon-reply:before { content: '\8fd4'; } /* '返' */
 .icon-lock:before { content: '\9375'; } /* '鍵' */
-.icon-sdd:before { content: '\9396'; } /* '鎖' */
 .icon-flash:before { content: '\96f7'; } /* '雷' */
 .icon-twitter:before { content: '\9ce5'; } /* '鳥' */

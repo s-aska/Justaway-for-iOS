@@ -4,6 +4,7 @@
 #import "JFIAccountCell.h"
 #import "JFIAccount.h"
 #import "JFIHTTPImageOperation.h"
+#import "JFITheme.h"
 
 @interface JFIAccountViewController ()
 
@@ -24,6 +25,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    JFITheme *theme = [JFITheme sharedTheme];
+    self.view.backgroundColor = theme.mainBackgroundColor;
+    [self.titleLabel setTextColor:theme.titleTextColor];
+    self.toolbarView.backgroundColor = theme.menuBackgroundColor;
+
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     

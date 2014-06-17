@@ -17,6 +17,7 @@
                         // Duplicate
                         if ([error code] != 139) {
                             [sharedActionStatus removeFavorite:statusID];
+                            NSLog(@"[createFavorite] error code:%i description:%@", [error code], [error description]);
                         }
                     }];
 }
@@ -33,6 +34,7 @@
                                       // Duplicate
                                       if ([error code] != 34) {
                                           [sharedActionStatus setFavorite:statusID];
+                                          NSLog(@"[destroyFavorite] error code:%i description:%@", [error code], [error description]);
                                       }
                                   }];
 }
@@ -47,8 +49,11 @@
                         }
                           errorBlock:^(NSError *error){
                               // Duplicate
-                              if ([error code] != 34) {
+                              NSString *duplicate = @"sharing is not permissible for this status";
+                              if ([error code] != 34 &&
+                                  [[error description] rangeOfString:duplicate].location == NSNotFound) {
                                   [sharedActionStatus removeRetweet:statusID];
+                                  NSLog(@"[createRetweet] error code:%i description:%@", [error code], [error description]);
                               }
                           }];
 }
@@ -73,6 +78,7 @@
                           // Duplicate
                           if ([error code] != 34) {
                               [sharedActionStatus setRetweetID:statusID statusID:destroyStatusID];
+                              NSLog(@"[destroyRetweet] error code:%i description:%@", [error code], [error description]);
                           }
                       }];
 }

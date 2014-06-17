@@ -3,6 +3,7 @@
 #import "JFIAccount.h"
 #import "JFIAppDelegate.h"
 #import "JFITabViewController.h"
+#import "JFITheme.h"
 
 @interface JFITabViewController ()
 
@@ -20,8 +21,16 @@
     return self;
 }
 
-- (void)loadView {
+- (void)loadView
+{
 	[super loadView];
+}
+
+- (void)setTheme
+{
+    JFITheme *theme = [JFITheme sharedTheme];
+    [self.tableView setSeparatorColor:theme.mainHighlightBackgroundColor];
+    [self.tableView setBackgroundColor:theme.mainBackgroundColor];
 }
 
 - (void)viewDidLoad
@@ -29,8 +38,8 @@
     [super viewDidLoad];
     
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
-    [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
-    [self.tableView setBackgroundColor:[UIColor blackColor]];
+    
+    [self setTheme];
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
@@ -55,6 +64,12 @@
         default:
             break;
     }
+    
+    // テーマ設定
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setTheme)
+                                                 name:JFISetThemeNotification
+                                               object:delegate];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onRefresh)

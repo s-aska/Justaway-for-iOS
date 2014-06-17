@@ -13,6 +13,7 @@
 @property (nonatomic, weak) IBOutlet UITextView *editorTextView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *editorBottomConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *editorHeightConstraint;
+@property (nonatomic, weak) IBOutlet UIView *toolbarView;
 @property (nonatomic, weak) IBOutlet JFIButton *postButton;
 @property (nonatomic, weak) IBOutlet JFIButton *imageButton;
 @property (nonatomic) UIView *contentView;
@@ -25,6 +26,7 @@
 - (IBAction)changePageAction:(id)sender;
 - (IBAction)streamingAction:(id)sender;
 - (IBAction)accountAction:(id)sender;
+- (IBAction)themeAction:(id)sender;
 - (IBAction)postAction:(id)sender;
 - (IBAction)closeAction:(id)sender;
 - (IBAction)imageAction:(id)sender;

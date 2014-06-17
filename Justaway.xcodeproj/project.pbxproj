@@ -27,6 +27,7 @@
 		383D7DE118E1957A00D36678 /* JFIAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DE018E1957A00D36678 /* JFIAccountViewController.m */; };
 		383D7DE518E1AF5C00D36678 /* JFIAccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DE318E1AF5C00D36678 /* JFIAccountCell.m */; };
 		383D7DE618E1AF5C00D36678 /* JFIAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DE418E1AF5C00D36678 /* JFIAccountCell.xib */; };
+		385D50A7194FD3E20037947D /* UIColor+Justaway.m in Sources */ = {isa = PBXBuildFile; fileRef = 385D50A6194FD3E20037947D /* UIColor+Justaway.m */; };
 		3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */ = {isa = PBXBuildFile; fileRef = 3882594318E5511200F50117 /* NSDictionary+Default.m */; };
 		3882594818E55F3600F50117 /* JFIHTTPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3882594718E55F3600F50117 /* JFIHTTPImageOperation.m */; };
 		38C6769519480E89002DE676 /* JFIImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C6769319480E89002DE676 /* JFIImageViewController.m */; };
@@ -44,6 +45,7 @@
 		6A52D248190D1F1F00C78B4D /* JFIRetweetActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D247190D1F1F00C78B4D /* JFIRetweetActionSheet.m */; };
 		6A52D24B190D43EE00C78B4D /* JFIActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D24A190D43EE00C78B4D /* JFIActionSheet.m */; };
 		6A52D24F190D4A7800C78B4D /* JFIStatusActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D24E190D4A7800C78B4D /* JFIStatusActionSheet.m */; };
+		6A7FD875194C802D00919A15 /* JFIThemeActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7FD874194C802D00919A15 /* JFIThemeActionSheet.m */; };
 		6A9C989F18BB89D500CF4F84 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C989E18BB89D500CF4F84 /* Podfile */; };
 		6AB9C8C619041716002FD422 /* JFIEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB9C8C519041716002FD422 /* JFIEntity.m */; };
 		6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
@@ -103,6 +105,8 @@
 		383D7DE218E1AF5C00D36678 /* JFIAccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIAccountCell.h; sourceTree = "<group>"; };
 		383D7DE318E1AF5C00D36678 /* JFIAccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIAccountCell.m; sourceTree = "<group>"; };
 		383D7DE418E1AF5C00D36678 /* JFIAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIAccountCell.xib; sourceTree = "<group>"; };
+		385D50A5194FD3E20037947D /* UIColor+Justaway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Justaway.h"; sourceTree = "<group>"; };
+		385D50A6194FD3E20037947D /* UIColor+Justaway.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Justaway.m"; sourceTree = "<group>"; };
 		3882594218E5511200F50117 /* NSDictionary+Default.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Default.h"; sourceTree = "<group>"; };
 		3882594318E5511200F50117 /* NSDictionary+Default.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Default.m"; sourceTree = "<group>"; };
 		3882594618E55F3600F50117 /* JFIHTTPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIHTTPImageOperation.h; sourceTree = "<group>"; };
@@ -132,6 +136,8 @@
 		6A52D24A190D43EE00C78B4D /* JFIActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIActionSheet.m; sourceTree = "<group>"; };
 		6A52D24D190D4A7800C78B4D /* JFIStatusActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIStatusActionSheet.h; sourceTree = "<group>"; };
 		6A52D24E190D4A7800C78B4D /* JFIStatusActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIStatusActionSheet.m; sourceTree = "<group>"; };
+		6A7FD873194C802D00919A15 /* JFIThemeActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIThemeActionSheet.h; sourceTree = "<group>"; };
+		6A7FD874194C802D00919A15 /* JFIThemeActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIThemeActionSheet.m; sourceTree = "<group>"; };
 		6A9C989E18BB89D500CF4F84 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6AB9C8C419041716002FD422 /* JFIEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIEntity.h; sourceTree = "<group>"; };
 		6AB9C8C519041716002FD422 /* JFIEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntity.m; sourceTree = "<group>"; };
@@ -205,6 +211,8 @@
 				3882594318E5511200F50117 /* NSDictionary+Default.m */,
 				3828D5B918ED24FF00170374 /* UIImage+Processing.h */,
 				3828D5BA18ED24FF00170374 /* UIImage+Processing.m */,
+				385D50A5194FD3E20037947D /* UIColor+Justaway.h */,
+				385D50A6194FD3E20037947D /* UIColor+Justaway.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -324,6 +332,8 @@
 				6A52D247190D1F1F00C78B4D /* JFIRetweetActionSheet.m */,
 				6A52D24D190D4A7800C78B4D /* JFIStatusActionSheet.h */,
 				6A52D24E190D4A7800C78B4D /* JFIStatusActionSheet.m */,
+				6A7FD873194C802D00919A15 /* JFIThemeActionSheet.h */,
+				6A7FD874194C802D00919A15 /* JFIThemeActionSheet.m */,
 			);
 			name = ActionSheets;
 			sourceTree = "<group>";
@@ -570,6 +580,7 @@
 				6AB9C8C619041716002FD422 /* JFIEntity.m in Sources */,
 				38D1B97518FD42F700DED578 /* JFIActionStatus.m in Sources */,
 				6A21291018C3485A00AD2953 /* JFIEntityCell.m in Sources */,
+				385D50A7194FD3E20037947D /* UIColor+Justaway.m in Sources */,
 				38DA5F7218E447DE006F484C /* JFIConstants.m in Sources */,
 				6ADF7956188D6E2200632BA5 /* JFIAppDelegate.m in Sources */,
 				3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */,
@@ -586,6 +597,7 @@
 				383D7DE518E1AF5C00D36678 /* JFIAccountCell.m in Sources */,
 				6A52D24F190D4A7800C78B4D /* JFIStatusActionSheet.m in Sources */,
 				383D7DC418D6B64A00D36678 /* JFIMainViewController.m in Sources */,
+				6A7FD875194C802D00919A15 /* JFIThemeActionSheet.m in Sources */,
 				38108F341906A14400C99F00 /* JFITab.m in Sources */,
 				38C6769519480E89002DE676 /* JFIImageViewController.m in Sources */,
 				383D7DB418D1968F00D36678 /* NSDate+Justaway.m in Sources */,

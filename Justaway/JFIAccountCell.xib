@@ -45,7 +45,6 @@
                     <constraint firstItem="YWc-DG-9Fy" firstAttribute="leading" secondItem="Z2F-7F-IPM" secondAttribute="trailing" constant="8" id="unq-fb-L69"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="displayNameLabel" destination="8rI-eb-ygc" id="C1L-qS-ORE"/>
                 <outlet property="iconImageView" destination="Z2F-7F-IPM" id="7mq-H6-iUi"/>

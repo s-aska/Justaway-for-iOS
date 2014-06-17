@@ -33,7 +33,13 @@
     {
       "uid": "5211af474d3a9848f67f945e2ccaf143",
       "css": "cancel",
-      "code": 9747,
+      "code": 10006,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "44e04715aecbca7f266a17d5a7863c68",
+      "css": "plus",
+      "code": 43,
       "src": "fontawesome"
     },
     {
@@ -115,12 +121,6 @@
       "src": "entypo"
     },
     {
-      "uid": "96ea1be71f597a5bdfc8f791ada4f651",
-      "css": "archive",
-      "code": 31665,
-      "src": "entypo"
-    },
-    {
       "uid": "db112402805d9dadc01ce009fbfdb914",
       "css": "paper-plane",
       "code": 25237,
@@ -133,9 +133,9 @@
       "src": "typicons"
     },
     {
-      "uid": "08a23ea96a596b1b5f12f6abbbc8f5f9",
-      "css": "location",
-      "code": 25152,
+      "uid": "fc94b92194752796654c96c7b7dccebb",
+      "css": "cog",
+      "code": 10017,
       "src": "iconic"
     },
     {
@@ -145,34 +145,16 @@
       "src": "modernpics"
     },
     {
-      "uid": "cad619ef78a5500c1e5b3d021d2fdd65",
-      "css": "trash",
-      "code": 28040,
-      "src": "maki"
-    },
-    {
       "uid": "b1ec8e90c2c85cf0035849980a3789b3",
       "css": "twitter",
       "code": 40165,
       "src": "zocial"
     },
     {
-      "uid": "630529f03c319c01101aa167181b650e",
-      "css": "tag",
-      "code": 26413,
-      "src": "elusive"
-    },
-    {
       "uid": "6059b7737287728091ce7e4c600cca56",
       "css": "edit-alt",
       "code": 26360,
       "src": "elusive"
-    },
-    {
-      "uid": "3c4a596e8ee3584c4c9e7002371db19f",
-      "css": "sdd",
-      "code": 37782,
-      "src": "websymbols"
     }
   ]
 }

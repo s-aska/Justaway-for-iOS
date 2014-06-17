@@ -8,7 +8,9 @@
 #import "JFIAccountViewController.h"
 #import "JFITab.h"
 #import "JFIStatusActionSheet.h"
+#import "JFIThemeActionSheet.h"
 #import "JFIImageViewController.h"
+#import "JFITheme.h"
 
 @interface JFIMainViewController ()
 
@@ -30,10 +32,23 @@
     return self;
 }
 
+- (void)setTheme
+{
+    JFITheme *theme = [JFITheme sharedTheme];
+    [self.titleLabel setTextColor:theme.titleTextColor];
+    [self.streamingButton setTitleColor:theme.titleTextColor forState:UIControlStateNormal];
+    self.view.backgroundColor = theme.mainBackgroundColor;
+    self.scrollWrapperView.backgroundColor = theme.mainBackgroundColor;
+    self.editorView.backgroundColor = theme.menuBackgroundColor;
+    self.toolbarView.backgroundColor = theme.menuBackgroundColor;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     NSLog(@"[JFIMainViewController] viewDidLoad");
+    
+    [self setTheme];
     
     self.viewControllers = NSMutableArray.new;
     self.views = NSMutableArray.new;
@@ -79,6 +94,12 @@
     [super viewWillAppear:animated];
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    // テーマ設定
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setTheme)
+                                                 name:JFISetThemeNotification
+                                               object:delegate];
     
     // Streamingの接続状況に応じて
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -302,6 +323,11 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIAccount" bundle:nil];
     JFIAccountViewController *accountViewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIAccountViewController"];
     [self presentViewController:accountViewController animated:YES completion:nil];
+}
+
+- (IBAction)themeAction:(id)sender
+{
+    [[[JFIThemeActionSheet alloc] init] showInView:self.view];
 }
 
 - (IBAction)postAction:(id)sender

@@ -17,9 +17,10 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4jC-ic-wcd">
-                                <rect key="frame" x="260" y="15" width="55" height="29"/>
+                                <rect key="frame" x="245" y="10" width="75" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                                 <state key="normal" title="streaming">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -29,7 +30,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3x3-bt-Xij">
-                                <rect key="frame" x="5" y="20" width="41" height="20"/>
+                                <rect key="frame" x="10" y="20" width="41" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="14"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -157,8 +158,8 @@
                                             <action selector="changePageAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="cmy-0d-z1y"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POk-aP-yJH" customClass="JFIButton">
-                                        <rect key="frame" x="220" y="-4" width="50" height="54"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hRb-oZ-xWr" customClass="JFIButton">
+                                        <rect key="frame" x="173" y="-4" width="50" height="54"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
@@ -166,7 +167,19 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="accountAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="5EO-Jo-xIb"/>
+                                            <action selector="accountAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="tRr-bY-B5H"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POk-aP-yJH" customClass="JFIButton">
+                                        <rect key="frame" x="223" y="-4" width="47" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                                        <state key="normal" title="✡">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="themeAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="Wc7-Yb-BKF"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CvT-HE-uuZ" customClass="JFIButton">
@@ -189,6 +202,7 @@
                                     <constraint firstAttribute="bottom" secondItem="CvT-HE-uuZ" secondAttribute="bottom" id="Hwh-OK-JE2"/>
                                     <constraint firstAttribute="trailing" secondItem="CvT-HE-uuZ" secondAttribute="trailing" id="Ob6-YY-GvU"/>
                                     <constraint firstItem="CvT-HE-uuZ" firstAttribute="leading" secondItem="POk-aP-yJH" secondAttribute="trailing" id="RHP-8U-Ra7"/>
+                                    <constraint firstAttribute="bottom" secondItem="hRb-oZ-xWr" secondAttribute="bottom" id="VuI-LR-Asn"/>
                                     <constraint firstItem="5PL-9a-hUM" firstAttribute="leading" secondItem="ivN-aE-Jrd" secondAttribute="trailing" id="ZeW-Yi-Rcx"/>
                                     <constraint firstAttribute="bottom" secondItem="POk-aP-yJH" secondAttribute="bottom" id="aQK-eM-Gmv"/>
                                     <constraint firstAttribute="bottom" secondItem="5PL-9a-hUM" secondAttribute="bottom" id="cA0-eF-XZs"/>
@@ -196,19 +210,20 @@
                                     <constraint firstItem="MkS-3K-xmb" firstAttribute="leading" secondItem="5PL-9a-hUM" secondAttribute="trailing" id="eZb-cx-WFv"/>
                                     <constraint firstItem="ivN-aE-Jrd" firstAttribute="leading" secondItem="svU-vp-0tM" secondAttribute="leading" id="f18-St-aWc"/>
                                     <constraint firstItem="ivN-aE-Jrd" firstAttribute="leading" secondItem="svU-vp-0tM" secondAttribute="leading" id="gEP-bZ-Gqs"/>
+                                    <constraint firstItem="POk-aP-yJH" firstAttribute="leading" secondItem="hRb-oZ-xWr" secondAttribute="trailing" id="wzi-K7-oiV"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="3x3-bt-Xij" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" constant="5" id="J5x-19-RN0"/>
+                            <constraint firstItem="3x3-bt-Xij" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" constant="10" id="J5x-19-RN0"/>
                             <constraint firstAttribute="trailing" secondItem="svU-vp-0tM" secondAttribute="trailing" id="JRf-ar-1YW"/>
-                            <constraint firstItem="4jC-ic-wcd" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" constant="-5" id="OKq-b2-Xip"/>
+                            <constraint firstItem="4jC-ic-wcd" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" constant="-10" id="OKq-b2-Xip"/>
                             <constraint firstItem="svU-vp-0tM" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="OuK-Cc-OVP"/>
                             <constraint firstAttribute="trailing" secondItem="fgT-2n-FvJ" secondAttribute="trailing" id="SSx-hq-FxP"/>
                             <constraint firstItem="y1F-mf-7hv" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="Uon-3Z-erx"/>
                             <constraint firstAttribute="trailing" secondItem="y1F-mf-7hv" secondAttribute="trailing" id="Xz8-iB-Etv"/>
-                            <constraint firstAttribute="trailing" secondItem="4jC-ic-wcd" secondAttribute="trailing" constant="5" id="YuU-1G-mgg"/>
+                            <constraint firstAttribute="trailing" secondItem="4jC-ic-wcd" secondAttribute="trailing" id="YuU-1G-mgg"/>
                             <constraint firstItem="5LT-7V-FLx" firstAttribute="top" secondItem="svU-vp-0tM" secondAttribute="bottom" id="ZVc-r2-ver"/>
                             <constraint firstItem="3x3-bt-Xij" firstAttribute="top" secondItem="1cU-c2-SLE" secondAttribute="bottom" id="dSA-uf-KQe"/>
                             <constraint firstItem="fgT-2n-FvJ" firstAttribute="leading" secondItem="11y-bf-UL7" secondAttribute="leading" id="dSw-96-hxq"/>
@@ -230,6 +245,7 @@
                         <outlet property="scrollWrapperView" destination="fgT-2n-FvJ" id="i6D-XG-JHW"/>
                         <outlet property="streamingButton" destination="4jC-ic-wcd" id="gJM-61-1Kv"/>
                         <outlet property="titleLabel" destination="3x3-bt-Xij" id="ZGi-8q-ZWB"/>
+                        <outlet property="toolbarView" destination="svU-vp-0tM" id="N5B-ZP-k5O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rhR-F2-fzL" userLabel="First Responder" sceneMemberID="firstResponder"/>
