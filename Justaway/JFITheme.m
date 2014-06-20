@@ -18,9 +18,9 @@
 // TODO
 - (void)setDarkTheme
 {
-    self.name = @"dark";
+    self.name = @"Dark";
     self.statusBarStyle = UIStatusBarStyleLightContent;
-    self.mainBackgroundColor = [UIColor blackColor];
+    self.mainBackgroundColor = [UIColor colorWithRed:0.10 green:0.10 blue:0.10 alpha:1.0];
     self.mainHighlightBackgroundColor = [UIColor darkGrayColor];
     self.titleTextColor = [UIColor whiteColor];
     self.bodyTextColor = [UIColor whiteColor];
@@ -43,9 +43,9 @@
 
 - (void)setLightTheme
 {
-    self.name = @"light";
+    self.name = @"Light";
     self.statusBarStyle = UIStatusBarStyleDefault;
-    self.mainBackgroundColor = [UIColor whiteColor];
+    self.mainBackgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
     self.mainHighlightBackgroundColor = [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:1.0];
     self.titleTextColor = [UIColor darkGrayColor];
     self.bodyTextColor = [UIColor darkGrayColor];
@@ -68,7 +68,7 @@
 
 - (void)setSolarizedDarkTheme
 {
-    self.name = @"solarizedDark";
+    self.name = @"Solarized Dark";
     self.statusBarStyle = UIStatusBarStyleLightContent;
     
     UIColor *base03  = [UIColor colorWithRed:0.00 green:0.17 blue:0.21 alpha:1.0];
@@ -111,7 +111,7 @@
 
 - (void)setSolarizedLightTheme
 {
-    self.name = @"solarizedLight";
+    self.name = @"Solarized Light";
     self.statusBarStyle = UIStatusBarStyleDefault;
     
     // UIColor *base03  = [UIColor colorWithRed:0.00 green:0.17 blue:0.21 alpha:1.0];
@@ -154,7 +154,7 @@
 
 - (void)setMonokaiTheme
 {
-    self.name = @"monokai";
+    self.name = @"Monokai";
     self.statusBarStyle = UIStatusBarStyleLightContent;
     
     UIColor *black = [UIColor colorWithRed:0.15 green:0.16 blue:0.13 alpha:1.0];

@@ -7,7 +7,7 @@
         <!--Main View Controller-->
         <scene sceneID="Buu-RA-sG5">
             <objects>
-                <viewController id="ixp-68-Kbk" customClass="JFIMainViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="JFIMainViewController" id="ixp-68-Kbk" customClass="JFIMainViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1cU-c2-SLE"/>
                         <viewControllerLayoutGuide type="bottom" id="5LT-7V-FLx"/>
@@ -253,23 +253,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8BD-H2-daq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-198" y="-14"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="ne6-RE-dVD">
-            <objects>
-                <viewController id="NQ3-hV-APF" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="2sj-55-t3Z"/>
-                        <viewControllerLayoutGuide type="bottom" id="qv1-LD-ZL7"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Zn6-n2-r6Q">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VCs-ca-LiW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -4,6 +4,7 @@
 @interface JFISettingsViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet UIView *themeToolbarView;
+@property (nonatomic, weak) IBOutlet UILabel *themeNameLabel;
 @property (nonatomic) UIView *currenToolbarView;
 
 - (IBAction)themeAction:(id)sender;

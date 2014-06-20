@@ -2,8 +2,11 @@
 #import "JFIAccountViewController.h"
 #import "JFITheme.h"
 #import "JFIConstants.h"
+#import "JFIAppDelegate.h"
 
 @interface JFISettingsViewController ()
+
+@property (nonatomic) int currentTag;
 
 @end
 
@@ -21,13 +24,39 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [self setTheme];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    // テーマ設定
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setTheme)
+                                                 name:JFISetThemeNotification
+                                               object:delegate];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)setTheme
+{
+    JFITheme *theme = [JFITheme sharedTheme];
+    [self.themeNameLabel setText:theme.name];
+    [self.themeNameLabel setTextColor:theme.menuTextColor];
+    // [self.themeToolbarView setBackgroundColor:theme.menuBackgroundColor];
 }
 
 #pragma mark - UIButton
@@ -68,7 +97,7 @@
     int count = 0;
     NSArray *themes = @[theme1, theme2, theme3, theme4, theme5];
     for (JFITheme *theme in themes) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(5 + (count * 45), 5, 40, 40)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(5 + (count * 45), 22, 40, 40)];
         view.backgroundColor = theme.mainBackgroundColor;
         view.tag = count;
         
@@ -83,37 +112,44 @@
 
 - (void)selectTheme:(UITapGestureRecognizer *)sender
 {
+    if (self.currentTag == sender.view.tag) {
+        [self closeAction:nil];
+        return;
+    }
+    self.currentTag = sender.view.tag;
+    
+    JFITheme *theme = [JFITheme sharedTheme];
     switch (sender.view.tag) {
         case 0:
-            [[JFITheme sharedTheme] setDarkTheme];
+            [theme setDarkTheme];
             [[NSNotificationCenter defaultCenter] postNotificationName:JFISetThemeNotification
                                                                 object:[[UIApplication sharedApplication] delegate]
                                                               userInfo:nil];
             break;
             
         case 1:
-            [[JFITheme sharedTheme] setLightTheme];
+            [theme setLightTheme];
             [[NSNotificationCenter defaultCenter] postNotificationName:JFISetThemeNotification
                                                                 object:[[UIApplication sharedApplication] delegate]
                                                               userInfo:nil];
             break;
             
         case 2:
-            [[JFITheme sharedTheme] setSolarizedDarkTheme];
+            [theme setSolarizedDarkTheme];
             [[NSNotificationCenter defaultCenter] postNotificationName:JFISetThemeNotification
                                                                 object:[[UIApplication sharedApplication] delegate]
                                                               userInfo:nil];
             break;
             
         case 3:
-            [[JFITheme sharedTheme] setSolarizedLightTheme];
+            [theme setSolarizedLightTheme];
             [[NSNotificationCenter defaultCenter] postNotificationName:JFISetThemeNotification
                                                                 object:[[UIApplication sharedApplication] delegate]
                                                               userInfo:nil];
             break;
             
         case 4:
-            [[JFITheme sharedTheme] setMonokaiTheme];
+            [theme setMonokaiTheme];
             [[NSNotificationCenter defaultCenter] postNotificationName:JFISetThemeNotification
                                                                 object:[[UIApplication sharedApplication] delegate]
                                                               userInfo:nil];
