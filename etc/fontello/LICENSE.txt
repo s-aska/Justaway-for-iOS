@@ -19,6 +19,15 @@ Font license info
    Homepage:  http://typicons.com/
 
 
+## MFG Labs
+
+   Copyright (C) 2012 by Daniel Bruce
+
+   Author:    MFG Labs
+   License:   SIL (http://scripts.sil.org/OFL)
+   Homepage:  http://www.mfglabs.com/
+
+
 ## Iconic
 
    Copyright (C) 2012 by P.J. Onori
@@ -35,6 +44,15 @@ Font license info
    Author:    Daniel Bruce
    License:   CC BY-SA (http://creativecommons.org/licenses/by-sa/2.0/)
    Homepage:  http://www.entypo.com
+
+
+## Maki
+
+   Copyright (C) Mapbox, LCC
+
+   Author:    Mapbox
+   License:   BSD (https://github.com/mapbox/maki/blob/gh-pages/LICENSE.txt)
+   Homepage:  http://mapbox.com/maki/
 
 
 ## Modern Pictograms

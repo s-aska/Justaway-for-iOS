@@ -39,7 +39,7 @@
                                 <color key="separatorColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1DS-vp-Fhe">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1DS-vp-Fhe" customClass="JFIMenuView">
                                 <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -105,7 +105,6 @@
                     <connections>
                         <outlet property="tableView" destination="1X2-Tw-7FO" id="b2J-ws-yxw"/>
                         <outlet property="titleLabel" destination="1q5-iy-nVp" id="zK0-OM-h8a"/>
-                        <outlet property="toolbarView" destination="1DS-vp-Fhe" id="CD3-o5-0WI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qD7-if-vQN" userLabel="First Responder" sceneMemberID="firstResponder"/>

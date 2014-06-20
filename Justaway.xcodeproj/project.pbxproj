@@ -28,6 +28,10 @@
 		383D7DE518E1AF5C00D36678 /* JFIAccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D7DE318E1AF5C00D36678 /* JFIAccountCell.m */; };
 		383D7DE618E1AF5C00D36678 /* JFIAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 383D7DE418E1AF5C00D36678 /* JFIAccountCell.xib */; };
 		385D50A7194FD3E20037947D /* UIColor+Justaway.m in Sources */ = {isa = PBXBuildFile; fileRef = 385D50A6194FD3E20037947D /* UIColor+Justaway.m */; };
+		385D50AB195464040037947D /* JFISettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385D50A9195464040037947D /* JFISettingsViewController.m */; };
+		385D50AC195464040037947D /* JFISettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 385D50AA195464040037947D /* JFISettingsViewController.xib */; };
+		385D50AE19546B9A0037947D /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 385D50AD19546B9A0037947D /* fontello.ttf */; };
+		385D50B11954718B0037947D /* JFIMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 385D50B01954718B0037947D /* JFIMenuView.m */; };
 		3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */ = {isa = PBXBuildFile; fileRef = 3882594318E5511200F50117 /* NSDictionary+Default.m */; };
 		3882594818E55F3600F50117 /* JFIHTTPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3882594718E55F3600F50117 /* JFIHTTPImageOperation.m */; };
 		38C6769519480E89002DE676 /* JFIImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C6769319480E89002DE676 /* JFIImageViewController.m */; };
@@ -41,7 +45,6 @@
 		6A002A581938F6E00025EBCB /* JFITwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A002A571938F6E00025EBCB /* JFITwitter.m */; };
 		6A002A5B193905490025EBCB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6A002A5D193905490025EBCB /* Localizable.strings */; };
 		6A21291018C3485A00AD2953 /* JFIEntityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21290E18C3485A00AD2953 /* JFIEntityCell.m */; };
-		6A3DE96318EB32D900F045A7 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */; };
 		6A52D248190D1F1F00C78B4D /* JFIRetweetActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D247190D1F1F00C78B4D /* JFIRetweetActionSheet.m */; };
 		6A52D24B190D43EE00C78B4D /* JFIActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D24A190D43EE00C78B4D /* JFIActionSheet.m */; };
 		6A52D24F190D4A7800C78B4D /* JFIStatusActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D24E190D4A7800C78B4D /* JFIStatusActionSheet.m */; };
@@ -107,6 +110,12 @@
 		383D7DE418E1AF5C00D36678 /* JFIAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFIAccountCell.xib; sourceTree = "<group>"; };
 		385D50A5194FD3E20037947D /* UIColor+Justaway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Justaway.h"; sourceTree = "<group>"; };
 		385D50A6194FD3E20037947D /* UIColor+Justaway.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Justaway.m"; sourceTree = "<group>"; };
+		385D50A8195464040037947D /* JFISettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFISettingsViewController.h; sourceTree = "<group>"; };
+		385D50A9195464040037947D /* JFISettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFISettingsViewController.m; sourceTree = "<group>"; };
+		385D50AA195464040037947D /* JFISettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JFISettingsViewController.xib; sourceTree = "<group>"; };
+		385D50AD19546B9A0037947D /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
+		385D50AF1954718B0037947D /* JFIMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIMenuView.h; sourceTree = "<group>"; };
+		385D50B01954718B0037947D /* JFIMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIMenuView.m; sourceTree = "<group>"; };
 		3882594218E5511200F50117 /* NSDictionary+Default.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Default.h"; sourceTree = "<group>"; };
 		3882594318E5511200F50117 /* NSDictionary+Default.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Default.m"; sourceTree = "<group>"; };
 		3882594618E55F3600F50117 /* JFIHTTPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIHTTPImageOperation.h; sourceTree = "<group>"; };
@@ -127,7 +136,6 @@
 		6A002A571938F6E00025EBCB /* JFITwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFITwitter.m; sourceTree = "<group>"; };
 		6A002A5C193905490025EBCB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6A002A5E193905F90025EBCB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		6A21290D18C3485A00AD2953 /* JFIEntityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIEntityCell.h; sourceTree = "<group>"; };
 		6A21290E18C3485A00AD2953 /* JFIEntityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntityCell.m; sourceTree = "<group>"; };
 		6A52D246190D1F1F00C78B4D /* JFIRetweetActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIRetweetActionSheet.h; sourceTree = "<group>"; };
@@ -246,6 +254,9 @@
 				38C6769219480E89002DE676 /* JFIImageViewController.h */,
 				38C6769319480E89002DE676 /* JFIImageViewController.m */,
 				38C6769419480E89002DE676 /* JFIImageViewController.xib */,
+				385D50A8195464040037947D /* JFISettingsViewController.h */,
+				385D50A9195464040037947D /* JFISettingsViewController.m */,
+				385D50AA195464040037947D /* JFISettingsViewController.xib */,
 				38DA5F6C18E30D27006F484C /* Main */,
 			);
 			name = ViewControllers;
@@ -272,6 +283,8 @@
 				6A52D24C190D4A1500C78B4D /* ActionSheets */,
 				3828D5B218EBC6C400170374 /* Controls */,
 				38DA5F6E18E30D6C006F484C /* TableViewCells */,
+				385D50AF1954718B0037947D /* JFIMenuView.h */,
+				385D50B01954718B0037947D /* JFIMenuView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -318,7 +331,7 @@
 		6A0DD82918EB2D6E00B9B9E6 /* font */ = {
 			isa = PBXGroup;
 			children = (
-				6A0DD82A18EB2D8B00B9B9E6 /* fontello.ttf */,
+				385D50AD19546B9A0037947D /* fontello.ttf */,
 			);
 			name = font;
 			sourceTree = "<group>";
@@ -510,12 +523,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A3DE96318EB32D900F045A7 /* fontello.ttf in Resources */,
 				6A9C989F18BB89D500CF4F84 /* Podfile in Resources */,
 				38C6769619480E89002DE676 /* JFIImageViewController.xib in Resources */,
 				6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */,
+				385D50AE19546B9A0037947D /* fontello.ttf in Resources */,
 				383D7DE618E1AF5C00D36678 /* JFIAccountCell.xib in Resources */,
 				6A002A5B193905490025EBCB /* Localizable.strings in Resources */,
+				385D50AC195464040037947D /* JFISettingsViewController.xib in Resources */,
 				383D7DDE18E1925700D36678 /* JFIAccount.storyboard in Resources */,
 				6ADF7950188D6E2200632BA5 /* InfoPlist.strings in Resources */,
 				383D7DC618D6B66D00D36678 /* JFIMain.storyboard in Resources */,
@@ -588,11 +602,13 @@
 				6A002A581938F6E00025EBCB /* JFITwitter.m in Sources */,
 				38108F3119069CB300C99F00 /* JFIMessagesViewController.m in Sources */,
 				38D1B96F18FD0B2400DED578 /* JFITheme.m in Sources */,
+				385D50B11954718B0037947D /* JFIMenuView.m in Sources */,
 				20D352DC18C9A63D00CC8C80 /* JFIAccount.m in Sources */,
 				38108F2B1906984F00C99F00 /* JFIHomeViewController.m in Sources */,
 				3882594818E55F3600F50117 /* JFIHTTPImageOperation.m in Sources */,
 				383D7DDB18E139B500D36678 /* JFITabViewController.m in Sources */,
 				6A52D248190D1F1F00C78B4D /* JFIRetweetActionSheet.m in Sources */,
+				385D50AB195464040037947D /* JFISettingsViewController.m in Sources */,
 				3828D5B518EBC6F500170374 /* JFIButton.m in Sources */,
 				383D7DE518E1AF5C00D36678 /* JFIAccountCell.m in Sources */,
 				6A52D24F190D4A7800C78B4D /* JFIStatusActionSheet.m in Sources */,

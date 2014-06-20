@@ -53,7 +53,7 @@
                                     <constraint firstItem="3Ek-3n-dTm" firstAttribute="leading" secondItem="fgT-2n-FvJ" secondAttribute="leading" id="zT4-nP-e8g"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1F-mf-7hv">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1F-mf-7hv" customClass="JFIMenuView">
                                 <rect key="frame" x="0.0" y="422" width="320" height="98"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -118,7 +118,7 @@
                                     <constraint firstAttribute="bottom" secondItem="BdM-VG-XQE" secondAttribute="bottom" constant="54" id="pge-lf-AI6"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="svU-vp-0tM">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="svU-vp-0tM" customClass="JFIMenuView">
                                 <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -158,18 +158,6 @@
                                             <action selector="changePageAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="cmy-0d-z1y"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hRb-oZ-xWr" customClass="JFIButton">
-                                        <rect key="frame" x="173" y="-4" width="50" height="54"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                                        <state key="normal" title="人">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="accountAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="tRr-bY-B5H"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POk-aP-yJH" customClass="JFIButton">
                                         <rect key="frame" x="223" y="-4" width="47" height="54"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -179,7 +167,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="themeAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="Wc7-Yb-BKF"/>
+                                            <action selector="settingsAction:" destination="ixp-68-Kbk" eventType="touchUpInside" id="0c7-LV-Ut5"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CvT-HE-uuZ" customClass="JFIButton">
@@ -202,7 +190,6 @@
                                     <constraint firstAttribute="bottom" secondItem="CvT-HE-uuZ" secondAttribute="bottom" id="Hwh-OK-JE2"/>
                                     <constraint firstAttribute="trailing" secondItem="CvT-HE-uuZ" secondAttribute="trailing" id="Ob6-YY-GvU"/>
                                     <constraint firstItem="CvT-HE-uuZ" firstAttribute="leading" secondItem="POk-aP-yJH" secondAttribute="trailing" id="RHP-8U-Ra7"/>
-                                    <constraint firstAttribute="bottom" secondItem="hRb-oZ-xWr" secondAttribute="bottom" id="VuI-LR-Asn"/>
                                     <constraint firstItem="5PL-9a-hUM" firstAttribute="leading" secondItem="ivN-aE-Jrd" secondAttribute="trailing" id="ZeW-Yi-Rcx"/>
                                     <constraint firstAttribute="bottom" secondItem="POk-aP-yJH" secondAttribute="bottom" id="aQK-eM-Gmv"/>
                                     <constraint firstAttribute="bottom" secondItem="5PL-9a-hUM" secondAttribute="bottom" id="cA0-eF-XZs"/>
@@ -210,7 +197,6 @@
                                     <constraint firstItem="MkS-3K-xmb" firstAttribute="leading" secondItem="5PL-9a-hUM" secondAttribute="trailing" id="eZb-cx-WFv"/>
                                     <constraint firstItem="ivN-aE-Jrd" firstAttribute="leading" secondItem="svU-vp-0tM" secondAttribute="leading" id="f18-St-aWc"/>
                                     <constraint firstItem="ivN-aE-Jrd" firstAttribute="leading" secondItem="svU-vp-0tM" secondAttribute="leading" id="gEP-bZ-Gqs"/>
-                                    <constraint firstItem="POk-aP-yJH" firstAttribute="leading" secondItem="hRb-oZ-xWr" secondAttribute="trailing" id="wzi-K7-oiV"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -245,7 +231,6 @@
                         <outlet property="scrollWrapperView" destination="fgT-2n-FvJ" id="i6D-XG-JHW"/>
                         <outlet property="streamingButton" destination="4jC-ic-wcd" id="gJM-61-1Kv"/>
                         <outlet property="titleLabel" destination="3x3-bt-Xij" id="ZGi-8q-ZWB"/>
-                        <outlet property="toolbarView" destination="svU-vp-0tM" id="N5B-ZP-k5O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rhR-F2-fzL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -268,6 +253,23 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8BD-H2-daq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-198" y="-14"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ne6-RE-dVD">
+            <objects>
+                <viewController id="NQ3-hV-APF" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2sj-55-t3Z"/>
+                        <viewControllerLayoutGuide type="bottom" id="qv1-LD-ZL7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Zn6-n2-r6Q">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VCs-ca-LiW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

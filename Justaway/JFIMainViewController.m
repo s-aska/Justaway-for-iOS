@@ -39,8 +39,6 @@
     [self.streamingButton setTitleColor:theme.titleTextColor forState:UIControlStateNormal];
     self.view.backgroundColor = theme.mainBackgroundColor;
     self.scrollWrapperView.backgroundColor = theme.mainBackgroundColor;
-    self.editorView.backgroundColor = theme.menuBackgroundColor;
-    self.toolbarView.backgroundColor = theme.menuBackgroundColor;
 }
 
 - (void)viewDidLoad
@@ -86,7 +84,7 @@
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     if ([delegate.accounts count] == 0) {
-        [self accountAction:nil];
+        // TODO: 何かする
     }
 }
 
@@ -317,17 +315,14 @@
     }
 }
 
-- (IBAction)accountAction:(id)sender
+- (IBAction)settingsAction:(id)sender
 {
-    NSLog(@"[JFIMainViewController] accountAction");
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIAccount" bundle:nil];
-    JFIAccountViewController *accountViewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIAccountViewController"];
-    [self presentViewController:accountViewController animated:YES completion:nil];
-}
-
-- (IBAction)themeAction:(id)sender
-{
-    [[[JFIThemeActionSheet alloc] init] showInView:self.view];
+    // [[[JFIThemeActionSheet alloc] init] showInView:self.view];
+    if (self.settingsViewController == nil) {
+        self.settingsViewController = JFISettingsViewController.new;
+    }
+    [self.view addSubview:self.settingsViewController.view];
+    
 }
 
 - (IBAction)postAction:(id)sender
@@ -497,7 +492,7 @@
     NSDictionary *userInfo = [notification userInfo];
     NSDictionary *media = [userInfo objectForKey:@"media"];
     if (self.imageViewController == nil) {
-        self.imageViewController = [[JFIImageViewController alloc] init];
+        self.imageViewController = JFIImageViewController.new;
     }
     self.imageViewController.media = media;
     [self.view addSubview:self.imageViewController.view];
