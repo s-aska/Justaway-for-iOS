@@ -32,6 +32,7 @@
 		385D50AC195464040037947D /* JFISettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 385D50AA195464040037947D /* JFISettingsViewController.xib */; };
 		385D50AE19546B9A0037947D /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 385D50AD19546B9A0037947D /* fontello.ttf */; };
 		385D50B11954718B0037947D /* JFIMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 385D50B01954718B0037947D /* JFIMenuView.m */; };
+		385D50B41959AABD0037947D /* JFITransparent.m in Sources */ = {isa = PBXBuildFile; fileRef = 385D50B31959AABD0037947D /* JFITransparent.m */; };
 		3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */ = {isa = PBXBuildFile; fileRef = 3882594318E5511200F50117 /* NSDictionary+Default.m */; };
 		3882594818E55F3600F50117 /* JFIHTTPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3882594718E55F3600F50117 /* JFIHTTPImageOperation.m */; };
 		38C6769519480E89002DE676 /* JFIImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C6769319480E89002DE676 /* JFIImageViewController.m */; };
@@ -116,6 +117,8 @@
 		385D50AD19546B9A0037947D /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		385D50AF1954718B0037947D /* JFIMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIMenuView.h; sourceTree = "<group>"; };
 		385D50B01954718B0037947D /* JFIMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIMenuView.m; sourceTree = "<group>"; };
+		385D50B21959AABD0037947D /* JFITransparent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFITransparent.h; sourceTree = "<group>"; };
+		385D50B31959AABD0037947D /* JFITransparent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFITransparent.m; sourceTree = "<group>"; };
 		3882594218E5511200F50117 /* NSDictionary+Default.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Default.h"; sourceTree = "<group>"; };
 		3882594318E5511200F50117 /* NSDictionary+Default.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Default.m"; sourceTree = "<group>"; };
 		3882594618E55F3600F50117 /* JFIHTTPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIHTTPImageOperation.h; sourceTree = "<group>"; };
@@ -285,6 +288,8 @@
 				38DA5F6E18E30D6C006F484C /* TableViewCells */,
 				385D50AF1954718B0037947D /* JFIMenuView.h */,
 				385D50B01954718B0037947D /* JFIMenuView.m */,
+				385D50B21959AABD0037947D /* JFITransparent.h */,
+				385D50B31959AABD0037947D /* JFITransparent.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -607,6 +612,7 @@
 				38108F2B1906984F00C99F00 /* JFIHomeViewController.m in Sources */,
 				3882594818E55F3600F50117 /* JFIHTTPImageOperation.m in Sources */,
 				383D7DDB18E139B500D36678 /* JFITabViewController.m in Sources */,
+				385D50B41959AABD0037947D /* JFITransparent.m in Sources */,
 				6A52D248190D1F1F00C78B4D /* JFIRetweetActionSheet.m in Sources */,
 				385D50AB195464040037947D /* JFISettingsViewController.m in Sources */,
 				3828D5B518EBC6F500170374 /* JFIButton.m in Sources */,
