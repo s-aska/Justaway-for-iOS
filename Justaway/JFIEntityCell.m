@@ -120,11 +120,8 @@
 - (void)setButtonColor
 {
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
-//    JFITheme *theme = [JFITheme sharedTheme];
     [self.favoriteButton setActive:[sharedActionStatus isFavorite:self.entity.statusID]];
     [self.retweetButton setActive:[sharedActionStatus isRetweet:self.entity.statusID]];
-//    [theme setColorForFavoriteButton:self.favoriteButton active:[sharedActionStatus isFavorite:self.entity.statusID]];
-//    [theme setColorForRetweetButton:self.retweetButton active:[sharedActionStatus isRetweet:self.entity.statusID]];
 }
 
 - (void)setTheme
