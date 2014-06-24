@@ -24,6 +24,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self setTheme];
 }
 
@@ -34,6 +35,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // 「同じテーマを二度タップしたら閉じる」はテーマ設定を開いてからカウントする
+    self.currentTag = -1;
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
@@ -56,7 +60,6 @@
     JFITheme *theme = [JFITheme sharedTheme];
     [self.themeNameLabel setText:theme.name];
     [self.themeNameLabel setTextColor:theme.menuTextColor];
-    // [self.themeToolbarView setBackgroundColor:theme.menuBackgroundColor];
 }
 
 #pragma mark - UIButton
@@ -112,6 +115,7 @@
 
 - (void)selectTheme:(UITapGestureRecognizer *)sender
 {
+    // 「同じテーマを二度タップしたら閉じる」
     if (self.currentTag == sender.view.tag) {
         [self closeAction:nil];
         return;
