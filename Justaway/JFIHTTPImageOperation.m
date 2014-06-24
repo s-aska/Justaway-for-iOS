@@ -32,11 +32,11 @@
             break;
             
         case ImageProcessTypeIcon:
-            string = @"icon";
+            string = @"42x42x5";
             break;
             
         case ImageProcessTypeThumbnail:
-            string = @"thumbnail";
+            string = @"240x75";
             break;
             
         default:
@@ -90,7 +90,7 @@
             break;
             
         case ImageProcessTypeThumbnail:
-            processedImage = [image resizedImageForSize:CGSizeMake(75.f, 75.f)];
+            processedImage = [image resizedImageForSize:CGSizeMake(240.f, 75.f)];
             break;
             
         default:

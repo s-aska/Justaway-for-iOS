@@ -59,15 +59,15 @@
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="dXu-tL-vBd" secondAttribute="centerY" id="GEO-Qu-32E"/>
-                        <constraint firstAttribute="centerY" secondItem="szc-eA-rV6" secondAttribute="centerY" id="VOD-XJ-vjL"/>
+                        <constraint firstAttribute="centerY" secondItem="szc-eA-rV6" secondAttribute="centerY" id="TKm-wv-xKY"/>
                         <constraint firstItem="dXu-tL-vBd" firstAttribute="leading" secondItem="vEg-Kp-rDQ" secondAttribute="leading" id="VVE-iU-VZ0"/>
+                        <constraint firstAttribute="trailing" secondItem="szc-eA-rV6" secondAttribute="trailing" id="hpc-NW-wsg"/>
                         <constraint firstAttribute="height" constant="50" id="qbO-9F-j1N"/>
-                        <constraint firstAttribute="trailing" secondItem="szc-eA-rV6" secondAttribute="trailing" id="rRF-82-8Py"/>
                     </constraints>
                 </view>
             </subviews>
             <constraints>
-                <constraint firstItem="vEg-Kp-rDQ" firstAttribute="top" secondItem="OlQ-b1-GnB" secondAttribute="bottom" id="CcG-64-nkc"/>
+                <constraint firstItem="vEg-Kp-rDQ" firstAttribute="top" secondItem="OlQ-b1-GnB" secondAttribute="bottom" id="AHo-6P-nu3"/>
                 <constraint firstItem="OlQ-b1-GnB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="EZ6-oN-ND7"/>
                 <constraint firstAttribute="trailing" secondItem="OlQ-b1-GnB" secondAttribute="trailing" id="HcA-Vb-FDZ"/>
                 <constraint firstItem="OlQ-b1-GnB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="mKl-zi-Bh8"/>

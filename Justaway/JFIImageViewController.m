@@ -28,8 +28,6 @@
     tapGesture.numberOfTapsRequired = 1;
     [self.scrollView addGestureRecognizer:tapGesture];
     
-    self.imageView.center = self.view.center;
-    
     self.scrollView.delegate = self;
     self.scrollView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5]; // 透過黒背景
     self.scrollView.contentMode = UIViewContentModeScaleAspectFit; // アスペクト比固定（ピンチイン・ピンチアウト時のアスペクト比）
@@ -52,18 +50,23 @@
     NSURL *url = [[NSURL alloc] initWithString:[[self.media valueForKey:@"media_url"] stringByAppendingString:@":large"]];
     
     // 画面に収まる最大スケールを計算
-    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+    CGSize screenSize = self.scrollView.frame.size;
     float w = [[self.media valueForKeyPath:@"sizes.large.w"] floatValue];
     float h = [[self.media valueForKeyPath:@"sizes.large.h"] floatValue];
     float scale_w = screenSize.width / w;
-    float scale_h = screenSize.width / h;
+    float scale_h = screenSize.height / h;
     float scale = scale_w > scale_h ? scale_h : scale_w;
+    float x = (screenSize.width - w * scale) / 2;
+    float y = (screenSize.height - h * scale) / 2;
     
+    // NSLog(@"x:%f y:%f w:%f h:%f s:%f", x, y, scale_w, scale_h, scale);
+    self.scrollView.contentSize = CGSizeMake(w * scale, h * scale);
     self.scrollView.zoomScale = scale;
     
     UIImage *image = [[ISMemoryCache sharedCache] objectForKey:url];
     if (image) {
         self.imageView.image = image;
+        self.imageView.frame = CGRectMake(x, y, w * scale, h * scale);
     } else {
         
         // インジケーター表示
@@ -93,6 +96,7 @@
                                    } else {
                                        self.imageView.image = image;
                                    }
+                                   self.imageView.frame = CGRectMake(x, y, w * scale, h * scale);
                                }];
         
     }

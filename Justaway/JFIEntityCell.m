@@ -154,7 +154,7 @@
         NSInteger tag = 0;
         for (NSDictionary *media in entity.media) {
             NSURL *url = [[NSURL alloc] initWithString:[[media valueForKey:@"media_url"] stringByAppendingString:@":thumb"]];
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 5.f, 75.f, 75.f)];
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 5.f, 240.f, 75.f)];
             imageView.tag = tag;
             imageView.userInteractionEnabled = YES;
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imageAction:)];
