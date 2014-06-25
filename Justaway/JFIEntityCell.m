@@ -99,7 +99,27 @@
     
     // RT
     if (entity.actionedUserID != nil) {
-        self.actionedLabel.text = [NSString stringWithFormat:@"RT by %@ (@%@)", self.entity.actionedDisplayName, self.entity.actionedScreenName];
+        NSString *eventName = @"";
+        switch (self.entity.type) {
+            case EntityTypeFavorite:
+                eventName = @"fav";
+                break;
+                
+            case EntityTypeUnFavorite:
+                eventName = @"unfav";
+                break;
+                
+            case EntityTypeStatus:
+                eventName = @"RT";
+                break;
+                
+            default:
+                break;
+        }
+        self.actionedLabel.text = [NSString stringWithFormat:@"%@ by %@ (@%@)",
+                                   eventName,
+                                   self.entity.actionedDisplayName,
+                                   self.entity.actionedScreenName];
         self.actionedView.hidden = NO;
         self.createdAtLabelHeightConstraint.constant = 21.f;
     } else {

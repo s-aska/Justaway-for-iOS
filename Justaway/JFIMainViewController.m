@@ -250,10 +250,10 @@
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     if ([delegate.accounts count] == 0) {
         JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-        JFIEntity *tweet = [[JFIEntity alloc] initDummy];
+        JFIEntity *entity = [[JFIEntity alloc] initDummy];
         [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveStatusNotification
                                                             object:delegate
-                                                          userInfo:@{@"tweet": tweet}];
+                                                          userInfo:@{@"entity": entity}];
         return;
     }
     

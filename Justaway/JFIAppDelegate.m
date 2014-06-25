@@ -296,6 +296,7 @@
                                             keywordsToTrack:nil
                                       locationBoundingBoxes:nil
                                               progressBlock:^(id response) {
+                                                  
                                                   if (self.streamingStatus != StreamingConnected) {
                                                       NSLog(@"[JFIAppDelegate] connect streaming");
                                                       self.streamingStatus = StreamingConnected;
@@ -303,16 +304,51 @@
                                                                                                           object:self
                                                                                                         userInfo:nil];
                                                   }
-                                                  if ([response valueForKey:@"text"]) {
-                                                      if ([response valueForKey:@"text"] == nil) {
-                                                          return;
-                                                      }
-                                                      JFIEntity *tweet = [[JFIEntity alloc] initWithStatus:response];
+                                                  
+                                                  if ([response valueForKey:@"event"]) {
+                                                      
+                                                      // ふぁぼ・あんふぁぼ・フォロー・
+                                                      NSLog(@"[JFIAppDelegate] event:%@", [response valueForKey:@"event"]);
+                                                      
+                                                      JFIEntity *entity = [[JFIEntity alloc] initWithEvent:response];
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveEventNotification
+                                                                                                          object:self
+                                                                                                        userInfo:@{@"entity": entity}];
+                                                      
+                                                  } else if ([response valueForKeyPath:@"delete.status"]) {
+                                                      
+                                                      // ツイ消し
+                                                      NSString *statusID = [response valueForKeyPath:@"delete.status.id_str"];
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:JFIDestroyStatusNotification
+                                                                                                          object:[[UIApplication sharedApplication] delegate]
+                                                                                                        userInfo:@{@"status_id": statusID}];
+                                                      
+                                                  } else if ([response valueForKeyPath:@"delete.direct_message"]) {
+                                                      
+                                                      // DM削除
+                                                      NSString *messageID = [response valueForKeyPath:@"delete.direct_message.id_str"];
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:JFIDestroyMessageNotification
+                                                                                                          object:[[UIApplication sharedApplication] delegate]
+                                                                                                        userInfo:@{@"message_id": messageID}];
+                                                      
+                                                  } else if ([response valueForKey:@"direct_message"]) {
+                                                      
+                                                      // DM
+                                                      JFIEntity *entity = [[JFIEntity alloc] initWithMessage:[response valueForKey:@"direct_message"]];
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveMessageNotification
+                                                                                                          object:self
+                                                                                                        userInfo:@{@"entity": entity}];
+                                                      
+                                                  } else if ([response valueForKey:@"text"]) {
+                                                      
+                                                      // ツイート・リツイート
+                                                      JFIEntity *entity= [[JFIEntity alloc] initWithStatus:response];
                                                       [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveStatusNotification
                                                                                                           object:self
-                                                                                                        userInfo:@{@"tweet": tweet}];
+                                                                                                        userInfo:@{@"entity": entity}];
                                                       
                                                   }
+                                                  
                                               } stallWarningBlock:nil
                                                  errorBlock:^(NSError *error) {
                                                      

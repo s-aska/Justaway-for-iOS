@@ -19,12 +19,15 @@ extern NSString *const JFISetThemeNotification;
 extern NSString *const JFISelectAccessTokenNotification;
 extern NSString *const JFIReceiveAccessTokenNotification;
 extern NSString *const JFIReceiveStatusNotification;
+extern NSString *const JFIReceiveMessageNotification;
+extern NSString *const JFIReceiveEventNotification;
 extern NSString *const JFIStreamingConnectionNotification;
 extern NSString *const JFIEditorNotification;
 extern NSString *const JFIOpenStatusNotification;
 extern NSString *const JFICloseStatusNotification;
 extern NSString *const JFIActionStatusNotification;
 extern NSString *const JFIDestroyStatusNotification;
+extern NSString *const JFIDestroyMessageNotification;
 extern NSString *const JFIOpenImageNotification;
 
 #pragma mark - keychain const
@@ -60,5 +63,7 @@ typedef NS_ENUM(NSInteger, TabType) {
 typedef NS_ENUM(NSInteger, EntityType) {
     EntityTypeStatus,
     EntityTypeFavorite,
+    EntityTypeUnFavorite,
+    EntityTypeFollow,
     EntityTypeMessage,
 };

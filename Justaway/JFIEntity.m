@@ -46,30 +46,41 @@
     self = [super init];
     if (self) {
         self.type = EntityTypeStatus;
-        NSDictionary *source;
-        if ([status valueForKey:@"retweeted_status"] == nil) {
-            source = status;
+        if ([status valueForKey:@"retweeted_status"]) {
+            [self setUser:[status valueForKeyPath:@"retweeted_status.user"]];
+            [self setStatus:[status valueForKey:@"retweeted_status"]];
+            [self setActionedUser:[status valueForKey:@"user"]];
         } else {
-            source = [status valueForKey:@"retweeted_status"];
-            self.actionedUserID = [status valueForKeyPath:@"user.id_str"];
-            self.actionedScreenName = [status valueForKeyPath:@"user.screen_name"];
-            self.actionedDisplayName = [status valueForKeyPath:@"user.name"];
-            self.actionedProfileImageURL = [NSURL URLWithString:[status valueForKeyPath:@"user.profile_image_url"]];
+            [self setUser:[status valueForKey:@"user"]];
+            [self setStatus:status];
         }
-        self.statusID = [source valueForKey:@"id_str"];
-        self.userID = [source valueForKeyPath:@"user.id_str"];
-        self.screenName = [source valueForKeyPath:@"user.screen_name"];
-        self.displayName = [source valueForKeyPath:@"user.name"];
-        self.profileImageURL = [NSURL URLWithString:[source valueForKeyPath:@"user.profile_image_url"]];
-        self.text = [self getText:[source valueForKey:@"text"]];
-        self.createdAt = [source valueForKey:@"created_at"];
-        self.clientName = [self getClientName:[source valueForKey:@"source"]];
-        self.retweetCount = [source valueForKey:@"retweet_count"];
-        self.favoriteCount = [source valueForKey:@"favorite_count"];
-        self.urls = [source valueForKeyPath:@"entities.urls"];
-        self.userMentions = [source valueForKeyPath:@"entities.user_mentions"];
-        self.hashtags = [source valueForKeyPath:@"entities.hashtags"];
-        self.media = [source valueForKeyPath:@"entities.media"];
+        
+    }
+    return self;
+}
+
+- (instancetype)initWithEvent:(NSDictionary *)event
+{
+    self = [super init];
+    if (self) {
+        if ([[event valueForKey:@"event"] isEqualToString:@"favorite"]) {
+            self.type = EntityTypeFavorite;
+            [self setUser:[event valueForKeyPath:@"target_object.user"]];
+            [self setStatus:[event valueForKey:@"target_object"]];
+            [self setActionedUser:[event valueForKey:@"source"]];
+        } else if ([[event valueForKey:@"event"] isEqualToString:@"unfavorite"]) {
+            self.type = EntityTypeUnFavorite;
+            [self setUser:[event valueForKeyPath:@"target_object.user"]];
+            [self setStatus:[event valueForKey:@"target_object"]];
+            [self setActionedUser:[event valueForKey:@"source"]];
+        } else if ([[event valueForKey:@"event"] isEqualToString:@"follow"]) {
+            self.type = EntityTypeFollow;
+            [self setUser:[event valueForKey:@"source"]];
+            self.text = [event valueForKeyPath:@"source.description"];
+            self.createdAt = [event valueForKey:@"created_at"];
+        } else {
+            return nil;
+        }
     }
     return self;
 }
@@ -92,6 +103,36 @@
         self.media = [message valueForKeyPath:@"entities.media"];
     }
     return self;
+}
+
+- (void)setUser:(NSDictionary *)user
+{
+    self.userID = [user valueForKeyPath:@"id_str"];
+    self.screenName = [user valueForKeyPath:@"screen_name"];
+    self.displayName = [user valueForKeyPath:@"name"];
+    self.profileImageURL = [NSURL URLWithString:[user valueForKeyPath:@"profile_image_url"]];
+}
+
+- (void)setStatus:(NSDictionary *)status
+{
+    self.statusID = [status valueForKey:@"id_str"];
+    self.text = [self getText:[status valueForKey:@"text"]];
+    self.createdAt = [status valueForKey:@"created_at"];
+    self.clientName = [self getClientName:[status valueForKey:@"source"]];
+    self.retweetCount = [status valueForKey:@"retweet_count"];
+    self.favoriteCount = [status valueForKey:@"favorite_count"];
+    self.urls = [status valueForKeyPath:@"entities.urls"];
+    self.userMentions = [status valueForKeyPath:@"entities.user_mentions"];
+    self.hashtags = [status valueForKeyPath:@"entities.hashtags"];
+    self.media = [status valueForKeyPath:@"entities.media"];
+}
+
+- (void)setActionedUser:(NSDictionary *)user
+{
+    self.actionedUserID = [user valueForKeyPath:@"id_str"];
+    self.actionedScreenName = [user valueForKeyPath:@"screen_name"];
+    self.actionedDisplayName = [user valueForKeyPath:@"name"];
+    self.actionedProfileImageURL = [NSURL URLWithString:[user valueForKeyPath:@"profile_image_url"]];
 }
 
 - (NSString *)getText:(NSString *)text

@@ -55,8 +55,20 @@
                                                        object:delegate];
             break;
         case TabTypeNotifications:
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(receiveEvent:)
+                                                         name:JFIReceiveEventNotification
+                                                       object:delegate];
             break;
         case TabTypeMessages:
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(receiveStatus:)
+                                                         name:JFIReceiveMessageNotification
+                                                       object:delegate];
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(destoryMessage:)
+                                                         name:JFIDestroyMessageNotification
+                                                       object:delegate];
             break;
         case TabTypeUserList:
             break;
@@ -329,8 +341,20 @@
 
 - (void)receiveStatus:(NSNotification *)center
 {
-    JFIEntity *tweet = [center.userInfo valueForKey:@"tweet"];
-    [self.stacks addObject:tweet];
+    JFIEntity *entity = [center.userInfo valueForKey:@"entity"];
+    [self.stacks addObject:entity];
+    
+    // NSLog(@"receiveStatus stack count:%lu", (unsigned long)[self.stacks count]);
+    
+    if (!self.scrolling) {
+        [self finalizeWithDebounce:.5f];
+    }
+}
+
+- (void)receiveEvent:(NSNotification *)center
+{
+    JFIEntity *entity = [center.userInfo valueForKey:@"entity"];
+    [self.stacks addObject:entity];
     
     // NSLog(@"receiveStatus stack count:%lu", (unsigned long)[self.stacks count]);
     
@@ -355,6 +379,30 @@
                 [removeEntities addObject:entity];
                 [indexPaths addObject:[NSIndexPath indexPathForRow:position inSection:0]];
             }
+        }
+        position++;
+    }
+    if ([removeEntities count] > 0) {
+        [self.tableView beginUpdates];
+        for (JFIEntity *entity in removeEntities) {
+            [self.entities removeObject:entity];
+        }
+        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+    }
+}
+
+
+- (void)destoryMessage:(NSNotification *)center
+{
+    NSString *messageID = [center.userInfo valueForKey:@"message_id"];
+    NSInteger position = 0;
+    NSMutableArray *indexPaths = NSMutableArray.new;
+    NSMutableArray *removeEntities = NSMutableArray.new;
+    for (JFIEntity *entity in self.entities) {
+        if ([entity.messageID isEqualToString:messageID]) {
+            [removeEntities addObject:entity];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:position inSection:0]];
         }
         position++;
     }

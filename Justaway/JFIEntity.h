@@ -35,6 +35,7 @@
 - (instancetype)initDummy;
 - (instancetype)initWithStatus:(NSDictionary *)status;
 - (instancetype)initWithMessage:(NSDictionary *)message;
+- (instancetype)initWithEvent:(NSDictionary *)event;
 
 - (NSString *)statusURL;
 - (NSURL *)profileImageBiggerURL;
