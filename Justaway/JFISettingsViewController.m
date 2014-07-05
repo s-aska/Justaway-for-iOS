@@ -6,8 +6,6 @@
 
 @interface JFISettingsViewController ()
 
-@property (nonatomic) int currentTag;
-
 @end
 
 @implementation JFISettingsViewController
@@ -26,6 +24,14 @@
     [super viewDidLoad];
     
     [self setTheme];
+    
+    [self.fontSizeSlider addTarget:self
+                            action:@selector(fontSizeChanged)
+                  forControlEvents:UIControlEventValueChanged];
+    
+    [self.fontSizeSlider addTarget:self
+                            action:@selector(fontSizeApply)
+                  forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside|UIControlEventTouchDragOutside];
 }
 
 - (void)didReceiveMemoryWarning
@@ -35,9 +41,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    // 「同じテーマを二度タップしたら閉じる」はテーマ設定を開いてからカウントする
-    self.currentTag = -1;
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
@@ -74,6 +77,18 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIAccount" bundle:nil];
     JFIAccountViewController *accountViewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIAccountViewController"];
     [self presentViewController:accountViewController animated:YES completion:nil];
+}
+
+- (IBAction)fontSizeAction:(id)sender
+{
+    if (self.currenToolbarView != nil) {
+        [self.currenToolbarView setHidden:YES];
+        self.currenToolbarView = nil;
+    }
+    
+    [self.fontSizeToolbarView setHidden:NO];
+    self.currenToolbarView = self.fontSizeToolbarView;
+    
 }
 
 - (IBAction)themeAction:(id)sender
@@ -115,13 +130,6 @@
 
 - (void)selectTheme:(UITapGestureRecognizer *)sender
 {
-    // 「同じテーマを二度タップしたら閉じる」
-    if (self.currentTag == sender.view.tag) {
-        [self closeAction:nil];
-        return;
-    }
-    self.currentTag = sender.view.tag;
-    
     JFITheme *theme = [JFITheme sharedTheme];
     switch (sender.view.tag) {
         case 0:
@@ -162,6 +170,24 @@
         default:
             break;
     }
+}
+
+- (void)fontSizeChanged
+{
+    NSLog(@"fontSizeChanged fontSize:%f", self.fontSizeSlider.value);
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    delegate.fontSize = self.fontSizeSlider.value;
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFISetFontSizeNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:nil];
+}
+
+- (void)fontSizeApply
+{
+    NSLog(@"fontSizeApply fontSize:%f", self.fontSizeSlider.value);
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIApplyFontSizeNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:nil];
 }
 
 @end

@@ -21,7 +21,12 @@
                                              selector:@selector(setTheme)
                                                  name:JFISetThemeNotification
                                                object:nil];
-
+    
+    // フォントサイズ設定
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setFontSize)
+                                                 name:JFISetFontSizeNotification
+                                               object:nil];
 }
 
 - (void)dealloc
@@ -135,6 +140,7 @@
     }
     
     [self setButtonColor];
+    [self setFontSize];
 }
 
 - (void)setButtonColor
@@ -158,6 +164,15 @@
     [self.createdAtLabel setTextColor:theme.absoluteDateTextColor];
     [self.sourceLabel setTextColor:theme.clientNameTextColor];
     [self.statusLabel setTextColor:theme.bodyTextColor];
+}
+
+- (void)setFontSize
+{
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    float fontSize = 12 + delegate.fontSize;
+    if (self.statusLabel.font.pointSize != fontSize) {
+        self.statusLabel.font = [UIFont systemFontOfSize:fontSize];
+    }
 }
 
 - (void)loadImages:(BOOL)scrolling

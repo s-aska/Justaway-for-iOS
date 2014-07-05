@@ -16,6 +16,8 @@ extern NSString *const JFICellForHeightID;
 #pragma mark - NSNotification
 
 extern NSString *const JFISetThemeNotification;
+extern NSString *const JFISetFontSizeNotification;
+extern NSString *const JFIApplyFontSizeNotification;
 extern NSString *const JFISelectAccessTokenNotification;
 extern NSString *const JFIReceiveAccessTokenNotification;
 extern NSString *const JFIReceiveStatusNotification;

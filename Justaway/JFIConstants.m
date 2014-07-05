@@ -16,6 +16,8 @@ NSString *const JFICellForHeightID = @"JFICellForHeightID";
 #pragma mark - notification const
 
 NSString *const JFISetThemeNotification            = @"JFISetThemeNotification";
+NSString *const JFISetFontSizeNotification         = @"JFISetFontSizeNotification";
+NSString *const JFIApplyFontSizeNotification       = @"JFIApplyFontSizeNotification";
 NSString *const JFISelectAccessTokenNotification   = @"JFISelectAccessTokenNotification";
 NSString *const JFIReceiveAccessTokenNotification  = @"JFIReceiveAccessTokenNotification";
 NSString *const JFIReceiveStatusNotification       = @"JFIReceiveStatusNotification";

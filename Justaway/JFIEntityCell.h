@@ -24,6 +24,7 @@
 @property (nonatomic) JFIEntity *entity;
 @property (nonatomic) NSString *themeName;
 
+- (void)setFontSize;
 - (void)setLabelTexts:(JFIEntity *)entity;
 - (void)setButtonColor;
 - (void)loadImages:(BOOL)scrolling;

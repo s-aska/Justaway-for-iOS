@@ -33,6 +33,11 @@
     [self.tableView setBackgroundColor:theme.mainBackgroundColor];
 }
 
+- (void)reloadVisibleCells
+{
+    [self.tableView reloadRowsAtIndexPaths:self.tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -82,6 +87,12 @@
                                              selector:@selector(setTheme)
                                                  name:JFISetThemeNotification
                                                object:delegate];
+    
+    // フォントサイズ設定
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadVisibleCells)
+                                                 name:JFIApplyFontSizeNotification
+                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onRefresh)
@@ -242,7 +253,9 @@
     }
     
     // 高さの計算結果をキャッシュから参照
-    if (entity.height != nil) {
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    float fontSize = delegate.fontSize;
+    if (entity.height != nil && entity.fontSize == fontSize) {
         return [entity.height floatValue] + 2;
     }
     
@@ -262,6 +275,7 @@
     
     // 高さの計算結果をキャッシュ
     entity.height =  @(height);
+    entity.fontSize = fontSize;
     
     // 自動計算で得られた高さを返す
     return height + 2;
@@ -391,7 +405,6 @@
         [self.tableView endUpdates];
     }
 }
-
 
 - (void)destoryMessage:(NSNotification *)center
 {

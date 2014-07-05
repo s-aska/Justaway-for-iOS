@@ -6,6 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JFISettingsViewController">
             <connections>
+                <outlet property="fontSizeSlider" destination="M0S-sD-tRi" id="uto-Vd-9Gn"/>
+                <outlet property="fontSizeToolbarView" destination="fKt-lo-rK9" id="BRF-T1-6wR"/>
                 <outlet property="themeNameLabel" destination="J3u-fr-PRb" id="hwb-4U-cCw"/>
                 <outlet property="themeToolbarView" destination="eyM-l6-114" id="CeM-oH-KkC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -16,6 +18,23 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fKt-lo-rK9" customClass="JFIMenuView">
+                    <rect key="frame" x="0.0" y="468" width="320" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-4" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="M0S-sD-tRi">
+                            <rect key="frame" x="18" y="10" width="284" height="31"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </slider>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="M0S-sD-tRi" secondAttribute="trailing" constant="20" id="KWM-40-LEZ"/>
+                        <constraint firstItem="M0S-sD-tRi" firstAttribute="leading" secondItem="fKt-lo-rK9" secondAttribute="leading" constant="20" id="Lca-vP-9Ys"/>
+                        <constraint firstAttribute="height" constant="50" id="cJs-je-Xai"/>
+                        <constraint firstAttribute="centerY" secondItem="M0S-sD-tRi" secondAttribute="centerY" id="px2-kT-alP"/>
+                    </constraints>
+                </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eyM-l6-114" customClass="JFIMenuView">
                     <rect key="frame" x="0.0" y="450" width="320" height="68"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -59,6 +78,9 @@
                             <state key="normal" title="A">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="fontSizeAction:" destination="-1" eventType="touchUpInside" id="Riw-u1-3SW"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xjX-37-q2Z" customClass="JFIButton">
                             <rect key="frame" x="220" y="-2" width="50" height="54"/>
@@ -101,7 +123,10 @@
             </subviews>
             <constraints>
                 <constraint firstItem="ML3-eX-Jfh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Prv-B4-53Q"/>
+                <constraint firstAttribute="trailing" secondItem="fKt-lo-rK9" secondAttribute="trailing" id="Rmr-Im-P2l"/>
+                <constraint firstItem="ML3-eX-Jfh" firstAttribute="top" secondItem="fKt-lo-rK9" secondAttribute="bottom" id="V3p-vZ-tht"/>
                 <constraint firstAttribute="bottom" secondItem="ML3-eX-Jfh" secondAttribute="bottom" id="WCd-YM-hMR"/>
+                <constraint firstItem="fKt-lo-rK9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YUJ-aT-SsU"/>
                 <constraint firstAttribute="trailing" secondItem="ML3-eX-Jfh" secondAttribute="trailing" id="beI-7Z-crg"/>
                 <constraint firstAttribute="trailing" secondItem="eyM-l6-114" secondAttribute="trailing" id="fsC-Lu-8dr"/>
                 <constraint firstItem="eyM-l6-114" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lCU-B3-zjI"/>
@@ -110,12 +135,5 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
-        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mo3-y4-vwY">
-            <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-            <nil key="highlightedColor"/>
-        </label>
     </objects>
 </document>

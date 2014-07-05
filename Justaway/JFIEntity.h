@@ -30,6 +30,7 @@
 
 // Cell
 @property (nonatomic) NSNumber *height;
+@property (nonatomic) float fontSize;
 
 
 - (instancetype)initDummy;
