@@ -17,7 +17,7 @@
                         // Duplicate
                         if ([error code] != 139) {
                             [sharedActionStatus removeFavorite:statusID];
-                            NSLog(@"[createFavorite] error code:%i description:%@", [error code], [error description]);
+                            NSLog(@"[createFavorite] error code:%li description:%@", (long)[error code], [error description]);
                         }
                     }];
 }
@@ -34,7 +34,7 @@
                                       // Duplicate
                                       if ([error code] != 34) {
                                           [sharedActionStatus setFavorite:statusID];
-                                          NSLog(@"[destroyFavorite] error code:%i description:%@", [error code], [error description]);
+                                          NSLog(@"[destroyFavorite] error code:%li description:%@", (long)[error code], [error description]);
                                       }
                                   }];
 }
@@ -53,7 +53,7 @@
                               if ([error code] != 34 &&
                                   [[error description] rangeOfString:duplicate].location == NSNotFound) {
                                   [sharedActionStatus removeRetweet:statusID];
-                                  NSLog(@"[createRetweet] error code:%i description:%@", [error code], [error description]);
+                                  NSLog(@"[createRetweet] error code:%li description:%@", (long)[error code], [error description]);
                               }
                           }];
 }
@@ -78,7 +78,7 @@
                           // Duplicate
                           if ([error code] != 34) {
                               [sharedActionStatus setRetweetID:statusID statusID:destroyStatusID];
-                              NSLog(@"[destroyRetweet] error code:%i description:%@", [error code], [error description]);
+                              NSLog(@"[destroyRetweet] error code:%li description:%@", (long)[error code], [error description]);
                           }
                       }];
 }
