@@ -28,10 +28,6 @@
     [self.fontSizeSlider addTarget:self
                             action:@selector(fontSizeChanged)
                   forControlEvents:UIControlEventValueChanged];
-    
-    [self.fontSizeSlider addTarget:self
-                            action:@selector(fontSizeApply)
-                  forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside|UIControlEventTouchDragOutside];
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,6 +65,9 @@
 
 - (IBAction)closeAction:(id)sender
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIApplyFontSizeNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:nil];
     [self.view removeFromSuperview];
 }
 
@@ -178,14 +177,6 @@
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     delegate.fontSize = self.fontSizeSlider.value;
     [[NSNotificationCenter defaultCenter] postNotificationName:JFISetFontSizeNotification
-                                                        object:[[UIApplication sharedApplication] delegate]
-                                                      userInfo:nil];
-}
-
-- (void)fontSizeApply
-{
-    NSLog(@"fontSizeApply fontSize:%f", self.fontSizeSlider.value);
-    [[NSNotificationCenter defaultCenter] postNotificationName:JFIApplyFontSizeNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];
 }

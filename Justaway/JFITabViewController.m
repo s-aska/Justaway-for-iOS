@@ -33,11 +33,6 @@
     [self.tableView setBackgroundColor:theme.mainBackgroundColor];
 }
 
-- (void)reloadVisibleCells
-{
-    [self.tableView reloadRowsAtIndexPaths:self.tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -89,8 +84,8 @@
                                                object:delegate];
     
     // フォントサイズ設定
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadVisibleCells)
+    [[NSNotificationCenter defaultCenter] addObserver:self.tableView
+                                             selector:@selector(reloadData)
                                                  name:JFIApplyFontSizeNotification
                                                object:nil];
     
