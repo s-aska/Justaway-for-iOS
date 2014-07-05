@@ -1,10 +1,10 @@
-"retweet" = "公式RT";
-"favorite" = "ふぁぼ";
-"favorite_and_retweet" = "ふぁぼ＆公式RT";
+"retweet" = "リツイート";
+"favorite" = "お気に入り";
+"favorite_and_retweet" = "お気に入り＆リツイート";
 "quote" = "URL引用";
-"reply" = "リプ";
-"destroy_status" = "ツイ消し";
-"destroy_retweet" = "公式RT取り消し";
-"destroy_favorite" = "あんふぁぼ";
+"reply" = "返信";
+"destroy_status" = "ツイート取り消し";
+"destroy_retweet" = "リツイート取り消し";
+"destroy_favorite" = "お気に入り取り消し";
 "cancel" = "キャンセル";
 "streaming_rate_limited" = "ストリーミング接続が制限されました、ストリーミング接続をオフにします。";
