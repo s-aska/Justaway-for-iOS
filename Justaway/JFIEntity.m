@@ -36,6 +36,22 @@
                                            @"w": @596
                                            }
                                    }
+                           },@{
+                           @"display_url": @"pic.twitter.com/rJC5Pxsu",
+                           @"expanded_url": @"http://twitter.com/yunorno/status/114080493036773378/photo/1",
+                           @"id": @114080493040967680,
+                           @"id_str": @"114080493040967680",
+                           @"media_url": @"http://pbs.twimg.com/media/BoXV1KSIgAAHJpZ.png",
+                           @"media_url_https": @"https://pbs.twimg.com/media/BoXV1KSIgAAHJpZ.png",
+                           @"type": @"photo",
+                           @"url": @"http://t.co/rJC5Pxsu",
+                           @"sizes": @{
+                                   @"large": @{
+                                           @"h": @392,
+                                           @"resize": @"fit",
+                                           @"w": @596
+                                           }
+                                   }
                            }];
     }
     return self;
@@ -100,7 +116,11 @@
         self.urls = [message valueForKeyPath:@"entities.urls"];
         self.userMentions = [message valueForKeyPath:@"entities.user_mentions"];
         self.hashtags = [message valueForKeyPath:@"entities.hashtags"];
-        self.media = [message valueForKeyPath:@"entities.media"];
+        if ([message valueForKey:@"extended_entities"] != nil) {
+            self.media = [message valueForKeyPath:@"extended_entities.media"];
+        } else {
+            self.media = [message valueForKeyPath:@"entities.media"];
+        }
     }
     return self;
 }
@@ -124,7 +144,11 @@
     self.urls = [status valueForKeyPath:@"entities.urls"];
     self.userMentions = [status valueForKeyPath:@"entities.user_mentions"];
     self.hashtags = [status valueForKeyPath:@"entities.hashtags"];
-    self.media = [status valueForKeyPath:@"entities.media"];
+    if ([status valueForKey:@"extended_entities"] != nil) {
+        self.media = [status valueForKeyPath:@"extended_entities.media"];
+    } else {
+        self.media = [status valueForKeyPath:@"entities.media"];
+    }
 }
 
 - (void)setActionedUser:(NSDictionary *)user
