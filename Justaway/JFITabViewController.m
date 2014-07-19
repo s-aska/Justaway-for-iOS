@@ -33,6 +33,18 @@
     [self.tableView setBackgroundColor:theme.mainBackgroundColor];
 }
 
+- (void)setFontSize
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        for (JFIEntity *entity in self.entities) {
+            [self heightForEntity:entity];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    });
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -84,8 +96,8 @@
                                                object:delegate];
     
     // フォントサイズ設定
-    [[NSNotificationCenter defaultCenter] addObserver:self.tableView
-                                             selector:@selector(reloadData)
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setFontSize)
                                                  name:JFIApplyFontSizeNotification
                                                object:nil];
     
