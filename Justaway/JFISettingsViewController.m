@@ -6,6 +6,8 @@
 
 @interface JFISettingsViewController ()
 
+@property (nonatomic) BOOL fontSizeApply;
+
 @end
 
 @implementation JFISettingsViewController
@@ -51,6 +53,13 @@
 {
     [super viewWillDisappear:animated];
     
+    if (self.fontSizeApply) {
+        self.fontSizeApply = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:JFIApplyFontSizeNotification
+                                                            object:[[UIApplication sharedApplication] delegate]
+                                                          userInfo:nil];
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -65,9 +74,6 @@
 
 - (IBAction)closeAction:(id)sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:JFIApplyFontSizeNotification
-                                                        object:[[UIApplication sharedApplication] delegate]
-                                                      userInfo:nil];
     [self.view removeFromSuperview];
 }
 
@@ -87,7 +93,6 @@
     
     [self.fontSizeToolbarView setHidden:NO];
     self.currenToolbarView = self.fontSizeToolbarView;
-    
 }
 
 - (IBAction)themeAction:(id)sender
@@ -174,6 +179,7 @@
 - (void)fontSizeChanged
 {
     NSLog(@"fontSizeChanged fontSize:%f", self.fontSizeSlider.value);
+    self.fontSizeApply = YES;
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     delegate.fontSize = self.fontSizeSlider.value;
     [[NSNotificationCenter defaultCenter] postNotificationName:JFISetFontSizeNotification
