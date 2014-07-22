@@ -310,6 +310,13 @@
                                                       // ふぁぼ・あんふぁぼ・フォロー・
                                                       NSLog(@"[JFIAppDelegate] event:%@", [response valueForKey:@"event"]);
                                                       
+                                                      for (JFIAccount *account in self.accounts) {
+                                                          if ([account.userID isEqualToString:[response valueForKeyPath:@"source.id_str"]]) {
+                                                              NSLog(@"[JFIAppDelegate] is me.");
+                                                              return;
+                                                          }
+                                                      }
+                                                      
                                                       JFIEntity *entity = [[JFIEntity alloc] initWithEvent:response];
                                                       [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveEventNotification
                                                                                                           object:self
