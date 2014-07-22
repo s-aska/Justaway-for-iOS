@@ -2,6 +2,7 @@
 #import "JFIAccount.h"
 #import "JFIEntity.h"
 #import "JFITheme.h"
+#import "JFIActionStatus.h"
 #import "JFIAppDelegate.h"
 #import "STHTTPRequest+STTwitter.h"
 #import <SSKeychain/SSKeychain.h>
@@ -126,6 +127,11 @@
     } errorBlock:^(NSError *error) {
         NSLog(@"-- error:%@", [error localizedDescription]);
     }];
+}
+
+- (JFIAccount *)getAccount
+{
+    return [self.accounts objectAtIndex:self.currentAccountIndex];
 }
 
 - (STTwitterAPI *)getTwitter
@@ -309,15 +315,17 @@
                                                       
                                                       // ふぁぼ・あんふぁぼ・フォロー・
                                                       NSLog(@"[JFIAppDelegate] event:%@", [response valueForKey:@"event"]);
-                                                      
-                                                      for (JFIAccount *account in self.accounts) {
-                                                          if ([account.userID isEqualToString:[response valueForKeyPath:@"source.id_str"]]) {
-                                                              NSLog(@"[JFIAppDelegate] is me.");
-                                                              return;
+                                                      JFIEntity *entity = [[JFIEntity alloc] initWithEvent:response];
+                                                      JFIAccount *account = [self getAccount];
+                                                      if ([account.userID isEqualToString:[response valueForKeyPath:@"source.id_str"]]) {
+                                                          if (entity.type == EntityTypeFavorite) {
+                                                              [[JFIActionStatus sharedActionStatus] setFavorite:entity.statusID];
+                                                          } else if (entity.type == EntityTypeUnFavorite) {
+                                                              [[JFIActionStatus sharedActionStatus] removeFavorite:entity.statusID];
                                                           }
+                                                          return;
                                                       }
                                                       
-                                                      JFIEntity *entity = [[JFIEntity alloc] initWithEvent:response];
                                                       [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveEventNotification
                                                                                                           object:self
                                                                                                         userInfo:@{@"entity": entity}];
