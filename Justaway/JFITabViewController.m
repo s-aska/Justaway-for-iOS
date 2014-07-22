@@ -4,8 +4,12 @@
 #import "JFIAppDelegate.h"
 #import "JFITabViewController.h"
 #import "JFITheme.h"
+#import "JFILoading.h"
+#import "LVDebounce.h"
 
 @interface JFITabViewController ()
+
+@property (nonatomic) UIActivityIndicatorView *indicator;
 
 @end
 
@@ -35,8 +39,7 @@
 
 - (void)setFontSize
 {
-    self.fontSizeChanged = YES;
-    [self finalizeWithDebounce:.1f];
+    [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
 }
 
 - (void)viewDidLoad
@@ -118,6 +121,8 @@
     
     NSLog(@"[JFIHomeViewController] viewDidLoad accounts:%lu", (unsigned long)[delegate.accounts count]);
     
+    self.fontSize = delegate.fontSize;
+    
     // xibファイル名を指定しUINibオブジェクトを生成する
     UINib *nib = [UINib nibWithNibName:@"JFIEntityCell" bundle:nil];
     
@@ -138,10 +143,11 @@
         [self onRefresh];
     } else if (self.tabType == TabTypeHome) {
         // レイアウト確認用のダミーデータ
-        self.entities = [NSMutableArray array];
+        NSMutableArray *entities = NSMutableArray.new;
         for (NSInteger i = 0; i < 40; i++) {
-            [self.entities addObject:[[JFIEntity alloc] initDummy]];
+            [entities addObject:[[JFIEntity alloc] initDummy]];
         }
+        [self setEntities:entities];
         [self.tableView reloadData];
     }
 }
@@ -162,13 +168,13 @@
 {
     JFIEntityCell *cell = [tableView dequeueReusableCellWithIdentifier:JFICellID forIndexPath:indexPath];
     
-    JFIEntity *tweet = [self.entities objectAtIndex:indexPath.row];
+    JFIEntity *entity = [self.entities objectAtIndex:indexPath.row];
     
-    if (cell.entity == tweet) {
+    if (cell.entity == entity) {
         return cell;
     }
     
-    [cell setLabelTexts:tweet];
+    [cell setLabelTexts:entity];
     
     [cell.displayNameLabel sizeToFit];
     
@@ -182,12 +188,16 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     JFIEntity *entity = [self.entities objectAtIndex:indexPath.row];
-    return [self heightForEntity:entity];
+    if (entity != nil) {
+        return [entity.height floatValue] + 2;
+    } else {
+        return 0;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didSelectRowAtIndexPath");
+    NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
     JFIEntity *entity = [self.entities objectAtIndex:indexPath.row];
     if (entity == nil) {
         return;
@@ -199,24 +209,24 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    NSLog(@"scrollViewWillBeginDragging");
+    NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
     self.scrolling = YES;
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(finalize) object:nil];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
 	if (!decelerate) {
-        NSLog(@"scrollViewDidEndDragging");
+        NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
         self.scrolling = NO;
-        [self finalizeWithDebounce:.5f];
+        [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
 	}
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    NSLog(@"scrollViewDidEndDecelerating");
-    [self finalizeWithDebounce:.5f];
+    NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
+    self.scrolling = NO;
+    [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
 }
 
 
@@ -250,22 +260,15 @@
 
 - (CGFloat)heightForEntity:(JFIEntity *)entity
 {
-    if (entity == nil) {
-        return 0;
-    }
-    
     // 高さの計算結果をキャッシュから参照
-    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-    float fontSize = delegate.fontSize;
+    float fontSize = self.fontSize;
     if (entity.height != nil && entity.fontSize == fontSize) {
         return [entity.height floatValue] + 2;
     }
     
-    // NSLog(@"[JFITabViewController] heightForEntity no cache:%@", entity.statusID);
-    
-    self.cellForHeight.frame = self.tableView.bounds;
-    
+    [self.cellForHeight setFrame:self.tableView.bounds];
     [self.cellForHeight setLabelTexts:entity];
+    [self.cellForHeight setFontSize:fontSize];
     [self.cellForHeight.contentView setNeedsLayout];
     [self.cellForHeight.contentView layoutIfNeeded];
     
@@ -280,7 +283,7 @@
     entity.fontSize = fontSize;
     
     // 自動計算で得られた高さを返す
-    return height + 2;
+    return [entity.height floatValue] + 2;
 }
 
 - (void)scrollToTop
@@ -288,111 +291,104 @@
     [self.tableView setContentOffset:CGPointZero animated:YES];
 }
 
-/*
- * イベントの発火に合わせてゴリゴリUIブロックするとAnimationが突っかかったりするのでdebounceする
- * 今はおよそスクロール終了やストリーミング受信（非スクロール時）に0.5秒delayでレンダリング処理を仕込んでいる
- */
-- (void)finalizeWithDebounce:(CGFloat)delay
-{
-    if (self.finalizing) {
-        NSLog(@"[%@] %s finalizing:YES", NSStringFromClass([self class]), sel_getName(_cmd));
-    } else {
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(finalize) object:nil];
-        [self performSelector:@selector(finalize) withObject:nil afterDelay:delay];
-    }
-}
-
 - (void)finalize
 {
-    // やることが無くなるまで再帰的に
-    self.finalizing = YES;
-    
-    if (self.fontSizeChanged) {
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    if (self.fontSize != delegate.fontSize) {
         [self finalizeFontSize];
     } else if ([self.stacks count] > 0) {
         [self finalizeStack];
     } else {
-        self.finalizing = NO;
+        NSLog(@"[%@] %s finalizeImage", NSStringFromClass([self class]), sel_getName(_cmd));
         [self finalizeImage];
     }
 }
 
 - (void)finalizeFontSize
 {
+    BOOL isCurrent = self.isCurrent;
+    if (isCurrent) {
+        [[JFILoading sharedLoading] startAnimating];
+    }
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        for (JFIEntity *entity in self.entities) {
-            [self heightForEntity:entity];
-            // [NSThread sleepForTimeInterval:.025]; 競合のデバッグ
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UITableViewCell *firstCell = [self.tableView.visibleCells firstObject];
-            CGFloat offset = self.tableView.contentOffset.y - firstCell.frame.origin.y;
-            NSIndexPath *firstPath;
-            // スクロール位置が深い場合2番目の表示セルを基準にする
-            if ([self.tableView.indexPathsForVisibleRows count] > 1 && offset > (firstCell.frame.size.height / 2)) {
-                firstPath = [self.tableView.indexPathsForVisibleRows objectAtIndex:1];
-                firstCell = [self.tableView cellForRowAtIndexPath:firstPath];
-                offset = self.tableView.contentOffset.y - firstCell.frame.origin.y;
-            } else {
-                firstPath = [self.tableView.indexPathsForVisibleRows firstObject];
+        @synchronized(self) {
+            self.fontSize = delegate.fontSize;
+            for (JFIEntity *entity in self.entities) {
+                [self heightForEntity:entity];
             }
-            // NSLog(@"[%@] %s offset:%f", NSStringFromClass([self class]), sel_getName(_cmd), offset);
-            [self.tableView reloadData];
-            [self.tableView scrollToRowAtIndexPath:firstPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-            [self.tableView setContentOffset:CGPointMake(0.0, self.tableView.contentOffset.y + offset) animated:NO];
-            self.fontSizeChanged = NO;
-            [self finalize];
+            for (JFIEntity *entity in self.stacks) {
+                [self heightForEntity:entity];
+            }
+        }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            @synchronized(self) {
+                UITableViewCell *firstCell = [self.tableView.visibleCells firstObject];
+                CGFloat offset = self.tableView.contentOffset.y - firstCell.frame.origin.y;
+                NSIndexPath *firstPath;
+                // スクロール位置が深い場合2番目の表示セルを基準にする
+                if ([self.tableView.indexPathsForVisibleRows count] > 1 && offset > (firstCell.frame.size.height / 2)) {
+                    firstPath = [self.tableView.indexPathsForVisibleRows objectAtIndex:1];
+                    firstCell = [self.tableView cellForRowAtIndexPath:firstPath];
+                    offset = self.tableView.contentOffset.y - firstCell.frame.origin.y;
+                } else {
+                    firstPath = [self.tableView.indexPathsForVisibleRows firstObject];
+                }
+                // NSLog(@"[%@] %s offset:%f", NSStringFromClass([self class]), sel_getName(_cmd), offset);
+                [self.tableView reloadData];
+                [self.tableView scrollToRowAtIndexPath:firstPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                [self.tableView setContentOffset:CGPointMake(0.0, self.tableView.contentOffset.y + offset) animated:NO];
+            }
+            [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
+            if (isCurrent) {
+                [[JFILoading sharedLoading] stopAnimating];
+            }
         });
     });
 }
 
 - (void)finalizeStack
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
+    if (self.scrolling) {
+        return;
+    }
+    @synchronized(self) {
         NSMutableArray *indexPaths = NSMutableArray.new;
         int index = 0;
-        for (JFIEntity *tweet in self.stacks) {
-            // ここで高さ計算してキャッシュしておかないとscrollToTopが正しく動作しない
-            [self heightForEntity:tweet];
-            [self.entities insertObject:tweet atIndex:0];
+        for (JFIEntity *entity in self.stacks) {
+            [self.entities insertObject:entity atIndex:0];
             [indexPaths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
             index++;
         }
         
         // 最上部表示時のみ自動スクロールする
         BOOL autoScroll = self.tableView.contentOffset.y > 0 && [self.tableView.visibleCells count] > 0 ? NO : YES;
+        UITableViewCell *lastCell = [self.tableView.visibleCells lastObject];
+        CGFloat offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
+        [UIView setAnimationsEnabled:NO];
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        if ([self.entities count] > 1000) {
+            NSMutableArray *removeIndexPaths = NSMutableArray.new;
+            NSMutableArray *removeEntities = NSMutableArray.new;
+            for (NSInteger i = 1000; i < [self.entities count]; i++) {
+                [removeEntities addObject:self.entities[i]];
+                [removeIndexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+            }
+            for (JFIEntity *entity in removeEntities) {
+                [self.entities removeObject:entity];
+            }
+            [self.tableView deleteRowsAtIndexPaths:removeIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+        }
+        [self.tableView setContentOffset:CGPointMake(0.0, lastCell.frame.origin.y - offset) animated:NO];
+        [UIView setAnimationsEnabled:YES];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            UITableViewCell *lastCell = [self.tableView.visibleCells lastObject];
-            CGFloat offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
-            [UIView setAnimationsEnabled:NO];
-            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-            if ([self.entities count] > 1000) {
-                NSMutableArray *removeIndexPaths = NSMutableArray.new;
-                NSMutableArray *removeEntities = NSMutableArray.new;
-                for (NSInteger i = 1000; i < [self.entities count]; i++) {
-                    [removeEntities addObject:self.entities[i]];
-                    [removeIndexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-                }
-                for (JFIEntity *entity in removeEntities) {
-                    [self.entities removeObject:entity];
-                }
-                [self.tableView deleteRowsAtIndexPaths:removeIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-            }
-            [self.tableView setContentOffset:CGPointMake(0.0, lastCell.frame.origin.y - offset) animated:NO];
-            [UIView setAnimationsEnabled:YES];
-            
-            if (autoScroll) {
-                [self scrollToTop];
-            }
-            
-            self.stacks = [@[] mutableCopy];
-            
-            [self finalize];
-        });
-    });
+        if (autoScroll) {
+            [self scrollToTop];
+        }
+        
+        self.stacks = [@[] mutableCopy];
+    }
+    [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
 }
 
 - (void)finalizeImage
@@ -408,83 +404,80 @@
 
 - (void)receiveStatus:(NSNotification *)center
 {
-    JFIEntity *entity = [center.userInfo valueForKey:@"entity"];
-    [self.stacks addObject:entity];
+    NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
     
-    // NSLog(@"receiveStatus stack count:%lu", (unsigned long)[self.stacks count]);
+    [self addStack:[center.userInfo valueForKey:@"entity"]];
     
-    if (!self.scrolling) {
-        [self finalizeWithDebounce:.5f];
-    }
+    [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
 }
 
 - (void)receiveEvent:(NSNotification *)center
 {
-    JFIEntity *entity = [center.userInfo valueForKey:@"entity"];
-    [self.stacks addObject:entity];
+    NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
     
-    // NSLog(@"receiveStatus stack count:%lu", (unsigned long)[self.stacks count]);
+    [self addStack:[center.userInfo valueForKey:@"entity"]];
     
-    if (!self.scrolling) {
-        [self finalizeWithDebounce:.5f];
-    }
+    [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
 }
 
 - (void)destoryStatus:(NSNotification *)center
 {
-    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSString *statusID = [center.userInfo valueForKey:@"status_id"];
-    BOOL retweetedByMe = [center.userInfo valueForKey:@"retweeted_by_me"] == nil ? NO : YES;
-    NSInteger position = 0;
-    NSMutableArray *indexPaths = NSMutableArray.new;
-    NSMutableArray *removeEntities = NSMutableArray.new;
-    JFIAccount *account = delegate.accounts[delegate.currentAccountIndex];
-    NSString *actionedUserID = retweetedByMe ? account.userID : @"";
-    for (JFIEntity *entity in self.entities) {
-        if ([entity.statusID isEqualToString:statusID]) {
-            if (!retweetedByMe || [actionedUserID isEqualToString:entity.actionedUserID]) {
-                [removeEntities addObject:entity];
-                [indexPaths addObject:[NSIndexPath indexPathForRow:position inSection:0]];
+    @synchronized(self) {
+        JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+        NSString *statusID = [center.userInfo valueForKey:@"status_id"];
+        BOOL retweetedByMe = [center.userInfo valueForKey:@"retweeted_by_me"] == nil ? NO : YES;
+        NSInteger position = 0;
+        NSMutableArray *indexPaths = NSMutableArray.new;
+        NSMutableArray *removeEntities = NSMutableArray.new;
+        JFIAccount *account = delegate.accounts[delegate.currentAccountIndex];
+        NSString *actionedUserID = retweetedByMe ? account.userID : @"";
+        for (JFIEntity *entity in self.entities) {
+            if ([entity.statusID isEqualToString:statusID]) {
+                if (!retweetedByMe || [actionedUserID isEqualToString:entity.actionedUserID]) {
+                    [removeEntities addObject:entity];
+                    [indexPaths addObject:[NSIndexPath indexPathForRow:position inSection:0]];
+                }
             }
+            position++;
         }
-        position++;
-    }
-    if ([removeEntities count] > 0) {
-        [self.tableView beginUpdates];
-        for (JFIEntity *entity in removeEntities) {
-            [self.entities removeObject:entity];
+        if ([removeEntities count] > 0) {
+            [self.tableView beginUpdates];
+            for (JFIEntity *entity in removeEntities) {
+                [self.entities removeObject:entity];
+            }
+            [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
         }
-        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
     }
 }
 
 - (void)destoryMessage:(NSNotification *)center
 {
-    NSString *messageID = [center.userInfo valueForKey:@"message_id"];
-    NSInteger position = 0;
-    NSMutableArray *indexPaths = NSMutableArray.new;
-    NSMutableArray *removeEntities = NSMutableArray.new;
-    for (JFIEntity *entity in self.entities) {
-        if ([entity.messageID isEqualToString:messageID]) {
-            [removeEntities addObject:entity];
-            [indexPaths addObject:[NSIndexPath indexPathForRow:position inSection:0]];
+    @synchronized(self) {
+        NSString *messageID = [center.userInfo valueForKey:@"message_id"];
+        NSInteger position = 0;
+        NSMutableArray *indexPaths = NSMutableArray.new;
+        NSMutableArray *removeEntities = NSMutableArray.new;
+        for (JFIEntity *entity in self.entities) {
+            if ([entity.messageID isEqualToString:messageID]) {
+                [removeEntities addObject:entity];
+                [indexPaths addObject:[NSIndexPath indexPathForRow:position inSection:0]];
+            }
+            position++;
         }
-        position++;
-    }
-    if ([removeEntities count] > 0) {
-        [self.tableView beginUpdates];
-        for (JFIEntity *entity in removeEntities) {
-            [self.entities removeObject:entity];
+        if ([removeEntities count] > 0) {
+            [self.tableView beginUpdates];
+            for (JFIEntity *entity in removeEntities) {
+                [self.entities removeObject:entity];
+            }
+            [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
         }
-        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
     }
 }
 
 - (void)closeStatus:(NSNotification *)center
 {
-    NSLog(@"closeStatus");
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
@@ -496,6 +489,25 @@
 }
 
 #pragma mark - JFITabViewController
+
+- (void)setEntities:(NSArray *)entities
+{
+    @synchronized(self) {
+        _entities = NSMutableArray.new;
+        for (JFIEntity *entity in entities) {
+            [self heightForEntity:entity];
+            [self.entities addObject:entity];
+        }
+    }
+}
+
+- (void)addStack:(JFIEntity *)entity
+{
+    @synchronized(self) {
+        [self heightForEntity:entity];
+        [self.stacks addObject:entity];
+    }
+}
 
 - (void)loadEntities
 {

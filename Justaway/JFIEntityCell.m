@@ -27,6 +27,8 @@
                                              selector:@selector(setFontSize)
                                                  name:JFISetFontSizeNotification
                                                object:nil];
+    
+    [self setFontSize];
 }
 
 - (void)dealloc
@@ -140,7 +142,6 @@
     }
     
     [self setButtonColor];
-    [self setFontSize];
 }
 
 - (void)setButtonColor
@@ -169,7 +170,12 @@
 - (void)setFontSize
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-    float fontSize = 12 + delegate.fontSize;
+    [self setFontSize:delegate.fontSize];
+}
+
+- (void)setFontSize:(float)size
+{
+    float fontSize = 12 + size;
     if (self.statusLabel.font.pointSize != fontSize) {
         self.statusLabel.font = [UIFont systemFontOfSize:fontSize];
     }

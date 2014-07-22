@@ -11,6 +11,7 @@
 #import "JFIThemeActionSheet.h"
 #import "JFIImageViewController.h"
 #import "JFITheme.h"
+#import "JFILoading.h"
 
 @interface JFIMainViewController ()
 
@@ -68,6 +69,7 @@
     int count = 0;
     for (JFITab *tab in self.tabs) {
         JFITabViewController *viewController = [tab loadViewConroller];
+        viewController.isCurrent = count == 0 ? YES : NO;
         viewController.view.frame = CGRectMake(0, 0, s.width, s.height);
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(s.width * count, 0, s.width, s.height)];
         [view addSubview:viewController.view];
@@ -197,6 +199,11 @@
         self.currentPage = page;
         JFITab *tab = self.tabs[page];
         self.titleLabel.text = [tab title];
+    }
+    int count = 0;
+    for (JFITabViewController *tabViewController in self.viewControllers) {
+        tabViewController.isCurrent = self.currentPage == count ? YES : NO;
+        count++;
     }
 }
 
@@ -385,7 +392,7 @@
     
     if (self.image) {
         NSData *data = UIImageJPEGRepresentation(self.image, 0.8f);
-        [self showIndicator];
+        [[JFILoading sharedLoading] startAnimating];
         [twitter postStatusUpdate:[self.editorTextView text]
                    mediaDataArray:@[data]
                 possiblySensitive:nil
@@ -399,16 +406,16 @@
               }
                      successBlock:^(NSDictionary *status) {
                          [self closeEditor];
-                         [self hideIndicator];
+                         [[JFILoading sharedLoading] stopAnimating];
                      }
                        errorBlock:^(NSError *error) {
-                           [self hideIndicator];
+                           [[JFILoading sharedLoading] stopAnimating];
                        }
          ];
         return;
     }
     
-    [self showIndicator];
+    [[JFILoading sharedLoading] startAnimating];
     [twitter postStatusUpdate:[self.editorTextView text]
             inReplyToStatusID:self.inReplyToStatusId
                      latitude:nil
@@ -418,10 +425,10 @@
                      trimUser:nil
                  successBlock:^(NSDictionary *status) {
                      [self closeEditor];
-                     [self hideIndicator];
+                     [[JFILoading sharedLoading] stopAnimating];
                  } errorBlock:^(NSError *error) {
                      NSLog(@"[JFIMainViewController] tweetAction error:%@", [error localizedDescription]);
-                     [self hideIndicator];
+                     [[JFILoading sharedLoading] stopAnimating];
                      [[[UIAlertView alloc]
                        initWithTitle:@"disconnect"
                        message:[error localizedDescription]
@@ -504,7 +511,7 @@
     [imageView removeFromSuperview];
     
     // ネットワークエラーでインジケーターが消えていないことがある
-    [self hideIndicator];
+    [[JFILoading sharedLoading] stopAnimating];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -579,23 +586,6 @@
         default:
             break;
     }
-}
-
-- (void)showIndicator
-{
-    if (self.indicator == nil) {
-        self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        self.indicator.center = self.view.center;
-        [self.view addSubview:self.indicator];
-    }
-    [self.indicator startAnimating];
-}
-
-- (void)hideIndicator
-{
-    [self.indicator performSelectorOnMainThread:@selector(stopAnimating) withObject:nil waitUntilDone:YES];
-    [self.indicator removeFromSuperview];
-    self.indicator = nil;
 }
 
 @end

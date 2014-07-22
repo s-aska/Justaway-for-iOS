@@ -25,6 +25,7 @@
 @property (nonatomic) NSString *themeName;
 
 - (void)setFontSize;
+- (void)setFontSize:(float)size;
 - (void)setLabelTexts:(JFIEntity *)entity;
 - (void)setButtonColor;
 - (void)loadImages;

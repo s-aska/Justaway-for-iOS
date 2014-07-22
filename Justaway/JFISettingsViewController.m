@@ -3,10 +3,9 @@
 #import "JFITheme.h"
 #import "JFIConstants.h"
 #import "JFIAppDelegate.h"
+#import "LVDebounce.h"
 
 @interface JFISettingsViewController ()
-
-@property (nonatomic) BOOL fontSizeApply;
 
 @end
 
@@ -52,13 +51,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    if (self.fontSizeApply) {
-        self.fontSizeApply = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:JFIApplyFontSizeNotification
-                                                            object:[[UIApplication sharedApplication] delegate]
-                                                          userInfo:nil];
-    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -178,11 +170,23 @@
 
 - (void)fontSizeChanged
 {
-    NSLog(@"fontSizeChanged fontSize:%f", self.fontSizeSlider.value);
-    self.fontSizeApply = YES;
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    if (delegate.fontSize == self.fontSizeSlider.value) {
+        return;
+    }
+    NSLog(@"[%@] %s fontSize:%f", NSStringFromClass([self class]), sel_getName(_cmd), self.fontSizeSlider.value);
     delegate.fontSize = self.fontSizeSlider.value;
     [[NSNotificationCenter defaultCenter] postNotificationName:JFISetFontSizeNotification
+                                                        object:[[UIApplication sharedApplication] delegate]
+                                                      userInfo:nil];
+    
+    [LVDebounce fireAfter:.5f target:self selector:@selector(fontSizeApply) userInfo:nil];
+}
+
+- (void)fontSizeApply
+{
+    NSLog(@"[%@] %s fontSize:%f", NSStringFromClass([self class]), sel_getName(_cmd), self.fontSizeSlider.value);
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIApplyFontSizeNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];
 }

@@ -17,10 +17,11 @@
     [twitter getMentionsTimelineSinceID:nil
                                   count:20
                            successBlock:^(NSArray *statuses) {
-                               self.entities = [NSMutableArray array];
+                               NSMutableArray *entities = NSMutableArray.new;
                                for (NSDictionary *dictionaly in statuses) {
-                                   [self.entities addObject:[[JFIEntity alloc] initWithStatus:dictionaly]];
+                                   [entities addObject:[[JFIEntity alloc] initWithStatus:dictionaly]];
                                }
+                               [self setEntities:entities];
                                [self.tableView reloadData];
                                [self.refreshControl endRefreshing];
                            } errorBlock:^(NSError *error) {

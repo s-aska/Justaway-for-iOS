@@ -17,12 +17,11 @@
     [twitter getHomeTimelineSinceID:nil
                               count:200
                        successBlock:^(NSArray *statuses) {
-                           self.entities = [NSMutableArray array];
+                           NSMutableArray *entities = NSMutableArray.new;
                            for (NSDictionary *dictionaly in statuses) {
-                               JFIEntity *entity = [[JFIEntity alloc] initWithStatus:dictionaly];
-                               [self heightForEntity:entity];
-                               [self.entities addObject:entity];
+                               [entities addObject:[[JFIEntity alloc] initWithStatus:dictionaly]];
                            }
+                           [self setEntities:entities];
                            [self.tableView reloadData];
                            [self.refreshControl endRefreshing];
                            if (delegate.streamingMode) {

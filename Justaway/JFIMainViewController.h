@@ -20,7 +20,6 @@
 @property (nonatomic) NSMutableArray *tabs;
 @property (nonatomic) NSMutableArray *views;
 @property (nonatomic) NSMutableArray *viewControllers;
-@property (nonatomic) UIActivityIndicatorView *indicator;
 @property (nonatomic) JFIImageViewController *imageViewController;
 @property (nonatomic) JFISettingsViewController *settingsViewController;
 
@@ -31,8 +30,5 @@
 - (IBAction)closeAction:(id)sender;
 - (IBAction)imageAction:(id)sender;
 - (IBAction)tweetAction:(id)sender;
-
-- (void)showIndicator;
-- (void)hideIndicator;
 
 @end

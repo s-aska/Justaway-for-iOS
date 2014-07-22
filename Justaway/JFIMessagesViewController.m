@@ -35,10 +35,11 @@
         NSSortDescriptor *sortDispNo = [[NSSortDescriptor alloc] initWithKey:@"created_at" ascending:NO];
         NSArray *sortDescArray = [NSArray arrayWithObjects:sortDispNo, nil];
         NSArray *statuses = [[receivedRows sortedArrayUsingDescriptors:sortDescArray] mutableCopy];
-        self.entities = [NSMutableArray array];
+        NSMutableArray *entities = NSMutableArray.new;
         for (NSDictionary *dictionaly in statuses) {
-            [self.entities addObject:[[JFIEntity alloc] initWithMessage:dictionaly]];
+            [entities addObject:[[JFIEntity alloc] initWithMessage:dictionaly]];
         }
+        [self setEntities:entities];
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
     };
