@@ -9,6 +9,8 @@
 @property (nonatomic) NSMutableArray *stacks;
 @property (nonatomic) JFIEntityCell *cellForHeight;
 @property (nonatomic) BOOL scrolling;
+@property (nonatomic) BOOL finalizing;
+@property (nonatomic) BOOL fontSizeChanged;
 
 - (id)initWithType:(TabType)tabType;
 - (CGFloat)heightForEntity:(JFIEntity *)entity;

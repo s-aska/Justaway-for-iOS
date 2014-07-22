@@ -35,14 +35,8 @@
 
 - (void)setFontSize
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        for (JFIEntity *entity in self.entities) {
-            [self heightForEntity:entity];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
-    });
+    self.fontSizeChanged = YES;
+    [self finalizeWithDebounce:.1f];
 }
 
 - (void)viewDidLoad
@@ -178,7 +172,7 @@
     
     [cell.displayNameLabel sizeToFit];
     
-    [cell loadImages:self.scrolling];
+    [cell loadImages];
     
     return cell;
 }
@@ -214,6 +208,7 @@
 {
 	if (!decelerate) {
         NSLog(@"scrollViewDidEndDragging");
+        self.scrolling = NO;
         [self finalizeWithDebounce:.5f];
 	}
 }
@@ -299,18 +294,61 @@
  */
 - (void)finalizeWithDebounce:(CGFloat)delay
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(finalize) object:nil];
-    [self performSelector:@selector(finalize) withObject:nil afterDelay:delay];
+    if (self.finalizing) {
+        NSLog(@"[%@] %s finalizing:YES", NSStringFromClass([self class]), sel_getName(_cmd));
+    } else {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(finalize) object:nil];
+        [self performSelector:@selector(finalize) withObject:nil afterDelay:delay];
+    }
 }
 
 - (void)finalize
 {
-    // NSLog(@"finalize stack count:%lu", (unsigned long)[self.stacks count]);
+    // やることが無くなるまで再帰的に
+    self.finalizing = YES;
     
-    self.scrolling = NO;
-    
-    // スタック内容をレンダリングする
-    if ([self.stacks count] > 0) {
+    if (self.fontSizeChanged) {
+        [self finalizeFontSize];
+    } else if ([self.stacks count] > 0) {
+        [self finalizeStack];
+    } else {
+        self.finalizing = NO;
+        [self finalizeImage];
+    }
+}
+
+- (void)finalizeFontSize
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        for (JFIEntity *entity in self.entities) {
+            [self heightForEntity:entity];
+            // [NSThread sleepForTimeInterval:.025]; 競合のデバッグ
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UITableViewCell *firstCell = [self.tableView.visibleCells firstObject];
+            CGFloat offset = self.tableView.contentOffset.y - firstCell.frame.origin.y;
+            NSIndexPath *firstPath;
+            // スクロール位置が深い場合2番目の表示セルを基準にする
+            if ([self.tableView.indexPathsForVisibleRows count] > 1 && offset > (firstCell.frame.size.height / 2)) {
+                firstPath = [self.tableView.indexPathsForVisibleRows objectAtIndex:1];
+                firstCell = [self.tableView cellForRowAtIndexPath:firstPath];
+                offset = self.tableView.contentOffset.y - firstCell.frame.origin.y;
+            } else {
+                firstPath = [self.tableView.indexPathsForVisibleRows firstObject];
+            }
+            // NSLog(@"[%@] %s offset:%f", NSStringFromClass([self class]), sel_getName(_cmd), offset);
+            [self.tableView reloadData];
+            [self.tableView scrollToRowAtIndexPath:firstPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            [self.tableView setContentOffset:CGPointMake(0.0, self.tableView.contentOffset.y + offset) animated:NO];
+            self.fontSizeChanged = NO;
+            [self finalize];
+        });
+    });
+}
+
+- (void)finalizeStack
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         NSMutableArray *indexPaths = NSMutableArray.new;
         int index = 0;
@@ -325,35 +363,43 @@
         // 最上部表示時のみ自動スクロールする
         BOOL autoScroll = self.tableView.contentOffset.y > 0 && [self.tableView.visibleCells count] > 0 ? NO : YES;
         
-        UITableViewCell *lastCell = [self.tableView.visibleCells lastObject];
-        CGFloat offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
-        [UIView setAnimationsEnabled:NO];
-        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-        if ([self.entities count] > 1000) {
-            NSMutableArray *removeIndexPaths = NSMutableArray.new;
-            NSMutableArray *removeEntities = NSMutableArray.new;
-            for (NSInteger i = 1000; i < [self.entities count]; i++) {
-                [removeEntities addObject:self.entities[i]];
-                [removeIndexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            UITableViewCell *lastCell = [self.tableView.visibleCells lastObject];
+            CGFloat offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
+            [UIView setAnimationsEnabled:NO];
+            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+            if ([self.entities count] > 1000) {
+                NSMutableArray *removeIndexPaths = NSMutableArray.new;
+                NSMutableArray *removeEntities = NSMutableArray.new;
+                for (NSInteger i = 1000; i < [self.entities count]; i++) {
+                    [removeEntities addObject:self.entities[i]];
+                    [removeIndexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+                }
+                for (JFIEntity *entity in removeEntities) {
+                    [self.entities removeObject:entity];
+                }
+                [self.tableView deleteRowsAtIndexPaths:removeIndexPaths withRowAnimation:UITableViewRowAnimationFade];
             }
-            for (JFIEntity *entity in removeEntities) {
-                [self.entities removeObject:entity];
+            [self.tableView setContentOffset:CGPointMake(0.0, lastCell.frame.origin.y - offset) animated:NO];
+            [UIView setAnimationsEnabled:YES];
+            
+            if (autoScroll) {
+                [self scrollToTop];
             }
-            [self.tableView deleteRowsAtIndexPaths:removeIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-        }
-        [self.tableView setContentOffset:CGPointMake(0.0, lastCell.frame.origin.y - offset) animated:NO];
-        [UIView setAnimationsEnabled:YES];
-        
-        if (autoScroll) {
-            [self scrollToTop];
-        }
-        
-        self.stacks = [@[] mutableCopy];
-    }
-    
+            
+            self.stacks = [@[] mutableCopy];
+            
+            [self finalize];
+        });
+    });
+}
+
+- (void)finalizeImage
+{
     for (JFIEntityCell *cell in self.tableView.visibleCells) {
         if (cell.iconImageView.image == nil) {
-            [cell loadImages:NO];
+            [cell loadImages];
         }
     }
 }

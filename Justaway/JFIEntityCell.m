@@ -175,7 +175,7 @@
     }
 }
 
-- (void)loadImages:(BOOL)scrolling
+- (void)loadImages
 {
     JFIEntity *entity = self.entity;
     

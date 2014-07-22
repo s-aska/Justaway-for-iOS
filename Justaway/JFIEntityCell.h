@@ -27,7 +27,7 @@
 - (void)setFontSize;
 - (void)setLabelTexts:(JFIEntity *)entity;
 - (void)setButtonColor;
-- (void)loadImages:(BOOL)scrolling;
+- (void)loadImages;
 
 - (IBAction)replyAction:(id)sender;
 - (IBAction)retweetAction:(id)sender;
