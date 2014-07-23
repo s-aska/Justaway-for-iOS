@@ -29,6 +29,10 @@
     [self.fontSizeSlider addTarget:self
                             action:@selector(fontSizeChanged)
                   forControlEvents:UIControlEventValueChanged];
+    
+    [self.fontSizeSlider addTarget:self
+                            action:@selector(fontSizeApply)
+                  forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
 }
 
 - (void)didReceiveMemoryWarning
@@ -179,8 +183,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:JFISetFontSizeNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];
-    
-    [LVDebounce fireAfter:.5f target:self selector:@selector(fontSizeApply) userInfo:nil];
 }
 
 - (void)fontSizeApply

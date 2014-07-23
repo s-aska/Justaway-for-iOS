@@ -215,11 +215,11 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-	if (!decelerate) {
+    if (!decelerate) {
         NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
         self.scrolling = NO;
         [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
-	}
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -299,20 +299,22 @@
     } else if ([self.stacks count] > 0) {
         [self finalizeStack];
     } else {
-        NSLog(@"[%@] %s finalizeImage", NSStringFromClass([self class]), sel_getName(_cmd));
         [self finalizeImage];
+        NSLog(@"[%@] %s complete.", NSStringFromClass([self class]), sel_getName(_cmd));
     }
 }
 
 - (void)finalizeFontSize
 {
+    // タブは複数あり同時にフォントサイズが変わるがローディングは1つしか表示しない
     BOOL isCurrent = self.isCurrent;
     if (isCurrent) {
         [[JFILoading sharedLoading] startAnimating];
     }
-    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         @synchronized(self) {
+            JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
             self.fontSize = delegate.fontSize;
             for (JFIEntity *entity in self.entities) {
                 [self heightForEntity:entity];
@@ -320,13 +322,14 @@
             for (JFIEntity *entity in self.stacks) {
                 [self heightForEntity:entity];
             }
-        }
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            @synchronized(self) {
+            
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                
+                // 表示セル・スクロール位置を保ちながらreloadData
                 UITableViewCell *firstCell = [self.tableView.visibleCells firstObject];
                 CGFloat offset = self.tableView.contentOffset.y - firstCell.frame.origin.y;
                 NSIndexPath *firstPath;
-                // スクロール位置が深い場合2番目の表示セルを基準にする
+                // セルが半分以上隠れているている場合、2番目の表示セルを基準にする
                 if ([self.tableView.indexPathsForVisibleRows count] > 1 && offset > (firstCell.frame.size.height / 2)) {
                     firstPath = [self.tableView.indexPathsForVisibleRows objectAtIndex:1];
                     firstCell = [self.tableView cellForRowAtIndexPath:firstPath];
@@ -338,12 +341,12 @@
                 [self.tableView reloadData];
                 [self.tableView scrollToRowAtIndexPath:firstPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
                 [self.tableView setContentOffset:CGPointMake(0.0, self.tableView.contentOffset.y + offset) animated:NO];
-            }
-            [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
-            if (isCurrent) {
-                [[JFILoading sharedLoading] stopAnimating];
-            }
-        });
+                [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
+                if (isCurrent) {
+                    [[JFILoading sharedLoading] stopAnimating];
+                }
+            });
+        }
     });
 }
 
