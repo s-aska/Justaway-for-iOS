@@ -18,6 +18,7 @@ NSString *const JFICellForHeightID = @"JFICellForHeightID";
 NSString *const JFISetThemeNotification            = @"JFISetThemeNotification";
 NSString *const JFISetFontSizeNotification         = @"JFISetFontSizeNotification";
 NSString *const JFIApplyFontSizeNotification       = @"JFIApplyFontSizeNotification";
+NSString *const JFIFinalizeFontSizeNotification    = @"JFIFinalizeFontSizeNotification";
 NSString *const JFISelectAccessTokenNotification   = @"JFISelectAccessTokenNotification";
 NSString *const JFIReceiveAccessTokenNotification  = @"JFIReceiveAccessTokenNotification";
 NSString *const JFIReceiveStatusNotification       = @"JFIReceiveStatusNotification";

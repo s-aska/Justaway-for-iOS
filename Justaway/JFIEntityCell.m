@@ -28,6 +28,11 @@
                                                  name:JFISetFontSizeNotification
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(finalizeFontSize)
+                                                 name:JFIFinalizeFontSizeNotification
+                                               object:nil];
+    
     [self setFontSize];
 }
 
@@ -178,7 +183,55 @@
     float fontSize = 12 + size;
     if (self.statusLabel.font.pointSize != fontSize) {
         self.statusLabel.font = [UIFont systemFontOfSize:fontSize];
+        if (!self.resizing) {
+            self.resizing = YES;
+            [UIView animateWithDuration:0.5
+                                  delay:0
+                                options:UIViewAnimationOptionCurveEaseIn
+                             animations:^{
+                                 self.replyButton.alpha = 0;
+                                 self.retweetCountLabel.alpha = 0;
+                                 self.retweetButton.alpha = 0;
+                                 self.favoriteCountLabel.alpha = 0;
+                                 self.favoriteButton.alpha = 0;
+                                 self.actionedView.alpha = 0;
+                                 self.createdAtLabel.alpha = 0;
+                                 self.sourceLabel.alpha = 0;
+                             }
+                             completion:^(BOOL finished){}
+             ];
+        }
     }
+}
+
+
+- (void)finalizeFontSize
+{
+    self.replyButton.alpha = 0;
+    self.retweetCountLabel.alpha = 0;
+    self.retweetButton.alpha = 0;
+    self.favoriteCountLabel.alpha = 0;
+    self.favoriteButton.alpha = 0;
+    self.actionedView.alpha = 0;
+    self.createdAtLabel.alpha = 0;
+    self.sourceLabel.alpha = 0;
+    [UIView animateWithDuration:0.2
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         self.replyButton.alpha = 1;
+                         self.retweetCountLabel.alpha = 1;
+                         self.retweetButton.alpha = 1;
+                         self.favoriteCountLabel.alpha = 1;
+                         self.favoriteButton.alpha = 1;
+                         self.actionedView.alpha = 1;
+                         self.createdAtLabel.alpha = 1;
+                         self.sourceLabel.alpha = 1;
+                     }
+                     completion:^(BOOL finished){
+                         self.resizing = NO;
+                     }
+     ];
 }
 
 - (void)loadImages

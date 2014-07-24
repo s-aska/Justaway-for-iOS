@@ -45,12 +45,6 @@
         return;
     }
     
-    // タブは複数あり同時にフォントサイズが変わるがローディングは1つしか表示しない
-    BOOL isCurrent = self.isCurrent;
-    if (isCurrent) {
-        [SVProgressHUD show];
-    }
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         @synchronized(self) {
             NSLog(@"[%@] %s heightForEntity.", NSStringFromClass([self class]), sel_getName(_cmd));
@@ -84,11 +78,11 @@
             [self.tableView scrollToRowAtIndexPath:firstPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
             [self.tableView setContentOffset:CGPointMake(0.0, self.tableView.contentOffset.y + offset) animated:NO];
             
-            if (isCurrent) {
-                [SVProgressHUD dismiss];
-            }
-            
             [self loadImages];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:JFIFinalizeFontSizeNotification
+                                                                object:[[UIApplication sharedApplication] delegate]
+                                                              userInfo:nil];
             
             NSLog(@"[%@] %s complete.", NSStringFromClass([self class]), sel_getName(_cmd));
         });

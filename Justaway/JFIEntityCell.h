@@ -23,6 +23,7 @@
 @property (nonatomic, weak) IBOutlet UIView *imagesView;
 @property (nonatomic) JFIEntity *entity;
 @property (nonatomic) NSString *themeName;
+@property (nonatomic) BOOL resizing;
 
 - (void)setFontSize;
 - (void)setFontSize:(float)size;

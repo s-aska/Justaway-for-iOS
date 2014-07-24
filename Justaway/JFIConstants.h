@@ -18,6 +18,7 @@ extern NSString *const JFICellForHeightID;
 extern NSString *const JFISetThemeNotification;
 extern NSString *const JFISetFontSizeNotification;
 extern NSString *const JFIApplyFontSizeNotification;
+extern NSString *const JFIFinalizeFontSizeNotification;
 extern NSString *const JFISelectAccessTokenNotification;
 extern NSString *const JFIReceiveAccessTokenNotification;
 extern NSString *const JFIReceiveStatusNotification;
