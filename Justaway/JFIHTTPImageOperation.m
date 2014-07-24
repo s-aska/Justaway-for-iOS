@@ -28,7 +28,7 @@
     NSString *string;
     switch (self.processType) {
         case ImageProcessTypeNone:
-            string = @"none";
+            return self.request.URL;
             break;
             
         case ImageProcessTypeIcon:
@@ -40,7 +40,7 @@
             break;
             
         default:
-            string = @"";
+            return self.request.URL;
             break;
     }
     if (self.request.URL.query) {
