@@ -9,7 +9,7 @@
 
 @interface JFITabViewController ()
 
-@property (nonatomic) UIActivityIndicatorView *indicator;
+@property (nonatomic) NSMutableDictionary *heights;
 
 @end
 
@@ -21,6 +21,7 @@
     if (self) {
         self.stacks = [@[] mutableCopy];
         self.tabType = tabType;
+        self.heights = NSMutableDictionary.new;
     }
     return self;
 }
@@ -318,14 +319,47 @@
         return [entity.height floatValue] + 2;
     }
     
-    [self.cellForHeight setFrame:self.tableView.bounds];
-    [self.cellForHeight setLabelTexts:entity];
-    [self.cellForHeight setFontSize:fontSize];
-    [self.cellForHeight.contentView setNeedsLayout];
-    [self.cellForHeight.contentView layoutIfNeeded];
+    // パターン毎にAuto Layoutの計算結果をキャッシュし高速化を図る
+    // 不確定要素はstatusLabelとインライン画像なのでキャッシュしている基準値にそれぞれ加える
+    float height;
+    NSString *pattern = entity.actionedUserID ? @"retweeted" : @"simple";
     
-    // 適切なサイズをAuto Layoutによって自動計算する
-    float height = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    if ([self.heights valueForKey:pattern]) {
+        
+        CGRect rect = [entity.text boundingRectWithSize:CGSizeMake(self.cellForHeight.statusLabel.frame.size.width, 0)
+                                                options:NSStringDrawingUsesLineFragmentOrigin
+                                             attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:fontSize + 12.0f]}
+                                                context:nil];
+        
+        height = [[self.heights valueForKey:pattern] floatValue] + ceilf(rect.size.height);
+        
+        // NSLog(@"[%@] %s height:%f", NSStringFromClass([self class]), sel_getName(_cmd), ceilf(rect.size.height));
+        
+    } else {
+        
+        [self.cellForHeight setFrame:self.tableView.bounds];
+        [self.cellForHeight setLabelTexts:entity];
+        [self.cellForHeight setFontSize:fontSize];
+        [self.cellForHeight.statusLabel sizeToFit];
+        [self.cellForHeight.contentView setNeedsLayout];
+        [self.cellForHeight.contentView layoutIfNeeded];
+        
+        // 適切なサイズをAuto Layoutによって自動計算する
+        height = [self.cellForHeight.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+        
+        [self.heights setValue:@(height - self.cellForHeight.statusLabel.frame.size.height) forKey:pattern];
+        
+        /*
+        CGRect rect = [entity.text boundingRectWithSize:CGSizeMake(self.cellForHeight.statusLabel.frame.size.width, 0)
+                                                options:NSStringDrawingUsesLineFragmentOrigin
+                                             attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:fontSize + 12.0f]}
+                                                context:nil];
+
+        NSLog(@"[%@] %s height:%f height:%f", NSStringFromClass([self class]), sel_getName(_cmd), self.cellForHeight.statusLabel.frame.size.height, ceilf(rect.size.height));
+         */
+    }
+    
+    // 画像
     if ([entity.media count] > 0) {
         height+= [entity.media count] * 80.f;
     }
