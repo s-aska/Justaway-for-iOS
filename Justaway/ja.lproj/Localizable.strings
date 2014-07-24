@@ -3,7 +3,7 @@
 "favorite_and_retweet" = "お気に入り＆リツイート";
 "quote" = "URL引用";
 "reply" = "返信";
-"destroy_status" = "ツイート取り消し";
+"destroy_status" = "削除";
 "destroy_retweet" = "リツイート取り消し";
 "destroy_favorite" = "お気に入り取り消し";
 "cancel" = "キャンセル";
