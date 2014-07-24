@@ -42,6 +42,11 @@
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     if (self.fontSize == delegate.fontSize) {
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:JFIFinalizeFontSizeNotification
+                                                            object:[[UIApplication sharedApplication] delegate]
+                                                          userInfo:nil];
+        
         return;
     }
     

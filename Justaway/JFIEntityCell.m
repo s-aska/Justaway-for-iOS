@@ -147,6 +147,17 @@
     }
     
     [self setButtonColor];
+    
+    int alpha = self.resizing ? 0 : 1;
+    self.imagesView.alpha = alpha;
+    self.replyButton.alpha = alpha;
+    self.retweetCountLabel.alpha = alpha;
+    self.retweetButton.alpha = alpha;
+    self.favoriteCountLabel.alpha = alpha;
+    self.favoriteButton.alpha = alpha;
+    self.actionedView.alpha = alpha;
+    self.createdAtLabel.alpha = alpha;
+    self.sourceLabel.alpha = alpha;
 }
 
 - (void)setButtonColor
@@ -189,6 +200,7 @@
                                   delay:0
                                 options:UIViewAnimationOptionCurveEaseIn
                              animations:^{
+                                 self.imagesView.alpha = 0;
                                  self.replyButton.alpha = 0;
                                  self.retweetCountLabel.alpha = 0;
                                  self.retweetButton.alpha = 0;
@@ -207,6 +219,8 @@
 
 - (void)finalizeFontSize
 {
+    self.resizing = NO;
+    self.imagesView.alpha = 0;
     self.replyButton.alpha = 0;
     self.retweetCountLabel.alpha = 0;
     self.retweetButton.alpha = 0;
@@ -219,6 +233,7 @@
                           delay:0
                         options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
+                         self.imagesView.alpha = 1;
                          self.replyButton.alpha = 1;
                          self.retweetCountLabel.alpha = 1;
                          self.retweetButton.alpha = 1;
@@ -228,9 +243,7 @@
                          self.createdAtLabel.alpha = 1;
                          self.sourceLabel.alpha = 1;
                      }
-                     completion:^(BOOL finished){
-                         self.resizing = NO;
-                     }
+                     completion:^(BOOL finished){}
      ];
 }
 
