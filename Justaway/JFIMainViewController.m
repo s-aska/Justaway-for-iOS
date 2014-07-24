@@ -11,7 +11,7 @@
 #import "JFIThemeActionSheet.h"
 #import "JFIImageViewController.h"
 #import "JFITheme.h"
-#import "JFILoading.h"
+#import "SVProgressHUD.h"
 
 @interface JFIMainViewController ()
 
@@ -392,7 +392,7 @@
     
     if (self.image) {
         NSData *data = UIImageJPEGRepresentation(self.image, 0.8f);
-        [[JFILoading sharedLoading] startAnimating];
+        [SVProgressHUD show];
         [twitter postStatusUpdate:[self.editorTextView text]
                    mediaDataArray:@[data]
                 possiblySensitive:nil
@@ -406,16 +406,16 @@
               }
                      successBlock:^(NSDictionary *status) {
                          [self closeEditor];
-                         [[JFILoading sharedLoading] stopAnimating];
+                         [SVProgressHUD dismiss];
                      }
                        errorBlock:^(NSError *error) {
-                           [[JFILoading sharedLoading] stopAnimating];
+                           [SVProgressHUD dismiss];
                        }
          ];
         return;
     }
     
-    [[JFILoading sharedLoading] startAnimating];
+    [SVProgressHUD show];
     [twitter postStatusUpdate:[self.editorTextView text]
             inReplyToStatusID:self.inReplyToStatusId
                      latitude:nil
@@ -425,10 +425,10 @@
                      trimUser:nil
                  successBlock:^(NSDictionary *status) {
                      [self closeEditor];
-                     [[JFILoading sharedLoading] stopAnimating];
+                     [SVProgressHUD dismiss];
                  } errorBlock:^(NSError *error) {
                      NSLog(@"[JFIMainViewController] tweetAction error:%@", [error localizedDescription]);
-                     [[JFILoading sharedLoading] stopAnimating];
+                     [SVProgressHUD dismiss];
                      [[[UIAlertView alloc]
                        initWithTitle:@"disconnect"
                        message:[error localizedDescription]
@@ -511,7 +511,7 @@
     [imageView removeFromSuperview];
     
     // ネットワークエラーでインジケーターが消えていないことがある
-    [[JFILoading sharedLoading] stopAnimating];
+    [SVProgressHUD dismiss];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification

@@ -4,7 +4,7 @@
 #import "JFIAppDelegate.h"
 #import "JFITabViewController.h"
 #import "JFITheme.h"
-#import "JFILoading.h"
+#import "SVProgressHUD.h"
 #import "LVDebounce.h"
 
 @interface JFITabViewController ()
@@ -48,7 +48,7 @@
     // タブは複数あり同時にフォントサイズが変わるがローディングは1つしか表示しない
     BOOL isCurrent = self.isCurrent;
     if (isCurrent) {
-        [[JFILoading sharedLoading] startAnimating];
+        [SVProgressHUD show];
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -85,7 +85,7 @@
             [self.tableView setContentOffset:CGPointMake(0.0, self.tableView.contentOffset.y + offset) animated:NO];
             
             if (isCurrent) {
-                [[JFILoading sharedLoading] stopAnimating];
+                [SVProgressHUD dismiss];
             }
             
             [self loadImages];

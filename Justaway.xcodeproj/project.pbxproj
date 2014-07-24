@@ -64,7 +64,6 @@
 		6ADF796D188D6E2300632BA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7949188D6E2200632BA5 /* UIKit.framework */; };
 		6ADF7975188D6E2300632BA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6ADF7973188D6E2300632BA5 /* InfoPlist.strings */; };
 		6ADF7977188D6E2300632BA5 /* JustawayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADF7976188D6E2300632BA5 /* JustawayTests.m */; };
-		6AEF0D09197F09A60071469C /* JFILoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEF0D08197F09A60071469C /* JFILoading.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -169,8 +168,6 @@
 		6ADF7972188D6E2300632BA5 /* JustawayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JustawayTests-Info.plist"; sourceTree = "<group>"; };
 		6ADF7974188D6E2300632BA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6ADF7976188D6E2300632BA5 /* JustawayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JustawayTests.m; sourceTree = "<group>"; };
-		6AEF0D07197F09A60071469C /* JFILoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFILoading.h; sourceTree = "<group>"; };
-		6AEF0D08197F09A60071469C /* JFILoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFILoading.m; sourceTree = "<group>"; };
 		A4AADD2047B74C8D8ED7CB17 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -293,8 +290,6 @@
 				385D50B01954718B0037947D /* JFIMenuView.m */,
 				385D50B21959AABD0037947D /* JFITransparent.h */,
 				385D50B31959AABD0037947D /* JFITransparent.m */,
-				6AEF0D07197F09A60071469C /* JFILoading.h */,
-				6AEF0D08197F09A60071469C /* JFILoading.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -623,7 +618,6 @@
 				3828D5B518EBC6F500170374 /* JFIButton.m in Sources */,
 				383D7DE518E1AF5C00D36678 /* JFIAccountCell.m in Sources */,
 				6A52D24F190D4A7800C78B4D /* JFIStatusActionSheet.m in Sources */,
-				6AEF0D09197F09A60071469C /* JFILoading.m in Sources */,
 				383D7DC418D6B64A00D36678 /* JFIMainViewController.m in Sources */,
 				6A7FD875194C802D00919A15 /* JFIThemeActionSheet.m in Sources */,
 				38108F341906A14400C99F00 /* JFITab.m in Sources */,

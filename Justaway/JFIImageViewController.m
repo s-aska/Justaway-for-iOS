@@ -3,6 +3,7 @@
 #import "UIImage+Processing.h"
 #import <ISMemoryCache/ISMemoryCache.h>
 #import "JFITheme.h"
+#import "SVProgressHUD.h"
 
 @interface JFIImageViewController ()
 
@@ -34,9 +35,6 @@
     self.scrollView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5]; // 透過黒背景
     self.scrollView.contentMode = UIViewContentModeScaleAspectFit; // アスペクト比固定（ピンチイン・ピンチアウト時のアスペクト比）
     self.imageView.contentMode = UIViewContentModeScaleAspectFit; // アスペクト比固定（何も指定しないとUIImageViewに合わせて伸長してしまう）
-    
-    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    self.indicator.center = self.view.center;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -48,8 +46,6 @@
     self.toolbarView.backgroundColor = theme.menuBackgroundColor;
     
     // 消し損ねたインジケーターがないかチェック
-    [self.indicator removeFromSuperview];
-    
     NSURL *url = [[NSURL alloc] initWithString:[[self.media valueForKey:@"media_url"] stringByAppendingString:@":large"]];
     UIImage *image = [[ISMemoryCache sharedCache] objectForKey:url];
     if (image) {
@@ -57,8 +53,7 @@
     } else {
         
         // インジケーター表示
-        [self.view addSubview:self.indicator];
-        [self.indicator startAnimating];
+        [SVProgressHUD show];
         
         self.imageView.image = nil;
         [JFIHTTPImageOperation loadURL:url
@@ -66,8 +61,7 @@
                                handler:^(NSHTTPURLResponse *response, UIImage *image, NSError *error) {
                                    
                                    // インジケーター非表示
-                                   [self.indicator stopAnimating];
-                                   [self.indicator removeFromSuperview];
+                                   [SVProgressHUD dismiss];
                                    
                                    if (response) {
                                        
@@ -111,11 +105,10 @@
     }
     
     // 読み込み中・保存中は無視（連打対策）
-    if ([self.indicator isAnimating]) {
+    if ([SVProgressHUD isVisible]) {
         return;
     }
-    [self.view addSubview:self.indicator];
-    [self.indicator startAnimating];
+    [SVProgressHUD show];
     UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(onCompleteSave:didFinishSavingWithError:contextInfo:), NULL);
 }
 
@@ -137,8 +130,7 @@
 - (void)close
 {
     self.imageView.image = nil;
-    [self.indicator stopAnimating];
-    [self.indicator removeFromSuperview];
+    [SVProgressHUD dismiss];
     [self.view removeFromSuperview];
 }
 

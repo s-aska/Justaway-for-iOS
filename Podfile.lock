@@ -5,6 +5,7 @@ PODS:
   - LVDebounce (0.0.4)
   - SSKeychain (1.2.1)
   - STTwitter (0.0.9)
+  - SVProgressHUD (HEAD based on 1.0)
 
 DEPENDENCIES:
   - ISDiskCache
@@ -13,6 +14,7 @@ DEPENDENCIES:
   - LVDebounce
   - SSKeychain
   - STTwitter
+  - SVProgressHUD (HEAD)
 
 SPEC CHECKSUMS:
   ISDiskCache: 83cea8b87ba0d73822cc0cce92a6496b65dd15cd
@@ -21,5 +23,6 @@ SPEC CHECKSUMS:
   LVDebounce: 697df869ab4b11a543844acab021def0e1364d83
   SSKeychain: 63182d96667ab9ccd72cb6f19ccb06faec605710
   STTwitter: bc2c74ffeeff6ead7b03cfec0c5d9e6be2d54e56
+  SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
 
-COCOAPODS: 0.32.1
+COCOAPODS: 0.33.1

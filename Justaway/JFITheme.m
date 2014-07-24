@@ -1,5 +1,6 @@
 #import "JFITheme.h"
 #import "UIColor+Justaway.h"
+#import "SVProgressHUD.h"
 
 @implementation JFITheme
 
@@ -39,6 +40,9 @@
     self.menuTextColor = [UIColor whiteColor];
     self.menuHighlightTextColor = [UIColor blueLightColor];
     self.menuDisabledTextColor = [UIColor grayColor];
+    
+    [SVProgressHUD setBackgroundColor:self.mainBackgroundColor];
+    [SVProgressHUD setForegroundColor:self.titleTextColor];
 }
 
 - (void)setLightTheme
@@ -64,6 +68,9 @@
     self.menuTextColor = [UIColor darkGrayColor];
     self.menuHighlightTextColor = [UIColor blueDarkColor];
     self.menuDisabledTextColor = [UIColor grayColor];
+    
+    [SVProgressHUD setBackgroundColor:self.mainBackgroundColor];
+    [SVProgressHUD setForegroundColor:self.titleTextColor];
 }
 
 - (void)setSolarizedDarkTheme
@@ -107,6 +114,9 @@
     self.menuTextColor = base1;
     self.menuHighlightTextColor = blue;
     self.menuDisabledTextColor = base01;
+    
+    [SVProgressHUD setBackgroundColor:self.mainBackgroundColor];
+    [SVProgressHUD setForegroundColor:self.titleTextColor];
 }
 
 - (void)setSolarizedLightTheme
@@ -150,6 +160,9 @@
     self.menuTextColor = base01;
     self.menuHighlightTextColor = blue;
     self.menuDisabledTextColor = base1;
+    
+    [SVProgressHUD setBackgroundColor:self.mainBackgroundColor];
+    [SVProgressHUD setForegroundColor:self.titleTextColor];
 }
 
 - (void)setMonokaiTheme
@@ -185,6 +198,9 @@
     self.menuTextColor = [UIColor whiteColor];
     self.menuHighlightTextColor = [UIColor blueLightColor];
     self.menuDisabledTextColor = [UIColor grayColor];
+    
+    [SVProgressHUD setBackgroundColor:self.mainBackgroundColor];
+    [SVProgressHUD setForegroundColor:self.titleTextColor];
 }
 
 - (void)setColorForMenuButton:(UIButton *)button active:(BOOL)active
