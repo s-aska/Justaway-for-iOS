@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JFIImageViewController">
             <connections>
                 <outlet property="imageView" destination="wle-ac-bH3" id="LwP-Qt-vDg"/>
+                <outlet property="menuBottomConstraint" destination="txl-cq-pMa" id="mh1-Xq-BWh"/>
                 <outlet property="scrollView" destination="OlQ-b1-GnB" id="9V5-38-VW4"/>
                 <outlet property="toolbarView" destination="vEg-Kp-rDQ" id="p1I-T4-b4l"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -18,11 +19,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.20000000000000001" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="OlQ-b1-GnB">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="518"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wle-ac-bH3">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="569"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="619"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </imageView>
                     </subviews>
@@ -31,20 +32,8 @@
                     <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXu-tL-vBd" customClass="JFIButton">
-                            <rect key="frame" x="0.0" y="-2" width="53" height="54"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                            <state key="normal" title="✖">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="closeAction:" destination="-1" eventType="touchUpInside" id="ofu-5u-v9A"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="szc-eA-rV6" customClass="JFIButton">
-                            <rect key="frame" x="266" y="-5" width="54" height="59"/>
+                            <rect key="frame" x="0.0" y="-5" width="320" height="59"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="24"/>
                             <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
@@ -58,18 +47,18 @@
                     </subviews>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="centerY" secondItem="dXu-tL-vBd" secondAttribute="centerY" id="GEO-Qu-32E"/>
+                        <constraint firstAttribute="centerX" secondItem="szc-eA-rV6" secondAttribute="centerX" id="E5x-U5-kuy"/>
                         <constraint firstAttribute="centerY" secondItem="szc-eA-rV6" secondAttribute="centerY" id="TKm-wv-xKY"/>
-                        <constraint firstItem="dXu-tL-vBd" firstAttribute="leading" secondItem="vEg-Kp-rDQ" secondAttribute="leading" id="VVE-iU-VZ0"/>
-                        <constraint firstAttribute="trailing" secondItem="szc-eA-rV6" secondAttribute="trailing" id="hpc-NW-wsg"/>
+                        <constraint firstAttribute="trailing" secondItem="szc-eA-rV6" secondAttribute="trailing" id="Yjq-8x-Pc0"/>
+                        <constraint firstItem="szc-eA-rV6" firstAttribute="leading" secondItem="vEg-Kp-rDQ" secondAttribute="leading" id="d7k-il-p5X"/>
                         <constraint firstAttribute="height" constant="50" id="qbO-9F-j1N"/>
                     </constraints>
                 </view>
             </subviews>
             <constraints>
-                <constraint firstItem="vEg-Kp-rDQ" firstAttribute="top" secondItem="OlQ-b1-GnB" secondAttribute="bottom" id="AHo-6P-nu3"/>
                 <constraint firstItem="OlQ-b1-GnB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="EZ6-oN-ND7"/>
                 <constraint firstAttribute="trailing" secondItem="OlQ-b1-GnB" secondAttribute="trailing" id="HcA-Vb-FDZ"/>
+                <constraint firstAttribute="bottom" secondItem="OlQ-b1-GnB" secondAttribute="bottom" id="kUv-3Y-lEA"/>
                 <constraint firstItem="OlQ-b1-GnB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="mKl-zi-Bh8"/>
                 <constraint firstAttribute="trailing" secondItem="vEg-Kp-rDQ" secondAttribute="trailing" id="pO3-k2-a5V"/>
                 <constraint firstAttribute="bottom" secondItem="vEg-Kp-rDQ" secondAttribute="bottom" id="txl-cq-pMa"/>

@@ -23,8 +23,10 @@
 {
     [super viewDidLoad];
     
-    // タップしたら消す
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeAction:)];
+    UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showMenu:)];
+    [self.scrollView addGestureRecognizer:longGesture];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(close)];
     tapGesture.numberOfTapsRequired = 1;
     [self.scrollView addGestureRecognizer:tapGesture];
     
@@ -40,6 +42,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    self.menuBottomConstraint.constant = -50.0f;
     
     JFITheme *theme = [JFITheme sharedTheme];
     self.toolbarView.backgroundColor = theme.menuBackgroundColor;
@@ -48,25 +51,9 @@
     [self.indicator removeFromSuperview];
     
     NSURL *url = [[NSURL alloc] initWithString:[[self.media valueForKey:@"media_url"] stringByAppendingString:@":large"]];
-    
-    // 画面に収まる最大スケールを計算
-    CGSize screenSize = self.scrollView.frame.size;
-    float w = [[self.media valueForKeyPath:@"sizes.large.w"] floatValue];
-    float h = [[self.media valueForKeyPath:@"sizes.large.h"] floatValue];
-    float scale_w = screenSize.width / w;
-    float scale_h = screenSize.height / h;
-    float scale = scale_w > scale_h ? scale_h : scale_w;
-    float x = (screenSize.width - w * scale) / 2;
-    float y = (screenSize.height - h * scale) / 2;
-    
-    // NSLog(@"x:%f y:%f w:%f h:%f s:%f", x, y, scale_w, scale_h, scale);
-    self.scrollView.contentSize = CGSizeMake(w * scale, h * scale);
-    self.scrollView.zoomScale = scale;
-    
     UIImage *image = [[ISMemoryCache sharedCache] objectForKey:url];
     if (image) {
         self.imageView.image = image;
-        self.imageView.frame = CGRectMake(x, y, w * scale, h * scale);
     } else {
         
         // インジケーター表示
@@ -96,7 +83,6 @@
                                    } else {
                                        self.imageView.image = image;
                                    }
-                                   self.imageView.frame = CGRectMake(x, y, w * scale, h * scale);
                                }];
         
     }
@@ -117,14 +103,6 @@
 
 #pragma mark - UIButton
 
-- (IBAction)closeAction:(id)sender
-{
-    self.imageView.image = nil;
-    [self.indicator stopAnimating];
-    [self.indicator removeFromSuperview];
-    [self.view removeFromSuperview];
-}
-
 - (IBAction)saveAction:(id)sender
 {
     // 読み込み前は無視
@@ -141,10 +119,33 @@
     UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(onCompleteSave:didFinishSavingWithError:contextInfo:), NULL);
 }
 
+- (void)showMenu:(UILongPressGestureRecognizer *)sender
+{
+    if([sender state] == UIGestureRecognizerStateBegan){
+        self.menuBottomConstraint.constant = 0.0f;
+        [UIView animateWithDuration:0.1
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^{
+                             [self.view layoutIfNeeded];
+                         }
+                         completion:^(BOOL finished){}
+         ];
+    }
+}
+
+- (void)close
+{
+    self.imageView.image = nil;
+    [self.indicator stopAnimating];
+    [self.indicator removeFromSuperview];
+    [self.view removeFromSuperview];
+}
+
 // 画像保存完了時のセレクタ
 - (void)onCompleteSave:(UIImage *)screenImage didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
-    [self closeAction:nil];
+    [self close];
     NSString *message = error ? @"Failure" : @"Success";
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @""
                                                     message: message

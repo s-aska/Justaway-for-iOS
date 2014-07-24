@@ -3,13 +3,13 @@
 
 @interface JFIImageViewController : UIViewController <UIScrollViewDelegate>
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *menuBottomConstraint;
 @property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 @property (nonatomic, weak) IBOutlet UIView *toolbarView;
 @property (nonatomic) NSDictionary *media;
 @property (nonatomic) UIActivityIndicatorView *indicator;
 
-- (IBAction)closeAction:(id)sender;
 - (IBAction)saveAction:(id)sender;
 
 @end
