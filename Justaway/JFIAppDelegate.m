@@ -334,6 +334,16 @@
                                                       
                                                       // ツイ消し
                                                       NSString *statusID = [response valueForKeyPath:@"delete.status.id_str"];
+                                                      NSLog(@"[%@] %s destroyStatus statusID:%@", NSStringFromClass([self class]), sel_getName(_cmd), statusID);
+                                                      JFIActionStatus *actionStatus = [JFIActionStatus sharedActionStatus];
+                                                      for (NSString *originalStatusID in [actionStatus getRetweetOriginalStatusIDs:statusID]) {
+                                                          NSLog(@"[%@] %s removeRetweet originalStatusID:%@ referenceStatusID:%@",
+                                                                NSStringFromClass([self class]),
+                                                                sel_getName(_cmd),
+                                                                originalStatusID,
+                                                                statusID);
+                                                          [actionStatus removeRetweet:originalStatusID];
+                                                      }
                                                       [[NSNotificationCenter defaultCenter] postNotificationName:JFIDestroyStatusNotification
                                                                                                           object:[[UIApplication sharedApplication] delegate]
                                                                                                         userInfo:@{@"status_id": statusID}];
@@ -358,6 +368,36 @@
                                                       
                                                       // ツイート・リツイート
                                                       JFIEntity *entity= [[JFIEntity alloc] initWithStatus:response];
+                                                      if (entity.referenceStatusID != nil) {
+                                                          JFIAccount *account = [self getAccount];
+                                                          if ([account.userID isEqualToString:entity.actionedUserID]) {
+                                                              [twitter getStatusesShowID:entity.statusID
+                                                                                trimUser:0
+                                                                        includeMyRetweet:0
+                                                                         includeEntities:0
+                                                                            successBlock:^(id response) {
+                                                                                NSString *originalStatusID;
+                                                                                if ([response valueForKey:@"retweeted_status"]) {
+                                                                                    originalStatusID = [response valueForKeyPath:@"retweeted_status.id_str"];
+                                                                                } else {
+                                                                                    originalStatusID = [response valueForKey:@"id_str"];
+                                                                                }
+                                                                                NSLog(@"[%@] %s setRetweet originalStatusID:%@ referenceStatusID:%@",
+                                                                                      NSStringFromClass([self class]),
+                                                                                      sel_getName(_cmd),
+                                                                                      entity.statusID,
+                                                                                      entity.referenceStatusID);
+                                                                                [[JFIActionStatus sharedActionStatus] setRetweetID:originalStatusID
+                                                                                                                          statusID:entity.referenceStatusID];
+                                                                            }
+                                                                              errorBlock:^(NSError *error) {
+                                                                                  NSLog(@"[%@] %s error %@",
+                                                                                        NSStringFromClass([self class]),
+                                                                                        sel_getName(_cmd),
+                                                                                        [error description]);
+                                                                              }];
+                                                          }
+                                                      }
                                                       [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveStatusNotification
                                                                                                           object:self
                                                                                                         userInfo:@{@"entity": entity}];

@@ -31,56 +31,77 @@
     return self;
 }
 
-- (BOOL)isFavorite:(NSString *)key
+- (BOOL)isFavorite:(NSString *)originalStatusID
 {
-    return [self.favoriteDictionary objectForKey:key] != nil ? YES : NO;
+    return [self.favoriteDictionary objectForKey:originalStatusID] != nil ? YES : NO;
 }
 
-- (void)setFavorite:(NSString *)key
+- (void)setFavorite:(NSString *)originalStatusID
 {
-    [self.favoriteDictionary setObject:@(1) forKey:key];
+    [self.favoriteDictionary setObject:@(1) forKey:originalStatusID];
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIActionStatusNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];
 }
 
-- (void)removeFavorite:(NSString *)key
+- (void)removeFavorite:(NSString *)originalStatusID
 {
-    [self.favoriteDictionary removeObjectForKey:key];
+    [self.favoriteDictionary removeObjectForKey:originalStatusID];
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIActionStatusNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];
 }
 
-- (BOOL)isRetweet:(NSString *)key
+- (BOOL)isRetweet:(NSString *)originalStatusID
 {
-    return [self.retweetDictionary objectForKey:key] != nil ? YES : NO;
+    return [self.retweetDictionary objectForKey:originalStatusID] != nil ? YES : NO;
 }
 
-- (NSString *)getRetweetID:(NSString *)key
+- (BOOL)isRetweetEntity:(JFIEntity *)entity
 {
-    return [self.retweetDictionary objectForKey:key];
+    // 直接RT
+    if ([self isRetweet:entity.statusID]) {
+        return YES;
+    }
+    // RTをRT
+    if (entity.referenceStatusID != nil && [self isRetweet:entity.referenceStatusID]) {
+        return YES;
+    }
+    return NO;
 }
 
-- (void)setRetweet:(NSString *)key
+- (NSString *)getRetweetID:(NSString *)originalStatusID
 {
-    [self.retweetDictionary setObject:@"" forKey:key];
+    return [self.retweetDictionary objectForKey:originalStatusID];
+}
+
+- (NSArray *)getRetweetOriginalStatusIDs:(NSString *)referenceStatusID
+{
+    return [self.retweetDictionary allKeysForObject:referenceStatusID];
+}
+
+- (void)setRetweet:(NSString *)originalStatusID
+{
+    [self.retweetDictionary setObject:@"" forKey:originalStatusID];
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIActionStatusNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];
 }
 
-- (void)setRetweetID:(NSString *)key statusID:(NSString *)statusID
+- (void)setRetweetID:(NSString *)originalStatusID statusID:(NSString *)referenceStatusID
 {
-    [self.retweetDictionary setObject:statusID forKey:key];
+    [self.retweetDictionary setObject:referenceStatusID forKey:originalStatusID];
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIActionStatusNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];
 }
 
-- (void)removeRetweet:(NSString *)key
+- (void)removeRetweet:(NSString *)originalStatusID
 {
-    [self.retweetDictionary removeObjectForKey:key];
+    if ([self.retweetDictionary objectForKey:originalStatusID] == nil) {
+        return;
+    }
+    [self.retweetDictionary removeObjectForKey:originalStatusID];
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIActionStatusNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];

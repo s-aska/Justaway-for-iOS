@@ -442,7 +442,7 @@
 
 - (void)receiveStatus:(NSNotification *)center
 {
-    NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
+    // NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
     
     [self addStack:[center.userInfo valueForKey:@"entity"]];
     

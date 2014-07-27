@@ -66,6 +66,7 @@
             [self setUser:[status valueForKeyPath:@"retweeted_status.user"]];
             [self setStatus:[status valueForKey:@"retweeted_status"]];
             [self setActionedUser:[status valueForKey:@"user"]];
+            self.referenceStatusID = [status valueForKey:@"id_str"];
         } else {
             [self setUser:[status valueForKey:@"user"]];
             [self setStatus:status];

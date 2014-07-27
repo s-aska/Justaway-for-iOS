@@ -21,6 +21,7 @@
 @property (nonatomic) NSString *actionedScreenName;
 @property (nonatomic) NSString *actionedDisplayName;
 @property (nonatomic) NSURL *actionedProfileImageURL;
+@property (nonatomic) NSString *referenceStatusID;
 
 // Status only
 @property (nonatomic) NSString *statusID;

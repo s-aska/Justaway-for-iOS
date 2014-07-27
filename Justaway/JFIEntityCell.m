@@ -165,7 +165,7 @@
 {
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
     [self.favoriteButton setActive:[sharedActionStatus isFavorite:self.entity.statusID]];
-    [self.retweetButton setActive:[sharedActionStatus isRetweet:self.entity.statusID]];
+    [self.retweetButton setActive:[sharedActionStatus isRetweetEntity:self.entity]];
 }
 
 - (void)setTheme
