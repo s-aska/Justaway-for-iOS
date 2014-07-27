@@ -259,6 +259,12 @@
                                                       userInfo:@{@"entity": entity}];
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    // NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
+    self.scrolling = YES;
+}
+
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
@@ -270,7 +276,7 @@
     if (!decelerate) {
         NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
         self.scrolling = NO;
-        [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
+        [LVDebounce fireAfter:JFIFinalizeInterval target:self selector:@selector(finalize) userInfo:nil];
     }
 }
 
@@ -278,7 +284,12 @@
 {
     NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
     self.scrolling = NO;
-    [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
+    [LVDebounce fireAfter:JFIFinalizeInterval target:self selector:@selector(finalize) userInfo:nil];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
+	self.scrolling = NO;
 }
 
 
@@ -370,6 +381,7 @@
 - (void)finalize
 {
     if (self.scrolling) {
+        [LVDebounce fireAfter:JFIFinalizeInterval target:self selector:@selector(finalize) userInfo:nil];
         return;
     }
     if ([self.stacks count] == 0) {
@@ -434,7 +446,7 @@
     
     [self addStack:[center.userInfo valueForKey:@"entity"]];
     
-    [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
+    [LVDebounce fireAfter:JFIFinalizeInterval target:self selector:@selector(finalize) userInfo:nil];
 }
 
 - (void)receiveEvent:(NSNotification *)center
@@ -443,7 +455,7 @@
     
     [self addStack:[center.userInfo valueForKey:@"entity"]];
     
-    [LVDebounce fireAfter:.1f target:self selector:@selector(finalize) userInfo:nil];
+    [LVDebounce fireAfter:JFIFinalizeInterval target:self selector:@selector(finalize) userInfo:nil];
 }
 
 - (void)destoryStatus:(NSNotification *)center

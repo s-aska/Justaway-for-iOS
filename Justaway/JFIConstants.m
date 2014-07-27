@@ -40,3 +40,7 @@ NSString *const JFIAccessTokenService = @"JustawayService";
 #pragma mark - Regexp
 
 NSString *const JFIURLPattern = @"(?:http://|https://)[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+";
+
+#pragma mark - Interval
+
+CGFloat const JFIFinalizeInterval = .1f;

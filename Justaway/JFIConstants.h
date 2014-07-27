@@ -41,6 +41,10 @@ extern NSString *const JFIAccessTokenService;
 
 extern NSString *const JFIURLPattern;
 
+#pragma mark - Interval
+
+extern CGFloat const JFIFinalizeInterval;
+
 #pragma mark - ENUM
 
 typedef NS_ENUM(NSInteger, ImageProcessType) {
