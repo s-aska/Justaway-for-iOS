@@ -180,6 +180,7 @@
     }
     NSLog(@"[%@] %s fontSize:%f", NSStringFromClass([self class]), sel_getName(_cmd), self.fontSizeSlider.value);
     delegate.fontSize = self.fontSizeSlider.value;
+    delegate.resizing = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:JFISetFontSizeNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];
@@ -188,6 +189,8 @@
 - (void)fontSizeApply
 {
     NSLog(@"[%@] %s fontSize:%f", NSStringFromClass([self class]), sel_getName(_cmd), self.fontSizeSlider.value);
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    delegate.resizing = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIApplyFontSizeNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];

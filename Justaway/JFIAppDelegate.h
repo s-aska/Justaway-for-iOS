@@ -12,6 +12,7 @@
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 @property (nonatomic) BOOL streamingMode;
 @property (nonatomic) float fontSize;
+@property (nonatomic) BOOL resizing;
 
 - (STTwitterAPI *)getTwitter;
 - (STTwitterAPI *)getTwitterByIndex:(NSInteger)index;

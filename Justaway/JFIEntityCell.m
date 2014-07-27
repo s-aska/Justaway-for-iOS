@@ -148,7 +148,8 @@
     
     [self setButtonColor];
     
-    int alpha = self.resizing ? 0 : 1;
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    int alpha = delegate.resizing ? 0 : 1;
     self.imagesView.alpha = alpha;
     self.replyButton.alpha = alpha;
     self.retweetCountLabel.alpha = alpha;
