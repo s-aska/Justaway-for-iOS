@@ -38,8 +38,6 @@
                                                  name:JFIReceiveAccessTokenNotification
                                                object:delegate];
     
-    self.operationQueue = NSOperationQueue.new;
-    
     // xibファイル名を指定しUINibオブジェクトを生成する
     UINib *nib = [UINib nibWithNibName:@"JFIAccountCell" bundle:nil];
     
