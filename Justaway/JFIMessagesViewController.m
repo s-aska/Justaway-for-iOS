@@ -32,14 +32,12 @@
         
         // 受信したDM一覧と送信したDM一覧を混ぜて並び替える
         [receivedRows addObjectsFromArray:messages];
-        NSSortDescriptor *sortDispNo = [[NSSortDescriptor alloc] initWithKey:@"created_at" ascending:NO];
-        NSArray *sortDescArray = [NSArray arrayWithObjects:sortDispNo, nil];
-        NSArray *statuses = [[receivedRows sortedArrayUsingDescriptors:sortDescArray] mutableCopy];
         NSMutableArray *entities = NSMutableArray.new;
-        for (NSDictionary *dictionaly in statuses) {
+        for (NSDictionary *dictionaly in receivedRows) {
             [entities addObject:[[JFIEntity alloc] initWithMessage:dictionaly]];
         }
-        [self setEntities:entities];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
+        [self setEntities:[[entities sortedArrayUsingDescriptors:@[sortDescriptor]] mutableCopy]];
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
     };

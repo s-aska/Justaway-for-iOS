@@ -1,4 +1,5 @@
 #import "JFIEntity.h"
+#import "NSDate+Justaway.h"
 
 @implementation JFIEntity
 
@@ -13,7 +14,7 @@
         self.displayName = @"Shinichiro Aska";
         self.profileImageURL = [NSURL URLWithString:@"https://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"];
         self.text = @"Please touch user icon.";
-        self.createdAt = @"Wed Jun 06 20:07:10 +0000 2012";
+        self.createdAt = [NSDate dateWithTwitterDate:@"Wed Jun 06 20:07:10 +0000 2012"];
         self.clientName = @"web";
         self.retweetCount = @10000;
         self.favoriteCount = @20000;
@@ -94,7 +95,7 @@
             self.type = EntityTypeFollow;
             [self setUser:[event valueForKey:@"source"]];
             self.text = [event valueForKeyPath:@"source.description"];
-            self.createdAt = [event valueForKey:@"created_at"];
+            self.createdAt = [NSDate dateWithTwitterDate:[event valueForKey:@"created_at"]];
         } else {
             return nil;
         }
@@ -113,7 +114,7 @@
         self.displayName = [message valueForKeyPath:@"sender.name"];
         self.profileImageURL = [NSURL URLWithString:[message valueForKeyPath:@"sender.profile_image_url"]];
         self.text = [self getText:[message valueForKey:@"text"]];
-        self.createdAt = [message valueForKey:@"created_at"];
+        self.createdAt = [NSDate dateWithTwitterDate:[message valueForKey:@"created_at"]];
         self.urls = [message valueForKeyPath:@"entities.urls"];
         self.userMentions = [message valueForKeyPath:@"entities.user_mentions"];
         self.hashtags = [message valueForKeyPath:@"entities.hashtags"];
@@ -138,7 +139,7 @@
 {
     self.statusID = [status valueForKey:@"id_str"];
     self.text = [self getText:[status valueForKey:@"text"]];
-    self.createdAt = [status valueForKey:@"created_at"];
+    self.createdAt = [NSDate dateWithTwitterDate:[status valueForKey:@"created_at"]];
     self.clientName = [self getClientName:[status valueForKey:@"source"]];
     self.retweetCount = [status valueForKey:@"retweet_count"];
     self.favoriteCount = [status valueForKey:@"favorite_count"];

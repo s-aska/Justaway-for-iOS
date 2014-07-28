@@ -74,9 +74,8 @@
     self.statusLabel.text = entity.text;
     
     // 投稿日時
-    NSDate *createdAt = [NSDate dateWithTwitterDate:entity.createdAt];
-    self.createdAtRelativeLabel.text = [createdAt relativeDescription];
-    self.createdAtLabel.text = [createdAt absoluteDescription];
+    self.createdAtRelativeLabel.text = [entity.createdAt relativeDescription];
+    self.createdAtLabel.text = [entity.createdAt absoluteDescription];
     
     if (entity.type == EntityTypeMessage) {
         self.retweetCountLabel.hidden = YES;
