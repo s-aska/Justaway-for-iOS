@@ -203,7 +203,7 @@
     [SVProgressHUD setForegroundColor:self.titleTextColor];
 }
 
-- (void)setColorForMenuButton:(UIButton *)button active:(BOOL)active
+- (void)setColorForMenuButton:(JFIButton *)button active:(BOOL)active
 {
     UIColor *normalColor = active ? self.menuHighlightTextColor : self.menuTextColor;
     [button setTitleColor:normalColor forState:UIControlStateNormal];
@@ -211,21 +211,27 @@
     [button setTitleColor:self.menuDisabledTextColor forState:UIControlStateDisabled];
 }
 
-- (void)setColorForReplyButton:(UIButton *)button active:(BOOL)active
+- (void)setColorForReplyButton:(JFIButton *)button active:(BOOL)active
 {
     [button setTitleColor:self.buttonTextColor forState:UIControlStateNormal];
 }
 
-- (void)setColorForFavoriteButton:(UIButton *)button active:(BOOL)active
+- (void)setColorForFavoriteButton:(JFIButton *)button active:(BOOL)active animated:(BOOL)animated
 {
     UIColor *color = active ? self.favoritedTextColor : self.buttonTextColor;
     [button setTitleColor:color forState:UIControlStateNormal];
+    if (active && animated) {
+        [button animation];
+    }
 }
 
-- (void)setColorForRetweetButton:(UIButton *)button active:(BOOL)active
+- (void)setColorForRetweetButton:(JFIButton *)button active:(BOOL)active animated:(BOOL)animated
 {
     UIColor *color = active ? self.retweetedTextColor : self.buttonTextColor;
     [button setTitleColor:color forState:UIControlStateNormal];
+    if (active && animated) {
+        [button animation];
+    }
 }
 
 @end

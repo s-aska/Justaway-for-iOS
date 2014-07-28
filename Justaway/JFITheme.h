@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "JFIButton.h"
 
 @interface JFITheme : NSObject
 
@@ -32,9 +33,9 @@
 - (void)setSolarizedLightTheme;
 - (void)setMonokaiTheme;
 
-- (void)setColorForMenuButton:(UIButton *)button active:(BOOL)active;
-- (void)setColorForReplyButton:(UIButton *)button active:(BOOL)active;
-- (void)setColorForFavoriteButton:(UIButton *)button active:(BOOL)active;
-- (void)setColorForRetweetButton:(UIButton *)button active:(BOOL)active;
+- (void)setColorForMenuButton:(JFIButton *)button active:(BOOL)active;
+- (void)setColorForReplyButton:(JFIButton *)button active:(BOOL)active;
+- (void)setColorForFavoriteButton:(JFIButton *)button active:(BOOL)active animated:(BOOL)animated;
+- (void)setColorForRetweetButton:(JFIButton *)button active:(BOOL)active animated:(BOOL)animated;
 
 @end

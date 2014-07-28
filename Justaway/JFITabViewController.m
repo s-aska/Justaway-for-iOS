@@ -522,7 +522,7 @@
 - (void)actionStatusChange
 {
     for (JFIEntityCell *cell in self.tableView.visibleCells) {
-        [cell setButtonColor];
+        [cell setButtonColor:YES];
     }
 }
 

@@ -145,7 +145,7 @@
                                            [entity.media count] * 80.f);
     }
     
-    [self setButtonColor];
+    [self setButtonColor:NO];
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     int alpha = delegate.resizing ? 0 : 1;
@@ -160,11 +160,11 @@
     self.sourceLabel.alpha = alpha;
 }
 
-- (void)setButtonColor
+- (void)setButtonColor:(BOOL)animated
 {
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
-    [self.favoriteButton setActive:[sharedActionStatus isFavorite:self.entity.statusID]];
-    [self.retweetButton setActive:[sharedActionStatus isRetweetEntity:self.entity]];
+    [self.favoriteButton setActive:[sharedActionStatus isFavorite:self.entity.statusID] animated:animated];
+    [self.retweetButton setActive:[sharedActionStatus isRetweetEntity:self.entity] animated:animated];
 }
 
 - (void)setTheme
