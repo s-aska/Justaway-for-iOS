@@ -104,6 +104,51 @@
     self.accounts = [@[] mutableCopy];
 }
 
+- (JFIAccount *)findAccount:(NSString *)userID
+{
+    for (JFIAccount *account in self.accounts) {
+        if ([account.userID isEqualToString:userID]) {
+            return account;
+        }
+    }
+    return nil;
+}
+
+- (void)refreshAccounts:(void(^)())successBlock
+{
+    self.refreshedAccounts = YES;
+    NSMutableArray *userIDs = NSMutableArray.new;
+    for (JFIAccount *account in self.accounts) {
+        [userIDs addObject:account.userID];
+    }
+    if ([userIDs count] > 0) {
+        STTwitterAPI *twitter = [self getTwitter];
+        [twitter getUsersLookupForScreenName:nil
+                                    orUserID:[userIDs componentsJoinedByString:@","]
+                             includeEntities:nil
+                                successBlock:^(NSArray *users) {
+                                    NSLog(@"[%@] %s success %i accounts", NSStringFromClass([self class]), sel_getName(_cmd), [users count]);
+                                    for (NSDictionary *user in users) {
+                                        JFIAccount *account = [self findAccount:user[@"id_str"]];
+                                        if (account) {
+                                            NSDictionary *directory = @{JFIAccountUserIDKey          : user[@"id_str"],
+                                                                        JFIAccountScreenNameKey      : user[@"screen_name"],
+                                                                        JFIAccountDisplayNameKey     : user[@"name"],
+                                                                        JFIAccountProfileImageURLKey : user[@"profile_image_url"],
+                                                                        JFIAccountOAuthTokenKey      : account.oAuthToken,
+                                                                        JFIAccountOAuthTokenSecretKey: account.oAuthTokenSecret};
+                                            [self saveAccount:[[JFIAccount alloc] initWithDictionary:directory]];
+                                        }
+                                    }
+                                    successBlock();
+                                }
+                                  errorBlock:^(NSError *error) {
+                                      NSLog(@"[%@] %s error:%@", NSStringFromClass([self class]), sel_getName(_cmd), error);
+                                      self.refreshedAccounts = NO;
+                                  }];
+    }
+}
+
 - (void)postTokenRequest
 {
     self.loginTwitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:JFITwitterConsumerKey

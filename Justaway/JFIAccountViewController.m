@@ -47,6 +47,13 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
+    // 起動後1回だけリロードする
+    if (!delegate.refreshedAccounts) {
+        [delegate refreshAccounts:^{
+            [self loadAccounts];
+        }];
+    }
+    
     [self loadAccounts];
 }
 

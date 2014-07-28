@@ -13,10 +13,12 @@
 @property (nonatomic) BOOL streamingMode;
 @property (nonatomic) float fontSize;
 @property (nonatomic) BOOL resizing;
+@property (nonatomic) BOOL refreshedAccounts;
 
 - (STTwitterAPI *)getTwitter;
 - (STTwitterAPI *)getTwitterByIndex:(NSInteger)index;
 - (void)clearAccounts;
+- (void)refreshAccounts:(void(^)())successBlock;
 - (void)postTokenRequest;
 - (void)loginUsingIOSAccount;
 - (BOOL)enableStreaming;
