@@ -69,11 +69,6 @@
         // 最後にpush
         [self.accounts addObject:account];
     }
-    
-    // 通知する
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"loadAccounts"
-                                                        object:self
-                                                      userInfo:nil];
 }
 
 - (void)saveAccount:(JFIAccount *)account
@@ -128,6 +123,7 @@
                              includeEntities:nil
                                 successBlock:^(NSArray *users) {
                                     NSLog(@"[%@] %s success %i accounts", NSStringFromClass([self class]), sel_getName(_cmd), [users count]);
+                                    NSMutableArray *newAccounts = NSMutableArray.new;
                                     for (NSDictionary *user in users) {
                                         JFIAccount *account = [self findAccount:user[@"id_str"]];
                                         if (account) {
@@ -137,9 +133,20 @@
                                                                         JFIAccountProfileImageURLKey : user[@"profile_image_url"],
                                                                         JFIAccountOAuthTokenKey      : account.oAuthToken,
                                                                         JFIAccountOAuthTokenSecretKey: account.oAuthTokenSecret};
-                                            [self saveAccount:[[JFIAccount alloc] initWithDictionary:directory]];
+                                            
+                                            JFIAccount *newAccount = [[JFIAccount alloc] initWithDictionary:directory];
+                                            
+                                            [SSKeychain setPassword:[newAccount jsonStringRepresentation]
+                                                         forService:JFIAccessTokenService
+                                                            account:newAccount.screenName
+                                                              error:nil];
+                                            
+                                            [newAccounts addObject:newAccount];
                                         }
                                     }
+                                    
+                                    self.accounts = newAccounts;
+                                    
                                     successBlock();
                                 }
                                   errorBlock:^(NSError *error) {
