@@ -21,6 +21,7 @@ NSString *const JFIApplyFontSizeNotification       = @"JFIApplyFontSizeNotificat
 NSString *const JFIFinalizeFontSizeNotification    = @"JFIFinalizeFontSizeNotification";
 NSString *const JFISelectAccessTokenNotification   = @"JFISelectAccessTokenNotification";
 NSString *const JFIReceiveAccessTokenNotification  = @"JFIReceiveAccessTokenNotification";
+NSString *const JFIRefreshAccessTokenNotification  = @"JFIRefreshAccessTokenNotification";
 NSString *const JFIReceiveStatusNotification       = @"JFIReceiveStatusNotification";
 NSString *const JFIReceiveMessageNotification      = @"JFIReceiveMessageNotification";
 NSString *const JFIReceiveEventNotification        = @"JFIReceiveEventNotification";

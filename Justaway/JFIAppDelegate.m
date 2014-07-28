@@ -75,7 +75,7 @@
 {
     [SSKeychain setPassword:[account jsonStringRepresentation]
                  forService:JFIAccessTokenService
-                    account:account.screenName
+                    account:account.userID
                       error:nil];
     
     [self loadAccounts];
@@ -99,6 +99,33 @@
     self.accounts = [@[] mutableCopy];
 }
 
+- (void)removeAccount:(NSString *)userID
+{
+    JFIAccount *targetAccount;
+    int index = 0;
+    for (JFIAccount *account in self.accounts) {
+        if ([account.userID isEqualToString:userID]) {
+            targetAccount = account;
+            continue;
+        }
+        index++;
+    }
+    if (targetAccount == nil) {
+        return;
+    }
+    if (self.currentAccountIndex > 0 && self.currentAccountIndex <= index) {
+        self.currentAccountIndex--;
+    }
+    
+    [self.accounts removeObject:targetAccount];
+    
+    [SSKeychain deletePasswordForService:JFIAccessTokenService account:targetAccount.userID];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:JFIRefreshAccessTokenNotification
+                                                        object:self
+                                                      userInfo:nil];
+}
+
 - (JFIAccount *)findAccount:(NSString *)userID
 {
     for (JFIAccount *account in self.accounts) {
@@ -109,7 +136,7 @@
     return nil;
 }
 
-- (void)refreshAccounts:(void(^)())successBlock
+- (void)refreshAccounts
 {
     self.refreshedAccounts = YES;
     NSMutableArray *userIDs = NSMutableArray.new;
@@ -136,9 +163,10 @@
                                             
                                             JFIAccount *newAccount = [[JFIAccount alloc] initWithDictionary:directory];
                                             
+                                            [SSKeychain deletePasswordForService:JFIAccessTokenService account:account.screenName]; // TODO: 下位互換
                                             [SSKeychain setPassword:[newAccount jsonStringRepresentation]
                                                          forService:JFIAccessTokenService
-                                                            account:newAccount.screenName
+                                                            account:newAccount.userID
                                                               error:nil];
                                             
                                             [newAccounts addObject:newAccount];
@@ -147,7 +175,9 @@
                                     
                                     self.accounts = newAccounts;
                                     
-                                    successBlock();
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:JFIRefreshAccessTokenNotification
+                                                                                        object:self
+                                                                                      userInfo:nil];
                                 }
                                   errorBlock:^(NSError *error) {
                                       NSLog(@"[%@] %s error:%@", NSStringFromClass([self class]), sel_getName(_cmd), error);

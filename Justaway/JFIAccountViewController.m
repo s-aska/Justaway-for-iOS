@@ -27,6 +27,7 @@
     [super viewDidLoad];
     
     JFITheme *theme = [JFITheme sharedTheme];
+    [self.tableView setSeparatorColor:theme.mainHighlightBackgroundColor];
     self.view.backgroundColor = theme.mainBackgroundColor;
     [self.titleLabel setTextColor:theme.titleTextColor];
     
@@ -36,6 +37,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receiveAccessToken:)
                                                  name:JFIReceiveAccessTokenNotification
+                                               object:delegate];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadAccounts)
+                                                 name:JFIRefreshAccessTokenNotification
                                                object:delegate];
     
     // xibファイル名を指定しUINibオブジェクトを生成する
@@ -49,9 +55,7 @@
     
     // 起動後1回だけリロードする
     if (!delegate.refreshedAccounts) {
-        [delegate refreshAccounts:^{
-            [self loadAccounts];
-        }];
+        [delegate refreshAccounts];
     }
     
     [self loadAccounts];
@@ -99,7 +103,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 47;
+    return 56;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

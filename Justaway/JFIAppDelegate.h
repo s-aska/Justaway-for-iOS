@@ -18,7 +18,8 @@
 - (STTwitterAPI *)getTwitter;
 - (STTwitterAPI *)getTwitterByIndex:(NSInteger)index;
 - (void)clearAccounts;
-- (void)refreshAccounts:(void(^)())successBlock;
+- (void)removeAccount:(NSString *)userID;
+- (void)refreshAccounts;
 - (void)postTokenRequest;
 - (void)loginUsingIOSAccount;
 - (BOOL)enableStreaming;

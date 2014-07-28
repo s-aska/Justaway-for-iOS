@@ -21,6 +21,7 @@ extern NSString *const JFIApplyFontSizeNotification;
 extern NSString *const JFIFinalizeFontSizeNotification;
 extern NSString *const JFISelectAccessTokenNotification;
 extern NSString *const JFIReceiveAccessTokenNotification;
+extern NSString *const JFIRefreshAccessTokenNotification;
 extern NSString *const JFIReceiveStatusNotification;
 extern NSString *const JFIReceiveMessageNotification;
 extern NSString *const JFIReceiveEventNotification;
