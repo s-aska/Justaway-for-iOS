@@ -9,13 +9,14 @@
 
 @end
 
+static const NSTimeInterval animationDuration = .2;
+
 @implementation JFISettingsViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -33,6 +34,8 @@
     [self.fontSizeSlider addTarget:self
                             action:@selector(fontSizeApply)
                   forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+    
+    self.bottomConstraint.constant = -50;
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,7 +43,8 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
@@ -52,11 +56,26 @@
                                                object:delegate];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.bottomConstraint.constant = 0;
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        [self.view layoutIfNeeded];
+    }
+                     completion:nil];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)setTheme
@@ -70,7 +89,26 @@
 
 - (IBAction)closeAction:(id)sender
 {
-    [self.view removeFromSuperview];
+    void(^close)() = ^(){
+        
+        self.bottomConstraint.constant = -50;
+        
+        [UIView animateWithDuration:animationDuration
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+            [self.view layoutIfNeeded];
+        }
+                         completion:^(BOOL finished){
+            [self.view removeFromSuperview];
+        }];
+    };
+    
+    if (self.currenToolbarView != nil) {
+        [self hideMenu:self.currenToolbarView completion:close];
+    } else {
+        close();
+    }
 }
 
 - (IBAction)accountAction:(id)sender
@@ -82,24 +120,12 @@
 
 - (IBAction)fontSizeAction:(id)sender
 {
-    if (self.currenToolbarView != nil) {
-        [self.currenToolbarView setHidden:YES];
-        self.currenToolbarView = nil;
-    }
-    
-    [self.fontSizeToolbarView setHidden:NO];
-    self.currenToolbarView = self.fontSizeToolbarView;
+    [self showMenu:self.fontSizeToolbarView];
 }
 
 - (IBAction)themeAction:(id)sender
 {
-    if (self.currenToolbarView != nil) {
-        [self.currenToolbarView setHidden:YES];
-        self.currenToolbarView = nil;
-    }
-    
-    [self.themeToolbarView setHidden:NO];
-    self.currenToolbarView = self.themeToolbarView;
+    [self showMenu:self.themeToolbarView];
     
     JFITheme *theme1 = JFITheme.new;
     [theme1 setDarkTheme];
@@ -111,7 +137,7 @@
     [theme4 setSolarizedLightTheme];
     JFITheme *theme5 = JFITheme.new;
     [theme5 setMonokaiTheme];
-
+    
     int count = 0;
     NSArray *themes = @[theme1, theme2, theme3, theme4, theme5];
     for (JFITheme *theme in themes) {
@@ -194,6 +220,55 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIApplyFontSizeNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:nil];
+}
+
+- (void)hideMenu:(UIView *)menu completion:(void(^)())completion
+{
+    self.currenToolbarView = nil;
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        menu.frame = CGRectMake(-menu.frame.size.width,
+                                menu.frame.origin.y,
+                                menu.frame.size.width,
+                                menu.frame.size.height);
+    }
+                     completion:^(BOOL finished){
+        menu.hidden = YES;
+        if (completion) {
+            completion();
+        }
+    }];
+}
+
+- (void)showMenu:(UIView *)menu
+{
+    if (self.currenToolbarView) {
+        if (self.currenToolbarView == menu) {
+            return;
+        }
+        [self hideMenu:self.currenToolbarView completion:nil];
+    }
+    self.currenToolbarView = menu;
+    
+    menu.frame = CGRectMake(menu.frame.size.width,
+                            menu.frame.origin.y,
+                            menu.frame.size.width,
+                            menu.frame.size.height);
+    menu.hidden = NO;
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        menu.frame = CGRectMake(0,
+                                menu.frame.origin.y,
+                                menu.frame.size.width,
+                                menu.frame.size.height);
+    }
+                     completion:nil];
 }
 
 @end

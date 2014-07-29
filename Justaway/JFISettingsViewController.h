@@ -3,6 +3,7 @@
 
 @interface JFISettingsViewController : UIViewController
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomConstraint;
 @property (nonatomic, weak) IBOutlet UIView *themeToolbarView;
 @property (nonatomic, weak) IBOutlet UILabel *themeNameLabel;
 @property (nonatomic, weak) IBOutlet UIView *fontSizeToolbarView;
