@@ -50,7 +50,6 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"[%@] %s userID:%@ buttonIndex:%i", NSStringFromClass([self class]), sel_getName(_cmd), self.userID, buttonIndex);
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     switch (buttonIndex) {
         case 1:

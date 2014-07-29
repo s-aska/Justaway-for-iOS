@@ -149,7 +149,6 @@
                                     orUserID:[userIDs componentsJoinedByString:@","]
                              includeEntities:nil
                                 successBlock:^(NSArray *users) {
-                                    NSLog(@"[%@] %s success %i accounts", NSStringFromClass([self class]), sel_getName(_cmd), [users count]);
                                     NSMutableArray *newAccounts = NSMutableArray.new;
                                     for (NSDictionary *user in users) {
                                         JFIAccount *account = [self findAccount:user[@"id_str"]];
