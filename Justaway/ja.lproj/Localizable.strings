@@ -7,4 +7,5 @@
 "destroy_retweet" = "リツイート取り消し";
 "destroy_favorite" = "お気に入り取り消し";
 "cancel" = "キャンセル";
+"settings_menu" = "メニュー設定";
 "streaming_rate_limited" = "ストリーミング接続が制限されました、ストリーミング接続をオフにします。";

@@ -3,6 +3,7 @@
 #import "JFIStatusActionSheet.h"
 #import "JFIAccount.h"
 #import "JFITwitter.h"
+#import "JFIStatusMenuViewController.h"
 
 @implementation JFIStatusActionSheet
 
@@ -38,6 +39,8 @@
                               action:@selector(openURL:)
                               object:[[NSURL alloc] initWithString:[url objectForKey:@"media_url"]]];
         }
+        [self addButtonWithTitle:NSLocalizedString(@"menu_settings", nil) action:@selector(settings)];
+        [self addButtonWithTitle:NSLocalizedString(@"menu_settings", nil) action:NSSelectorFromString(@"")];
         if ([account.userID isEqualToString:entity.userID]) {
             self.destructiveButtonIndex = [self addButtonWithTitle:NSLocalizedString(@"destroy_status", nil) action:@selector(destroyStatus)];
         }
@@ -103,6 +106,14 @@
 - (void)reply
 {
     [JFITwitter reply:self.entity];
+}
+
+- (void)settings
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIStatusMenu" bundle:nil];
+    JFIStatusMenuViewController *accountViewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIStatusMenuViewController"];
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    [delegate.window.rootViewController presentViewController:accountViewController animated:YES completion:nil];
 }
 
 - (void)openURL:(NSURL *)url
