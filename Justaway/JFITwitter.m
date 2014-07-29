@@ -98,7 +98,7 @@
 
 + (void)quote:(JFIEntity *)entity
 {
-    NSString *text = [NSString stringWithFormat:@" @%@", entity.statusURL];
+    NSString *text = [NSString stringWithFormat:@" %@", entity.statusURL];
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIEditorNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:@{@"text": text,
