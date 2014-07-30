@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "STTwitter.h"
 #import "JFIConstants.h"
+#import "JFIAccount.h"
 
 @interface JFIAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -17,6 +18,7 @@
 
 - (STTwitterAPI *)getTwitter;
 - (STTwitterAPI *)getTwitterByIndex:(NSInteger)index;
+- (JFIAccount *)getAccount;
 - (void)clearAccounts;
 - (void)removeAccount:(NSString *)userID;
 - (void)refreshAccounts;

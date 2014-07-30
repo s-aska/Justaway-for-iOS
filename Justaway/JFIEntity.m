@@ -21,6 +21,7 @@
         self.urls = NSArray.new;
         self.userMentions = NSArray.new;
         self.hashtags = NSArray.new;
+        self.isProtected = NO;
         self.media = @[@{
                            @"display_url": @"pic.twitter.com/rJC5Pxsu",
                            @"expanded_url": @"http://twitter.com/yunorno/status/114080493036773378/photo/1",
@@ -133,6 +134,7 @@
     self.screenName = [user valueForKeyPath:@"screen_name"];
     self.displayName = [user valueForKeyPath:@"name"];
     self.profileImageURL = [NSURL URLWithString:[user valueForKeyPath:@"profile_image_url"]];
+    self.isProtected = [[user valueForKey:@"protected"] boolValue];
 }
 
 - (void)setStatus:(NSDictionary *)status

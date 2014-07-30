@@ -70,6 +70,9 @@
     // screen_name
     self.screenNameLabel.text = [@"@" stringByAppendingString:entity.screenName];
     
+    // 鍵アイコン
+    self.protectedButton.hidden = entity.isProtected ? NO : YES;
+    
     // ツイート
     self.statusLabel.text = entity.text;
     
@@ -164,7 +167,13 @@
 {
     JFIActionStatus *sharedActionStatus = [JFIActionStatus sharedActionStatus];
     [self.favoriteButton setActive:[sharedActionStatus isFavorite:self.entity.statusID] animated:animated];
-    [self.retweetButton setActive:[sharedActionStatus isRetweetEntity:self.entity] animated:animated];
+    if (self.entity.isProtected) {
+        [self.retweetButton setEnabled:NO];
+        [self.retweetButton setActive:NO animated:NO];
+    } else {
+        [self.retweetButton setEnabled:YES];
+        [self.retweetButton setActive:[sharedActionStatus isRetweetEntity:self.entity] animated:animated];
+    }
 }
 
 - (void)setTheme

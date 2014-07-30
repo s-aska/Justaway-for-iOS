@@ -27,7 +27,6 @@ extern NSString *const JFIReceiveMessageNotification;
 extern NSString *const JFIReceiveEventNotification;
 extern NSString *const JFIStreamingConnectionNotification;
 extern NSString *const JFIEditorNotification;
-extern NSString *const JFIOpenStatusNotification;
 extern NSString *const JFICloseStatusNotification;
 extern NSString *const JFIActionStatusNotification;
 extern NSString *const JFIDestroyStatusNotification;

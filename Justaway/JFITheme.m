@@ -227,10 +227,14 @@
 
 - (void)setColorForRetweetButton:(JFIButton *)button active:(BOOL)active animated:(BOOL)animated
 {
-    UIColor *color = active ? self.retweetedTextColor : self.buttonTextColor;
-    [button setTitleColor:color forState:UIControlStateNormal];
-    if (active && animated) {
-        [button animation];
+    if (button.isEnabled) {
+        UIColor *color = active ? self.retweetedTextColor : self.buttonTextColor;
+        [button setTitleColor:color forState:UIControlStateNormal];
+        if (active && animated) {
+            [button animation];
+        }
+    } else {
+        [button setTitleColor:[self.buttonTextColor colorWithAlphaComponent:.3] forState:UIControlStateDisabled];
     }
 }
 

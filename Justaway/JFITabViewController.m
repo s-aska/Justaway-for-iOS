@@ -1,5 +1,6 @@
 #import "JFIConstants.h"
 #import "JFIEntity.h"
+#import "JFIEntityMenu.h"
 #import "JFIAccount.h"
 #import "JFIAppDelegate.h"
 #import "JFITabViewController.h"
@@ -254,9 +255,7 @@
     if (entity == nil) {
         return;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:JFIOpenStatusNotification
-                                                        object:[[UIApplication sharedApplication] delegate]
-                                                      userInfo:@{@"entity": entity}];
+    [JFIEntityMenu showMenu:entity];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

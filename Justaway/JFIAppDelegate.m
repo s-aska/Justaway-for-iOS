@@ -1,5 +1,4 @@
 #import "JFISecret.h"
-#import "JFIAccount.h"
 #import "JFIEntity.h"
 #import "JFITheme.h"
 #import "JFIActionStatus.h"

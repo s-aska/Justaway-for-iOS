@@ -7,7 +7,6 @@
 #import "JFIMessagesViewController.h"
 #import "JFIAccountViewController.h"
 #import "JFITab.h"
-#import "JFIStatusActionSheet.h"
 #import "JFIThemeActionSheet.h"
 #import "JFIImageViewController.h"
 #import "JFITheme.h"
@@ -122,12 +121,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(editorHandler:)
                                                  name:JFIEditorNotification
-                                               object:delegate];
-    
-    // ステータス用のコンテキストメニュー表示
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(openStatusHandler:)
-                                                 name:JFIOpenStatusNotification
                                                object:delegate];
     
     // 画像の拡大表示
@@ -256,7 +249,6 @@
 {
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     if ([delegate.accounts count] == 0) {
-        JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
         JFIEntity *entity = [[JFIEntity alloc] initDummy];
         [[NSNotificationCenter defaultCenter] postNotificationName:JFIReceiveStatusNotification
                                                             object:delegate
@@ -484,14 +476,6 @@
         self.editorTextView.selectedRange = range;
     }
     self.inReplyToStatusId = [userInfo objectForKey:@"in_reply_to_status_id"];
-}
-
-- (void)openStatusHandler:(NSNotification *)notification
-{
-    NSDictionary *userInfo = [notification userInfo];
-    if ([userInfo objectForKey:@"entity"] != nil) {
-        [[[JFIStatusActionSheet alloc] initWithEntity:[userInfo objectForKey:@"entity"]] showInView:self.view];
-    }
 }
 
 - (void)openImageHandler:(NSNotification *)notification

@@ -22,6 +22,7 @@
 @property (nonatomic) NSString *actionedDisplayName;
 @property (nonatomic) NSURL *actionedProfileImageURL;
 @property (nonatomic) NSString *referenceStatusID;
+@property (nonatomic) BOOL isProtected;
 
 // Status only
 @property (nonatomic) NSString *statusID;
