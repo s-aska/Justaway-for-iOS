@@ -3,8 +3,8 @@
 
 @interface JFIEntityMenu : NSObject
 
-+ (void)loadSettings;
-+ (void)saveSettings;
++ (NSArray *)loadSettings;
++ (void)saveSettings:(NSArray *)newMenus;
 + (void)showMenu:(JFIEntity *)entity;
 
 @end

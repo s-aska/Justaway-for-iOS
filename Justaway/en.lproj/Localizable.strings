@@ -6,6 +6,8 @@
 "destroy_status" = "Delete";
 "destroy_retweet" = "Cancel retweet";
 "destroy_favorite" = "Cancel favorite";
+"open_url" = "Open URL";
+"open_media_url" = "Open Media URL";
 "cancel" = "Cancel";
 "settings_menu" = "Settings Menu";
 "streaming_rate_limited" = "Exceeded connection limit for user, turn off streaming mode.";

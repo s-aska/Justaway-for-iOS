@@ -9,6 +9,13 @@ NSString *const JFIAccountDisplayNameKey      = @"displayName";
 NSString *const JFIAccountProfileImageURLKey  = @"profileImageUrl";
 NSString *const JFIAccountPriorityKey         = @"priority";
 
+#pragma mark - JFIEntityMenuKeys
+
+NSString *const JFIEntityMenuIDKey       = @"id";
+NSString *const JFIEntityMenuSelectorKey = @"selector";
+NSString *const JFIEntityMenuEnableKey   = @"enable";
+NSString *const JFIEntityMenuPriorityKey = @"priority";
+
 #pragma mark - UITableView const
 
 NSString *const JFICellID          = @"JFICellID";

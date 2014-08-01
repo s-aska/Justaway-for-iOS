@@ -9,6 +9,13 @@ extern NSString *const JFIAccountDisplayNameKey;
 extern NSString *const JFIAccountProfileImageURLKey;
 extern NSString *const JFIAccountPriorityKey;
 
+#pragma mark - JFIEntityMenuKeys
+
+extern NSString *const JFIEntityMenuIDKey;
+extern NSString *const JFIEntityMenuSelectorKey;
+extern NSString *const JFIEntityMenuEnableKey;
+extern NSString *const JFIEntityMenuPriorityKey;
+
 #pragma mark - UITableView
 
 extern NSString *const JFICellID;

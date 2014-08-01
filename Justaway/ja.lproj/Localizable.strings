@@ -6,6 +6,8 @@
 "destroy_status" = "削除";
 "destroy_retweet" = "リツイート取り消し";
 "destroy_favorite" = "お気に入り取り消し";
+"open_url" = "URLを開く";
+"open_media_url" = "画像のURLを開く";
 "cancel" = "キャンセル";
 "settings_menu" = "メニュー設定";
 "streaming_rate_limited" = "ストリーミング接続が制限されました、ストリーミング接続をオフにします。";

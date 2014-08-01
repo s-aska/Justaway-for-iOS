@@ -53,8 +53,8 @@
 		6A7FD875194C802D00919A15 /* JFIThemeActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7FD874194C802D00919A15 /* JFIThemeActionSheet.m */; };
 		6A9C989F18BB89D500CF4F84 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C989E18BB89D500CF4F84 /* Podfile */; };
 		6AB9C8C619041716002FD422 /* JFIEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB9C8C519041716002FD422 /* JFIEntity.m */; };
-		6AC3D2451988293A0040B822 /* JFIStatusMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AC3D2441988293A0040B822 /* JFIStatusMenu.storyboard */; };
-		6AC3D24B19882C560040B822 /* JFIStatusMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC3D24A19882C560040B822 /* JFIStatusMenuViewController.m */; };
+		6AC3D2451988293A0040B822 /* JFIEntityMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AC3D2441988293A0040B822 /* JFIEntityMenu.storyboard */; };
+		6AC3D24B19882C560040B822 /* JFIEntityMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC3D24A19882C560040B822 /* JFIEntityMenuViewController.m */; };
 		6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
 		6ADF7948188D6E2200632BA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */; };
 		6ADF794A188D6E2200632BA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7949188D6E2200632BA5 /* UIKit.framework */; };
@@ -157,9 +157,9 @@
 		6A9C989E18BB89D500CF4F84 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6AB9C8C419041716002FD422 /* JFIEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIEntity.h; sourceTree = "<group>"; };
 		6AB9C8C519041716002FD422 /* JFIEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntity.m; sourceTree = "<group>"; };
-		6AC3D2441988293A0040B822 /* JFIStatusMenu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JFIStatusMenu.storyboard; sourceTree = "<group>"; };
-		6AC3D24919882C560040B822 /* JFIStatusMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIStatusMenuViewController.h; sourceTree = "<group>"; };
-		6AC3D24A19882C560040B822 /* JFIStatusMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIStatusMenuViewController.m; sourceTree = "<group>"; };
+		6AC3D2441988293A0040B822 /* JFIEntityMenu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JFIEntityMenu.storyboard; sourceTree = "<group>"; };
+		6AC3D24919882C560040B822 /* JFIEntityMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIEntityMenuViewController.h; sourceTree = "<group>"; };
+		6AC3D24A19882C560040B822 /* JFIEntityMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntityMenuViewController.m; sourceTree = "<group>"; };
 		6ADF7942188D6E2200632BA5 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ADF7945188D6E2200632BA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6ADF7947188D6E2200632BA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -370,9 +370,9 @@
 				383D7DDF18E1957A00D36678 /* JFIAccountViewController.h */,
 				383D7DE018E1957A00D36678 /* JFIAccountViewController.m */,
 				383D7DDD18E1925700D36678 /* JFIAccount.storyboard */,
-				6AC3D24919882C560040B822 /* JFIStatusMenuViewController.h */,
-				6AC3D24A19882C560040B822 /* JFIStatusMenuViewController.m */,
-				6AC3D2441988293A0040B822 /* JFIStatusMenu.storyboard */,
+				6AC3D24919882C560040B822 /* JFIEntityMenuViewController.h */,
+				6AC3D24A19882C560040B822 /* JFIEntityMenuViewController.m */,
+				6AC3D2441988293A0040B822 /* JFIEntityMenu.storyboard */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -549,7 +549,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AC3D2451988293A0040B822 /* JFIStatusMenu.storyboard in Resources */,
+				6AC3D2451988293A0040B822 /* JFIEntityMenu.storyboard in Resources */,
 				6A9C989F18BB89D500CF4F84 /* Podfile in Resources */,
 				38C6769619480E89002DE676 /* JFIImageViewController.xib in Resources */,
 				6ADF7964188D6E2200632BA5 /* Images.xcassets in Resources */,
@@ -624,7 +624,7 @@
 				6A21291018C3485A00AD2953 /* JFIEntityCell.m in Sources */,
 				385D50A7194FD3E20037947D /* UIColor+Justaway.m in Sources */,
 				38DA5F7218E447DE006F484C /* JFIConstants.m in Sources */,
-				6AC3D24B19882C560040B822 /* JFIStatusMenuViewController.m in Sources */,
+				6AC3D24B19882C560040B822 /* JFIEntityMenuViewController.m in Sources */,
 				6ADF7956188D6E2200632BA5 /* JFIAppDelegate.m in Sources */,
 				3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */,
 				383110BF19886C1300F38688 /* JFIEntityMenu.m in Sources */,

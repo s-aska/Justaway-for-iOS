@@ -4,7 +4,7 @@
 #import "JFITwitter.h"
 #import "JFIAccount.h"
 #import "JFIActionStatus.h"
-#import "JFIStatusMenuViewController.h"
+#import "JFIEntityMenuViewController.h"
 
 @implementation JFIEntityMenu
 
@@ -14,45 +14,67 @@ static NSArray *menus = nil;
 + (void)initialize {
     if (self == [JFIEntityMenu class]) {
         settings = NSMutableDictionary.new;
-        menus = @[@"menuReply:entity:",
-                  @"menuFavoriteRetweet:entity:",
-                  @"menuFavorite:entity:",
-                  @"menuRetweet:entity:",
-                  @"menuQuote:entity:",
-                  @"menuOpenURL:entity:",
-                  @"menuOpenMediaURL:entity:",
-                  @"menuDestroyStatus:entity:"];
+        menus = @[[@{JFIEntityMenuIDKey      : @"reply",
+                     JFIEntityMenuSelectorKey: @"menuReply:entity:",
+                     JFIEntityMenuEnableKey  :@YES} mutableCopy],
+                  [@{JFIEntityMenuIDKey      : @"favorite_and_retweet",
+                     JFIEntityMenuSelectorKey: @"menuFavoriteRetweet:entity:",
+                     JFIEntityMenuEnableKey  :@YES} mutableCopy],
+                  [@{JFIEntityMenuIDKey      : @"favorite",
+                     JFIEntityMenuSelectorKey: @"menuFavorite:entity:",
+                     JFIEntityMenuEnableKey  :@YES} mutableCopy],
+                  [@{JFIEntityMenuIDKey      : @"retweet",
+                     JFIEntityMenuSelectorKey: @"menuRetweet:entity:",
+                     JFIEntityMenuEnableKey  :@YES} mutableCopy],
+                  [@{JFIEntityMenuIDKey      : @"quote",
+                     JFIEntityMenuSelectorKey: @"menuQuote:entity:",
+                     JFIEntityMenuEnableKey  :@YES} mutableCopy],
+                  [@{JFIEntityMenuIDKey      : @"open_url",
+                     JFIEntityMenuSelectorKey: @"menuOpenURL:entity:",
+                     JFIEntityMenuEnableKey  :@YES} mutableCopy],
+                  [@{JFIEntityMenuIDKey      : @"open_media_url",
+                     JFIEntityMenuSelectorKey: @"menuOpenMediaURL:entity:",
+                     JFIEntityMenuEnableKey  :@YES} mutableCopy],
+                  [@{JFIEntityMenuIDKey      : @"destroy_status",
+                     JFIEntityMenuSelectorKey: @"menuDestroyStatus:entity:",
+                     JFIEntityMenuEnableKey  :@YES} mutableCopy]];
     }
 }
 
-+ (void)loadSettings
++ (NSArray *)loadSettings
 {
-    
+    /*
+    for (NSMutableDictionary *menu in menus) {
+        [menu setValue:@(1) forKey:JFIEntityMenuEnableKey];
+    }
+     */
+    return menus;
 }
 
-+ (void)saveSettings
++ (void)saveSettings:(NSArray *)newMenus
 {
-    
+    menus = newMenus;
 }
 
 + (void)showMenu:(JFIEntity *)entity
 {
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     JFIBlocksSheet *blocksSheet = JFIBlocksSheet.new;
-    for (NSString *menu in menus) {
-        if ([self respondsToSelector:NSSelectorFromString(menu)]) {
-            [self performSelector:NSSelectorFromString(menu) withObject:blocksSheet withObject:entity];
+    for (NSDictionary *menu in menus) {
+        if ([menu[JFIEntityMenuEnableKey] boolValue] &&
+            [self respondsToSelector:NSSelectorFromString(menu[JFIEntityMenuSelectorKey])]) {
+            [self performSelector:NSSelectorFromString(menu[JFIEntityMenuSelectorKey]) withObject:blocksSheet withObject:entity];
         } else {
-            NSLog(@"[%@] %s missing:%@", NSStringFromClass([self class]), sel_getName(_cmd), menu);
+            NSLog(@"[%@] %s missing:%@", NSStringFromClass([self class]), sel_getName(_cmd), menu[JFIEntityMenuSelectorKey]);
         }
     }
-    #pragma clang diagnostic pop
+#pragma clang diagnostic pop
     
     // メニュー設定
     [blocksSheet addButtonWithTitle:NSLocalizedString(@"settings_menu", nil) block:^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIStatusMenu" bundle:nil];
-        JFIStatusMenuViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIStatusMenuViewController"];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIEntityMenu" bundle:nil];
+        JFIEntityMenuViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIEntityMenuViewController"];
         JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
         [delegate.window.rootViewController presentViewController:viewController animated:YES completion:nil];
     }];
