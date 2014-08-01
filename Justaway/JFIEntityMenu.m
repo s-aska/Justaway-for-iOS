@@ -137,7 +137,7 @@ static NSArray *menus = nil;
 
 + (void)menuOpenURL:(JFIBlocksSheet *)blocksSheet entity:(JFIEntity *)entity
 {
-    for (NSDictionary *url in entity.media) {
+    for (NSDictionary *url in entity.urls) {
         [blocksSheet addButtonWithTitle:[url objectForKey:@"display_url"] block:^{
             [[UIApplication sharedApplication] openURL:[[NSURL alloc] initWithString:[url objectForKey:@"expanded_url"]]];
         }];
