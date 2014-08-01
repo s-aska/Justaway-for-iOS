@@ -7,6 +7,7 @@ NSString *const JFIAccountUserIDKey           = @"userID";
 NSString *const JFIAccountScreenNameKey       = @"screenName";
 NSString *const JFIAccountDisplayNameKey      = @"displayName";
 NSString *const JFIAccountProfileImageURLKey  = @"profileImageUrl";
+NSString *const JFIAccountPriorityKey         = @"priority";
 
 #pragma mark - UITableView const
 

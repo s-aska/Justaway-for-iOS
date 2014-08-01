@@ -35,26 +35,12 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L37-lh-tCh" customClass="JFIButton">
-                        <rect key="frame" x="268" y="2" width="52" height="52"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                        <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                        <state key="normal" title="✖">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="removeAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="xIM-td-FS6"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="YWc-DG-9Fy" firstAttribute="top" secondItem="8rI-eb-ygc" secondAttribute="bottom" id="5i1-Pu-mTx"/>
-                    <constraint firstAttribute="trailing" secondItem="L37-lh-tCh" secondAttribute="trailing" id="ITe-kt-rQZ"/>
                     <constraint firstItem="8rI-eb-ygc" firstAttribute="leading" secondItem="Z2F-7F-IPM" secondAttribute="trailing" constant="8" id="RXZ-qm-SUs"/>
                     <constraint firstItem="Z2F-7F-IPM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="Wio-eL-kjo"/>
                     <constraint firstItem="8rI-eb-ygc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="d76-gT-ESm"/>
-                    <constraint firstAttribute="centerY" secondItem="L37-lh-tCh" secondAttribute="centerY" id="fMT-0I-EtE"/>
                     <constraint firstItem="Z2F-7F-IPM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="7" id="hi5-ay-gdY"/>
                     <constraint firstItem="YWc-DG-9Fy" firstAttribute="leading" secondItem="Z2F-7F-IPM" secondAttribute="trailing" constant="8" id="unq-fb-L69"/>
                 </constraints>

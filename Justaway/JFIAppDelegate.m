@@ -68,6 +68,9 @@
         // 最後にpush
         [self.accounts addObject:account];
     }
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"priority" ascending:YES];
+    self.accounts = [[self.accounts sortedArrayUsingDescriptors:@[sortDescriptor]] mutableCopy];
 }
 
 - (void)saveAccount:(JFIAccount *)account
@@ -148,30 +151,24 @@
                                     orUserID:[userIDs componentsJoinedByString:@","]
                              includeEntities:nil
                                 successBlock:^(NSArray *users) {
-                                    NSMutableArray *newAccounts = NSMutableArray.new;
+                                    NSMutableArray *accounts = NSMutableArray.new;
+                                    int priorty = 0;
                                     for (NSDictionary *user in users) {
-                                        JFIAccount *account = [self findAccount:user[@"id_str"]];
+                                        JFIAccount *account = [self updateAccount:user[@"id_str"]
+                                                                       screenName:user[@"screen_name"]
+                                                                             name:user[@"name"]
+                                                                  profileImageURL:user[@"profile_image_url"]
+                                                                         priority:@(priorty)];
+                                        
                                         if (account) {
-                                            NSDictionary *directory = @{JFIAccountUserIDKey          : user[@"id_str"],
-                                                                        JFIAccountScreenNameKey      : user[@"screen_name"],
-                                                                        JFIAccountDisplayNameKey     : user[@"name"],
-                                                                        JFIAccountProfileImageURLKey : user[@"profile_image_url"],
-                                                                        JFIAccountOAuthTokenKey      : account.oAuthToken,
-                                                                        JFIAccountOAuthTokenSecretKey: account.oAuthTokenSecret};
-                                            
-                                            JFIAccount *newAccount = [[JFIAccount alloc] initWithDictionary:directory];
-                                            
-                                            [SSKeychain deletePasswordForService:JFIAccessTokenService account:account.screenName]; // TODO: 下位互換
-                                            [SSKeychain setPassword:[newAccount jsonStringRepresentation]
-                                                         forService:JFIAccessTokenService
-                                                            account:newAccount.userID
-                                                              error:nil];
-                                            
-                                            [newAccounts addObject:newAccount];
+                                            [accounts addObject:account];
+                                            priorty++;
                                         }
+                                        
+                                        [SSKeychain deletePasswordForService:JFIAccessTokenService account:user[@"screen_name"]]; // TODO: 下位互換
                                     }
                                     
-                                    self.accounts = newAccounts;
+                                    self.accounts = accounts;
                                     
                                     [[NSNotificationCenter defaultCenter] postNotificationName:JFIRefreshAccessTokenNotification
                                                                                         object:self
@@ -181,6 +178,36 @@
                                       NSLog(@"[%@] %s error:%@", NSStringFromClass([self class]), sel_getName(_cmd), error);
                                       self.refreshedAccounts = NO;
                                   }];
+    }
+}
+
+- (JFIAccount *)updateAccount:(NSString *)userID
+                   screenName:(NSString *)screenName
+                         name:(NSString *)name
+              profileImageURL:(NSString *)profileImageURL
+                     priority:(NSNumber *)priority
+{
+    JFIAccount *account = [self findAccount:userID];
+    if (account) {
+        NSDictionary *directory = @{JFIAccountUserIDKey          : userID,
+                                    JFIAccountScreenNameKey      : screenName,
+                                    JFIAccountDisplayNameKey     : name,
+                                    JFIAccountProfileImageURLKey : profileImageURL,
+                                    JFIAccountOAuthTokenKey      : account.oAuthToken,
+                                    JFIAccountOAuthTokenSecretKey: account.oAuthTokenSecret,
+                                    JFIAccountPriorityKey        : priority};
+        
+        JFIAccount *newAccount = [[JFIAccount alloc] initWithDictionary:directory];
+        
+        [SSKeychain setPassword:[newAccount jsonStringRepresentation]
+                     forService:JFIAccessTokenService
+                        account:newAccount.userID
+                          error:nil];
+        
+        return newAccount;
+    } else {
+        [SSKeychain deletePasswordForService:JFIAccessTokenService account:userID];
+        return nil;
     }
 }
 
@@ -303,13 +330,20 @@
                                     orScreenName:nil
                                  includeEntities:nil
                                     successBlock:^(NSDictionary *user) {
-                                        
+                                        NSNumber *priority;
+                                        JFIAccount *account = [self findAccount:userID];
+                                        if (account) {
+                                            priority = account.priority;
+                                        } else {
+                                            priority = @([[NSDate date] timeIntervalSince1970]);
+                                        }
                                         NSDictionary *directory = @{JFIAccountUserIDKey          : userID,
                                                                     JFIAccountScreenNameKey      : screenName,
                                                                     JFIAccountDisplayNameKey     : user[@"name"],
                                                                     JFIAccountProfileImageURLKey : user[@"profile_image_url"],
                                                                     JFIAccountOAuthTokenKey      : oauthToken,
-                                                                    JFIAccountOAuthTokenSecretKey: oauthTokenSecret};
+                                                                    JFIAccountOAuthTokenSecretKey: oauthTokenSecret,
+                                                                    JFIAccountPriorityKey        : priority};
                                         
                                         [self saveAccount:[[JFIAccount alloc] initWithDictionary:directory]];
                                     } errorBlock:errorBlock];

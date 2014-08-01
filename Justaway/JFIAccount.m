@@ -12,6 +12,7 @@
 @property (nonatomic, copy, readwrite) NSString *screenName;
 @property (nonatomic, copy, readwrite) NSString *displayName;
 @property (nonatomic, copy, readwrite) NSString *profileImageURL;
+@property (nonatomic, copy, readwrite) NSNumber *priority;
 
 @end
 
@@ -29,6 +30,7 @@
         self.screenName = dictionary[JFIAccountScreenNameKey];
         self.displayName = [dictionary objectForKey:JFIAccountDisplayNameKey defaultObject:@"-"];
         self.profileImageURL = dictionary[JFIAccountProfileImageURLKey];
+        self.priority = [dictionary objectForKey:JFIAccountPriorityKey defaultObject:@(1)];
     }
     return self;
 }
@@ -57,6 +59,7 @@
     [account setScreenName:self.screenName];
     [account setDisplayName:self.displayName];
     [account setProfileImageURL:self.profileImageURL];
+    [account setPriority:self.priority];
     
     return account;
 }
@@ -70,7 +73,8 @@
              JFIAccountUserIDKey:           self.userID,
              JFIAccountScreenNameKey:       self.screenName,
              JFIAccountDisplayNameKey:      self.displayName,
-             JFIAccountProfileImageURLKey:  self.profileImageURL};
+             JFIAccountProfileImageURLKey:  self.profileImageURL,
+             JFIAccountPriorityKey:         self.priority};
 }
 
 - (NSString *)jsonStringRepresentation
@@ -123,6 +127,7 @@
                                               account.screenName       = screenName;
                                               account.displayName      = user[@"name"];
                                               account.profileImageURL  = user[@"profile_image_url"];
+                                              account.priority         = @([[NSDate date] timeIntervalSince1970]);
                                               successBlock(account);
                                           }
                                             errorBlock:errorBlock];

@@ -7,6 +7,7 @@ extern NSString *const JFIAccountUserIDKey;
 extern NSString *const JFIAccountScreenNameKey;
 extern NSString *const JFIAccountDisplayNameKey;
 extern NSString *const JFIAccountProfileImageURLKey;
+extern NSString *const JFIAccountPriorityKey;
 
 #pragma mark - UITableView
 

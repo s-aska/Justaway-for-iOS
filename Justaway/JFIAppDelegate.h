@@ -19,9 +19,15 @@
 - (STTwitterAPI *)getTwitter;
 - (STTwitterAPI *)getTwitterByIndex:(NSInteger)index;
 - (JFIAccount *)getAccount;
+- (void)loadAccounts;
 - (void)clearAccounts;
 - (void)removeAccount:(NSString *)userID;
 - (void)refreshAccounts;
+- (JFIAccount *)updateAccount:(NSString *)userID
+                   screenName:(NSString *)screenName
+                         name:(NSString *)name
+              profileImageURL:(NSString *)profileImageURL
+                     priority:(NSNumber *)priority;
 - (void)postTokenRequest;
 - (void)loginUsingIOSAccount;
 - (BOOL)enableStreaming;

@@ -8,6 +8,8 @@
 
 @interface JFIAccountViewController ()
 
+@property (nonatomic) NSMutableArray *accounts;
+
 @end
 
 @implementation JFIAccountViewController
@@ -33,17 +35,6 @@
     
     JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    // アカウントが追加されたらリロードする
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(receiveAccessToken:)
-                                                 name:JFIReceiveAccessTokenNotification
-                                               object:delegate];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loadAccounts)
-                                                 name:JFIRefreshAccessTokenNotification
-                                               object:delegate];
-    
     // xibファイル名を指定しUINibオブジェクトを生成する
     UINib *nib = [UINib nibWithNibName:@"JFIAccountCell" bundle:nil];
     
@@ -57,8 +48,33 @@
     if (!delegate.refreshedAccounts) {
         [delegate refreshAccounts];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    // アカウントが追加されたらリロードする
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveAccessToken:)
+                                                 name:JFIReceiveAccessTokenNotification
+                                               object:delegate];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadAccounts)
+                                                 name:JFIRefreshAccessTokenNotification
+                                               object:delegate];
     
     [self loadAccounts];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -71,23 +87,16 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-    return [delegate.accounts count];
+    return [self.accounts count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
-    
-    //    NSLog(@"[JFIAccountViewController] cellForRowAtIndexPath %@", indexPath);
-    
     JFIAccountCell *cell = [tableView dequeueReusableCellWithIdentifier:JFICellID forIndexPath:indexPath];
     
-    JFIAccount *account = [delegate.accounts objectAtIndex:indexPath.row];
+    JFIAccount *account = [self.accounts objectAtIndex:indexPath.row];
     
     [cell setLabelTexts:account];
-    
-    //    [cell.displayNameLabel sizeToFit];
     
     [JFIHTTPImageOperation loadURL:account.profileImageBiggerURL
                        processType:ImageProcessTypeIcon
@@ -97,6 +106,28 @@
                            }];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self.accounts removeObjectAtIndex:indexPath.row];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    if (destinationIndexPath.row < self.accounts.count) {
+        JFIAccount *account = [self.accounts objectAtIndex:sourceIndexPath.row];
+        [self.accounts removeObjectAtIndex:sourceIndexPath.row];
+        [self.accounts insertObject:account atIndex:destinationIndexPath.row];
+    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -135,10 +166,43 @@
 
 - (void)loadAccounts
 {
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    self.accounts = [delegate.accounts mutableCopy];
+    for (JFIAccount *account in self.accounts) {
+        NSLog(@"[%@] %s %@:%@", NSStringFromClass([self class]), sel_getName(_cmd), account.screenName, account.priority);
+    }
     [self.tableView reloadData];
 }
 
 #pragma mark - Action
+
+- (IBAction)editAction:(id)sender
+{
+    [self.tableView setEditing:!self.tableView.editing animated:YES];
+    if (self.tableView.editing) {
+        [self.rightButton setTitle:@"Done" forState:UIControlStateNormal];
+    } else {
+        [self.rightButton setTitle:@"Edit" forState:UIControlStateNormal];
+        JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+        NSMutableDictionary *accountMap = NSMutableDictionary.new;
+        int priority = 0;
+        for (JFIAccount *account in self.accounts) {
+            [delegate updateAccount:account.userID
+                         screenName:account.screenName
+                               name:account.displayName
+                    profileImageURL:account.profileImageURL
+                           priority:@(priority)];
+            [accountMap setObject:account.userID forKey:account.userID];
+            priority++;
+        }
+        for (JFIAccount *account in delegate.accounts) {
+            if (![accountMap objectForKey:account.userID]) {
+                [delegate removeAccount:account.userID];
+            }
+        }
+        [delegate loadAccounts];
+    }
+}
 
 - (IBAction)resetAction:(id)sender
 {
