@@ -254,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				38DA5F6C18E30D27006F484C /* Main */,
+				6AFB66A6198D7AD100FB5038 /* Profile */,
 				6AC3D24C19882C660040B822 /* Settings */,
 				38C6769219480E89002DE676 /* JFIImageViewController.h */,
 				38C6769319480E89002DE676 /* JFIImageViewController.m */,
@@ -459,6 +460,13 @@
 				6ADF7973188D6E2300632BA5 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6AFB66A6198D7AD100FB5038 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

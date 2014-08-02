@@ -172,8 +172,6 @@
                                                  name:JFIActionStatusNotification
                                                object:delegate];
     
-    NSLog(@"[JFIHomeViewController] viewDidLoad accounts:%lu", (unsigned long)[delegate.accounts count]);
-    
     self.fontSize = delegate.fontSize;
     
     // xibファイル名を指定しUINibオブジェクトを生成する

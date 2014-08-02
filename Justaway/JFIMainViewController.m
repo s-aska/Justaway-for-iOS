@@ -43,7 +43,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"[JFIMainViewController] viewDidLoad");
     
     [self setTheme];
     

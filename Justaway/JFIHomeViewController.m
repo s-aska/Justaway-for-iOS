@@ -28,7 +28,7 @@
                                [delegate startStreaming];
                            }
                        } errorBlock:^(NSError *error) {
-                           NSLog(@"-- error: %@", [error localizedDescription]);
+                           NSLog(@"[%@] %s error:%@", NSStringFromClass([self class]), sel_getName(_cmd), [error localizedDescription]);
                            [self.refreshControl endRefreshing];
                        }];
 }

@@ -48,15 +48,11 @@
     // KeyChainから全アカウント情報を取得
     NSArray *dictionaries = [SSKeychain accountsForService:JFIAccessTokenService];
     
-    NSLog(@"[JFIAppDelegate] loadAccounts accounts:%lu", (unsigned long)[dictionaries count]);
-    
     // アカウントリスト初期化
     self.accounts = [@[] mutableCopy];
     
     // KeyChain上のアカウント情報はJSONでシリアライズしているので、これをデシリアライズする
     for (NSDictionary *dictionary in dictionaries) {
-        
-        NSLog(@"-- account: %@", [dictionary objectForKey:@"acct"]);
         
         // KeyChain => NSString
         NSString *jsonString = [SSKeychain passwordForService:JFIAccessTokenService
@@ -223,7 +219,7 @@
                              screenName:nil
                           oauthCallback:@"justaway://twitter_access_tokens/"
                              errorBlock:^(NSError *error) {
-                                 NSLog(@"-- error: %@", error);
+                                 NSLog(@"[%@] %s error:%@", NSStringFromClass([self class]), sel_getName(_cmd), error);
                              }];
 }
 
@@ -232,7 +228,7 @@
     [JFIAccount loginUsingIOSAccountWithSuccessBlock:^(JFIAccount *account) {
         [self saveAccount:account];
     } errorBlock:^(NSError *error) {
-        NSLog(@"-- error:%@", [error localizedDescription]);
+        NSLog(@"[%@] %s error:%@", NSStringFromClass([self class]), sel_getName(_cmd), error);
     }];
 }
 
@@ -322,7 +318,7 @@
     
     // AccessToken取得
     void(^errorBlock)(NSError *) = ^(NSError *error) {
-        NSLog(@"-- %@", [error localizedDescription]);
+        NSLog(@"[%@] %s error:%@", NSStringFromClass([self class]), sel_getName(_cmd), error);
     };
     void(^accessTokenSuccessBlock)(NSString *, NSString *, NSString *, NSString *) =
     ^(NSString *oauthToken, NSString *oauthTokenSecret, NSString *userID, NSString *screenName) {
@@ -369,10 +365,10 @@
     NetworkStatus networkStatus = [self.reachability currentReachabilityStatus];
     if (networkStatus != ReachableViaWiFi &&
         networkStatus != ReachableViaWWAN) {
-        NSLog(@"[JFIAppDelegate] notifiedNetworkStatus disconnected.");
+        NSLog(@"[%@] %s disconnected", NSStringFromClass([self class]), sel_getName(_cmd));
         return;
     }
-    NSLog(@"[JFIAppDelegate] notifiedNetworkStatus connected.");
+    NSLog(@"[%@] %s connected", NSStringFromClass([self class]), sel_getName(_cmd));
     if (self.streamingMode) {
         [self startStreaming];
     }
@@ -387,15 +383,16 @@
 
 - (void)startStreaming
 {
-    NSLog(@"[JFIAppDelegate] startStreaming");
     if (self.streamingStatus == StreamingConnecting ||
         self.streamingStatus == StreamingConnected) {
-        NSLog(@"[JFIAppDelegate] streaming is connected or connecting.");
+        NSLog(@"[%@] %s streaming is connected or connecting.", NSStringFromClass([self class]), sel_getName(_cmd));
         return;
     }
     if ([self.accounts count] == 0) {
         return;
     }
+    
+    NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
     
     self.streamingStatus = StreamingConnecting;
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingConnectionNotification
@@ -418,7 +415,7 @@
                                               progressBlock:^(id response) {
                                                   
                                                   if (self.streamingStatus != StreamingConnected) {
-                                                      NSLog(@"[JFIAppDelegate] connect streaming");
+                                                      NSLog(@"[%@] %s connect streaming", NSStringFromClass([self class]), sel_getName(_cmd));
                                                       self.streamingStatus = StreamingConnected;
                                                       [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingConnectionNotification
                                                                                                           object:self
@@ -428,7 +425,7 @@
                                                   if ([response valueForKey:@"event"]) {
                                                       
                                                       // ふぁぼ・あんふぁぼ・フォロー・
-                                                      NSLog(@"[JFIAppDelegate] event:%@", [response valueForKey:@"event"]);
+                                                      NSLog(@"[%@] %s event:%@", NSStringFromClass([self class]), sel_getName(_cmd), [response valueForKey:@"event"]);
                                                       JFIEntity *entity = [[JFIEntity alloc] initWithEvent:response];
                                                       JFIAccount *account = [self getAccount];
                                                       if ([account.userID isEqualToString:[response valueForKeyPath:@"source.id_str"]]) {
@@ -525,13 +522,15 @@
                                                      // 機内モード ... The network connection was lost.
                                                      // ネットワークエラー ... The network connection was lost.
                                                      // 接続制限(420) ... Exceeded connection limit for user
-                                                     NSLog(@"[JFIAppDelegate] disconnect streaming status code:%li error code:%li description:%@",
+                                                     NSLog(@"[%@] %s disconnect streaming status code:%li error code:%li description:%@",
+                                                           NSStringFromClass([self class]),
+                                                           sel_getName(_cmd),
                                                            (long)self.streamingRequest.responseStatus,
                                                            (long)[error code],
                                                            [error localizedDescription]);
                                                      if (self.streamingRequest.responseStatus == 420) {
                                                          self.streamingMode = NO;
-                                                         NSLog(@"[JFIAppDelegate] streamingMode:off");
+                                                         NSLog(@"[%@] %s streamingMode:off", NSStringFromClass([self class]), sel_getName(_cmd));
                                                          [[[UIAlertView alloc]
                                                            initWithTitle:@"error"
                                                            message:NSLocalizedString(@"streaming_rate_limited", nil)
@@ -551,7 +550,7 @@
 {
     if (self.streamingStatus == StreamingDisconnecting ||
         self.streamingStatus == StreamingDisconnected) {
-        NSLog(@"[JFIAppDelegate] streaming is disconnected or disconnecting.");
+        NSLog(@"[%@] %s streaming is disconnected or disconnecting.", NSStringFromClass([self class]), sel_getName(_cmd));
         return;
     }
     
@@ -564,7 +563,7 @@
         self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
     }
     
-    NSLog(@"[JFIAppDelegate] stopStreaming");
+    NSLog(@"[%@] %s", NSStringFromClass([self class]), sel_getName(_cmd));
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIStreamingConnectionNotification
                                                         object:self
                                                       userInfo:nil];
