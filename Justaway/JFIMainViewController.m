@@ -7,7 +7,6 @@
 #import "JFIMessagesViewController.h"
 #import "JFIAccountViewController.h"
 #import "JFITab.h"
-#import "JFIThemeActionSheet.h"
 #import "JFIImageViewController.h"
 #import "JFITheme.h"
 #import "SVProgressHUD.h"

@@ -9,14 +9,13 @@
     static JFITheme *theme;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        theme = [[JFITheme alloc] init];
+        theme = JFITheme.new;
         [theme setSolarizedLightTheme];
     });
     
     return theme;
 }
 
-// TODO
 - (void)setDarkTheme
 {
     self.name = @"Dark";

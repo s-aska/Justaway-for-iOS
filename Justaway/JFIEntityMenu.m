@@ -166,7 +166,6 @@ static NSArray *menus = nil;
     }
 }
 
-
 + (void)menuOpenMediaURL:(JFIBlocksSheet *)blocksSheet entity:(JFIEntity *)entity
 {
     for (NSDictionary *url in entity.media) {
