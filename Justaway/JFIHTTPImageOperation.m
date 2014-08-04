@@ -86,7 +86,11 @@
             break;
             
         case ImageProcessTypeIcon:
-            processedImage = [image resizedImageForSize:CGSizeMake(42.f, 42.f) cornerRadius:5.f];
+            processedImage = [image resizedImageForSize:CGSizeMake(42.f, 42.f) cornerRadius:7.f];
+            break;
+            
+        case ImageProcessTypeIcon64:
+            processedImage = [image resizedImageForSize:CGSizeMake(64.f, 64.f) cornerRadius:10.f];
             break;
             
         case ImageProcessTypeThumbnail:

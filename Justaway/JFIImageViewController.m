@@ -37,7 +37,8 @@
     self.imageView.contentMode = UIViewContentModeScaleAspectFit; // アスペクト比固定（何も指定しないとUIImageViewに合わせて伸長してしまう）
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
     self.menuBottomConstraint.constant = -50.0f;

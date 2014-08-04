@@ -58,6 +58,7 @@ extern CGFloat const JFIFinalizeInterval;
 typedef NS_ENUM(NSInteger, ImageProcessType) {
     ImageProcessTypeNone,
     ImageProcessTypeIcon,
+    ImageProcessTypeIcon64,
     ImageProcessTypeThumbnail,
 };
 

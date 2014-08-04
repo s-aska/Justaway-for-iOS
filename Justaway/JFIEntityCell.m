@@ -6,6 +6,7 @@
 #import "JFIRetweetActionSheet.h"
 #import "JFIEntityCell.h"
 #import "JFIHTTPImageOperation.h"
+#import "JFIProfileViewController.h"
 #import "NSDate+Justaway.h"
 #import <ISMemoryCache/ISMemoryCache.h>
 
@@ -32,6 +33,11 @@
                                              selector:@selector(finalizeFontSize)
                                                  name:JFIFinalizeFontSizeNotification
                                                object:nil];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openProfile:)];
+    tapGesture.numberOfTapsRequired = 1;
+    self.iconImageView.userInteractionEnabled = YES;
+    [self.iconImageView addGestureRecognizer:tapGesture];
     
     [self setFontSize];
 }
@@ -368,6 +374,15 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:JFIOpenImageNotification
                                                         object:[[UIApplication sharedApplication] delegate]
                                                       userInfo:@{@"media": media}];
+}
+
+- (void)openProfile:(id)sender
+{
+    JFIAppDelegate *delegate = (JFIAppDelegate *) [[UIApplication sharedApplication] delegate];
+    UINavigationController *navigationController = (UINavigationController *) delegate.window.rootViewController;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIProfile" bundle:nil];
+    JFIProfileViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIProfileViewController"];
+    [navigationController pushViewController:viewController animated:YES];
 }
 
 @end

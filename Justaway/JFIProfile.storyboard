@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Profile View Controller-->
         <scene sceneID="2pG-YZ-apN">
             <objects>
-                <viewController id="WY7-sL-zLb" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="JFIProfileViewController" id="WY7-sL-zLb" customClass="JFIProfileViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bex-ht-xWR"/>
                         <viewControllerLayoutGuide type="bottom" id="Xk9-AW-bqp"/>
@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d1f-9f-aTn">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d1f-9f-aTn">
                                 <rect key="frame" x="0.0" y="20" width="320" height="180"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -33,52 +33,55 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shinichiro Aska" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7es-mJ-c2Q">
-                                        <rect key="frame" x="101" y="89" width="119" height="22"/>
+                                        <rect key="frame" x="97" y="87" width="127" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                         <color key="shadowColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <size key="shadowOffset" width="0.0" height="1"/>
+                                        <size key="shadowOffset" width="0.0" height="2"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@su_aska" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ptG-uO-VaP">
-                                        <rect key="frame" x="132" y="111" width="56" height="16"/>
+                                        <rect key="frame" x="128" y="110" width="65" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                         <color key="shadowColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <size key="shadowOffset" width="0.0" height="1"/>
+                                        <size key="shadowOffset" width="0.0" height="2"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="フォローされています" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ltf-dc-ENw">
-                                        <rect key="frame" x="100" y="129" width="120" height="15"/>
+                                        <rect key="frame" x="100" y="132" width="120" height="19"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="12"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
+                                        <color key="shadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <size key="shadowOffset" width="0.0" height="2"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="7es-mJ-c2Q" firstAttribute="top" secondItem="bGB-7j-4KW" secondAttribute="bottom" constant="5" id="0PT-In-CIx"/>
+                                    <constraint firstItem="7es-mJ-c2Q" firstAttribute="top" secondItem="bGB-7j-4KW" secondAttribute="bottom" constant="3" id="0PT-In-CIx"/>
                                     <constraint firstAttribute="centerX" secondItem="Ltf-dc-ENw" secondAttribute="centerX" id="1Po-w5-Taq"/>
                                     <constraint firstItem="QBQ-Zm-0lh" firstAttribute="leading" secondItem="d1f-9f-aTn" secondAttribute="leading" id="3Rh-3q-X7t"/>
-                                    <constraint firstItem="ptG-uO-VaP" firstAttribute="top" secondItem="7es-mJ-c2Q" secondAttribute="bottom" id="55Q-WT-7RA"/>
+                                    <constraint firstItem="ptG-uO-VaP" firstAttribute="top" secondItem="7es-mJ-c2Q" secondAttribute="bottom" constant="-3" id="55Q-WT-7RA"/>
                                     <constraint firstAttribute="trailing" secondItem="QBQ-Zm-0lh" secondAttribute="trailing" id="GGK-f2-ggv"/>
                                     <constraint firstItem="bGB-7j-4KW" firstAttribute="top" secondItem="d1f-9f-aTn" secondAttribute="top" constant="20" id="IUx-N3-q3W"/>
                                     <constraint firstAttribute="centerX" secondItem="7es-mJ-c2Q" secondAttribute="centerX" id="KhL-Kf-BkH"/>
                                     <constraint firstItem="QBQ-Zm-0lh" firstAttribute="top" secondItem="d1f-9f-aTn" secondAttribute="top" id="LpB-UO-dQh"/>
                                     <constraint firstAttribute="bottom" secondItem="QBQ-Zm-0lh" secondAttribute="bottom" id="Q11-s2-DLN"/>
                                     <constraint firstAttribute="centerX" secondItem="ptG-uO-VaP" secondAttribute="centerX" id="TMr-cs-Tyc"/>
-                                    <constraint firstItem="Ltf-dc-ENw" firstAttribute="top" secondItem="ptG-uO-VaP" secondAttribute="bottom" constant="2" id="UNE-pX-hed"/>
+                                    <constraint firstItem="Ltf-dc-ENw" firstAttribute="top" secondItem="ptG-uO-VaP" secondAttribute="bottom" id="UNE-pX-hed"/>
                                     <constraint firstAttribute="height" constant="180" id="epv-vO-75F"/>
                                     <constraint firstAttribute="centerX" secondItem="bGB-7j-4KW" secondAttribute="centerX" id="y2h-dE-3El"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xtx-HW-0NC">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xtx-HW-0NC" customClass="JFIMenuView">
                                 <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="459-sq-c2F">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="459-sq-c2F" customClass="JFIButton">
                                         <rect key="frame" x="0.0" y="0.0" width="46" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -86,6 +89,9 @@
                                         <state key="normal" title="左">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="closeAction:" destination="WY7-sL-zLb" eventType="touchUpInside" id="kVK-6J-iDL"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -116,6 +122,10 @@
                             <constraint firstItem="jsl-5Y-mXK" firstAttribute="top" secondItem="d1f-9f-aTn" secondAttribute="bottom" id="vyL-wK-Xgp"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="backgroundImageView" destination="QBQ-Zm-0lh" id="b4M-y9-4rT"/>
+                        <outlet property="iconImageView" destination="bGB-7j-4KW" id="e3I-TQ-GWR"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SjD-St-BUl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
