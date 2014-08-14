@@ -47,6 +47,7 @@
 		5998521C3B1B4965A2329D56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22194C00EF13418F82A85B42 /* libPods.a */; };
 		6A002A581938F6E00025EBCB /* JFITwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A002A571938F6E00025EBCB /* JFITwitter.m */; };
 		6A002A5B193905490025EBCB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6A002A5D193905490025EBCB /* Localizable.strings */; };
+		6A1997F0199D18A3002570DC /* UIColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A1997EF199D18A3002570DC /* UIColor+Hex.m */; };
 		6A21291018C3485A00AD2953 /* JFIEntityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A21290E18C3485A00AD2953 /* JFIEntityCell.m */; };
 		6A52D248190D1F1F00C78B4D /* JFIRetweetActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D247190D1F1F00C78B4D /* JFIRetweetActionSheet.m */; };
 		6A52D24B190D43EE00C78B4D /* JFIActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D24A190D43EE00C78B4D /* JFIActionSheet.m */; };
@@ -147,6 +148,8 @@
 		6A002A571938F6E00025EBCB /* JFITwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFITwitter.m; sourceTree = "<group>"; };
 		6A002A5C193905490025EBCB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6A002A5E193905F90025EBCB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6A1997EE199D18A3002570DC /* UIColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
+		6A1997EF199D18A3002570DC /* UIColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
 		6A21290D18C3485A00AD2953 /* JFIEntityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIEntityCell.h; sourceTree = "<group>"; };
 		6A21290E18C3485A00AD2953 /* JFIEntityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntityCell.m; sourceTree = "<group>"; };
 		6A52D246190D1F1F00C78B4D /* JFIRetweetActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIRetweetActionSheet.h; sourceTree = "<group>"; };
@@ -234,6 +237,8 @@
 				3828D5BA18ED24FF00170374 /* UIImage+Processing.m */,
 				385D50A5194FD3E20037947D /* UIColor+Justaway.h */,
 				385D50A6194FD3E20037947D /* UIColor+Justaway.m */,
+				6A1997EE199D18A3002570DC /* UIColor+Hex.h */,
+				6A1997EF199D18A3002570DC /* UIColor+Hex.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -637,6 +642,7 @@
 				385D50A7194FD3E20037947D /* UIColor+Justaway.m in Sources */,
 				38DA5F7218E447DE006F484C /* JFIConstants.m in Sources */,
 				6AC3D24B19882C560040B822 /* JFIEntityMenuViewController.m in Sources */,
+				6A1997F0199D18A3002570DC /* UIColor+Hex.m in Sources */,
 				6ADF7956188D6E2200632BA5 /* JFIAppDelegate.m in Sources */,
 				3882594418E5511200F50117 /* NSDictionary+Default.m in Sources */,
 				383110BF19886C1300F38688 /* JFIEntityMenu.m in Sources */,

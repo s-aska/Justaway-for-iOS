@@ -382,6 +382,7 @@
     UINavigationController *navigationController = (UINavigationController *) delegate.window.rootViewController;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"JFIProfile" bundle:nil];
     JFIProfileViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"JFIProfileViewController"];
+    viewController.userID = self.entity.userID;
     [navigationController pushViewController:viewController animated:YES];
 }
 

@@ -93,6 +93,15 @@
                                             <action selector="closeAction:" destination="WY7-sL-zLb" eventType="touchUpInside" id="kVK-6J-iDL"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DKX-yQ-yH0" customClass="JFIButton">
+                                        <rect key="frame" x="274" y="0.0" width="46" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                                        <state key="normal" title="三">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
@@ -124,7 +133,11 @@
                     </view>
                     <connections>
                         <outlet property="backgroundImageView" destination="QBQ-Zm-0lh" id="b4M-y9-4rT"/>
+                        <outlet property="displayName" destination="7es-mJ-c2Q" id="Uqh-dv-8dU"/>
+                        <outlet property="followedBy" destination="Ltf-dc-ENw" id="Jfg-7b-a3E"/>
                         <outlet property="iconImageView" destination="bGB-7j-4KW" id="e3I-TQ-GWR"/>
+                        <outlet property="profileView" destination="d1f-9f-aTn" id="YqT-lP-Dqe"/>
+                        <outlet property="scrennName" destination="ptG-uO-VaP" id="3a4-kr-NfE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SjD-St-BUl" userLabel="First Responder" sceneMemberID="firstResponder"/>
