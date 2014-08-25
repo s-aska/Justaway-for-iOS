@@ -53,6 +53,7 @@
 		6A52D24B190D43EE00C78B4D /* JFIActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A52D24A190D43EE00C78B4D /* JFIActionSheet.m */; };
 		6A9C989F18BB89D500CF4F84 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C989E18BB89D500CF4F84 /* Podfile */; };
 		6AB9C8C619041716002FD422 /* JFIEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB9C8C519041716002FD422 /* JFIEntity.m */; };
+		6ABD2D8919ABCAE4003BE384 /* UIView+Border.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD2D8819ABCAE4003BE384 /* UIView+Border.m */; };
 		6AC3D2451988293A0040B822 /* JFIEntityMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AC3D2441988293A0040B822 /* JFIEntityMenu.storyboard */; };
 		6AC3D24B19882C560040B822 /* JFIEntityMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC3D24A19882C560040B822 /* JFIEntityMenuViewController.m */; };
 		6ADF7946188D6E2200632BA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADF7945188D6E2200632BA5 /* Foundation.framework */; };
@@ -159,6 +160,8 @@
 		6A9C989E18BB89D500CF4F84 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6AB9C8C419041716002FD422 /* JFIEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIEntity.h; sourceTree = "<group>"; };
 		6AB9C8C519041716002FD422 /* JFIEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntity.m; sourceTree = "<group>"; };
+		6ABD2D8719ABCAE4003BE384 /* UIView+Border.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Border.h"; sourceTree = "<group>"; };
+		6ABD2D8819ABCAE4003BE384 /* UIView+Border.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Border.m"; sourceTree = "<group>"; };
 		6AC3D2441988293A0040B822 /* JFIEntityMenu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JFIEntityMenu.storyboard; sourceTree = "<group>"; };
 		6AC3D24919882C560040B822 /* JFIEntityMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JFIEntityMenuViewController.h; sourceTree = "<group>"; };
 		6AC3D24A19882C560040B822 /* JFIEntityMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JFIEntityMenuViewController.m; sourceTree = "<group>"; };
@@ -239,6 +242,8 @@
 				385D50A6194FD3E20037947D /* UIColor+Justaway.m */,
 				6A1997EE199D18A3002570DC /* UIColor+Hex.h */,
 				6A1997EF199D18A3002570DC /* UIColor+Hex.m */,
+				6ABD2D8719ABCAE4003BE384 /* UIView+Border.h */,
+				6ABD2D8819ABCAE4003BE384 /* UIView+Border.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -656,6 +661,7 @@
 				3882594818E55F3600F50117 /* JFIHTTPImageOperation.m in Sources */,
 				383D7DDB18E139B500D36678 /* JFITabViewController.m in Sources */,
 				385D50B41959AABD0037947D /* JFITransparent.m in Sources */,
+				6ABD2D8919ABCAE4003BE384 /* UIView+Border.m in Sources */,
 				6A52D248190D1F1F00C78B4D /* JFIRetweetActionSheet.m in Sources */,
 				385D50AB195464040037947D /* JFISettingsViewController.m in Sources */,
 				3828D5B518EBC6F500170374 /* JFIButton.m in Sources */,

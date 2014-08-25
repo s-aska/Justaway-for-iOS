@@ -10,4 +10,14 @@
 "open_media_url" = "画像のURLを開く";
 "cancel" = "キャンセル";
 "settings_menu" = "メニュー設定";
+"tweets" = "ツイート";
+"following" = "フォロー";
+"followers" = "フォロワー";
+"lists" = "リスト";
+"favorites" = "お気に入り";
+"following" = "フォロー中";
+"follow" = "フォローする";
+"unfollow" = "フォロー解除";
+"mute" = "ミュート";
+"block_or_report" = "ブロックまたはスパム報告";
 "streaming_rate_limited" = "ストリーミング接続が制限されました、ストリーミング接続をオフにします。";

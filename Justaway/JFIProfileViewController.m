@@ -1,7 +1,9 @@
 #import "JFIProfileViewController.h"
 #import "JFIHTTPImageOperation.h"
 #import "JFIAppDelegate.h"
+#import "JFITheme.h"
 #import "UIColor+Hex.h"
+#import "UIView+Border.h"
 
 @interface JFIProfileViewController ()
 
@@ -32,6 +34,22 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    JFITheme *theme = [JFITheme sharedTheme];
+    self.view.backgroundColor = theme.mainBackgroundColor;
+    
+    [self.tabView addTopBorderWithColor:theme.mainHighlightBackgroundColor andWidth:0.5f];
+    [self.tabView addBottomBorderWithColor:theme.mainHighlightBackgroundColor andWidth:0.5f];
+    [self.tabFollowingView addLeftBorderWithColor:theme.mainHighlightBackgroundColor andWidth:0.5f];
+    [self.tabFollowersView addLeftBorderWithColor:theme.mainHighlightBackgroundColor andWidth:0.5f];
+    [self.tabListsView addLeftBorderWithColor:theme.mainHighlightBackgroundColor andWidth:0.5f];
+    [self.tabFavoritesView addLeftBorderWithColor:theme.mainHighlightBackgroundColor andWidth:0.5f];
+    
+    self.tweetsLabel.textColor = theme.menuHighlightTextColor;
+    self.followingLabel.textColor = theme.menuTextColor;
+    self.followersLabel.textColor = theme.menuTextColor;
+    self.listsLabel.textColor = theme.menuTextColor;
+    self.favoritesLabel.textColor = theme.menuTextColor;
     
     NSLog(@"[%@] %s userID:%@", NSStringFromClass([self class]), sel_getName(_cmd), self.userID);
     
@@ -82,6 +100,17 @@
     }
                                errorBlock:^(NSError *error) {
     }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+//    self.tabView.layer.sublayers = nil;
+//    self.tabFollowingView.layer.sublayers = nil;
+//    self.tabFollowersView.layer.sublayers = nil;
+//    self.tabListsView.layer.sublayers = nil;
+//    self.tabFavoritesView.layer.sublayers = nil;
 }
 
 - (void)loadIcon:(NSURL *)url

@@ -10,4 +10,14 @@
 "open_media_url" = "Open Media URL";
 "cancel" = "Cancel";
 "settings_menu" = "Settings Menu";
+"tweets" = "Tweets";
+"following" = "Following";
+"followers" = "Followers";
+"lists" = "Lists";
+"favorites" = "Favorites";
+"following" = "Following";
+"follow" = "Follow";
+"unfollow" = "Unfollow";
+"mute" = "Mute";
+"block_or_report" = "Block or Report";
 "streaming_rate_limited" = "Exceeded connection limit for user, turn off streaming mode.";
