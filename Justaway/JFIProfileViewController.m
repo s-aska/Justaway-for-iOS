@@ -73,6 +73,17 @@
                            
                            self.displayName.text = [user valueForKey:@"name"];
                            self.scrennName.text = [NSString stringWithFormat:@"@%@", [user valueForKey:@"screen_name"]];
+                           
+                           NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                           [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+                           [formatter setGroupingSeparator:@","];
+                           [formatter setGroupingSize:3];
+                           
+                           self.tweetsLabel.text = [formatter stringFromNumber:[user valueForKey:@"statuses_count"]];
+                           self.followingLabel.text = [formatter stringFromNumber:[user valueForKey:@"friends_count"]];
+                           self.followersLabel.text = [formatter stringFromNumber:[user valueForKey:@"followers_count"]];
+                           self.listsLabel.text = [formatter stringFromNumber:[user valueForKey:@"listed_count"]];
+                           self.favoritesLabel.text = [formatter stringFromNumber:[user valueForKey:@"favourites_count"]];
     }
                         errorBlock:^(NSError *error) {
                             NSLog(@"[%@] %s error:%@", NSStringFromClass([self class]), sel_getName(_cmd), [error localizedDescription]);
@@ -89,9 +100,9 @@
                                  NSLog(@"[%@] %s followed_by:%@", NSStringFromClass([self class]), sel_getName(_cmd), [relationship valueForKeyPath:@"relationship.source.followed_by"]);
                                  
                                  if ([[relationship valueForKeyPath:@"relationship.source.following"] boolValue]) {
-                                     // TODO: Set follow button label
+                                     self.followButton.titleLabel.text = NSLocalizedString(@"following", nil);
                                  } else {
-                                     // TODO: Set follow button label
+                                     self.followButton.titleLabel.text = NSLocalizedString(@"follow", nil);
                                  }
                                  
                                  if ([[relationship valueForKeyPath:@"relationship.source.followed_by"] boolValue]) {

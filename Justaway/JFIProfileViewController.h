@@ -8,6 +8,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *displayName;
 @property (nonatomic, weak) IBOutlet UILabel *scrennName;
 @property (nonatomic, weak) IBOutlet UILabel *followedBy;
+@property (nonatomic, weak) IBOutlet UIButton *followButton;
 @property (nonatomic, weak) IBOutlet UIView *tabView;
 @property (nonatomic, weak) IBOutlet UIView *tabTweetsView;
 @property (nonatomic, weak) IBOutlet UIView *tabFollowingView;

@@ -77,11 +77,11 @@
                                     <constraint firstAttribute="centerX" secondItem="bGB-7j-4KW" secondAttribute="centerX" id="y2h-dE-3El"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jsl-5Y-mXK">
-                                <rect key="frame" x="245" y="200" width="75" height="38"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jsl-5Y-mXK">
+                                <rect key="frame" x="215" y="200" width="105" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="contentEdgeInsets" minX="15" minY="10" maxX="15" maxY="10"/>
-                                <state key="normal" title="Follow">
+                                <state key="normal" title="フォロー中">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -292,6 +292,7 @@
                         <outlet property="backgroundImageView" destination="QBQ-Zm-0lh" id="b4M-y9-4rT"/>
                         <outlet property="displayName" destination="7es-mJ-c2Q" id="Uqh-dv-8dU"/>
                         <outlet property="favoritesLabel" destination="1BK-rn-UID" id="0SF-9o-hp6"/>
+                        <outlet property="followButton" destination="jsl-5Y-mXK" id="TZ9-dJ-h0X"/>
                         <outlet property="followedBy" destination="Ltf-dc-ENw" id="Jfg-7b-a3E"/>
                         <outlet property="followersLabel" destination="okt-Yn-SmC" id="PAH-oX-Rvx"/>
                         <outlet property="followingLabel" destination="pVC-Oo-IEg" id="7bq-5T-Z6I"/>
