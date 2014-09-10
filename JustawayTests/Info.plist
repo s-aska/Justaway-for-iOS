@@ -18,6 +18,10 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>fontello.ttf</string>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 </dict>

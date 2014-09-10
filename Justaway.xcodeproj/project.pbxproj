@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38B4475D19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
+		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
 		6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3019BB514900D50D78 /* ViewController.swift */; };
 		6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3219BB514900D50D78 /* Main.storyboard */; };
@@ -25,6 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4B9D2D19BB514900D50D78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +90,7 @@
 		6A4B9D2C19BB514900D50D78 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				38B4475C19C062460055F074 /* fontello.ttf */,
 				6A4B9D2D19BB514900D50D78 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -190,6 +194,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */,
+				38B4475D19C062460055F074 /* fontello.ttf in Resources */,
 				6A4B9D3619BB514900D50D78 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -198,6 +203,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38B4475E19C062460055F074 /* fontello.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,6 +405,7 @@
 				6A4B9D4719BB514900D50D78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6A4B9D4819BB514900D50D78 /* Build configuration list for PBXNativeTarget "JustawayTests" */ = {
 			isa = XCConfigurationList;
@@ -407,6 +414,7 @@
 				6A4B9D4A19BB514900D50D78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
