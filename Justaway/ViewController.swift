@@ -34,30 +34,64 @@ class ViewController: UIViewController {
     
     func handleKeyboardWillShowNotification(notification: NSNotification) {
         NSLog("handleKeyboardWillShowNotification")
-        let userInfo = notification.userInfo!
         
+        let userInfo = notification.userInfo!
         let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as NSNumber).doubleValue
         let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
         
+        let orientation: UIInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
+        if (orientation.isLandscape) {
+            self.editorViewButtomConstraint.constant = keyboardScreenEndFrame.size.width
+        } else {
+            self.editorViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
+        }
+        
+        self.view.setNeedsUpdateConstraints()
+        
+        UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
+            if (self.editorView.alpha == 0) {
+                self.editorView.alpha = 1
+            }
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
     
     func handleKeyboardWillHideNotification(notification: NSNotification) {
         NSLog("handleKeyboardWillHideNotification")
         
+        let userInfo = notification.userInfo!
+        let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as NSNumber).doubleValue
+        
+        self.editorViewButtomConstraint.constant = 0
+        
+        UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
+            self.editorView.alpha = 0
+            self.view.layoutIfNeeded()
+        }, completion: {
+            (finished: Bool) in
+            self.editorView.hidden = true
+        })
     }
     
     @IBAction func signInButtonClick(sender: UIButton) {
         NSLog("signInButtonClick")
     }
     
+    @IBAction func closeEditorButtonClick(sender: UIButton) {
+        
+        if (self.editorTextView.isFirstResponder()) {
+            self.editorTextView.resignFirstResponder()
+        } else {
+            self.editorView.hidden = true
+        }
+    }
+    
     @IBAction func writeButtonClick(sender: UIButton) {
-        // self.editorView.hidden = false
-        // editorViewButtomConstraint.constant = 100
+        
         if (self.editorView.hidden) {
-            self.editorView.hidden = false;
-//            self.editorView.alpha = 0;
+            self.editorView.hidden = false
+            self.editorView.alpha = 0
             self.editorTextView.becomeFirstResponder()
-//            [self.editorTextView becomeFirstResponder];
         }
     }
 }
