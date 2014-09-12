@@ -1,15 +1,21 @@
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var editorView: UIView!
     @IBOutlet weak var editorViewButtomConstraint: NSLayoutConstraint!
     @IBOutlet weak var editorTextView: UITextView!
+    @IBOutlet weak var editorTextViewHeightConstraint: NSLayoutConstraint!
+    
+    var editorTextViewMinHeight: NSNumber!
+    let editorTextViewMargin: NSNumber = 20
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.editorTextView.delegate = self
         UIButton.appearance().setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        editorTextViewMinHeight = Int(self.editorTextViewHeightConstraint.constant) - editorTextViewMargin
     }
     
     override func didReceiveMemoryWarning() {
@@ -30,6 +36,14 @@ class ViewController: UIViewController {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+        let height = max(textView.contentSize.height, editorTextViewMinHeight) + editorTextViewMargin
+        var frame = textView.frame
+        frame.size.height = height
+        textView.frame = frame
+        self.editorTextViewHeightConstraint.constant = height
     }
     
     func handleKeyboardWillShowNotification(notification: NSNotification) {

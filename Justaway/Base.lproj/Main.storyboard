@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.9" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="fontello.ttf">
@@ -37,7 +37,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vtZ-25-Zd3">
                                 <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6s0-Bq-v9h">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6s0-Bq-v9h">
                                         <rect key="frame" x="550" y="0.0" width="50" height="50"/>
                                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                                         <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
@@ -49,7 +49,7 @@
                                             <action selector="writeButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eso-Gy-UbF"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Dm-sZ-qBC">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Dm-sZ-qBC">
                                         <rect key="frame" x="501" y="0.0" width="49" height="50"/>
                                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                                         <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
@@ -69,12 +69,21 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IlY-W9-l0u">
-                                <rect key="frame" x="0.0" y="500" width="600" height="100"/>
+                                <rect key="frame" x="0.0" y="506" width="600" height="94"/>
                                 <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J1c-8T-CYn">
+                                        <rect key="frame" x="10" y="10" width="580" height="54"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="54" id="tQf-B7-8sb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VGb-Bi-oSQ">
-                                        <rect key="frame" x="0.0" y="50" width="600" height="50"/>
+                                        <rect key="frame" x="0.0" y="44" width="600" height="50"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F4f-H6-IEe">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F4f-H6-IEe">
                                                 <rect key="frame" x="551" y="0.0" width="49" height="50"/>
                                                 <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                                                 <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
@@ -83,7 +92,7 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDE-0c-vAG">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDE-0c-vAG">
                                                 <rect key="frame" x="0.0" y="0.0" width="49" height="50"/>
                                                 <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                                                 <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
@@ -105,12 +114,6 @@
                                             <constraint firstAttribute="trailing" secondItem="F4f-H6-IEe" secondAttribute="trailing" id="wGa-Mo-lqM"/>
                                         </constraints>
                                     </view>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J1c-8T-CYn">
-                                        <rect key="frame" x="10" y="10" width="580" height="40"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -118,10 +121,9 @@
                                     <constraint firstAttribute="trailing" secondItem="VGb-Bi-oSQ" secondAttribute="trailing" id="I8Z-nc-3BM"/>
                                     <constraint firstAttribute="trailing" secondItem="J1c-8T-CYn" secondAttribute="trailing" constant="10" id="Jig-Br-sk8"/>
                                     <constraint firstItem="VGb-Bi-oSQ" firstAttribute="leading" secondItem="IlY-W9-l0u" secondAttribute="leading" id="MKx-al-bVa"/>
-                                    <constraint firstAttribute="height" constant="100" id="PvZ-YY-niS"/>
+                                    <constraint firstItem="VGb-Bi-oSQ" firstAttribute="top" secondItem="J1c-8T-CYn" secondAttribute="bottom" constant="-20" id="XiW-cJ-xU9"/>
                                     <constraint firstItem="J1c-8T-CYn" firstAttribute="leading" secondItem="IlY-W9-l0u" secondAttribute="leading" constant="10" id="bHh-FH-4nG"/>
                                     <constraint firstAttribute="bottom" secondItem="VGb-Bi-oSQ" secondAttribute="bottom" id="f3F-HG-rEW"/>
-                                    <constraint firstItem="VGb-Bi-oSQ" firstAttribute="top" secondItem="J1c-8T-CYn" secondAttribute="bottom" id="mpK-2j-0CU"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -139,6 +141,7 @@
                     </view>
                     <connections>
                         <outlet property="editorTextView" destination="J1c-8T-CYn" id="q8a-xU-Huf"/>
+                        <outlet property="editorTextViewHeightConstraint" destination="tQf-B7-8sb" id="9Xo-Xl-KMz"/>
                         <outlet property="editorView" destination="IlY-W9-l0u" id="DHc-K2-E3o"/>
                         <outlet property="editorViewButtomConstraint" destination="YOw-M6-9fZ" id="7Ay-1o-3V8"/>
                         <outlet property="signInButton" destination="Ujo-jJ-LAP" id="PJX-C0-MfZ"/>
