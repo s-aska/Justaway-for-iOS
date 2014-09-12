@@ -13,9 +13,9 @@ class ViewController: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.editorTextView.delegate = self
-        UIButton.appearance().setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        editorTextViewMinHeight = Int(self.editorTextViewHeightConstraint.constant) - editorTextViewMargin
+        
+        editorTextView.delegate = self
+        editorTextViewMinHeight = Int(editorTextViewHeightConstraint.constant) - editorTextViewMargin
     }
     
     override func didReceiveMemoryWarning() {
@@ -40,24 +40,24 @@ class ViewController: UIViewController, UITextViewDelegate {
     
     func textViewDidChange(textView: UITextView) {
         let height = max(textView.contentSize.height, editorTextViewMinHeight) + editorTextViewMargin
+        
         var frame = textView.frame
         frame.size.height = height
         textView.frame = frame
-        self.editorTextViewHeightConstraint.constant = height
+        
+        editorTextViewHeightConstraint.constant = height
     }
     
     func handleKeyboardWillShowNotification(notification: NSNotification) {
-        NSLog("handleKeyboardWillShowNotification")
-        
         let userInfo = notification.userInfo!
         let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as NSNumber).doubleValue
         let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
         
         let orientation: UIInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
         if (orientation.isLandscape) {
-            self.editorViewButtomConstraint.constant = keyboardScreenEndFrame.size.width
+            editorViewButtomConstraint.constant = keyboardScreenEndFrame.size.width
         } else {
-            self.editorViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
+            editorViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
         }
         
         self.view.setNeedsUpdateConstraints()
@@ -71,41 +71,42 @@ class ViewController: UIViewController, UITextViewDelegate {
     }
     
     func handleKeyboardWillHideNotification(notification: NSNotification) {
-        NSLog("handleKeyboardWillHideNotification")
-        
         let userInfo = notification.userInfo!
         let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as NSNumber).doubleValue
         
-        self.editorViewButtomConstraint.constant = 0
+        editorViewButtomConstraint.constant = 0
         
         UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
             self.editorView.alpha = 0
             self.view.layoutIfNeeded()
-        }, completion: {
-            (finished: Bool) in
+        }, completion: { finished in
             self.editorView.hidden = true
         })
     }
     
-    @IBAction func signInButtonClick(sender: UIButton) {
-        NSLog("signInButtonClick")
-    }
-    
-    @IBAction func closeEditorButtonClick(sender: UIButton) {
+    func closeEditor() {
+        editorTextView.text = ""
+        editorTextViewHeightConstraint.constant = editorTextViewMinHeight + editorTextViewMargin
         
-        if (self.editorTextView.isFirstResponder()) {
-            self.editorTextView.resignFirstResponder()
+        if (editorTextView.isFirstResponder()) {
+            editorTextView.resignFirstResponder()
         } else {
-            self.editorView.hidden = true
+            editorView.hidden = true
         }
     }
     
+    @IBAction func signInButtonClick(sender: UIButton) {
+    }
+    
+    @IBAction func closeEditorButtonClick(sender: UIButton) {
+        closeEditor()
+    }
+    
     @IBAction func writeButtonClick(sender: UIButton) {
-        
-        if (self.editorView.hidden) {
-            self.editorView.hidden = false
-            self.editorView.alpha = 0
-            self.editorTextView.becomeFirstResponder()
+        if (editorView.hidden) {
+            editorView.hidden = false
+            editorView.alpha = 0
+            editorTextView.becomeFirstResponder()
         }
     }
 }
