@@ -1,6 +1,6 @@
 # Justaway for iOS
 
-![logo](http://justaway.info/static/img/logo.svg)
+![logo](http://justaway.info/img/logo.svg)
 
 ## Setup
 
