@@ -7,8 +7,6 @@
         <mutableArray key="fontello.ttf">
             <string>fontello</string>
             <string>fontello</string>
-            <string>fontello</string>
-            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -68,82 +66,17 @@
                                     <constraint firstAttribute="trailing" secondItem="6s0-Bq-v9h" secondAttribute="trailing" id="eTP-cT-Wdt"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IlY-W9-l0u">
-                                <rect key="frame" x="0.0" y="506" width="600" height="94"/>
-                                <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J1c-8T-CYn">
-                                        <rect key="frame" x="10" y="10" width="580" height="54"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="54" id="tQf-B7-8sb"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VGb-Bi-oSQ">
-                                        <rect key="frame" x="0.0" y="44" width="600" height="50"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F4f-H6-IEe">
-                                                <rect key="frame" x="551" y="0.0" width="49" height="50"/>
-                                                <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                                                <state key="normal" title="投">
-                                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDE-0c-vAG">
-                                                <rect key="frame" x="0.0" y="0.0" width="49" height="50"/>
-                                                <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                                <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                                                <state key="normal" title="下">
-                                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="closeEditorButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xWT-9t-0Hv"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="centerY" secondItem="fDE-0c-vAG" secondAttribute="centerY" id="8oP-Ww-dA9"/>
-                                            <constraint firstItem="fDE-0c-vAG" firstAttribute="leading" secondItem="VGb-Bi-oSQ" secondAttribute="leading" id="Txa-f8-H3u"/>
-                                            <constraint firstAttribute="centerY" secondItem="F4f-H6-IEe" secondAttribute="centerY" id="cqw-fm-Xmw"/>
-                                            <constraint firstAttribute="height" constant="50" id="mgw-CU-EwM"/>
-                                            <constraint firstAttribute="trailing" secondItem="F4f-H6-IEe" secondAttribute="trailing" id="wGa-Mo-lqM"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="J1c-8T-CYn" firstAttribute="top" secondItem="IlY-W9-l0u" secondAttribute="top" constant="10" id="4C0-Hh-SSv"/>
-                                    <constraint firstAttribute="trailing" secondItem="VGb-Bi-oSQ" secondAttribute="trailing" id="I8Z-nc-3BM"/>
-                                    <constraint firstAttribute="trailing" secondItem="J1c-8T-CYn" secondAttribute="trailing" constant="10" id="Jig-Br-sk8"/>
-                                    <constraint firstItem="VGb-Bi-oSQ" firstAttribute="leading" secondItem="IlY-W9-l0u" secondAttribute="leading" id="MKx-al-bVa"/>
-                                    <constraint firstItem="VGb-Bi-oSQ" firstAttribute="top" secondItem="J1c-8T-CYn" secondAttribute="bottom" constant="-20" id="XiW-cJ-xU9"/>
-                                    <constraint firstItem="J1c-8T-CYn" firstAttribute="leading" secondItem="IlY-W9-l0u" secondAttribute="leading" constant="10" id="bHh-FH-4nG"/>
-                                    <constraint firstAttribute="bottom" secondItem="VGb-Bi-oSQ" secondAttribute="bottom" id="f3F-HG-rEW"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="Ujo-jJ-LAP" secondAttribute="centerX" id="7Jm-he-Mha"/>
                             <constraint firstAttribute="trailing" secondItem="vtZ-25-Zd3" secondAttribute="trailing" id="PzX-tf-NYr"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="IlY-W9-l0u" secondAttribute="bottom" id="YOw-M6-9fZ"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vtZ-25-Zd3" secondAttribute="bottom" id="gvK-Ui-CQu"/>
-                            <constraint firstItem="IlY-W9-l0u" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="icv-i9-cGB"/>
                             <constraint firstAttribute="centerY" secondItem="Ujo-jJ-LAP" secondAttribute="centerY" id="pKY-pr-PGt"/>
-                            <constraint firstAttribute="trailing" secondItem="IlY-W9-l0u" secondAttribute="trailing" id="ssq-dL-qSy"/>
                             <constraint firstItem="vtZ-25-Zd3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="vP3-e3-Njp"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="editorTextView" destination="J1c-8T-CYn" id="q8a-xU-Huf"/>
-                        <outlet property="editorTextViewHeightConstraint" destination="tQf-B7-8sb" id="9Xo-Xl-KMz"/>
-                        <outlet property="editorView" destination="IlY-W9-l0u" id="DHc-K2-E3o"/>
-                        <outlet property="editorViewButtomConstraint" destination="YOw-M6-9fZ" id="7Ay-1o-3V8"/>
                         <outlet property="signInButton" destination="Ujo-jJ-LAP" id="PJX-C0-MfZ"/>
                     </connections>
                 </viewController>
