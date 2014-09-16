@@ -1,87 +1,102 @@
 import UIKit
 
 class SettingsViewController: UIViewController {
-
-    @IBOutlet weak var fontSizeView: UIView!
-    @IBOutlet weak var toolView: UIView!
-    @IBOutlet weak var toolViewBottom: NSLayoutConstraint!
+    // MARK: Properties
+    
+    @IBOutlet weak var fontSizeSettingsView: UIView!
+    @IBOutlet weak var themeSettingsView: UIView!
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var containerViewBottomConstraint: NSLayoutConstraint!
+    
+    var currentSettingsView: UIView!
+    
+    // MARK: Actions
     
     @IBAction func hide(sender: UIButton) {
         hide()
     }
     
-    @IBAction func showFontSize(sender: UIButton) {
-        fontSizeView.slideIn()
-        currentView = fontSizeView
+    @IBAction func showFontSizeSettingsView(sender: UIButton) {
+        showSettingsView(fontSizeSettingsView)
     }
     
-    var currentView: UIView!
+    @IBAction func showThemeSettingsView(sender: UIButton) {
+        showSettingsView(themeSettingsView)
+    }
     
-    // MARK: - UIViewController
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        toolViewBottom.constant = -toolView.frame.size.height
-        fontSizeView.hidden = true
+        containerViewBottomConstraint.constant = -containerView.frame.size.height
+        fontSizeSettingsView.hidden = true
+        themeSettingsView.hidden = true
     }
     
     // MARK: - 
     
+    func showSettingsView(view: UIView) {
+        if currentSettingsView != nil {
+            if currentSettingsView === view {
+                return
+            }
+            hideSettingsView(currentSettingsView, completion: nil)
+        }
+        self.currentSettingsView = view
+        view.hidden = false
+        view.frame = CGRectMake(view.frame.size.width,
+            view.frame.origin.y,
+            view.frame.size.width,
+            view.frame.size.height)
+        view.hidden = false
+        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
+            view.frame = CGRectMake(0,
+                view.frame.origin.y,
+                view.frame.size.width,
+                view.frame.size.height)
+        }, { finished in
+        })
+    }
+    
+    func hideSettingsView(view: UIView, completion: (Void -> Void)?) {
+        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
+            view.frame = CGRectMake(-view.frame.size.width,
+                view.frame.origin.y,
+                view.frame.size.width,
+                view.frame.size.height)
+        }, { finished in
+            view.hidden = true
+            if completion != nil {
+                completion!()
+            }
+        })
+    }
+    
     func show() {
-        toolViewBottom.constant = 0
+        containerViewBottomConstraint.constant = 0
         
         UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
             self.view.layoutIfNeeded()
-            }, { finished in
+        }, { finished in
         })
     }
     
     func hide() {
         
-        func closeView() {
-            toolViewBottom.constant = -toolView.frame.size.height
+        func hideContainer() {
+            containerViewBottomConstraint.constant = -containerView.frame.size.height
             UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
                 self.view.layoutIfNeeded()
-                }, { finished in
+            }, { finished in
             })
         }
         
-        if currentView != nil {
-            currentView.slideOut(closeView)
-            currentView = nil
+        if currentSettingsView != nil {
+            hideSettingsView(currentSettingsView, hideContainer)
+            currentSettingsView = nil
         } else {
-            closeView()
+            hideContainer()
         }
-    }
-}
-
-extension UIView {
-    func slideIn() {
-        self.hidden = false
-        self.frame = CGRectMake(self.frame.size.width,
-            self.frame.origin.y,
-            self.frame.size.width,
-            self.frame.size.height)
-        self.hidden = false
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
-            self.frame = CGRectMake(0,
-                self.frame.origin.y,
-                self.frame.size.width,
-                self.frame.size.height)
-        }, { finished in
-        })
-    }
-    
-    func slideOut(completion: Void -> Void) {
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
-            self.frame = CGRectMake(-self.frame.size.width,
-                self.frame.origin.y,
-                self.frame.size.width,
-                self.frame.size.height)
-        }, { finished in
-            self.hidden = true
-            completion()
-        })
     }
 }

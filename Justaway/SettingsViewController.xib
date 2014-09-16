@@ -14,9 +14,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingsViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
-                <outlet property="fontSizeView" destination="pkx-aZ-Uhl" id="GLj-0I-ZUM"/>
-                <outlet property="toolView" destination="xif-2B-jzt" id="EqX-lC-UfZ"/>
-                <outlet property="toolViewBottom" destination="5FV-1T-Uhc" id="wpn-vk-0pX"/>
+                <outlet property="containerView" destination="xif-2B-jzt" id="73J-gz-2wx"/>
+                <outlet property="containerViewBottomConstraint" destination="5FV-1T-Uhc" id="C8W-0Q-eGj"/>
+                <outlet property="fontSizeSettingsView" destination="pkx-aZ-Uhl" id="sw1-Kk-Eah"/>
+                <outlet property="themeSettingsView" destination="iYc-3u-r1v" id="5V4-lo-jMe"/>
                 <outlet property="view" destination="iN0-l3-epB" id="rY1-Qf-gy5"/>
             </connections>
         </placeholder>
@@ -25,6 +26,14 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iYc-3u-r1v">
+                    <rect key="frame" x="0.0" y="500" width="600" height="50"/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="VbD-bZ-U79"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="jIq-ft-xM4"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pkx-aZ-Uhl">
                     <rect key="frame" x="0.0" y="500" width="600" height="50"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -64,6 +73,9 @@
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="showThemeSettingsView:" destination="-1" eventType="touchUpInside" id="IFZ-Zm-LPw"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6QV-2N-74j">
                             <rect key="frame" x="456" y="0.0" width="49" height="50"/>
@@ -74,7 +86,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="showFontSize:" destination="-1" eventType="touchUpInside" id="aoS-nu-2bY"/>
+                                <action selector="showFontSizeSettingsView:" destination="-1" eventType="touchUpInside" id="WAw-QL-f6V"/>
                             </connections>
                         </button>
                     </subviews>
@@ -94,10 +106,13 @@
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="xif-2B-jzt" secondAttribute="bottom" id="5FV-1T-Uhc"/>
+                <constraint firstItem="iYc-3u-r1v" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="7fx-QA-UTq"/>
                 <constraint firstItem="xif-2B-jzt" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="FVf-Rp-7eJ"/>
                 <constraint firstAttribute="trailing" secondItem="xif-2B-jzt" secondAttribute="trailing" id="Lno-SJ-a1W"/>
                 <constraint firstItem="xif-2B-jzt" firstAttribute="top" secondItem="pkx-aZ-Uhl" secondAttribute="bottom" id="OMl-1e-bpT"/>
+                <constraint firstAttribute="trailing" secondItem="iYc-3u-r1v" secondAttribute="trailing" id="iaZ-pH-XCe"/>
                 <constraint firstAttribute="trailing" secondItem="pkx-aZ-Uhl" secondAttribute="trailing" id="nym-LV-xhY"/>
+                <constraint firstItem="xif-2B-jzt" firstAttribute="top" secondItem="iYc-3u-r1v" secondAttribute="bottom" id="oB6-pN-fQD"/>
                 <constraint firstItem="pkx-aZ-Uhl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="tom-Ug-Qn2"/>
             </constraints>
         </view>

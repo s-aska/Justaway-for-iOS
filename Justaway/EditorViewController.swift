@@ -1,35 +1,28 @@
 import UIKit
 
-class EditorViewController: UIViewController, UITextViewDelegate {
+class EditorViewController: UIViewController {
     // MARK: Properties
     
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var containerViewButtomConstraint: NSLayoutConstraint! // Used to Match the Keyboard UIView
     
-    /// Used to adjust the text view's position when the keyboard hides and shows.
-    @IBOutlet weak var containerViewButtomConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var textView: UITextView!
-    
-    /// Used to adjust the text view's height when the text changes.
-    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
-    
-    @IBAction func hide(sender: UIButton) {
-        hide()
-    }
-    
-    @IBAction func send(sender: UIButton) {
-        
-    }
+    @IBOutlet weak var textView: AutoExpandTextView!
+    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint! // Used to Auto Expanding UITextView
     
     var textViewMinHeight: NSNumber!
+    
+    // MARK: Actions
+    
+    @IBAction func hide(sender: UIButton) { hide() }
+    
+    @IBAction func send(sender: UIButton) {  }
     
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        textView.delegate = self
-        textViewMinHeight = textViewHeightConstraint.constant
+        textView.configure(heightConstraint: textViewHeightConstraint)
     }
     
     override func didReceiveMemoryWarning() {
@@ -39,8 +32,6 @@ class EditorViewController: UIViewController, UITextViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Used to adjust the text view's height when the keyboard hides and shows.
-        // See: https://developer.apple.com/library/prerelease/ios/samplecode/UICatalog/Listings/Swift_UICatalog_TextViewController_swift.html
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "handleKeyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: "handleKeyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
@@ -54,56 +45,45 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
     
-    // MARK: UITextViewDelegate
-    
-    func textViewDidChange(textView: UITextView) {
-        let height = max(textView.contentSize.height, textViewMinHeight)
-        
-        var frame = textView.frame
-        frame.size.height = height
-        textView.frame = frame
-        textView.setContentOffset(CGPointZero, animated: false) // iOS8(GM) has bug...
-        
-        textViewHeightConstraint.constant = height
-    }
-    
-    // MARK: Keyboard Event Notifications
+    // MARK: Match the Keyboard UIView
     
     func handleKeyboardWillShowNotification(notification: NSNotification) {
+        keyboardWillChangeFrameWithNotification(notification, showsKeyboard: true)
+    }
+    
+    func handleKeyboardWillHideNotification(notification: NSNotification) {
+        keyboardWillChangeFrameWithNotification(notification, showsKeyboard: false)
+    }
+    
+    func keyboardWillChangeFrameWithNotification(notification: NSNotification, showsKeyboard: Bool) {
         let userInfo = notification.userInfo!
         let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as NSNumber).doubleValue
         let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
         
-        let orientation: UIInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
-        if (orientation.isLandscape) {
-            containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.width
+        if showsKeyboard {
+            let orientation: UIInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
+            if (orientation.isLandscape) {
+                containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.width
+            } else {
+                containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
+            }
         } else {
-            containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
+            containerViewButtomConstraint.constant = 0
         }
         
         self.view.setNeedsUpdateConstraints()
         
         UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
-            self.containerView.alpha = 1
-            self.view.layoutIfNeeded()
-        }, completion: nil)
-    }
-    
-    func handleKeyboardWillHideNotification(notification: NSNotification) {
-        let userInfo = notification.userInfo!
-        let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as NSNumber).doubleValue
-        
-        containerViewButtomConstraint.constant = 0
-        
-        UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
-            self.containerView.alpha = 0
+            self.containerView.alpha = showsKeyboard ? 1 : 0
             self.view.layoutIfNeeded()
         }, completion: { finished in
-            self.view.hidden = true
+            if !showsKeyboard {
+                self.view.hidden = true
+            }
         })
     }
     
-    // MARK: - Editor control
+    // MARK: - Actions
     
     func show() {
         view.hidden = false
@@ -111,9 +91,7 @@ class EditorViewController: UIViewController, UITextViewDelegate {
     }
     
     func hide() {
-        textView.text = ""
-        textView.layoutIfNeeded() // Reset .contentSize.height
-        textViewDidChange(textView)
+        textView.reset()
         
         if (textView.isFirstResponder()) {
             textView.resignFirstResponder()
