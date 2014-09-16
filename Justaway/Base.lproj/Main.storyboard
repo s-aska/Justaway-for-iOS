@@ -44,7 +44,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="writeButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eso-Gy-UbF"/>
+                                            <action selector="openEditor:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N20-pa-5xp"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Dm-sZ-qBC">
@@ -55,6 +55,9 @@
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="openSettings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="T4i-Fh-dBU"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>

@@ -5,14 +5,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var signInButton: UIButton!
     
     var editorViewController: EditorViewController!
+    var settingsViewController: SettingsViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         editorViewController = EditorViewController(nibName: "EditorViewController", bundle: nil)
-        editorViewController.view.frame = self.view.frame
+        editorViewController.view.frame = view.frame
         editorViewController.view.hidden = true
         self.view.addSubview(editorViewController.view)
+        
+        settingsViewController = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        settingsViewController.view.frame = view.frame
+        settingsViewController.view.hidden = false
+        self.view.addSubview(settingsViewController.view)
     }
     
     override func didReceiveMemoryWarning() {
@@ -31,8 +37,12 @@ class ViewController: UIViewController {
         
     }
     
-    @IBAction func writeButtonClick(sender: UIButton) {
-        editorViewController.openEdiotr()
+    @IBAction func showEditor(sender: UIButton) {
+        editorViewController.show()
+    }
+    
+    @IBAction func showSettings(sender: UIButton) {
+        settingsViewController.show()
     }
 }
 

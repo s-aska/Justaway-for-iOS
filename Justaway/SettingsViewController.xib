@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="fontello.ttf">
+            <string>fontello</string>
+            <string>fontello</string>
+            <string>fontello</string>
+            <string>fontello</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingsViewController" customModule="Justaway" customModuleProvider="target">
+            <connections>
+                <outlet property="fontSizeView" destination="pkx-aZ-Uhl" id="GLj-0I-ZUM"/>
+                <outlet property="toolView" destination="xif-2B-jzt" id="EqX-lC-UfZ"/>
+                <outlet property="toolViewBottom" destination="5FV-1T-Uhc" id="wpn-vk-0pX"/>
+                <outlet property="view" destination="iN0-l3-epB" id="rY1-Qf-gy5"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TransparentView" customModule="Justaway" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pkx-aZ-Uhl">
+                    <rect key="frame" x="0.0" y="500" width="600" height="50"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="u3A-RP-fVc"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xif-2B-jzt">
+                    <rect key="frame" x="0.0" y="550" width="600" height="50"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KGE-1q-n9x">
+                            <rect key="frame" x="0.0" y="0.0" width="49" height="50"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                            <state key="normal" title="下">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="close:" destination="-1" eventType="touchUpInside" id="dmj-tU-6Cu"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ly-iZ-nc7">
+                            <rect key="frame" x="554" y="0.0" width="46" height="50"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                            <state key="normal" title="人">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNt-l5-Cr2">
+                            <rect key="frame" x="505" y="0.0" width="49" height="50"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                            <state key="normal" title="彩">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6QV-2N-74j">
+                            <rect key="frame" x="456" y="0.0" width="49" height="50"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                            <state key="normal" title="A">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="openFontSize:" destination="-1" eventType="touchUpInside" id="h3W-sW-RrM"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="4ly-iZ-nc7" secondAttribute="centerY" id="GVK-GQ-uyd"/>
+                        <constraint firstAttribute="centerY" secondItem="6QV-2N-74j" secondAttribute="centerY" id="ZKN-mr-CF6"/>
+                        <constraint firstAttribute="centerY" secondItem="KGE-1q-n9x" secondAttribute="centerY" id="iDT-qS-Acv"/>
+                        <constraint firstItem="4ly-iZ-nc7" firstAttribute="leading" secondItem="hNt-l5-Cr2" secondAttribute="trailing" id="oEl-a2-ZJF"/>
+                        <constraint firstAttribute="trailing" secondItem="4ly-iZ-nc7" secondAttribute="trailing" id="p24-Qy-uxH"/>
+                        <constraint firstItem="hNt-l5-Cr2" firstAttribute="leading" secondItem="6QV-2N-74j" secondAttribute="trailing" id="rOY-4e-E0X"/>
+                        <constraint firstItem="KGE-1q-n9x" firstAttribute="leading" secondItem="xif-2B-jzt" secondAttribute="leading" id="sB0-Xq-4Z0"/>
+                        <constraint firstAttribute="height" constant="50" id="t9s-Bj-rZ8"/>
+                        <constraint firstAttribute="centerY" secondItem="hNt-l5-Cr2" secondAttribute="centerY" id="wZU-eP-Wb6"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="xif-2B-jzt" secondAttribute="bottom" id="5FV-1T-Uhc"/>
+                <constraint firstItem="xif-2B-jzt" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="FVf-Rp-7eJ"/>
+                <constraint firstAttribute="trailing" secondItem="xif-2B-jzt" secondAttribute="trailing" id="Lno-SJ-a1W"/>
+                <constraint firstItem="xif-2B-jzt" firstAttribute="top" secondItem="pkx-aZ-Uhl" secondAttribute="bottom" id="OMl-1e-bpT"/>
+                <constraint firstAttribute="trailing" secondItem="pkx-aZ-Uhl" secondAttribute="trailing" id="nym-LV-xhY"/>
+                <constraint firstItem="pkx-aZ-Uhl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="tom-Ug-Qn2"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

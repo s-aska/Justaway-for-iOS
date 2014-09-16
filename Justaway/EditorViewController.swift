@@ -13,7 +13,7 @@ class EditorViewController: UIViewController, UITextViewDelegate {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -91,12 +91,12 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         })
     }
     
-    func openEdiotr() {
+    func open() {
         view.hidden = false
         editorTextView.becomeFirstResponder()
     }
     
-    func closeEditor() {
+    func close() {
         editorTextView.text = ""
         editorTextViewHeightConstraint.constant = editorTextViewMinHeight + editorTextViewMargin
         
@@ -108,7 +108,7 @@ class EditorViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func close(sender: UIButton) {
-        closeEditor()
+        close()
     }
 }
 
