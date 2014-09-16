@@ -91,12 +91,12 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         })
     }
     
-    func open() {
+    func show() {
         view.hidden = false
         editorTextView.becomeFirstResponder()
     }
     
-    func close() {
+    func hide() {
         editorTextView.text = ""
         editorTextViewHeightConstraint.constant = editorTextViewMinHeight + editorTextViewMargin
         
@@ -107,8 +107,8 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    @IBAction func close(sender: UIButton) {
-        close()
+    @IBAction func hide(sender: UIButton) {
+        hide()
     }
 }
 

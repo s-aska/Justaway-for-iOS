@@ -15,7 +15,7 @@ class SettingsViewController: UIViewController {
         fontSizeView.hidden = true
     }
     
-    func open() {
+    func show() {
         toolViewBottom.constant = 0
         
         UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
@@ -24,7 +24,7 @@ class SettingsViewController: UIViewController {
         })
     }
     
-    func close() {
+    func hide() {
         
         func closeView() {
             toolViewBottom.constant = -toolView.frame.size.height
@@ -42,11 +42,11 @@ class SettingsViewController: UIViewController {
         }
     }
     
-    @IBAction func close(sender: UIButton) {
-        close()
+    @IBAction func hide(sender: UIButton) {
+        hide()
     }
     
-    @IBAction func openFontSize(sender: UIButton) {
+    @IBAction func showFontSize(sender: UIButton) {
         fontSizeView.slideIn()
         currentView = fontSizeView
     }

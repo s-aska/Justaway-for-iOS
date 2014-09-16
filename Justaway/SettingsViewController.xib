@@ -44,7 +44,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="close:" destination="-1" eventType="touchUpInside" id="dmj-tU-6Cu"/>
+                                <action selector="hide:" destination="-1" eventType="touchUpInside" id="5GG-Ql-ZuY"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ly-iZ-nc7">
@@ -74,7 +74,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="openFontSize:" destination="-1" eventType="touchUpInside" id="h3W-sW-RrM"/>
+                                <action selector="showFontSize:" destination="-1" eventType="touchUpInside" id="aoS-nu-2bY"/>
                             </connections>
                         </button>
                     </subviews>

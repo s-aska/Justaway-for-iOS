@@ -29,7 +29,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="signInButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Lx0-SS-Pfr"/>
+                                    <action selector="signInButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tAl-1S-dJE"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vtZ-25-Zd3">
@@ -44,7 +44,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="openEditor:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N20-pa-5xp"/>
+                                            <action selector="showEditor:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kXD-41-NKw"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Dm-sZ-qBC">
@@ -56,7 +56,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="openSettings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="T4i-Fh-dBU"/>
+                                            <action selector="showSettings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="AY5-VP-seR"/>
                                         </connections>
                                     </button>
                                 </subviews>
