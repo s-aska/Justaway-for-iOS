@@ -28,10 +28,10 @@
                     <rect key="frame" x="0.0" y="506" width="600" height="94"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAS-wm-Zms">
-                            <rect key="frame" x="10" y="10" width="580" height="54"/>
+                            <rect key="frame" x="10" y="10" width="580" height="34"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="54" id="36B-3S-QRz"/>
+                                <constraint firstAttribute="height" constant="34" id="36B-3S-QRz"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -47,6 +47,9 @@
                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <connections>
+                                        <action selector="send:" destination="-1" eventType="touchUpInside" id="e3h-hl-4bj"/>
+                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NN0-dj-HHc">
                                     <rect key="frame" x="0.0" y="0.0" width="49" height="50"/>
@@ -75,7 +78,7 @@
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="pAS-wm-Zms" secondAttribute="trailing" constant="10" id="A5I-o1-lhK"/>
                         <constraint firstItem="pAS-wm-Zms" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" constant="10" id="N9c-mZ-Q3i"/>
-                        <constraint firstItem="cpB-WM-7Qz" firstAttribute="top" secondItem="pAS-wm-Zms" secondAttribute="bottom" constant="-20" id="OSW-sG-aTj"/>
+                        <constraint firstItem="cpB-WM-7Qz" firstAttribute="top" secondItem="pAS-wm-Zms" secondAttribute="bottom" id="OSW-sG-aTj"/>
                         <constraint firstItem="pAS-wm-Zms" firstAttribute="top" secondItem="GiI-4f-pcf" secondAttribute="top" constant="10" id="PW5-Fa-Djp"/>
                         <constraint firstItem="cpB-WM-7Qz" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="Rcs-Ty-EE5"/>
                         <constraint firstAttribute="trailing" secondItem="cpB-WM-7Qz" secondAttribute="trailing" id="eev-EE-je8"/>

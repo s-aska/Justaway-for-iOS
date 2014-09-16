@@ -1,12 +1,6 @@
 import UIKit
 
 class EditorViewController: UIViewController, UITextViewDelegate {
-    // MARK: Types
-    
-    struct Constants {
-        static let textViewMargin: NSNumber = 20
-    }
-    
     // MARK: Properties
     
     @IBOutlet weak var containerView: UIView!
@@ -23,6 +17,10 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         hide()
     }
     
+    @IBAction func send(sender: UIButton) {
+        
+    }
+    
     var textViewMinHeight: NSNumber!
     
     // MARK: - View Life Cycle
@@ -31,7 +29,7 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         
         textView.delegate = self
-        textViewMinHeight = Int(textViewHeightConstraint.constant) - Constants.textViewMargin
+        textViewMinHeight = textViewHeightConstraint.constant
     }
     
     override func didReceiveMemoryWarning() {
@@ -42,7 +40,7 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         super.viewWillAppear(animated)
         
         // Used to adjust the text view's height when the keyboard hides and shows.
-        // https://developer.apple.com/library/prerelease/ios/samplecode/UICatalog/Listings/Swift_UICatalog_TextViewController_swift.html
+        // See: https://developer.apple.com/library/prerelease/ios/samplecode/UICatalog/Listings/Swift_UICatalog_TextViewController_swift.html
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "handleKeyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: "handleKeyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
@@ -59,13 +57,15 @@ class EditorViewController: UIViewController, UITextViewDelegate {
     // MARK: UITextViewDelegate
     
     func textViewDidChange(textView: UITextView) {
-        let height = max(textView.contentSize.height, textViewMinHeight) + Constants.textViewMargin
+        let height = max(textView.contentSize.height, textViewMinHeight)
         
         var frame = textView.frame
         frame.size.height = height
         textView.frame = frame
         
         textViewHeightConstraint.constant = height
+        
+        textView.setContentOffset(CGPointZero, animated: false) // iOS8(GM) has bug...
     }
     
     // MARK: Keyboard Event Notifications
