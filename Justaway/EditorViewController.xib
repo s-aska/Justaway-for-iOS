@@ -40,9 +40,9 @@
                             <rect key="frame" x="0.0" y="44" width="600" height="50"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbk-4F-WpO">
-                                    <rect key="frame" x="551" y="0.0" width="49" height="50"/>
+                                    <rect key="frame" x="541" y="0.0" width="59" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                    <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                                     <state key="normal" title="投">
                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -52,9 +52,9 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NN0-dj-HHc">
-                                    <rect key="frame" x="0.0" y="0.0" width="49" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="59" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                    <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                                     <state key="normal" title="下">
                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>

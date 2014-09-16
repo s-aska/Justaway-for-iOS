@@ -1,14 +1,21 @@
 import UIKit
 
 class SettingsViewController: UIViewController {
+    // MARK: Types
+    
+    struct Constants {
+        static let duration = 0.2
+        static let delay: NSNumber = 0
+    }
+    
     // MARK: Properties
     
-    @IBOutlet weak var fontSizeSettingsView: UIView!
-    @IBOutlet weak var themeSettingsView: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerViewBottomConstraint: NSLayoutConstraint!
     
     var currentSettingsView: UIView!
+    var fontSizeViewController: FontSizeViewController!
+    var themeViewController: ThemeViewController!
     
     // MARK: Actions
     
@@ -17,11 +24,11 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func showFontSizeSettingsView(sender: UIButton) {
-        showSettingsView(fontSizeSettingsView)
+        showSettingsView(fontSizeViewController.view)
     }
     
     @IBAction func showThemeSettingsView(sender: UIButton) {
-        showSettingsView(themeSettingsView)
+        showSettingsView(themeViewController.view)
     }
     
     // MARK: - View Life Cycle
@@ -29,9 +36,23 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureSettingsView()
+    }
+    
+    // MARK: Configuration
+    
+    func configureSettingsView() {
         containerViewBottomConstraint.constant = -containerView.frame.size.height
-        fontSizeSettingsView.hidden = true
-        themeSettingsView.hidden = true
+        
+        fontSizeViewController = FontSizeViewController(nibName: "FontSizeViewController", bundle: nil)
+        fontSizeViewController.view.frame = view.frame
+        fontSizeViewController.view.hidden = true
+        self.view.addSubview(fontSizeViewController.view)
+        
+        themeViewController = ThemeViewController(nibName: "ThemeViewController", bundle: nil)
+        themeViewController.view.frame = view.frame
+        themeViewController.view.hidden = true
+        self.view.addSubview(themeViewController.view)
     }
     
     // MARK: - Switch the setting view
@@ -50,7 +71,8 @@ class SettingsViewController: UIViewController {
             view.frame.size.width,
             view.frame.size.height)
         view.hidden = false
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
+        
+        UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
             view.frame = CGRectMake(0,
                 view.frame.origin.y,
                 view.frame.size.width,
@@ -61,7 +83,8 @@ class SettingsViewController: UIViewController {
     
     func hideSettingsView(view: UIView, completion: (Void -> Void)?) {
         currentSettingsView = nil
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
+        
+        UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
             view.frame = CGRectMake(-view.frame.size.width,
                 view.frame.origin.y,
                 view.frame.size.width,
@@ -79,7 +102,7 @@ class SettingsViewController: UIViewController {
     func show() {
         containerViewBottomConstraint.constant = 0
         
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
             self.view.layoutIfNeeded()
         }, { finished in
         })
@@ -89,7 +112,8 @@ class SettingsViewController: UIViewController {
         
         func hideContainer() {
             containerViewBottomConstraint.constant = -containerView.frame.size.height
-            UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
+            
+            UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
                 self.view.layoutIfNeeded()
             }, { finished in
             })

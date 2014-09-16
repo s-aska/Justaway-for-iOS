@@ -16,8 +16,6 @@
             <connections>
                 <outlet property="containerView" destination="xif-2B-jzt" id="73J-gz-2wx"/>
                 <outlet property="containerViewBottomConstraint" destination="5FV-1T-Uhc" id="C8W-0Q-eGj"/>
-                <outlet property="fontSizeSettingsView" destination="pkx-aZ-Uhl" id="sw1-Kk-Eah"/>
-                <outlet property="themeSettingsView" destination="iYc-3u-r1v" id="5V4-lo-jMe"/>
                 <outlet property="view" destination="iN0-l3-epB" id="rY1-Qf-gy5"/>
             </connections>
         </placeholder>
@@ -26,28 +24,13 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iYc-3u-r1v">
-                    <rect key="frame" x="0.0" y="500" width="600" height="50"/>
-                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="VbD-bZ-U79"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="jIq-ft-xM4"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pkx-aZ-Uhl">
-                    <rect key="frame" x="0.0" y="500" width="600" height="50"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="u3A-RP-fVc"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xif-2B-jzt">
                     <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KGE-1q-n9x">
-                            <rect key="frame" x="0.0" y="0.0" width="49" height="50"/>
+                            <rect key="frame" x="0.0" y="0.0" width="59" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                             <state key="normal" title="下">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -57,18 +40,18 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ly-iZ-nc7">
-                            <rect key="frame" x="554" y="0.0" width="46" height="50"/>
+                            <rect key="frame" x="544" y="0.0" width="56" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                             <state key="normal" title="人">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNt-l5-Cr2">
-                            <rect key="frame" x="505" y="0.0" width="49" height="50"/>
+                            <rect key="frame" x="485" y="0.0" width="59" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                             <state key="normal" title="彩">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -78,9 +61,9 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6QV-2N-74j">
-                            <rect key="frame" x="456" y="0.0" width="49" height="50"/>
+                            <rect key="frame" x="426" y="0.0" width="59" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                             <state key="normal" title="A">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -106,14 +89,8 @@
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="xif-2B-jzt" secondAttribute="bottom" id="5FV-1T-Uhc"/>
-                <constraint firstItem="iYc-3u-r1v" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="7fx-QA-UTq"/>
                 <constraint firstItem="xif-2B-jzt" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="FVf-Rp-7eJ"/>
                 <constraint firstAttribute="trailing" secondItem="xif-2B-jzt" secondAttribute="trailing" id="Lno-SJ-a1W"/>
-                <constraint firstItem="xif-2B-jzt" firstAttribute="top" secondItem="pkx-aZ-Uhl" secondAttribute="bottom" id="OMl-1e-bpT"/>
-                <constraint firstAttribute="trailing" secondItem="iYc-3u-r1v" secondAttribute="trailing" id="iaZ-pH-XCe"/>
-                <constraint firstAttribute="trailing" secondItem="pkx-aZ-Uhl" secondAttribute="trailing" id="nym-LV-xhY"/>
-                <constraint firstItem="xif-2B-jzt" firstAttribute="top" secondItem="iYc-3u-r1v" secondAttribute="bottom" id="oB6-pN-fQD"/>
-                <constraint firstItem="pkx-aZ-Uhl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="tom-Ug-Qn2"/>
             </constraints>
         </view>
     </objects>
