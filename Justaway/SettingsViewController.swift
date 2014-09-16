@@ -34,7 +34,7 @@ class SettingsViewController: UIViewController {
         themeSettingsView.hidden = true
     }
     
-    // MARK: - 
+    // MARK: - Switch the setting view
     
     func showSettingsView(view: UIView) {
         if currentSettingsView != nil {
@@ -43,7 +43,7 @@ class SettingsViewController: UIViewController {
             }
             hideSettingsView(currentSettingsView, completion: nil)
         }
-        self.currentSettingsView = view
+        currentSettingsView = view
         view.hidden = false
         view.frame = CGRectMake(view.frame.size.width,
             view.frame.origin.y,
@@ -60,6 +60,7 @@ class SettingsViewController: UIViewController {
     }
     
     func hideSettingsView(view: UIView, completion: (Void -> Void)?) {
+        currentSettingsView = nil
         UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: {
             view.frame = CGRectMake(-view.frame.size.width,
                 view.frame.origin.y,
@@ -72,6 +73,8 @@ class SettingsViewController: UIViewController {
             }
         })
     }
+    
+    // MARK: -
     
     func show() {
         containerViewBottomConstraint.constant = 0
@@ -94,7 +97,6 @@ class SettingsViewController: UIViewController {
         
         if currentSettingsView != nil {
             hideSettingsView(currentSettingsView, hideContainer)
-            currentSettingsView = nil
         } else {
             hideContainer()
         }
