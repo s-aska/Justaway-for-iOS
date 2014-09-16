@@ -4,17 +4,14 @@ class EditorViewController: UIViewController {
     // MARK: Properties
     
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var containerViewButtomConstraint: NSLayoutConstraint! // Used to Match the Keyboard UIView
+    @IBOutlet weak var containerViewButtomConstraint: NSLayoutConstraint! // Used to adjust the height when the keyboard hides and shows.
     
     @IBOutlet weak var textView: AutoExpandTextView!
-    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint! // Used to Auto Expanding UITextView
-    
-    var textViewMinHeight: NSNumber!
+    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint! // Used to AutoExpandTextView
     
     // MARK: Actions
     
     @IBAction func hide(sender: UIButton) { hide() }
-    
     @IBAction func send(sender: UIButton) {  }
     
     // MARK: - View Life Cycle
@@ -45,7 +42,7 @@ class EditorViewController: UIViewController {
         notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
     
-    // MARK: Match the Keyboard UIView
+    // MARK: Keyboard Event Notifications
     
     func handleKeyboardWillShowNotification(notification: NSNotification) {
         keyboardWillChangeFrameWithNotification(notification, showsKeyboard: true)
@@ -83,7 +80,7 @@ class EditorViewController: UIViewController {
         })
     }
     
-    // MARK: - Actions
+    // MARK: -
     
     func show() {
         view.hidden = false
@@ -100,4 +97,3 @@ class EditorViewController: UIViewController {
         }
     }
 }
-
