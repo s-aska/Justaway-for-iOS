@@ -6,7 +6,18 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var toolView: UIView!
     @IBOutlet weak var toolViewBottom: NSLayoutConstraint!
     
+    @IBAction func hide(sender: UIButton) {
+        hide()
+    }
+    
+    @IBAction func showFontSize(sender: UIButton) {
+        fontSizeView.slideIn()
+        currentView = fontSizeView
+    }
+    
     var currentView: UIView!
+    
+    // MARK: - UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,6 +25,8 @@ class SettingsViewController: UIViewController {
         toolViewBottom.constant = -toolView.frame.size.height
         fontSizeView.hidden = true
     }
+    
+    // MARK: - 
     
     func show() {
         toolViewBottom.constant = 0
@@ -40,15 +53,6 @@ class SettingsViewController: UIViewController {
         } else {
             closeView()
         }
-    }
-    
-    @IBAction func hide(sender: UIButton) {
-        hide()
-    }
-    
-    @IBAction func showFontSize(sender: UIButton) {
-        fontSizeView.slideIn()
-        currentView = fontSizeView
     }
 }
 

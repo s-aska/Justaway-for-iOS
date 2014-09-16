@@ -12,10 +12,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditorViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
-                <outlet property="editorTextView" destination="pAS-wm-Zms" id="ZNn-ef-wCQ"/>
-                <outlet property="editorTextViewHeightConstraint" destination="36B-3S-QRz" id="q98-AU-nEg"/>
-                <outlet property="editorView" destination="GiI-4f-pcf" id="9zy-a0-baQ"/>
-                <outlet property="editorViewButtomConstraint" destination="hpk-3M-F0T" id="ruQ-3s-ZtO"/>
+                <outlet property="containerView" destination="GiI-4f-pcf" id="zU9-2h-jpG"/>
+                <outlet property="containerViewButtomConstraint" destination="hpk-3M-F0T" id="Wb7-U4-L0j"/>
+                <outlet property="textView" destination="pAS-wm-Zms" id="SmZ-cI-pnh"/>
+                <outlet property="textViewHeightConstraint" destination="36B-3S-QRz" id="04U-qg-a2q"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ljW-bN-VJk"/>
             </connections>
         </placeholder>

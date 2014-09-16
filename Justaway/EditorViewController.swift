@@ -1,20 +1,37 @@
 import UIKit
 
 class EditorViewController: UIViewController, UITextViewDelegate {
+    // MARK: Types
     
-    @IBOutlet weak var editorView: UIView!
-    @IBOutlet weak var editorViewButtomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var editorTextView: UITextView!
-    @IBOutlet weak var editorTextViewHeightConstraint: NSLayoutConstraint!
+    struct Constants {
+        static let textViewMargin: NSNumber = 20
+    }
     
-    var editorTextViewMinHeight: NSNumber!
-    let editorTextViewMargin: NSNumber = 20
+    // MARK: Properties
+    
+    @IBOutlet weak var containerView: UIView!
+    
+    /// Used to adjust the text view's position when the keyboard hides and shows.
+    @IBOutlet weak var containerViewButtomConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var textView: UITextView!
+    
+    /// Used to adjust the text view's height when the text changes.
+    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBAction func hide(sender: UIButton) {
+        hide()
+    }
+    
+    var textViewMinHeight: NSNumber!
+    
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        editorTextView.delegate = self
-        editorTextViewMinHeight = Int(editorTextViewHeightConstraint.constant) - editorTextViewMargin
+        textView.delegate = self
+        textViewMinHeight = Int(textViewHeightConstraint.constant) - Constants.textViewMargin
     }
     
     override func didReceiveMemoryWarning() {
@@ -24,6 +41,8 @@ class EditorViewController: UIViewController, UITextViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        // Used to adjust the text view's height when the keyboard hides and shows.
+        // https://developer.apple.com/library/prerelease/ios/samplecode/UICatalog/Listings/Swift_UICatalog_TextViewController_swift.html
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "handleKeyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: "handleKeyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
@@ -37,15 +56,19 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
     
+    // MARK: UITextViewDelegate
+    
     func textViewDidChange(textView: UITextView) {
-        let height = max(textView.contentSize.height, editorTextViewMinHeight) + editorTextViewMargin
+        let height = max(textView.contentSize.height, textViewMinHeight) + Constants.textViewMargin
         
         var frame = textView.frame
         frame.size.height = height
         textView.frame = frame
         
-        editorTextViewHeightConstraint.constant = height
+        textViewHeightConstraint.constant = height
     }
+    
+    // MARK: Keyboard Event Notifications
     
     func handleKeyboardWillShowNotification(notification: NSNotification) {
         let userInfo = notification.userInfo!
@@ -54,17 +77,15 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         
         let orientation: UIInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
         if (orientation.isLandscape) {
-            editorViewButtomConstraint.constant = keyboardScreenEndFrame.size.width
+            containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.width
         } else {
-            editorViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
+            containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
         }
         
         self.view.setNeedsUpdateConstraints()
         
         UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
-            if (self.editorView.alpha == 0) {
-                self.editorView.alpha = 1
-            }
+            self.containerView.alpha = 1
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -73,34 +94,33 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         let userInfo = notification.userInfo!
         let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as NSNumber).doubleValue
         
-        editorViewButtomConstraint.constant = 0
+        containerViewButtomConstraint.constant = 0
         
         UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
-            self.editorView.alpha = 0
+            self.containerView.alpha = 0
             self.view.layoutIfNeeded()
         }, completion: { finished in
-                self.view.hidden = true
+            self.view.hidden = true
         })
     }
     
+    // MARK: - Editor control
+    
     func show() {
         view.hidden = false
-        editorTextView.becomeFirstResponder()
+        textView.becomeFirstResponder()
     }
     
     func hide() {
-        editorTextView.text = ""
-        editorTextViewHeightConstraint.constant = editorTextViewMinHeight + editorTextViewMargin
+        textView.text = ""
+        textView.layoutIfNeeded()
+        textViewDidChange(textView)
         
-        if (editorTextView.isFirstResponder()) {
-            editorTextView.resignFirstResponder()
+        if (textView.isFirstResponder()) {
+            textView.resignFirstResponder()
         } else {
             view.hidden = true
         }
-    }
-    
-    @IBAction func hide(sender: UIButton) {
-        hide()
     }
 }
 
