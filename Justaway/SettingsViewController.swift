@@ -39,7 +39,7 @@ class SettingsViewController: UIViewController {
         configureSettingsView()
     }
     
-    // MARK: Configuration
+    // MARK: - Configuration
     
     func configureSettingsView() {
         containerViewBottomConstraint.constant = -containerView.frame.size.height
@@ -55,7 +55,7 @@ class SettingsViewController: UIViewController {
         self.view.addSubview(themeViewController.view)
     }
     
-    // MARK: - Switch the setting view
+    // MARK: - Switch the SettingsView
     
     func showSettingsView(view: UIView) {
         if currentSettingsView != nil {
@@ -65,6 +65,8 @@ class SettingsViewController: UIViewController {
             hideSettingsView(currentSettingsView, completion: nil)
         }
         currentSettingsView = view
+        
+        // Slide in
         view.hidden = false
         view.frame = CGRectMake(view.frame.size.width,
             view.frame.origin.y,
@@ -84,6 +86,7 @@ class SettingsViewController: UIViewController {
     func hideSettingsView(view: UIView, completion: (Void -> Void)?) {
         currentSettingsView = nil
         
+        // Slide out
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
             view.frame = CGRectMake(-view.frame.size.width,
                 view.frame.origin.y,
