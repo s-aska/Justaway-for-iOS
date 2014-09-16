@@ -62,10 +62,9 @@ class EditorViewController: UIViewController, UITextViewDelegate {
         var frame = textView.frame
         frame.size.height = height
         textView.frame = frame
+        textView.setContentOffset(CGPointZero, animated: false) // iOS8(GM) has bug...
         
         textViewHeightConstraint.constant = height
-        
-        textView.setContentOffset(CGPointZero, animated: false) // iOS8(GM) has bug...
     }
     
     // MARK: Keyboard Event Notifications
@@ -113,7 +112,7 @@ class EditorViewController: UIViewController, UITextViewDelegate {
     
     func hide() {
         textView.text = ""
-        textView.layoutIfNeeded()
+        textView.layoutIfNeeded() // Reset .contentSize.height
         textViewDidChange(textView)
         
         if (textView.isFirstResponder()) {
