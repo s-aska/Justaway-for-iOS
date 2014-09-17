@@ -1,5 +1,5 @@
 import UIKit
 
-class ThemeViewController: UIViewController {
+class ThemeViewController: BaseViewController {
     
 }

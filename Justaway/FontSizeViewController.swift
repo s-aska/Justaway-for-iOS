@@ -1,5 +1,5 @@
 import UIKit
 
-class FontSizeViewController: UIViewController {
+class FontSizeViewController: BaseViewController {
     
 }

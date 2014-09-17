@@ -10,12 +10,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        editorViewController = EditorViewController(nibName: "EditorViewController", bundle: nil)
+        editorViewController = EditorViewController()
         editorViewController.view.frame = view.frame
         editorViewController.view.hidden = true
         self.view.addSubview(editorViewController.view)
         
-        settingsViewController = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        settingsViewController = SettingsViewController()
         settingsViewController.view.frame = view.frame
         settingsViewController.view.hidden = false
         self.view.addSubview(settingsViewController.view)

@@ -3,7 +3,7 @@ import UIKit
 class AutoExpandTextView: UITextView, UITextViewDelegate {
     // MARK: Properties
     
-    var constraint: NSLayoutConstraint!
+    weak var constraint: NSLayoutConstraint!
     var minHeight: NSNumber!
     
     // MARK: Configuration
@@ -17,17 +17,17 @@ class AutoExpandTextView: UITextView, UITextViewDelegate {
     // MARK: UITextViewDelegate
     
     func textViewDidChange(textView: UITextView) {
-        setHeight(max(textView.contentSize.height, minHeight))
+        exapnd(max(textView.contentSize.height, minHeight))
     }
     
-    // MARK: 
+    // MARK: Public
     
     func reset() {
         text = ""
-        setHeight(minHeight)
+        exapnd(minHeight)
     }
     
-    func setHeight(height: NSNumber) {
+    func exapnd(height: NSNumber) {
         var f = frame
         f.size.height = height
         frame = f

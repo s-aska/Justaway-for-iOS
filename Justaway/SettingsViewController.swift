@@ -1,6 +1,6 @@
 import UIKit
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: BaseViewController {
     // MARK: Types
     
     struct Constants {
@@ -17,7 +17,7 @@ class SettingsViewController: UIViewController {
     var fontSizeViewController: FontSizeViewController!
     var themeViewController: ThemeViewController!
     
-    // MARK: Actions
+    // MARK: IBActions
     
     @IBAction func hide(sender: UIButton) {
         hide()
@@ -44,12 +44,12 @@ class SettingsViewController: UIViewController {
     func configureSettingsView() {
         containerViewBottomConstraint.constant = -containerView.frame.size.height
         
-        fontSizeViewController = FontSizeViewController(nibName: "FontSizeViewController", bundle: nil)
+        fontSizeViewController = FontSizeViewController()
         fontSizeViewController.view.frame = view.frame
         fontSizeViewController.view.hidden = true
         self.view.addSubview(fontSizeViewController.view)
         
-        themeViewController = ThemeViewController(nibName: "ThemeViewController", bundle: nil)
+        themeViewController = ThemeViewController()
         themeViewController.view.frame = view.frame
         themeViewController.view.hidden = true
         self.view.addSubview(themeViewController.view)

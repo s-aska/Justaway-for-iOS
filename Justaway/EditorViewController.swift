@@ -1,6 +1,6 @@
 import UIKit
 
-class EditorViewController: UIViewController {
+class EditorViewController: BaseViewController {
     // MARK: Properties
     
     @IBOutlet weak var containerView: UIView!
@@ -9,7 +9,7 @@ class EditorViewController: UIViewController {
     @IBOutlet weak var textView: AutoExpandTextView!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint! // Used to AutoExpandTextView
     
-    // MARK: Actions
+    // MARK: IBActions
     
     @IBAction func hide(sender: UIButton) { hide() }
     @IBAction func send(sender: UIButton) {  }
