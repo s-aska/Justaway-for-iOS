@@ -34,6 +34,8 @@ class AutoExpandTextView: UITextView, UITextViewDelegate {
         
         setContentOffset(CGPointZero, animated: false) // iOS8(GM) has bug?
         
-        constraint.constant = height
+        if constraint != nil {
+            constraint.constant = height
+        }
     }
 }

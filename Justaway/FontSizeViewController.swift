@@ -1,5 +1,9 @@
 import UIKit
 
-class FontSizeViewController: BaseViewController {
+class FontSizeViewController: UIViewController {
+    // MARK: Properties
     
+    override var nibName: String {
+        return "FontSizeViewController"
+    }
 }

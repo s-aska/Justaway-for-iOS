@@ -1,6 +1,6 @@
 import UIKit
 
-class SettingsViewController: BaseViewController {
+class SettingsViewController: UIViewController {
     // MARK: Types
     
     struct Constants {
@@ -16,6 +16,10 @@ class SettingsViewController: BaseViewController {
     var currentSettingsView: UIView!
     var fontSizeViewController: FontSizeViewController!
     var themeViewController: ThemeViewController!
+    
+    override var nibName: String {
+        return "SettingsViewController"
+    }
     
     // MARK: - View Life Cycle
     

@@ -1,6 +1,6 @@
 import UIKit
 
-class EditorViewController: BaseViewController {
+class EditorViewController: UIViewController {
     // MARK: Properties
     
     @IBOutlet weak var containerView: UIView!
@@ -8,6 +8,10 @@ class EditorViewController: BaseViewController {
     
     @IBOutlet weak var textView: AutoExpandTextView!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint! // Used to AutoExpandTextView
+    
+    override var nibName: String {
+        return "EditorViewController"
+    }
     
     // MARK: - View Life Cycle
     

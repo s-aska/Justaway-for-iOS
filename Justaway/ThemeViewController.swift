@@ -1,5 +1,9 @@
 import UIKit
 
-class ThemeViewController: BaseViewController {
+class ThemeViewController: UIViewController {
+    // MARK: Properties
     
+    override var nibName: String {
+        return "ThemeViewController"
+    }
 }
