@@ -17,20 +17,6 @@ class SettingsViewController: BaseViewController {
     var fontSizeViewController: FontSizeViewController!
     var themeViewController: ThemeViewController!
     
-    // MARK: IBActions
-    
-    @IBAction func hide(sender: UIButton) {
-        hide()
-    }
-    
-    @IBAction func showFontSizeSettingsView(sender: UIButton) {
-        showSettingsView(fontSizeViewController.view)
-    }
-    
-    @IBAction func showThemeSettingsView(sender: UIButton) {
-        showSettingsView(themeViewController.view)
-    }
-    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -47,15 +33,27 @@ class SettingsViewController: BaseViewController {
         fontSizeViewController = FontSizeViewController()
         fontSizeViewController.view.frame = view.frame
         fontSizeViewController.view.hidden = true
-        self.view.addSubview(fontSizeViewController.view)
+        view.addSubview(fontSizeViewController.view)
         
         themeViewController = ThemeViewController()
         themeViewController.view.frame = view.frame
         themeViewController.view.hidden = true
-        self.view.addSubview(themeViewController.view)
+        view.addSubview(themeViewController.view)
     }
     
-    // MARK: - Switch the SettingsView
+    // MARK: - Actions
+    
+    @IBAction func hide(sender: UIButton) {
+        hide()
+    }
+    
+    @IBAction func showFontSizeSettingsView(sender: UIButton) {
+        showSettingsView(fontSizeViewController.view)
+    }
+    
+    @IBAction func showThemeSettingsView(sender: UIButton) {
+        showSettingsView(themeViewController.view)
+    }
     
     func showSettingsView(view: UIView) {
         if currentSettingsView != nil {
@@ -99,8 +97,6 @@ class SettingsViewController: BaseViewController {
             }
         })
     }
-    
-    // MARK: -
     
     func show() {
         containerViewBottomConstraint.constant = 0

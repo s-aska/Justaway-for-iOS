@@ -9,11 +9,6 @@ class EditorViewController: BaseViewController {
     @IBOutlet weak var textView: AutoExpandTextView!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint! // Used to AutoExpandTextView
     
-    // MARK: IBActions
-    
-    @IBAction func hide(sender: UIButton) { hide() }
-    @IBAction func send(sender: UIButton) {  }
-    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -42,7 +37,7 @@ class EditorViewController: BaseViewController {
         notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
     
-    // MARK: Keyboard Event Notifications
+    // MARK: - Keyboard Event Notifications
     
     func handleKeyboardWillShowNotification(notification: NSNotification) {
         keyboardWillChangeFrameWithNotification(notification, showsKeyboard: true)
@@ -80,7 +75,15 @@ class EditorViewController: BaseViewController {
         })
     }
     
-    // MARK: -
+    // MARK: - Actions
+    
+    @IBAction func hide(sender: UIButton) {
+        hide()
+    }
+    
+    @IBAction func send(sender: UIButton) {
+        
+    }
     
     func show() {
         view.hidden = false

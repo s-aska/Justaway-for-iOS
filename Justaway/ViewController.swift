@@ -1,11 +1,14 @@
 import UIKit
 
 class ViewController: UIViewController {
+    // MARK: Properties
     
     @IBOutlet weak var signInButton: UIButton!
     
     var editorViewController: EditorViewController!
     var settingsViewController: SettingsViewController!
+    
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +35,8 @@ class ViewController: UIViewController {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
     }
+    
+    // MARK: - Actions
     
     @IBAction func signInButtonClick(sender: UIButton) {
         
