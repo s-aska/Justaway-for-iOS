@@ -1,10 +1,10 @@
 import UIKit
 
-class AccountViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // MARK: Types
     
     struct TableViewConstants {
-        static let tableViewCellIdentifier = "searchResultsCell"
+        static let tableViewCellIdentifier = "Cell"
     }
     
     // MARK: Properties
@@ -17,15 +17,16 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         return "AccountViewController"
     }
     
+    // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
         tableView?.delegate = self
         tableView?.dataSource = self
     }
     
-    // MARK: UITableViewDataSource
+    // MARK: - UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
@@ -39,33 +40,23 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // 選択するとアラートを表示する
-        let alert = UIAlertView(title: "alertTitle", message: "selected cell index is \(indexPath.row)", delegate: nil, cancelButtonTitle: "OK")
-        alert.show()
+    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
-        return 1
-    }
-//
-//    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
-//        return 1
-//    }
-//
-//    // セクション高さ
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        
-//    }
+    // MARK: UITableViewDelegate
     
-//    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as UITableViewCell
-////
-////        cell.textLabel!.text = visibleResults[indexPath.row]
-//        
-//        return cell
-//    }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let alert = UIAlertView(title: "alertTitle", message: "selected cell index is \(indexPath.row)", delegate: nil, cancelButtonTitle: "OK")
+        alert.show()
+    }
+    
+    // MARK: - Actions
+    
     @IBAction func edit() {
         tableView?.setEditing(true, animated: true)
     }
