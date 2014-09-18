@@ -16,6 +16,7 @@ class SettingsViewController: UIViewController {
     var currentSettingsView: UIView!
     var fontSizeViewController: FontSizeViewController!
     var themeViewController: ThemeViewController!
+    var accountViewController: AccountViewController!
     
     override var nibName: String {
         return "SettingsViewController"
@@ -43,6 +44,11 @@ class SettingsViewController: UIViewController {
         themeViewController.view.frame = view.frame
         themeViewController.view.hidden = true
         view.addSubview(themeViewController.view)
+        
+        accountViewController = AccountViewController()
+        accountViewController.view.frame = view.frame
+        accountViewController.view.hidden = true
+        view.addSubview(accountViewController.view)
     }
     
     // MARK: - Actions
@@ -57,6 +63,10 @@ class SettingsViewController: UIViewController {
     
     @IBAction func showThemeSettingsView(sender: UIButton) {
         showSettingsView(themeViewController.view)
+    }
+    
+    @IBAction func showAccountViewController(sender: UIButton) {
+        showSettingsView(accountViewController.view)
     }
     
     func showSettingsView(view: UIView) {
