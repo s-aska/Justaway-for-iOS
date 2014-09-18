@@ -9,7 +9,9 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // MARK: Properties
     
-    @IBOutlet var tableView : UITableView?
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var leftButton: UIButton!
+    @IBOutlet weak var rightButton: UIButton!
     
     var items:Array<String> = ["one", "two", "three", "four"]
     
@@ -22,8 +24,8 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView?.delegate = self
-        tableView?.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     // MARK: - UITableViewDataSource
@@ -57,7 +59,33 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // MARK: - Actions
     
-    @IBAction func edit() {
-        tableView?.setEditing(true, animated: true)
+    @IBAction func left(sender: UIButton) {
+        if (tableView.editing == true) {
+            cancel()
+        }
+    }
+    
+    @IBAction func right(sender: UIButton) {
+        if (tableView.editing == true) {
+            done()
+        } else {
+            edit()
+        }
+    }
+    
+    func cancel() {
+        tableView.setEditing(false, animated: true)
+        leftButton.setTitle("Add", forState: UIControlState.Normal)
+        rightButton.setTitle("Edit", forState: UIControlState.Normal)
+    }
+    
+    func edit() {
+        tableView.setEditing(true, animated: true)
+        leftButton.setTitle("Cancel", forState: UIControlState.Normal)
+        rightButton.setTitle("Done", forState: UIControlState.Normal)
+    }
+    
+    func done() {
+        cancel()
     }
 }

@@ -3,15 +3,12 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="fontello.ttf">
-            <string>fontello</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccountViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
-                <outlet property="tableView" destination="nsx-O5-qnt" id="qTZ-MN-Fw6"/>
+                <outlet property="leftButton" destination="Vwk-HG-Wc6" id="hLw-u1-h89"/>
+                <outlet property="rightButton" destination="ARA-5i-TJg" id="o8w-hx-7WT"/>
+                <outlet property="tableView" destination="nsx-O5-qnt" id="OhG-Og-ewk"/>
                 <outlet property="view" destination="iN0-l3-epB" id="m2R-db-FFw"/>
             </connections>
         </placeholder>
@@ -27,14 +24,17 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M3b-2x-uXn">
                     <rect key="frame" x="0.0" y="500" width="600" height="50"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vwk-HG-Wc6">
-                            <rect key="frame" x="0.0" y="0.0" width="56" height="50"/>
-                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="Vwk-HG-Wc6">
+                            <rect key="frame" x="0.0" y="-2" width="77" height="54"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
-                            <state key="normal" title="+">
+                            <state key="normal" title="Add">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="left:" destination="-1" eventType="touchUpInside" id="Ay3-62-DkY"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ARA-5i-TJg">
                             <rect key="frame" x="525" y="-2" width="75" height="54"/>
@@ -45,7 +45,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="edit" destination="-1" eventType="touchUpInside" id="8ct-Y5-h5z"/>
+                                <action selector="right:" destination="-1" eventType="touchUpInside" id="2J2-EE-3C7"/>
                             </connections>
                         </button>
                     </subviews>
