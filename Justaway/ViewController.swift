@@ -1,6 +1,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
     // MARK: Properties
     
     @IBOutlet weak var signInButton: UIButton!
@@ -49,5 +50,6 @@ class ViewController: UIViewController {
     @IBAction func showSettings(sender: UIButton) {
         settingsViewController.show()
     }
+    
 }
 

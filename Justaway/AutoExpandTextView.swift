@@ -1,6 +1,7 @@
 import UIKit
 
 class AutoExpandTextView: UITextView, UITextViewDelegate {
+    
     // MARK: Properties
     
     weak var constraint: NSLayoutConstraint!

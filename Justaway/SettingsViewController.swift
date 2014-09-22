@@ -1,6 +1,7 @@
 import UIKit
 
 class SettingsViewController: UIViewController {
+    
     // MARK: Types
     
     struct Constants {
@@ -138,4 +139,5 @@ class SettingsViewController: UIViewController {
             hideContainer()
         }
     }
+    
 }

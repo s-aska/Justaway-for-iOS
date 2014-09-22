@@ -35,18 +35,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vtZ-25-Zd3">
                                 <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6s0-Bq-v9h">
-                                        <rect key="frame" x="540" y="0.0" width="60" height="50"/>
-                                        <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                        <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
-                                        <state key="normal" title="書">
-                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="showEditor:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kXD-41-NKw"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Dm-sZ-qBC">
                                         <rect key="frame" x="481" y="0.0" width="59" height="50"/>
                                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
@@ -57,6 +45,18 @@
                                         </state>
                                         <connections>
                                             <action selector="showSettings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="AY5-VP-seR"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6s0-Bq-v9h">
+                                        <rect key="frame" x="540" y="0.0" width="60" height="50"/>
+                                        <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                                        <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                                        <state key="normal" title="書">
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="showEditor:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kXD-41-NKw"/>
                                         </connections>
                                     </button>
                                 </subviews>

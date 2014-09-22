@@ -1,6 +1,7 @@
 import UIKit
 
 class EditorViewController: UIViewController {
+    
     // MARK: Properties
     
     @IBOutlet weak var containerView: UIView!
@@ -103,4 +104,5 @@ class EditorViewController: UIViewController {
             view.hidden = true
         }
     }
+    
 }

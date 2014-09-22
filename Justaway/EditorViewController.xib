@@ -7,6 +7,7 @@
         <mutableArray key="fontello.ttf">
             <string>fontello</string>
             <string>fontello</string>
+            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -39,18 +40,6 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpB-WM-7Qz">
                             <rect key="frame" x="0.0" y="44" width="600" height="50"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbk-4F-WpO">
-                                    <rect key="frame" x="541" y="0.0" width="59" height="50"/>
-                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
-                                    <state key="normal" title="投">
-                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="send:" destination="-1" eventType="touchUpInside" id="e3h-hl-4bj"/>
-                                    </connections>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NN0-dj-HHc">
                                     <rect key="frame" x="0.0" y="0.0" width="59" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
@@ -63,12 +52,38 @@
                                         <action selector="hide:" destination="-1" eventType="touchUpInside" id="WfZ-ML-tyE"/>
                                     </connections>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcO-tg-NdG">
+                                    <rect key="frame" x="59" y="0.0" width="62" height="50"/>
+                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                                    <state key="normal" title="画">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="hide:" destination="-1" eventType="touchUpInside" id="SaI-Ym-ZnA"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbk-4F-WpO">
+                                    <rect key="frame" x="541" y="0.0" width="59" height="50"/>
+                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                                    <state key="normal" title="投">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="send:" destination="-1" eventType="touchUpInside" id="e3h-hl-4bj"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="centerY" secondItem="NN0-dj-HHc" secondAttribute="centerY" id="0RW-J6-0qG"/>
                                 <constraint firstAttribute="height" constant="50" id="QA0-KP-aqU"/>
                                 <constraint firstItem="NN0-dj-HHc" firstAttribute="leading" secondItem="cpB-WM-7Qz" secondAttribute="leading" id="RPs-BP-itF"/>
+                                <constraint firstItem="AcO-tg-NdG" firstAttribute="leading" secondItem="NN0-dj-HHc" secondAttribute="trailing" id="cZu-qX-yjw"/>
+                                <constraint firstAttribute="centerY" secondItem="AcO-tg-NdG" secondAttribute="centerY" id="fS4-To-Vfx"/>
                                 <constraint firstAttribute="trailing" secondItem="mbk-4F-WpO" secondAttribute="trailing" id="ht5-bz-Fwc"/>
                                 <constraint firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="y1y-gb-4En"/>
                             </constraints>

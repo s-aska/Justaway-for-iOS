@@ -1,6 +1,7 @@
 import UIKit
 
 class AccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
     // MARK: Types
     
     struct TableViewConstants {
@@ -88,4 +89,5 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     func done() {
         cancel()
     }
+    
 }
