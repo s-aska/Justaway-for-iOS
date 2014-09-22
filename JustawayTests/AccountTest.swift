@@ -31,8 +31,6 @@ class AccountTest: XCTestCase {
         
         XCTAssert(current == 0, "loadAccounts current")
         
-        println(accounts[0].screenName)
-        
         XCTAssert(accounts[0].screenName == "su_aska", "loadAccounts screenName")
     }
     
