@@ -16,14 +16,12 @@ class KeychainServiceTest: XCTestCase {
     func testExample() {
         
         let saveSuccess = KeychainService.save("accounts", data: "{\"hoge\":foo}")
-        print(saveSuccess)
         XCTAssert(saveSuccess, "save")
         
         let data = KeychainService.load("accounts")
         XCTAssert(data == "{\"hoge\":foo}", "load")
         
         let removeSuccess = KeychainService.remove("accounts")
-        print(removeSuccess)
         XCTAssert(removeSuccess, "remove")
         
         let dataAfterRemove = KeychainService.load("accounts")
