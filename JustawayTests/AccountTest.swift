@@ -22,6 +22,18 @@ class AccountTest: XCTestCase {
         XCTAssert(account.screenName == "su_aska", "screenName")
         
         XCTAssert(account.profileImageBiggerURL().absoluteString == biggerURL, "profileImageBiggerURL")
+        
+        let saveSuccess = AccountService.save(0, accounts: [account])
+        
+        XCTAssert(saveSuccess, "saveSuccess")
+        
+        let (current, accounts) = AccountService.load()
+        
+        XCTAssert(current == 0, "loadAccounts current")
+        
+        println(accounts[0].screenName)
+        
+        XCTAssert(accounts[0].screenName == "su_aska", "loadAccounts screenName")
     }
     
 }

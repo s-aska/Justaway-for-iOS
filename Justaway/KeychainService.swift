@@ -1,19 +1,13 @@
 import UIKit
 import Security
 
-let serviceIdentifier = "info.justaway"
-let accessGroup = "info.justaway.Justaway"
-
-class KeychainService: NSObject {
+class KeychainService {
     
-    class func save(key: String, data: NSString) -> Bool {
-        let dataFromString: NSData = data.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
-        
+    class func save(key: String, data: NSData) -> Bool {
         let keychainQuery = [
             kSecClass       : kSecClassGenericPassword,
-            kSecAttrService : serviceIdentifier,
             kSecAttrAccount : key,
-            kSecValueData   : dataFromString ]
+            kSecValueData   : data ]
         
         SecItemDelete(keychainQuery as CFDictionaryRef)
         
@@ -22,10 +16,9 @@ class KeychainService: NSObject {
         return status == noErr
     }
     
-    class func load(key: String) -> NSString {
+    class func load(key: String) -> NSData {
         let keychainQuery = [
             kSecClass       : kSecClassGenericPassword,
-            kSecAttrService : serviceIdentifier,
             kSecAttrAccount : key,
             kSecReturnData  : kCFBooleanTrue,
             kSecMatchLimit  : kSecMatchLimitOne ]
@@ -37,16 +30,15 @@ class KeychainService: NSObject {
         let opaque = dataTypeRef?.toOpaque()
         
         if let op = opaque? {
-            return NSString(data: Unmanaged<NSData>.fromOpaque(op).takeUnretainedValue(), encoding: NSUTF8StringEncoding)
+            return Unmanaged<NSData>.fromOpaque(op).takeUnretainedValue()
         } else {
-            return ""
+            return NSData()
         }
     }
     
     class func remove(key: String) -> Bool {
         let keychainQuery = [
             kSecClass       : kSecClassGenericPassword,
-            kSecAttrService : serviceIdentifier,
             kSecAttrAccount : key,
             kSecValueData   : NSData() ]
         

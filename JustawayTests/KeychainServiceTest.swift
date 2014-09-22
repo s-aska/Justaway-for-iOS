@@ -15,17 +15,30 @@ class KeychainServiceTest: XCTestCase {
     
     func testExample() {
         
-        let saveSuccess = KeychainService.save("accounts", data: "{\"hoge\":foo}")
+        let saveSuccess = KeychainService.save("accounts", data: "{\"hoge\":foo}".toData())
         XCTAssert(saveSuccess, "save")
         
-        let data = KeychainService.load("accounts")
-        XCTAssert(data == "{\"hoge\":foo}", "load")
+        let dataAfterSave = KeychainService.load("accounts")
+        XCTAssert(dataAfterSave.length > 0, "load length")
+        XCTAssert(dataAfterSave.toString() == "{\"hoge\":foo}", "load data")
         
         let removeSuccess = KeychainService.remove("accounts")
         XCTAssert(removeSuccess, "remove")
         
         let dataAfterRemove = KeychainService.load("accounts")
-        XCTAssert(dataAfterRemove == "", "load after remove")
+        XCTAssert(dataAfterRemove.length == 0, "load after remove")
     }
     
+}
+
+extension String {
+    func toData() -> NSData {
+        return dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
+    }
+}
+
+extension NSData {
+    func toString() -> String {
+        return NSString(data: self, encoding: NSUTF8StringEncoding)
+    }
 }
