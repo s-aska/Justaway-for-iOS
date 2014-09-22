@@ -6,18 +6,6 @@ let accessGroup = "info.justaway.Justaway"
 
 class KeychainService: NSObject {
     
-    class func remove(key: String) -> Bool {
-        let keychainQuery = [
-            kSecClass       : kSecClassGenericPassword,
-            kSecAttrService : serviceIdentifier,
-            kSecAttrAccount : key,
-            kSecValueData   : NSData() ]
-        
-        let status: OSStatus = SecItemDelete(keychainQuery as CFDictionaryRef)
-        
-        return status == noErr
-    }
-    
     class func save(key: String, data: NSString) -> Bool {
         let dataFromString: NSData = data.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
         
@@ -53,6 +41,18 @@ class KeychainService: NSObject {
         } else {
             return ""
         }
+    }
+    
+    class func remove(key: String) -> Bool {
+        let keychainQuery = [
+            kSecClass       : kSecClassGenericPassword,
+            kSecAttrService : serviceIdentifier,
+            kSecAttrAccount : key,
+            kSecValueData   : NSData() ]
+        
+        let status: OSStatus = SecItemDelete(keychainQuery as CFDictionaryRef)
+        
+        return status == noErr
     }
     
 }
