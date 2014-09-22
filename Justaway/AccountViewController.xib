@@ -24,7 +24,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M3b-2x-uXn">
                     <rect key="frame" x="0.0" y="500" width="600" height="50"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="Vwk-HG-Wc6">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vwk-HG-Wc6">
                             <rect key="frame" x="0.0" y="-0.5" width="72" height="51"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
