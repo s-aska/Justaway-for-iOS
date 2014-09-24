@@ -19,14 +19,14 @@ class KeychainServiceTest: XCTestCase {
         XCTAssert(saveSuccess, "save")
         
         let dataAfterSave = KeychainService.load("accounts")
-        XCTAssert(dataAfterSave.length > 0, "load length")
-        XCTAssert(dataAfterSave.toString() == "{\"hoge\":foo}", "load data")
+        XCTAssert(dataAfterSave!.length > 0, "load length")
+        XCTAssert(dataAfterSave!.toString() == "{\"hoge\":foo}", "load data")
         
         let removeSuccess = KeychainService.remove("accounts")
         XCTAssert(removeSuccess, "remove")
         
         let dataAfterRemove = KeychainService.load("accounts")
-        XCTAssert(dataAfterRemove.length == 0, "load after remove")
+        XCTAssert(dataAfterRemove == nil, "load after remove")
     }
     
 }

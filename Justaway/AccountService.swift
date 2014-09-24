@@ -21,7 +21,12 @@ class AccountService {
     
     class func load() -> (NSNumber, Array<Account>) {
         let data = KeychainService.load(KeyConstants.keychain)
-        let json :AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil) as? NSDictionary
+        
+        if data == nil {
+            return (-1, Array<Account>())
+        }
+        
+        let json :AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil) as? NSDictionary
         
         let current = json[KeyConstants.current] as NSNumber
         
@@ -31,6 +36,10 @@ class AccountService {
         })
         
         return (current, accounts)
+    }
+    
+    class func clear() {
+        KeychainService.remove(KeyConstants.keychain)
     }
     
 }

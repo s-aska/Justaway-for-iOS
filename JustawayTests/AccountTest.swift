@@ -32,6 +32,14 @@ class AccountTest: XCTestCase {
         XCTAssert(current == 0, "loadAccounts current")
         
         XCTAssert(accounts[0].screenName == "su_aska", "loadAccounts screenName")
+        
+        AccountService.clear()
+        
+        let (currentAfterClear, accountsAfterClear) = AccountService.load()
+        
+        XCTAssert(currentAfterClear == -1, "clear current")
+        
+        XCTAssert(accountsAfterClear.count == 0, "clear accounts")
     }
     
 }
