@@ -17,7 +17,7 @@ class AccountTest: XCTestCase {
         let normalURL = "https://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
         let biggerURL = "https://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_bigger.png"
         
-        let account = Account(accessToken: "dummy", userID: "1", screenName: "su_aska", name: "Shinichiro Aska", profileImageURL: NSURL(string: normalURL))
+        let account = Account(accessToken: "dummy", userID: "1", screenName: "su_aska", name: "Shinichiro Aska", profileImageURL: NSURL(string: normalURL), iOS: true)
         
         XCTAssert(account.screenName == "su_aska", "screenName")
         

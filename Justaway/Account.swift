@@ -10,6 +10,7 @@ class Account {
         static let screenName = "screenName"
         static let name = "name"
         static let profileImageURL = "profileImageURL"
+        static let iOS = "iOS"
     }
     
     // MARK: - Properties
@@ -19,15 +20,17 @@ class Account {
     let screenName: String
     let name: String
     let profileImageURL: NSURL
+    let iOS: Bool
     
     // MARK: - Initializers
     
-    init(accessToken: String, userID: String, screenName: String, name: String, profileImageURL: NSURL) {
+    init(accessToken: String, userID: String, screenName: String, name: String, profileImageURL: NSURL, iOS: Bool) {
         self.accessToken = accessToken
         self.userID = userID
         self.screenName = screenName
         self.name = name
         self.profileImageURL = profileImageURL
+        self.iOS = iOS
     }
     
     init(dictionary: NSDictionary) {
@@ -36,6 +39,7 @@ class Account {
         self.screenName = dictionary[KeyConstants.screenName] as String
         self.name = dictionary[KeyConstants.name] as String
         self.profileImageURL = NSURL(string: dictionary[KeyConstants.profileImageURL] as String)
+        self.iOS = dictionary[KeyConstants.iOS] as Bool
     }
     
     // MARK: - Public Methods
@@ -50,7 +54,8 @@ class Account {
                  KeyConstants.userID          : self.userID,
                  KeyConstants.screenName      : self.screenName,
                  KeyConstants.name            : self.name,
-                 KeyConstants.profileImageURL : self.profileImageURL.absoluteString! ]
+                 KeyConstants.profileImageURL : self.profileImageURL.absoluteString!,
+                 KeyConstants.iOS             : self.iOS ]
     }
     
 }
