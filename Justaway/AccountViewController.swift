@@ -45,6 +45,16 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         cell.accessoryType = UITableViewCellAccessoryType.Checkmark
         cell.textLabel?.text = self.rows[indexPath.row].name
         cell.detailTextLabel?.text = self.rows[indexPath.row].screenName
+        let url = self.rows[indexPath.row].profileImageBiggerURL()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            let imageData :NSData = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: nil)
+            dispatch_async(dispatch_get_main_queue(), {
+                cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                cell.imageView?.image = UIImage(data:imageData)
+                cell.setNeedsLayout()
+            })
+            NSLog("load %@", url)
+        })
         return cell
     }
     
