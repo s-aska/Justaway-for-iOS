@@ -1,5 +1,6 @@
 import UIKit
 import Accounts
+import Social
 
 class AccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -28,6 +29,9 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        let (current, accounts) = AccountService.load()
+        rows = accounts
     }
     
     // MARK: - UITableViewDataSource
@@ -83,18 +87,35 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                     if twitterAccounts?.count == 0 {
                         self.alertWithTitle("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
                     } else {
-                        self.rows = twitterAccounts.map({
+                        let idMap = NSMutableDictionary()
+                        let ids :Array<String> = twitterAccounts.map({
                             twitterAccount in
-                            Account(accessToken: twitterAccount.identifier,
-                                userID: twitterAccount.valueForKeyPath("properties.user_id") as String,
-                                screenName: twitterAccount.username as String,
-                                name: twitterAccount.username as String,
-                                profileImageURL: NSURL(string: ""),
-                                iOS: true)
+                            let id = twitterAccount.valueForKeyPath("properties.user_id") as String
+                            idMap.setValue(twitterAccount.identifier, forKey: id)
+                            return id
                         })
-                        
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.tableView.reloadData()
+                        let url = NSURL(string: "https://api.twitter.com/1.1/users/lookup.json")
+                        let params = ["user_id": ids]
+                        let req = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .GET, URL: url, parameters: params)
+                        req.account = twitterAccounts[0] as ACAccount
+                        req.performRequestWithHandler({
+                            (data :NSData!, res :NSHTTPURLResponse!, error :NSError!) -> Void in
+                            NSLog("%@", NSString(data: data, encoding :NSUTF8StringEncoding))
+                            let users = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil) as? NSArray
+                            self.rows = (users as [NSDictionary]).map({
+                                (user: NSDictionary) in
+                                let token = idMap.valueForKey(user["id_str"] as String) as String
+                                return Account(accessToken: token,
+                                    userID: user["id_str"] as String,
+                                    screenName: user["screen_name"] as String,
+                                    name: user["name"] as String,
+                                    profileImageURL: NSURL(string: user["profile_image_url"] as String),
+                                    iOS: true)
+                            })
+                            AccountService.save(0, accounts: self.rows)
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                self.tableView.reloadData()
+                            })
                         })
                     }
                 } else {
