@@ -16,7 +16,7 @@ class KeychainService {
         return status == noErr
     }
     
-    class func load(key: String) -> NSData {
+    class func load(key: String) -> NSData? {
         let keychainQuery = [
             kSecClass       : kSecClassGenericPassword,
             kSecAttrAccount : key,
@@ -27,20 +27,17 @@ class KeychainService {
         
         let status: OSStatus = SecItemCopyMatching(keychainQuery, &dataTypeRef)
         
-        let opaque = dataTypeRef?.toOpaque()
-        
-        if let op = opaque? {
-            return Unmanaged<NSData>.fromOpaque(op).takeUnretainedValue()
+        if status == noErr {
+            return (dataTypeRef!.takeRetainedValue() as NSData)
         } else {
-            return NSData()
+            return nil
         }
     }
     
     class func remove(key: String) -> Bool {
         let keychainQuery = [
             kSecClass       : kSecClassGenericPassword,
-            kSecAttrAccount : key,
-            kSecValueData   : NSData() ]
+            kSecAttrAccount : key ]
         
         let status: OSStatus = SecItemDelete(keychainQuery as CFDictionaryRef)
         
