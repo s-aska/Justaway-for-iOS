@@ -4,7 +4,7 @@ class Account {
     
     // MARK: - Types
     
-    struct KeyConstants {
+    struct Constants {
         static let accessToken = "accessToken"
         static let userID = "userID"
         static let screenName = "screenName"
@@ -34,12 +34,12 @@ class Account {
     }
     
     init(dictionary: NSDictionary) {
-        self.accessToken = dictionary[KeyConstants.accessToken] as String
-        self.userID = dictionary[KeyConstants.userID] as String
-        self.screenName = dictionary[KeyConstants.screenName] as String
-        self.name = dictionary[KeyConstants.name] as String
-        self.profileImageURL = NSURL(string: dictionary[KeyConstants.profileImageURL] as String)
-        self.iOS = dictionary[KeyConstants.iOS] as Bool
+        self.accessToken = dictionary[Constants.accessToken] as String
+        self.userID = dictionary[Constants.userID] as String
+        self.screenName = dictionary[Constants.screenName] as String
+        self.name = dictionary[Constants.name] as String
+        self.profileImageURL = NSURL(string: dictionary[Constants.profileImageURL] as String)
+        self.iOS = dictionary[Constants.iOS] as Bool
     }
     
     // MARK: - Public Methods
@@ -50,12 +50,12 @@ class Account {
     }
     
     func toDictionary() -> NSDictionary {
-        return [ KeyConstants.accessToken     : self.accessToken,
-                 KeyConstants.userID          : self.userID,
-                 KeyConstants.screenName      : self.screenName,
-                 KeyConstants.name            : self.name,
-                 KeyConstants.profileImageURL : self.profileImageURL.absoluteString!,
-                 KeyConstants.iOS             : self.iOS ]
+        return [ Constants.accessToken     : self.accessToken,
+                 Constants.userID          : self.userID,
+                 Constants.screenName      : self.screenName,
+                 Constants.name            : self.name,
+                 Constants.profileImageURL : self.profileImageURL.absoluteString!,
+                 Constants.iOS             : self.iOS ]
     }
     
 }

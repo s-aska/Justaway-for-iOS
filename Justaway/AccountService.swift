@@ -2,41 +2,34 @@ import Foundation
 
 class AccountService {
     
+    // MARK: - Types
+    
     struct Constants {
-        static let Keychain = "AccountService"
-        static let Current = "current"
-        static let Accounts = "accounts"
+        static let keychain = "AccountService"
     }
     
-    class func save(current: NSNumber, accounts: Array<Account>) -> Bool {
-        let dictionary = [
-            Constants.Current  : current,
-            Constants.Accounts : accounts.map({ (a) in a.toDictionary() })
-        ]
+    // MARK: - Public Methods
+    
+    class func save(settings: AccountSettings) -> Bool {
+        let data = NSJSONSerialization.dataWithJSONObject(settings.toDictionary(), options: nil, error: nil)!
         
-        let data = NSJSONSerialization.dataWithJSONObject(dictionary, options: nil, error: nil)!
-        
-        return KeychainService.save(Constants.Keychain, data: data)
+        return KeychainService.save(Constants.keychain, data: data)
     }
     
-    class func load() -> (NSNumber, Array<Account>) {
-        let data = KeychainService.load(Constants.Keychain)
+    class func load() -> AccountSettings? {
+        let data = KeychainService.load(Constants.keychain)
         
         if data == nil {
-            return (-1, Array<Account>())
+            return nil
         }
         
         let json :AnyObject! = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: nil)
         
-        let current = json[Constants.Current] as NSNumber
-        
-        var accounts :Array<Account> = (json[Constants.Accounts] as [NSDictionary]).map({ (d) in Account(dictionary: d) })
-        
-        return (current, accounts)
+        return AccountSettings(dictionary: json as NSDictionary)
     }
     
     class func clear() {
-        KeychainService.remove(Constants.Keychain)
+        KeychainService.remove(Constants.keychain)
     }
     
 }

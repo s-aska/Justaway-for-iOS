@@ -30,8 +30,9 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         tableView.delegate = self
         tableView.dataSource = self
         
-        let (current, accounts) = AccountService.load()
-        rows = accounts
+        if let accountSettings = AccountService.load() {
+            rows = accountSettings.accounts
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -122,7 +123,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                                     profileImageURL: NSURL(string: user["profile_image_url"] as String),
                                     iOS: true)
                             })
-                            AccountService.save(0, accounts: self.rows)
+                            AccountService.save(AccountSettings(current: 0, accounts: self.rows))
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                 self.tableView.reloadData()
                             })

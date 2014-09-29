@@ -19,27 +19,25 @@ class AccountTest: XCTestCase {
         
         let account = Account(accessToken: "dummy", userID: "1", screenName: "su_aska", name: "Shinichiro Aska", profileImageURL: NSURL(string: normalURL), iOS: true)
         
-        XCTAssert(account.screenName == "su_aska", "screenName")
+        XCTAssert(account.screenName == "su_aska", "Account#init")
         
-        XCTAssert(account.profileImageBiggerURL().absoluteString == biggerURL, "profileImageBiggerURL")
+        XCTAssert(account.profileImageBiggerURL().absoluteString == biggerURL, "Account#profileImageBiggerURL")
         
-        let saveSuccess = AccountService.save(0, accounts: [account])
+        let saveSuccess = AccountService.save(AccountSettings(current: 0, accounts: [account]))
         
-        XCTAssert(saveSuccess, "saveSuccess")
+        XCTAssert(saveSuccess, "AccountService#save")
         
-        let (current, accounts) = AccountService.load()
+        let accountSettings = AccountService.load()!
         
-        XCTAssert(current == 0, "loadAccounts current")
+        XCTAssert(accountSettings.current == 0, "AccountService#load")
         
-        XCTAssert(accounts[0].screenName == "su_aska", "loadAccounts screenName")
+        XCTAssert(accountSettings.accounts[0].screenName == account.screenName, "AccountService#load")
+        
+        XCTAssert(accountSettings.account() === accountSettings.account(0), "accountSettings#account")
         
         AccountService.clear()
         
-        let (currentAfterClear, accountsAfterClear) = AccountService.load()
-        
-        XCTAssert(currentAfterClear == -1, "clear current")
-        
-        XCTAssert(accountsAfterClear.count == 0, "clear accounts")
+        XCTAssert(AccountService.load() == nil, "AccountService#clear")
     }
     
 }
