@@ -33,7 +33,7 @@ class Account {
         self.iOS = iOS
     }
     
-    init(dictionary: NSDictionary) {
+    init(_ dictionary: NSDictionary) {
         self.accessToken = dictionary[Constants.accessToken] as String
         self.userID = dictionary[Constants.userID] as String
         self.screenName = dictionary[Constants.screenName] as String

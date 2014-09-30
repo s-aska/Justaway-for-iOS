@@ -21,9 +21,9 @@ class AccountSettings {
         self.accounts = accounts
     }
     
-    init(dictionary: NSDictionary) {
+    init(_ dictionary: NSDictionary) {
         self.current = dictionary[Constants.current] as Int
-        self.accounts = (dictionary[Constants.accounts] as [NSDictionary]).map({ (d) in Account(dictionary: d) })
+        self.accounts = (dictionary[Constants.accounts] as [NSDictionary]).map({ d in Account(d) })
     }
     
     // MARK: - Public Methods
@@ -39,7 +39,7 @@ class AccountSettings {
     func toDictionary() -> NSDictionary {
         return [
             Constants.current  : current,
-            Constants.accounts : accounts.map({ (a) in a.toDictionary() })
+            Constants.accounts : accounts.map({ a in a.toDictionary() })
         ]
     }
     
