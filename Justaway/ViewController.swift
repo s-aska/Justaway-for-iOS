@@ -1,4 +1,6 @@
 import UIKit
+import Accounts
+import Social
 
 class ViewController: UIViewController {
     
@@ -41,6 +43,19 @@ class ViewController: UIViewController {
     
     @IBAction func signInButtonClick(sender: UIButton) {
         
+    }
+    
+    @IBAction func homeButton(sender: UIButton) {
+        if let accountSettings = AccountService.load() {
+            let account = accountSettings.account()
+            let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
+            let req = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .GET, URL: url, parameters: nil)
+            req.account = ACAccountStore().accountWithIdentifier(account.accessToken)
+            req.performRequestWithHandler({
+                (data :NSData!, res :NSHTTPURLResponse!, error :NSError!) -> Void in
+                NSLog("%@", NSString(data: data, encoding :NSUTF8StringEncoding))
+            })
+        }
     }
     
     @IBAction func showEditor(sender: UIButton) {

@@ -7,6 +7,7 @@
         <mutableArray key="fontello.ttf">
             <string>fontello</string>
             <string>fontello</string>
+            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -59,14 +60,28 @@
                                             <action selector="showEditor:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kXD-41-NKw"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pgq-uW-BFD">
+                                        <rect key="frame" x="0.0" y="0.0" width="58" height="50"/>
+                                        <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                                        <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                                        <state key="normal" title="家">
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="homeButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8BC-9m-RIe"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerY" secondItem="7Dm-sZ-qBC" secondAttribute="centerY" id="4ZV-ZJ-EpC"/>
+                                    <constraint firstItem="Pgq-uW-BFD" firstAttribute="leading" secondItem="vtZ-25-Zd3" secondAttribute="leading" id="Bcx-LA-ETw"/>
                                     <constraint firstAttribute="centerY" secondItem="6s0-Bq-v9h" secondAttribute="centerY" id="UPJ-Ly-nEP"/>
                                     <constraint firstItem="6s0-Bq-v9h" firstAttribute="leading" secondItem="7Dm-sZ-qBC" secondAttribute="trailing" id="WCY-3p-5BC"/>
                                     <constraint firstAttribute="height" constant="50" id="XQA-F6-Nwl"/>
                                     <constraint firstAttribute="trailing" secondItem="6s0-Bq-v9h" secondAttribute="trailing" id="eTP-cT-Wdt"/>
+                                    <constraint firstAttribute="centerY" secondItem="Pgq-uW-BFD" secondAttribute="centerY" id="k5c-Qb-BWH"/>
                                 </constraints>
                             </view>
                         </subviews>

@@ -1,4 +1,6 @@
 import Foundation
+import Accounts
+import Social
 
 class Account {
     
@@ -56,6 +58,22 @@ class Account {
                  Constants.name            : self.name,
                  Constants.profileImageURL : self.profileImageURL.absoluteString!,
                  Constants.iOS             : self.iOS ]
+    }
+    
+    func get(url: NSURL, parameters: NSDictionary?, hander: SLRequestHandler) {
+        let req = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .GET, URL: url, parameters: parameters)
+        if (iOS) {
+            req.account = ACAccountStore().accountWithIdentifier(accessToken)
+        } else {
+            let accountType = ACAccountStore().accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+            let account = ACAccount(accountType: accountType)
+            account.credential = ACAccountCredential(OAuth2Token: "", refreshToken: "", expiryDate: NSDate())
+            req.account = account
+        }
+        req.performRequestWithHandler({
+            (data :NSData!, res :NSHTTPURLResponse!, error :NSError!) -> Void in
+            NSLog("%@", NSString(data: data, encoding :NSUTF8StringEncoding))
+        })
     }
     
 }
