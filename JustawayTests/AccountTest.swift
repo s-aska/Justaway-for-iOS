@@ -23,11 +23,11 @@ class AccountTest: XCTestCase {
         
         XCTAssert(account.profileImageBiggerURL().absoluteString == biggerURL, "Account#profileImageBiggerURL")
         
-        let saveSuccess = AccountService.save(AccountSettings(current: 0, accounts: [account]))
+        let saveSuccess = AccountSettingsStore.save(AccountSettings(current: 0, accounts: [account]))
         
         XCTAssert(saveSuccess, "AccountService#save")
         
-        let accountSettings = AccountService.load()!
+        let accountSettings = AccountSettingsStore.load()!
         
         XCTAssert(accountSettings.current == 0, "AccountService#load")
         
@@ -35,9 +35,9 @@ class AccountTest: XCTestCase {
         
         XCTAssert(accountSettings.account() === accountSettings.account(0), "accountSettings#account")
         
-        AccountService.clear()
+        AccountSettingsStore.clear()
         
-        XCTAssert(AccountService.load() == nil, "AccountService#clear")
+        XCTAssert(AccountSettingsStore.load() == nil, "AccountService#clear")
     }
     
 }

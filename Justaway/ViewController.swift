@@ -46,7 +46,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func homeButton(sender: UIButton) {
-        if let accountSettings = AccountService.load() {
+        if let accountSettings = AccountSettingsStore.load() {
             let account = accountSettings.account()
             let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
             let req = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .GET, URL: url, parameters: nil)

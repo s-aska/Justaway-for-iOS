@@ -1,11 +1,11 @@
 import Foundation
 
-class AccountService {
+class AccountSettingsStore {
     
     // MARK: - Types
     
     struct Constants {
-        static let keychain = "AccountService"
+        static let keychainKey = "AccountService"
     }
     
     // MARK: - Public Methods
@@ -13,11 +13,11 @@ class AccountService {
     class func save(settings: AccountSettings) -> Bool {
         let data = NSJSONSerialization.dataWithJSONObject(settings.toDictionary(), options: nil, error: nil)!
         
-        return KeychainService.save(Constants.keychain, data: data)
+        return Keychain.save(Constants.keychainKey, data: data)
     }
     
     class func load() -> AccountSettings? {
-        let data = KeychainService.load(Constants.keychain)
+        let data = Keychain.load(Constants.keychainKey)
         
         if data == nil {
             return nil
@@ -29,7 +29,7 @@ class AccountService {
     }
     
     class func clear() {
-        KeychainService.remove(Constants.keychain)
+        Keychain.remove(Constants.keychainKey)
     }
     
 }

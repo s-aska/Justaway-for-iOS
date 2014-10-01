@@ -30,7 +30,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         tableView.delegate = self
         tableView.dataSource = self
         
-        if let accountSettings = AccountService.load() {
+        if let accountSettings = AccountSettingsStore.load() {
             rows = accountSettings.accounts
         }
     }
@@ -112,7 +112,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                         req.performRequestWithHandler({
                             (data :NSData!, res :NSHTTPURLResponse!, error :NSError!) -> Void in
                             NSLog("%@", NSString(data: data, encoding :NSUTF8StringEncoding))
-                            let users = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: nil) as? NSArray
+                            let users = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: nil) as? NSArray
                             self.rows = (users as [NSDictionary]).map({
                                 (user: NSDictionary) in
                                 let token = idMap.valueForKey(user["id_str"] as String) as String
@@ -123,7 +123,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                                     profileImageURL: NSURL(string: user["profile_image_url"] as String),
                                     iOS: true)
                             })
-                            AccountService.save(AccountSettings(current: 0, accounts: self.rows))
+                            AccountSettingsStore.save(AccountSettings(current: 0, accounts: self.rows))
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                 self.tableView.reloadData()
                             })

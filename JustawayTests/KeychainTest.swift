@@ -1,7 +1,7 @@
 import UIKit
 import XCTest
 
-class KeychainServiceTest: XCTestCase {
+class KeychainTest: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -15,17 +15,17 @@ class KeychainServiceTest: XCTestCase {
     
     func testExample() {
         
-        let saveSuccess = KeychainService.save("accounts", data: "{\"hoge\":foo}".toData())
+        let saveSuccess = Keychain.save("accounts", data: "{\"hoge\":foo}".toData())
         XCTAssert(saveSuccess, "save")
         
-        let dataAfterSave = KeychainService.load("accounts")
+        let dataAfterSave = Keychain.load("accounts")
         XCTAssert(dataAfterSave!.length > 0, "load length")
         XCTAssert(dataAfterSave!.toString() == "{\"hoge\":foo}", "load data")
         
-        let removeSuccess = KeychainService.remove("accounts")
+        let removeSuccess = Keychain.remove("accounts")
         XCTAssert(removeSuccess, "remove")
         
-        let dataAfterRemove = KeychainService.load("accounts")
+        let dataAfterRemove = Keychain.load("accounts")
         XCTAssert(dataAfterRemove == nil, "load after remove")
     }
     

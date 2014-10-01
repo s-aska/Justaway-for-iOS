@@ -17,13 +17,12 @@
 		382340CE19D043C000554D8C /* AccountTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340CD19D043C000554D8C /* AccountTest.swift */; };
 		382340CF19D0442600554D8C /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340C319D0323F00554D8C /* Account.swift */; };
 		382340D019D0451600554D8C /* FontSizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB55B4C19C8ADBE00DC6442 /* FontSizeViewController.swift */; };
-		382340D419D04EBA00554D8C /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D319D04EBA00554D8C /* KeychainService.swift */; };
-		382340D619D055E000554D8C /* KeychainServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D519D055E000554D8C /* KeychainServiceTest.swift */; };
-		382340D719D055EA00554D8C /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D319D04EBA00554D8C /* KeychainService.swift */; };
+		382340D419D04EBA00554D8C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D319D04EBA00554D8C /* Keychain.swift */; };
+		382340D619D055E000554D8C /* KeychainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D519D055E000554D8C /* KeychainTest.swift */; };
+		382340D719D055EA00554D8C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D319D04EBA00554D8C /* Keychain.swift */; };
 		38B4475D19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */; };
-		6A0B236619DAEFE7004819BB /* TwitterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0B236519DAEFE7004819BB /* TwitterService.swift */; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
 		6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3019BB514900D50D78 /* ViewController.swift */; };
 		6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3219BB514900D50D78 /* Main.storyboard */; };
@@ -40,8 +39,8 @@
 		6AB55B5319C8B2D500DC6442 /* ThemeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB55B5219C8B2D500DC6442 /* ThemeViewController.xib */; };
 		6AB55B5519C9F1EB00DC6442 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB55B5419C9F1EB00DC6442 /* AccountViewController.swift */; };
 		6AB55B5719C9F20B00DC6442 /* AccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB55B5619C9F20B00DC6442 /* AccountViewController.xib */; };
-		6AB55B5A19D0B7B700DC6442 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB55B5919D0B7B700DC6442 /* AccountService.swift */; };
-		6AB55B5B19D0CCD000DC6442 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB55B5919D0B7B700DC6442 /* AccountService.swift */; };
+		6AB55B5A19D0B7B700DC6442 /* AccountSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB55B5919D0B7B700DC6442 /* AccountSettingsStore.swift */; };
+		6AB55B5B19D0CCD000DC6442 /* AccountSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB55B5919D0B7B700DC6442 /* AccountSettingsStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,11 +61,10 @@
 		382340C919D0352F00554D8C /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		382340CB19D0353800554D8C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		382340CD19D043C000554D8C /* AccountTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTest.swift; sourceTree = "<group>"; };
-		382340D319D04EBA00554D8C /* KeychainService.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = KeychainService.swift; sourceTree = "<group>"; };
-		382340D519D055E000554D8C /* KeychainServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainServiceTest.swift; sourceTree = "<group>"; };
+		382340D319D04EBA00554D8C /* Keychain.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = Keychain.swift; sourceTree = "<group>"; };
+		382340D519D055E000554D8C /* KeychainTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTest.swift; sourceTree = "<group>"; };
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoExpandTextView.swift; sourceTree = "<group>"; };
-		6A0B236519DAEFE7004819BB /* TwitterService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterService.swift; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4B9D2D19BB514900D50D78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,7 +85,7 @@
 		6AB55B5219C8B2D500DC6442 /* ThemeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThemeViewController.xib; sourceTree = "<group>"; };
 		6AB55B5419C9F1EB00DC6442 /* AccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		6AB55B5619C9F20B00DC6442 /* AccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountViewController.xib; sourceTree = "<group>"; };
-		6AB55B5919D0B7B700DC6442 /* AccountService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
+		6AB55B5919D0B7B700DC6442 /* AccountSettingsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,8 +150,8 @@
 				6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */,
 				6A4B9D3019BB514900D50D78 /* ViewController.swift */,
 				6A4B9D3219BB514900D50D78 /* Main.storyboard */,
-				6AB55B5819D0B5CE00DC6442 /* Service */,
 				6AB55B4619C5946400DC6442 /* Category */,
+				6AB55B5819D0B5CE00DC6442 /* DataStore */,
 				382340C219D031FF00554D8C /* Models */,
 				6AB55B4719C5982F00DC6442 /* Views */,
 				6AB55B3C19C5629C00DC6442 /* ViewControllers */,
@@ -177,7 +175,7 @@
 			children = (
 				6A4B9D4119BB514900D50D78 /* JustawayTests.swift */,
 				382340CD19D043C000554D8C /* AccountTest.swift */,
-				382340D519D055E000554D8C /* KeychainServiceTest.swift */,
+				382340D519D055E000554D8C /* KeychainTest.swift */,
 				6A4B9D3F19BB514900D50D78 /* Supporting Files */,
 			);
 			path = JustawayTests;
@@ -241,14 +239,13 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
-		6AB55B5819D0B5CE00DC6442 /* Service */ = {
+		6AB55B5819D0B5CE00DC6442 /* DataStore */ = {
 			isa = PBXGroup;
 			children = (
-				382340D319D04EBA00554D8C /* KeychainService.swift */,
-				6AB55B5919D0B7B700DC6442 /* AccountService.swift */,
-				6A0B236519DAEFE7004819BB /* TwitterService.swift */,
+				382340D319D04EBA00554D8C /* Keychain.swift */,
+				6AB55B5919D0B7B700DC6442 /* AccountSettingsStore.swift */,
 			);
-			name = Service;
+			name = DataStore;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -368,11 +365,10 @@
 				381E6E0719D98A7300139654 /* AccountSettings.swift in Sources */,
 				382340CA19D0352F00554D8C /* Notification.swift in Sources */,
 				6AB55B4D19C8ADBE00DC6442 /* FontSizeViewController.swift in Sources */,
-				6A0B236619DAEFE7004819BB /* TwitterService.swift in Sources */,
 				6AB55B5119C8B2B200DC6442 /* ThemeViewController.swift in Sources */,
 				382340C819D0351A00554D8C /* Message.swift in Sources */,
-				382340D419D04EBA00554D8C /* KeychainService.swift in Sources */,
-				6AB55B5A19D0B7B700DC6442 /* AccountService.swift in Sources */,
+				382340D419D04EBA00554D8C /* Keychain.swift in Sources */,
+				6AB55B5A19D0B7B700DC6442 /* AccountSettingsStore.swift in Sources */,
 				6AB55B4319C5843000DC6442 /* SettingsViewController.swift in Sources */,
 				6AB55B5519C9F1EB00DC6442 /* AccountViewController.swift in Sources */,
 			);
@@ -384,12 +380,12 @@
 			files = (
 				382340D019D0451600554D8C /* FontSizeViewController.swift in Sources */,
 				6A4B9D4219BB514900D50D78 /* JustawayTests.swift in Sources */,
-				382340D619D055E000554D8C /* KeychainServiceTest.swift in Sources */,
+				382340D619D055E000554D8C /* KeychainTest.swift in Sources */,
 				382340CE19D043C000554D8C /* AccountTest.swift in Sources */,
-				6AB55B5B19D0CCD000DC6442 /* AccountService.swift in Sources */,
+				6AB55B5B19D0CCD000DC6442 /* AccountSettingsStore.swift in Sources */,
 				382340CF19D0442600554D8C /* Account.swift in Sources */,
 				381E6E0819D98CA500139654 /* AccountSettings.swift in Sources */,
-				382340D719D055EA00554D8C /* KeychainService.swift in Sources */,
+				382340D719D055EA00554D8C /* Keychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

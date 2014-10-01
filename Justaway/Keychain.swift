@@ -1,23 +1,23 @@
 import UIKit
 import Security
 
-class KeychainService {
+class Keychain {
     
     class func save(key: String, data: NSData) -> Bool {
-        let keychainQuery = [
+        let query = [
             kSecClass       : kSecClassGenericPassword,
             kSecAttrAccount : key,
             kSecValueData   : data ]
         
-        SecItemDelete(keychainQuery as CFDictionaryRef)
+        SecItemDelete(query as CFDictionaryRef)
         
-        let status: OSStatus = SecItemAdd(keychainQuery as CFDictionaryRef, nil)
+        let status: OSStatus = SecItemAdd(query as CFDictionaryRef, nil)
         
         return status == noErr
     }
     
     class func load(key: String) -> NSData? {
-        let keychainQuery = [
+        let query = [
             kSecClass       : kSecClassGenericPassword,
             kSecAttrAccount : key,
             kSecReturnData  : kCFBooleanTrue,
@@ -25,7 +25,7 @@ class KeychainService {
         
         var dataTypeRef :Unmanaged<AnyObject>?
         
-        let status: OSStatus = SecItemCopyMatching(keychainQuery, &dataTypeRef)
+        let status: OSStatus = SecItemCopyMatching(query, &dataTypeRef)
         
         if status == noErr {
             return (dataTypeRef!.takeRetainedValue() as NSData)
@@ -35,11 +35,11 @@ class KeychainService {
     }
     
     class func remove(key: String) -> Bool {
-        let keychainQuery = [
+        let query = [
             kSecClass       : kSecClassGenericPassword,
             kSecAttrAccount : key ]
         
-        let status: OSStatus = SecItemDelete(keychainQuery as CFDictionaryRef)
+        let status: OSStatus = SecItemDelete(query as CFDictionaryRef)
         
         return status == noErr
     }
