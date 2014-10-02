@@ -48,13 +48,13 @@ class KeychainTest: XCTestCase {
 }
 
 extension String {
-    public var dataValue : NSData {
+    public var dataValue: NSData {
         return dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
     }
 }
 
 extension NSData {
-    public var stringValue : String {
+    public var stringValue: String {
         return NSString(data: self, encoding: NSUTF8StringEncoding)
     }
 }
