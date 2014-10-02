@@ -126,6 +126,14 @@
 			name = Table;
 			sourceTree = "<group>";
 		};
+		6A0B236719DC49A3004819BB /* OS */ = {
+			isa = PBXGroup;
+			children = (
+				382340D319D04EBA00554D8C /* Keychain.swift */,
+			);
+			name = OS;
+			sourceTree = "<group>";
+		};
 		6A4B9D2019BB514900D50D78 = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +158,7 @@
 				6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */,
 				6A4B9D3019BB514900D50D78 /* ViewController.swift */,
 				6A4B9D3219BB514900D50D78 /* Main.storyboard */,
+				6A0B236719DC49A3004819BB /* OS */,
 				6AB55B4619C5946400DC6442 /* Category */,
 				6AB55B5819D0B5CE00DC6442 /* DataStore */,
 				382340C219D031FF00554D8C /* Models */,
@@ -242,7 +251,6 @@
 		6AB55B5819D0B5CE00DC6442 /* DataStore */ = {
 			isa = PBXGroup;
 			children = (
-				382340D319D04EBA00554D8C /* Keychain.swift */,
 				6AB55B5919D0B7B700DC6442 /* AccountSettingsStore.swift */,
 			);
 			name = DataStore;
