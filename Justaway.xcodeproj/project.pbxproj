@@ -106,15 +106,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		381E6E0919DD500700139654 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				381E6E0619D98A7300139654 /* AccountSettings.swift */,
+				382340C319D0323F00554D8C /* Account.swift */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		381E6E0A19DD501100139654 /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+				382340C519D0350D00554D8C /* Status.swift */,
+				382340C919D0352F00554D8C /* Notification.swift */,
+				382340C719D0351A00554D8C /* Message.swift */,
+				382340CB19D0353800554D8C /* User.swift */,
+			);
+			name = Twitter;
+			sourceTree = "<group>";
+		};
 		382340C219D031FF00554D8C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				382340C319D0323F00554D8C /* Account.swift */,
-				381E6E0619D98A7300139654 /* AccountSettings.swift */,
-				382340C519D0350D00554D8C /* Status.swift */,
-				382340C719D0351A00554D8C /* Message.swift */,
-				382340C919D0352F00554D8C /* Notification.swift */,
-				382340CB19D0353800554D8C /* User.swift */,
+				381E6E0919DD500700139654 /* Settings */,
+				381E6E0A19DD501100139654 /* Twitter */,
 			);
 			name = Models;
 			sourceTree = "<group>";

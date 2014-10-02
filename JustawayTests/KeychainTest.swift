@@ -14,19 +14,30 @@ class KeychainTest: XCTestCase {
     }
     
     func testExample() {
+        let key = "clearTest"
+        let saveData = "{\"hoge\":foo}".toData()
         
-        let saveSuccess = Keychain.save("accounts", data: "{\"hoge\":foo}".toData())
-        XCTAssert(saveSuccess, "save")
+        XCTAssert(Keychain.save(key, data: saveData), "save")
         
-        let dataAfterSave = Keychain.load("accounts")
-        XCTAssert(dataAfterSave!.length > 0, "load length")
-        XCTAssert(dataAfterSave!.toString() == "{\"hoge\":foo}", "load data")
+        let loadData = Keychain.load(key)!
         
-        let removeSuccess = Keychain.remove("accounts")
-        XCTAssert(removeSuccess, "remove")
+        XCTAssert(loadData.length > 0, "load length")
+        XCTAssert(loadData.toString() == saveData.toString(), "load data")
         
-        let dataAfterRemove = Keychain.load("accounts")
-        XCTAssert(dataAfterRemove == nil, "load after remove")
+        XCTAssert(Keychain.remove(key), "remove")
+        
+        XCTAssert(Keychain.load(key) == nil, "load after remove")
+    }
+    
+    func testClear() {
+        let key = "clearTest"
+        let data = "clearTestData".toData()
+        
+        Keychain.save(key, data: data)
+        XCTAssert(Keychain.load(key) != nil, "load success before clear")
+        
+        Keychain.clear()
+        XCTAssert(Keychain.load(key) == nil, "load failure after clear")
     }
     
 }

@@ -44,4 +44,13 @@ class Keychain {
         return status == noErr
     }
     
+    
+    class func clear() -> Bool {
+        let query = [ kSecClass : kSecClassGenericPassword ]
+        
+        let status: OSStatus = SecItemDelete(query as CFDictionaryRef)
+        
+        return status == noErr
+    }
+    
 }
