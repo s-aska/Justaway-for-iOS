@@ -5,39 +5,44 @@ class KeychainTest: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        Keychain.clear()
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        Keychain.clear()
         super.tearDown()
     }
     
     func testExample() {
-        let key = "clearTest"
-        let saveData = "{\"hoge\":foo}".toData()
+        let key1 = "testExampleKey1"
+        let key2 = "testExampleKey2"
+        let saveData = "data".toData()
         
-        XCTAssert(Keychain.save(key, data: saveData), "save")
+        XCTAssert(Keychain.save(key1, data: saveData), "save")
+        XCTAssert(Keychain.save(key2, data: saveData), "save")
         
-        let loadData = Keychain.load(key)!
+        XCTAssert(Keychain.load(key1) != nil, "load")
+        XCTAssert(Keychain.load(key2) != nil, "load")
         
-        XCTAssert(loadData.length > 0, "load length")
-        XCTAssert(loadData.toString() == saveData.toString(), "load data")
+        let loadData = Keychain.load(key1)!
         
-        XCTAssert(Keychain.remove(key), "remove")
+        XCTAssert(loadData.toString() == saveData.stringValue, "load data")
         
-        XCTAssert(Keychain.load(key) == nil, "load after remove")
+        XCTAssert(Keychain.remove(key1), "remove")
+        
+        XCTAssert(Keychain.load(key1) == nil, "remove data")
+        XCTAssert(Keychain.load(key2) != nil, "not remove data")
     }
     
     func testClear() {
-        let key = "clearTest"
-        let data = "clearTestData".toData()
+        let key = "testClearKey"
+        let data = "testClearData".toData()
         
         Keychain.save(key, data: data)
-        XCTAssert(Keychain.load(key) != nil, "load success before clear")
+        XCTAssert(Keychain.load(key) != nil, "save data")
         
         Keychain.clear()
-        XCTAssert(Keychain.load(key) == nil, "load failure after clear")
+        XCTAssert(Keychain.load(key) == nil, "clear data")
     }
     
 }
@@ -50,6 +55,9 @@ extension String {
 
 extension NSData {
     func toString() -> String {
+        return NSString(data: self, encoding: NSUTF8StringEncoding)
+    }
+    public var stringValue : String {
         return NSString(data: self, encoding: NSUTF8StringEncoding)
     }
 }
