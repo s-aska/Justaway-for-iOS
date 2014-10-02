@@ -16,7 +16,7 @@ class KeychainTest: XCTestCase {
     func testExample() {
         let key1 = "testExampleKey1"
         let key2 = "testExampleKey2"
-        let saveData = "data".toData()
+        let saveData = "data".dataValue
         
         XCTAssert(Keychain.save(key1, data: saveData), "save")
         XCTAssert(Keychain.save(key2, data: saveData), "save")
@@ -26,7 +26,7 @@ class KeychainTest: XCTestCase {
         
         let loadData = Keychain.load(key1)!
         
-        XCTAssert(loadData.toString() == saveData.stringValue, "load data")
+        XCTAssert(loadData.stringValue == saveData.stringValue, "load data")
         
         XCTAssert(Keychain.remove(key1), "remove")
         
@@ -36,7 +36,7 @@ class KeychainTest: XCTestCase {
     
     func testClear() {
         let key = "testClearKey"
-        let data = "testClearData".toData()
+        let data = "testClearData".dataValue
         
         Keychain.save(key, data: data)
         XCTAssert(Keychain.load(key) != nil, "save data")
@@ -48,15 +48,12 @@ class KeychainTest: XCTestCase {
 }
 
 extension String {
-    func toData() -> NSData {
+    public var dataValue : NSData {
         return dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
     }
 }
 
 extension NSData {
-    func toString() -> String {
-        return NSString(data: self, encoding: NSUTF8StringEncoding)
-    }
     public var stringValue : String {
         return NSString(data: self, encoding: NSUTF8StringEncoding)
     }
