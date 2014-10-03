@@ -3,7 +3,7 @@ import Accounts
 import Social
 import SwifteriOS
 
-class AccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class AccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate {
     
     // MARK: Types
     
@@ -94,13 +94,19 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         if (tableView.editing == true) {
             cancel()
         } else {
+            var actionSheet =  UIAlertController(title: "Add Account", message: "Choose via", preferredStyle: UIAlertControllerStyle.ActionSheet)
             
+            actionSheet.addAction(UIAlertAction(title: "via iOS", style: UIAlertActionStyle.Default, handler: { action in
+                self.loadAccountFromOS()
+            }))
             
-            if (false) {
-                loadAccountFromOS()
-            } else {
-                loadAccountFromOAuth()
-            }
+            actionSheet.addAction(UIAlertAction(title: "via Justaway for iOS", style: UIAlertActionStyle.Default, handler: { action in
+                self.loadAccountFromOAuth()
+            }))
+            
+            actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+            
+            self.presentViewController(actionSheet, animated: true, completion: nil)
         }
     }
     
