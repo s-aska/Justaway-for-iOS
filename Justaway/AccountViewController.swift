@@ -3,7 +3,7 @@ import Accounts
 import Social
 import SwifteriOS
 
-class AccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate {
+class AccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     // MARK: Types
     
@@ -55,7 +55,6 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                 cell.imageView?.image = UIImage(data:imageData)
                 cell.setNeedsLayout()
             })
-            NSLog("load %@", url)
         })
         return cell
     }
@@ -128,24 +127,16 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         swifter.authorizeWithCallbackURL(url, success: {
             accessToken, response in
             
-            let userID = accessToken!.userID!.toInt()!
-            
-            swifter.getUsersLookupWithUserIDs([userID], includeEntities: false, success: { (users) -> Void in
-                let user = users![0] as JSONValue
-                let account = AccountSettings.Account(credential: SwifterCredential(accessToken: accessToken!),
-                    userID: user["user_id"].string ?? "",
-                    screenName: user["screen_name"].string ?? "",
-                    name: user["name"].string ?? "",
-                    profileImageURL: NSURL(string: user["profile_image_url"].string ?? ""))
-                
-                self.rows = [account]
-                
-                AccountSettingsStore.save(AccountSettings(current: 0, accounts: self.rows))
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.tableView.reloadData()
-                })
-            }, failure: failureHandler)
+            if let token = accessToken {
+                self.merge([
+                    AccountSettings.Account(
+                        credential: SwifterCredential(accessToken: token),
+                        userID: token.userID!,
+                        screenName: token.screenName ?? "",
+                        name: token.screenName! ?? "",
+                        profileImageURL: NSURL(string: ""))
+                    ])
+            }
             
         }, failure: failureHandler)
     }
@@ -164,40 +155,64 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                 if twitterAccounts?.count == 0 {
                     self.alertWithTitle("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
                 } else {
-                    let idMap = NSMutableDictionary()
-                    let ids :Array<String> = twitterAccounts.map({
-                        twitterAccount in
-                        let id = twitterAccount.valueForKeyPath("properties.user_id") as String
-                        idMap.setValue(twitterAccount, forKey: id)
-                        return id
-                    })
-                    let url = NSURL(string: "https://api.twitter.com/1.1/users/lookup.json")
-                    let params = ["user_id": ids]
-                    let req = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .GET, URL: url, parameters: params)
-                    req.account = twitterAccounts[0] as ACAccount
-                    req.performRequestWithHandler({
-                        (data :NSData!, res :NSHTTPURLResponse!, error :NSError!) -> Void in
-                        NSLog("%@", NSString(data: data, encoding :NSUTF8StringEncoding))
-                        let users = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: nil) as? [NSDictionary]
-                        self.rows = users!.map({
-                            user in
-                            let account = idMap.valueForKey(user["id_str"] as String) as ACAccount
-                            return AccountSettings.Account(credential: SwifterCredential(account: account),
-                                userID: user["id_str"] as String,
-                                screenName: user["screen_name"] as String,
-                                name: user["name"] as String,
-                                profileImageURL: NSURL(string: user["profile_image_url"] as String))
+                    self.merge(
+                        twitterAccounts.map({ twitterAccount in
+                            AccountSettings.Account(
+                                credential: SwifterCredential(account: twitterAccount as ACAccount),
+                                userID: twitterAccount.valueForKeyPath("properties.user_id") as String,
+                                screenName: twitterAccount.username,
+                                name: twitterAccount.username,
+                                profileImageURL: NSURL(string: ""))
                         })
-                        AccountSettingsStore.save(AccountSettings(current: 0, accounts: self.rows))
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.tableView.reloadData()
-                        })
-                    })
+                    )
                 }
             } else {
                 self.alertWithTitle("Error", message: error.localizedDescription)
             }
         }
+    }
+    
+    func merge(accounts: Array<AccountSettings.Account>) {
+        var rows = self.rows
+        for account in accounts {
+            var overwrite = false
+            rows = rows.map({ row in
+                if row.userID == account.userID {
+                    overwrite = true
+                    return account
+                } else {
+                    return row
+                }
+            })
+            if !overwrite {
+                rows.insert(account, atIndex: 0)
+            }
+        }
+        let userIDs: Array<Int> = rows.map({ row in row.userID.toInt()! })
+        let swifter = Swifter(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret)
+        swifter.client.credential = rows[0].credential
+        swifter.getUsersLookupWithUserIDs(userIDs, includeEntities: false, success: {
+            users in
+            for user in users! {
+                rows = rows.map({ row in
+                    if row.userID == user["id_str"].string! {
+                        return AccountSettings.Account(
+                            credential: row.credential,
+                            userID: user["id_str"].string ?? row.userID,
+                            screenName: user["screen_name"].string ?? row.screenName,
+                            name: user["name"].string ?? row.name,
+                            profileImageURL: NSURL(string: user["profile_image_url"].string ?? ""))
+                    } else {
+                        return row
+                    }
+                })
+            }
+            AccountSettingsStore.save(AccountSettings(current: 0, accounts: rows))
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.rows = rows
+                self.tableView.reloadData()
+            })
+            }, failure: { error in })
     }
     
     func initEditing() {
