@@ -79,8 +79,10 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     // MARK: UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let alert = UIAlertView(title: "alertTitle", message: "selected cell index is \(indexPath.row)", delegate: nil, cancelButtonTitle: "OK")
-        alert.show()
+        if let settings = self.settings {
+            self.settings = AccountSettings(current: indexPath.row, accounts: settings.accounts)
+            self.tableView.reloadData()
+        }
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -108,7 +110,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     func alertWithTitle(title: String, message: String) {
         var alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.view.window?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
     }
     
     @IBAction func left(sender: UIButton) {
@@ -123,7 +125,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                 self.addAccounByOAuth()
             }))
             actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-            self.presentViewController(actionSheet, animated: true, completion: nil)
+            self.view.window?.rootViewController?.presentViewController(actionSheet, animated: true, completion: nil)
         }
     }
     
@@ -147,7 +149,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             
             if let token = accessToken {
                 self.addAccouns([
-                    AccountSettings.Account(
+                    Account(
                         credential: SwifterCredential(accessToken: token),
                         userID: token.userID!,
                         screenName: token.screenName ?? "",
@@ -168,15 +170,15 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             granted, error in
             
             if granted {
-                let twitterAccounts = accountStore.accountsWithAccountType(accountType)
+                let twitterAccounts = accountStore.accountsWithAccountType(accountType) as [ACAccount]
                 
                 if twitterAccounts.count == 0 {
                     self.alertWithTitle("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
                 } else {
                     self.addAccouns(
-                        twitterAccounts.map({ twitterAccount in
-                            AccountSettings.Account(
-                                credential: SwifterCredential(account: twitterAccount as ACAccount),
+                        twitterAccounts.map({ (twitterAccount: ACAccount) in
+                            Account(
+                                credential: SwifterCredential(account: twitterAccount),
                                 userID: twitterAccount.valueForKeyPath("properties.user_id") as String,
                                 screenName: twitterAccount.username,
                                 name: twitterAccount.username,
@@ -190,9 +192,9 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
-    func addAccouns(accounts: Array<AccountSettings.Account>) {
-        Twitter.refreshAccounts(accounts, successHandler: { accounts in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+    func addAccouns(accounts: [Account]) {
+        Twitter.refreshAccounts(accounts, successHandler: {
+            dispatch_async(dispatch_get_main_queue(), {
                 self.cancel()
             })
         })

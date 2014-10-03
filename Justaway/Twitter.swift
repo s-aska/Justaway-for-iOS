@@ -11,7 +11,7 @@ class TwitterUser {
     let name: String
     let profileImageURL: NSURL
     
-    init(_ dictionary: Dictionary<String, JSONValue>) {
+    init(_ dictionary: [String: JSONValue]) {
         self.userID = dictionary["id_str"]?.string ?? ""
         self.screenName = dictionary["screen_name"]?.string ?? ""
         self.name = dictionary["name"]?.string ?? ""
@@ -20,46 +20,72 @@ class TwitterUser {
 }
 
 class Twitter {
-    class func refreshAccounts(newAccounts: Array<AccountSettings.Account>, successHandler: (Array<AccountSettings.Account> -> Void)) {
-        var accounts = Array<AccountSettings.Account>()
+    
+    // MARK: - Singleton
+    
+    struct Static {
+        static let swifter = Swifter(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret)
+    }
+    
+    class var swifter : Swifter { return Static.swifter }
+    
+    // MARK: - Class Methods
+    
+    class func refreshAccounts(newAccounts: [Account], successHandler: (Void -> Void)) {
+        var accounts = [Account]()
         var current = 0
-        let swifter = Swifter(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret)
+        
         if let accountSettings = AccountSettingsStore.get() {
-            let currentUserID = accountSettings.account().userID
-            var newAccountMap = Dictionary<String, AccountSettings.Account>()
+            
+            // Merge accounts and newAccounts
+            var newAccountMap = [String: Account]()
             for newAccount in newAccounts {
                 newAccountMap[newAccount.userID] = newAccount
             }
-            accounts = accountSettings.accounts
-            accounts = accounts.map({ account in
-                newAccountMap.removeValueForKey(account.userID) ?? account
-            })
+            
+            accounts = accountSettings.accounts.map({ newAccountMap.removeValueForKey($0.userID) ?? $0 })
+            
             for newAccount in newAccountMap.values {
                 accounts.insert(newAccount, atIndex: 0)
             }
+            
+            // Update current index
+            let currentUserID = accountSettings.account().userID
             for i in 0 ... accounts.count {
                 if accounts[i].userID == currentUserID {
                     current = i
                     break
                 }
             }
+            
+            // Update credential from current account
             swifter.client.credential = accountSettings.account().credential
         } else if newAccounts.count > 0 {
+            
+            // Merge accounts and newAccounts
             accounts = newAccounts
+            
+            // Update credential from newAccounts
             swifter.client.credential = accounts[0].credential
         } else {
             return
         }
-        let userIDs: Array<Int> = accounts.map({ accounts in accounts.userID.toInt()! })
-        swifter.getUsersLookupWithUserIDs(userIDs, includeEntities: false, success: { rows in
-            var userMap = Dictionary<String, TwitterUser>()
+        
+        let userIDs = accounts.map({ $0.userID.toInt()! })
+        
+        let success :(([JSONValue]?) -> Void) = { (rows: [JSONValue]?) in
+            
+            // Convert JSONValue
+            var userDirectory = [String: TwitterUser]()
             for row in rows! {
                 let user = TwitterUser(row.object!)
-                userMap[user.userID] = user
+                userDirectory[user.userID] = user
             }
-            accounts = accounts.map({ account in
-                if let user = userMap[account.userID] {
-                    return AccountSettings.Account(
+            
+            // Update accounts information
+            accounts = accounts.map({ (account: Account) in
+                if let user = userDirectory[account.userID] {
+                    return Account(
                         credential: account.credential,
                         userID: user.userID,
                         screenName: user.screenName,
@@ -69,9 +95,14 @@ class Twitter {
                     return account
                 }
             })
-            NSLog("refreshAccounts current:%i", current)
+            
+            // Save Device
             AccountSettingsStore.save(AccountSettings(current: current, accounts: accounts))
-            successHandler(accounts)
-            }, failure: failureHandler)
+            
+            successHandler()
+        }
+        
+        swifter.getUsersLookupWithUserIDs(userIDs, includeEntities: false, success: success, failure: failureHandler)
     }
+    
 }
