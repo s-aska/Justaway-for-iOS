@@ -41,7 +41,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
+        let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         cell.accessoryType = self.settings?.current == indexPath.row ? .Checkmark : UITableViewCellAccessoryType.None
         cell.textLabel?.text = self.settings?.accounts[indexPath.row].name
         cell.detailTextLabel?.text = self.settings?.accounts[indexPath.row].screenName
@@ -84,10 +84,13 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
+        if editingStyle == .Delete {
             if let settings = self.settings {
                 var accounts = settings.accounts
-                var current = indexPath.row == settings.current ? 0 : indexPath.row < settings.current ? settings.current - 1 : settings.current
+                var current =
+                    indexPath.row == settings.current ? 0 :
+                    indexPath.row < settings.current ? settings.current - 1 :
+                    settings.current
                 accounts.removeAtIndex(indexPath.row)
                 NSLog("commitEditingStyle current:%i", current)
                 if accounts.count > 0 {
@@ -167,7 +170,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             if granted {
                 let twitterAccounts = accountStore.accountsWithAccountType(accountType)
                 
-                if twitterAccounts?.count == 0 {
+                if twitterAccounts.count == 0 {
                     self.alertWithTitle("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
                 } else {
                     self.addAccouns(
@@ -204,7 +207,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func cancel() {
         self.settings = AccountSettingsStore.get()
-        self.tableView.reloadData()
+        tableView.reloadData()
         initEditing()
     }
     
@@ -220,7 +223,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         } else {
             AccountSettingsStore.clear()
         }
-        self.tableView.reloadData()
+        tableView.reloadData()
         initEditing()
     }
     
