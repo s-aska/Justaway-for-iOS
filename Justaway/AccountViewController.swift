@@ -17,7 +17,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var leftButton: UIButton!
     @IBOutlet weak var rightButton: UIButton!
     
-    var rows:Array<Account> = []
+    var rows:Array<AccountSettings.Account> = []
     
     override var nibName: String {
         return "AccountViewController"
@@ -47,7 +47,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         cell.accessoryType = UITableViewCellAccessoryType.Checkmark
         cell.textLabel?.text = self.rows[indexPath.row].name
         cell.detailTextLabel?.text = self.rows[indexPath.row].screenName
-        let url = self.rows[indexPath.row].profileImageBiggerURL()
+        let url = self.rows[indexPath.row].profileImageBiggerURL
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
             let imageData :NSData = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: nil)
             dispatch_async(dispatch_get_main_queue(), {
@@ -119,7 +119,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             
             swifter.getUsersLookupWithUserIDs([userID], includeEntities: false, success: { (users) -> Void in
                 let user = users![0] as JSONValue
-                let account = Account(credential: SwifterCredential(accessToken: accessToken!),
+                let account = AccountSettings.Account(credential: SwifterCredential(accessToken: accessToken!),
                     userID: user["user_id"].string ?? "",
                     screenName: user["screen_name"].string ?? "",
                     name: user["name"].string ?? "",
@@ -132,7 +132,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             }, failure: failureHandler)
             
             
-            },failure: failureHandler
+            }, failure: failureHandler
         )
     }
     
@@ -168,7 +168,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                         self.rows = users!.map({
                             user in
                             let account = idMap.valueForKey(user["id_str"] as String) as ACAccount
-                            return Account(credential: SwifterCredential(account: account),
+                            return AccountSettings.Account(credential: SwifterCredential(account: account),
                                 userID: user["id_str"] as String,
                                 screenName: user["screen_name"] as String,
                                 name: user["name"] as String,

@@ -11,7 +11,7 @@ class AccountSettingsStore {
     // MARK: - Public Methods
     
     class func save(settings: AccountSettings) -> Bool {
-        let data = NSJSONSerialization.dataWithJSONObject(settings.toDictionary(), options: nil, error: nil)!
+        let data = NSJSONSerialization.dataWithJSONObject(settings.dictionaryValue, options: nil, error: nil)!
         
         return Keychain.save(Constants.keychainKey, data: data)
     }
