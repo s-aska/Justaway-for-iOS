@@ -106,6 +106,15 @@ public class AccountSettings {
         return accounts[index]
     }
     
+//    func index(userID: String) -> Int? {
+//        for i in 0 ... accounts.count {
+//            if accounts[i].userID == userID {
+//                return i
+//            }
+//        }
+//        return nil
+//    }
+    
     public var dictionaryValue: NSDictionary {
         return [
             Constants.current  : current,

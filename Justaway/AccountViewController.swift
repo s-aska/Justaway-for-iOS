@@ -17,7 +17,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var leftButton: UIButton!
     @IBOutlet weak var rightButton: UIButton!
     
-    var rows:Array<AccountSettings.Account> = []
+    var settings: AccountSettings?
     
     override var nibName: String {
         return "AccountViewController"
@@ -31,25 +31,23 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         tableView.delegate = self
         tableView.dataSource = self
         
-        if let accountSettings = AccountSettingsStore.load() {
-            rows = accountSettings.accounts
-        }
+        self.settings = AccountSettingsStore.get()
     }
     
     // MARK: - UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rows.count
+        return settings?.accounts.count ?? 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-        cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-        cell.textLabel?.text = self.rows[indexPath.row].name
-        cell.detailTextLabel?.text = self.rows[indexPath.row].screenName
-        let url = self.rows[indexPath.row].profileImageBiggerURL
+        cell.accessoryType = self.settings?.current == indexPath.row ? .Checkmark : UITableViewCellAccessoryType.None
+        cell.textLabel?.text = self.settings?.accounts[indexPath.row].name
+        cell.detailTextLabel?.text = self.settings?.accounts[indexPath.row].screenName
+        let url = self.settings?.accounts[indexPath.row].profileImageBiggerURL
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-            let imageData :NSData = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: nil)
+            let imageData :NSData = NSData.dataWithContentsOfURL(url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: nil)
             dispatch_async(dispatch_get_main_queue(), {
                 cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
                 cell.imageView?.image = UIImage(data:imageData)
@@ -64,7 +62,18 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        
+        if let settings = self.settings {
+            if destinationIndexPath.row < settings.accounts.count {
+                var accounts = settings.accounts
+                accounts.insert(accounts.removeAtIndex(sourceIndexPath.row), atIndex: destinationIndexPath.row)
+                let current =
+                    settings.current == sourceIndexPath.row ? destinationIndexPath.row :
+                    settings.current == destinationIndexPath.row ? sourceIndexPath.row :
+                    settings.current
+                NSLog("moveRowAtIndexPath current:%i", current)
+                self.settings = AccountSettings(current: current, accounts: accounts)
+            }
+        }
     }
     
     // MARK: UITableViewDelegate
@@ -76,8 +85,18 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            self.rows.removeAtIndex(indexPath.row)
-            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            if let settings = self.settings {
+                var accounts = settings.accounts
+                var current = indexPath.row == settings.current ? 0 : indexPath.row < settings.current ? settings.current - 1 : settings.current
+                accounts.removeAtIndex(indexPath.row)
+                NSLog("commitEditingStyle current:%i", current)
+                if accounts.count > 0 {
+                    self.settings = AccountSettings(current: current, accounts: accounts)
+                } else {
+                    self.settings = nil
+                }
+                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            }
         }
     }
     
@@ -94,17 +113,13 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             cancel()
         } else {
             var actionSheet =  UIAlertController(title: "Add Account", message: "Choose via", preferredStyle: UIAlertControllerStyle.ActionSheet)
-            
             actionSheet.addAction(UIAlertAction(title: "via iOS", style: UIAlertActionStyle.Default, handler: { action in
-                self.loadAccountFromOS()
+                self.addAccounByAcAccount()
             }))
-            
             actionSheet.addAction(UIAlertAction(title: "via Justaway for iOS", style: UIAlertActionStyle.Default, handler: { action in
-                self.loadAccountFromOAuth()
+                self.addAccounByOAuth()
             }))
-            
             actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-            
             self.presentViewController(actionSheet, animated: true, completion: nil)
         }
     }
@@ -117,7 +132,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
-    func loadAccountFromOAuth() {
+    func addAccounByOAuth() {
         let failureHandler: ((NSError) -> Void) = {
             error in
             self.alertWithTitle("Error", message: error.localizedDescription)
@@ -128,7 +143,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             accessToken, response in
             
             if let token = accessToken {
-                self.merge([
+                self.addAccouns([
                     AccountSettings.Account(
                         credential: SwifterCredential(accessToken: token),
                         userID: token.userID!,
@@ -141,7 +156,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         }, failure: failureHandler)
     }
     
-    func loadAccountFromOS() {
+    func addAccounByAcAccount() {
         let accountStore = ACAccountStore()
         let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
         
@@ -155,7 +170,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                 if twitterAccounts?.count == 0 {
                     self.alertWithTitle("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
                 } else {
-                    self.merge(
+                    self.addAccouns(
                         twitterAccounts.map({ twitterAccount in
                             AccountSettings.Account(
                                 credential: SwifterCredential(account: twitterAccount as ACAccount),
@@ -172,60 +187,24 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
-    func merge(accounts: Array<AccountSettings.Account>) {
-        var rows = self.rows
-        for account in accounts {
-            var overwrite = false
-            rows = rows.map({ row in
-                if row.userID == account.userID {
-                    overwrite = true
-                    return account
-                } else {
-                    return row
-                }
-            })
-            if !overwrite {
-                rows.insert(account, atIndex: 0)
-            }
-        }
-        let userIDs: Array<Int> = rows.map({ row in row.userID.toInt()! })
-        let swifter = Swifter(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret)
-        swifter.client.credential = rows[0].credential
-        swifter.getUsersLookupWithUserIDs(userIDs, includeEntities: false, success: {
-            users in
-            for user in users! {
-                rows = rows.map({ row in
-                    if row.userID == user["id_str"].string! {
-                        return AccountSettings.Account(
-                            credential: row.credential,
-                            userID: user["id_str"].string ?? row.userID,
-                            screenName: user["screen_name"].string ?? row.screenName,
-                            name: user["name"].string ?? row.name,
-                            profileImageURL: NSURL(string: user["profile_image_url"].string ?? ""))
-                    } else {
-                        return row
-                    }
-                })
-            }
-            AccountSettingsStore.save(AccountSettings(current: 0, accounts: rows))
+    func addAccouns(accounts: Array<AccountSettings.Account>) {
+        Twitter.refreshAccounts(accounts, successHandler: { accounts in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.rows = rows
-                self.tableView.reloadData()
+                self.cancel()
             })
-            }, failure: { error in })
+        })
     }
     
     func initEditing() {
-        tableView.setEditing(false, animated: true)
+        tableView.setEditing(false, animated: false)
         leftButton.setTitle("Add", forState: UIControlState.Normal)
         rightButton.setTitle("Edit", forState: UIControlState.Normal)
+        rightButton.hidden = self.settings == nil
     }
     
     func cancel() {
-        if let accountSettings = AccountSettingsStore.load() {
-            self.rows = accountSettings.accounts
-            self.tableView.reloadData()
-        }
+        self.settings = AccountSettingsStore.get()
+        self.tableView.reloadData()
         initEditing()
     }
     
@@ -236,7 +215,12 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func done() {
-        AccountSettingsStore.save(AccountSettings(current: 0, accounts: self.rows))
+        if let settings = self.settings {
+            AccountSettingsStore.save(settings)
+        } else {
+            AccountSettingsStore.clear()
+        }
+        self.tableView.reloadData()
         initEditing()
     }
     
