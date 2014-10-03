@@ -75,6 +75,13 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         alert.show()
     }
     
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            self.rows.removeAtIndex(indexPath.row)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+        }
+    }
+    
     // MARK: - Actions
     
     func alertWithTitle(title: String, message: String) {
@@ -124,16 +131,17 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                     screenName: user["screen_name"].string ?? "",
                     name: user["name"].string ?? "",
                     profileImageURL: NSURL(string: user["profile_image_url"].string ?? ""))
+                
                 self.rows = [account]
+                
                 AccountSettingsStore.save(AccountSettings(current: 0, accounts: self.rows))
+                
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.tableView.reloadData()
                 })
             }, failure: failureHandler)
             
-            
-            }, failure: failureHandler
-        )
+        }, failure: failureHandler)
     }
     
     func loadAccountFromOS() {
@@ -186,10 +194,18 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
-    func cancel() {
+    func initEditing() {
         tableView.setEditing(false, animated: true)
         leftButton.setTitle("Add", forState: UIControlState.Normal)
         rightButton.setTitle("Edit", forState: UIControlState.Normal)
+    }
+    
+    func cancel() {
+        if let accountSettings = AccountSettingsStore.load() {
+            self.rows = accountSettings.accounts
+            self.tableView.reloadData()
+        }
+        initEditing()
     }
     
     func edit() {
@@ -199,7 +215,8 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func done() {
-        cancel()
+        AccountSettingsStore.save(AccountSettings(current: 0, accounts: self.rows))
+        initEditing()
     }
     
 }
