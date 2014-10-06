@@ -84,18 +84,27 @@
                                     <constraint firstAttribute="centerY" secondItem="Pgq-uW-BFD" secondAttribute="centerY" id="k5c-Qb-BWH"/>
                                 </constraints>
                             </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="96g-es-eq7">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="Ujo-jJ-LAP" secondAttribute="centerX" id="7Jm-he-Mha"/>
+                            <constraint firstItem="96g-es-eq7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="NGD-De-v9q"/>
                             <constraint firstAttribute="trailing" secondItem="vtZ-25-Zd3" secondAttribute="trailing" id="PzX-tf-NYr"/>
+                            <constraint firstAttribute="trailing" secondItem="96g-es-eq7" secondAttribute="trailing" id="Wad-C5-QXC"/>
+                            <constraint firstItem="96g-es-eq7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="aMp-vf-dyN"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vtZ-25-Zd3" secondAttribute="bottom" id="gvK-Ui-CQu"/>
+                            <constraint firstItem="vtZ-25-Zd3" firstAttribute="top" secondItem="96g-es-eq7" secondAttribute="bottom" id="nVM-sg-jVR"/>
                             <constraint firstAttribute="centerY" secondItem="Ujo-jJ-LAP" secondAttribute="centerY" id="pKY-pr-PGt"/>
                             <constraint firstItem="vtZ-25-Zd3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="vP3-e3-Njp"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="signInButton" destination="Ujo-jJ-LAP" id="PJX-C0-MfZ"/>
+                        <outlet property="testTableView" destination="96g-es-eq7" id="GiE-DC-1Yr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

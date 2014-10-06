@@ -11,11 +11,93 @@ class TwitterUser {
     let name: String
     let profileImageURL: NSURL
     
-    init(_ dictionary: [String: JSONValue]) {
-        self.userID = dictionary["id_str"]?.string ?? ""
-        self.screenName = dictionary["screen_name"]?.string ?? ""
-        self.name = dictionary["name"]?.string ?? ""
-        self.profileImageURL = NSURL(string: dictionary["profile_image_url"]?.string ?? "")
+    init(_ json: JSONValue) {
+        self.userID = json["id_str"].string ?? ""
+        self.screenName = json["screen_name"].string ?? ""
+        self.name = json["name"].string ?? ""
+        self.profileImageURL = NSURL(string: json["profile_image_url"].string ?? "")
+    }
+}
+
+class TwitterURL {
+    let displayURL: String
+    let expandedURL: String
+    
+    init(_ json: JSONValue) {
+        self.displayURL = json["display_url"].string ?? ""
+        self.expandedURL = json["expanded_url"].string ?? ""
+    }
+}
+
+class TwitterMedia {
+    let displayURL: String
+    let expandedURL: String
+    let mediaURL: NSURL
+    let height: Int
+    let width: Int
+    
+    init(_ json: JSONValue) {
+        self.displayURL = json["display_url"].string ?? ""
+        self.expandedURL = json["expanded_url"].string ?? ""
+        self.mediaURL = NSURL(string: json["media_url"].string ?? "")
+        self.height = json["sizes"]["large"]["h"].integer ?? 0
+        self.width = json["sizes"]["large"]["w"].integer ?? 0
+    }
+}
+
+class TwitterStatus {
+    let user: TwitterUser
+    let statusID: String
+    let text: String
+    let createdAt: NSDate
+    let clientName: String
+    let retweetCount: Int
+    let favoriteCount: Int
+    let urls: [TwitterURL]
+    let userMentions: [String]
+    let hashtags: [String]
+    let isProtected: Bool
+    let media: [TwitterMedia]
+    
+    
+    init(_ json: JSONValue) {
+        println(json)
+        self.user = TwitterUser(json["user"])
+        self.statusID = json["id_str"].string ?? ""
+        self.text = json["text"].string ?? ""
+        self.createdAt = TwitterDate.dateFromString(json["created_at"].string!)
+        self.retweetCount = json["retweet_count"].integer ?? 0
+        self.favoriteCount = json["favorite_count"].integer ?? 0
+        
+        if let urls = json["entities"]["urls"].array {
+            self.urls = urls.map { TwitterURL($0) }
+        } else {
+            self.urls = [TwitterURL]()
+        }
+        
+        if let userMentions = json["entities"]["user_mentions"].array {
+            self.userMentions = userMentions.map { $0.string! }
+        } else {
+            self.userMentions = [String]()
+        }
+        
+        if let hashtags = json["entities"]["hashtags"].array {
+            self.hashtags = hashtags.map { $0.string! }
+        } else {
+            self.hashtags = [String]()
+        }
+        
+        self.isProtected = json["protected"].boolValue
+        
+        if let extended_entities = json["extended_entities"].array {
+            self.media = extended_entities.map { TwitterMedia($0) }
+        } else if let media = json["media"].array {
+            self.media = media.map { TwitterMedia($0) }
+        } else {
+            self.media = [TwitterMedia]()
+        }
+        
+        self.clientName = TwitterVia.clientName(json["source"].string ?? "unknown")
     }
 }
 
@@ -78,7 +160,7 @@ class Twitter {
             // Convert JSONValue
             var userDirectory = [String: TwitterUser]()
             for row in rows! {
-                let user = TwitterUser(row.object!)
+                let user = TwitterUser(row)
                 userDirectory[user.userID] = user
             }
             
@@ -103,6 +185,82 @@ class Twitter {
         }
         
         swifter.getUsersLookupWithUserIDs(userIDs, includeEntities: false, success: success, failure: failureHandler)
+    }
+    
+    class func getHomeTimeline(successHandler: ([TwitterStatus]) -> Void) {
+        if let account = AccountSettingsStore.get() {
+            swifter.client.credential = account.account().credential
+            swifter.getStatusesHomeTimelineWithCount(20, sinceID: nil, maxID: nil, trimUser: nil, contributorDetails: nil, includeEntities: false, success: { (statuses: [JSONValue]?) -> Void in
+                if statuses != nil {
+                    successHandler(statuses!.map { TwitterStatus($0) })
+                }
+            }, failure: failureHandler)
+        }
+    }
+    
+}
+
+class TwitterDate {
+    
+    struct Static {
+        static let twitterFormatter: NSDateFormatter = TwitterDate.makeTwitterFormatter()
+        static let absoluteFormatter: NSDateFormatter = TwitterDate.makeAbsoluteFormatter()
+    }
+    
+    private class func makeTwitterFormatter() -> NSDateFormatter {
+        let formatter = NSDateFormatter()
+        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        formatter.calendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)
+        formatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+        return formatter
+    }
+    
+    private class func makeAbsoluteFormatter() -> NSDateFormatter {
+        let formatter = NSDateFormatter()
+        formatter.locale = NSLocale.currentLocale()
+        formatter.calendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)
+        formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        return formatter
+    }
+    
+    class func dateFromString(createdAt: String) -> NSDate {
+        return Static.twitterFormatter.dateFromString(createdAt)!
+    }
+    
+    class func absolute(date: NSDate) -> String {
+        return Static.absoluteFormatter.stringFromDate(date)
+    }
+    
+    class func relative(date: NSDate) -> String {
+        let diff = Int(NSDate().timeIntervalSinceDate(date))
+        if (diff < 1) {
+            return "now";
+        } else if (diff < 60) {
+            return NSString(format: "%ds", diff)
+        } else if (diff < 3600) {
+            return NSString(format: "%dm", diff / 60)
+        } else if (diff < 86400) {
+            return NSString(format: "%dh", diff / 3600)
+        } else {
+            return NSString(format: "%dd", diff / 86400)
+        }
+    }
+    
+}
+
+class TwitterVia {
+    
+    struct Static {
+        static let regexp = NSRegularExpression(pattern: "rel=\"nofollow\">(.+)</a>", options: NSRegularExpressionOptions(0), error: nil)
+    }
+    
+    class func clientName(source: String) -> String {
+        if let match = Static.regexp.firstMatchInString(source, options: NSMatchingOptions(0), range: NSMakeRange(0, countElements(source))) {
+            if match.numberOfRanges > 0 {
+                return (source as NSString).substringWithRange(match.rangeAtIndex(1))
+            }
+        }
+        return source
     }
     
 }

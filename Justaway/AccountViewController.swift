@@ -82,6 +82,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         if let settings = self.settings {
             self.settings = AccountSettings(current: indexPath.row, accounts: settings.accounts)
             self.tableView.reloadData()
+            AccountSettingsStore.save(self.settings!)
         }
     }
     

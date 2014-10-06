@@ -11,6 +11,8 @@
 		381E6E0819D98CA500139654 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E0619D98A7300139654 /* AccountSettings.swift */; };
 		381E6E7E19DE4FB000139654 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7D19DE4FB000139654 /* Secret.swift */; };
 		381E6E8019DE9DAB00139654 /* Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7F19DE9DAB00139654 /* Twitter.swift */; };
+		381E6E8319E2A56A00139654 /* TwitterStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 381E6E8219E2A56A00139654 /* TwitterStatusCell.xib */; };
+		381E6E8519E2A69200139654 /* TwitterStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E8419E2A69200139654 /* TwitterStatusCell.swift */; };
 		382340C619D0350D00554D8C /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340C519D0350D00554D8C /* Status.swift */; };
 		382340C819D0351A00554D8C /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340C719D0351A00554D8C /* Message.swift */; };
 		382340CA19D0352F00554D8C /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340C919D0352F00554D8C /* Notification.swift */; };
@@ -93,6 +95,8 @@
 		381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Swifter.xcodeproj; path = Swifter/Swifter.xcodeproj; sourceTree = "<group>"; };
 		381E6E7D19DE4FB000139654 /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		381E6E7F19DE9DAB00139654 /* Twitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Twitter.swift; sourceTree = "<group>"; };
+		381E6E8219E2A56A00139654 /* TwitterStatusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterStatusCell.xib; sourceTree = "<group>"; };
+		381E6E8419E2A69200139654 /* TwitterStatusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterStatusCell.swift; sourceTree = "<group>"; };
 		382340C519D0350D00554D8C /* Status.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		382340C719D0351A00554D8C /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		382340C919D0352F00554D8C /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
@@ -194,6 +198,8 @@
 		38373FE219C9477100DBCB24 /* Table */ = {
 			isa = PBXGroup;
 			children = (
+				381E6E8419E2A69200139654 /* TwitterStatusCell.swift */,
+				381E6E8219E2A56A00139654 /* TwitterStatusCell.xib */,
 			);
 			name = Table;
 			sourceTree = "<group>";
@@ -234,7 +240,6 @@
 				6A4B9D3219BB514900D50D78 /* Main.storyboard */,
 				6A0B236719DC49A3004819BB /* OS */,
 				381E6E8119DE9DB300139654 /* Network */,
-				6AB55B4619C5946400DC6442 /* Category */,
 				6AB55B5819D0B5CE00DC6442 /* DataStore */,
 				382340C219D031FF00554D8C /* Models */,
 				6AB55B4719C5982F00DC6442 /* Views */,
@@ -283,13 +288,6 @@
 				6AB55B4419C584B300DC6442 /* SettingsViewController.xib */,
 			);
 			name = ViewControllers;
-			sourceTree = "<group>";
-		};
-		6AB55B4619C5946400DC6442 /* Category */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Category;
 			sourceTree = "<group>";
 		};
 		6AB55B4719C5982F00DC6442 /* Views */ = {
@@ -463,6 +461,7 @@
 				6A4B9D3619BB514900D50D78 /* Images.xcassets in Resources */,
 				6AB55B5719C9F20B00DC6442 /* AccountViewController.xib in Resources */,
 				6AB55B4519C584B300DC6442 /* SettingsViewController.xib in Resources */,
+				381E6E8319E2A56A00139654 /* TwitterStatusCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,6 +480,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				381E6E8519E2A69200139654 /* TwitterStatusCell.swift in Sources */,
 				6AB55B4919C5984800DC6442 /* TransparentView.swift in Sources */,
 				6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */,
 				38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */,
