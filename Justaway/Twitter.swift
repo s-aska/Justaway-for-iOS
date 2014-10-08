@@ -56,7 +56,7 @@ struct TwitterStatus {
     let media: [TwitterMedia]
     
     init(_ json: JSONValue) {
-        println(json)
+//        println(json)
         self.user = TwitterUser(json["user"])
         self.statusID = json["id_str"].string ?? ""
         self.text = json["text"].string ?? ""

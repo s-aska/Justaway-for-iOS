@@ -31,6 +31,7 @@
 		38B4475D19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */; };
+		38F7B8F319E5720F0081C735 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
 		6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3019BB514900D50D78 /* ViewController.swift */; };
 		6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3219BB514900D50D78 /* Main.storyboard */; };
@@ -116,6 +117,7 @@
 		38A694F319E4E6E800DD6072 /* TwitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTests.swift; sourceTree = "<group>"; };
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoExpandTextView.swift; sourceTree = "<group>"; };
+		38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4B9D2D19BB514900D50D78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -217,8 +219,7 @@
 		3894C24A19E556070038AEF8 /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
-				3894C24B19E557120038AEF8 /* TimelineViewController.swift */,
-				3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */,
+				38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */,
 			);
 			name = Timeline;
 			sourceTree = "<group>";
@@ -302,12 +303,14 @@
 		6AB55B3C19C5629C00DC6442 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3894C24B19E557120038AEF8 /* TimelineViewController.swift */,
+				3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */,
 				3894C24A19E556070038AEF8 /* Timeline */,
-				6AB55B4B19C8AC2A00DC6442 /* Settings */,
 				6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */,
 				6AB55B3F19C563F600DC6442 /* EditorViewController.xib */,
 				6AB55B4219C5843000DC6442 /* SettingsViewController.swift */,
 				6AB55B4419C584B300DC6442 /* SettingsViewController.xib */,
+				6AB55B4B19C8AC2A00DC6442 /* Settings */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				382340C819D0351A00554D8C /* Message.swift in Sources */,
 				381E6E8019DE9DAB00139654 /* Twitter.swift in Sources */,
 				382340D419D04EBA00554D8C /* Keychain.swift in Sources */,
+				38F7B8F319E5720F0081C735 /* TimelineTableViewController.swift in Sources */,
 				6AB55B5A19D0B7B700DC6442 /* AccountSettingsStore.swift in Sources */,
 				6AB55B4319C5843000DC6442 /* SettingsViewController.swift in Sources */,
 				6AB55B5519C9F1EB00DC6442 /* AccountViewController.swift in Sources */,

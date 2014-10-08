@@ -2,6 +2,8 @@ import UIKit
 
 class ViewTools {
     
+    // 上下左右ピッタリにviewを追加する
+    // 使用例: Storyboard で top/bottom layout guide に合わせた containerView に別のVCのviewを追加する
     class func addSubviewWithEqual(containerView: UIView, view: UIView) {
         view.setTranslatesAutoresizingMaskIntoConstraints(false)
         containerView.addSubview(view)

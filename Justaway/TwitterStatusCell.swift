@@ -32,6 +32,11 @@ class TwitterStatusCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        selectionStyle = .None
+        separatorInset = UIEdgeInsetsZero
+        layoutMargins = UIEdgeInsetsZero
+        preservesSuperviewLayoutMargins = false
     }
     
     deinit {
