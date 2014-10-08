@@ -3,13 +3,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="fontello.ttf">
-            <string>fontello</string>
-            <string>fontello</string>
-            <string>fontello</string>
-        </mutableArray>
-    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -23,8 +16,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1I1-JO-Sau">
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ujo-jJ-LAP">
-                                <rect key="frame" x="169" y="274" width="262" height="51"/>
+                                <rect key="frame" x="169" y="275" width="262" height="51"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                 <state key="normal" title="Sign in with Twitter">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -33,84 +30,20 @@
                                     <action selector="signInButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tAl-1S-dJE"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vtZ-25-Zd3">
-                                <rect key="frame" x="0.0" y="550" width="600" height="50"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Dm-sZ-qBC">
-                                        <rect key="frame" x="481" y="0.0" width="59" height="50"/>
-                                        <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                        <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
-                                        <state key="normal" title="✡">
-                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="showSettings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="AY5-VP-seR"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6s0-Bq-v9h">
-                                        <rect key="frame" x="540" y="0.0" width="60" height="50"/>
-                                        <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                        <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
-                                        <state key="normal" title="書">
-                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="showEditor:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kXD-41-NKw"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pgq-uW-BFD">
-                                        <rect key="frame" x="0.0" y="0.0" width="58" height="50"/>
-                                        <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                        <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
-                                        <state key="normal" title="家">
-                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="homeButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8BC-9m-RIe"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="7Dm-sZ-qBC" secondAttribute="centerY" id="4ZV-ZJ-EpC"/>
-                                    <constraint firstItem="Pgq-uW-BFD" firstAttribute="leading" secondItem="vtZ-25-Zd3" secondAttribute="leading" id="Bcx-LA-ETw"/>
-                                    <constraint firstAttribute="centerY" secondItem="6s0-Bq-v9h" secondAttribute="centerY" id="UPJ-Ly-nEP"/>
-                                    <constraint firstItem="6s0-Bq-v9h" firstAttribute="leading" secondItem="7Dm-sZ-qBC" secondAttribute="trailing" id="WCY-3p-5BC"/>
-                                    <constraint firstAttribute="height" constant="50" id="XQA-F6-Nwl"/>
-                                    <constraint firstAttribute="trailing" secondItem="6s0-Bq-v9h" secondAttribute="trailing" id="eTP-cT-Wdt"/>
-                                    <constraint firstAttribute="centerY" secondItem="Pgq-uW-BFD" secondAttribute="centerY" id="k5c-Qb-BWH"/>
-                                </constraints>
-                            </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="96g-es-eq7">
-                                <rect key="frame" x="0.0" y="20" width="600" height="530"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="Ujo-jJ-LAP" secondAttribute="centerX" id="7Jm-he-Mha"/>
-                            <constraint firstItem="96g-es-eq7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="NGD-De-v9q"/>
-                            <constraint firstAttribute="trailing" secondItem="vtZ-25-Zd3" secondAttribute="trailing" id="PzX-tf-NYr"/>
-                            <constraint firstAttribute="trailing" secondItem="96g-es-eq7" secondAttribute="trailing" id="Wad-C5-QXC"/>
-                            <constraint firstItem="96g-es-eq7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="aMp-vf-dyN"/>
-                            <constraint firstItem="96g-es-eq7" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="cG8-fR-e6r"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vtZ-25-Zd3" secondAttribute="bottom" id="gvK-Ui-CQu"/>
-                            <constraint firstItem="vtZ-25-Zd3" firstAttribute="top" secondItem="96g-es-eq7" secondAttribute="bottom" id="nVM-sg-jVR"/>
-                            <constraint firstAttribute="centerY" secondItem="Ujo-jJ-LAP" secondAttribute="centerY" id="pKY-pr-PGt"/>
-                            <constraint firstItem="vtZ-25-Zd3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="vP3-e3-Njp"/>
+                            <constraint firstAttribute="centerY" secondItem="Ujo-jJ-LAP" secondAttribute="centerY" id="2ng-yj-mOA"/>
+                            <constraint firstItem="1I1-JO-Sau" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="FaO-42-KHw"/>
+                            <constraint firstAttribute="centerX" secondItem="Ujo-jJ-LAP" secondAttribute="centerX" id="VRJ-N9-1fQ"/>
+                            <constraint firstAttribute="trailing" secondItem="1I1-JO-Sau" secondAttribute="trailing" id="YVr-5T-Nzv"/>
+                            <constraint firstAttribute="bottom" secondItem="1I1-JO-Sau" secondAttribute="bottom" id="ghL-Ml-FdC"/>
+                            <constraint firstItem="1I1-JO-Sau" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="lpR-9N-wQ4"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="NGD-De-v9q"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
+                        <outlet property="containerView" destination="1I1-JO-Sau" id="J7z-VB-gAN"/>
                         <outlet property="signInButton" destination="Ujo-jJ-LAP" id="PJX-C0-MfZ"/>
-                        <outlet property="testTableView" destination="96g-es-eq7" id="GiE-DC-1Yr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

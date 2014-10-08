@@ -22,6 +22,9 @@
 		382340D419D04EBA00554D8C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D319D04EBA00554D8C /* Keychain.swift */; };
 		382340D619D055E000554D8C /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D519D055E000554D8C /* KeychainTests.swift */; };
 		382340D719D055EA00554D8C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D319D04EBA00554D8C /* Keychain.swift */; };
+		3894C24C19E557120038AEF8 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3894C24B19E557120038AEF8 /* TimelineViewController.swift */; };
+		3894C24E19E557BF0038AEF8 /* TimelineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */; };
+		3894C25019E55C770038AEF8 /* ViewTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3894C24F19E55C770038AEF8 /* ViewTools.swift */; };
 		38A694F419E4E6E800DD6072 /* TwitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A694F319E4E6E800DD6072 /* TwitterTests.swift */; };
 		38A694F519E4E75F00DD6072 /* Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7F19DE9DAB00139654 /* Twitter.swift */; };
 		38A694F619E4E82A00DD6072 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7D19DE4FB000139654 /* Secret.swift */; };
@@ -107,6 +110,9 @@
 		382340CD19D043C000554D8C /* AccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		382340D319D04EBA00554D8C /* Keychain.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = Keychain.swift; sourceTree = "<group>"; };
 		382340D519D055E000554D8C /* KeychainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
+		3894C24B19E557120038AEF8 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
+		3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineViewController.xib; sourceTree = "<group>"; };
+		3894C24F19E55C770038AEF8 /* ViewTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewTools.swift; sourceTree = "<group>"; };
 		38A694F319E4E6E800DD6072 /* TwitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTests.swift; sourceTree = "<group>"; };
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoExpandTextView.swift; sourceTree = "<group>"; };
@@ -208,6 +214,15 @@
 			name = Table;
 			sourceTree = "<group>";
 		};
+		3894C24A19E556070038AEF8 /* Timeline */ = {
+			isa = PBXGroup;
+			children = (
+				3894C24B19E557120038AEF8 /* TimelineViewController.swift */,
+				3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */,
+			);
+			name = Timeline;
+			sourceTree = "<group>";
+		};
 		6A0B236719DC49A3004819BB /* OS */ = {
 			isa = PBXGroup;
 			children = (
@@ -240,8 +255,9 @@
 			children = (
 				6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */,
 				6A4B9D3019BB514900D50D78 /* ViewController.swift */,
-				381E6E7D19DE4FB000139654 /* Secret.swift */,
 				6A4B9D3219BB514900D50D78 /* Main.storyboard */,
+				381E6E7D19DE4FB000139654 /* Secret.swift */,
+				3894C24F19E55C770038AEF8 /* ViewTools.swift */,
 				6A0B236719DC49A3004819BB /* OS */,
 				381E6E8119DE9DB300139654 /* Network */,
 				6AB55B5819D0B5CE00DC6442 /* DataStore */,
@@ -286,6 +302,7 @@
 		6AB55B3C19C5629C00DC6442 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3894C24A19E556070038AEF8 /* Timeline */,
 				6AB55B4B19C8AC2A00DC6442 /* Settings */,
 				6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */,
 				6AB55B3F19C563F600DC6442 /* EditorViewController.xib */,
@@ -465,6 +482,7 @@
 				6AB55B5319C8B2D500DC6442 /* ThemeViewController.xib in Resources */,
 				6A4B9D3619BB514900D50D78 /* Images.xcassets in Resources */,
 				6AB55B5719C9F20B00DC6442 /* AccountViewController.xib in Resources */,
+				3894C24E19E557BF0038AEF8 /* TimelineViewController.xib in Resources */,
 				6AB55B4519C584B300DC6442 /* SettingsViewController.xib in Resources */,
 				381E6E8319E2A56A00139654 /* TwitterStatusCell.xib in Resources */,
 			);
@@ -487,6 +505,7 @@
 			files = (
 				381E6E8519E2A69200139654 /* TwitterStatusCell.swift in Sources */,
 				6AB55B4919C5984800DC6442 /* TransparentView.swift in Sources */,
+				3894C25019E55C770038AEF8 /* ViewTools.swift in Sources */,
 				6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */,
 				38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */,
 				6AB55B3E19C562CF00DC6442 /* EditorViewController.swift in Sources */,
@@ -494,6 +513,7 @@
 				6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */,
 				382340CC19D0353800554D8C /* User.swift in Sources */,
 				381E6E7E19DE4FB000139654 /* Secret.swift in Sources */,
+				3894C24C19E557120038AEF8 /* TimelineViewController.swift in Sources */,
 				381E6E0719D98A7300139654 /* AccountSettings.swift in Sources */,
 				382340CA19D0352F00554D8C /* Notification.swift in Sources */,
 				6AB55B4D19C8ADBE00DC6442 /* FontSizeViewController.swift in Sources */,

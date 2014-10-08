@@ -6,46 +6,37 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FontSizeViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
-                <outlet property="view" destination="iN0-l3-epB" id="jGe-Nf-VNi"/>
+                <outlet property="view" destination="yGC-W7-Fys" id="tjE-mC-Cpt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TransparentView" customModule="Justaway" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yGC-W7-Fys">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yGC-W7-Fys">
-                    <rect key="frame" x="0.0" y="500" width="600" height="50"/>
-                    <subviews>
-                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="BnS-sj-KDZ">
-                            <rect key="frame" x="6" y="10" width="513" height="31"/>
-                        </slider>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ri-tn-lLJ">
-                            <rect key="frame" x="525" y="-1" width="75" height="51"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                            <state key="normal" title="Reset">
-                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="8Ri-tn-lLJ" firstAttribute="leading" secondItem="BnS-sj-KDZ" secondAttribute="trailing" constant="8" id="54T-Yh-S58"/>
-                        <constraint firstAttribute="height" constant="50" id="FOF-Al-7oF"/>
-                        <constraint firstAttribute="centerY" secondItem="BnS-sj-KDZ" secondAttribute="centerY" id="UZx-UG-CUS"/>
-                        <constraint firstAttribute="trailing" secondItem="8Ri-tn-lLJ" secondAttribute="trailing" id="dnl-ou-Of5"/>
-                        <constraint firstItem="BnS-sj-KDZ" firstAttribute="leading" secondItem="yGC-W7-Fys" secondAttribute="leading" constant="8" id="eOT-5Y-mXH"/>
-                        <constraint firstAttribute="centerY" secondItem="8Ri-tn-lLJ" secondAttribute="centerY" id="s0A-O5-5Pe"/>
-                    </constraints>
-                </view>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="BnS-sj-KDZ">
+                    <rect key="frame" x="6" y="10" width="513" height="31"/>
+                </slider>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ri-tn-lLJ">
+                    <rect key="frame" x="525" y="-1" width="75" height="51"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                    <state key="normal" title="Reset">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="yGC-W7-Fys" secondAttribute="bottom" constant="50" id="37U-jD-YPN"/>
-                <constraint firstItem="yGC-W7-Fys" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="HzF-Xn-zmJ"/>
-                <constraint firstAttribute="trailing" secondItem="yGC-W7-Fys" secondAttribute="trailing" id="pFq-G3-sWq"/>
+                <constraint firstItem="8Ri-tn-lLJ" firstAttribute="leading" secondItem="BnS-sj-KDZ" secondAttribute="trailing" constant="8" id="54T-Yh-S58"/>
+                <constraint firstAttribute="centerY" secondItem="BnS-sj-KDZ" secondAttribute="centerY" id="UZx-UG-CUS"/>
+                <constraint firstAttribute="height" constant="50" id="dMp-jj-0CL"/>
+                <constraint firstAttribute="trailing" secondItem="8Ri-tn-lLJ" secondAttribute="trailing" id="dnl-ou-Of5"/>
+                <constraint firstItem="BnS-sj-KDZ" firstAttribute="leading" secondItem="yGC-W7-Fys" secondAttribute="leading" constant="8" id="eOT-5Y-mXH"/>
+                <constraint firstAttribute="centerY" secondItem="8Ri-tn-lLJ" secondAttribute="centerY" id="s0A-O5-5Pe"/>
             </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="120" y="388"/>
         </view>
     </objects>
 </document>

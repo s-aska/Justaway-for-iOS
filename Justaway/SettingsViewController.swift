@@ -31,25 +31,28 @@ class SettingsViewController: UIViewController {
         configureSettingsView()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     // MARK: - Configuration
     
     func configureSettingsView() {
-        containerViewBottomConstraint.constant = -containerView.frame.size.height
+        let menuHeight = containerView.frame.size.height
+        
+        containerViewBottomConstraint.constant = -menuHeight
         
         fontSizeViewController = FontSizeViewController()
-        fontSizeViewController.view.frame = view.frame
         fontSizeViewController.view.hidden = true
-        view.addSubview(fontSizeViewController.view)
+        ViewTools.addSubviewWithEqual(view, view: fontSizeViewController.view, top: nil, right: 0.0, bottom: menuHeight, left: 0.0)
         
         themeViewController = ThemeViewController()
-        themeViewController.view.frame = view.frame
         themeViewController.view.hidden = true
-        view.addSubview(themeViewController.view)
+        ViewTools.addSubviewWithEqual(view, view: themeViewController.view, top: nil, right: 0.0, bottom: menuHeight, left: 0.0)
         
         accountViewController = AccountViewController()
-        accountViewController.view.frame = view.frame
         accountViewController.view.hidden = true
-        view.addSubview(accountViewController.view)
+        ViewTools.addSubviewWithEqual(view, view: accountViewController.view, top: 0.0, right: 0.0, bottom: menuHeight, left: 0.0)
     }
     
     // MARK: - Actions
