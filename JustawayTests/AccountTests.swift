@@ -22,25 +22,25 @@ class AccountTest: XCTestCase {
         let credential = SwifterCredential(accessToken: accessToken)
         let account = Account(credential: credential, userID: "1", screenName: "su_aska", name: "Shinichiro Aska", profileImageURL: NSURL(string: normalURL))
         
-        XCTAssert(account.screenName == "su_aska", "Account#init")
+        XCTAssertEqual(account.screenName, "su_aska")
         
-        XCTAssert(account.profileImageBiggerURL.absoluteString == biggerURL, "Account#profileImageBiggerURL")
+        XCTAssertEqual(account.profileImageBiggerURL.absoluteString!, biggerURL)
         
         let saveSuccess = AccountSettingsStore.save(AccountSettings(current: 0, accounts: [account]))
         
-        XCTAssert(saveSuccess, "AccountService#save")
+        XCTAssertTrue(saveSuccess)
         
         let accountSettings = AccountSettingsStore.load()!
         
-        XCTAssert(accountSettings.current == 0, "AccountService#load")
+        XCTAssertEqual(accountSettings.current, 0)
         
-        XCTAssert(accountSettings.accounts[0].screenName == account.screenName, "AccountService#load")
+        XCTAssertEqual(accountSettings.accounts[0].screenName, account.screenName)
         
-        XCTAssert(accountSettings.account().userID == accountSettings.account(0).userID, "accountSettings#account")
+        XCTAssertEqual(accountSettings.account().userID, accountSettings.account(0).userID)
         
         AccountSettingsStore.clear()
         
-        XCTAssert(AccountSettingsStore.load() == nil, "AccountService#clear")
+        XCTAssertTrue(AccountSettingsStore.load() == nil)
     }
     
 }

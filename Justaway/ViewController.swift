@@ -60,11 +60,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         numberFormatter.numberStyle = .DecimalStyle
         
         cell.nameLabel.text = status.user.name
-        cell.screenNameLabel.text = status.user.screenName
+        cell.screenNameLabel.text = "@" + status.user.screenName
         cell.protectedLabel.hidden = status.isProtected ? false : true
         cell.statusLabel.text = status.text
-        cell.retweetCountLabel.text = numberFormatter.stringFromNumber(status.retweetCount)
-        cell.favoriteCountLabel.text = numberFormatter.stringFromNumber(status.favoriteCount)
+        cell.retweetCountLabel.text = status.retweetCount > 0 ? numberFormatter.stringFromNumber(status.retweetCount) : ""
+        cell.favoriteCountLabel.text = status.favoriteCount > 0 ? numberFormatter.stringFromNumber(status.favoriteCount) : ""
         cell.relativeCreatedAtLabel.text = TwitterDate.relative(status.createdAt)
         cell.absoluteCreatedAtLabel.text = TwitterDate.absolute(status.createdAt)
         cell.viaLabel.text = status.clientName

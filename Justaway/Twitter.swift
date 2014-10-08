@@ -1,11 +1,7 @@
 import Foundation
 import SwifteriOS
 
-let failureHandler = { (error: NSError) -> Void in
-    NSLog("%@", error.localizedDescription)
-}
-
-class TwitterUser {
+struct TwitterUser {
     let userID: String
     let screenName: String
     let name: String
@@ -19,7 +15,7 @@ class TwitterUser {
     }
 }
 
-class TwitterURL {
+struct TwitterURL {
     let displayURL: String
     let expandedURL: String
     
@@ -29,7 +25,7 @@ class TwitterURL {
     }
 }
 
-class TwitterMedia {
+struct TwitterMedia {
     let displayURL: String
     let expandedURL: String
     let mediaURL: NSURL
@@ -45,7 +41,7 @@ class TwitterMedia {
     }
 }
 
-class TwitterStatus {
+struct TwitterStatus {
     let user: TwitterUser
     let statusID: String
     let text: String
@@ -58,7 +54,6 @@ class TwitterStatus {
     let hashtags: [String]
     let isProtected: Bool
     let media: [TwitterMedia]
-    
     
     init(_ json: JSONValue) {
         println(json)
@@ -99,6 +94,10 @@ class TwitterStatus {
         
         self.clientName = TwitterVia.clientName(json["source"].string ?? "unknown")
     }
+}
+
+let failureHandler = { (error: NSError) -> Void in
+    NSLog("%@", error.localizedDescription)
 }
 
 class Twitter {
@@ -190,11 +189,13 @@ class Twitter {
     class func getHomeTimeline(successHandler: ([TwitterStatus]) -> Void) {
         if let account = AccountSettingsStore.get() {
             swifter.client.credential = account.account().credential
-            swifter.getStatusesHomeTimelineWithCount(20, sinceID: nil, maxID: nil, trimUser: nil, contributorDetails: nil, includeEntities: false, success: { (statuses: [JSONValue]?) -> Void in
+            let success = { (statuses: [JSONValue]?) -> Void in
                 if statuses != nil {
                     successHandler(statuses!.map { TwitterStatus($0) })
                 }
-            }, failure: failureHandler)
+            }
+            let failure = failureHandler
+            swifter.getStatusesHomeTimelineWithCount(20, sinceID: nil, maxID: nil, trimUser: nil, contributorDetails: nil, includeEntities: false, success: success, failure: failure)
         }
     }
     

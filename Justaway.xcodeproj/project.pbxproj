@@ -17,11 +17,14 @@
 		382340C819D0351A00554D8C /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340C719D0351A00554D8C /* Message.swift */; };
 		382340CA19D0352F00554D8C /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340C919D0352F00554D8C /* Notification.swift */; };
 		382340CC19D0353800554D8C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340CB19D0353800554D8C /* User.swift */; };
-		382340CE19D043C000554D8C /* AccountTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340CD19D043C000554D8C /* AccountTest.swift */; };
+		382340CE19D043C000554D8C /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340CD19D043C000554D8C /* AccountTests.swift */; };
 		382340D019D0451600554D8C /* FontSizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB55B4C19C8ADBE00DC6442 /* FontSizeViewController.swift */; };
 		382340D419D04EBA00554D8C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D319D04EBA00554D8C /* Keychain.swift */; };
-		382340D619D055E000554D8C /* KeychainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D519D055E000554D8C /* KeychainTest.swift */; };
+		382340D619D055E000554D8C /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D519D055E000554D8C /* KeychainTests.swift */; };
 		382340D719D055EA00554D8C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340D319D04EBA00554D8C /* Keychain.swift */; };
+		38A694F419E4E6E800DD6072 /* TwitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A694F319E4E6E800DD6072 /* TwitterTests.swift */; };
+		38A694F519E4E75F00DD6072 /* Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7F19DE9DAB00139654 /* Twitter.swift */; };
+		38A694F619E4E82A00DD6072 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7D19DE4FB000139654 /* Secret.swift */; };
 		38B4475D19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */; };
@@ -101,9 +104,10 @@
 		382340C719D0351A00554D8C /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		382340C919D0352F00554D8C /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		382340CB19D0353800554D8C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		382340CD19D043C000554D8C /* AccountTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTest.swift; sourceTree = "<group>"; };
+		382340CD19D043C000554D8C /* AccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		382340D319D04EBA00554D8C /* Keychain.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = Keychain.swift; sourceTree = "<group>"; };
-		382340D519D055E000554D8C /* KeychainTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTest.swift; sourceTree = "<group>"; };
+		382340D519D055E000554D8C /* KeychainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
+		38A694F319E4E6E800DD6072 /* TwitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTests.swift; sourceTree = "<group>"; };
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoExpandTextView.swift; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -263,8 +267,9 @@
 			isa = PBXGroup;
 			children = (
 				6A4B9D4119BB514900D50D78 /* JustawayTests.swift */,
-				382340CD19D043C000554D8C /* AccountTest.swift */,
-				382340D519D055E000554D8C /* KeychainTest.swift */,
+				382340CD19D043C000554D8C /* AccountTests.swift */,
+				382340D519D055E000554D8C /* KeychainTests.swift */,
+				38A694F319E4E6E800DD6072 /* TwitterTests.swift */,
 				6A4B9D3F19BB514900D50D78 /* Supporting Files */,
 			);
 			path = JustawayTests;
@@ -507,12 +512,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				382340D019D0451600554D8C /* FontSizeViewController.swift in Sources */,
+				38A694F619E4E82A00DD6072 /* Secret.swift in Sources */,
 				6A4B9D4219BB514900D50D78 /* JustawayTests.swift in Sources */,
-				382340D619D055E000554D8C /* KeychainTest.swift in Sources */,
-				382340CE19D043C000554D8C /* AccountTest.swift in Sources */,
+				382340D619D055E000554D8C /* KeychainTests.swift in Sources */,
+				382340CE19D043C000554D8C /* AccountTests.swift in Sources */,
+				38A694F519E4E75F00DD6072 /* Twitter.swift in Sources */,
 				6AB55B5B19D0CCD000DC6442 /* AccountSettingsStore.swift in Sources */,
 				381E6E0819D98CA500139654 /* AccountSettings.swift in Sources */,
 				382340D719D055EA00554D8C /* Keychain.swift in Sources */,
+				38A694F419E4E6E800DD6072 /* TwitterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

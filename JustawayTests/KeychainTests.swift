@@ -18,20 +18,20 @@ class KeychainTest: XCTestCase {
         let key2 = "testExampleKey2"
         let saveData = "data".dataValue
         
-        XCTAssert(Keychain.save(key1, data: saveData), "save")
-        XCTAssert(Keychain.save(key2, data: saveData), "save")
+        XCTAssertTrue(Keychain.save(key1, data: saveData))
+        XCTAssertTrue(Keychain.save(key2, data: saveData))
         
-        XCTAssert(Keychain.load(key1) != nil, "load")
-        XCTAssert(Keychain.load(key2) != nil, "load")
+        XCTAssertTrue(Keychain.load(key1) != nil)
+        XCTAssertTrue(Keychain.load(key2) != nil)
         
         let loadData = Keychain.load(key1)!
         
-        XCTAssert(loadData.stringValue == saveData.stringValue, "load data")
+        XCTAssertEqual(loadData.stringValue, saveData.stringValue)
         
-        XCTAssert(Keychain.remove(key1), "remove")
+        XCTAssertTrue(Keychain.remove(key1))
         
-        XCTAssert(Keychain.load(key1) == nil, "remove data")
-        XCTAssert(Keychain.load(key2) != nil, "not remove data")
+        XCTAssertTrue(Keychain.load(key1) == nil)
+        XCTAssertTrue(Keychain.load(key2) != nil)
     }
     
     func testClear() {
@@ -39,10 +39,10 @@ class KeychainTest: XCTestCase {
         let data = "testClearData".dataValue
         
         Keychain.save(key, data: data)
-        XCTAssert(Keychain.load(key) != nil, "save data")
+        XCTAssertTrue(Keychain.load(key) != nil)
         
         Keychain.clear()
-        XCTAssert(Keychain.load(key) == nil, "clear data")
+        XCTAssertTrue(Keychain.load(key) == nil)
     }
     
 }
