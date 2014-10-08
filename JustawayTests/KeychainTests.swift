@@ -13,10 +13,29 @@ class KeychainTest: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        let key1 = "testExampleKey1"
-        let key2 = "testExampleKey2"
+    func testSaveLoad() {
+        let key1 = "testSaveLoadKey1"
+        let key2 = "testSaveLoadKey2"
         let saveData = "data".dataValue
+        
+        XCTAssertTrue(Keychain.load(key1) == nil)
+        XCTAssertTrue(Keychain.load(key2) == nil)
+        
+        XCTAssertTrue(Keychain.save(key1, data: saveData))
+        
+        XCTAssertTrue(Keychain.load(key1) != nil)
+        XCTAssertTrue(Keychain.load(key2) == nil)
+        
+        let loadData = Keychain.load(key1)!
+        
+        XCTAssertEqual(loadData.stringValue, saveData.stringValue)
+    }
+    
+    
+    func testDelete() {
+        let key1 = "testDeleteKey1"
+        let key2 = "testDeleteKey2"
+        let saveData = "testDeleteData".dataValue
         
         XCTAssertTrue(Keychain.save(key1, data: saveData))
         XCTAssertTrue(Keychain.save(key2, data: saveData))
@@ -24,11 +43,7 @@ class KeychainTest: XCTestCase {
         XCTAssertTrue(Keychain.load(key1) != nil)
         XCTAssertTrue(Keychain.load(key2) != nil)
         
-        let loadData = Keychain.load(key1)!
-        
-        XCTAssertEqual(loadData.stringValue, saveData.stringValue)
-        
-        XCTAssertTrue(Keychain.remove(key1))
+        XCTAssertTrue(Keychain.delete(key1))
         
         XCTAssertTrue(Keychain.load(key1) == nil)
         XCTAssertTrue(Keychain.load(key2) != nil)

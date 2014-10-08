@@ -34,7 +34,7 @@ class Keychain {
         }
     }
     
-    class func remove(key: String) -> Bool {
+    class func delete(key: String) -> Bool {
         let query = [
             kSecClass       : kSecClassGenericPassword,
             kSecAttrAccount : key ]

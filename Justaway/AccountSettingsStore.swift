@@ -52,7 +52,7 @@ class AccountSettingsStore {
     class func clear() {
         AccountSettingsCache.sharedInstance.settings = nil
         
-        Keychain.remove(Constants.keychainKey)
+        Keychain.delete(Constants.keychainKey)
     }
     
 }

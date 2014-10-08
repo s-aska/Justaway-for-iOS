@@ -6,11 +6,11 @@ class AccountTest: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        AccountSettingsStore.clear()
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        AccountSettingsStore.clear()
         super.tearDown()
     }
     
@@ -26,9 +26,7 @@ class AccountTest: XCTestCase {
         
         XCTAssertEqual(account.profileImageBiggerURL.absoluteString!, biggerURL)
         
-        let saveSuccess = AccountSettingsStore.save(AccountSettings(current: 0, accounts: [account]))
-        
-        XCTAssertTrue(saveSuccess)
+        XCTAssertTrue(AccountSettingsStore.save(AccountSettings(current: 0, accounts: [account])))
         
         let accountSettings = AccountSettingsStore.load()!
         

@@ -4,14 +4,6 @@ import XCTest
 
 class TwitterTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
-    
     func testTwitterDate() {
         XCTAssertEqual(TwitterDate.absolute(TwitterDate.dateFromString("Wed Jun 06 20:07:10 +0900 2012")), "2012/06/06 20:07:10")
         XCTAssertEqual(TwitterDate.relative(NSDate(timeIntervalSinceNow: -3)), "3s")
@@ -23,13 +15,6 @@ class TwitterTests: XCTestCase {
     func testTwitterVia() {
         XCTAssertEqual(TwitterVia.clientName("<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"), "Twitter Web Client")
         XCTAssertEqual(TwitterVia.clientName("Web"), "Web")
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
-        }
     }
     
 }
