@@ -16,8 +16,8 @@ class TimelineViewController: UIViewController {
     
     // MARK: - View Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
         editorViewController = EditorViewController()
         editorViewController.view.hidden = true
@@ -27,7 +27,6 @@ class TimelineViewController: UIViewController {
         ViewTools.addSubviewWithEqual(self.view, view: settingsViewController.view)
         
         var size = scrollWrapperView.frame.size
-        size.width = 320
         println(size.width)
         let contentView = UIView(frame: CGRectMake(0, 0, size.width, size.height))
         
