@@ -2,7 +2,7 @@ import UIKit
 import XCTest
 import SwifteriOS
 
-class AccountTest: XCTestCase {
+class AccountTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

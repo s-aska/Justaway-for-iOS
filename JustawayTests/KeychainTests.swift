@@ -1,7 +1,7 @@
 import UIKit
 import XCTest
 
-class KeychainTest: XCTestCase {
+class KeychainTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
