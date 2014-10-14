@@ -32,6 +32,8 @@
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */; };
 		38F7B8F319E5720F0081C735 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */; };
+		38FDB41619ECDE0B00056AF7 /* EmitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38FDB41319ECDD6900056AF7 /* EmitterKit.framework */; };
+		38FDB41819ECDE6200056AF7 /* EmitterKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 38FDB41319ECDD6900056AF7 /* EmitterKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
 		6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3019BB514900D50D78 /* ViewController.swift */; };
 		6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3219BB514900D50D78 /* Main.storyboard */; };
@@ -88,6 +90,20 @@
 			remoteGlobalIDString = 8B300C5A1944AECB00993175;
 			remoteInfo = SwifterDemoMacTests;
 		};
+		38FDB41219ECDD6900056AF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 38FDB40E19ECDD6800056AF7 /* EmitterKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1102850D19C9BCEB0069F253;
+			remoteInfo = EmitterKit;
+		};
+		38FDB41419ECDDFC00056AF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 38FDB40E19ECDD6800056AF7 /* EmitterKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1102850C19C9BCEB0069F253;
+			remoteInfo = EmitterKit;
+		};
 		6A4B9D3C19BB514900D50D78 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6A4B9D2119BB514900D50D78 /* Project object */;
@@ -96,6 +112,19 @@
 			remoteInfo = Justaway;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		38FDB41719ECDE4B00056AF7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				38FDB41819ECDE6200056AF7 /* EmitterKit.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		381E6E0619D98A7300139654 /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
@@ -118,6 +147,7 @@
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoExpandTextView.swift; sourceTree = "<group>"; };
 		38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
+		38FDB40E19ECDD6800056AF7 /* EmitterKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EmitterKit.xcodeproj; path = "emitter-kit/EmitterKit.xcodeproj"; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4B9D2D19BB514900D50D78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -146,6 +176,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38FDB41619ECDE0B00056AF7 /* EmitterKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,6 +255,14 @@
 			name = Timeline;
 			sourceTree = "<group>";
 		};
+		38FDB40F19ECDD6800056AF7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				38FDB41319ECDD6900056AF7 /* EmitterKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		6A0B236719DC49A3004819BB /* OS */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,6 +277,7 @@
 				6A4B9D2B19BB514900D50D78 /* Justaway */,
 				6A4B9D3E19BB514900D50D78 /* JustawayTests */,
 				6A4B9D2A19BB514900D50D78 /* Products */,
+				38FDB40E19ECDD6800056AF7 /* EmitterKit.xcodeproj */,
 				381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */,
 			);
 			sourceTree = "<group>";
@@ -364,10 +404,12 @@
 				6A4B9D2519BB514900D50D78 /* Sources */,
 				6A4B9D2619BB514900D50D78 /* Frameworks */,
 				6A4B9D2719BB514900D50D78 /* Resources */,
+				38FDB41719ECDE4B00056AF7 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				38FDB41519ECDDFC00056AF7 /* PBXTargetDependency */,
 			);
 			name = Justaway;
 			productName = Justaway;
@@ -423,6 +465,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 38FDB40F19ECDD6800056AF7 /* Products */;
+					ProjectRef = 38FDB40E19ECDD6800056AF7 /* EmitterKit.xcodeproj */;
+				},
+				{
 					ProductGroup = 381E6E6C19DE47EB00139654 /* Products */;
 					ProjectRef = 381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */;
 				},
@@ -469,6 +515,13 @@
 			fileType = wrapper.cfbundle;
 			path = SwifterDemoMacTests.xctest;
 			remoteRef = 381E6E7B19DE47EC00139654 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		38FDB41319ECDD6900056AF7 /* EmitterKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = EmitterKit.framework;
+			remoteRef = 38FDB41219ECDD6900056AF7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -551,6 +604,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		38FDB41519ECDDFC00056AF7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = EmitterKit;
+			targetProxy = 38FDB41419ECDDFC00056AF7 /* PBXContainerItemProxy */;
+		};
 		6A4B9D3D19BB514900D50D78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6A4B9D2819BB514900D50D78 /* Justaway */;

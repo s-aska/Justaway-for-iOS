@@ -1,3 +1,6 @@
 [submodule "Swifter"]
 	path = Swifter
 	url = git@github.com:mattdonnelly/Swifter.git
+[submodule "emitter-kit"]
+	path = emitter-kit
+	url = git@github.com:aleclarson/emitter-kit.git
