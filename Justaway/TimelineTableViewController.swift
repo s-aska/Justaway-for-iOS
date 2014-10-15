@@ -41,6 +41,8 @@ class TimelineTableViewController: UITableViewController {
         cell.viaLabel.text = status.clientName
         cell.imagesContainerView.hidden = true
         cell.actionedContainerView.hidden = true
+        cell.createdAtBottom.constant = 5.0
+        
         return cell
     }
     

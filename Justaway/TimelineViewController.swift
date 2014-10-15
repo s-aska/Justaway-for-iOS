@@ -9,6 +9,7 @@ class TimelineViewController: UIViewController {
     var editorViewController: EditorViewController!
     var settingsViewController: SettingsViewController!
     var tableViewController: TimelineTableViewController!
+    var tableViewControllers = [TimelineTableViewController]()
     
     override var nibName: String {
         return "TimelineViewController"
@@ -28,13 +29,22 @@ class TimelineViewController: UIViewController {
         
         var size = scrollWrapperView.frame.size
         println(size.width)
-        let contentView = UIView(frame: CGRectMake(0, 0, size.width, size.height))
+        let contentView = UIView(frame: CGRectMake(0, 0, size.width * 3, size.height))
         
         tableViewController = TimelineTableViewController()
         tableViewController.view.frame = CGRectMake(0, 0, size.width, size.height)
         let view = UIView(frame: CGRectMake(0, 0, size.width, size.height))
         view.addSubview(tableViewController.view)
         contentView.addSubview(view)
+        
+        for i in 1 ... 3 {
+            let vc = TimelineTableViewController()
+            vc.view.frame = CGRectMake(0, 0, size.width, size.height)
+            let view = UIView(frame: CGRectMake(size.width * (i as NSNumber), 0, size.width, size.height))
+            view.addSubview(vc.view)
+            contentView.addSubview(view)
+            tableViewControllers.append(vc)
+        }
         
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size

@@ -205,6 +205,7 @@
                 <outlet property="actionedContainerView" destination="rcK-bH-pWp" id="Af5-eu-404"/>
                 <outlet property="actionedIconImageView" destination="9gv-um-TrN" id="BSj-Lg-OHU"/>
                 <outlet property="actionedTextLabel" destination="Xmj-o7-Msh" id="hZZ-ZN-1Oq"/>
+                <outlet property="createdAtBottom" destination="2qD-44-sTx" id="MX9-c5-osX"/>
                 <outlet property="favoriteButton" destination="OBS-6K-La7" id="bgr-rd-Or3"/>
                 <outlet property="favoriteCountLabel" destination="ydf-ds-1yM" id="vmz-6D-XB0"/>
                 <outlet property="iconImageView" destination="d8g-lI-qp9" id="Wg9-C7-sU1"/>

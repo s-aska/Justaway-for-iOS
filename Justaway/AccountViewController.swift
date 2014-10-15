@@ -49,15 +49,18 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         cell.accessoryType = self.settings?.current == indexPath.row ? .Checkmark : UITableViewCellAccessoryType.None
         cell.textLabel?.text = self.settings?.accounts[indexPath.row].name
         cell.detailTextLabel?.text = self.settings?.accounts[indexPath.row].screenName
-        let url = self.settings?.accounts[indexPath.row].profileImageBiggerURL
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-            let imageData :NSData = NSData.dataWithContentsOfURL(url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: nil)
-            dispatch_async(dispatch_get_main_queue(), {
-                cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-                cell.imageView?.image = UIImage(data:imageData)
-                cell.setNeedsLayout()
+        if let url = self.settings?.accounts[indexPath.row].profileImageBiggerURL {
+            println(url)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+                var error: NSError?
+                let imageData :NSData = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
+                dispatch_async(dispatch_get_main_queue(), {
+                    cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                    cell.imageView?.image = UIImage(data:imageData)
+                    cell.setNeedsLayout()
+                })
             })
-        })
+        }
         return cell
     }
     
