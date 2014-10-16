@@ -49,6 +49,8 @@ class Notification {
         }
     }
     
+    // MARK: - postNotificationName
+    
     class func post(name: String) {
         NSNotificationCenter.defaultCenter().postNotificationName(name, object: nil)
     }
