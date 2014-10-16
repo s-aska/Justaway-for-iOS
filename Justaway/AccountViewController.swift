@@ -36,6 +36,18 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewWillAppear(animated)
         
         self.settings = AccountSettingsStore.get()
+        
+        Notification.onMainThread(self, name: TwitterAuthorizeNotification, callback: {
+            (notification: NSNotification!) in
+            
+            self.cancel()
+        })
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        Notification.off(self)
     }
     
     // MARK: - UITableViewDataSource
@@ -201,11 +213,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func addAccouns(accounts: [Account]) {
-        Twitter.refreshAccounts(accounts, successHandler: {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.cancel()
-            })
-        })
+        Twitter.refreshAccounts(accounts)
     }
     
     func initEditing() {

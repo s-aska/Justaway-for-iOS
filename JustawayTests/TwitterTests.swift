@@ -5,16 +5,18 @@ import XCTest
 class TwitterTests: XCTestCase {
     
     func testTwitterDate() {
-        XCTAssertEqual(TwitterDate.absolute(TwitterDate.dateFromString("Wed Jun 06 20:07:10 +0900 2012")), "2012/06/06 20:07:10")
-        XCTAssertEqual(TwitterDate.relative(NSDate(timeIntervalSinceNow: -3)), "3s")
-        XCTAssertEqual(TwitterDate.relative(NSDate(timeIntervalSinceNow: -3 * 60)), "3m")
-        XCTAssertEqual(TwitterDate.relative(NSDate(timeIntervalSinceNow: -3 * 60 * 60)), "3h")
-        XCTAssertEqual(TwitterDate.relative(NSDate(timeIntervalSinceNow: -3 * 60 * 60 * 24)), "3d")
+        XCTAssertEqual(TwitterDate("Wed Jun 06 20:07:10 +0900 2012").absoluteString, "2012/06/06 20:07:10")
+        XCTAssertEqual(TwitterDate(NSDate(timeIntervalSinceNow: -3)).relativeString, "3s")
+        XCTAssertEqual(TwitterDate(NSDate(timeIntervalSinceNow: -3 * 60)).relativeString, "3m")
+        XCTAssertEqual(TwitterDate(NSDate(timeIntervalSinceNow: -3 * 60 * 60)).relativeString, "3h")
+        XCTAssertEqual(TwitterDate(NSDate(timeIntervalSinceNow: -3 * 60 * 60 * 24)).relativeString, "3d")
     }
     
     func testTwitterVia() {
-        XCTAssertEqual(TwitterVia.clientName("<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>"), "Twitter Web Client")
-        XCTAssertEqual(TwitterVia.clientName("Web"), "Web")
+        let via = TwitterVia("<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>")
+        XCTAssertEqual(via.name, "Twitter Web Client")
+        XCTAssertEqual((via.URL?.absoluteString)!, "http://twitter.com")
+        XCTAssertEqual(TwitterVia("Web").name, "Web")
     }
     
 }

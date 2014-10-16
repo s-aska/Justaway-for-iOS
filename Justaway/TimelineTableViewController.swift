@@ -36,9 +36,9 @@ class TimelineTableViewController: UITableViewController {
         cell.statusLabel.text = status.text
         cell.retweetCountLabel.text = status.retweetCount > 0 ? numberFormatter.stringFromNumber(status.retweetCount) : ""
         cell.favoriteCountLabel.text = status.favoriteCount > 0 ? numberFormatter.stringFromNumber(status.favoriteCount) : ""
-        cell.relativeCreatedAtLabel.text = TwitterDate.relative(status.createdAt)
-        cell.absoluteCreatedAtLabel.text = TwitterDate.absolute(status.createdAt)
-        cell.viaLabel.text = status.clientName
+        cell.relativeCreatedAtLabel.text = status.createdAt.relativeString
+        cell.absoluteCreatedAtLabel.text = status.createdAt.absoluteString
+        cell.viaLabel.text = status.via.name
         cell.imagesContainerView.hidden = true
         cell.actionedContainerView.hidden = true
         cell.createdAtBottom.constant = 5.0
@@ -71,9 +71,9 @@ class TimelineTableViewController: UITableViewController {
                 println(status.user.screenName)
                 println(status.user.profileImageURL)
                 println(status.text)
-                println(status.clientName)
-                println(TwitterDate.relative(status.createdAt))
-                println(TwitterDate.absolute(status.createdAt))
+                println(status.via.name)
+                println(status.createdAt.relativeString)
+                println(status.createdAt.absoluteString)
             }
             self.rows = statuses
             dispatch_async(dispatch_get_main_queue(), {

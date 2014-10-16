@@ -29,30 +29,19 @@ class EditorViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "handleKeyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: "handleKeyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
+        Notification.onMainThread(self, name: UIKeyboardWillShowNotification, callback: { n in self.keyboardWillChangeFrame(n, showsKeyboard: true) })
+        Notification.onMainThread(self, name: UIKeyboardWillHideNotification, callback: { n in self.keyboardWillChangeFrame(n, showsKeyboard: false) })
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
-        notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        Notification.off(self)
     }
     
     // MARK: - Keyboard Event Notifications
     
-    func handleKeyboardWillShowNotification(notification: NSNotification) {
-        keyboardWillChangeFrameWithNotification(notification, showsKeyboard: true)
-    }
-    
-    func handleKeyboardWillHideNotification(notification: NSNotification) {
-        keyboardWillChangeFrameWithNotification(notification, showsKeyboard: false)
-    }
-    
-    func keyboardWillChangeFrameWithNotification(notification: NSNotification, showsKeyboard: Bool) {
+    func keyboardWillChangeFrame(notification: NSNotification, showsKeyboard: Bool) {
         let userInfo = notification.userInfo!
         let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as NSNumber).doubleValue
         let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
