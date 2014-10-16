@@ -43,7 +43,9 @@ class TimelineTableViewController: UITableViewController {
         cell.actionedContainerView.hidden = true
         cell.createdAtBottom.constant = 5.0
         cell.iconImageView.image = nil
-        ImageLoader.load(status.user.profileImageURL, imageView: cell.iconImageView, { _ in
+        ImageLoader.load(status.user.profileImageURL, imageView: cell.iconImageView, { (data: NSData, from: ImageLoaderFrom) -> Void in
+            cell.iconImageView.contentMode = UIViewContentMode.ScaleAspectFit
+            cell.iconImageView.image = UIImage(data: data)
             cell.setNeedsLayout()
         })
         
