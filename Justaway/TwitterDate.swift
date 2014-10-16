@@ -59,7 +59,7 @@ struct TwitterDate {
         } else if (diff < 86400) {
             return NSString(format: "%dh", diff / 3600)
         } else if (diff < 86400_000) {
-            return NSString(format: "%dh", diff / 86400)
+            return NSString(format: "%dd", diff / 86400)
         } else {
             return NSString(format: "%dy", diff / (86400 * 365))
         }

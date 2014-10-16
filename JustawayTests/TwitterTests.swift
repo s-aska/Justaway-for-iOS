@@ -10,6 +10,8 @@ class TwitterTests: XCTestCase {
         XCTAssertEqual(TwitterDate(NSDate(timeIntervalSinceNow: -3 * 60)).relativeString, "3m")
         XCTAssertEqual(TwitterDate(NSDate(timeIntervalSinceNow: -3 * 60 * 60)).relativeString, "3h")
         XCTAssertEqual(TwitterDate(NSDate(timeIntervalSinceNow: -3 * 60 * 60 * 24)).relativeString, "3d")
+        XCTAssertEqual(TwitterDate(NSDate(timeIntervalSinceNow: -600 * 60 * 60 * 24)).relativeString, "600d")
+        XCTAssertEqual(TwitterDate(NSDate(timeIntervalSinceNow: -5 * 60 * 60 * 24 * 365)).relativeString, "5y")
     }
     
     func testTwitterVia() {
