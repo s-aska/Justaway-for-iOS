@@ -63,14 +63,9 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         cell.detailTextLabel?.text = self.settings?.accounts[indexPath.row].screenName
         if let url = self.settings?.accounts[indexPath.row].profileImageBiggerURL {
             println(url)
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-                var error: NSError?
-                let imageData :NSData = NSData.dataWithContentsOfURL(url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
-                dispatch_async(dispatch_get_main_queue(), {
-                    cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-                    cell.imageView?.image = UIImage(data:imageData)
-                    cell.setNeedsLayout()
-                })
+            ImageLoader.load(url, imageView: cell.imageView!, { _ in
+                cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+                cell.setNeedsLayout()
             })
         }
         return cell

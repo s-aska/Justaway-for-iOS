@@ -42,6 +42,10 @@ class TimelineTableViewController: UITableViewController {
         cell.imagesContainerView.hidden = true
         cell.actionedContainerView.hidden = true
         cell.createdAtBottom.constant = 5.0
+        cell.iconImageView.image = nil
+        ImageLoader.load(status.user.profileImageURL, imageView: cell.iconImageView, { _ in
+            cell.setNeedsLayout()
+        })
         
         return cell
     }
@@ -66,15 +70,15 @@ class TimelineTableViewController: UITableViewController {
     
     func loadData() {
         Twitter.getHomeTimeline { (statuses: [TwitterStatus]) -> Void in
-            for status in statuses {
-                println(status.user.userID)
-                println(status.user.screenName)
-                println(status.user.profileImageURL)
-                println(status.text)
-                println(status.via.name)
-                println(status.createdAt.relativeString)
-                println(status.createdAt.absoluteString)
-            }
+//            for status in statuses {
+//                println(status.user.userID)
+//                println(status.user.screenName)
+//                println(status.user.profileImageURL)
+//                println(status.text)
+//                println(status.via.name)
+//                println(status.createdAt.relativeString)
+//                println(status.createdAt.absoluteString)
+//            }
             self.rows = statuses
             dispatch_async(dispatch_get_main_queue(), {
                 self.tableView.reloadData()
