@@ -13,11 +13,11 @@ class Notification {
     
     // MARK: - addObserverForName
     
-    class func on(target: AnyObject, name: String, queue: NSOperationQueue?, callback: ((NSNotification!) -> Void)) {
+    class func on(target: AnyObject, name: String, queue: NSOperationQueue?, handler: ((NSNotification!) -> Void)) {
         let id = ObjectIdentifier(target).uintValue()
         
         dispatch_sync(Static.queue) {
-            let observer = NSNotificationCenter.defaultCenter().addObserverForName(name, object: nil, queue: queue, usingBlock: callback)
+            let observer = NSNotificationCenter.defaultCenter().addObserverForName(name, object: nil, queue: queue, usingBlock: handler)
             if let observers = Static.instance.cache[id] {
                 Static.instance.cache[id] = observers + [observer]
             } else {
@@ -26,12 +26,12 @@ class Notification {
         }
     }
     
-    class func onMainThread(target: AnyObject, name: String, callback: ((NSNotification!) -> Void)) {
-        Notification.on(target, name: name, queue: NSOperationQueue.mainQueue(), callback: callback)
+    class func onMainThread(target: AnyObject, name: String, handler: ((NSNotification!) -> Void)) {
+        Notification.on(target, name: name, queue: NSOperationQueue.mainQueue(), handler: handler)
     }
     
-    class func onBackgroundThread(target: AnyObject, name: String, callback: ((NSNotification!) -> Void)) {
-        Notification.on(target, name: name, queue: NSOperationQueue(), callback: callback)
+    class func onBackgroundThread(target: AnyObject, name: String, handler: ((NSNotification!) -> Void)) {
+        Notification.on(target, name: name, queue: NSOperationQueue(), handler: handler)
     }
     
     // MARK: - removeObserver

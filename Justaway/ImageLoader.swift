@@ -50,27 +50,25 @@ class ImageLoader {
     class func doSuccess(url: NSURL, data: NSData, from: ImageLoaderFrom) {
         let hash = url.absoluteString!
         NSLog("%@ success", hash)
-        if let handlers = Static.handlers[hash] {
+        if let handlers = Static.handlers.removeValueForKey(hash) {
             for handler in handlers {
                 if let success = handler.success {
                     success(data, from)
                 }
             }
         }
-        Static.handlers.removeValueForKey(hash)
     }
     
     class func doFailure(url: NSURL, error: NSError) {
         let hash = url.absoluteString!
         NSLog("%@ failure", hash)
-        if let handlers = Static.handlers[hash] {
+        if let handlers = Static.handlers.removeValueForKey(hash) {
             for handler in handlers {
                 if let failure = handler.failure {
                     failure(error)
                 }
             }
         }
-        Static.handlers.removeValueForKey(hash)
     }
 }
 
@@ -89,76 +87,29 @@ class ImageLoaderMemoryCache {
     }
 }
 
-class ImageLoaderOperation: NSOperation {
+class ImageLoaderDownloadOperation: AsyncOperation {
     
-    let url: NSURL
     let task: NSURLSessionDownloadTask
     
-    internal var running = false
-    internal var stopped = false
-    internal var done = false
-    
-    init(_ url: NSURL, task: NSURLSessionDownloadTask) {
-        self.url = url
+    init(_ task: NSURLSessionDownloadTask) {
         self.task = task
-    }
-    
-    override internal var asynchronous: Bool {
-        return true
-    }
-    
-    override internal var cancelled: Bool {
-        return stopped
-    }
-    
-    override internal var executing: Bool {
-        get { return running }
-        set {
-            if running != newValue {
-                willChangeValueForKey("isExecuting")
-                running = newValue
-                didChangeValueForKey("isExecuting")
-            }
-        }
-    }
-    
-    override internal var finished: Bool {
-        get { return done }
-        set {
-            if done != newValue {
-                willChangeValueForKey("isFinished")
-                done = newValue
-                didChangeValueForKey("isFinished")
-            }
-        }
-    }
-    
-    override internal var ready: Bool {
-        return !running
+        super.init()
     }
     
     override func start() {
-        NSLog("%@ start", url.absoluteString!)
         super.start()
-        stopped = false
-        executing = true
-        finished = false
+        state = .Executing
         task.resume()
     }
     
     override func cancel() {
-        NSLog("%@ cancel", url.absoluteString!)
         super.cancel()
-        stopped = true
-        executing = false
-        finished = true
+        state = .Finished
         task.cancel()
     }
     
     func finish() {
-        NSLog("%@ finish", url.absoluteString!)
-        executing = false
-        finished = true
+        state = .Finished
     }
     
 }
@@ -167,14 +118,14 @@ class ImageLoaderTask: NSObject, NSURLSessionDownloadDelegate {
     
     let url: NSURL
     let imageView: UIImageView
-    var operation: ImageLoaderOperation?
+    var operation: ImageLoaderDownloadOperation?
     
     init(_ url: NSURL, imageView: UIImageView) {
         self.url = url
         self.imageView = imageView
     }
     
-    func load() -> ImageLoaderOperation? {
+    func load() -> ImageLoaderDownloadOperation? {
         NSLog("%@ load", url.absoluteString!)
         if let data = ImageLoaderMemoryCache.get(url.absoluteString!) {
             dispatch_async(dispatch_get_main_queue(), {
@@ -185,7 +136,8 @@ class ImageLoaderTask: NSObject, NSURLSessionDownloadDelegate {
         NSLog("%@ create", url.absoluteString!)
         let config  = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(url.absoluteString! + NSDate(timeIntervalSinceNow: 0).description)
         let session = NSURLSession(configuration: config, delegate: self, delegateQueue: nil)
-        operation = ImageLoaderOperation(url, task: session.downloadTaskWithURL(url))
+        let task = session.downloadTaskWithURL(url)
+        operation = ImageLoaderDownloadOperation(task)
         return operation
     }
     

@@ -37,7 +37,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         
         self.settings = AccountSettingsStore.get()
         
-        Notification.onMainThread(self, name: TwitterAuthorizeNotification, callback: {
+        Notification.onMainThread(self, name: TwitterAuthorizeNotification, handler: {
             (notification: NSNotification!) in
             
             self.cancel()
@@ -153,27 +153,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func addAccounByOAuth() {
-        let failureHandler: ((NSError) -> Void) = {
-            error in
-            self.alertWithTitle("Error", message: error.localizedDescription)
-        }
-        let swifter = Swifter(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret)
-        let url = NSURL(string: "justaway://success")
-        swifter.authorizeWithCallbackURL(url, success: {
-            accessToken, response in
-            
-            if let token = accessToken {
-                self.addAccouns([
-                    Account(
-                        credential: SwifterCredential(accessToken: token),
-                        userID: token.userID!,
-                        screenName: token.screenName ?? "",
-                        name: token.screenName! ?? "",
-                        profileImageURL: NSURL(string: ""))
-                    ])
-            }
-            
-        }, failure: failureHandler)
+        Twitter.addOAuthAccount()
     }
     
     func addAccounByAcAccount() {

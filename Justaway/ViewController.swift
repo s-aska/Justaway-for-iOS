@@ -28,7 +28,7 @@ class ViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        Notification.onMainThread(self, name: TwitterAuthorizeNotification, callback: { _ in self.configure() })
+        Notification.onMainThread(self, name: TwitterAuthorizeNotification, handler: { _ in self.configure() })
         
         configure()
     }

@@ -29,8 +29,8 @@ class EditorViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        Notification.onMainThread(self, name: UIKeyboardWillShowNotification, callback: { n in self.keyboardWillChangeFrame(n, showsKeyboard: true) })
-        Notification.onMainThread(self, name: UIKeyboardWillHideNotification, callback: { n in self.keyboardWillChangeFrame(n, showsKeyboard: false) })
+        Notification.onMainThread(self, name: UIKeyboardWillShowNotification, handler: { n in self.keyboardWillChangeFrame(n, showsKeyboard: true) })
+        Notification.onMainThread(self, name: UIKeyboardWillHideNotification, handler: { n in self.keyboardWillChangeFrame(n, showsKeyboard: false) })
     }
     
     override func viewDidDisappear(animated: Bool) {

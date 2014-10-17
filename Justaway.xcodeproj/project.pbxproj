@@ -42,6 +42,7 @@
 		38F1B0A019EFE2E100A3608E /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3868B95619EFDAAC001221BF /* Notification.swift */; };
 		38F1B0A719EFE2ED00A3608E /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F1B0A619EFE2ED00A3608E /* NotificationTests.swift */; };
 		38F1B0AA19F01B7600A3608E /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F1B0A919F01B7600A3608E /* ImageLoader.swift */; };
+		38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */; };
 		38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */; };
 		38F7B8F319E5720F0081C735 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
@@ -133,6 +134,7 @@
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		38F1B0A619EFE2ED00A3608E /* NotificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTests.swift; sourceTree = "<group>"; };
 		38F1B0A919F01B7600A3608E /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoExpandTextView.swift; sourceTree = "<group>"; };
 		38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -253,11 +255,20 @@
 			name = Entities;
 			sourceTree = "<group>";
 		};
+		38F4EAD719F11BEE00CBD23F /* Operation */ = {
+			isa = PBXGroup;
+			children = (
+				38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */,
+			);
+			name = Operation;
+			sourceTree = "<group>";
+		};
 		6A0B236719DC49A3004819BB /* OS */ = {
 			isa = PBXGroup;
 			children = (
 				382340D319D04EBA00554D8C /* Keychain.swift */,
 				3868B95619EFDAAC001221BF /* Notification.swift */,
+				38F4EAD719F11BEE00CBD23F /* Operation */,
 			);
 			name = OS;
 			sourceTree = "<group>";
@@ -542,6 +553,7 @@
 				3894C24C19E557120038AEF8 /* TimelineViewController.swift in Sources */,
 				38F1B0AA19F01B7600A3608E /* ImageLoader.swift in Sources */,
 				381E6E0719D98A7300139654 /* AccountSettings.swift in Sources */,
+				38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */,
 				6AB55B4D19C8ADBE00DC6442 /* FontSizeViewController.swift in Sources */,
 				6AB55B5119C8B2B200DC6442 /* ThemeViewController.swift in Sources */,
 				381E6E8019DE9DAB00139654 /* Twitter.swift in Sources */,

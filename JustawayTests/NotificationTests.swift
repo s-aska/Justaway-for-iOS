@@ -14,14 +14,14 @@ class NotificationTests: XCTestCase {
     }
     
     func testOnMainThread() {
-        Notification.onMainThread(self, name: "testOnMainThread", callback: { _ in
+        Notification.onMainThread(self, name: "testOnMainThread", handler: { _ in
             XCTAssertTrue(NSThread.isMainThread())
         })
         Notification.post("testOnMainThread")
     }
     
     func testOnBackgroundThread() {
-        Notification.onBackgroundThread(self, name: "testOnBackgroundThread", callback: { _ in
+        Notification.onBackgroundThread(self, name: "testOnBackgroundThread", handler: { _ in
             XCTAssertTrue(NSThread.isMainThread() == false)
         })
         Notification.post("testOnBackgroundThread")
@@ -31,12 +31,12 @@ class NotificationTests: XCTestCase {
         
         var counter = 0
         
-        let callback = { (n: NSNotification!) -> Void in
+        let handler = { (n: NSNotification!) -> Void in
             counter++
             return
         }
         
-        Notification.onMainThread(self, name: "testOffCounter", callback: callback)
+        Notification.onMainThread(self, name: "testOffCounter", handler: handler)
         
         Notification.post("testOffCounter")
         Notification.post("testOffCounter")
@@ -46,12 +46,12 @@ class NotificationTests: XCTestCase {
         Notification.post("testOffCounter")
         Notification.post("testOffCounter")
         
-        Notification.onMainThread(self, name: "testOffCounter", callback: callback)
+        Notification.onMainThread(self, name: "testOffCounter", handler: handler)
         
         Notification.post("testOffCounter")
         Notification.post("testOffCounter")
         
-        Notification.onMainThread(self, name: "testOffVerify", callback: { _ in
+        Notification.onMainThread(self, name: "testOffVerify", handler: { _ in
             XCTAssertEqual(counter, 4)
         })
         Notification.post("testOffVerify")
