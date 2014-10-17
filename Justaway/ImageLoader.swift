@@ -1,21 +1,45 @@
 import Foundation
 import UIKit
 
-enum ImageLoaderFrom {
+public enum ImageLoaderLoadedFrom {
     case Memory
     case Disk
     case Network
 }
 
-private class ImageLoaderHandler {
-    var progress:((Double) -> Void)?
-    var success:((NSData, ImageLoaderFrom) -> Void)?
-    var failure:((NSError) -> Void)?
+class ImageLoaderOptions {
+    let displayer: ImageLoaderDisplayer
+    let processor: ImageLoaderProcessor
     
-    init(progress: ((Double) -> Void)?, success: ((NSData, ImageLoaderFrom) -> Void)?, failure: ((NSError) -> Void)?) {
-        self.progress = progress
-        self.success = success
-        self.failure = failure
+    init(displayer: ImageLoaderDisplayer, processor: ImageLoaderProcessor) {
+        self.displayer = displayer
+        self.processor = processor
+    }
+}
+
+class ImageLoaderRequest {
+    let url: NSURL
+    let imageView: UIImageView
+    let options: ImageLoaderOptions?
+    let cacheKey: String
+    
+    init(url: NSURL, imageView: UIImageView, options: ImageLoaderOptions?) {
+        self.url = url
+        self.imageView = imageView
+        self.options = options
+        if let o = options {
+            self.cacheKey = url.absoluteString! + o.processor.cacheKey(imageView)
+        } else {
+            self.cacheKey = url.absoluteString!
+        }
+    }
+    
+    func display(image: UIImage, loadedFrom: ImageLoaderLoadedFrom) {
+        let displayer = self.options?.displayer ?? DefaultDisplayer.sharedInstance
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            displayer.display(image, imageView: self.imageView, loadedFrom: loadedFrom)
+        })
     }
 }
 
@@ -23,7 +47,7 @@ class ImageLoader {
     
     struct Static {
         private static let queue = NSOperationQueue()
-        private static var handlers = Dictionary<String,Array<ImageLoaderHandler>>()
+        private static var requests = Dictionary<String,Array<ImageLoaderRequest>>()
         private static let serial = dispatch_queue_create("ImageLoader.Static.instance.serial_queue", DISPATCH_QUEUE_SERIAL)
     }
     
@@ -31,42 +55,49 @@ class ImageLoader {
         Static.queue.maxConcurrentOperationCount = 1
     }
     
-    class func load(url: NSURL, imageView: UIImageView, success: ((data: NSData, from: ImageLoaderFrom) -> Void)) {
-        let hash = url.absoluteString!
+    class func displayImage(url: NSURL, imageView: UIImageView, options: ImageLoaderOptions?) {
+        
+        imageView.image = nil
+        
+        let request = ImageLoaderRequest(url: url, imageView: imageView, options: options)
+        
+        if let data = ImageLoaderMemoryCache.get(request.cacheKey) {
+            ImageLoader.doSuccess(request, data: data, loadedFrom: .Memory)
+            return
+        }
         
         dispatch_sync(Static.serial) {
-            if let handlers = Static.handlers[hash] {
-                Static.handlers[hash] = handlers + [ImageLoaderHandler(nil, success, nil)]
+            if let requests = Static.requests[request.cacheKey] {
+                Static.requests[request.cacheKey] = requests + [request]
             } else {
-                Static.handlers[hash] = [ImageLoaderHandler(nil, success, nil)]
-                let task = ImageLoaderTask(url, imageView: imageView)
-                if let operation = task.load() {
-                    Static.queue.addOperation(operation)
+                Static.requests[request.cacheKey] = [request]
+                let task = ImageLoaderTask(request)
+                if let operation = task.create() {
+                    Static.queue.addOperation(operation) // Download from Network
                 }
             }
         }
     }
     
-    class func doSuccess(url: NSURL, data: NSData, from: ImageLoaderFrom) {
-        let hash = url.absoluteString!
-        NSLog("%@ success", hash)
-        if let handlers = Static.handlers.removeValueForKey(hash) {
-            for handler in handlers {
-                if let success = handler.success {
-                    success(data, from)
-                }
-            }
+    class func doSuccess(request: ImageLoaderRequest, data: NSData, loadedFrom: ImageLoaderLoadedFrom) {
+        NSLog("%@ success", request.cacheKey)
+        
+        let processor = request.options?.processor ?? DefaultProcessor.sharedInstance
+        let image = processor.transform(data, imageView: request.imageView)
+        
+        switch (loadedFrom) {
+        case .Network:
+            ImageLoaderMemoryCache.set(request.cacheKey, data: UIImagePNGRepresentation(image))
+        case .Disk:
+            ImageLoaderMemoryCache.set(request.cacheKey, data: UIImagePNGRepresentation(image))
+            request.display(UIImage(data: data), loadedFrom: .Disk)
+        case .Memory:
+            request.display(UIImage(data: data), loadedFrom: .Memory)
         }
-    }
-    
-    class func doFailure(url: NSURL, error: NSError) {
-        let hash = url.absoluteString!
-        NSLog("%@ failure", hash)
-        if let handlers = Static.handlers.removeValueForKey(hash) {
-            for handler in handlers {
-                if let failure = handler.failure {
-                    failure(error)
-                }
+        
+        if let requests = Static.requests.removeValueForKey(request.cacheKey) {
+            for request in requests.filter({ h in h.imageView.image == nil }) {
+                request.display(image, loadedFrom: loadedFrom)
             }
         }
     }
@@ -116,48 +147,41 @@ class ImageLoaderDownloadOperation: AsyncOperation {
 
 class ImageLoaderTask: NSObject, NSURLSessionDownloadDelegate {
     
-    let url: NSURL
-    let imageView: UIImageView
+    let request: ImageLoaderRequest
     var operation: ImageLoaderDownloadOperation?
     
-    init(_ url: NSURL, imageView: UIImageView) {
-        self.url = url
-        self.imageView = imageView
+    init(_ request: ImageLoaderRequest) {
+        self.request = request
     }
     
-    func load() -> ImageLoaderDownloadOperation? {
-        NSLog("%@ load", url.absoluteString!)
-        if let data = ImageLoaderMemoryCache.get(url.absoluteString!) {
-            dispatch_async(dispatch_get_main_queue(), {
-                ImageLoader.doSuccess(self.url, data: data, from: .Memory)
-            })
-            return nil
-        }
-        NSLog("%@ create", url.absoluteString!)
-        let config  = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(url.absoluteString! + NSDate(timeIntervalSinceNow: 0).description)
+    func create() -> ImageLoaderDownloadOperation? {
+        NSLog("%@ create", request.cacheKey)
+        
+        let config  = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(request.cacheKey + String(NSDate().hashValue))
         let session = NSURLSession(configuration: config, delegate: self, delegateQueue: nil)
-        let task = session.downloadTaskWithURL(url)
+        let task = session.downloadTaskWithURL(request.url)
         operation = ImageLoaderDownloadOperation(task)
+        operation?.name = request.cacheKey
         return operation
     }
     
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didFinishDownloadingToURL location: NSURL) {
+        NSLog("%@ success", request.cacheKey)
+        
         let data = NSData(contentsOfURL: location)
         if data.length > 0 {
-            ImageLoaderMemoryCache.set(url.absoluteString!, data: data)
-            dispatch_async(dispatch_get_main_queue(), {
-                ImageLoader.doSuccess(self.url, data: data, from: .Network)
-            })
+            ImageLoader.doSuccess(request, data: data, loadedFrom: .Network)
             operation?.finish()
         } else {
             operation?.cancel()
         }
-        
     }
     
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
+        NSLog("%@ failure", request.cacheKey)
+        
         if let e = error {
-            ImageLoader.doFailure(self.url, error: e)
+//            ImageLoader.doFailure(self.url, error: e)
         }
     }
     

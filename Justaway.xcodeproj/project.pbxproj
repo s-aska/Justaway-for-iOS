@@ -37,12 +37,17 @@
 		38A694F419E4E6E800DD6072 /* TwitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A694F319E4E6E800DD6072 /* TwitterTests.swift */; };
 		38A694F519E4E75F00DD6072 /* Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7F19DE9DAB00139654 /* Twitter.swift */; };
 		38A694F619E4E82A00DD6072 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7D19DE4FB000139654 /* Secret.swift */; };
+		38AB8BCD19F167D30065D869 /* ImageLoaderClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AB8BCC19F167D30065D869 /* ImageLoaderClient.swift */; };
 		38B4475D19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38F1B0A019EFE2E100A3608E /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3868B95619EFDAAC001221BF /* Notification.swift */; };
 		38F1B0A719EFE2ED00A3608E /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F1B0A619EFE2ED00A3608E /* NotificationTests.swift */; };
 		38F1B0AA19F01B7600A3608E /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F1B0A919F01B7600A3608E /* ImageLoader.swift */; };
 		38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */; };
+		38F4EAD919F1336600CBD23F /* ImageLoaderDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAD819F1336600CBD23F /* ImageLoaderDisplayer.swift */; };
+		38F4EAE819F14AD000CBD23F /* FadeInDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAE719F14AD000CBD23F /* FadeInDisplayer.swift */; };
+		38F4EAEA19F14D9400CBD23F /* ImageLoaderProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAE919F14D9400CBD23F /* ImageLoaderProcessor.swift */; };
+		38F4EAEC19F14E4700CBD23F /* RoundedProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAEB19F14E4700CBD23F /* RoundedProcessor.swift */; };
 		38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */; };
 		38F7B8F319E5720F0081C735 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
@@ -101,6 +106,20 @@
 			remoteGlobalIDString = 8B300C5A1944AECB00993175;
 			remoteInfo = SwifterDemoMacTests;
 		};
+		38F4EAE319F1447200CBD23F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 740AC3EA1999799900AB9A86;
+			remoteInfo = Toucan;
+		};
+		38F4EAE519F1447200CBD23F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 740AC3F51999799900AB9A86;
+			remoteInfo = ToucanTests;
+		};
 		6A4B9D3C19BB514900D50D78 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6A4B9D2119BB514900D50D78 /* Project object */;
@@ -131,10 +150,16 @@
 		3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineViewController.xib; sourceTree = "<group>"; };
 		3894C24F19E55C770038AEF8 /* ViewTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewTools.swift; sourceTree = "<group>"; };
 		38A694F319E4E6E800DD6072 /* TwitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTests.swift; sourceTree = "<group>"; };
+		38AB8BCC19F167D30065D869 /* ImageLoaderClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderClient.swift; sourceTree = "<group>"; };
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		38F1B0A619EFE2ED00A3608E /* NotificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTests.swift; sourceTree = "<group>"; };
 		38F1B0A919F01B7600A3608E /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		38F4EAD819F1336600CBD23F /* ImageLoaderDisplayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderDisplayer.swift; sourceTree = "<group>"; };
+		38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Toucan.xcodeproj; path = Toucan/Toucan/Toucan.xcodeproj; sourceTree = "<group>"; };
+		38F4EAE719F14AD000CBD23F /* FadeInDisplayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FadeInDisplayer.swift; sourceTree = "<group>"; };
+		38F4EAE919F14D9400CBD23F /* ImageLoaderProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderProcessor.swift; sourceTree = "<group>"; };
+		38F4EAEB19F14E4700CBD23F /* RoundedProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedProcessor.swift; sourceTree = "<group>"; };
 		38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoExpandTextView.swift; sourceTree = "<group>"; };
 		38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -202,7 +227,7 @@
 		381E6E8119DE9DB300139654 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				38F1B0A919F01B7600A3608E /* ImageLoader.swift */,
+				38AB8BC219F1678B0065D869 /* ImageLoader */,
 				3868B94319EFCCB8001221BF /* Twitter */,
 			);
 			name = Network;
@@ -242,6 +267,35 @@
 			name = Timeline;
 			sourceTree = "<group>";
 		};
+		38AB8BC219F1678B0065D869 /* ImageLoader */ = {
+			isa = PBXGroup;
+			children = (
+				38AB8BCC19F167D30065D869 /* ImageLoaderClient.swift */,
+				38F1B0A919F01B7600A3608E /* ImageLoader.swift */,
+				38AB8BCB19F1679F0065D869 /* Processor */,
+				38AB8BCA19F167960065D869 /* Displayer */,
+			);
+			name = ImageLoader;
+			sourceTree = "<group>";
+		};
+		38AB8BCA19F167960065D869 /* Displayer */ = {
+			isa = PBXGroup;
+			children = (
+				38F4EAD819F1336600CBD23F /* ImageLoaderDisplayer.swift */,
+				38F4EAE719F14AD000CBD23F /* FadeInDisplayer.swift */,
+			);
+			name = Displayer;
+			sourceTree = "<group>";
+		};
+		38AB8BCB19F1679F0065D869 /* Processor */ = {
+			isa = PBXGroup;
+			children = (
+				38F4EAE919F14D9400CBD23F /* ImageLoaderProcessor.swift */,
+				38F4EAEB19F14E4700CBD23F /* RoundedProcessor.swift */,
+			);
+			name = Processor;
+			sourceTree = "<group>";
+		};
 		38F1B0A819EFEB7900A3608E /* Entities */ = {
 			isa = PBXGroup;
 			children = (
@@ -263,6 +317,15 @@
 			name = Operation;
 			sourceTree = "<group>";
 		};
+		38F4EADF19F1447200CBD23F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				38F4EAE419F1447200CBD23F /* Toucan.framework */,
+				38F4EAE619F1447200CBD23F /* ToucanTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		6A0B236719DC49A3004819BB /* OS */ = {
 			isa = PBXGroup;
 			children = (
@@ -280,6 +343,7 @@
 				6A4B9D3E19BB514900D50D78 /* JustawayTests */,
 				6A4B9D2A19BB514900D50D78 /* Products */,
 				381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */,
+				38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -459,6 +523,10 @@
 					ProductGroup = 381E6E6C19DE47EB00139654 /* Products */;
 					ProjectRef = 381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */;
 				},
+				{
+					ProductGroup = 38F4EADF19F1447200CBD23F /* Products */;
+					ProjectRef = 38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -504,6 +572,20 @@
 			remoteRef = 381E6E7B19DE47EC00139654 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		38F4EAE419F1447200CBD23F /* Toucan.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Toucan.framework;
+			remoteRef = 38F4EAE319F1447200CBD23F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		38F4EAE619F1447200CBD23F /* ToucanTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ToucanTests.xctest;
+			remoteRef = 38F4EAE519F1447200CBD23F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -539,15 +621,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38F4EAE819F14AD000CBD23F /* FadeInDisplayer.swift in Sources */,
+				38F4EAEC19F14E4700CBD23F /* RoundedProcessor.swift in Sources */,
 				381E6E8519E2A69200139654 /* TwitterStatusCell.swift in Sources */,
 				6AB55B4919C5984800DC6442 /* TransparentView.swift in Sources */,
 				3868B94B19EFCCE2001221BF /* TwitterURL.swift in Sources */,
+				38AB8BCD19F167D30065D869 /* ImageLoaderClient.swift in Sources */,
 				3894C25019E55C770038AEF8 /* ViewTools.swift in Sources */,
 				6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */,
 				3868B95419EFCD5D001221BF /* TwitterMedia.swift in Sources */,
 				38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */,
 				6AB55B3E19C562CF00DC6442 /* EditorViewController.swift in Sources */,
 				6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */,
+				38F4EAEA19F14D9400CBD23F /* ImageLoaderProcessor.swift in Sources */,
+				38F4EAD919F1336600CBD23F /* ImageLoaderDisplayer.swift in Sources */,
 				381E6E7E19DE4FB000139654 /* Secret.swift in Sources */,
 				3868B94519EFCCC7001221BF /* TwitterDate.swift in Sources */,
 				3894C24C19E557120038AEF8 /* TimelineViewController.swift in Sources */,
