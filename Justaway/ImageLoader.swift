@@ -76,15 +76,11 @@ class ImageLoader {
         }
     }
     
-    class func displayImage(url: NSURL, imageView: UIImageView) {
-        displayImage(url, imageView: imageView, options: nil)
-    }
-    
-    class func displayImage(url: NSURL, imageView: UIImageView, options: ImageLoaderOptions?) {
+    class func displayImage(url: NSURL, imageView: UIImageView, options: ImageLoaderOptions = Static.defaultOptions) {
         
         imageView.image = nil
         
-        let request = ImageLoaderRequest(url: url, imageView: imageView, options: options ?? Static.defaultOptions)
+        let request = ImageLoaderRequest(url: url, imageView: imageView, options: options)
         
         if let data = ImageLoaderMemoryCache.get(request.cacheKey) {
             ImageLoader.doSuccess(request, data: data, loadedFrom: .Memory)

@@ -8,7 +8,7 @@ class ImageLoaderClient {
     }
     
     class func displayImage(url: NSURL, imageView: UIImageView) {
-        ImageLoader.displayImage(url, imageView: imageView, options: nil)
+        ImageLoader.displayImage(url, imageView: imageView)
     }
     
     class func displayUserIcon(url: NSURL, imageView: UIImageView) {
