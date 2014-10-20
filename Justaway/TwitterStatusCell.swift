@@ -48,6 +48,26 @@ class TwitterStatusCell: UITableViewCell {
     
     
     
+    // MARK: - Public Mehtods
+    
+    func setText(status: TwitterStatus) {
+        let numberFormatter = NSNumberFormatter()
+        numberFormatter.numberStyle = .DecimalStyle
+        self.nameLabel.text = status.user.name
+        self.screenNameLabel.text = "@" + status.user.screenName
+        self.protectedLabel.hidden = status.isProtected ? false : true
+        self.statusLabel.text = status.text
+        self.retweetCountLabel.text = status.retweetCount > 0 ? numberFormatter.stringFromNumber(status.retweetCount) : ""
+        self.favoriteCountLabel.text = status.favoriteCount > 0 ? numberFormatter.stringFromNumber(status.favoriteCount) : ""
+        self.relativeCreatedAtLabel.text = status.createdAt.relativeString
+        self.absoluteCreatedAtLabel.text = status.createdAt.absoluteString
+        self.viaLabel.text = status.via.name
+        self.imagesContainerView.hidden = true
+        self.actionedContainerView.hidden = true
+        self.createdAtBottom.constant = 5.0
+        self.iconImageView.image = nil
+    }
+    
     // MARK: - Actions
     
     @IBAction func reply(sender: UIButton) {
