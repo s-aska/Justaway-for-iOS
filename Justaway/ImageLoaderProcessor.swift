@@ -8,15 +8,6 @@ public protocol ImageLoaderProcessor {
     func cacheKey(imageView: UIImageView) -> String
 }
 
-class DefaultProcessor {
-    
-    struct Static {
-        static var instance: ImageLoaderProcessor = SimpleProcessor()
-    }
-    
-    class var sharedInstance: ImageLoaderProcessor { return Static.instance }
-}
-
 class SimpleProcessor: ImageLoaderProcessor {
     
     func transform(data: NSData, imageView: UIImageView) -> UIImage {
