@@ -76,7 +76,11 @@ class ImageLoader {
         }
     }
     
-    class func displayImage(url: NSURL, imageView: UIImageView, options: ImageLoaderOptions = Static.defaultOptions) {
+    class func displayImage(url: NSURL, imageView: UIImageView) {
+        displayImage(url, imageView: imageView, options: Static.defaultOptions)
+    }
+    
+    class func displayImage(url: NSURL, imageView: UIImageView, options: ImageLoaderOptions) {
         
         imageView.image = nil
         
