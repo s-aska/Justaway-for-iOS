@@ -5,8 +5,8 @@ class SettingsViewController: UIViewController {
     // MARK: Types
     
     struct Constants {
-        static let duration = 0.2
-        static let delay: NSNumber = 0
+        static let duration: Double = 0.2
+        static let delay: NSTimeInterval = 0
     }
     
     // MARK: Properties
@@ -90,13 +90,14 @@ class SettingsViewController: UIViewController {
             view.frame.size.height)
         view.hidden = false
         
-        UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
             view.frame = CGRectMake(0,
                 view.frame.origin.y,
                 view.frame.size.width,
                 view.frame.size.height)
-        }, { finished in
-        })
+        }) { (finished) -> Void in
+            
+        }
     }
     
     func hideSettingsView(view: UIView, completion: (Void -> Void)?) {

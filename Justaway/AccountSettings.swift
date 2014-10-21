@@ -32,7 +32,7 @@ class Account {
         self.userID = dictionary[Constants.userID]!
         self.screenName = dictionary[Constants.screenName]!
         self.name = dictionary[Constants.name]!
-        self.profileImageURL = NSURL(string: dictionary[Constants.profileImageURL]!)
+        self.profileImageURL = NSURL(string: dictionary[Constants.profileImageURL]!)!
         if dictionary[Constants.identifier] != nil {
             let account = ACAccountStore().accountWithIdentifier(dictionary[Constants.identifier])
             self.credential = SwifterCredential(account: account)
@@ -43,7 +43,7 @@ class Account {
     }
     
     var profileImageBiggerURL: NSURL {
-        return NSURL(string: profileImageURL.absoluteString!.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: nil, range: nil))
+        return NSURL(string: profileImageURL.absoluteString!.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: nil, range: nil))!
     }
     
     var dictionaryValue: [String: String] {

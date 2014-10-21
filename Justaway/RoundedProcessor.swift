@@ -11,7 +11,7 @@ class RoundedProcessor: ImageLoaderProcessor {
     }
     
     func transform(data: NSData, imageView: UIImageView) -> UIImage {
-        return Toucan(image: UIImage(data: data)).resizeByClipping(imageView.bounds.size).maskWithRoundedRect(cornerRadius: radius).image
+        return Toucan(image: UIImage(data: data)!).resizeByClipping(imageView.bounds.size).maskWithRoundedRect(cornerRadius: radius).image
     }
     
     func cacheKey(imageView: UIImageView) -> String {

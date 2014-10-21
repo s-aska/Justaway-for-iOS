@@ -70,6 +70,6 @@ extension String {
 
 extension NSData {
     public var stringValue: String {
-        return NSString(data: self, encoding: NSUTF8StringEncoding)
+        return NSString(data: self, encoding: NSUTF8StringEncoding)!
     }
 }

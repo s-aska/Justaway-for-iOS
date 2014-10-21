@@ -6,7 +6,7 @@ struct TwitterVia {
     let URL: NSURL?
     
     struct Static {
-        static let regexp = NSRegularExpression(pattern: "<a href=\"(.+)\" rel=\"nofollow\">(.+)</a>", options: NSRegularExpressionOptions(0), error: nil)
+        static let regexp = NSRegularExpression(pattern: "<a href=\"(.+)\" rel=\"nofollow\">(.+)</a>", options: NSRegularExpressionOptions(0), error: nil)!
     }
     
     init(_ source: String) {

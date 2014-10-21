@@ -81,25 +81,25 @@ class ImageLoader {
     }
     
     class func displayImage(url: NSURL, imageView: UIImageView, options: ImageLoaderOptions) {
-        
         imageView.image = nil
-        
-        let request = ImageLoaderRequest(url: url, imageView: imageView, options: options)
-        
-        if let data = ImageLoaderMemoryCache.get(request.cacheKey) {
-            ImageLoader.doSuccess(request, data: data, loadedFrom: .Memory)
-            return
-        }
-        
-        dispatch_sync(Static.serial) {
-            if let requests = Static.requests[request.cacheKey] {
-                Static.requests[request.cacheKey] = requests + [request]
-            } else {
-                Static.requests[request.cacheKey] = [request]
-                let task = ImageLoaderTask(request)
-                Static.queue.addOperation(task.operation!) // Download from Network
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, UInt(0)), { ()->() in
+            let request = ImageLoaderRequest(url: url, imageView: imageView, options: options)
+            
+            if let data = ImageLoaderMemoryCache.get(request.cacheKey) {
+                ImageLoader.doSuccess(request, data: data, loadedFrom: .Memory)
+                return
             }
-        }
+            
+            dispatch_sync(Static.serial) {
+                if let requests = Static.requests[request.cacheKey] {
+                    Static.requests[request.cacheKey] = requests + [request]
+                } else {
+                    Static.requests[request.cacheKey] = [request]
+                    let task = ImageLoaderTask(request)
+                    Static.queue.addOperation(task.operation!) // Download from Network
+                }
+            }
+        })
     }
     
     class func doSuccess(request: ImageLoaderRequest, data: NSData, loadedFrom: ImageLoaderLoadedFrom) {
@@ -128,7 +128,7 @@ class ImageLoader {
         if loadedFrom == .Network {
             return request.options.processor.transform(data, imageView: request.imageView)
         } else {
-            return UIImage(data: data)
+            return UIImage(data: data)!
         }
     }
 }
@@ -181,8 +181,8 @@ class ImageLoaderTask: NSObject, NSURLSessionDownloadDelegate {
 //        NSLog("%@ download success", request.cacheKey)
         
         let data = NSData(contentsOfURL: location)
-        if data.length > 0 {
-            ImageLoader.doSuccess(request, data: data, loadedFrom: .Network)
+        if data != nil && data?.length > 0 {
+            ImageLoader.doSuccess(request, data: data!, loadedFrom: .Network)
             operation?.finish()
         } else {
             operation?.cancel()

@@ -5,7 +5,7 @@ class AutoExpandTextView: UITextView, UITextViewDelegate {
     // MARK: Properties
     
     weak var constraint: NSLayoutConstraint!
-    var minHeight: NSNumber!
+    var minHeight: CGFloat!
     
     // MARK: Configuration
     
@@ -28,7 +28,7 @@ class AutoExpandTextView: UITextView, UITextViewDelegate {
         exapnd(minHeight)
     }
     
-    func exapnd(height: NSNumber) {
+    func exapnd(height: CGFloat) {
         var f = frame
         f.size.height = height
         frame = f

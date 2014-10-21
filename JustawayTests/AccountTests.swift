@@ -20,7 +20,7 @@ class AccountTests: XCTestCase {
         
         let accessToken = SwifterCredential.OAuthAccessToken(key: "", secret: "")
         let credential = SwifterCredential(accessToken: accessToken)
-        let account = Account(credential: credential, userID: "1", screenName: "su_aska", name: "Shinichiro Aska", profileImageURL: NSURL(string: normalURL))
+        let account = Account(credential: credential, userID: "1", screenName: "su_aska", name: "Shinichiro Aska", profileImageURL: NSURL(string: normalURL)!)
         
         XCTAssertEqual(account.screenName, "su_aska")
         

@@ -46,7 +46,7 @@ class Twitter {
             }
         }
         
-        swifter.authorizeWithCallbackURL(NSURL(string: "justaway://success"), success: success, failure: failure)
+        swifter.authorizeWithCallbackURL(NSURL(string: "justaway://success")!, success: success, failure: failure)
     }
     
     class func refreshAccounts(newAccounts: [Account]) {

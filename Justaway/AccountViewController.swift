@@ -59,10 +59,10 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         cell.accessoryType = self.settings?.current == indexPath.row ? .Checkmark : UITableViewCellAccessoryType.None
-        cell.textLabel?.text = self.settings?.accounts[indexPath.row].name
+        cell.textLabel.text = self.settings?.accounts[indexPath.row].name
         cell.detailTextLabel?.text = self.settings?.accounts[indexPath.row].screenName
         if let url = self.settings?.accounts[indexPath.row].profileImageBiggerURL {
-            ImageLoaderClient.displayImage(url, imageView: cell.imageView!)
+            ImageLoaderClient.displayImage(url, imageView: cell.imageView)
         }
         return cell
     }
@@ -173,7 +173,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                                 userID: twitterAccount.valueForKeyPath("properties.user_id") as String,
                                 screenName: twitterAccount.username,
                                 name: twitterAccount.username,
-                                profileImageURL: NSURL(string: ""))
+                                profileImageURL: NSURL(string: "")!)
                         })
                     )
                 }

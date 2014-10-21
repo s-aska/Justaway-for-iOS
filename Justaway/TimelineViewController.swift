@@ -40,7 +40,7 @@ class TimelineViewController: UIViewController {
         for i in 1 ... 3 {
             let vc = TimelineTableViewController()
             vc.view.frame = CGRectMake(0, 0, size.width, size.height)
-            let view = UIView(frame: CGRectMake(size.width * (i as NSNumber), 0, size.width, size.height))
+            let view = UIView(frame: CGRectMake(size.width * CGFloat(i), 0, size.width, size.height))
             view.addSubview(vc.view)
             contentView.addSubview(view)
             tableViewControllers.append(vc)

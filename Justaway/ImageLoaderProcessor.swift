@@ -11,7 +11,7 @@ public protocol ImageLoaderProcessor {
 class SimpleProcessor: ImageLoaderProcessor {
     
     func transform(data: NSData, imageView: UIImageView) -> UIImage {
-        return UIImage(data: data)
+        return UIImage(data: data)!
     }
     
     func cacheKey(imageView: UIImageView) -> String {
