@@ -61,3 +61,29 @@ class AsyncOperation: NSOperation {
     }
     
 }
+
+class AsyncBlockOperation: AsyncOperation {
+    
+    let executionBlock: (op: AsyncBlockOperation) -> Void
+    
+    init(_ executionBlock: (op: AsyncBlockOperation) -> Void) {
+        self.executionBlock = executionBlock
+        super.init()
+    }
+    
+    override func start() {
+        super.start()
+        state = .Executing
+        executionBlock(op: self)
+    }
+    
+    override func cancel() {
+        super.cancel()
+        state = .Finished
+    }
+    
+    func finish() {
+        state = .Finished
+    }
+    
+}

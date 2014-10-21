@@ -21,6 +21,8 @@ class Twitter {
             
             if error.code == 401 {
                 NSLog("%@", "[FATAL] Please set a Your Twitter Consumer Key and Secret for the Secret.swift")
+            } else if error.code == -1009 {
+                NSLog("%@", "[FATAL] offline")
             } else {
                 NSLog("%@", error.debugDescription)
                 
@@ -126,27 +128,34 @@ class Twitter {
         swifter.getUsersLookupWithUserIDs(userIDs, includeEntities: false, success: success, failure: failure)
     }
     
-    class func getHomeTimeline(successHandler: ([TwitterStatus]) -> Void) {
+    class func getHomeTimeline(maxID: Int64?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         if let account = AccountSettingsStore.get() {
             
-            let success = { (statuses: [JSONValue]?) -> Void in
+            let s = { (statuses: [JSONValue]?) -> Void in
                 if statuses != nil {
-                    successHandler(statuses!.map { TwitterStatus($0) })
+                    success(statuses!.map { TwitterStatus($0) })
                 }
             }
             
-            let failure = { (error: NSError) -> Void in
+            let f = { (error: NSError) -> Void in
                 if error.code == 401 {
                     NSLog("%@", "[FATAL] Please set a Your Twitter Consumer Key and Secret for the Secret.swift")
+                } else if error.code == 429 {
+                    NSLog("%@", "[FATAL] API Limit")
                 } else {
                     NSLog("%@", error.debugDescription)
                     
                     // TODO: Alert
                 }
+                failure(error)
             }
             
-            swifter.client.credential = account.account().credential
-            swifter.getStatusesHomeTimelineWithCount(20, sinceID: nil, maxID: nil, trimUser: nil, contributorDetails: nil, includeEntities: false, success: success, failure: failure)
+            if let ac = account.account().credential.account {
+                Swifter(account: ac).getStatusesHomeTimelineWithCount(20, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: false, success: s, failure: f)
+            } else {
+                swifter.client.credential = account.account().credential
+                swifter.getStatusesHomeTimelineWithCount(20, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: false, success: s, failure: f)
+            }
         }
     }
     

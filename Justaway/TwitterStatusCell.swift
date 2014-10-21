@@ -3,6 +3,8 @@ import UIKit
 class TwitterStatusCell: UITableViewCell {
     
     // MARK: Properties
+    var status: TwitterStatus?
+    
     @IBOutlet weak var createdAtBottom: NSLayoutConstraint!
     
     @IBOutlet weak var iconImageView: UIImageView!

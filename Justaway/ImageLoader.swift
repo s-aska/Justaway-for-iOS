@@ -115,9 +115,11 @@ class ImageLoader {
             request.display(image, loadedFrom: .Memory)
         }
         
-        if let requests = Static.requests.removeValueForKey(request.cacheKey) {
-            for request in requests.filter({ h in h.imageView.image == nil }) {
-                request.display(image, loadedFrom: loadedFrom)
+        dispatch_sync(Static.serial) {
+            if let requests = Static.requests.removeValueForKey(request.cacheKey) {
+                for request in requests.filter({ h in h.imageView.image == nil }) {
+                    request.display(image, loadedFrom: loadedFrom)
+                }
             }
         }
     }

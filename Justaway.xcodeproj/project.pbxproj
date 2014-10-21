@@ -38,6 +38,10 @@
 		38A694F519E4E75F00DD6072 /* Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7F19DE9DAB00139654 /* Twitter.swift */; };
 		38A694F619E4E82A00DD6072 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7D19DE4FB000139654 /* Secret.swift */; };
 		38AB8BCD19F167D30065D869 /* ImageLoaderClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AB8BCC19F167D30065D869 /* ImageLoaderClient.swift */; };
+		38AB8BCE19F6A1DE0065D869 /* SwifteriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 381E6E7619DE47EC00139654 /* SwifteriOS.framework */; };
+		38AB8BCF19F6A1DE0065D869 /* SwifteriOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 381E6E7619DE47EC00139654 /* SwifteriOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		38AB8BD319F6A1E40065D869 /* Toucan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38F4EAE419F1447200CBD23F /* Toucan.framework */; };
+		38AB8BD419F6A1E40065D869 /* Toucan.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38F4EAE419F1447200CBD23F /* Toucan.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38B4475D19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38F1B0A019EFE2E100A3608E /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3868B95619EFDAAC001221BF /* Notification.swift */; };
@@ -106,6 +110,20 @@
 			remoteGlobalIDString = 8B300C5A1944AECB00993175;
 			remoteInfo = SwifterDemoMacTests;
 		};
+		38AB8BD019F6A1DE0065D869 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B9F50ED1944A5AB00894629;
+			remoteInfo = SwifteriOS;
+		};
+		38AB8BD519F6A1E40065D869 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 740AC3E91999799900AB9A86;
+			remoteInfo = Toucan;
+		};
 		38F4EAE319F1447200CBD23F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */;
@@ -128,6 +146,21 @@
 			remoteInfo = Justaway;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		38AB8BD219F6A1DF0065D869 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				38AB8BD419F6A1E40065D869 /* Toucan.framework in Embed Frameworks */,
+				38AB8BCF19F6A1DE0065D869 /* SwifteriOS.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		381E6E0619D98A7300139654 /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
@@ -190,6 +223,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38AB8BD319F6A1E40065D869 /* Toucan.framework in Frameworks */,
+				38AB8BCE19F6A1DE0065D869 /* SwifteriOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,10 +496,13 @@
 				6A4B9D2519BB514900D50D78 /* Sources */,
 				6A4B9D2619BB514900D50D78 /* Frameworks */,
 				6A4B9D2719BB514900D50D78 /* Resources */,
+				38AB8BD219F6A1DF0065D869 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				38AB8BD119F6A1DE0065D869 /* PBXTargetDependency */,
+				38AB8BD619F6A1E40065D869 /* PBXTargetDependency */,
 			);
 			name = Justaway;
 			productName = Justaway;
@@ -684,6 +722,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		38AB8BD119F6A1DE0065D869 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwifteriOS;
+			targetProxy = 38AB8BD019F6A1DE0065D869 /* PBXContainerItemProxy */;
+		};
+		38AB8BD619F6A1E40065D869 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Toucan;
+			targetProxy = 38AB8BD519F6A1E40065D869 /* PBXContainerItemProxy */;
+		};
 		6A4B9D3D19BB514900D50D78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6A4B9D2819BB514900D50D78 /* Justaway */;
@@ -785,6 +833,7 @@
 		6A4B9D4619BB514900D50D78 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Justaway/Info.plist;
@@ -797,6 +846,7 @@
 		6A4B9D4719BB514900D50D78 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Justaway/Info.plist;
