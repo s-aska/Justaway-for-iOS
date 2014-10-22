@@ -15,6 +15,15 @@ class Twitter {
     
     // MARK: - Class Methods
     
+    class func getClient(account: Account) -> Swifter {
+        if let ac = account.credential.account {
+            return Swifter(account: ac)
+        } else {
+            swifter.client.credential = account.credential
+            return swifter
+        }
+    }
+    
     class func addOAuthAccount() {
         let failure: ((NSError) -> Void) = {
             error in
@@ -89,7 +98,7 @@ class Twitter {
             return
         }
         
-        let userIDs = accounts.map({ $0.userID.toInt()! })
+        let userIDs = accounts.map({ $0.userID })
         
         let success :(([JSONValue]?) -> Void) = { (rows: [JSONValue]?) in
             
@@ -128,12 +137,12 @@ class Twitter {
         swifter.getUsersLookupWithUserIDs(userIDs, includeEntities: false, success: success, failure: failure)
     }
     
-    class func getHomeTimeline(maxID: Int64?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+    class func getHomeTimeline(maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         if let account = AccountSettingsStore.get() {
             
-            let s = { (statuses: [JSONValue]?) -> Void in
-                if statuses != nil {
-                    success(statuses!.map { TwitterStatus($0) })
+            let s = { (array: [JSONValue]?) -> Void in
+                if let statuses = array {
+                    success(statuses.map { TwitterStatus($0) })
                 }
             }
             
@@ -150,12 +159,7 @@ class Twitter {
                 failure(error)
             }
             
-            if let ac = account.account().credential.account {
-                Swifter(account: ac).getStatusesHomeTimelineWithCount(20, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: false, success: s, failure: f)
-            } else {
-                swifter.client.credential = account.account().credential
-                swifter.getStatusesHomeTimelineWithCount(20, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: false, success: s, failure: f)
-            }
+            getClient(account.account()).getStatusesHomeTimelineWithCount(nil, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
         }
     }
     

@@ -70,7 +70,7 @@ class TimelineViewController: UIViewController {
     }
     
     @IBAction func homeButton(sender: UIButton) {
-        tableViewController.loadData()
+        tableViewController.loadData(nil)
         
         
     }

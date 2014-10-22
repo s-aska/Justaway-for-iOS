@@ -10,8 +10,8 @@ struct TwitterStatus {
     let retweetCount: Int
     let favoriteCount: Int
     let urls: [TwitterURL]
-    let userMentions: [String]
-    let hashtags: [String]
+    let mentions: [TwitterUser]
+    let hashtags: [TwitterHashtag]
     let isProtected: Bool
     let media: [TwitterMedia]
     
@@ -30,15 +30,15 @@ struct TwitterStatus {
         }
         
         if let userMentions = json["entities"]["user_mentions"].array {
-            self.userMentions = userMentions.map { $0.string! }
+            self.mentions = userMentions.map { TwitterUser($0) }
         } else {
-            self.userMentions = [String]()
+            self.mentions = [TwitterUser]()
         }
         
         if let hashtags = json["entities"]["hashtags"].array {
-            self.hashtags = hashtags.map { $0.string! }
+            self.hashtags = hashtags.map { TwitterHashtag($0) }
         } else {
-            self.hashtags = [String]()
+            self.hashtags = [TwitterHashtag]()
         }
         
         self.isProtected = json["protected"].boolValue

@@ -40,11 +40,10 @@ class Notification {
         let id = ObjectIdentifier(target).uintValue()
         
         dispatch_sync(Static.queue) {
-            if let observers = Static.instance.cache[id] {
+            if let observers = Static.instance.cache.removeValueForKey(id) {
                 for observer in observers {
                     NSNotificationCenter.defaultCenter().removeObserver(observer)
                 }
-                Static.instance.cache.removeValueForKey(id)
             }
         }
     }
