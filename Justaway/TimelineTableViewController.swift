@@ -1,7 +1,7 @@
 import UIKit
 
 let TIMELINE_ROWS_LIMIT = 45
-let TIMELINE_FOOTER_HEIGHT = 40
+let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
 
 class TimelineTableViewController: UITableViewController {
     
