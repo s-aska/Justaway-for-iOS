@@ -14,43 +14,51 @@ struct TwitterStatus {
     let hashtags: [TwitterHashtag]
     let isProtected: Bool
     let media: [TwitterMedia]
+    let actionedBy: TwitterUser?
+    let referenceStatusID: String?
     
     init(_ json: JSONValue) {
-        self.user = TwitterUser(json["user"])
-        self.statusID = json["id_str"].string ?? ""
-        self.text = json["text"].string ?? ""
-        self.createdAt = TwitterDate(json["created_at"].string!)
-        self.retweetCount = json["retweet_count"].integer ?? 0
-        self.favoriteCount = json["favorite_count"].integer ?? 0
+        let statusJson = json["retweeted_status"].object != nil ? json["retweeted_status"] : json
+        self.user = TwitterUser(statusJson["user"])
+        self.statusID = statusJson["id_str"].string ?? ""
+        self.text = statusJson["text"].string ?? ""
+        self.createdAt = TwitterDate(statusJson["created_at"].string!)
+        self.retweetCount = statusJson["retweet_count"].integer ?? 0
+        self.favoriteCount = statusJson["favorite_count"].integer ?? 0
         
-        if let urls = json["entities"]["urls"].array {
+        if let urls = statusJson["entities"]["urls"].array {
             self.urls = urls.map { TwitterURL($0) }
         } else {
             self.urls = [TwitterURL]()
         }
         
-        if let userMentions = json["entities"]["user_mentions"].array {
+        if let userMentions = statusJson["entities"]["user_mentions"].array {
             self.mentions = userMentions.map { TwitterUser($0) }
         } else {
             self.mentions = [TwitterUser]()
         }
         
-        if let hashtags = json["entities"]["hashtags"].array {
+        if let hashtags = statusJson["entities"]["hashtags"].array {
             self.hashtags = hashtags.map { TwitterHashtag($0) }
         } else {
             self.hashtags = [TwitterHashtag]()
         }
         
-        self.isProtected = json["protected"].boolValue
+        self.isProtected = statusJson["protected"].boolValue
         
-        if let extended_entities = json["extended_entities"].array {
+        if let extended_entities = statusJson["extended_entities"].array {
             self.media = extended_entities.map { TwitterMedia($0) }
-        } else if let media = json["media"].array {
+        } else if let media = statusJson["media"].array {
             self.media = media.map { TwitterMedia($0) }
         } else {
             self.media = [TwitterMedia]()
         }
         
-        self.via = TwitterVia(json["source"].string ?? "unknown")
+        self.via = TwitterVia(statusJson["source"].string ?? "unknown")
+        
+        if json["retweeted_status"].object != nil {
+            self.actionedBy = TwitterUser(json["user"])
+            self.referenceStatusID = json["id_str"].string
+        }
     }
 }

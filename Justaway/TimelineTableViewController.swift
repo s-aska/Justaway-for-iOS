@@ -8,7 +8,7 @@ class TimelineTableViewController: UITableViewController {
     
     var rows = [TwitterStatus]()
     var rowHeight = [String:CGFloat]()
-    var patternHeight = [String:CGFloat]()
+    var patternHeight = [Int:CGFloat]()
     var cellForHeight: TwitterStatusCell?
     var lastID: Int64?
     var footerView: UIView?
@@ -57,9 +57,17 @@ class TimelineTableViewController: UITableViewController {
             }
         }
         
+        let layout = status.actionedBy == nil ? TwitterStatusCell.TwitterStatusCellLayout.Normal : TwitterStatusCell.TwitterStatusCellLayout.Actioned
+        
+        cell.setLayout(layout)
+        
         cell.setText(status)
         
         ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: cell.iconImageView)
+        
+        if let actionedBy = status.actionedBy {
+            ImageLoaderClient.displayImage(actionedBy.profileImageURL, imageView: cell.actionedIconImageView)
+        }
         
         cell.status = status
         
@@ -201,11 +209,13 @@ class TimelineTableViewController: UITableViewController {
     }
     
     func heightForStatus(status: TwitterStatus, fontSize: CGFloat) -> CGFloat {
-        let pattern = "normal"
+        let layout = status.actionedBy == nil ? TwitterStatusCell.TwitterStatusCellLayout.Normal : TwitterStatusCell.TwitterStatusCellLayout.Actioned
+        let pattern = layout.hashValue
         if let height = patternHeight[pattern] {
             return height + heightForText(status.text, fontSize: fontSize)
         } else if let cell = cellForHeight {
             cell.frame = self.tableView.bounds
+            cell.setLayout(layout)
             cell.setText(status)
             cell.contentView.setNeedsLayout()
             cell.contentView.layoutIfNeeded()

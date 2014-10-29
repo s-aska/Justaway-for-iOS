@@ -2,8 +2,14 @@ import UIKit
 
 class TwitterStatusCell: UITableViewCell {
     
+    enum TwitterStatusCellLayout {
+        case Normal
+        case Actioned
+    }
+    
     // MARK: Properties
     var status: TwitterStatus?
+    var layout: TwitterStatusCellLayout?
     
     @IBOutlet weak var createdAtBottom: NSLayoutConstraint!
     
@@ -52,6 +58,22 @@ class TwitterStatusCell: UITableViewCell {
     
     // MARK: - Public Mehtods
     
+    func setLayout(layout: TwitterStatusCellLayout) {
+        if self.layout == nil || self.layout != layout {
+            
+            switch(layout) {
+            case .Normal:
+                self.createdAtBottom.constant = 5.0
+                self.actionedContainerView.hidden = true
+            case .Actioned:
+                self.createdAtBottom.constant = 22.0
+                self.actionedContainerView.hidden = false
+            }
+            
+            self.layout = layout
+        }
+    }
+    
     func setText(status: TwitterStatus) {
         let numberFormatter = NSNumberFormatter()
         numberFormatter.numberStyle = .DecimalStyle
@@ -65,9 +87,13 @@ class TwitterStatusCell: UITableViewCell {
         self.absoluteCreatedAtLabel.text = status.createdAt.absoluteString
         self.viaLabel.text = status.via.name
         self.imagesContainerView.hidden = true
-        self.actionedContainerView.hidden = true
-        self.createdAtBottom.constant = 5.0
         self.iconImageView.image = nil
+        if let actionedBy = status.actionedBy {
+            self.actionedTextLabel.text = "@" + actionedBy.screenName
+            self.actionedIconImageView.image = nil
+        } else {
+            
+        }
     }
     
     // MARK: - Actions
