@@ -3,8 +3,10 @@ import UIKit
 class TimelineViewController: UIViewController {
     
     // MARK: Properties
+    
     @IBOutlet weak var scrollWrapperView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var homeButton: UIButton!
     
     var editorViewController: EditorViewController!
     var settingsViewController: SettingsViewController!
@@ -49,6 +51,10 @@ class TimelineViewController: UIViewController {
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
         scrollView.pagingEnabled = true
+        
+        var longPress = UILongPressGestureRecognizer(target: self, action: "refresh:")
+        longPress.minimumPressDuration = 2.0;
+        homeButton.addGestureRecognizer(longPress)
     }
     
     override func didReceiveMemoryWarning() {
@@ -65,14 +71,16 @@ class TimelineViewController: UIViewController {
     
     // MARK: - Actions
     
+    func refresh(sender: AnyObject) {
+        tableViewController.loadData(nil)
+    }
+    
     @IBAction func signInButtonClick(sender: UIButton) {
         
     }
     
     @IBAction func homeButton(sender: UIButton) {
-        tableViewController.loadData(nil)
-        
-        
+        tableViewController.toggleStreaming()
     }
     
     @IBAction func showEditor(sender: UIButton) {

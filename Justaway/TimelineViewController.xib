@@ -13,6 +13,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TimelineViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
+                <outlet property="homeButton" destination="YWo-Rz-RMv" id="3Ug-7w-3b2"/>
                 <outlet property="scrollView" destination="QzD-8n-VHR" id="uQa-aB-Crg"/>
                 <outlet property="scrollWrapperView" destination="YQA-1l-jex" id="Qcu-44-ZzZ"/>
                 <outlet property="view" destination="iN0-l3-epB" id="diP-QV-l6C"/>
