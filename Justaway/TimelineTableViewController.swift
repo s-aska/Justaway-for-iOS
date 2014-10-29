@@ -66,7 +66,7 @@ class TimelineTableViewController: UITableViewController {
         ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: cell.iconImageView)
         
         if let actionedBy = status.actionedBy {
-            ImageLoaderClient.displayImage(actionedBy.profileImageURL, imageView: cell.actionedIconImageView)
+            ImageLoaderClient.displayActionedUserIcon(actionedBy.profileImageURL, imageView: cell.actionedIconImageView)
         }
         
         cell.status = status
