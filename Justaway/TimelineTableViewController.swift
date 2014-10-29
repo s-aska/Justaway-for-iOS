@@ -13,6 +13,7 @@ class TimelineTableViewController: UITableViewController {
     var lastID: Int64?
     var footerView: UIView?
     var footerIndicatorView: UIActivityIndicatorView?
+    var isTop: Bool = true
     
     enum RenderMode {
         case TOP
@@ -116,6 +117,7 @@ class TimelineTableViewController: UITableViewController {
     }
     
     override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        isTop = false
         scrollBegin() // begin of flick scrolling
     }
     
@@ -189,10 +191,10 @@ class TimelineTableViewController: UITableViewController {
     func scrollEnd() {
         Static.loadDataQueue.suspended = false
         Static.mainQueue.suspended = false
+        isTop = self.tableView.contentOffset.y == 0
         let y = self.tableView.contentOffset.y + self.tableView.bounds.size.height - self.tableView.contentInset.bottom
         let h = self.tableView.contentSize.height
         let f = h - y
-        println("f: \(f)")
         if f < TIMELINE_FOOTER_HEIGHT {
             didScrollToBottom()
         }
@@ -328,7 +330,6 @@ class TimelineTableViewController: UITableViewController {
                 
             } else if let lastCell = self.tableView.visibleCells().last as? UITableViewCell {
                 
-                let autoScroll = self.tableView.contentOffset.y > 0 ? false : true;
                 let offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
                 UIView.setAnimationsEnabled(false)
                 self.tableView.beginUpdates()
@@ -341,7 +342,7 @@ class TimelineTableViewController: UITableViewController {
                 self.tableView.endUpdates()
                 self.tableView.setContentOffset(CGPointMake(0, lastCell.frame.origin.y - offset), animated: false)
                 UIView.setAnimationsEnabled(true)
-                if autoScroll {
+                if self.isTop {
                     self.scrollToTop()
                 }
             } else {
