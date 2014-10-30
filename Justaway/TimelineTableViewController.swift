@@ -37,8 +37,8 @@ class TimelineTableViewController: UITableViewController {
         self.tableView.separatorInset = UIEdgeInsetsZero
         
         let nib = UINib(nibName: "TwitterStatusCell", bundle: nil)
-        for layout in TwitterStatusCellLayout.allValues() {
-            self.tableView.registerNib(nib, forCellReuseIdentifier: layout.stringValue)
+        for layout in TwitterStatusCellLayout.allValues {
+            self.tableView.registerNib(nib, forCellReuseIdentifier: layout.rawValue)
         }
         self.tableView.registerNib(nib, forCellReuseIdentifier: "CellForHeight")
         cellForHeight = self.tableView.dequeueReusableCellWithIdentifier("CellForHeight") as? TwitterStatusCell
@@ -53,7 +53,7 @@ class TimelineTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let status = rows[indexPath.row]
         let layout = TwitterStatusCellLayout.fromStatus(status)
-        let cell = tableView.dequeueReusableCellWithIdentifier(layout.stringValue, forIndexPath: indexPath) as TwitterStatusCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as TwitterStatusCell
         
         if let s = cell.status {
             if s.statusID == status.statusID {

@@ -1,30 +1,15 @@
 import UIKit
 
-enum TwitterStatusCellLayout: Int {
-    case Normal
-    case Actioned
+enum TwitterStatusCellLayout: String {
+    case Normal = "Normal"
+    case Actioned = "Actioned"
     
     static func fromStatus(status: TwitterStatus) -> TwitterStatusCellLayout {
         return status.isActioned ? Actioned : Normal
     }
     
-    static func allValues() -> [TwitterStatusCellLayout] {
-        var values = [TwitterStatusCellLayout]()
-        var i = 0
-        while let value = self(rawValue: i) {
-            values.append(value)
-            i++
-        }
-        return values
-    }
-    
-    var stringValue: String {
-        switch self {
-        case Normal:
-            return "Normal"
-        case Actioned:
-            return "Actioned"
-        }
+    static var allValues: [TwitterStatusCellLayout] {
+        return [Normal, Actioned]
     }
 }
 
@@ -33,8 +18,6 @@ class TwitterStatusCell: UITableViewCell {
     // MARK: Properties
     var status: TwitterStatus?
     var layout: TwitterStatusCellLayout?
-    
-    @IBOutlet weak var createdAtBottom: NSLayoutConstraint!
     
     @IBOutlet weak var iconImageView: UIImageView!
     
@@ -59,6 +42,7 @@ class TwitterStatusCell: UITableViewCell {
     @IBOutlet weak var actionedContainerView: UIView!
     @IBOutlet weak var actionedIconImageView: UIImageView!
     @IBOutlet weak var actionedTextLabel: UILabel!
+    @IBOutlet weak var createdAtBottomConstraintWhenActioned: NSLayoutConstraint!
     
     // MARK: - View Life Cycle
     
@@ -85,13 +69,10 @@ class TwitterStatusCell: UITableViewCell {
         if self.layout == nil || self.layout != layout {
             self.layout = layout
             
-            switch(layout) {
-            case .Normal:
-                self.createdAtBottom.constant = 5.0
-                self.actionedContainerView.hidden = true
-            case .Actioned:
-                self.createdAtBottom.constant = 22.0
-                self.actionedContainerView.hidden = false
+            if layout == .Normal {
+                self.actionedContainerView.removeFromSuperview()
+            } else {
+                self.createdAtBottomConstraintWhenActioned.priority = 751 // UILayoutPriorityDefaultHight + 1
             }
             
             self.layoutIfNeeded()
