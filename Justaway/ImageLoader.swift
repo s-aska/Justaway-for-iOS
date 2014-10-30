@@ -33,11 +33,14 @@ class ImageLoaderRequest {
         self.imageView = imageView
         self.options = options
         self.cacheKey = url.absoluteString! + options.processor.cacheKey(imageView)
+        imageView.tag = url.hashValue
     }
     
     func display(image: UIImage, loadedFrom: ImageLoaderLoadedFrom) {
         dispatch_async(dispatch_get_main_queue(), {
-            self.options.displayer.display(image, imageView: self.imageView, loadedFrom: loadedFrom)
+            if self.imageView.tag == self.url.hashValue {
+                self.options.displayer.display(image, imageView: self.imageView, loadedFrom: loadedFrom)
+            }
         })
     }
 }
@@ -62,7 +65,7 @@ class ImageLoader {
     struct Static {
         private static let queue = NSOperationQueue()
         private static let serial = dispatch_queue_create("ImageLoader.Static.instance.serial_queue", DISPATCH_QUEUE_SERIAL)
-        private static var requests = Dictionary<String,Array<ImageLoaderRequest>>()
+        private static var requests = [String: [ImageLoaderRequest]]()
         private static var defaultOptions = ImageLoaderOptions()
     }
     

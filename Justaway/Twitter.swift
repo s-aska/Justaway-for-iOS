@@ -100,7 +100,7 @@ class Twitter {
         
         let userIDs = accounts.map({ $0.userID })
         
-        let success :(([JSONValue]?) -> Void) = { (rows: [JSONValue]?) in
+        let success :(([JSONValue]?) -> Void) = { (rows) in
             
             // Convert JSONValue
             var userDirectory = [String: TwitterUser]()
