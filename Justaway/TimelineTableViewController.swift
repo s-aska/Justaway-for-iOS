@@ -1,14 +1,14 @@
 import UIKit
 import SwifteriOS
 
-let TIMELINE_ROWS_LIMIT = 45
+let TIMELINE_ROWS_LIMIT = 1000
 let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
 
 class TimelineTableViewController: UITableViewController {
     
     var rows = [TwitterStatus]()
     var rowHeight = [String:CGFloat]()
-    var patternHeight = [Int:CGFloat]()
+    var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
     var cellForHeight: TwitterStatusCell?
     var lastID: Int64?
     var footerView: UIView?
@@ -37,7 +37,9 @@ class TimelineTableViewController: UITableViewController {
         self.tableView.separatorInset = UIEdgeInsetsZero
         
         let nib = UINib(nibName: "TwitterStatusCell", bundle: nil)
-        self.tableView.registerNib(nib, forCellReuseIdentifier: "Cell")
+        for layout in TwitterStatusCellLayout.allValues() {
+            self.tableView.registerNib(nib, forCellReuseIdentifier: layout.stringValue)
+        }
         self.tableView.registerNib(nib, forCellReuseIdentifier: "CellForHeight")
         cellForHeight = self.tableView.dequeueReusableCellWithIdentifier("CellForHeight") as? TwitterStatusCell
     }
@@ -49,8 +51,9 @@ class TimelineTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as TwitterStatusCell
         let status = rows[indexPath.row]
+        let layout = TwitterStatusCellLayout.fromStatus(status)
+        let cell = tableView.dequeueReusableCellWithIdentifier(layout.stringValue, forIndexPath: indexPath) as TwitterStatusCell
         
         if let s = cell.status {
             if s.statusID == status.statusID {
@@ -58,10 +61,8 @@ class TimelineTableViewController: UITableViewController {
             }
         }
         
-        let layout = status.actionedBy == nil ? TwitterStatusCell.TwitterStatusCellLayout.Normal : TwitterStatusCell.TwitterStatusCellLayout.Actioned
-        
+        cell.status = status
         cell.setLayout(layout)
-        
         cell.setText(status)
         
         ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: cell.iconImageView)
@@ -69,8 +70,6 @@ class TimelineTableViewController: UITableViewController {
         if let actionedBy = status.actionedBy {
             ImageLoaderClient.displayActionedUserIcon(actionedBy.profileImageURL, imageView: cell.actionedIconImageView)
         }
-        
-        cell.status = status
         
         return cell
     }
@@ -211,9 +210,8 @@ class TimelineTableViewController: UITableViewController {
     }
     
     func heightForStatus(status: TwitterStatus, fontSize: CGFloat) -> CGFloat {
-        let layout = status.actionedBy == nil ? TwitterStatusCell.TwitterStatusCellLayout.Normal : TwitterStatusCell.TwitterStatusCellLayout.Actioned
-        let pattern = layout.hashValue
-        if let height = patternHeight[pattern] {
+        let layout = TwitterStatusCellLayout.fromStatus(status)
+        if let height = layoutHeight[layout] {
             return height + heightForText(status.text, fontSize: fontSize)
         } else if let cell = cellForHeight {
             cell.frame = self.tableView.bounds
@@ -223,7 +221,7 @@ class TimelineTableViewController: UITableViewController {
             cell.contentView.layoutIfNeeded()
             let totalHeight = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
             let textHeight = heightForText(status.text, fontSize: fontSize)
-            patternHeight[pattern] = totalHeight - textHeight
+            layoutHeight[layout] = totalHeight - textHeight
             return totalHeight
         } else {
             assertionFailure("cellForHeight is missing.")

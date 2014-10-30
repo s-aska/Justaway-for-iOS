@@ -1,11 +1,34 @@
 import UIKit
 
-class TwitterStatusCell: UITableViewCell {
+enum TwitterStatusCellLayout: Int {
+    case Normal
+    case Actioned
     
-    enum TwitterStatusCellLayout {
-        case Normal
-        case Actioned
+    static func fromStatus(status: TwitterStatus) -> TwitterStatusCellLayout {
+        return status.isActioned ? Actioned : Normal
     }
+    
+    static func allValues() -> [TwitterStatusCellLayout] {
+        var values = [TwitterStatusCellLayout]()
+        var i = 0
+        while let value = self(rawValue: i) {
+            values.append(value)
+            i++
+        }
+        return values
+    }
+    
+    var stringValue: String {
+        switch self {
+        case Normal:
+            return "Normal"
+        case Actioned:
+            return "Actioned"
+        }
+    }
+}
+
+class TwitterStatusCell: UITableViewCell {
     
     // MARK: Properties
     var status: TwitterStatus?
@@ -60,6 +83,7 @@ class TwitterStatusCell: UITableViewCell {
     
     func setLayout(layout: TwitterStatusCellLayout) {
         if self.layout == nil || self.layout != layout {
+            self.layout = layout
             
             switch(layout) {
             case .Normal:
@@ -70,7 +94,7 @@ class TwitterStatusCell: UITableViewCell {
                 self.actionedContainerView.hidden = false
             }
             
-            self.layout = layout
+            self.layoutIfNeeded()
         }
     }
     

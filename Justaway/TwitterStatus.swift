@@ -61,4 +61,8 @@ struct TwitterStatus {
             self.referenceStatusID = json["id_str"].string
         }
     }
+    
+    var isActioned: Bool {
+        return self.actionedBy != nil
+    }
 }

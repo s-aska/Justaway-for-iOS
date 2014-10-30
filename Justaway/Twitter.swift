@@ -159,7 +159,7 @@ class Twitter {
                 failure(error)
             }
             
-            getClient(account.account()).getStatusesHomeTimelineWithCount(nil, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
+            getClient(account.account()).getStatusesHomeTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
         }
     }
     
