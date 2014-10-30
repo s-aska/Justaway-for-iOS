@@ -33,14 +33,11 @@ class ImageLoaderRequest {
         self.imageView = imageView
         self.options = options
         self.cacheKey = url.absoluteString! + options.processor.cacheKey(imageView)
-        imageView.tag = url.hashValue
     }
     
     func display(image: UIImage, loadedFrom: ImageLoaderLoadedFrom) {
         dispatch_async(dispatch_get_main_queue(), {
-            if self.imageView.tag == self.url.hashValue {
-                self.options.displayer.display(image, imageView: self.imageView, loadedFrom: loadedFrom)
-            }
+            self.options.displayer.display(image, imageView: self.imageView, loadedFrom: loadedFrom)
         })
     }
 }
@@ -67,6 +64,7 @@ class ImageLoader {
         private static let serial = dispatch_queue_create("ImageLoader.Static.instance.serial_queue", DISPATCH_QUEUE_SERIAL)
         private static var requests = [String: [ImageLoaderRequest]]()
         private static var defaultOptions = ImageLoaderOptions()
+        private static var imageViewState = [Int: String]()
     }
     
     class func setup(maxConcurrentCount: Int = 5, cacheLimit: Int = 100, options: ImageLoaderOptions? = nil) {
@@ -84,9 +82,12 @@ class ImageLoader {
     }
     
     class func displayImage(url: NSURL, imageView: UIImageView, options: ImageLoaderOptions) {
-        imageView.image = nil
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, UInt(0)), { ()->() in
             let request = ImageLoaderRequest(url: url, imageView: imageView, options: options)
+            
+            dispatch_sync(Static.serial) {
+                Static.imageViewState[imageView.hashValue] = request.cacheKey
+            }
             
             if let data = ImageLoaderMemoryCache.get(request.cacheKey) {
                 ImageLoader.doSuccess(request, data: data, loadedFrom: .Memory)
@@ -120,8 +121,19 @@ class ImageLoader {
         
         dispatch_sync(Static.serial) {
             if let requests = Static.requests.removeValueForKey(request.cacheKey) {
-                for request in requests.filter({ h in h.imageView.image == nil }) {
+                for request in requests.filter({ h in Static.imageViewState[h.imageView.hashValue] == request.cacheKey }) {
                     request.display(image, loadedFrom: loadedFrom)
+                    Static.imageViewState.removeValueForKey(request.imageView.hashValue)
+                }
+            }
+        }
+    }
+    
+    class func doFailure(request: ImageLoaderRequest) {
+        dispatch_sync(Static.serial) {
+            if let requests = Static.requests.removeValueForKey(request.cacheKey) {
+                for request in requests.filter({ h in Static.imageViewState[h.imageView.hashValue] == request.cacheKey }) {
+                    Static.imageViewState.removeValueForKey(request.imageView.hashValue)
                 }
             }
         }
@@ -195,7 +207,8 @@ class ImageLoaderTask: NSObject, NSURLSessionDownloadDelegate {
     
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
         if let e = error {
-//            NSLog("%@ download error:%@", request.cacheKey, e.debugDescription)
+            NSLog("%@ download error:%@", request.cacheKey, e.debugDescription)
+            ImageLoader.doFailure(request)
         }
     }
     
