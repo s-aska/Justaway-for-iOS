@@ -251,7 +251,7 @@ class TimelineTableViewController: UITableViewController {
                 
                 // Calc cell height for the all statuses
                 for status in statuses {
-                    let statusID = status.statusID.longLongValue
+                    let statusID = (status.referenceStatusID ?? status.statusID).longLongValue
                     if (self.lastID == nil || statusID < self.lastID!) {
                         self.lastID = statusID
                     }
@@ -260,7 +260,8 @@ class TimelineTableViewController: UITableViewController {
                 // render statuses
                 self.renderData(statuses, mode: .BOTTOM, handler: always)
             }
-            let failure = { (error: NSError) in
+            let failure = { (error: NSError) -> Void in
+                println("loadData error: \(error)")
                 always()
             }
             dispatch_sync(dispatch_get_main_queue(), {
