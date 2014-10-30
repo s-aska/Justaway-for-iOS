@@ -281,39 +281,39 @@ class TimelineTableViewController: UITableViewController {
             newRowHeight[status.statusID] = self.heightForStatus(status, fontSize: fontSize)
         }
         
-        var oldRows = self.rows
-        
-        var deleteIndexPaths = [NSIndexPath]()
-        var totalRowsCount = mode == .OVER ? statuses.count : statuses.count + self.rows.count
-        if totalRowsCount > TIMELINE_ROWS_LIMIT {
-            let deleteCount = totalRowsCount - TIMELINE_ROWS_LIMIT
-            let leaveCount = oldRows.count - deleteCount
-            if mode == .TOP {
-                deleteIndexPaths = (leaveCount ..< oldRows.count).map { i in NSIndexPath(forRow: i, inSection: 0) }
-                oldRows = Array(oldRows[0 ..< leaveCount])
-            } else {
-                deleteIndexPaths = (0 ..< deleteCount).map { i in NSIndexPath(forRow: i, inSection: 0) }
-                oldRows = Array(oldRows[deleteCount ..< oldRows.count])
-            }
-        }
-        
-        var insertIndexPaths = [NSIndexPath]()
-        let newRows: [TwitterStatus] = {
-            switch (mode) {
-            case .TOP:
-                insertIndexPaths = (0 ..< statuses.count).map { i in NSIndexPath(forRow: i, inSection: 0) }
-                return statuses + oldRows
-            case .BOTTOM:
-                insertIndexPaths = (oldRows.count ..< (oldRows.count + statuses.count)).map { i in NSIndexPath(forRow: i, inSection: 0) }
-                return oldRows + statuses
-            case .OVER:
-                return statuses
-            }
-        }()
-
-        println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count) nowRows: \(newRows.count)")
-        
         let op = NSBlockOperation { () -> Void in
+            
+            var oldRows = self.rows
+            
+            var deleteIndexPaths = [NSIndexPath]()
+            var totalRowsCount = mode == .OVER ? statuses.count : statuses.count + self.rows.count
+            if totalRowsCount > TIMELINE_ROWS_LIMIT {
+                let deleteCount = totalRowsCount - TIMELINE_ROWS_LIMIT
+                let leaveCount = oldRows.count - deleteCount
+                if mode == .TOP {
+                    deleteIndexPaths = (leaveCount ..< oldRows.count).map { i in NSIndexPath(forRow: i, inSection: 0) }
+                    oldRows = Array(oldRows[0 ..< leaveCount])
+                } else {
+                    deleteIndexPaths = (0 ..< deleteCount).map { i in NSIndexPath(forRow: i, inSection: 0) }
+                    oldRows = Array(oldRows[deleteCount ..< oldRows.count])
+                }
+            }
+            
+            var insertIndexPaths = [NSIndexPath]()
+            let newRows: [TwitterStatus] = {
+                switch (mode) {
+                case .TOP:
+                    insertIndexPaths = (0 ..< statuses.count).map { i in NSIndexPath(forRow: i, inSection: 0) }
+                    return statuses + oldRows
+                case .BOTTOM:
+                    insertIndexPaths = (oldRows.count ..< (oldRows.count + statuses.count)).map { i in NSIndexPath(forRow: i, inSection: 0) }
+                    return oldRows + statuses
+                case .OVER:
+                    return statuses
+                }
+            }()
+            
+            println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count) nowRows: \(newRows.count)")
             
             self.rowHeight = newRowHeight
             self.rows = newRows
