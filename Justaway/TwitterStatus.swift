@@ -26,6 +26,10 @@ struct TwitterStatus {
         self.retweetCount = statusJson["retweet_count"].integer ?? 0
         self.favoriteCount = statusJson["favorite_count"].integer ?? 0
         
+        self.text = self.text.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: nil, range: nil)
+        self.text = self.text.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
+        self.text = self.text.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
+        
         if let urls = statusJson["entities"]["urls"].array {
             self.urls = urls.map { TwitterURL($0) }
         } else {
