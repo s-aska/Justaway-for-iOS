@@ -69,4 +69,8 @@ struct TwitterStatus {
     var isActioned: Bool {
         return self.actionedBy != nil
     }
+    
+    var uniqueID: String {
+        return self.referenceStatusID ?? self.statusID
+    }
 }

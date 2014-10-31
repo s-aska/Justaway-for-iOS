@@ -1,6 +1,8 @@
 import UIKit
 
 let TwitterStatusCellImagePreviewHeight :CGFloat = 80
+let TwitterStatusCellImagePreviewWidth :CGFloat = 240
+let TwitterStatusCellImagePreviewPadding :CGFloat = 5
 
 enum TwitterStatusCellLayout: String {
     case Normal = "Normal"
@@ -70,12 +72,9 @@ class TwitterStatusCell: UITableViewCell {
     func setLayout(layout: TwitterStatusCellLayout) {
         if self.layout == nil || self.layout != layout {
             self.layout = layout
-            
             if layout == .Normal {
                 self.actionedContainerView.hidden = true
-                self.createdAtBottomConstraintWhenActioned.constant = 5 // UILayoutPriorityDefaultHight + 1
-            } else {
-//                self.createdAtBottomConstraintWhenActioned.priority = 751 // UILayoutPriorityDefaultHight + 1
+                self.createdAtBottomConstraintWhenActioned.constant = 1 // Minimum
             }
             self.setNeedsLayout()
             self.layoutIfNeeded()
@@ -85,6 +84,7 @@ class TwitterStatusCell: UITableViewCell {
     func setText(status: TwitterStatus) {
         let numberFormatter = NSNumberFormatter()
         numberFormatter.numberStyle = .DecimalStyle
+        self.iconImageView.image = nil
         self.nameLabel.text = status.user.name
         self.screenNameLabel.text = "@" + status.user.screenName
         self.protectedLabel.hidden = status.isProtected ? false : true
@@ -94,7 +94,6 @@ class TwitterStatusCell: UITableViewCell {
         self.relativeCreatedAtLabel.text = status.createdAt.relativeString
         self.absoluteCreatedAtLabel.text = status.createdAt.absoluteString
         self.viaLabel.text = status.via.name
-        self.iconImageView.image = nil
         if let actionedBy = status.actionedBy {
             self.actionedTextLabel.text = "@" + actionedBy.screenName
             self.actionedIconImageView.image = nil
@@ -103,7 +102,8 @@ class TwitterStatusCell: UITableViewCell {
     }
     
     func setImage(status: TwitterStatus) {
-        if status.media.count == 0 {
+        
+        if status.media.count == 0 || self.imagesContainerView.hidden == false {
             return
         }
         
@@ -117,9 +117,9 @@ class TwitterStatusCell: UITableViewCell {
         for media in status.media {
             let imageView = UIImageView(frame: CGRectMake(
                 0,
-                CGFloat(tag) * TwitterStatusCellImagePreviewHeight + CGFloat(5),
-                CGFloat(240),
-                TwitterStatusCellImagePreviewHeight - CGFloat(5)))
+                CGFloat(tag) * TwitterStatusCellImagePreviewHeight + TwitterStatusCellImagePreviewPadding,
+                TwitterStatusCellImagePreviewWidth,
+                TwitterStatusCellImagePreviewHeight - TwitterStatusCellImagePreviewPadding))
             imageView.contentMode = UIViewContentMode.ScaleAspectFill
             imageView.clipsToBounds = true
             imageView.tag = tag
@@ -130,17 +130,12 @@ class TwitterStatusCell: UITableViewCell {
             self.imagesContainerView.addSubview(imageView)
             ImageLoaderClient.displayImage(media.mediaThumbURL, imageView: imageView)
             tag++
-//            println("load imageView.frame:\(imageView.frame) \(media.mediaThumbURL)")
         }
         self.imagesContainerView.frame = CGRectMake(
             self.imagesContainerView.frame.origin.x,
             self.imagesContainerView.frame.origin.y,
-            CGFloat(240),
+            TwitterStatusCellImagePreviewWidth,
             TwitterStatusCellImagePreviewHeight * CGFloat(status.media.count))
-//        println("load imagesContainerView.frame:\(self.imagesContainerView.frame)")
-//        self.contentView.setNeedsLayout()
-//        self.contentView.layoutIfNeeded()
-        
     }
     
     // MARK: - Actions

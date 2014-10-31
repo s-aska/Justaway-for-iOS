@@ -7,13 +7,14 @@ let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
 class TimelineTableViewController: UITableViewController {
     
     var rows = [TwitterStatus]()
-    var rowHeight = [String:CGFloat]()
+    var rowHeight = [String: CGFloat]()
     var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
     var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
     var lastID: Int64?
     var footerView: UIView?
     var footerIndicatorView: UIActivityIndicatorView?
     var isTop: Bool = true
+    var scrolling: Bool = false
     
     enum RenderMode {
         case TOP
@@ -55,7 +56,7 @@ class TimelineTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as TwitterStatusCell
         
         if let s = cell.status {
-            if s.statusID == status.statusID {
+            if s.uniqueID == status.uniqueID {
                 return cell
             }
         }
@@ -70,6 +71,10 @@ class TimelineTableViewController: UITableViewController {
             ImageLoaderClient.displayActionedUserIcon(actionedBy.profileImageURL, imageView: cell.actionedIconImageView)
         }
         
+        if (!scrolling) {
+            cell.setImage(status)
+        }
+        
         return cell
     }
     
@@ -77,7 +82,7 @@ class TimelineTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let status = rows[indexPath.row]
-        return rowHeight[status.statusID]!
+        return rowHeight[status.uniqueID] ?? 0
     }
     
 //    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -182,11 +187,13 @@ class TimelineTableViewController: UITableViewController {
     }
     
     func scrollBegin() {
+        scrolling = true
         Static.loadDataQueue.suspended = true
         Static.mainQueue.suspended = true
     }
     
     func scrollEnd() {
+        scrolling = false
         Static.loadDataQueue.suspended = false
         Static.mainQueue.suspended = false
         isTop = self.tableView.contentOffset.y == 0
@@ -196,11 +203,7 @@ class TimelineTableViewController: UITableViewController {
         if f < TIMELINE_FOOTER_HEIGHT {
             didScrollToBottom()
         }
-        for cell in self.tableView.visibleCells() as [TwitterStatusCell] {
-            if let status = cell.status {
-                cell.setImage(status)
-            }
-        }
+        self.renderImages()
     }
     
     func didScrollToBottom() {
@@ -239,9 +242,6 @@ class TimelineTableViewController: UITableViewController {
     }
     
     func heightForImage(status: TwitterStatus) -> CGFloat {
-//        if status.media.count > 0 {
-//            println("heightForImage: \(TwitterStatusCellImagePreviewHeight * CGFloat(status.media.count))")
-//        }
         return TwitterStatusCellImagePreviewHeight * CGFloat(status.media.count)
     }
     
@@ -260,14 +260,14 @@ class TimelineTableViewController: UITableViewController {
                 
                 // Calc cell height for the all statuses
                 for status in statuses {
-                    let statusID = (status.referenceStatusID ?? status.statusID).longLongValue
-                    if (self.lastID == nil || statusID < self.lastID!) {
-                        self.lastID = statusID
+                    let uniqueID = status.uniqueID.longLongValue
+                    if (self.lastID == nil || uniqueID < self.lastID!) {
+                        self.lastID = uniqueID
                     }
                 }
                 
                 // render statuses
-                self.renderData(statuses, mode: .BOTTOM, handler: always)
+                self.renderData(statuses, mode: (maxID != nil ? .BOTTOM : .OVER), handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 println("loadData error: \(error)")
@@ -285,66 +285,44 @@ class TimelineTableViewController: UITableViewController {
     func renderData(statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
         
         let fontSize = self.layoutHeightCell[.Normal]?.statusLabel.font.pointSize ?? 12.0
-        var newRowHeight = mode == .OVER ? [String:CGFloat]() : self.rowHeight
+        var insertRowHeight = [String: CGFloat]()
         for status in statuses {
-            newRowHeight[status.statusID] = self.heightForStatus(status, fontSize: fontSize)
+            insertRowHeight[status.uniqueID] = self.heightForStatus(status, fontSize: fontSize)
         }
         
         let op = NSBlockOperation { () -> Void in
             
-            var oldRows = self.rows
+            let limit = mode == .OVER ? 0 : TIMELINE_ROWS_LIMIT
+            let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + statuses.count) - limit, 0)
+            let deleteStart = mode == .TOP ? self.rows.count - deleteCount : 0
+            let deleteRange = deleteStart ..< (deleteStart + deleteCount)
+            let deleteIndexPaths = deleteRange.map { i in NSIndexPath(forRow: i, inSection: 0) }
+            let deleteIDs = deleteRange.map { i in self.rows[i].uniqueID }
             
-            var deleteIndexPaths = [NSIndexPath]()
-            var totalRowsCount = mode == .OVER ? statuses.count : statuses.count + self.rows.count
-            if totalRowsCount > TIMELINE_ROWS_LIMIT {
-                let deleteCount = totalRowsCount - TIMELINE_ROWS_LIMIT
-                let leaveCount = oldRows.count - deleteCount
-                if mode == .TOP {
-                    deleteIndexPaths = (leaveCount ..< oldRows.count).map { i in NSIndexPath(forRow: i, inSection: 0) }
-                    oldRows = Array(oldRows[0 ..< leaveCount])
-                } else {
-                    deleteIndexPaths = (0 ..< deleteCount).map { i in NSIndexPath(forRow: i, inSection: 0) }
-                    oldRows = Array(oldRows[deleteCount ..< oldRows.count])
-                }
+            let insertStart = mode == .BOTTOM ? self.rows.count - deleteCount : 0
+            let insertIndexPaths = (insertStart ..< (insertStart + statuses.count)).map { i in NSIndexPath(forRow: i, inSection: 0) }
+            
+            println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count)")
+            
+            for key in insertRowHeight.keys {
+                self.rowHeight[key] = insertRowHeight[key]
             }
             
-            var insertIndexPaths = [NSIndexPath]()
-            let newRows: [TwitterStatus] = {
-                switch (mode) {
-                case .TOP:
-                    insertIndexPaths = (0 ..< statuses.count).map { i in NSIndexPath(forRow: i, inSection: 0) }
-                    return statuses + oldRows
-                case .BOTTOM:
-                    insertIndexPaths = (oldRows.count ..< (oldRows.count + statuses.count)).map { i in NSIndexPath(forRow: i, inSection: 0) }
-                    return oldRows + statuses
-                case .OVER:
-                    return statuses
-                }
-            }()
-            
-            println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count) nowRows: \(newRows.count)")
-            
-            self.rowHeight = newRowHeight
-            self.rows = newRows
-            
-            if mode == .OVER {
-                
-                self.tableView.setContentOffset(CGPointZero, animated: false)
-                self.tableView.reloadData()
-                
-            } else if mode == .BOTTOM && deleteIndexPaths.count == 0 {
-                
-                self.tableView.reloadData()
-                
-            } else if let lastCell = self.tableView.visibleCells().last as? UITableViewCell {
+            if let lastCell = self.tableView.visibleCells().last as? UITableViewCell {
                 
                 let offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
                 UIView.setAnimationsEnabled(false)
                 self.tableView.beginUpdates()
                 if deleteIndexPaths.count > 0 {
                     self.tableView.deleteRowsAtIndexPaths(deleteIndexPaths, withRowAnimation: .None)
+                    self.rows.removeRange(deleteRange)
                 }
                 if insertIndexPaths.count > 0 {
+                    var i = 0
+                    for insertIndexPath in insertIndexPaths {
+                        self.rows.insert(statuses[i], atIndex: insertIndexPath.row)
+                        i++
+                    }
                     self.tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
                 }
                 self.tableView.endUpdates()
@@ -353,9 +331,20 @@ class TimelineTableViewController: UITableViewController {
                 if self.isTop {
                     self.scrollToTop()
                 }
+                
             } else {
+                if deleteIndexPaths.count > 0 {
+                    self.rows.removeRange(deleteRange)
+                }
+                for status in statuses {
+                    self.rows.append(status)
+                }
                 self.tableView.setContentOffset(CGPointZero, animated: false)
                 self.tableView.reloadData()
+            }
+            
+            for key in deleteIDs {
+                self.rowHeight.removeValueForKey(key)
             }
             
             if let h = handler {
@@ -365,6 +354,13 @@ class TimelineTableViewController: UITableViewController {
         Static.mainQueue.addOperation(op)
     }
     
+    func renderImages() {
+        for cell in self.tableView.visibleCells() as [TwitterStatusCell] {
+            if let status = cell.status {
+                cell.setImage(status)
+            }
+        }
+    }
 }
 
 private extension String {
