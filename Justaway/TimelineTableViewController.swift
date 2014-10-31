@@ -9,7 +9,7 @@ class TimelineTableViewController: UITableViewController {
     var rows = [TwitterStatus]()
     var rowHeight = [String:CGFloat]()
     var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
-    var cellForHeight: TwitterStatusCell?
+    var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
     var lastID: Int64?
     var footerView: UIView?
     var footerIndicatorView: UIActivityIndicatorView?
@@ -39,9 +39,8 @@ class TimelineTableViewController: UITableViewController {
         let nib = UINib(nibName: "TwitterStatusCell", bundle: nil)
         for layout in TwitterStatusCellLayout.allValues {
             self.tableView.registerNib(nib, forCellReuseIdentifier: layout.rawValue)
+            self.layoutHeightCell[layout] = self.tableView.dequeueReusableCellWithIdentifier(layout.rawValue) as? TwitterStatusCell
         }
-        self.tableView.registerNib(nib, forCellReuseIdentifier: "CellForHeight")
-        cellForHeight = self.tableView.dequeueReusableCellWithIdentifier("CellForHeight") as? TwitterStatusCell
     }
     
     // MARK: - UITableViewDataSource
@@ -197,6 +196,11 @@ class TimelineTableViewController: UITableViewController {
         if f < TIMELINE_FOOTER_HEIGHT {
             didScrollToBottom()
         }
+        for cell in self.tableView.visibleCells() as [TwitterStatusCell] {
+            if let status = cell.status {
+                cell.setImage(status)
+            }
+        }
     }
     
     func didScrollToBottom() {
@@ -212,17 +216,15 @@ class TimelineTableViewController: UITableViewController {
     func heightForStatus(status: TwitterStatus, fontSize: CGFloat) -> CGFloat {
         let layout = TwitterStatusCellLayout.fromStatus(status)
         if let height = layoutHeight[layout] {
-            return height + heightForText(status.text, fontSize: fontSize)
-        } else if let cell = cellForHeight {
+            return height + heightForText(status.text, fontSize: fontSize) + heightForImage(status)
+        } else if let cell = self.layoutHeightCell[layout] {
             cell.frame = self.tableView.bounds
-            cell.setLayout(layout)
             cell.setText(status)
-            cell.contentView.setNeedsLayout()
-            cell.contentView.layoutIfNeeded()
+            cell.setLayout(layout)
             let totalHeight = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
             let textHeight = heightForText(status.text, fontSize: fontSize)
             layoutHeight[layout] = totalHeight - textHeight
-            return totalHeight
+            return totalHeight + heightForImage(status)
         } else {
             assertionFailure("cellForHeight is missing.")
         }
@@ -230,10 +232,17 @@ class TimelineTableViewController: UITableViewController {
     
     func heightForText(text: NSString, fontSize: CGFloat) -> CGFloat {
         return text.boundingRectWithSize(
-            CGSizeMake((self.cellForHeight?.statusLabel.frame.size.width)!, 0),
+            CGSizeMake((self.layoutHeightCell[.Normal]?.statusLabel.frame.size.width)!, 0),
             options: NSStringDrawingOptions.UsesLineFragmentOrigin,
             attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
             context: nil).size.height
+    }
+    
+    func heightForImage(status: TwitterStatus) -> CGFloat {
+//        if status.media.count > 0 {
+//            println("heightForImage: \(TwitterStatusCellImagePreviewHeight * CGFloat(status.media.count))")
+//        }
+        return TwitterStatusCellImagePreviewHeight * CGFloat(status.media.count)
     }
     
     func loadData(maxID: Int64?) {
@@ -275,7 +284,7 @@ class TimelineTableViewController: UITableViewController {
     
     func renderData(statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
         
-        let fontSize = self.cellForHeight?.statusLabel.font.pointSize ?? 12.0
+        let fontSize = self.layoutHeightCell[.Normal]?.statusLabel.font.pointSize ?? 12.0
         var newRowHeight = mode == .OVER ? [String:CGFloat]() : self.rowHeight
         for status in statuses {
             newRowHeight[status.statusID] = self.heightForStatus(status, fontSize: fontSize)

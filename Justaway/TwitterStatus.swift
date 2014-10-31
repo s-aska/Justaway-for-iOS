@@ -50,9 +50,9 @@ struct TwitterStatus {
         
         self.isProtected = statusJson["protected"].boolValue
         
-        if let extended_entities = statusJson["extended_entities"].array {
+        if let extended_entities = statusJson["entities"]["extended_entities"].array {
             self.media = extended_entities.map { TwitterMedia($0) }
-        } else if let media = statusJson["media"].array {
+        } else if let media = statusJson["entities"]["media"].array {
             self.media = media.map { TwitterMedia($0) }
         } else {
             self.media = [TwitterMedia]()
