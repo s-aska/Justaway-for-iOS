@@ -107,25 +107,27 @@ class ImageLoader {
     }
     
     class func doSuccess(request: ImageLoaderRequest, data: NSData, loadedFrom: ImageLoaderLoadedFrom) {
-        let image = transformIfNeed(request, data: data, loadedFrom: loadedFrom)
-        
-        switch (loadedFrom) {
-        case .Network:
-            ImageLoaderMemoryCache.set(request.cacheKey, data: UIImagePNGRepresentation(image))
-        case .Disk:
-            ImageLoaderMemoryCache.set(request.cacheKey, data: UIImagePNGRepresentation(image))
-            request.display(image, loadedFrom: .Disk)
-        case .Memory:
-            request.display(image, loadedFrom: .Memory)
-        }
-        
-        dispatch_sync(Static.serial) {
-            if let requests = Static.requests.removeValueForKey(request.cacheKey) {
-                for request in requests.filter({ h in Static.imageViewState[h.imageView.hashValue] == request.cacheKey }) {
-                    request.display(image, loadedFrom: loadedFrom)
-                    Static.imageViewState.removeValueForKey(request.imageView.hashValue)
+        if let image = transformIfNeed(request, data: data, loadedFrom: loadedFrom) {
+            switch (loadedFrom) {
+            case .Network:
+                ImageLoaderMemoryCache.set(request.cacheKey, data: UIImagePNGRepresentation(image))
+            case .Disk:
+                ImageLoaderMemoryCache.set(request.cacheKey, data: UIImagePNGRepresentation(image))
+                request.display(image, loadedFrom: .Disk)
+            case .Memory:
+                request.display(image, loadedFrom: .Memory)
+            }
+            
+            dispatch_sync(Static.serial) {
+                if let requests = Static.requests.removeValueForKey(request.cacheKey) {
+                    for request in requests.filter({ h in Static.imageViewState[h.imageView.hashValue] == request.cacheKey }) {
+                        request.display(image, loadedFrom: loadedFrom)
+                        Static.imageViewState.removeValueForKey(request.imageView.hashValue)
+                    }
                 }
             }
+        } else {
+            doFailure(request)
         }
     }
     
@@ -139,11 +141,15 @@ class ImageLoader {
         }
     }
     
-    class func transformIfNeed(request: ImageLoaderRequest, data: NSData, loadedFrom: ImageLoaderLoadedFrom) -> UIImage {
-        if loadedFrom == .Network {
-            return request.options.processor.transform(data, imageView: request.imageView)
+    class func transformIfNeed(request: ImageLoaderRequest, data: NSData, loadedFrom: ImageLoaderLoadedFrom) -> UIImage? {
+        if let image = UIImage(data: data) {
+            if loadedFrom == .Network {
+                return request.options.processor.transform(image, imageView: request.imageView)
+            } else {
+                return image
+            }
         } else {
-            return UIImage(data: data)!
+            return nil
         }
     }
 }
