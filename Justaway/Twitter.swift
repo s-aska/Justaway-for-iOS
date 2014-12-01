@@ -1,5 +1,6 @@
 import Foundation
 import SwifteriOS
+import EventBox
 
 let TwitterAuthorizeNotification = "TwitterAuthorizeNotification"
 
@@ -36,7 +37,7 @@ class Twitter {
                 NSLog("%@", error.debugDescription)
                 
                 // TODO: Alert
-                Notification.post(TwitterAuthorizeNotification)
+                EventBox.post(TwitterAuthorizeNotification)
             }
         }
         
@@ -51,7 +52,7 @@ class Twitter {
                         profileImageURL: NSURL())
                     ])
             } else {
-                Notification.post(TwitterAuthorizeNotification)
+                EventBox.post(TwitterAuthorizeNotification)
             }
         }
         
@@ -126,7 +127,7 @@ class Twitter {
             // Save Device
             AccountSettingsStore.save(AccountSettings(current: current, accounts: accounts))
             
-            Notification.post(TwitterAuthorizeNotification)
+            EventBox.post(TwitterAuthorizeNotification)
         }
         
         let failure = { (error: NSError) -> Void in

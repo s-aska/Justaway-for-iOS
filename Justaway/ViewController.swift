@@ -2,6 +2,7 @@ import UIKit
 import Accounts
 import Social
 import SwifteriOS
+import EventBox
 
 class ViewController: UIViewController {
     
@@ -28,7 +29,7 @@ class ViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        Notification.onMainThread(self, name: TwitterAuthorizeNotification, handler: { _ in self.configure() })
+        EventBox.onMainThread(self, name: TwitterAuthorizeNotification, handler: { _ in self.configure() })
         
         configure()
     }
@@ -36,7 +37,7 @@ class ViewController: UIViewController {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        Notification.off(self)
+        EventBox.off(self)
     }
     
     // MARK: - Keyboard Event Notifications

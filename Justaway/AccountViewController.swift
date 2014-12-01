@@ -2,6 +2,7 @@ import UIKit
 import Accounts
 import Social
 import SwifteriOS
+import EventBox
 
 class AccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -37,7 +38,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         
         self.settings = AccountSettingsStore.get()
         
-        Notification.onMainThread(self, name: TwitterAuthorizeNotification, handler: {
+        EventBox.onMainThread(self, name: TwitterAuthorizeNotification, handler: {
             (notification: NSNotification!) in
             
             self.cancel()
@@ -47,7 +48,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        Notification.off(self)
+        EventBox.off(self)
     }
     
     // MARK: - UITableViewDataSource
@@ -59,7 +60,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         cell.accessoryType = self.settings?.current == indexPath.row ? .Checkmark : UITableViewCellAccessoryType.None
-        cell.textLabel.text = self.settings?.accounts[indexPath.row].name
+//        cell.textLabel.text = self.settings?.accounts[indexPath.row].name
         cell.detailTextLabel?.text = self.settings?.accounts[indexPath.row].screenName
         if let url = self.settings?.accounts[indexPath.row].profileImageBiggerURL {
 //            ImageLoaderClient.displayImage(url, imageView: cell.imageView)

@@ -1,4 +1,5 @@
 import Foundation
+import KeyClip
 
 class AccountSettingsCache {
     struct Static {
@@ -34,16 +35,14 @@ class AccountSettingsStore {
         
         AccountSettingsCache.sharedInstance.settings = settings
         
-        let data = NSJSONSerialization.dataWithJSONObject(settings.dictionaryValue, options: nil, error: nil)!
-        
-        return Keychain.save(Constants.keychainKey, data: data)
+        return KeyClip.save(Constants.keychainKey, dictionary: settings.dictionaryValue)
     }
     
     class func load() -> AccountSettings? {
-        if let data = Keychain.load(Constants.keychainKey) {
-            if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
-                AccountSettingsCache.sharedInstance.settings = AccountSettings(json as NSDictionary)
-            }
+        if let data = KeyClip.load("AccountService") as NSDictionary? {
+            AccountSettingsCache.sharedInstance.settings = AccountSettings(data)
+        } else {
+            return nil
         }
         
         return AccountSettingsCache.sharedInstance.settings
@@ -52,7 +51,7 @@ class AccountSettingsStore {
     class func clear() {
         AccountSettingsCache.sharedInstance.settings = nil
         
-        Keychain.delete(Constants.keychainKey)
+        KeyClip.delete(Constants.keychainKey)
     }
     
 }

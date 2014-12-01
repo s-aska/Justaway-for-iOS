@@ -1,4 +1,5 @@
 import UIKit
+import EventBox
 
 class EditorViewController: UIViewController {
     
@@ -29,14 +30,17 @@ class EditorViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        Notification.onMainThread(self, name: UIKeyboardWillShowNotification, handler: { n in self.keyboardWillChangeFrame(n, showsKeyboard: true) })
-        Notification.onMainThread(self, name: UIKeyboardWillHideNotification, handler: { n in self.keyboardWillChangeFrame(n, showsKeyboard: false) })
+        EventBox.onMainThread(self, name: UIKeyboardWillShowNotification, handler: { n in
+            self.keyboardWillChangeFrame(n, showsKeyboard: true) })
+        
+        EventBox.onMainThread(self, name: UIKeyboardWillHideNotification, handler: { n in
+            self.keyboardWillChangeFrame(n, showsKeyboard: false) })
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        Notification.off(self)
+        EventBox.off(self)
     }
     
     // MARK: - Keyboard Event Notifications

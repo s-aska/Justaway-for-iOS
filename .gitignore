@@ -25,3 +25,5 @@ Justaway.xcworkspace
 
 # Secret
 Justaway/JFISecret.m
+Carthage.build
+Carthage.checkout
