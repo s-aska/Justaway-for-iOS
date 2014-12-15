@@ -49,6 +49,8 @@
 		38F4EAEC19F14E4700CBD23F /* RoundedProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAEB19F14E4700CBD23F /* RoundedProcessor.swift */; };
 		38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */; };
 		38F7B8F319E5720F0081C735 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */; };
+		6A0A1CEF1A3E49760035A03C /* Iguazu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1CEC1A3E48270035A03C /* Iguazu.framework */; };
+		6A0A1CF01A3E49760035A03C /* Iguazu.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1CEC1A3E48270035A03C /* Iguazu.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
 		6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3019BB514900D50D78 /* ViewController.swift */; };
 		6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3219BB514900D50D78 /* Main.storyboard */; };
@@ -139,6 +141,27 @@
 			remoteGlobalIDString = 740AC3F51999799900AB9A86;
 			remoteInfo = ToucanTests;
 		};
+		6A0A1CEB1A3E48270035A03C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6AEEB8F81A3DBDAC0035010F;
+			remoteInfo = Iguazu;
+		};
+		6A0A1CED1A3E48270035A03C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6AEEB9031A3DBDAC0035010F;
+			remoteInfo = IguazuTests;
+		};
+		6A0A1CF11A3E49760035A03C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6AEEB8F71A3DBDAC0035010F;
+			remoteInfo = Iguazu;
+		};
 		6A4B9D3C19BB514900D50D78 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6A4B9D2119BB514900D50D78 /* Project object */;
@@ -156,6 +179,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				38AB8BD419F6A1E40065D869 /* Toucan.framework in Embed Frameworks */,
+				6A0A1CF01A3E49760035A03C /* Iguazu.framework in Embed Frameworks */,
 				38AB8BCF19F6A1DE0065D869 /* SwifteriOS.framework in Embed Frameworks */,
 				6AEEB8EA1A2B39C90035010F /* KeyClip.framework in Embed Frameworks */,
 				6A61270F1A298D1200C18E1D /* EventBox.framework in Embed Frameworks */,
@@ -195,6 +219,7 @@
 		38F4EAEB19F14E4700CBD23F /* RoundedProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedProcessor.swift; sourceTree = "<group>"; };
 		38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoExpandTextView.swift; sourceTree = "<group>"; };
 		38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
+		6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Iguazu.xcodeproj; path = Iguazu/Iguazu.xcodeproj; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4B9D2D19BB514900D50D78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -226,6 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				38AB8BD319F6A1E40065D869 /* Toucan.framework in Frameworks */,
+				6A0A1CEF1A3E49760035A03C /* Iguazu.framework in Frameworks */,
 				38AB8BCE19F6A1DE0065D869 /* SwifteriOS.framework in Frameworks */,
 				6AEEB8E91A2B39C90035010F /* KeyClip.framework in Frameworks */,
 				6A61270E1A298D1200C18E1D /* EventBox.framework in Frameworks */,
@@ -367,6 +393,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6A0A1CE71A3E48270035A03C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6A0A1CEC1A3E48270035A03C /* Iguazu.framework */,
+				6A0A1CEE1A3E48270035A03C /* IguazuTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		6A0B236719DC49A3004819BB /* OS */ = {
 			isa = PBXGroup;
 			children = (
@@ -378,6 +413,7 @@
 		6A4B9D2019BB514900D50D78 = {
 			isa = PBXGroup;
 			children = (
+				6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */,
 				6A4B9D2B19BB514900D50D78 /* Justaway */,
 				6A4B9D3E19BB514900D50D78 /* JustawayTests */,
 				6AB8CDEE1A29C13700D22268 /* Frameworks */,
@@ -515,6 +551,7 @@
 			dependencies = (
 				38AB8BD119F6A1DE0065D869 /* PBXTargetDependency */,
 				38AB8BD619F6A1E40065D869 /* PBXTargetDependency */,
+				6A0A1CF21A3E49760035A03C /* PBXTargetDependency */,
 			);
 			name = Justaway;
 			productName = Justaway;
@@ -569,6 +606,10 @@
 			productRefGroup = 6A4B9D2A19BB514900D50D78 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 6A0A1CE71A3E48270035A03C /* Products */;
+					ProjectRef = 6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */;
+				},
 				{
 					ProductGroup = 381E6E6C19DE47EB00139654 /* Products */;
 					ProjectRef = 381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */;
@@ -634,6 +675,20 @@
 			fileType = wrapper.cfbundle;
 			path = ToucanTests.xctest;
 			remoteRef = 38F4EAE519F1447200CBD23F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6A0A1CEC1A3E48270035A03C /* Iguazu.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Iguazu.framework;
+			remoteRef = 6A0A1CEB1A3E48270035A03C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6A0A1CEE1A3E48270035A03C /* IguazuTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = IguazuTests.xctest;
+			remoteRef = 6A0A1CED1A3E48270035A03C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -739,6 +794,11 @@
 			isa = PBXTargetDependency;
 			name = Toucan;
 			targetProxy = 38AB8BD519F6A1E40065D869 /* PBXContainerItemProxy */;
+		};
+		6A0A1CF21A3E49760035A03C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Iguazu;
+			targetProxy = 6A0A1CF11A3E49760035A03C /* PBXContainerItemProxy */;
 		};
 		6A4B9D3D19BB514900D50D78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -847,6 +907,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage.build/iOS",
+					"/Users/aska/Documents/EventBox/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = Justaway/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -865,6 +926,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage.build/iOS",
+					"/Users/aska/Documents/EventBox/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = Justaway/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;

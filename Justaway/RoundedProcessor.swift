@@ -1,25 +1,27 @@
 import Foundation
 import UIKit
 import Toucan
+import Iguazu
 
-class RoundedProcessor: ImageLoaderProcessor {
+class RoundedProcessor: IguazuFilter {
     
     let radius: CGFloat
+    let size: CGSize
     
-    init(_ radius: CGFloat) {
+    init(_ radius: CGFloat, size: CGSize) {
         self.radius = radius
+        self.size = size
     }
     
-    func transform(image: UIImage, imageView: UIImageView) -> UIImage {
+    func filter(image: UIImage) -> UIImage {
         if radius > 0 {
-            return Toucan(image: image).resizeByClipping(imageView.bounds.size).maskWithRoundedRect(cornerRadius: radius).image
+            return Toucan(image: image).resizeByClipping(size).maskWithRoundedRect(cornerRadius: radius).image
         } else {
-            return Toucan(image: image).resizeByClipping(imageView.bounds.size).image
+            return Toucan(image: image).resizeByClipping(size).image
         }
     }
     
-    func cacheKey(imageView: UIImageView) -> String {
-        let size = imageView.frame.size
+    func cacheKey() -> String {
         return String(format: "?size=%@x%@&radius=%@", size.width, size.height, radius)
     }
 }
