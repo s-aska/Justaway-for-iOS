@@ -1,5 +1,6 @@
 import UIKit
 import SwifteriOS
+import Pinwheel
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -10,7 +11,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        ImageLoader.setup()
+        Pinwheel.setup(
+            Pinwheel.Configuration.Builder()
+                .maxConcurrent(5)
+                .debug()
+                .build())
         
         return true
     }

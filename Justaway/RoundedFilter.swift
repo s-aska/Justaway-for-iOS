@@ -1,16 +1,16 @@
 import Foundation
 import UIKit
 import Toucan
-import Iguazu
+import Pinwheel
 
-class RoundedProcessor: IguazuFilter {
+class RoundedFilter: PinwheelFilter {
     
     let radius: CGFloat
     let size: CGSize
     
-    init(_ radius: CGFloat, size: CGSize) {
+    init(_ radius: CGFloat, w: Int, h: Int) {
         self.radius = radius
-        self.size = size
+        self.size = CGSize(width: w, height: h)
     }
     
     func filter(image: UIImage) -> UIImage {

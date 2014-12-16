@@ -13,3 +13,6 @@
 [submodule "Iguazu"]
 	path = Iguazu
 	url = git@github.com:s-aska/Iguazu.git
+[submodule "Pinwheel"]
+	path = Pinwheel
+	url = git@github.com:s-aska/Pinwheel.git

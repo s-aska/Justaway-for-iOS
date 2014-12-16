@@ -1,35 +1,34 @@
 import UIKit
-import Iguazu
+import Pinwheel
 
 class ImageLoaderClient {
     
     struct Static {
-        static let defaultOptions = Iguazu.DisplayOptions.Builder()
-            .displayer(Iguazu.FadeInDisplayer())
+        static let defaultOptions = Pinwheel.DisplayOptions.Builder()
+            .displayer(Pinwheel.FadeInDisplayer())
+            .queuePriority(NSOperationQueuePriority.Low)
             .build()
         
-        static let userIconOptions = Iguazu.DisplayOptions.Builder()
-            .addFilter(RoundedProcessor(6, size: CGSize(width: 42, height: 42)),
-                hook: .PreMemoryCache)
-            .displayer(Iguazu.FadeInDisplayer())
+        static let userIconOptions = Pinwheel.DisplayOptions.Builder()
+            .addFilter(RoundedFilter(6, w: 42, h: 42), hook: .BeforeMemory)
+            .displayer(Pinwheel.FadeInDisplayer())
             .build()
         
-        static let actionedUserIconOptions = Iguazu.DisplayOptions.Builder()
-            .addFilter(RoundedProcessor(2, size: CGSize(width: 16, height: 16)),
-                hook: .PreMemoryCache)
-            .displayer(Iguazu.FadeInDisplayer())
+        static let actionedUserIconOptions = Pinwheel.DisplayOptions.Builder()
+            .addFilter(RoundedFilter(2, w: 16, h: 16), hook: .BeforeMemory)
+            .displayer(Pinwheel.FadeInDisplayer())
             .build()
     }
     
     class func displayImage(url: NSURL, imageView: UIImageView) {
-        Iguazu.displayImage(url, imageView: imageView, options: Static.defaultOptions)
+        Pinwheel.displayImage(url, imageView: imageView, options: Static.defaultOptions)
     }
     
     class func displayUserIcon(url: NSURL, imageView: UIImageView) {
-        Iguazu.displayImage(url, imageView: imageView, options: Static.userIconOptions)
+        Pinwheel.displayImage(url, imageView: imageView, options: Static.userIconOptions)
     }
     
     class func displayActionedUserIcon(url: NSURL, imageView: UIImageView) {
-        Iguazu.displayImage(url, imageView: imageView, options: Static.actionedUserIconOptions)
+        Pinwheel.displayImage(url, imageView: imageView, options: Static.actionedUserIconOptions)
     }
 }

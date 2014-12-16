@@ -41,16 +41,12 @@
 		38AB8BD419F6A1E40065D869 /* Toucan.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38F4EAE419F1447200CBD23F /* Toucan.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38B4475D19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
-		38F1B0AA19F01B7600A3608E /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F1B0A919F01B7600A3608E /* ImageLoader.swift */; };
 		38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */; };
-		38F4EAD919F1336600CBD23F /* ImageLoaderDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAD819F1336600CBD23F /* ImageLoaderDisplayer.swift */; };
-		38F4EAE819F14AD000CBD23F /* FadeInDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAE719F14AD000CBD23F /* FadeInDisplayer.swift */; };
-		38F4EAEA19F14D9400CBD23F /* ImageLoaderProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAE919F14D9400CBD23F /* ImageLoaderProcessor.swift */; };
-		38F4EAEC19F14E4700CBD23F /* RoundedProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAEB19F14E4700CBD23F /* RoundedProcessor.swift */; };
+		38F4EAEC19F14E4700CBD23F /* RoundedFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAEB19F14E4700CBD23F /* RoundedFilter.swift */; };
 		38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */; };
 		38F7B8F319E5720F0081C735 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */; };
-		6A0A1CEF1A3E49760035A03C /* Iguazu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1CEC1A3E48270035A03C /* Iguazu.framework */; };
-		6A0A1CF01A3E49760035A03C /* Iguazu.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1CEC1A3E48270035A03C /* Iguazu.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6A0A1D321A40B7D30035A03C /* Pinwheel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */; };
+		6A0A1D331A40B7D30035A03C /* Pinwheel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
 		6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3019BB514900D50D78 /* ViewController.swift */; };
 		6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3219BB514900D50D78 /* Main.storyboard */; };
@@ -141,26 +137,26 @@
 			remoteGlobalIDString = 740AC3F51999799900AB9A86;
 			remoteInfo = ToucanTests;
 		};
-		6A0A1CEB1A3E48270035A03C /* PBXContainerItemProxy */ = {
+		6A0A1D2E1A40B7310035A03C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */;
+			containerPortal = 6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 6AEEB8F81A3DBDAC0035010F;
-			remoteInfo = Iguazu;
+			remoteGlobalIDString = 38E82B421A40747C00EFDC81;
+			remoteInfo = Pinwheel;
 		};
-		6A0A1CED1A3E48270035A03C /* PBXContainerItemProxy */ = {
+		6A0A1D301A40B7310035A03C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */;
+			containerPortal = 6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 6AEEB9031A3DBDAC0035010F;
-			remoteInfo = IguazuTests;
+			remoteGlobalIDString = 38E82B4D1A40747C00EFDC81;
+			remoteInfo = PinwheelTests;
 		};
-		6A0A1CF11A3E49760035A03C /* PBXContainerItemProxy */ = {
+		6A0A1D341A40B7D30035A03C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */;
+			containerPortal = 6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 6AEEB8F71A3DBDAC0035010F;
-			remoteInfo = Iguazu;
+			remoteGlobalIDString = 38E82B411A40747C00EFDC81;
+			remoteInfo = Pinwheel;
 		};
 		6A4B9D3C19BB514900D50D78 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -179,10 +175,10 @@
 			dstSubfolderSpec = 10;
 			files = (
 				38AB8BD419F6A1E40065D869 /* Toucan.framework in Embed Frameworks */,
-				6A0A1CF01A3E49760035A03C /* Iguazu.framework in Embed Frameworks */,
 				38AB8BCF19F6A1DE0065D869 /* SwifteriOS.framework in Embed Frameworks */,
 				6AEEB8EA1A2B39C90035010F /* KeyClip.framework in Embed Frameworks */,
 				6A61270F1A298D1200C18E1D /* EventBox.framework in Embed Frameworks */,
+				6A0A1D331A40B7D30035A03C /* Pinwheel.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -210,16 +206,12 @@
 		38A694F319E4E6E800DD6072 /* TwitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTests.swift; sourceTree = "<group>"; };
 		38AB8BCC19F167D30065D869 /* ImageLoaderClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderClient.swift; sourceTree = "<group>"; };
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
-		38F1B0A919F01B7600A3608E /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
-		38F4EAD819F1336600CBD23F /* ImageLoaderDisplayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderDisplayer.swift; sourceTree = "<group>"; };
 		38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Toucan.xcodeproj; path = Toucan/Toucan/Toucan.xcodeproj; sourceTree = "<group>"; };
-		38F4EAE719F14AD000CBD23F /* FadeInDisplayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FadeInDisplayer.swift; sourceTree = "<group>"; };
-		38F4EAE919F14D9400CBD23F /* ImageLoaderProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderProcessor.swift; sourceTree = "<group>"; };
-		38F4EAEB19F14E4700CBD23F /* RoundedProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedProcessor.swift; sourceTree = "<group>"; };
+		38F4EAEB19F14E4700CBD23F /* RoundedFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedFilter.swift; sourceTree = "<group>"; };
 		38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoExpandTextView.swift; sourceTree = "<group>"; };
 		38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
-		6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Iguazu.xcodeproj; path = Iguazu/Iguazu.xcodeproj; sourceTree = "<group>"; };
+		6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pinwheel.xcodeproj; path = Pinwheel/Pinwheel.xcodeproj; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4B9D2D19BB514900D50D78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -251,10 +243,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				38AB8BD319F6A1E40065D869 /* Toucan.framework in Frameworks */,
-				6A0A1CEF1A3E49760035A03C /* Iguazu.framework in Frameworks */,
 				38AB8BCE19F6A1DE0065D869 /* SwifteriOS.framework in Frameworks */,
 				6AEEB8E91A2B39C90035010F /* KeyClip.framework in Frameworks */,
 				6A61270E1A298D1200C18E1D /* EventBox.framework in Frameworks */,
+				6A0A1D321A40B7D30035A03C /* Pinwheel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,29 +329,9 @@
 			isa = PBXGroup;
 			children = (
 				38AB8BCC19F167D30065D869 /* ImageLoaderClient.swift */,
-				38F1B0A919F01B7600A3608E /* ImageLoader.swift */,
-				38AB8BCB19F1679F0065D869 /* Processor */,
-				38AB8BCA19F167960065D869 /* Displayer */,
+				38F4EAEB19F14E4700CBD23F /* RoundedFilter.swift */,
 			);
 			name = ImageLoader;
-			sourceTree = "<group>";
-		};
-		38AB8BCA19F167960065D869 /* Displayer */ = {
-			isa = PBXGroup;
-			children = (
-				38F4EAD819F1336600CBD23F /* ImageLoaderDisplayer.swift */,
-				38F4EAE719F14AD000CBD23F /* FadeInDisplayer.swift */,
-			);
-			name = Displayer;
-			sourceTree = "<group>";
-		};
-		38AB8BCB19F1679F0065D869 /* Processor */ = {
-			isa = PBXGroup;
-			children = (
-				38F4EAE919F14D9400CBD23F /* ImageLoaderProcessor.swift */,
-				38F4EAEB19F14E4700CBD23F /* RoundedProcessor.swift */,
-			);
-			name = Processor;
 			sourceTree = "<group>";
 		};
 		38F1B0A819EFEB7900A3608E /* Entities */ = {
@@ -393,11 +365,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6A0A1CE71A3E48270035A03C /* Products */ = {
+		6A0A1D2A1A40B7300035A03C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6A0A1CEC1A3E48270035A03C /* Iguazu.framework */,
-				6A0A1CEE1A3E48270035A03C /* IguazuTests.xctest */,
+				6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */,
+				6A0A1D311A40B7310035A03C /* PinwheelTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -413,7 +385,7 @@
 		6A4B9D2019BB514900D50D78 = {
 			isa = PBXGroup;
 			children = (
-				6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */,
+				6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */,
 				6A4B9D2B19BB514900D50D78 /* Justaway */,
 				6A4B9D3E19BB514900D50D78 /* JustawayTests */,
 				6AB8CDEE1A29C13700D22268 /* Frameworks */,
@@ -551,7 +523,7 @@
 			dependencies = (
 				38AB8BD119F6A1DE0065D869 /* PBXTargetDependency */,
 				38AB8BD619F6A1E40065D869 /* PBXTargetDependency */,
-				6A0A1CF21A3E49760035A03C /* PBXTargetDependency */,
+				6A0A1D351A40B7D30035A03C /* PBXTargetDependency */,
 			);
 			name = Justaway;
 			productName = Justaway;
@@ -607,8 +579,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 6A0A1CE71A3E48270035A03C /* Products */;
-					ProjectRef = 6A0A1CE61A3E48270035A03C /* Iguazu.xcodeproj */;
+					ProductGroup = 6A0A1D2A1A40B7300035A03C /* Products */;
+					ProjectRef = 6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */;
 				},
 				{
 					ProductGroup = 381E6E6C19DE47EB00139654 /* Products */;
@@ -677,18 +649,18 @@
 			remoteRef = 38F4EAE519F1447200CBD23F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6A0A1CEC1A3E48270035A03C /* Iguazu.framework */ = {
+		6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = Iguazu.framework;
-			remoteRef = 6A0A1CEB1A3E48270035A03C /* PBXContainerItemProxy */;
+			path = Pinwheel.framework;
+			remoteRef = 6A0A1D2E1A40B7310035A03C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6A0A1CEE1A3E48270035A03C /* IguazuTests.xctest */ = {
+		6A0A1D311A40B7310035A03C /* PinwheelTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = IguazuTests.xctest;
-			remoteRef = 6A0A1CED1A3E48270035A03C /* PBXContainerItemProxy */;
+			path = PinwheelTests.xctest;
+			remoteRef = 6A0A1D301A40B7310035A03C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -726,8 +698,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38F4EAE819F14AD000CBD23F /* FadeInDisplayer.swift in Sources */,
-				38F4EAEC19F14E4700CBD23F /* RoundedProcessor.swift in Sources */,
+				38F4EAEC19F14E4700CBD23F /* RoundedFilter.swift in Sources */,
 				381E6E8519E2A69200139654 /* TwitterStatusCell.swift in Sources */,
 				6AB55B4919C5984800DC6442 /* TransparentView.swift in Sources */,
 				3868B94B19EFCCE2001221BF /* TwitterURL.swift in Sources */,
@@ -738,13 +709,10 @@
 				38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */,
 				6AB55B3E19C562CF00DC6442 /* EditorViewController.swift in Sources */,
 				6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */,
-				38F4EAEA19F14D9400CBD23F /* ImageLoaderProcessor.swift in Sources */,
-				38F4EAD919F1336600CBD23F /* ImageLoaderDisplayer.swift in Sources */,
 				381E6E7E19DE4FB000139654 /* Secret.swift in Sources */,
 				3868B94519EFCCC7001221BF /* TwitterDate.swift in Sources */,
 				38A1A9A719F786EC0085EE12 /* TwitterHashtag.swift in Sources */,
 				3894C24C19E557120038AEF8 /* TimelineViewController.swift in Sources */,
-				38F1B0AA19F01B7600A3608E /* ImageLoader.swift in Sources */,
 				381E6E0719D98A7300139654 /* AccountSettings.swift in Sources */,
 				38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */,
 				6AB55B4D19C8ADBE00DC6442 /* FontSizeViewController.swift in Sources */,
@@ -795,10 +763,10 @@
 			name = Toucan;
 			targetProxy = 38AB8BD519F6A1E40065D869 /* PBXContainerItemProxy */;
 		};
-		6A0A1CF21A3E49760035A03C /* PBXTargetDependency */ = {
+		6A0A1D351A40B7D30035A03C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = Iguazu;
-			targetProxy = 6A0A1CF11A3E49760035A03C /* PBXContainerItemProxy */;
+			name = Pinwheel;
+			targetProxy = 6A0A1D341A40B7D30035A03C /* PBXContainerItemProxy */;
 		};
 		6A4B9D3D19BB514900D50D78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
