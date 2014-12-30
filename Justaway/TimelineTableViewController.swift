@@ -1,5 +1,6 @@
 import UIKit
 import SwifteriOS
+import EventBox
 
 let TIMELINE_ROWS_LIMIT = 1000
 let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
@@ -42,6 +43,24 @@ class TimelineTableViewController: UITableViewController {
             self.tableView.registerNib(nib, forCellReuseIdentifier: layout.rawValue)
             self.layoutHeightCell[layout] = self.tableView.dequeueReusableCellWithIdentifier(layout.rawValue) as? TwitterStatusCell
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        EventBox.onMainThread(self, name: "streamingOn") { n in
+            self.toggleStreaming()
+        }
+        
+        EventBox.onMainThread(self, name: "streamingOff") { n in
+            
+        }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        EventBox.off(self)
     }
     
     // MARK: - UITableViewDataSource
@@ -174,16 +193,18 @@ class TimelineTableViewController: UITableViewController {
             
             println(error)
         }
-        Twitter.swifter.getUserStreamDelimited(nil,
-            stallWarnings: nil,
-            includeMessagesFromFollowedAccounts: nil,
-            includeReplies: nil,
-            track: nil,
-            locations: nil,
-            stringifyFriendIDs: nil,
-            progress: progress,
-            stallWarningHandler: stallWarningHandler,
-            failure: failure)
+        if let account = AccountSettingsStore.get() {
+            Twitter.getClient(account.account()).getUserStreamDelimited(nil,
+                stallWarnings: nil,
+                includeMessagesFromFollowedAccounts: nil,
+                includeReplies: nil,
+                track: nil,
+                locations: nil,
+                stringifyFriendIDs: nil,
+                progress: progress,
+                stallWarningHandler: stallWarningHandler,
+                failure: failure)
+        }
     }
     
     func scrollBegin() {

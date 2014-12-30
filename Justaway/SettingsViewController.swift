@@ -15,6 +15,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var containerViewBottomConstraint: NSLayoutConstraint!
     
     var currentSettingsView: UIView!
+    var streamingViewController: StreamingViewController!
     var fontSizeViewController: FontSizeViewController!
     var themeViewController: ThemeViewController!
     var accountViewController: AccountViewController!
@@ -42,6 +43,10 @@ class SettingsViewController: UIViewController {
         
         containerViewBottomConstraint.constant = -menuHeight
         
+        streamingViewController = StreamingViewController()
+        streamingViewController.view.hidden = true
+        ViewTools.addSubviewWithEqual(view, view: streamingViewController.view, top: nil, right: 0.0, bottom: menuHeight, left: 0.0)
+        
         fontSizeViewController = FontSizeViewController()
         fontSizeViewController.view.hidden = true
         ViewTools.addSubviewWithEqual(view, view: fontSizeViewController.view, top: nil, right: 0.0, bottom: menuHeight, left: 0.0)
@@ -59,6 +64,10 @@ class SettingsViewController: UIViewController {
     
     @IBAction func hide(sender: UIButton) {
         hide()
+    }
+    
+    @IBAction func showStreamingSettingsView(sender: UIButton) {
+        showSettingsView(streamingViewController.view)
     }
     
     @IBAction func showFontSizeSettingsView(sender: UIButton) {

@@ -80,7 +80,7 @@ class TimelineViewController: UIViewController {
     }
     
     @IBAction func homeButton(sender: UIButton) {
-        tableViewController.toggleStreaming()
+        tableViewController.scrollToTop()
     }
     
     @IBAction func showEditor(sender: UIButton) {
