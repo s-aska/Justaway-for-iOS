@@ -47,20 +47,10 @@ class TimelineTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        EventBox.onMainThread(self, name: "streamingOn") { n in
-            self.toggleStreaming()
-        }
-        
-        EventBox.onMainThread(self, name: "streamingOff") { n in
-            
-        }
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        EventBox.off(self)
     }
     
     // MARK: - UITableViewDataSource
@@ -159,53 +149,6 @@ class TimelineTableViewController: UITableViewController {
     }
     
     // MARK: Public Methods
-    
-    func toggleStreaming() {
-        let progress = {
-            (data: [String: JSONValue]?) -> Void in
-            
-            if data == nil {
-                return
-            }
-            
-            let responce = JSON.JSONObject(data!)
-            
-            if let event = responce["event"].object {
-                
-            } else if let delete = responce["delete"].object {
-            } else if let status = responce["delete"]["status"].object {
-            } else if let direct_message = responce["delete"]["direct_message"].object {
-            } else if let direct_message = responce["direct_message"].object {
-            } else if let text = responce["text"].string {
-                let status = TwitterStatus(responce)
-                self.renderData([status], mode: .TOP, handler: {})
-            }
-            
-//            println(responce)
-        }
-        let stallWarningHandler = {
-            (code: String?, message: String?, percentFull: Int?) -> Void in
-            
-            println("code:\(code) message:\(message) percentFull:\(percentFull)")
-        }
-        let failure = {
-            (error: NSError) -> Void in
-            
-            println(error)
-        }
-        if let account = AccountSettingsStore.get() {
-            Twitter.getClient(account.account()).getUserStreamDelimited(nil,
-                stallWarnings: nil,
-                includeMessagesFromFollowedAccounts: nil,
-                includeReplies: nil,
-                track: nil,
-                locations: nil,
-                stringifyFriendIDs: nil,
-                progress: progress,
-                stallWarningHandler: stallWarningHandler,
-                failure: failure)
-        }
-    }
     
     func scrollBegin() {
         scrolling = true

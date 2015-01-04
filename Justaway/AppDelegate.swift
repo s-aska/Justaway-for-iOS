@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Pinwheel.Configuration.Builder()
                 .maxConcurrent(5)
                 .defaultTimeoutIntervalForRequest(5)
-                .debug()
+//                .debug()
                 .build())
         
         return true

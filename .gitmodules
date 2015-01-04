@@ -1,14 +1,14 @@
 [submodule "Swifter"]
 	path = Swifter
-	url = git@github.com:mattdonnelly/Swifter.git
+	url = git@github.com:s-aska/Swifter.git
 [submodule "Toucan"]
 	path = Toucan
 	url = git@github.com:gavinbunney/Toucan.git
-[submodule "Carthage.checkout/EventBox"]
-	path = Carthage.checkout/EventBox
+[submodule "Carthage/Checkouts/EventBox"]
+	path = Carthage/Checkouts/EventBox
 	url = https://github.com/s-aska/EventBox.git
-[submodule "Carthage.checkout/KeyClip"]
-	path = Carthage.checkout/KeyClip
+[submodule "Carthage/Checkouts/KeyClip"]
+	path = Carthage/Checkouts/KeyClip
 	url = https://github.com/s-aska/KeyClip.git
 [submodule "Pinwheel"]
 	path = Pinwheel

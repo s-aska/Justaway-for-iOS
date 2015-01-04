@@ -25,7 +25,6 @@
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="yEO-lB-wEd" secondAttribute="bottom" constant="9" id="7OA-Un-pm1"/>
-                <constraint firstAttribute="centerY" secondItem="yEO-lB-wEd" secondAttribute="centerY" id="8Sr-IY-LJA"/>
                 <constraint firstAttribute="centerX" secondItem="yEO-lB-wEd" secondAttribute="centerX" id="EZx-iM-GBE"/>
                 <constraint firstItem="yEO-lB-wEd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="W6g-S2-6T7"/>
             </constraints>
