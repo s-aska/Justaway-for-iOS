@@ -4,12 +4,6 @@
 [submodule "Toucan"]
 	path = Toucan
 	url = git@github.com:gavinbunney/Toucan.git
-[submodule "Carthage/Checkouts/EventBox"]
-	path = Carthage/Checkouts/EventBox
-	url = https://github.com/s-aska/EventBox.git
-[submodule "Carthage/Checkouts/KeyClip"]
-	path = Carthage/Checkouts/KeyClip
-	url = https://github.com/s-aska/KeyClip.git
 [submodule "Pinwheel"]
 	path = Pinwheel
 	url = git@github.com:s-aska/Pinwheel.git
