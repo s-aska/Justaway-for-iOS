@@ -11,12 +11,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        // Pinwheel.DiskCache.sharedInstance().clear()
+        Pinwheel.DiskCache.sharedInstance().clear()
         Pinwheel.setup(
             Pinwheel.Configuration.Builder()
                 .maxConcurrent(5)
                 .defaultTimeoutIntervalForRequest(5)
-//                .debug()
                 .build())
         
         return true
