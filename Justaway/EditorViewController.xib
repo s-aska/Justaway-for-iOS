@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="fontello.ttf">
+            <string>fontello</string>
+            <string>fontello</string>
+            <string>fontello</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditorViewController" customModule="Justaway" customModuleProvider="target">
+            <connections>
+                <outlet property="containerView" destination="GiI-4f-pcf" id="zU9-2h-jpG"/>
+                <outlet property="containerViewButtomConstraint" destination="hpk-3M-F0T" id="Wb7-U4-L0j"/>
+                <outlet property="textView" destination="pAS-wm-Zms" id="SmZ-cI-pnh"/>
+                <outlet property="textViewHeightConstraint" destination="36B-3S-QRz" id="04U-qg-a2q"/>
+                <outlet property="view" destination="iN0-l3-epB" id="ljW-bN-VJk"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GiI-4f-pcf">
+                    <rect key="frame" x="0.0" y="506" width="600" height="94"/>
+                    <subviews>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAS-wm-Zms" customClass="AutoExpandTextView" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="10" y="10" width="580" height="34"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="34" id="36B-3S-QRz"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpB-WM-7Qz">
+                            <rect key="frame" x="0.0" y="44" width="600" height="50"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NN0-dj-HHc">
+                                    <rect key="frame" x="0.0" y="0.0" width="59" height="50"/>
+                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                                    <state key="normal" title="下">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="hide:" destination="-1" eventType="touchUpInside" id="WfZ-ML-tyE"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcO-tg-NdG">
+                                    <rect key="frame" x="59" y="0.0" width="62" height="50"/>
+                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                                    <state key="normal" title="画">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="hide:" destination="-1" eventType="touchUpInside" id="SaI-Ym-ZnA"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbk-4F-WpO">
+                                    <rect key="frame" x="541" y="0.0" width="59" height="50"/>
+                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                                    <state key="normal" title="投">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="send:" destination="-1" eventType="touchUpInside" id="e3h-hl-4bj"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="centerY" secondItem="NN0-dj-HHc" secondAttribute="centerY" id="0RW-J6-0qG"/>
+                                <constraint firstAttribute="height" constant="50" id="QA0-KP-aqU"/>
+                                <constraint firstItem="NN0-dj-HHc" firstAttribute="leading" secondItem="cpB-WM-7Qz" secondAttribute="leading" id="RPs-BP-itF"/>
+                                <constraint firstItem="AcO-tg-NdG" firstAttribute="leading" secondItem="NN0-dj-HHc" secondAttribute="trailing" id="cZu-qX-yjw"/>
+                                <constraint firstAttribute="centerY" secondItem="AcO-tg-NdG" secondAttribute="centerY" id="fS4-To-Vfx"/>
+                                <constraint firstAttribute="trailing" secondItem="mbk-4F-WpO" secondAttribute="trailing" id="ht5-bz-Fwc"/>
+                                <constraint firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="y1y-gb-4En"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="pAS-wm-Zms" secondAttribute="trailing" constant="10" id="A5I-o1-lhK"/>
+                        <constraint firstItem="pAS-wm-Zms" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" constant="10" id="N9c-mZ-Q3i"/>
+                        <constraint firstItem="cpB-WM-7Qz" firstAttribute="top" secondItem="pAS-wm-Zms" secondAttribute="bottom" id="OSW-sG-aTj"/>
+                        <constraint firstItem="pAS-wm-Zms" firstAttribute="top" secondItem="GiI-4f-pcf" secondAttribute="top" constant="10" id="PW5-Fa-Djp"/>
+                        <constraint firstItem="cpB-WM-7Qz" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="Rcs-Ty-EE5"/>
+                        <constraint firstAttribute="trailing" secondItem="cpB-WM-7Qz" secondAttribute="trailing" id="eev-EE-je8"/>
+                        <constraint firstAttribute="bottom" secondItem="cpB-WM-7Qz" secondAttribute="bottom" id="rj4-RY-uIQ"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="GiI-4f-pcf" secondAttribute="trailing" id="gvC-FL-Sob"/>
+                <constraint firstAttribute="bottom" secondItem="GiI-4f-pcf" secondAttribute="bottom" id="hpk-3M-F0T"/>
+                <constraint firstItem="GiI-4f-pcf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="iwb-Zy-IdV"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

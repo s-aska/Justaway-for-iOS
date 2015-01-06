@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccountViewController" customModule="Justaway" customModuleProvider="target">
+            <connections>
+                <outlet property="leftButton" destination="Vwk-HG-Wc6" id="hLw-u1-h89"/>
+                <outlet property="rightButton" destination="ARA-5i-TJg" id="o8w-hx-7WT"/>
+                <outlet property="tableView" destination="nsx-O5-qnt" id="OhG-Og-ewk"/>
+                <outlet property="view" destination="iN0-l3-epB" id="m2R-db-FFw"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="nsx-O5-qnt">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M3b-2x-uXn">
+                    <rect key="frame" x="0.0" y="550" width="600" height="50"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vwk-HG-Wc6">
+                            <rect key="frame" x="0.0" y="-0.5" width="72" height="51"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                            <state key="normal" title="Add">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="left:" destination="-1" eventType="touchUpInside" id="Ay3-62-DkY"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ARA-5i-TJg">
+                            <rect key="frame" x="530" y="-1" width="70" height="51"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                            <state key="normal" title="Edit">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="right:" destination="-1" eventType="touchUpInside" id="2J2-EE-3C7"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="1RF-xn-tNL"/>
+                        <constraint firstAttribute="trailing" secondItem="ARA-5i-TJg" secondAttribute="trailing" id="J66-lY-KlA"/>
+                        <constraint firstAttribute="centerY" secondItem="Vwk-HG-Wc6" secondAttribute="centerY" id="LWC-1j-xkE"/>
+                        <constraint firstItem="Vwk-HG-Wc6" firstAttribute="leading" secondItem="M3b-2x-uXn" secondAttribute="leading" id="soN-mb-paq"/>
+                        <constraint firstAttribute="centerY" secondItem="ARA-5i-TJg" secondAttribute="centerY" id="wdd-pJ-Dd2"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="M3b-2x-uXn" firstAttribute="top" secondItem="nsx-O5-qnt" secondAttribute="bottom" id="2JC-p9-9c1"/>
+                <constraint firstAttribute="trailing" secondItem="nsx-O5-qnt" secondAttribute="trailing" id="4vb-cN-fVH"/>
+                <constraint firstItem="nsx-O5-qnt" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="BNX-vw-eTn"/>
+                <constraint firstItem="nsx-O5-qnt" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="bCU-lv-CqC"/>
+                <constraint firstAttribute="trailing" secondItem="M3b-2x-uXn" secondAttribute="trailing" id="cZv-vc-2to"/>
+                <constraint firstAttribute="bottom" secondItem="M3b-2x-uXn" secondAttribute="bottom" id="dvB-da-xHD"/>
+                <constraint firstItem="M3b-2x-uXn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mav-I2-pBd"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="137" y="194"/>
+        </view>
+    </objects>
+</document>
