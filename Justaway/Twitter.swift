@@ -31,6 +31,18 @@ class Twitter {
     
     // MARK: - Class Methods
     
+    class func setup() {
+        let reachability = Reachability.reachabilityForInternetConnection()
+        reachability.whenReachable = { reachability in
+            Twitter.startStreamingIfEnable()
+        }
+//        reachability.whenUnreachable = { reachability in
+//            println("Not reachable")
+//        }
+        
+        reachability.startNotifier()
+    }
+    
     class func getClient(account: Account) -> Swifter {
         if let ac = account.credential.account {
             return Swifter(account: ac)

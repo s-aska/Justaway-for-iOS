@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 .defaultTimeoutIntervalForRequest(5)
                 .build())
         
+        Twitter.setup()
+        
         return true
     }
     
