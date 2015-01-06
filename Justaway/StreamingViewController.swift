@@ -1,5 +1,4 @@
 import UIKit
-import EventBox
 
 class StreamingViewController: UIViewController {
     
@@ -13,9 +12,9 @@ class StreamingViewController: UIViewController {
     
     @IBAction func streamingChanged(sender: UISwitch) {
         if sender.on {
-            EventBox.post("streamingOn")
+            Twitter.startStreamingAndEnable()
         } else {
-            EventBox.post("streamingOff")
+            Twitter.stopStreamingAndDisable()
         }
     }
 }

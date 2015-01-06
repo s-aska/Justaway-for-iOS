@@ -6,10 +6,25 @@ let TwitterAuthorizeNotification = "TwitterAuthorizeNotification"
 
 class Twitter {
     
-    // MARK: - Singleton
+    // MARK: - Types
+    
+    enum ConnectionStatus {
+        case CONNECTING
+        case CONNECTIED
+        case DISCONNECTING
+        case DISCONNECTIED
+    }
+    
+    enum StreamingEvent: String {
+        case CreateStatus = "CreateStatus"
+    }
     
     struct Static {
         static let swifter = Swifter(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret)
+        static var enableStreaming = false
+        static var connectionStatus: ConnectionStatus = .DISCONNECTIED
+        static var streamingRequest: SwifterHTTPRequest?
+        private static let serial = dispatch_queue_create("pw.aska.justaway.twitter.serial", DISPATCH_QUEUE_SERIAL)
     }
     
     class var swifter : Swifter { return Static.swifter }
@@ -164,4 +179,93 @@ class Twitter {
         }
     }
     
+    class func startStreamingIfEnable() {
+        if Static.enableStreaming {
+            startStreaming()
+        }
+    }
+    
+    class func startStreamingAndEnable() {
+        Static.enableStreaming = true
+        startStreaming()
+    }
+    
+    class func startStreaming() {
+        dispatch_sync(Static.serial) {
+            if Static.connectionStatus == .DISCONNECTIED {
+                Static.connectionStatus = .CONNECTING
+                NSLog("connectionStatus: CONNECTING")
+            } else {
+                return
+            }
+        }
+        let progress = {
+            (data: [String: JSONValue]?) -> Void in
+            
+            if Static.connectionStatus != .CONNECTIED {
+                Static.connectionStatus = .CONNECTIED
+                NSLog("connectionStatus: CONNECTIED")
+            }
+            
+            if data == nil {
+                return
+            }
+            
+            let responce = JSON.JSONObject(data!)
+            
+            if let event = responce["event"].object {
+                
+            } else if let delete = responce["delete"].object {
+            } else if let status = responce["delete"]["status"].object {
+            } else if let direct_message = responce["delete"]["direct_message"].object {
+            } else if let direct_message = responce["direct_message"].object {
+            } else if let text = responce["text"].string {
+                EventBox.post(StreamingEvent.CreateStatus.rawValue, sender: TwitterStatus(responce))
+            }
+            
+            //            println(responce)
+        }
+        let stallWarningHandler = {
+            (code: String?, message: String?, percentFull: Int?) -> Void in
+            
+            println("code:\(code) message:\(message) percentFull:\(percentFull)")
+        }
+        let failure = {
+            (error: NSError) -> Void in
+            
+            Static.connectionStatus = .DISCONNECTIED
+            NSLog("connectionStatus: DISCONNECTIED")
+            
+            println(error)
+        }
+        if let account = AccountSettingsStore.get() {
+            Static.streamingRequest = Twitter.getClient(account.account()).getUserStreamDelimited(nil,
+                stallWarnings: nil,
+                includeMessagesFromFollowedAccounts: nil,
+                includeReplies: nil,
+                track: nil,
+                locations: nil,
+                stringifyFriendIDs: nil,
+                progress: progress,
+                stallWarningHandler: stallWarningHandler,
+                failure: failure)
+        }
+    }
+    
+    class func stopStreamingAndDisable() {
+        Static.enableStreaming = false
+        stopStreaming()
+    }
+    
+    class func stopStreaming() {
+        dispatch_sync(Static.serial) {
+            if Static.connectionStatus == .CONNECTIED {
+                Static.connectionStatus = .DISCONNECTIED
+                NSLog("connectionStatus: DISCONNECTIED")
+            } else {
+                return
+            }
+        }
+        Static.streamingRequest?.stop()
+    }
 }

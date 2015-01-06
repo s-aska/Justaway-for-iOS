@@ -1,7 +1,7 @@
 import Foundation
 import SwifteriOS
 
-struct TwitterStatus {
+class TwitterStatus {
     let user: TwitterUser
     let statusID: String
     let text: String
