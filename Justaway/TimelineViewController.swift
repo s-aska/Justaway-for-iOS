@@ -15,7 +15,7 @@ class TimelineViewController: UIViewController {
     var tableViewControllers = [TimelineTableViewController]()
     
     struct Static {
-        private static let connectionQueue = NSOperationQueue()
+        private static let connectionQueue = NSOperationQueue().serial()
     }
     
     override var nibName: String {
@@ -26,8 +26,6 @@ class TimelineViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        Static.connectionQueue.maxConcurrentOperationCount = 1
         
         editorViewController = EditorViewController()
         editorViewController.view.hidden = true

@@ -24,17 +24,14 @@ class TimelineTableViewController: UITableViewController {
     }
     
     struct Static {
-        private static let loadDataQueue = NSOperationQueue()
-        private static let mainQueue = NSOperationQueue.mainQueue()
+        private static let loadDataQueue = NSOperationQueue().serial()
+        private static let mainQueue = NSOperationQueue.mainQueue().serial()
     }
     
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        Static.loadDataQueue.maxConcurrentOperationCount = 1
-        Static.mainQueue.maxConcurrentOperationCount = 1
         
         self.tableView.separatorInset = UIEdgeInsetsZero
         
