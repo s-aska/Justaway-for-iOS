@@ -10,6 +10,7 @@
 		3805DE3D1A5D8AC000FBD015 /* Toucan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3805DE3C1A5D8AC000FBD015 /* Toucan.framework */; };
 		3805DE3E1A5D8AC000FBD015 /* Toucan.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3805DE3C1A5D8AC000FBD015 /* Toucan.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3805DE451A5D8DBD00FBD015 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DE441A5D8DBD00FBD015 /* Reachability.swift */; };
+		3805DE871A5DAA1600FBD015 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DE861A5DAA1600FBD015 /* Async.swift */; };
 		381E6E0719D98A7300139654 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E0619D98A7300139654 /* AccountSettings.swift */; };
 		381E6E0819D98CA500139654 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E0619D98A7300139654 /* AccountSettings.swift */; };
 		381E6E7E19DE4FB000139654 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7D19DE4FB000139654 /* Secret.swift */; };
@@ -162,6 +163,7 @@
 /* Begin PBXFileReference section */
 		3805DE3C1A5D8AC000FBD015 /* Toucan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Toucan.framework; path = Carthage/Build/iOS/Toucan.framework; sourceTree = "<group>"; };
 		3805DE441A5D8DBD00FBD015 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Reachability.swift; path = Reachability.swift/Reachability.swift; sourceTree = "<group>"; };
+		3805DE861A5DAA1600FBD015 /* Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Async.swift; path = Async/Async.swift; sourceTree = "<group>"; };
 		381E6E0619D98A7300139654 /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
 		381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Swifter.xcodeproj; path = Swifter/Swifter.xcodeproj; sourceTree = "<group>"; };
 		381E6E7D19DE4FB000139654 /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 		3805DE461A5D8FE200FBD015 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				3805DE861A5DAA1600FBD015 /* Async.swift */,
 				3805DE441A5D8DBD00FBD015 /* Reachability.swift */,
 			);
 			name = Libraries;
@@ -665,6 +668,7 @@
 				6AB55B4919C5984800DC6442 /* TransparentView.swift in Sources */,
 				3868B94B19EFCCE2001221BF /* TwitterURL.swift in Sources */,
 				38AB8BCD19F167D30065D869 /* ImageLoaderClient.swift in Sources */,
+				3805DE871A5DAA1600FBD015 /* Async.swift in Sources */,
 				3894C25019E55C770038AEF8 /* ViewTools.swift in Sources */,
 				6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */,
 				3805DE451A5D8DBD00FBD015 /* Reachability.swift in Sources */,

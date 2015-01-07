@@ -63,7 +63,7 @@ class TimelineViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        EventBox.onBackgroundThread(self, name: Twitter.StreamingEvent.CreateStatus.rawValue, sender: nil) { n in
+        EventBox.onBackgroundThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
             let status = n.object as TwitterStatus
             self.tableViewControllers.first?.renderData([status], mode: .TOP, handler: {})
         }

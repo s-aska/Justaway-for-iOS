@@ -1,4 +1,5 @@
 import UIKit
+import EventBox
 
 let TwitterStatusCellImagePreviewHeight :CGFloat = 80
 let TwitterStatusCellImagePreviewWidth :CGFloat = 240
@@ -57,10 +58,25 @@ class TwitterStatusCell: UITableViewCell {
         separatorInset = UIEdgeInsetsZero
         layoutMargins = UIEdgeInsetsZero
         preservesSuperviewLayoutMargins = false
+        
+        EventBox.onMainThread(self, name: Twitter.Event.CreateFavorites.rawValue) { (n) -> Void in
+            let statusID = n.object as String
+            if self.status?.statusID == statusID {
+                self.favoriteButton.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
+            }
+        }
+        
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyFavorites.rawValue) { (n) -> Void in
+            let statusID = n.object as String
+            if self.status?.statusID == statusID {
+                self.favoriteButton.setTitleColor(UIColor.lightGrayColor(), forState: UIControlState.Normal)
+            }
+        }
     }
     
     deinit {
         // NSNotificationCenter.defaultCenter().removeObserver(self)
+        EventBox.off(self)
     }
     
     // MARK: - UITableViewCell
@@ -153,7 +169,13 @@ class TwitterStatusCell: UITableViewCell {
     }
     
     @IBAction func favorite(sender: UIButton) {
-        
+        self.favoriteButton.enabled = false
+        Async.main(after: 0.5) {
+            self.favoriteButton.enabled = true
+        }
+        if let statusID = self.status?.statusID {
+            Twitter.toggleFavorite(statusID)
+        }
     }
     
 }

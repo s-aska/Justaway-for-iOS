@@ -7,3 +7,6 @@
 [submodule "Reachability.swift"]
 	path = Reachability.swift
 	url = git@github.com:ashleymills/Reachability.swift.git
+[submodule "Async"]
+	path = Async
+	url = git@github.com:duemunk/Async.git

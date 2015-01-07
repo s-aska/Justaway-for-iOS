@@ -15,8 +15,12 @@ class Twitter {
         case DISCONNECTIED
     }
     
-    enum StreamingEvent: String {
+    enum Event: String {
         case CreateStatus = "CreateStatus"
+        case CreateFavorites = "CreateFavorites"
+        case DestroyFavorites = "DestroyFavorites"
+        case CreateRetweet = "CreateRetweet"
+        case DestroyRetweet = "DestroyRetweet"
     }
     
     struct Static {
@@ -24,7 +28,10 @@ class Twitter {
         static var enableStreaming = false
         static var connectionStatus: ConnectionStatus = .DISCONNECTIED
         static var streamingRequest: SwifterHTTPRequest?
-        private static let serial = dispatch_queue_create("pw.aska.justaway.twitter.serial", DISPATCH_QUEUE_SERIAL)
+        static var favorites = [String: Bool]()
+        private static let connectionQueue = dispatch_queue_create("pw.aska.justaway.twitter.connection", DISPATCH_QUEUE_SERIAL)
+        private static let favoritesQueue = dispatch_queue_create("pw.aska.justaway.twitter.favorites", DISPATCH_QUEUE_SERIAL)
+        private static let retweetsQueue = dispatch_queue_create("pw.aska.justaway.twitter.retweets", DISPATCH_QUEUE_SERIAL)
     }
     
     class var swifter : Swifter { return Static.swifter }
@@ -49,6 +56,14 @@ class Twitter {
         } else {
             swifter.client.credential = account.credential
             return swifter
+        }
+    }
+    
+    class func getClient() -> Swifter? {
+        if let account = AccountSettingsStore.get() {
+            return getClient(account.account())
+        } else {
+            return nil
         }
     }
     
@@ -166,51 +181,133 @@ class Twitter {
     }
     
     class func getHomeTimeline(maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
-        if let account = AccountSettingsStore.get() {
-            
-            let s = { (array: [JSONValue]?) -> Void in
-                if let statuses = array {
-                    success(statuses.map { TwitterStatus($0) })
+        let s = { (array: [JSONValue]?) -> Void in
+            if let statuses = array {
+                success(statuses.map { TwitterStatus($0) })
+            }
+        }
+        
+        let f = { (error: NSError) -> Void in
+            if error.code == 401 {
+                NSLog("%@", "[FATAL] Please set a Your Twitter Consumer Key and Secret for the Secret.swift")
+            } else if error.code == 429 {
+                NSLog("%@", "[FATAL] API Limit")
+            } else {
+                NSLog("%@", error.debugDescription)
+                
+                // TODO: Alert
+            }
+            failure(error)
+        }
+        
+        getClient()?.getStatusesHomeTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
+    }
+}
+
+// MARK: - REST API
+
+extension Twitter {
+    class func toggleFavorite(statusID: String) {
+        Async.customQueue(Static.favoritesQueue) {
+            if Static.favorites[statusID] == true {
+                Twitter.destroyFavorite(statusID)
+            } else {
+                Async.background {
+                    Twitter.createFavorite(statusID)
                 }
             }
-            
-            let f = { (error: NSError) -> Void in
-                if error.code == 401 {
-                    NSLog("%@", "[FATAL] Please set a Your Twitter Consumer Key and Secret for the Secret.swift")
-                } else if error.code == 429 {
-                    NSLog("%@", "[FATAL] API Limit")
-                } else {
-                    NSLog("%@", error.debugDescription)
-                    
-                    // TODO: Alert
-                }
-                failure(error)
-            }
-            
-            getClient(account.account()).getStatusesHomeTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
         }
     }
     
+    class func createFavorite(statusID: String) {
+        Async.customQueue(Static.favoritesQueue) {
+            if Static.favorites[statusID] == true {
+                NSLog("aleady favorites")
+                return
+            }
+            Static.favorites[statusID] = true
+            EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
+            NSLog("create favorites")
+Twitter.getClient()?.postCreateFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
+    NSLog("create favorites success")
+}, failure: { (error) -> Void in
+    let code = Twitter.getErrorCode(error)
+    if code == 139 {
+        NSLog("aleady favorites failure code:%i", code)
+        return
+    }
+    Async.customQueue(Static.favoritesQueue) {
+        NSLog("create favorites failure code:%i error:\(error)", code)
+        Static.favorites.removeValueForKey(statusID)
+        EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
+    }
+    return
+})
+        }
+    }
+    
+    class func destroyFavorite(statusID: String) {
+        Async.customQueue(Static.favoritesQueue) {
+            if Static.favorites[statusID] == nil {
+                NSLog("no favorites")
+                return
+            }
+            Static.favorites.removeValueForKey(statusID)
+            EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
+            NSLog("destroy favorites")
+            Twitter.getClient()?.postDestroyFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
+                NSLog("destroy favorites success")
+                }, failure: { (error) -> Void in
+                    let code = Twitter.getErrorCode(error)
+                    if code == 34 {
+                        NSLog("no favorites failure code:%i", code)
+                        return
+                    }
+                    Async.customQueue(Static.favoritesQueue) {
+                        NSLog("destroy favorites failure code:%s error:\(error)", code)
+                        Static.favorites[statusID] = true
+                        EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
+                    }
+                    return
+            })
+        }
+    }
+    
+    class func getErrorCode(error: NSError) -> Int {
+        if let userInfo = error.userInfo {
+            if let errorCode = userInfo["Response-ErrorCode"] as? Int {
+                return errorCode
+            }
+        }
+        return 0
+    }
+}
+
+// MARK: - Streaming
+
+extension Twitter {
     class func startStreamingIfEnable() {
         if Static.enableStreaming {
-            startStreaming()
+            startStreamingIfDisconnected()
         }
     }
     
     class func startStreamingAndEnable() {
         Static.enableStreaming = true
-        startStreaming()
+        startStreamingIfDisconnected()
     }
     
-    class func startStreaming() {
-        dispatch_sync(Static.serial) {
+    class func startStreamingIfDisconnected() {
+        Async.customQueue(Static.connectionQueue) {
             if Static.connectionStatus == .DISCONNECTIED {
                 Static.connectionStatus = .CONNECTING
                 NSLog("connectionStatus: CONNECTING")
-            } else {
-                return
+                Twitter.startStreaming()
             }
         }
+    }
+    
+    class func startStreaming() {
         let progress = {
             (data: [String: JSONValue]?) -> Void in
             
@@ -233,10 +330,8 @@ class Twitter {
             } else if let direct_message = responce["delete"]["direct_message"].object {
             } else if let direct_message = responce["direct_message"].object {
             } else if let text = responce["text"].string {
-                EventBox.post(StreamingEvent.CreateStatus.rawValue, sender: TwitterStatus(responce))
+                EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
             }
-            
-            //            println(responce)
         }
         let stallWarningHandler = {
             (code: String?, message: String?, percentFull: Int?) -> Void in
@@ -251,34 +346,34 @@ class Twitter {
             
             println(error)
         }
-        if let account = AccountSettingsStore.get() {
-            Static.streamingRequest = Twitter.getClient(account.account()).getUserStreamDelimited(nil,
-                stallWarnings: nil,
-                includeMessagesFromFollowedAccounts: nil,
-                includeReplies: nil,
-                track: nil,
-                locations: nil,
-                stringifyFriendIDs: nil,
-                progress: progress,
-                stallWarningHandler: stallWarningHandler,
-                failure: failure)
-        }
+        Static.streamingRequest = getClient()?.getUserStreamDelimited(nil,
+            stallWarnings: nil,
+            includeMessagesFromFollowedAccounts: nil,
+            includeReplies: nil,
+            track: nil,
+            locations: nil,
+            stringifyFriendIDs: nil,
+            progress: progress,
+            stallWarningHandler: stallWarningHandler,
+            failure: failure)
     }
     
     class func stopStreamingAndDisable() {
         Static.enableStreaming = false
-        stopStreaming()
+        stopStreamingIFConnected()
     }
     
-    class func stopStreaming() {
-        dispatch_sync(Static.serial) {
+    class func stopStreamingIFConnected() {
+        Async.customQueue(Static.connectionQueue) {
             if Static.connectionStatus == .CONNECTIED {
                 Static.connectionStatus = .DISCONNECTIED
                 NSLog("connectionStatus: DISCONNECTIED")
-            } else {
-                return
+                Twitter.stopStreaming()
             }
         }
+    }
+    
+    class func stopStreaming() {
         Static.streamingRequest?.stop()
     }
 }
