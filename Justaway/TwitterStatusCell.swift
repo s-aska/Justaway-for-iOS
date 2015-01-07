@@ -19,7 +19,7 @@ enum TwitterStatusCellLayout: String {
 }
 
 class TwitterStatusCell: UITableViewCell {
-    
+
     // MARK: Properties
     var status: TwitterStatus?
     var layout: TwitterStatusCellLayout?
@@ -62,14 +62,14 @@ class TwitterStatusCell: UITableViewCell {
         EventBox.onMainThread(self, name: Twitter.Event.CreateFavorites.rawValue) { (n) -> Void in
             let statusID = n.object as String
             if self.status?.statusID == statusID {
-                self.favoriteButton.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
+                self.favoriteButton.selected = true
             }
         }
         
         EventBox.onMainThread(self, name: Twitter.Event.DestroyFavorites.rawValue) { (n) -> Void in
             let statusID = n.object as String
             if self.status?.statusID == statusID {
-                self.favoriteButton.setTitleColor(UIColor.lightGrayColor(), forState: UIControlState.Normal)
+                self.favoriteButton.selected = false
             }
         }
     }
@@ -168,13 +168,11 @@ class TwitterStatusCell: UITableViewCell {
         
     }
     
-    @IBAction func favorite(sender: UIButton) {
-        self.favoriteButton.enabled = false
-        Async.main(after: 0.5) {
-            self.favoriteButton.enabled = true
-        }
-        if let statusID = self.status?.statusID {
-            Twitter.toggleFavorite(statusID)
+    @IBAction func favorite(sender: BaseButton) {
+        if sender.lock() {
+            if let statusID = self.status?.statusID {
+                Twitter.toggleFavorite(statusID)
+            }
         }
     }
     

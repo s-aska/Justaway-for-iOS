@@ -228,21 +228,21 @@ extension Twitter {
             Static.favorites[statusID] = true
             EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
             NSLog("create favorites")
-Twitter.getClient()?.postCreateFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
-    NSLog("create favorites success")
-}, failure: { (error) -> Void in
-    let code = Twitter.getErrorCode(error)
-    if code == 139 {
-        NSLog("aleady favorites failure code:%i", code)
-        return
-    }
-    Async.customQueue(Static.favoritesQueue) {
-        NSLog("create favorites failure code:%i error:\(error)", code)
-        Static.favorites.removeValueForKey(statusID)
-        EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
-    }
-    return
-})
+            Twitter.getClient()?.postCreateFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
+                NSLog("create favorites success")
+            }, failure: { (error) -> Void in
+                let code = Twitter.getErrorCode(error)
+                if code == 139 {
+                    NSLog("aleady favorites failure code:%i", code)
+                    return
+                }
+                Async.customQueue(Static.favoritesQueue) {
+                    NSLog("create favorites failure code:%i error:\(error)", code)
+                    Static.favorites.removeValueForKey(statusID)
+                    EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
+                }
+                return
+            })
         }
     }
     

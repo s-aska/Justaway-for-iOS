@@ -19,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         Twitter.setup()
         
+        Theme.white()
+        
         return true
     }
     
