@@ -238,6 +238,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3805DE461A5D8FE200FBD015 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				3805DE441A5D8DBD00FBD015 /* Reachability.swift */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
 		381E6E0919DD500700139654 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -356,6 +364,7 @@
 			children = (
 				6A4B9D2B19BB514900D50D78 /* Justaway */,
 				6A4B9D3E19BB514900D50D78 /* JustawayTests */,
+				3805DE461A5D8FE200FBD015 /* Libraries */,
 				6AB8CDEE1A29C13700D22268 /* Frameworks */,
 				6A4B9D2A19BB514900D50D78 /* Products */,
 				6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */,
@@ -470,7 +479,6 @@
 		6AB8CDEE1A29C13700D22268 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3805DE441A5D8DBD00FBD015 /* Reachability.swift */,
 				3805DE3C1A5D8AC000FBD015 /* Toucan.framework */,
 				38D6DDF61A5AC317001C94F7 /* EventBox.framework */,
 				6ADB64771A5348D800602B2B /* KeyClip.framework */,
@@ -824,7 +832,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Debug;
 		};
