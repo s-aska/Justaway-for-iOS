@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import SwifteriOS
 import EventBox
 
@@ -217,6 +217,7 @@ class Twitter {
             if Static.connectionStatus != .CONNECTIED {
                 Static.connectionStatus = .CONNECTIED
                 NSLog("connectionStatus: CONNECTIED")
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }
             
             if data == nil {
