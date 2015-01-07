@@ -293,9 +293,9 @@ class TimelineTableViewController: UITableViewController {
                 self.tableView.setContentOffset(CGPointMake(0, lastCell.frame.origin.y - offset), animated: false)
                 UIView.setAnimationsEnabled(true)
                 if self.isTop {
-                    UIView.animateWithDuration(0.25, animations: { () -> Void in
+                    UIView.animateWithDuration(0.25, animations: { _ in
                         self.tableView.contentOffset = CGPointZero
-                    }, completion: { (b) -> Void in
+                    }, completion: { _ in
                         op.finish()
                     })
                 } else {
