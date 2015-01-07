@@ -127,6 +127,7 @@ class TimelineTableViewController: UITableViewController {
     
     override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         isTop = false
+        NSLog("isTop false scrollViewWillBeginDragging")
         scrollBegin() // begin of flick scrolling
     }
     
@@ -157,7 +158,9 @@ class TimelineTableViewController: UITableViewController {
         scrolling = false
         Static.loadDataQueue.suspended = false
         Static.mainQueue.suspended = false
-        isTop = self.tableView.contentOffset.y == 0
+        if isTop && self.tableView.contentOffset.y > 0.01 {
+            isTop = false
+        }
         let y = self.tableView.contentOffset.y + self.tableView.bounds.size.height - self.tableView.contentInset.bottom
         let h = self.tableView.contentSize.height
         let f = h - y
@@ -251,7 +254,7 @@ class TimelineTableViewController: UITableViewController {
             insertRowHeight[status.uniqueID] = self.heightForStatus(status, fontSize: fontSize)
         }
         
-        let op = NSBlockOperation { () -> Void in
+        let op = AsyncBlockOperation { (op) -> Void in
             
             let limit = mode == .OVER ? 0 : TIMELINE_ROWS_LIMIT
             let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + statuses.count) - limit, 0)
@@ -290,7 +293,13 @@ class TimelineTableViewController: UITableViewController {
                 self.tableView.setContentOffset(CGPointMake(0, lastCell.frame.origin.y - offset), animated: false)
                 UIView.setAnimationsEnabled(true)
                 if self.isTop {
-                    self.scrollToTop()
+                    UIView.animateWithDuration(0.25, animations: { () -> Void in
+                        self.tableView.contentOffset = CGPointZero
+                    }, completion: { (b) -> Void in
+                        op.finish()
+                    })
+                } else {
+                    op.finish()
                 }
                 
             } else {
@@ -302,6 +311,7 @@ class TimelineTableViewController: UITableViewController {
                 }
                 self.tableView.setContentOffset(CGPointZero, animated: false)
                 self.tableView.reloadData()
+                op.finish()
             }
             
             for key in deleteIDs {
