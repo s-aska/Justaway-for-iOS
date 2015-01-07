@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3805DE3D1A5D8AC000FBD015 /* Toucan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3805DE3C1A5D8AC000FBD015 /* Toucan.framework */; };
+		3805DE3E1A5D8AC000FBD015 /* Toucan.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3805DE3C1A5D8AC000FBD015 /* Toucan.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		381E6E0719D98A7300139654 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E0619D98A7300139654 /* AccountSettings.swift */; };
 		381E6E0819D98CA500139654 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E0619D98A7300139654 /* AccountSettings.swift */; };
 		381E6E7E19DE4FB000139654 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7D19DE4FB000139654 /* Secret.swift */; };
@@ -38,8 +40,6 @@
 		38AB8BCD19F167D30065D869 /* ImageLoaderClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AB8BCC19F167D30065D869 /* ImageLoaderClient.swift */; };
 		38AB8BCE19F6A1DE0065D869 /* SwifteriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 381E6E7619DE47EC00139654 /* SwifteriOS.framework */; };
 		38AB8BCF19F6A1DE0065D869 /* SwifteriOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 381E6E7619DE47EC00139654 /* SwifteriOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		38AB8BD319F6A1E40065D869 /* Toucan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38F4EAE419F1447200CBD23F /* Toucan.framework */; };
-		38AB8BD419F6A1E40065D869 /* Toucan.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38F4EAE419F1447200CBD23F /* Toucan.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38B4475D19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; };
@@ -111,34 +111,6 @@
 			remoteGlobalIDString = 8B300C5A1944AECB00993175;
 			remoteInfo = SwifterDemoMacTests;
 		};
-		38AB8BD019F6A1DE0065D869 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8B9F50ED1944A5AB00894629;
-			remoteInfo = SwifteriOS;
-		};
-		38AB8BD519F6A1E40065D869 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 740AC3E91999799900AB9A86;
-			remoteInfo = Toucan;
-		};
-		38F4EAE319F1447200CBD23F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 740AC3EA1999799900AB9A86;
-			remoteInfo = Toucan;
-		};
-		38F4EAE519F1447200CBD23F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 740AC3F51999799900AB9A86;
-			remoteInfo = ToucanTests;
-		};
 		6A0A1D2E1A40B7310035A03C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */;
@@ -176,7 +148,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				38AB8BD419F6A1E40065D869 /* Toucan.framework in Embed Frameworks */,
+				3805DE3E1A5D8AC000FBD015 /* Toucan.framework in Embed Frameworks */,
 				38AB8BCF19F6A1DE0065D869 /* SwifteriOS.framework in Embed Frameworks */,
 				38D6DDF81A5AC317001C94F7 /* EventBox.framework in Embed Frameworks */,
 				6ADB647B1A5348D800602B2B /* KeyClip.framework in Embed Frameworks */,
@@ -188,6 +160,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3805DE3C1A5D8AC000FBD015 /* Toucan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Toucan.framework; path = Carthage/Build/iOS/Toucan.framework; sourceTree = "<group>"; };
 		381E6E0619D98A7300139654 /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
 		381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Swifter.xcodeproj; path = Swifter/Swifter.xcodeproj; sourceTree = "<group>"; };
 		381E6E7D19DE4FB000139654 /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
@@ -212,7 +185,6 @@
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		38D6DDF61A5AC317001C94F7 /* EventBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventBox.framework; path = Carthage/Build/iOS/EventBox.framework; sourceTree = "<group>"; };
 		38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
-		38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Toucan.xcodeproj; path = Toucan/Toucan/Toucan.xcodeproj; sourceTree = "<group>"; };
 		38F4EAEB19F14E4700CBD23F /* RoundedFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedFilter.swift; sourceTree = "<group>"; };
 		38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoExpandTextView.swift; sourceTree = "<group>"; };
 		38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
@@ -248,7 +220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38AB8BD319F6A1E40065D869 /* Toucan.framework in Frameworks */,
+				3805DE3D1A5D8AC000FBD015 /* Toucan.framework in Frameworks */,
 				38AB8BCE19F6A1DE0065D869 /* SwifteriOS.framework in Frameworks */,
 				38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */,
 				6ADB647A1A5348D800602B2B /* KeyClip.framework in Frameworks */,
@@ -363,15 +335,6 @@
 			name = Operation;
 			sourceTree = "<group>";
 		};
-		38F4EADF19F1447200CBD23F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				38F4EAE419F1447200CBD23F /* Toucan.framework */,
-				38F4EAE619F1447200CBD23F /* ToucanTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		6A0A1D2A1A40B7300035A03C /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -392,13 +355,12 @@
 		6A4B9D2019BB514900D50D78 = {
 			isa = PBXGroup;
 			children = (
-				6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */,
 				6A4B9D2B19BB514900D50D78 /* Justaway */,
 				6A4B9D3E19BB514900D50D78 /* JustawayTests */,
 				6AB8CDEE1A29C13700D22268 /* Frameworks */,
 				6A4B9D2A19BB514900D50D78 /* Products */,
+				6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */,
 				381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */,
-				38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -509,6 +471,7 @@
 		6AB8CDEE1A29C13700D22268 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3805DE3C1A5D8AC000FBD015 /* Toucan.framework */,
 				38D6DDF61A5AC317001C94F7 /* EventBox.framework */,
 				6ADB64771A5348D800602B2B /* KeyClip.framework */,
 			);
@@ -530,8 +493,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				38AB8BD119F6A1DE0065D869 /* PBXTargetDependency */,
-				38AB8BD619F6A1E40065D869 /* PBXTargetDependency */,
 				6A0A1D351A40B7D30035A03C /* PBXTargetDependency */,
 			);
 			name = Justaway;
@@ -595,10 +556,6 @@
 					ProductGroup = 381E6E6C19DE47EB00139654 /* Products */;
 					ProjectRef = 381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */;
 				},
-				{
-					ProductGroup = 38F4EADF19F1447200CBD23F /* Products */;
-					ProjectRef = 38F4EADE19F1447200CBD23F /* Toucan.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -642,20 +599,6 @@
 			fileType = wrapper.cfbundle;
 			path = SwifterDemoMacTests.xctest;
 			remoteRef = 381E6E7B19DE47EC00139654 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		38F4EAE419F1447200CBD23F /* Toucan.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Toucan.framework;
-			remoteRef = 38F4EAE319F1447200CBD23F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		38F4EAE619F1447200CBD23F /* ToucanTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ToucanTests.xctest;
-			remoteRef = 38F4EAE519F1447200CBD23F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */ = {
@@ -765,16 +708,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		38AB8BD119F6A1DE0065D869 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SwifteriOS;
-			targetProxy = 38AB8BD019F6A1DE0065D869 /* PBXContainerItemProxy */;
-		};
-		38AB8BD619F6A1E40065D869 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Toucan;
-			targetProxy = 38AB8BD519F6A1E40065D869 /* PBXContainerItemProxy */;
-		};
 		6A0A1D351A40B7D30035A03C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Pinwheel;
@@ -883,7 +816,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -901,7 +833,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",

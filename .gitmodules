@@ -1,9 +1,9 @@
 [submodule "Swifter"]
 	path = Swifter
 	url = git@github.com:s-aska/Swifter.git
-[submodule "Toucan"]
-	path = Toucan
-	url = git@github.com:gavinbunney/Toucan.git
 [submodule "Pinwheel"]
 	path = Pinwheel
 	url = git@github.com:s-aska/Pinwheel.git
+[submodule "Reachability.swift"]
+	path = Reachability.swift
+	url = git@github.com:ashleymills/Reachability.swift.git
