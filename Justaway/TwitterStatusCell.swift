@@ -47,7 +47,6 @@ class TwitterStatusCell: UITableViewCell {
     @IBOutlet weak var actionedContainerView: UIView!
     @IBOutlet weak var actionedIconImageView: UIImageView!
     @IBOutlet weak var actionedTextLabel: UILabel!
-    @IBOutlet weak var createdAtBottomConstraintWhenActioned: NSLayoutConstraint!
     
     // MARK: - View Life Cycle
     
@@ -89,8 +88,7 @@ class TwitterStatusCell: UITableViewCell {
         if self.layout == nil || self.layout != layout {
             self.layout = layout
             if layout == .Normal {
-                self.actionedContainerView.hidden = true
-                self.createdAtBottomConstraintWhenActioned.constant = 1 // Minimum
+                self.actionedContainerView.removeFromSuperview()
             }
             self.setNeedsLayout()
             self.layoutIfNeeded()

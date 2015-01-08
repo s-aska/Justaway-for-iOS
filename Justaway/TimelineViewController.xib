@@ -24,10 +24,10 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rWY-A3-4yL">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rWY-A3-4yL" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Wb-6D-iQt">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Wb-6D-iQt" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="481" y="0.0" width="59" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                             <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
@@ -39,7 +39,7 @@
                                 <action selector="showSettings:" destination="-1" eventType="touchUpInside" id="nkD-q9-hkf"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jEn-1F-PMd">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jEn-1F-PMd" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="540" y="0.0" width="60" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                             <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
@@ -51,7 +51,7 @@
                                 <action selector="showEditor:" destination="-1" eventType="touchUpInside" id="aNv-DA-Fec"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWo-Rz-RMv">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWo-Rz-RMv" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="58" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                             <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
@@ -75,7 +75,7 @@
                         <constraint firstAttribute="height" constant="50" id="nmZ-Xw-cE3"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQA-1l-jex">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQA-1l-jex" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
                     <subviews>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QzD-8n-VHR">

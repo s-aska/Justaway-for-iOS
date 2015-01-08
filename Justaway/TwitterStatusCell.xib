@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="fontello.ttf">
@@ -31,13 +31,13 @@
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1M-cQ-9LC">
                         <rect key="frame" x="56" y="6" width="235" height="17"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aska" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4lU-BV-VYh">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aska" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4lU-BV-VYh" customClass="DisplayNameLable" customModule="Justaway" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="28" height="14.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="screen_name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hbJ-3K-Eoq">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="screen_name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hbJ-3K-Eoq" customClass="ScreenNameLable" customModule="Justaway" customModuleProvider="target">
                                 <rect key="frame" x="33" y="2" width="62.5" height="12"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -61,7 +61,7 @@
                             <constraint firstAttribute="height" constant="17" id="zjv-tI-wRl"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1d" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="umq-Pc-zJg">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1d" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="umq-Pc-zJg" customClass="RelativeDateLable" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="291" y="4" width="24" height="14"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="MlW-bI-Dc9"/>
@@ -70,14 +70,14 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="257" translatesAutoresizingMaskIntoConstraints="NO" id="KVr-ac-HTT">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="257" translatesAutoresizingMaskIntoConstraints="NO" id="KVr-ac-HTT" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="58" y="26" width="257" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bIb-jf-cxi"/>
-                    <button opaque="NO" tag="1000" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iUW-IA-CLC">
+                    <button opaque="NO" tag="1000" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iUW-IA-CLC" customClass="ReplyButton" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="49" y="36" width="35" height="36"/>
                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="16"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -90,7 +90,7 @@
                             <action selector="reply:" destination="jnu-r6-VZI" eventType="touchUpInside" id="vLu-YR-0Vc"/>
                         </connections>
                     </button>
-                    <button opaque="NO" tag="1001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gv3-p4-SV9">
+                    <button opaque="NO" tag="1001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gv3-p4-SV9" customClass="RetweetButton" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="102" y="35" width="39" height="37"/>
                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="17"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -115,25 +115,25 @@
                             <action selector="favorite:" destination="jnu-r6-VZI" eventType="touchUpInside" id="a9T-1O-43p"/>
                         </connections>
                     </button>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QaO-Qr-3Ua">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QaO-Qr-3Ua" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="134" y="48" width="29" height="12"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydf-ds-1yM">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydf-ds-1yM" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="186" y="48" width="29" height="12"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="via Justaway for iOS" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U1p-l9-QUq">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="via Justaway for iOS" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U1p-l9-QUq" customClass="ClientNameLable" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="242" y="50" width="73" height="11"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="8"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="created_at" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SR5-WN-luB">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="created_at" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SR5-WN-luB" customClass="AbsoluteDateLable" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="57" y="61" width="258" height="11"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="8"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -149,7 +149,7 @@
                                     <constraint firstAttribute="height" constant="16" id="rTI-kY-5wL"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RT by xxx" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xmj-o7-Msh">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RT by xxx" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xmj-o7-Msh" customClass="ScreenNameLable" customModule="Justaway" customModuleProvider="target">
                                 <rect key="frame" x="21" y="3" width="34" height="11"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="8"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -175,11 +175,12 @@
                     <constraint firstItem="OBS-6K-La7" firstAttribute="top" secondItem="bIb-jf-cxi" secondAttribute="bottom" constant="-2" id="8c8-mD-ie7"/>
                     <constraint firstAttribute="trailing" secondItem="SR5-WN-luB" secondAttribute="trailing" constant="5" id="8nI-lM-cjs"/>
                     <constraint firstItem="d8g-lI-qp9" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" constant="7" id="BG5-ja-eF3"/>
-                    <constraint firstAttribute="bottom" secondItem="SR5-WN-luB" secondAttribute="bottom" constant="23" id="Cd6-3e-moy"/>
+                    <constraint firstAttribute="bottom" secondItem="SR5-WN-luB" secondAttribute="bottom" priority="750" id="Cd6-3e-moy"/>
                     <constraint firstItem="bIb-jf-cxi" firstAttribute="leading" secondItem="d8g-lI-qp9" secondAttribute="trailing" constant="7" id="DIE-4a-vxU"/>
                     <constraint firstItem="ydf-ds-1yM" firstAttribute="leading" secondItem="OBS-6K-La7" secondAttribute="trailing" constant="-6" id="DzB-5m-gsp"/>
                     <constraint firstItem="y1M-cQ-9LC" firstAttribute="leading" secondItem="d8g-lI-qp9" secondAttribute="trailing" constant="7" id="FYM-G0-Vm8"/>
                     <constraint firstItem="SR5-WN-luB" firstAttribute="leading" secondItem="d8g-lI-qp9" secondAttribute="trailing" constant="8" id="FoY-Xr-wt2"/>
+                    <constraint firstItem="rcK-bH-pWp" firstAttribute="top" secondItem="SR5-WN-luB" secondAttribute="bottom" id="HgF-1B-RB6"/>
                     <constraint firstItem="gv3-p4-SV9" firstAttribute="leading" secondItem="iUW-IA-CLC" secondAttribute="trailing" constant="18" id="Hqd-AU-fzh"/>
                     <constraint firstAttribute="trailing" secondItem="KVr-ac-HTT" secondAttribute="trailing" constant="5" id="O0u-eF-urm"/>
                     <constraint firstAttribute="trailing" secondItem="umq-Pc-zJg" secondAttribute="trailing" constant="5" id="Rxu-gr-wp6"/>
@@ -206,7 +207,6 @@
                 <outlet property="actionedContainerView" destination="rcK-bH-pWp" id="Af5-eu-404"/>
                 <outlet property="actionedIconImageView" destination="9gv-um-TrN" id="BSj-Lg-OHU"/>
                 <outlet property="actionedTextLabel" destination="Xmj-o7-Msh" id="hZZ-ZN-1Oq"/>
-                <outlet property="createdAtBottomConstraintWhenActioned" destination="Cd6-3e-moy" id="yZM-Cb-ngr"/>
                 <outlet property="favoriteButton" destination="OBS-6K-La7" id="bgr-rd-Or3"/>
                 <outlet property="favoriteCountLabel" destination="ydf-ds-1yM" id="vmz-6D-XB0"/>
                 <outlet property="iconImageView" destination="d8g-lI-qp9" id="Wg9-C7-sU1"/>
