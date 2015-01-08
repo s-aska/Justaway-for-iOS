@@ -158,9 +158,7 @@ class TimelineTableViewController: UITableViewController {
         scrolling = false
         Static.loadDataQueue.suspended = false
         Static.mainQueue.suspended = false
-        if isTop && self.tableView.contentOffset.y > 0.01 {
-            isTop = false
-        }
+        isTop = self.tableView.contentOffset.y == 0 ? true : false
         let y = self.tableView.contentOffset.y + self.tableView.bounds.size.height - self.tableView.contentInset.bottom
         let h = self.tableView.contentSize.height
         let f = h - y
