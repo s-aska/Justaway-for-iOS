@@ -404,33 +404,3 @@ extension Twitter {
         Static.streamingRequest?.stop()
     }
 }
-
-extension JSONValue {
-    
-    private func encodeJSON() -> String {
-        switch self {
-        case .JSONBool(let bool):
-            return bool ? "true" : "false"
-            
-        case .JSONNumber(let number):
-            return "\(number)"
-            
-        case .JSONString(let string):
-            return "\"\(string)\""
-            
-        case .JSONArray(let array):
-            return "[" + join(",", array.map({ $0.encodeJSON() })) + "]"
-            
-        case .JSONObject(let dict):
-            return "{" + join(",", map(dict, { "\"\($0)\":\($1.encodeJSON())"})) + "}"
-            
-        case .JSONNull:
-            return "null"
-            
-        case .JSONInvalid:
-            assert(true, "This should never be reached")
-            return ""
-        }
-    }
-    
-}
