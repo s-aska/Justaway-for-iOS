@@ -70,9 +70,9 @@ class TwitterStatusCell: UITableViewCell {
                     self.favoriteButton.transform = CGAffineTransformMakeScale(1.4, 1.4)
                 }
                 let zoomInCompletion: ((Bool) -> Void) = { _ in
-                    UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseIn, animations: zoomOut, completion: { _ in })
+                    UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseIn, animations: zoomOut, completion: { _ in })
                 }
-                UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseIn, animations: zoomIn, completion: zoomInCompletion)
+                UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseIn, animations: zoomIn, completion: zoomInCompletion)
             }
         }
         

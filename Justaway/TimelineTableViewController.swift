@@ -1,6 +1,7 @@
 import UIKit
 import SwifteriOS
 import EventBox
+import KeyClip
 
 let TIMELINE_ROWS_LIMIT = 1000
 let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
@@ -44,10 +45,16 @@ class TimelineTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if lastID == nil {
+            self.loadCache()
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+        
+        // EventBox.off(self)
     }
     
     // MARK: - UITableViewDataSource
@@ -233,6 +240,17 @@ class TimelineTableViewController: UITableViewController {
         Static.loadDataQueue.addOperation(op)
     }
     
+    func saveCache() {
+        if self.rows.count > 0 {
+            let dictionary = ["statuses": ( self.rows.count > 100 ? Array(self.rows[0 ..< 100]) : self.rows ).map({ $0.dictionaryValue })]
+            KeyClip.save("homeTimeline", dictionary: dictionary)
+        }
+    }
+    
+    func saveCacheSchedule() {
+        Scheduler.regsiter(min: 5, max: 10, target: self, selector: Selector("saveCache"))
+    }
+    
     func loadData(maxID: Int64?) {
         if Static.loadDataQueue.operationCount > 0 {
             println("loadData busy")
@@ -321,9 +339,11 @@ class TimelineTableViewController: UITableViewController {
                         self.tableView.contentOffset = CGPointZero
                     }, completion: { _ in
                         self.renderImages()
+                        self.saveCacheSchedule()
                         op.finish()
                     })
                 } else {
+                    self.saveCacheSchedule()
                     op.finish()
                 }
                 
@@ -336,6 +356,7 @@ class TimelineTableViewController: UITableViewController {
                 }
                 self.tableView.setContentOffset(CGPointZero, animated: false)
                 self.tableView.reloadData()
+                self.saveCacheSchedule()
                 op.finish()
             }
             
