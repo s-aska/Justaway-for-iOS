@@ -227,6 +227,13 @@ class Twitter {
 // MARK: - REST API
 
 extension Twitter {
+    
+    class func isFavorite(statusID: String, handler: (Bool) -> Void) {
+        Async.customQueue(Static.favoritesQueue) {
+            handler(Static.favorites[statusID] == true)
+        }
+    }
+    
     class func toggleFavorite(statusID: String) {
         Async.customQueue(Static.favoritesQueue) {
             if Static.favorites[statusID] == true {

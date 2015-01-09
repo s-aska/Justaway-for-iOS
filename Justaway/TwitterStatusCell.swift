@@ -108,6 +108,12 @@ class TwitterStatusCell: UITableViewCell {
     func setText(status: TwitterStatus) {
         let numberFormatter = NSNumberFormatter()
         numberFormatter.numberStyle = .DecimalStyle
+        
+        Twitter.isFavorite(status.statusID) { isFavorite in
+            Async.main { self.favoriteButton.selected = isFavorite }
+            return
+        }
+        
         self.iconImageView.image = nil
         self.nameLabel.text = status.user.name
         self.screenNameLabel.text = "@" + status.user.screenName
