@@ -94,7 +94,7 @@ class TwitterStatus {
         
         self.isProtected = dictionary["isProtected"] as Bool
         
-        if let media = dictionary["hashtags"] as? [[String: AnyObject]] {
+        if let media = dictionary["media"] as? [[String: AnyObject]] {
             self.media = media.map({ TwitterMedia($0) })
         } else {
             self.media = [TwitterMedia]()
