@@ -110,8 +110,9 @@ class TwitterStatusCell: UITableViewCell {
         numberFormatter.numberStyle = .DecimalStyle
         
         Twitter.isFavorite(status.statusID) { isFavorite in
-            Async.main { self.favoriteButton.selected = isFavorite }
-            return
+            if self.favoriteButton.selected != isFavorite {
+                Async.main { self.favoriteButton.selected = isFavorite }
+            }
         }
         
         self.iconImageView.image = nil
