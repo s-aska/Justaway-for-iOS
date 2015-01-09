@@ -63,15 +63,16 @@ class TwitterStatusCell: UITableViewCell {
             if self.status?.statusID == statusID {
                 self.favoriteButton.selected = true
                 self.favoriteButton.transform = CGAffineTransformMakeScale(1, 1)
-                let completion: ((Bool) -> Void) = { _ in }
                 let zoomOut = {
                     self.favoriteButton.transform = CGAffineTransformMakeScale(1, 1)
                 }
                 let zoomIn: (() -> Void) = {
-                    self.favoriteButton.transform = CGAffineTransformMakeScale(1.8, 1.8)
-                    UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseIn, animations: zoomOut, completion: completion)
+                    self.favoriteButton.transform = CGAffineTransformMakeScale(1.4, 1.4)
                 }
-                UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseIn, animations: zoomIn, completion: completion)
+                let zoomInCompletion: ((Bool) -> Void) = { _ in
+                    UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseIn, animations: zoomOut, completion: { _ in })
+                }
+                UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseIn, animations: zoomIn, completion: zoomInCompletion)
             }
         }
         
