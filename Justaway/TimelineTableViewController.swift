@@ -127,7 +127,6 @@ class TimelineTableViewController: UITableViewController {
     
     override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         isTop = false
-        NSLog("isTop false scrollViewWillBeginDragging")
         scrollBegin() // begin of flick scrolling
     }
     
@@ -321,6 +320,7 @@ class TimelineTableViewController: UITableViewController {
                     UIView.animateWithDuration(0.3, animations: { _ in
                         self.tableView.contentOffset = CGPointZero
                     }, completion: { _ in
+                        self.renderImages()
                         op.finish()
                     })
                 } else {
