@@ -17,4 +17,20 @@ struct TwitterUser {
             self.profileImageURL = NSURL(string: json["profile_image_url"].string ?? "")!
         }
     }
+    
+    init(_ dictionary: [String: String]) {
+        self.userID = dictionary["userID"] ?? ""
+        self.screenName = dictionary["screenName"] ?? ""
+        self.name = dictionary["name"] ?? ""
+        self.profileImageURL = NSURL(string: dictionary["profileImageURL"] ?? "")!
+    }
+    
+    var dictionaryValue: [String: String] {
+        return [
+            "userID": userID,
+            "screenName": screenName,
+            "name": name,
+            "profileImageURL": profileImageURL.absoluteString ?? ""
+        ]
+    }
 }

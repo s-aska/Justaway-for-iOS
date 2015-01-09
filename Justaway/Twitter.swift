@@ -1,6 +1,7 @@
 import UIKit
 import SwifteriOS
 import EventBox
+import KeyClip
 
 let TwitterAuthorizeNotification = "TwitterAuthorizeNotification"
 
@@ -180,10 +181,29 @@ class Twitter {
         swifter.getUsersLookupWithUserIDs(userIDs, includeEntities: false, success: success, failure: failure)
     }
     
+    class func getHomeTimelineCache(success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        if let cache = KeyClip.load("homeTimeline") as NSDictionary? {
+            if let statuses = cache["statuses"] as? [[String: AnyObject]] {
+                success(statuses.map({ TwitterStatus($0) }))
+                return
+            }
+        }
+        failure(NSError())
+    }
+    
     class func getHomeTimeline(maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         let s = { (array: [JSONValue]?) -> Void in
-            if let statuses = array {
-                success(statuses.map { TwitterStatus($0) })
+            
+            if let statuses = array?.map({ TwitterStatus($0) }) {
+                
+                success(statuses)
+                
+                if maxID == nil {
+                    let dictionary = ["statuses": statuses.map({ $0.dictionaryValue })]
+                    if KeyClip.save("homeTimeline", dictionary: dictionary) {
+                        NSLog("homeTimeline cache success.")
+                    }
+                }
             }
         }
         
@@ -376,4 +396,34 @@ extension Twitter {
     class func stopStreaming() {
         Static.streamingRequest?.stop()
     }
+}
+
+extension JSONValue {
+    
+    private func encodeJSON() -> String {
+        switch self {
+        case .JSONBool(let bool):
+            return bool ? "true" : "false"
+            
+        case .JSONNumber(let number):
+            return "\(number)"
+            
+        case .JSONString(let string):
+            return "\"\(string)\""
+            
+        case .JSONArray(let array):
+            return "[" + join(",", array.map({ $0.encodeJSON() })) + "]"
+            
+        case .JSONObject(let dict):
+            return "{" + join(",", map(dict, { "\"\($0)\":\($1.encodeJSON())"})) + "}"
+            
+        case .JSONNull:
+            return "null"
+            
+        case .JSONInvalid:
+            assert(true, "This should never be reached")
+            return ""
+        }
+    }
+    
 }

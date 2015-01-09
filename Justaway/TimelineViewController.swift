@@ -45,6 +45,10 @@ class TimelineViewController: UIViewController {
             view.addSubview(vc.view)
             contentView.addSubview(view)
             tableViewControllers.append(vc)
+            
+            if i == 0 {
+                vc.loadCache()
+            }
         }
         
         scrollView.addSubview(contentView)

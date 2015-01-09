@@ -1,6 +1,7 @@
 import UIKit
 import SwifteriOS
 import Pinwheel
+import KeyClip
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 .build())
         
         Twitter.setup()
+        
+        KeyClip.printError(true)
         
         ThemeController.apply()
         

@@ -22,4 +22,16 @@ struct TwitterVia {
         }
         self.name = source
     }
+    
+    init(_ dictionary: [String: String]) {
+        self.name = dictionary["name"] ?? ""
+        self.URL = NSURL(string: dictionary["URL"] ?? "")
+    }
+    
+    var dictionaryValue: [String: String] {
+        return [
+            "name": name,
+            "URL": URL?.absoluteString ?? ""
+        ]
+    }
 }

@@ -207,6 +207,33 @@ class TimelineTableViewController: UITableViewController {
         return TwitterStatusCellImagePreviewHeight * CGFloat(status.media.count)
     }
     
+    func loadCache() {
+        if Static.loadDataQueue.operationCount > 0 {
+            println("loadData busy")
+            return
+        }
+        println("loadCache addOperation")
+        let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
+            let always: (()-> Void) = {
+                op.finish()
+                self.footerIndicatorView?.stopAnimating()
+            }
+            let success = { (statuses: [TwitterStatus]) -> Void in
+                self.renderData(statuses, mode: .OVER, handler: always)
+            }
+            let failure = { (error: NSError) -> Void in
+//                println("loadData error: \(error)")
+                always()
+            }
+            dispatch_sync(dispatch_get_main_queue(), {
+                self.footerIndicatorView?.startAnimating()
+                return
+            })
+            Twitter.getHomeTimelineCache(success, failure: failure)
+        })
+        Static.loadDataQueue.addOperation(op)
+    }
+    
     func loadData(maxID: Int64?) {
         if Static.loadDataQueue.operationCount > 0 {
             println("loadData busy")

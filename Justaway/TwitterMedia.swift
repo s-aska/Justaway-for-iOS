@@ -19,4 +19,22 @@ struct TwitterMedia {
     var mediaThumbURL: NSURL {
         return NSURL(string: self.mediaURL.absoluteString! + ":thumb")!
     }
+    
+    init(_ dictionary: [String: AnyObject]) {
+        self.displayURL = dictionary["displayURL"] as? String ?? ""
+        self.expandedURL = dictionary["expandedURL"] as? String ?? ""
+        self.mediaURL = NSURL(string: dictionary["mediaURL"] as? String ?? "")!
+        self.height = dictionary["height"] as? Int ?? 0
+        self.width = dictionary["width"] as? Int ?? 0
+    }
+    
+    var dictionaryValue: [String: AnyObject] {
+        return [
+            "displayURL": displayURL,
+            "expandedURL": expandedURL,
+            "mediaURL": mediaURL.absoluteString ?? "",
+            "height": height,
+            "width": width
+        ]
+    }
 }
