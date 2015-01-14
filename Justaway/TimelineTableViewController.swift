@@ -9,7 +9,6 @@ let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
 class TimelineTableViewController: UITableViewController {
     
     var rows = [Row]()
-    // var rowHeight = [String: CGFloat]()
     var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
     var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
     var lastID: Int64?
@@ -206,17 +205,16 @@ class TimelineTableViewController: UITableViewController {
         let layout = TwitterStatusCellLayout.fromStatus(status)
         if let height = layoutHeight[layout] {
             let textHeight = heightForText(status.text, fontSize: fontSize)
-            let totalHeight = height + textHeight
+            let totalHeight = ceil(height + textHeight)
             return Row(status: status, height: totalHeight, textHeight: textHeight)
         } else if let cell = self.layoutHeightCell[layout] {
             cell.frame = self.tableView.bounds
             cell.setLayout(layout)
             let textHeight = heightForText(status.text, fontSize: fontSize)
             cell.textHeightConstraint.constant = 0
-            // cell.imageViewHeightConstraint.constant = status.media.count > 0 ? 100 : 0
             let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
             layoutHeight[layout] = height
-            let totalHeight = height + textHeight
+            let totalHeight = ceil(height + textHeight)
             return Row(status: status, height: totalHeight, textHeight: textHeight)
         } else {
             assertionFailure("cellForHeight is missing.")
