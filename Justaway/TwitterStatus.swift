@@ -50,7 +50,7 @@ class TwitterStatus {
         
         self.isProtected = statusJson["protected"].boolValue
         
-        if let extended_entities = statusJson["entities"]["extended_entities"].array {
+        if let extended_entities = statusJson["extended_entities"]["media"].array {
             self.media = extended_entities.map { TwitterMedia($0) }
         } else if let media = statusJson["entities"]["media"].array {
             self.media = media.map { TwitterMedia($0) }

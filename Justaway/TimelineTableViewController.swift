@@ -243,6 +243,12 @@ class TimelineTableViewController: UITableViewController {
                 self.footerIndicatorView?.stopAnimating()
             }
             let success = { (statuses: [TwitterStatus]) -> Void in
+                for status in statuses {
+                    let uniqueID = status.uniqueID.longLongValue
+                    if (self.lastID == nil || uniqueID < self.lastID!) {
+                        self.lastID = uniqueID
+                    }
+                }
                 self.renderData(statuses, mode: .OVER, handler: always)
             }
             let failure = { (error: NSError) -> Void in
