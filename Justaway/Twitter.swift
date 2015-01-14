@@ -55,6 +55,12 @@ class Twitter {
 //        }
         
         reachability.startNotifier()
+        
+        let enableStreaming: String = KeyClip.load("settings.enableStreaming") ?? "0"
+        if enableStreaming == "1" {
+            Static.enableStreaming = true
+            Twitter.startStreaming()
+        }
     }
     
     class func getClient(account: Account) -> Swifter {
@@ -328,6 +334,7 @@ extension Twitter {
     class func startStreamingAndEnable() {
         Static.enableStreaming = true
         startStreamingIfDisconnected()
+        KeyClip.save("settings.enableStreaming", string: "1")
     }
     
     class func startStreamingIfDisconnected() {
@@ -397,6 +404,7 @@ extension Twitter {
     class func stopStreamingAndDisable() {
         Static.enableStreaming = false
         stopStreamingIFConnected()
+        KeyClip.save("settings.enableStreaming", string: "0")
     }
     
     class func stopStreamingIFConnected() {
