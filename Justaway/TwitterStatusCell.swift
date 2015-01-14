@@ -162,7 +162,6 @@ class TwitterStatusCell: UITableViewCell {
         let imageViews = [self.imageView1, self.imageView2, self.imageView3];
         for media in status.media {
             ImageLoaderClient.displayImage(media.mediaThumbURL, imageView: imageViews[i])
-            NSLog("\(media.mediaThumbURL)")
             i++
             if i > 2 {
                 break
