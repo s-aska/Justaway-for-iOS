@@ -8,13 +8,19 @@ let TwitterStatusCellImagePreviewPadding :CGFloat = 5
 enum TwitterStatusCellLayout: String {
     case Normal = "Normal"
     case Actioned = "Actioned"
+    case NormalWithImage = "NormalWithImage"
+    case ActionedWithImage = "ActionedWithImage"
     
     static func fromStatus(status: TwitterStatus) -> TwitterStatusCellLayout {
-        return status.isActioned ? Actioned : Normal
+        if status.isActioned {
+            return status.media.count > 0 ? ActionedWithImage : Actioned
+        } else {
+            return status.media.count > 0 ? NormalWithImage : Normal
+        }
     }
     
     static var allValues: [TwitterStatusCellLayout] {
-        return [Normal, Actioned]
+        return [Normal, Actioned, NormalWithImage, ActionedWithImage]
     }
 }
 
@@ -34,6 +40,9 @@ class TwitterStatusCell: UITableViewCell {
     @IBOutlet weak var statusLabel: UILabel!
     
     @IBOutlet weak var imagesContainerView: UIView!
+    @IBOutlet weak var imageView1: UIImageView!
+    @IBOutlet weak var imageView2: UIImageView!
+    @IBOutlet weak var imageView3: UIImageView!
     
     @IBOutlet weak var replyButton: UIButton!
     @IBOutlet weak var retweetButton: UIButton!
@@ -47,6 +56,7 @@ class TwitterStatusCell: UITableViewCell {
     @IBOutlet weak var actionedContainerView: UIView!
     @IBOutlet weak var actionedIconImageView: UIImageView!
     @IBOutlet weak var actionedTextLabel: UILabel!
+    @IBOutlet weak var textHeightConstraint: NSLayoutConstraint!
     
     // MARK: - View Life Cycle
     
@@ -85,7 +95,6 @@ class TwitterStatusCell: UITableViewCell {
     }
     
     deinit {
-        // NSNotificationCenter.defaultCenter().removeObserver(self)
         EventBox.off(self)
     }
     
@@ -98,8 +107,11 @@ class TwitterStatusCell: UITableViewCell {
     func setLayout(layout: TwitterStatusCellLayout) {
         if self.layout == nil || self.layout != layout {
             self.layout = layout
-            if layout == .Normal {
+            if layout == .Normal || layout == .NormalWithImage {
                 self.actionedContainerView.removeFromSuperview()
+            }
+            if layout == .Normal || layout == .Actioned {
+                self.imagesContainerView.removeFromSuperview()
             }
             self.setNeedsLayout()
             self.layoutIfNeeded()
@@ -130,7 +142,12 @@ class TwitterStatusCell: UITableViewCell {
             self.actionedTextLabel.text = "@" + actionedBy.screenName
             self.actionedIconImageView.image = nil
         }
-        self.imagesContainerView.hidden = true
+        if status.media.count > 0 {
+            self.imagesContainerView.hidden = true
+            self.imageView1.image = nil
+            self.imageView2.image = nil
+            self.imageView3.image = nil
+        }
     }
     
     func setImage(status: TwitterStatus) {
@@ -139,35 +156,17 @@ class TwitterStatusCell: UITableViewCell {
             return
         }
         
-        for subview in self.imagesContainerView.subviews {
-            subview.removeFromSuperview()
-        }
-        
         self.imagesContainerView.hidden = false
         
-        var tag = 0
+        var i = 0
+        let imageViews = [self.imageView1, self.imageView2, self.imageView3];
         for media in status.media {
-            let imageView = UIImageView(frame: CGRectMake(
-                0,
-                CGFloat(tag) * TwitterStatusCellImagePreviewHeight + TwitterStatusCellImagePreviewPadding,
-                TwitterStatusCellImagePreviewWidth,
-                TwitterStatusCellImagePreviewHeight - TwitterStatusCellImagePreviewPadding))
-            imageView.contentMode = UIViewContentMode.ScaleAspectFill
-            imageView.clipsToBounds = true
-            imageView.tag = tag
-//            imageView.userInteractionEnabled = true
-//            let gesture = UITapGestureRecognizer(target: self, action: Selector("showImage:"))
-//            gesture.numberOfTapsRequired = 1
-//            imageView.addGestureRecognizer(gesture)
-            self.imagesContainerView.addSubview(imageView)
-            ImageLoaderClient.displayImage(media.mediaThumbURL, imageView: imageView)
-            tag++
+            ImageLoaderClient.displayImage(media.mediaThumbURL, imageView: imageViews[i])
+            i++
+            if i >= 2 {
+                break
+            }
         }
-        self.imagesContainerView.frame = CGRectMake(
-            self.imagesContainerView.frame.origin.x,
-            self.imagesContainerView.frame.origin.y,
-            TwitterStatusCellImagePreviewWidth,
-            TwitterStatusCellImagePreviewHeight * CGFloat(status.media.count))
     }
     
     // MARK: - Actions

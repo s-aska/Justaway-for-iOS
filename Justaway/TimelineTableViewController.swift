@@ -8,8 +8,8 @@ let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
 
 class TimelineTableViewController: UITableViewController {
     
-    var rows = [TwitterStatus]()
-    var rowHeight = [String: CGFloat]()
+    var rows = [Row]()
+    // var rowHeight = [String: CGFloat]()
     var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
     var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
     var lastID: Int64?
@@ -27,6 +27,18 @@ class TimelineTableViewController: UITableViewController {
     struct Static {
         private static let loadDataQueue = NSOperationQueue().serial()
         private static let mainQueue = NSOperationQueue.mainQueue().serial()
+    }
+    
+    struct Row {
+        let status: TwitterStatus
+        var height: CGFloat
+        var textHeight: CGFloat
+        
+        init(status: TwitterStatus, height: CGFloat, textHeight: CGFloat) {
+            self.status = status
+            self.height = height
+            self.textHeight = textHeight
+        }
     }
     
     // MARK: - View Life Cycle
@@ -68,7 +80,8 @@ class TimelineTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let status = rows[indexPath.row]
+        let row = rows[indexPath.row]
+        let status = row.status
         let layout = TwitterStatusCellLayout.fromStatus(status)
         let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as TwitterStatusCell
         
@@ -81,6 +94,7 @@ class TimelineTableViewController: UITableViewController {
         cell.status = status
         cell.setLayout(layout)
         cell.setText(status)
+        cell.textHeightConstraint.constant = row.textHeight
         
         ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: cell.iconImageView)
         
@@ -98,8 +112,8 @@ class TimelineTableViewController: UITableViewController {
     // MARK: UITableViewDelegate
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let status = rows[indexPath.row]
-        return rowHeight[status.uniqueID] ?? 0
+        let row = rows[indexPath.row]
+        return row.height
     }
     
 //    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -188,33 +202,33 @@ class TimelineTableViewController: UITableViewController {
         self.tableView.setContentOffset(CGPointZero, animated: true)
     }
     
-    func heightForStatus(status: TwitterStatus, fontSize: CGFloat) -> CGFloat {
+    func createRow(status: TwitterStatus, fontSize: CGFloat) -> Row {
         let layout = TwitterStatusCellLayout.fromStatus(status)
         if let height = layoutHeight[layout] {
-            return height + heightForText(status.text, fontSize: fontSize) + heightForImage(status)
+            let textHeight = heightForText(status.text, fontSize: fontSize)
+            let totalHeight = height + textHeight
+            return Row(status: status, height: totalHeight, textHeight: textHeight)
         } else if let cell = self.layoutHeightCell[layout] {
             cell.frame = self.tableView.bounds
-            cell.setText(status)
             cell.setLayout(layout)
-            let totalHeight = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
             let textHeight = heightForText(status.text, fontSize: fontSize)
-            layoutHeight[layout] = totalHeight - textHeight
-            return totalHeight + heightForImage(status)
+            cell.textHeightConstraint.constant = 0
+            // cell.imageViewHeightConstraint.constant = status.media.count > 0 ? 100 : 0
+            let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+            layoutHeight[layout] = height
+            let totalHeight = height + textHeight
+            return Row(status: status, height: totalHeight, textHeight: textHeight)
         } else {
             assertionFailure("cellForHeight is missing.")
         }
     }
     
     func heightForText(text: NSString, fontSize: CGFloat) -> CGFloat {
-        return text.boundingRectWithSize(
+        return ceil(text.boundingRectWithSize(
             CGSizeMake((self.layoutHeightCell[.Normal]?.statusLabel.frame.size.width)!, 0),
             options: NSStringDrawingOptions.UsesLineFragmentOrigin,
             attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
-            context: nil).size.height
-    }
-    
-    func heightForImage(status: TwitterStatus) -> CGFloat {
-        return TwitterStatusCellImagePreviewHeight * CGFloat(status.media.count)
+            context: nil).size.height)
     }
     
     func loadCache() {
@@ -246,7 +260,7 @@ class TimelineTableViewController: UITableViewController {
     
     func saveCache() {
         if self.rows.count > 0 {
-            let dictionary = ["statuses": ( self.rows.count > 100 ? Array(self.rows[0 ..< 100]) : self.rows ).map({ $0.dictionaryValue })]
+            let dictionary = ["statuses": ( self.rows.count > 100 ? Array(self.rows[0 ..< 100]) : self.rows ).map({ $0.status.dictionaryValue })]
             KeyClip.save("homeTimeline", dictionary: dictionary)
         }
     }
@@ -295,10 +309,6 @@ class TimelineTableViewController: UITableViewController {
     func renderData(statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
         
         let fontSize = self.layoutHeightCell[.Normal]?.statusLabel.font.pointSize ?? 12.0
-        var insertRowHeight = [String: CGFloat]()
-        for status in statuses {
-            insertRowHeight[status.uniqueID] = self.heightForStatus(status, fontSize: fontSize)
-        }
         
         let op = AsyncBlockOperation { (op) -> Void in
             
@@ -307,16 +317,11 @@ class TimelineTableViewController: UITableViewController {
             let deleteStart = mode == .TOP ? self.rows.count - deleteCount : 0
             let deleteRange = deleteStart ..< (deleteStart + deleteCount)
             let deleteIndexPaths = deleteRange.map { i in NSIndexPath(forRow: i, inSection: 0) }
-            let deleteIDs = deleteRange.map { i in self.rows[i].uniqueID }
             
             let insertStart = mode == .BOTTOM ? self.rows.count - deleteCount : 0
             let insertIndexPaths = (insertStart ..< (insertStart + statuses.count)).map { i in NSIndexPath(forRow: i, inSection: 0) }
             
             println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count)")
-            
-            for key in insertRowHeight.keys {
-                self.rowHeight[key] = insertRowHeight[key]
-            }
             
             if let lastCell = self.tableView.visibleCells().last as? UITableViewCell {
                 
@@ -330,7 +335,8 @@ class TimelineTableViewController: UITableViewController {
                 if insertIndexPaths.count > 0 {
                     var i = 0
                     for insertIndexPath in insertIndexPaths {
-                        self.rows.insert(statuses[i], atIndex: insertIndexPath.row)
+                        let row = self.createRow(statuses[i], fontSize: fontSize)
+                        self.rows.insert(row, atIndex: insertIndexPath.row)
                         i++
                     }
                     self.tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
@@ -356,16 +362,12 @@ class TimelineTableViewController: UITableViewController {
                     self.rows.removeRange(deleteRange)
                 }
                 for status in statuses {
-                    self.rows.append(status)
+                    self.rows.append(self.createRow(status, fontSize: fontSize))
                 }
                 self.tableView.setContentOffset(CGPointZero, animated: false)
                 self.tableView.reloadData()
                 self.saveCacheSchedule()
                 op.finish()
-            }
-            
-            for key in deleteIDs {
-                self.rowHeight.removeValueForKey(key)
             }
             
             if let h = handler {

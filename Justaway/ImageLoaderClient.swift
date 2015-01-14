@@ -5,6 +5,7 @@ class ImageLoaderClient {
     
     struct Static {
         static let defaultOptions = Pinwheel.DisplayOptions.Builder()
+            .addFilter(RoundedFilter(6, w: 80, h: 80), hook: .BeforeMemory)
             .displayer(Pinwheel.FadeInDisplayer())
             .queuePriority(NSOperationQueuePriority.Low)
             .build()
