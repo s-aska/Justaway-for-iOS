@@ -49,12 +49,16 @@ class TimelineTableViewController: UITableViewController {
         if lastID == nil {
             self.loadCache()
         }
+        
+        EventBox.onBackgroundThread(self, name: "applicationDidEnterBackground") { (n) -> Void in
+            self.saveCache()
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        // EventBox.off(self)
+        EventBox.off(self)
     }
     
     // MARK: - UITableViewDataSource
@@ -248,7 +252,7 @@ class TimelineTableViewController: UITableViewController {
     }
     
     func saveCacheSchedule() {
-        Scheduler.regsiter(min: 5, max: 10, target: self, selector: Selector("saveCache"))
+        Scheduler.regsiter(min: 30, max: 60, target: self, selector: Selector("saveCache"))
     }
     
     func loadData(maxID: Int64?) {
