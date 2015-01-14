@@ -11,9 +11,9 @@ class Twitter {
     
     enum ConnectionStatus {
         case CONNECTING
-        case CONNECTIED
+        case CONNECTED
         case DISCONNECTING
-        case DISCONNECTIED
+        case DISCONNECTED
     }
     
     enum Event: String {
@@ -27,7 +27,7 @@ class Twitter {
     struct Static {
         static let swifter = Swifter(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret)
         static var enableStreaming = false
-        static var connectionStatus: ConnectionStatus = .DISCONNECTIED
+        static var connectionStatus: ConnectionStatus = .DISCONNECTED
         static var streamingRequest: SwifterHTTPRequest?
         static var favorites = [String: Bool]()
         private static let connectionQueue = dispatch_queue_create("pw.aska.justaway.twitter.connection", DISPATCH_QUEUE_SERIAL)
@@ -36,14 +36,20 @@ class Twitter {
     }
     
     class var swifter : Swifter { return Static.swifter }
+    class var connectionStatus: ConnectionStatus { return Static.connectionStatus }
+    class var enableStreaming: Bool { return Static.enableStreaming }
     
     // MARK: - Class Methods
     
     class func setup() {
         let reachability = Reachability.reachabilityForInternetConnection()
         reachability.whenReachable = { reachability in
-            Twitter.startStreamingIfEnable()
+            Async.main(after: 2) {
+                Twitter.startStreamingIfEnable()
+            }
+            return
         }
+        
 //        reachability.whenUnreachable = { reachability in
 //            println("Not reachable")
 //        }
@@ -326,9 +332,10 @@ extension Twitter {
     
     class func startStreamingIfDisconnected() {
         Async.customQueue(Static.connectionQueue) {
-            if Static.connectionStatus == .DISCONNECTIED {
+            if Static.connectionStatus == .DISCONNECTED {
                 Static.connectionStatus = .CONNECTING
-                NSLog("connectionStatus: CONNECTING")
+                EventBox.post("streamingStatusChange")
+                // NSLog("connectionStatus: CONNECTING")
                 Twitter.startStreaming()
             }
         }
@@ -338,9 +345,10 @@ extension Twitter {
         let progress = {
             (data: [String: JSONValue]?) -> Void in
             
-            if Static.connectionStatus != .CONNECTIED {
-                Static.connectionStatus = .CONNECTIED
-                NSLog("connectionStatus: CONNECTIED")
+            if Static.connectionStatus != .CONNECTED {
+                Static.connectionStatus = .CONNECTED
+                EventBox.post("streamingStatusChange")
+                // NSLog("connectionStatus: CONNECTED")
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }
             
@@ -368,8 +376,9 @@ extension Twitter {
         let failure = {
             (error: NSError) -> Void in
             
-            Static.connectionStatus = .DISCONNECTIED
-            NSLog("connectionStatus: DISCONNECTIED")
+            Static.connectionStatus = .DISCONNECTED
+            EventBox.post("streamingStatusChange")
+            // NSLog("connectionStatus: DISCONNECTED")
             
             println(error)
         }
@@ -392,9 +401,10 @@ extension Twitter {
     
     class func stopStreamingIFConnected() {
         Async.customQueue(Static.connectionQueue) {
-            if Static.connectionStatus == .CONNECTIED {
-                Static.connectionStatus = .DISCONNECTIED
-                NSLog("connectionStatus: DISCONNECTIED")
+            if Static.connectionStatus == .CONNECTED {
+                Static.connectionStatus = .DISCONNECTED
+                EventBox.post("streamingStatusChange")
+                // NSLog("connectionStatus: DISCONNECTED")
                 Twitter.stopStreaming()
             }
         }

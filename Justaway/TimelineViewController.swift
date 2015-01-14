@@ -9,6 +9,10 @@ class TimelineViewController: UIViewController {
     @IBOutlet weak var scrollWrapperView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var homeButton: UIButton!
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var streamingStatusLabel: UILabel!
+    @IBOutlet weak var streamingView: UIView!
+    @IBOutlet weak var streamingIcon: UILabel!
     
     var editorViewController: EditorViewController!
     var settingsViewController: SettingsViewController!
@@ -34,6 +38,10 @@ class TimelineViewController: UIViewController {
         settingsViewController = SettingsViewController()
         ViewTools.addSubviewWithEqual(self.view, view: settingsViewController.view)
         
+        if let account = AccountSettingsStore.get() {
+            ImageLoaderClient.displayTitleIcon(account.account().profileImageURL, imageView: iconImageView)
+        }
+        
         var size = scrollWrapperView.frame.size
         println(size.width)
         let contentView = UIView(frame: CGRectMake(0, 0, size.width * 3, size.height))
@@ -54,6 +62,11 @@ class TimelineViewController: UIViewController {
         var longPress = UILongPressGestureRecognizer(target: self, action: "refresh:")
         longPress.minimumPressDuration = 2.0;
         homeButton.addGestureRecognizer(longPress)
+        
+        streamingView.userInteractionEnabled = true
+        var gesture = UITapGestureRecognizer(target: self, action: "streamingSwitch:")
+        gesture.numberOfTapsRequired = 1
+        streamingView.addGestureRecognizer(gesture)
     }
     
     override func didReceiveMemoryWarning() {
@@ -66,6 +79,27 @@ class TimelineViewController: UIViewController {
         EventBox.onBackgroundThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
             let status = n.object as TwitterStatus
             self.tableViewControllers.first?.renderData([status], mode: .TOP, handler: {})
+        }
+        
+        EventBox.onMainThread(self, name: "streamingStatusChange") { _ in
+            switch Twitter.connectionStatus {
+            case .CONNECTED:
+                self.streamingStatusLabel.text = "connected"
+                self.streamingIcon.textColor = ThemeController.currentTheme.streamingConnected()
+            case .CONNECTING:
+                self.streamingStatusLabel.text = "connecting..."
+                self.streamingIcon.textColor = UIColor.lightGrayColor()
+            case .DISCONNECTED:
+                self.streamingStatusLabel.text = "disconnected"
+                if Twitter.enableStreaming {
+                    self.streamingIcon.textColor = ThemeController.currentTheme.streamingError()
+                } else {
+                    self.streamingIcon.textColor = UIColor.grayColor()
+                }
+            case .DISCONNECTING:
+                self.streamingStatusLabel.text = "disconnecting..."
+                self.streamingIcon.textColor = UIColor.lightGrayColor()
+            }
         }
     }
     
@@ -83,6 +117,15 @@ class TimelineViewController: UIViewController {
     
     func refresh(sender: AnyObject) {
         tableViewControllers.first?.loadData(nil)
+    }
+    
+    func streamingSwitch(sender: AnyObject) {
+        if Twitter.connectionStatus == .DISCONNECTED {
+            Twitter.startStreamingAndEnable()
+        } else if Twitter.connectionStatus == .CONNECTED {
+            Twitter.stopStreamingAndDisable()
+        }
+        
     }
     
     @IBAction func signInButtonClick(sender: UIButton) {

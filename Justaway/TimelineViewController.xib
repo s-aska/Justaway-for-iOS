@@ -8,14 +8,19 @@
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
+            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TimelineViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
                 <outlet property="homeButton" destination="YWo-Rz-RMv" id="3Ug-7w-3b2"/>
+                <outlet property="iconImageView" destination="eI8-Uh-DCZ" id="RKU-Sn-Att"/>
                 <outlet property="scrollView" destination="QzD-8n-VHR" id="uQa-aB-Crg"/>
                 <outlet property="scrollWrapperView" destination="YQA-1l-jex" id="Qcu-44-ZzZ"/>
+                <outlet property="streamingIcon" destination="jDy-2M-2Kq" id="MMU-r2-Sw8"/>
+                <outlet property="streamingStatusLabel" destination="i4e-3u-LDz" id="AzD-uC-8w0"/>
+                <outlet property="streamingView" destination="zsL-HL-Z8V" id="g3Z-kd-dON"/>
                 <outlet property="view" destination="iN0-l3-epB" id="diP-QV-l6C"/>
             </connections>
         </placeholder>
@@ -75,19 +80,63 @@
                         <constraint firstAttribute="height" constant="50" id="nmZ-Xw-cE3"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQA-1l-jex" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQA-1l-jex">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
                     <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eI8-Uh-DCZ">
+                            <rect key="frame" x="7" y="1" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="nB9-NZ-y6W"/>
+                                <constraint firstAttribute="height" constant="20" id="znd-3r-eFZ"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X0p-bW-fE8" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="32" y="2" width="38.5" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QzD-8n-VHR">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
+                            <rect key="frame" x="0.0" y="20" width="600" height="530"/>
                         </scrollView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zsL-HL-Z8V">
+                            <rect key="frame" x="490" y="0.0" width="110" height="40"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="雷" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDy-2M-2Kq" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="17" y="5" width="6" height="12.5"/>
+                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="12"/>
+                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disconnected" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i4e-3u-LDz" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="28" y="2" width="77" height="14.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="i4e-3u-LDz" firstAttribute="top" secondItem="zsL-HL-Z8V" secondAttribute="top" constant="2" id="Cvh-dd-uDf"/>
+                                <constraint firstItem="jDy-2M-2Kq" firstAttribute="top" secondItem="zsL-HL-Z8V" secondAttribute="top" constant="5" id="SfQ-tK-lNn"/>
+                                <constraint firstAttribute="width" constant="110" id="WsF-YJ-4F8"/>
+                                <constraint firstItem="i4e-3u-LDz" firstAttribute="leading" secondItem="jDy-2M-2Kq" secondAttribute="trailing" constant="5" id="ZT0-eg-FOi"/>
+                                <constraint firstAttribute="trailing" secondItem="i4e-3u-LDz" secondAttribute="trailing" constant="5" id="bnX-aB-heS"/>
+                                <constraint firstAttribute="height" constant="40" id="kNz-iZ-hxS"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="X0p-bW-fE8" firstAttribute="leading" secondItem="eI8-Uh-DCZ" secondAttribute="trailing" constant="5" id="0ef-7h-GXH"/>
+                        <constraint firstItem="zsL-HL-Z8V" firstAttribute="top" secondItem="YQA-1l-jex" secondAttribute="top" id="21n-Tm-Qbx"/>
                         <constraint firstAttribute="trailing" secondItem="QzD-8n-VHR" secondAttribute="trailing" id="79i-S3-TIK"/>
+                        <constraint firstItem="X0p-bW-fE8" firstAttribute="top" secondItem="YQA-1l-jex" secondAttribute="top" constant="2" id="9ya-EM-n27"/>
                         <constraint firstItem="QzD-8n-VHR" firstAttribute="leading" secondItem="YQA-1l-jex" secondAttribute="leading" id="FFB-7C-piX"/>
+                        <constraint firstItem="eI8-Uh-DCZ" firstAttribute="leading" secondItem="YQA-1l-jex" secondAttribute="leading" constant="7" id="JaV-R8-XGw"/>
+                        <constraint firstItem="eI8-Uh-DCZ" firstAttribute="top" secondItem="YQA-1l-jex" secondAttribute="top" constant="1" id="OKf-dk-fTs"/>
                         <constraint firstAttribute="bottom" secondItem="QzD-8n-VHR" secondAttribute="bottom" id="SAW-dz-IdC"/>
-                        <constraint firstItem="QzD-8n-VHR" firstAttribute="top" secondItem="YQA-1l-jex" secondAttribute="top" id="d7I-HP-uBl"/>
+                        <constraint firstItem="QzD-8n-VHR" firstAttribute="top" secondItem="YQA-1l-jex" secondAttribute="top" constant="20" id="d7I-HP-uBl"/>
+                        <constraint firstAttribute="trailing" secondItem="zsL-HL-Z8V" secondAttribute="trailing" id="kwn-gH-luU"/>
                     </constraints>
                 </view>
             </subviews>
@@ -101,6 +150,7 @@
                 <constraint firstAttribute="bottom" secondItem="rWY-A3-4yL" secondAttribute="bottom" id="Rl2-co-V9R"/>
                 <constraint firstAttribute="trailing" secondItem="YQA-1l-jex" secondAttribute="trailing" id="cl5-qc-HBy"/>
             </constraints>
+            <point key="canvasLocation" x="459" y="333"/>
         </view>
     </objects>
 </document>

@@ -31,9 +31,18 @@ protocol Theme {
     func buttonNormal() -> UIColor
     func retweetButtonSelected() -> UIColor
     func favoritesButtonSelected() -> UIColor
+    
+    func streamingConnected() -> UIColor
+    func streamingError() -> UIColor
 }
 
 class ThemeController {
+    
+    struct Static {
+        static var currentTheme: Theme = ThemeLight()
+    }
+    
+    class var currentTheme: Theme { return Static.currentTheme }
     
     class func apply() {
         apply(ThemeLight())

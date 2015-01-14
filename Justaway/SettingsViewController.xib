@@ -9,7 +9,6 @@
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
-            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -76,23 +75,10 @@
                                 <action selector="showFontSizeSettingsView:" destination="-1" eventType="touchUpInside" id="WAw-QL-f6V"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tle-KG-A7o" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="362" y="0.0" width="60" height="50"/>
-                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                            <inset key="contentEdgeInsets" minX="25" minY="15" maxX="25" maxY="15"/>
-                            <state key="normal" title="雷">
-                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="showStreamingSettingsView:" destination="-1" eventType="touchUpInside" id="9LU-Nu-z9T"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="4ly-iZ-nc7" secondAttribute="centerY" id="GVK-GQ-uyd"/>
-                        <constraint firstItem="6QV-2N-74j" firstAttribute="leading" secondItem="tle-KG-A7o" secondAttribute="trailing" id="TNN-ma-vTh"/>
                         <constraint firstAttribute="centerY" secondItem="6QV-2N-74j" secondAttribute="centerY" id="ZKN-mr-CF6"/>
                         <constraint firstAttribute="centerY" secondItem="KGE-1q-n9x" secondAttribute="centerY" id="iDT-qS-Acv"/>
                         <constraint firstItem="4ly-iZ-nc7" firstAttribute="leading" secondItem="hNt-l5-Cr2" secondAttribute="trailing" id="oEl-a2-ZJF"/>
@@ -101,7 +87,6 @@
                         <constraint firstItem="KGE-1q-n9x" firstAttribute="leading" secondItem="xif-2B-jzt" secondAttribute="leading" id="sB0-Xq-4Z0"/>
                         <constraint firstAttribute="height" constant="50" id="t9s-Bj-rZ8"/>
                         <constraint firstAttribute="centerY" secondItem="hNt-l5-Cr2" secondAttribute="centerY" id="wZU-eP-Wb6"/>
-                        <constraint firstAttribute="centerY" secondItem="tle-KG-A7o" secondAttribute="centerY" id="wbY-5u-Egx"/>
                     </constraints>
                 </view>
             </subviews>
