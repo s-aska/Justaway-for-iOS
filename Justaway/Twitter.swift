@@ -234,6 +234,26 @@ class Twitter {
         
         getClient()?.getStatusesHomeTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
     }
+    
+    class func statusUpdate(status: String, inReplyToStatusID: String?) {
+        
+        let s = { (status: [String: JSONValue]?) -> Void in
+        }
+        
+        let f = { (error: NSError) -> Void in
+            if error.code == 401 {
+                NSLog("%@", "[FATAL] Please set a Your Twitter Consumer Key and Secret for the Secret.swift")
+            } else if error.code == 429 {
+                NSLog("%@", "[FATAL] API Limit")
+            } else {
+                NSLog("%@", error.debugDescription)
+                
+                // TODO: Alert
+            }
+        }
+        
+        getClient()?.postStatusUpdate(status, inReplyToStatusID: inReplyToStatusID, lat: nil, long: nil, placeID: nil, displayCoordinates: nil, trimUser: nil, success: s, failure: f)
+    }
 }
 
 // MARK: - REST API

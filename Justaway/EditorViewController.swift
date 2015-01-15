@@ -96,6 +96,13 @@ class EditorViewController: UIViewController {
     }
     
     @IBAction func send(sender: UIButton) {
+        let text = textView.text
+        if text.isEmpty {
+            hide()
+        } else {
+            Twitter.statusUpdate(text, inReplyToStatusID: nil)
+            hide()
+        }
         
     }
     
