@@ -11,6 +11,7 @@ import UIKit
 // MARK: - ContainerView
 
 class MenuView: UIView {}
+class BackgroundView: UIView {}
 
 // MARK: - Buttons
 

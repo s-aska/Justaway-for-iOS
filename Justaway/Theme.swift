@@ -39,17 +39,20 @@ protocol Theme {
 class ThemeController {
     
     struct Static {
-        static var currentTheme: Theme = ThemeLight()
+        static var currentTheme: Theme = ThemeDark()
     }
     
     class var currentTheme: Theme { return Static.currentTheme }
     
     class func apply() {
-        apply(ThemeLight())
+        apply(Static.currentTheme)
     }
     
     class func apply(theme: Theme) {
         
+        UIApplication.sharedApplication().statusBarStyle = theme.statusBarStyle()
+        UITableViewCell.appearance().backgroundColor = theme.mainBackgroundColor()
+        BackgroundView.appearance().backgroundColor = theme.mainBackgroundColor()
         MenuView.appearance().backgroundColor = theme.menuBackgroundColor()
         MenuButton.appearance().setTitleColor(theme.menuTextColor(), forState: .Normal)
         
@@ -58,6 +61,8 @@ class ThemeController {
         ClientNameLable.appearance().textColor = theme.clientNameTextColor()
         RelativeDateLable.appearance().textColor = theme.relativeDateTextColor()
         AbsoluteDateLable.appearance().textColor = theme.absoluteDateTextColor()
+        StatusLable.appearance().textColor = theme.bodyTextColor()
+        TextLable.appearance().textColor = theme.bodyTextColor()
         
         ReplyButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Normal)
         ReplyButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Selected)
@@ -66,5 +71,13 @@ class ThemeController {
         FavoritesButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Normal)
         FavoritesButton.appearance().setTitleColor(theme.favoritesButtonSelected(), forState: .Selected)
         
+        let windows = UIApplication.sharedApplication().windows as [UIWindow]
+        for window in windows {
+            let subviews = window.subviews as [UIView]
+            for v in subviews {
+                v.removeFromSuperview()
+                window.addSubview(v)
+            }
+        }
     }
 }

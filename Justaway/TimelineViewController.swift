@@ -88,17 +88,17 @@ class TimelineViewController: UIViewController {
                 self.streamingIcon.textColor = ThemeController.currentTheme.streamingConnected()
             case .CONNECTING:
                 self.streamingStatusLabel.text = "connecting..."
-                self.streamingIcon.textColor = UIColor.lightGrayColor()
+                self.streamingIcon.textColor = ThemeController.currentTheme.bodyTextColor()
             case .DISCONNECTED:
                 self.streamingStatusLabel.text = "disconnected"
                 if Twitter.enableStreaming {
                     self.streamingIcon.textColor = ThemeController.currentTheme.streamingError()
                 } else {
-                    self.streamingIcon.textColor = UIColor.grayColor()
+                    self.streamingIcon.textColor = ThemeController.currentTheme.bodyTextColor()
                 }
             case .DISCONNECTING:
                 self.streamingStatusLabel.text = "disconnecting..."
-                self.streamingIcon.textColor = UIColor.lightGrayColor()
+                self.streamingIcon.textColor = ThemeController.currentTheme.bodyTextColor()
             }
         }
     }

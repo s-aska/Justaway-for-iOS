@@ -6,6 +6,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ThemeViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
+                <outlet property="themeDark" destination="JhJ-Ng-pXX" id="cb0-Oe-i3E"/>
+                <outlet property="themeLight" destination="sGu-md-8h9" id="ySu-Da-myg"/>
+                <outlet property="themeMonokai" destination="2z4-wj-J8z" id="HTQ-3U-AXF"/>
+                <outlet property="themeSolarizedDark" destination="O20-Le-E4t" id="fm3-2S-1Zv"/>
+                <outlet property="themeSolarizedLight" destination="lY7-TA-5or" id="wrv-QM-ga5"/>
                 <outlet property="view" destination="p5I-Iy-Zfi" id="h4d-iF-9mZ"/>
             </connections>
         </placeholder>
@@ -13,7 +18,7 @@
         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p5I-Iy-Zfi" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="600" height="130"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Light" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sGu-md-8h9">
+                <label opaque="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Light" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sGu-md-8h9">
                     <rect key="frame" x="10" y="10" width="90" height="50"/>
                     <color key="backgroundColor" white="0.96999999999999997" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -24,7 +29,7 @@
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O20-Le-E4t">
+                <label opaque="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O20-Le-E4t">
                     <rect key="frame" x="110" y="70" width="90" height="50"/>
                     <color key="backgroundColor" red="0.019607843831181526" green="0.16470588743686676" blue="0.21176472306251526" alpha="1" colorSpace="deviceRGB"/>
                     <constraints>
@@ -37,7 +42,7 @@ Dark</string>
                     <color key="textColor" red="0.57647061347961426" green="0.63137257099151611" blue="0.63137257099151611" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Monokai" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2z4-wj-J8z">
+                <label opaque="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Monokai" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2z4-wj-J8z">
                     <rect key="frame" x="210" y="70" width="90" height="50"/>
                     <color key="backgroundColor" red="0.15294118225574493" green="0.15686275064945221" blue="0.13333334028720856" alpha="1" colorSpace="deviceRGB"/>
                     <constraints>
@@ -48,7 +53,7 @@ Dark</string>
                     <color key="textColor" red="0.90196084976196289" green="0.85882359743118286" blue="0.45490199327468872" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lY7-TA-5or">
+                <label opaque="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lY7-TA-5or">
                     <rect key="frame" x="10" y="70" width="90" height="50"/>
                     <color key="backgroundColor" red="0.99215692281723022" green="0.9647059440612793" blue="0.89019614458084106" alpha="1" colorSpace="deviceRGB"/>
                     <constraints>
@@ -61,7 +66,7 @@ Light</string>
                     <color key="textColor" red="0.34509804844856262" green="0.43137258291244507" blue="0.458823561668396" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dark" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JhJ-Ng-pXX">
+                <label opaque="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dark" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JhJ-Ng-pXX">
                     <rect key="frame" x="110" y="10" width="90" height="50"/>
                     <color key="backgroundColor" white="0.10000000000000001" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
