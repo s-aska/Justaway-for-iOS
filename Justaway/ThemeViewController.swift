@@ -25,11 +25,11 @@ class ThemeViewController: UIViewController {
             case self.themeDark.tag:
                 ThemeController.apply(ThemeDark())
             case self.themeSolarizedLight.tag:
-                ThemeController.apply(ThemeLight())
+                ThemeController.apply(ThemeSolarizedLight())
             case self.themeSolarizedDark.tag:
-                ThemeController.apply(ThemeLight())
+                ThemeController.apply(ThemeSolarizedDark())
             case self.themeMonokai.tag:
-                ThemeController.apply(ThemeLight())
+                ThemeController.apply(ThemeMonokai())
             default:
                 break
             }

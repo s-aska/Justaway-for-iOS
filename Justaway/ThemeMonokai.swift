@@ -1,0 +1,37 @@
+//
+//  ThemeMonokai.swift
+//  Justaway
+//
+//  Created by Shinichiro Aska on 1/15/15.
+//  Copyright (c) 2015 Shinichiro Aska. All rights reserved.
+//
+
+import UIKit
+
+class ThemeMonokai: Theme {
+    
+    func statusBarStyle() -> UIStatusBarStyle { return .LightContent }
+    
+    func mainBackgroundColor() -> UIColor { return ThemeColor.Monokai.black }
+    func mainHighlightBackgroundColor() -> UIColor { return UIColor.darkGrayColor() }
+    func titleTextColor() -> UIColor { return UIColor.whiteColor() }
+    func bodyTextColor() -> UIColor { return UIColor.whiteColor() }
+    
+    func displayNameTextColor() -> UIColor { return ThemeColor.Monokai.yellow }
+    func screenNameTextColor() -> UIColor { return ThemeColor.Monokai.red }
+    func relativeDateTextColor() -> UIColor { return ThemeColor.Monokai.green }
+    func absoluteDateTextColor() -> UIColor { return ThemeColor.Monokai.violet }
+    func clientNameTextColor() -> UIColor { return ThemeColor.Monokai.blue }
+    
+    func menuBackgroundColor() -> UIColor { return ThemeColor.Monokai.gray }
+    func menuTextColor() -> UIColor { return UIColor.whiteColor() }
+    func menuHighlightTextColor() -> UIColor { return ThemeColor.Holo.blueLight }
+    func menuDisabledTextColor() -> UIColor { return UIColor.grayColor() }
+    
+    func buttonNormal() -> UIColor { return UIColor.lightGrayColor() }
+    func retweetButtonSelected() -> UIColor { return ThemeColor.Monokai.green }
+    func favoritesButtonSelected() -> UIColor { return ThemeColor.Monokai.orange }
+    func streamingConnected() -> UIColor { return ThemeColor.Monokai.green }
+    func streamingError() -> UIColor { return ThemeColor.Monokai.red }
+    
+}

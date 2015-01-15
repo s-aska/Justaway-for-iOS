@@ -40,4 +40,15 @@ struct ThemeColor {
         static let cyan    = UIColor(red: 0.16, green: 0.63, blue: 0.60, alpha: 1)
         static let green   = UIColor(red: 0.52, green: 0.60, blue: 0.00, alpha: 1)
     }
+    
+    struct Monokai {
+        static let black  = UIColor(red: 0.15, green: 0.16, blue: 0.13, alpha: 1.0)
+        static let red    = UIColor(red: 0.98, green: 0.15, blue: 0.45, alpha: 1.0)
+        static let green  = UIColor(red: 0.65, green: 0.89, blue: 0.18, alpha: 1.0)
+        static let orange = UIColor(red: 0.99, green: 0.59, blue: 0.12, alpha: 1.0)
+        static let blue   = UIColor(red: 0.40, green: 0.85, blue: 0.94, alpha: 1.0)
+        static let violet = UIColor(red: 0.68, green: 0.51, blue: 1.00, alpha: 1.0)
+        static let yellow = UIColor(red: 0.90, green: 0.86, blue: 0.45, alpha: 1.0)
+        static let gray   = UIColor(red: 0.46, green: 0.44, blue: 0.37, alpha: 1.0)
+    }
 }
