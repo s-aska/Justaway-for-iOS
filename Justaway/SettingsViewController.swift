@@ -27,17 +27,29 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        configureSettingsView()
+        configureView()
+        // configureEvent()
+    }
+    
+    deinit {
+        // EventBox.off(self)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
+    
     // MARK: - Configuration
     
-    func configureSettingsView() {
+    func configureView() {
         let menuHeight = containerView.frame.size.height
         
         containerViewBottomConstraint.constant = -menuHeight

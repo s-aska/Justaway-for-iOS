@@ -9,6 +9,7 @@
 import UIKit
 
 class ThemeDark: Theme {
+    
     func statusBarStyle() -> UIStatusBarStyle { return .LightContent }
     
     func mainBackgroundColor() -> UIColor { return UIColor(red: 0.10, green: 0.10, blue: 0.10, alpha: 1) }
@@ -29,7 +30,7 @@ class ThemeDark: Theme {
     
     func buttonNormal() -> UIColor { return UIColor.lightGrayColor() }
     func retweetButtonSelected() -> UIColor { return ThemeColor.Holo.greenLight }
-    func favoritesButtonSelected() -> UIColor { return ThemeColor.Holo.greenLight }
+    func favoritesButtonSelected() -> UIColor { return ThemeColor.Holo.orangeLight }
     func streamingConnected() -> UIColor { return ThemeColor.Holo.greenLight }
     func streamingError() -> UIColor { return ThemeColor.Holo.redLight }
     

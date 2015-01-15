@@ -17,9 +17,12 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        timelineViewController = TimelineViewController()
-        ViewTools.addSubviewWithEqual(containerView, view: timelineViewController.view)
+        configureView()
+        configureEvent()
+    }
+    
+    deinit {
+        EventBox.off(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -28,21 +31,21 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        EventBox.onMainThread(self, name: TwitterAuthorizeNotification, handler: { _ in self.configure() })
-        
-        configure()
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        EventBox.off(self)
     }
     
-    // MARK: - Keyboard Event Notifications
+    // MARK: - Configuration
     
-    func configure() {
+    func configureView() {
+        timelineViewController = TimelineViewController()
+        ViewTools.addSubviewWithEqual(containerView, view: timelineViewController.view)
+        toggleView()
+    }
+    
+    func toggleView() {
         if let accountSettings = AccountSettingsStore.get() {
             timelineViewController.view.hidden = false
             signInButton.hidden = true
@@ -52,6 +55,12 @@ class ViewController: UIViewController {
             signInButton.hidden = false
             signInButton.enabled = true
         }
+    }
+    
+    func configureEvent() {
+        EventBox.onMainThread(self, name: TwitterAuthorizeNotification, handler: { _ in
+            self.toggleView()
+        })
     }
     
     // MARK: - Actions

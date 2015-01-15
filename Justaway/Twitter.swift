@@ -59,7 +59,7 @@ class Twitter {
         let enableStreaming: String = KeyClip.load("settings.enableStreaming") ?? "0"
         if enableStreaming == "1" {
             Static.enableStreaming = true
-            Twitter.startStreaming()
+            Twitter.startStreamingIfDisconnected()
         }
     }
     
@@ -342,7 +342,7 @@ extension Twitter {
             if Static.connectionStatus == .DISCONNECTED {
                 Static.connectionStatus = .CONNECTING
                 EventBox.post("streamingStatusChange")
-                // NSLog("connectionStatus: CONNECTING")
+                NSLog("connectionStatus: CONNECTING")
                 Twitter.startStreaming()
             }
         }
@@ -355,7 +355,7 @@ extension Twitter {
             if Static.connectionStatus != .CONNECTED {
                 Static.connectionStatus = .CONNECTED
                 EventBox.post("streamingStatusChange")
-                // NSLog("connectionStatus: CONNECTED")
+                NSLog("connectionStatus: CONNECTED")
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }
             
@@ -385,7 +385,7 @@ extension Twitter {
             
             Static.connectionStatus = .DISCONNECTED
             EventBox.post("streamingStatusChange")
-            // NSLog("connectionStatus: DISCONNECTED")
+            NSLog("connectionStatus: DISCONNECTED")
             
             println(error)
         }
@@ -412,7 +412,7 @@ extension Twitter {
             if Static.connectionStatus == .CONNECTED {
                 Static.connectionStatus = .DISCONNECTED
                 EventBox.post("streamingStatusChange")
-                // NSLog("connectionStatus: DISCONNECTED")
+                NSLog("connectionStatus: DISCONNECTED")
                 Twitter.stopStreaming()
             }
         }

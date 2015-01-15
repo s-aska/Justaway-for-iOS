@@ -19,8 +19,12 @@ class EditorViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        textView.configure(heightConstraint: textViewHeightConstraint)
+        configureView()
+        configureEvent()
+    }
+    
+    deinit {
+        EventBox.off(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -29,18 +33,30 @@ class EditorViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        EventBox.onMainThread(self, name: UIKeyboardWillShowNotification, handler: { n in
-            self.keyboardWillChangeFrame(n, showsKeyboard: true) })
-        
-        EventBox.onMainThread(self, name: UIKeyboardWillHideNotification, handler: { n in
-            self.keyboardWillChangeFrame(n, showsKeyboard: false) })
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+    }
+    
+    // MARK: - Configuration
+    
+    func configureView() {
+        textView.configure(heightConstraint: textViewHeightConstraint)
+    }
+    
+    func configureEvent() {
+        EventBox.onMainThread(self, name: UIKeyboardWillShowNotification) { n in
+            if self.view.hidden == false {
+                self.keyboardWillChangeFrame(n, showsKeyboard: true)
+            }
+        }
         
-        EventBox.off(self)
+        EventBox.onMainThread(self, name: UIKeyboardWillHideNotification) { n in
+            if self.view.hidden == false {
+                self.keyboardWillChangeFrame(n, showsKeyboard: false)
+            }
+        }
     }
     
     // MARK: - Keyboard Event Notifications

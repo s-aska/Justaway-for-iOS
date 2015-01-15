@@ -62,12 +62,24 @@ class TwitterStatusCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+        configureView()
+        configureEvent()
+    }
+    
+    deinit {
+        EventBox.off(self)
+    }
+    
+    // MARK: - Configuration
+    
+    func configureView() {
         selectionStyle = .None
         separatorInset = UIEdgeInsetsZero
         layoutMargins = UIEdgeInsetsZero
         preservesSuperviewLayoutMargins = false
-        
+    }
+    
+    func configureEvent() {
         EventBox.onMainThread(self, name: Twitter.Event.CreateFavorites.rawValue) { (n) -> Void in
             let statusID = n.object as String
             if self.status?.statusID == statusID {
@@ -92,10 +104,6 @@ class TwitterStatusCell: UITableViewCell {
                 self.favoriteButton.selected = false
             }
         }
-    }
-    
-    deinit {
-        EventBox.off(self)
     }
     
     // MARK: - UITableViewCell

@@ -411,7 +411,6 @@
 			isa = PBXGroup;
 			children = (
 				6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */,
-				6A4B9D3019BB514900D50D78 /* ViewController.swift */,
 				6A4B9D3219BB514900D50D78 /* Main.storyboard */,
 				381E6E7D19DE4FB000139654 /* Secret.swift */,
 				3894C24F19E55C770038AEF8 /* ViewTools.swift */,
@@ -458,6 +457,7 @@
 		6AB55B3C19C5629C00DC6442 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6A4B9D3019BB514900D50D78 /* ViewController.swift */,
 				3894C24B19E557120038AEF8 /* TimelineViewController.swift */,
 				3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */,
 				3894C24A19E556070038AEF8 /* Timeline */,

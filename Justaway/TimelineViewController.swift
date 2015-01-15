@@ -30,7 +30,29 @@ class TimelineViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+        configureView()
+        configureEvent()
+    }
+    
+    deinit {
+        EventBox.off(self)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
+    
+    // MARK: - Configuration
+    
+    func configureView() {
         editorViewController = EditorViewController()
         editorViewController.view.hidden = true
         ViewTools.addSubviewWithEqual(self.view, view: editorViewController.view)
@@ -69,14 +91,8 @@ class TimelineViewController: UIViewController {
         streamingView.addGestureRecognizer(gesture)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        EventBox.onBackgroundThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
+    func configureEvent() {
+        EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
             let status = n.object as TwitterStatus
             self.tableViewControllers.first?.renderData([status], mode: .TOP, handler: {})
         }
@@ -101,12 +117,6 @@ class TimelineViewController: UIViewController {
                 self.streamingIcon.textColor = ThemeController.currentTheme.bodyTextColor()
             }
         }
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        EventBox.off(self)
     }
     
     func toggleStreaming() {

@@ -16,16 +16,13 @@ class TimelineTableViewController: UITableViewController {
     var footerIndicatorView: UIActivityIndicatorView?
     var isTop: Bool = true
     var scrolling: Bool = false
+    private let loadDataQueue = NSOperationQueue().serial()
+    private let mainQueue = NSOperationQueue.mainQueue().serial()
     
     enum RenderMode {
         case TOP
         case BOTTOM
         case OVER
-    }
-    
-    struct Static {
-        private static let loadDataQueue = NSOperationQueue().serial()
-        private static let mainQueue = NSOperationQueue.mainQueue().serial()
     }
     
     struct Row {
@@ -44,7 +41,33 @@ class TimelineTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureView()
+        configureEvent()
+    }
+    
+    deinit {
+        EventBox.off(self)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
+        if lastID == nil {
+            self.loadCache()
+        }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
+    
+    // MARK: - Configuration
+    
+    func configureView() {
         self.tableView.separatorInset = UIEdgeInsetsZero
         
         let nib = UINib(nibName: "TwitterStatusCell", bundle: nil)
@@ -54,22 +77,10 @@ class TimelineTableViewController: UITableViewController {
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if lastID == nil {
-            self.loadCache()
-        }
-        
+    func configureEvent() {
         EventBox.onBackgroundThread(self, name: "applicationDidEnterBackground") { (n) -> Void in
             self.saveCache()
         }
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        EventBox.off(self)
     }
     
     // MARK: - UITableViewDataSource
@@ -143,7 +154,7 @@ class TimelineTableViewController: UITableViewController {
     // MARK: UIScrollViewDelegate
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
-        if (Static.loadDataQueue.suspended) {
+        if (loadDataQueue.suspended) {
             return
         }
         scrollBegin() // now scrolling
@@ -173,14 +184,14 @@ class TimelineTableViewController: UITableViewController {
     
     func scrollBegin() {
         scrolling = true
-        Static.loadDataQueue.suspended = true
-        Static.mainQueue.suspended = true
+        loadDataQueue.suspended = true
+        mainQueue.suspended = true
     }
     
     func scrollEnd() {
         scrolling = false
-        Static.loadDataQueue.suspended = false
-        Static.mainQueue.suspended = false
+        loadDataQueue.suspended = false
+        mainQueue.suspended = false
         isTop = self.tableView.contentOffset.y == 0 ? true : false
         let y = self.tableView.contentOffset.y + self.tableView.bounds.size.height - self.tableView.contentInset.bottom
         let h = self.tableView.contentSize.height
@@ -230,7 +241,7 @@ class TimelineTableViewController: UITableViewController {
     }
     
     func loadCache() {
-        if Static.loadDataQueue.operationCount > 0 {
+        if loadDataQueue.operationCount > 0 {
             println("loadData busy")
             return
         }
@@ -259,7 +270,7 @@ class TimelineTableViewController: UITableViewController {
             })
             Twitter.getHomeTimelineCache(success, failure: failure)
         })
-        Static.loadDataQueue.addOperation(op)
+        loadDataQueue.addOperation(op)
     }
     
     func saveCache() {
@@ -274,7 +285,7 @@ class TimelineTableViewController: UITableViewController {
     }
     
     func loadData(maxID: Int64?) {
-        if Static.loadDataQueue.operationCount > 0 {
+        if loadDataQueue.operationCount > 0 {
             println("loadData busy")
             return
         }
@@ -307,7 +318,7 @@ class TimelineTableViewController: UITableViewController {
             })
             Twitter.getHomeTimeline(maxID?.stringValue, success: success, failure: failure)
         })
-        Static.loadDataQueue.addOperation(op)
+        loadDataQueue.addOperation(op)
     }
     
     func renderData(statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
@@ -378,7 +389,7 @@ class TimelineTableViewController: UITableViewController {
                 h()
             }
         }
-        Static.mainQueue.addOperation(op)
+        mainQueue.addOperation(op)
     }
     
     func renderImages() {

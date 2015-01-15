@@ -28,27 +28,40 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
+        configureView()
+        configureEvent()
+    }
+    
+    deinit {
+        EventBox.off(self)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.settings = AccountSettingsStore.get()
-        
-        EventBox.onMainThread(self, name: TwitterAuthorizeNotification, handler: {
-            (notification: NSNotification!) in
-            
-            self.cancel()
-        })
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        EventBox.off(self)
+    }
+    
+    // MARK: - Configuration
+    
+    func configureView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        settings = AccountSettingsStore.get()
+    }
+    
+    func configureEvent() {
+        EventBox.onMainThread(self, name: TwitterAuthorizeNotification) {
+            (notification: NSNotification!) in
+            
+            self.cancel()
+        }
     }
     
     // MARK: - UITableViewDataSource
