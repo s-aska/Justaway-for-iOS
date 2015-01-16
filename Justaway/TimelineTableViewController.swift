@@ -286,6 +286,9 @@ class TimelineTableViewController: UITableViewController {
             println("loadData busy")
             return
         }
+        if maxID == nil {
+            self.lastID = nil
+        }
         println("loadData addOperation: \(maxID ?? 0)")
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (()-> Void) = {
