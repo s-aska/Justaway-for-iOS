@@ -39,16 +39,16 @@ protocol Theme {
 class ThemeController {
     
     struct Static {
-        static var currentTheme: Theme = ThemeDark()
+        static var currentTheme: Theme = ThemeLight()
     }
     
     class var currentTheme: Theme { return Static.currentTheme }
     
     class func apply() {
-        apply(Static.currentTheme)
+        apply(Static.currentTheme, refresh: false)
     }
     
-    class func apply(theme: Theme) {
+    class func apply(theme: Theme, refresh: Bool = true) {
         
         // for UIKit
         
@@ -78,7 +78,76 @@ class ThemeController {
         FavoritesButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Normal)
         FavoritesButton.appearance().setTitleColor(theme.favoritesButtonSelected(), forState: .Selected)
         
-        // Note: viewWillAppear of various ViewController is executed. :/
+        if refresh {
+            refreshAppearance(theme)
+        }
+    }
+    
+    class func refreshAppearance(theme: Theme) {
+        let windows = UIApplication.sharedApplication().windows as [UIWindow]
+        for window in windows {
+            refreshWindow(window, theme: theme)
+        }
+        if let rootView = windows.first?.subviews.first? as? UIView {
+            rootView.backgroundColor = theme.mainBackgroundColor()
+        }
+        windows.first?.rootViewController?.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    class func refreshWindow(window: UIWindow, theme: Theme) {
+        // NSLog("+ \(NSStringFromClass(window.dynamicType))")
+        for subview in window.subviews as [UIView] {
+            refreshView(subview, theme: theme)
+        }
+    }
+    
+    class func refreshView(view: UIView, theme: Theme, indent: String = "  ") {
+        // NSLog("\(indent)- \(NSStringFromClass(view.dynamicType))")
+        for subview in view.subviews as [UIView] {
+            refreshView(subview, theme: theme, indent: indent + "  ")
+            switch subview {
+            case let v as UITableViewCell:
+                v.backgroundColor = theme.mainBackgroundColor()
+            case let v as UITableView:
+                v.backgroundColor = theme.mainBackgroundColor()
+            case let v as BackgroundView:
+                v.backgroundColor = theme.mainBackgroundColor()
+            case let v as MenuView:
+                v.backgroundColor = theme.menuBackgroundColor()
+            case let v as MenuButton:
+                v.setTitleColor(theme.menuTextColor(), forState: .Normal)
+            case let v as TextLable:
+                v.textColor = theme.titleTextColor()
+            case let v as DisplayNameLable:
+                v.textColor = theme.displayNameTextColor()
+            case let v as ScreenNameLable:
+                v.textColor = theme.screenNameTextColor()
+            case let v as ClientNameLable:
+                v.textColor = theme.clientNameTextColor()
+            case let v as RelativeDateLable:
+                v.textColor = theme.relativeDateTextColor()
+            case let v as AbsoluteDateLable:
+                v.textColor = theme.absoluteDateTextColor()
+            case let v as StatusLable:
+                v.textColor = theme.bodyTextColor()
+            case let v as ReplyButton:
+                v.setTitleColor(theme.buttonNormal(), forState: .Normal)
+                v.setTitleColor(theme.buttonNormal(), forState: .Selected)
+            case let v as RetweetButton:
+                v.setTitleColor(theme.buttonNormal(), forState: .Normal)
+                v.setTitleColor(theme.retweetButtonSelected(), forState: .Selected)
+            case let v as FavoritesButton:
+                v.setTitleColor(theme.buttonNormal(), forState: .Normal)
+                v.setTitleColor(theme.favoritesButtonSelected(), forState: .Selected)
+            default:
+                break
+            }
+        }
+    }
+    
+    // viewWillAppear of various ViewController is executed.
+    // very heavy.
+    class func refreshAppearanceSuperSlow() {
         let windows = UIApplication.sharedApplication().windows as [UIWindow]
         for window in windows {
             let subviews = window.subviews as [UIView]

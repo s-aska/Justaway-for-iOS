@@ -194,13 +194,15 @@ class Twitter {
     }
     
     class func getHomeTimelineCache(success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
-        if let cache = KeyClip.load("homeTimeline") as NSDictionary? {
-            if let statuses = cache["statuses"] as? [[String: AnyObject]] {
-                success(statuses.map({ TwitterStatus($0) }))
-                return
+        Async.background {
+            if let cache = KeyClip.load("homeTimeline") as NSDictionary? {
+                if let statuses = cache["statuses"] as? [[String: AnyObject]] {
+                    success(statuses.map({ TwitterStatus($0) }))
+                    return
+                }
             }
+            failure(NSError())
         }
-        failure(NSError())
     }
     
     class func getHomeTimeline(maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
