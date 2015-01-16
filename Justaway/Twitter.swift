@@ -287,23 +287,19 @@ extension Twitter {
                 NSLog("aleady favorites")
                 return
             }
-            Static.favorites[statusID] = true
-            EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
-            NSLog("create favorites")
             Twitter.getClient()?.postCreateFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
+                Async.customQueue(Static.favoritesQueue) {
+                    Static.favorites[statusID] = true
+                    EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
+                }
                 NSLog("create favorites success")
             }, failure: { (error) -> Void in
                 let code = Twitter.getErrorCode(error)
                 if code == 139 {
                     NSLog("aleady favorites failure code:%i", code)
-                    return
-                }
-                Async.customQueue(Static.favoritesQueue) {
+                } else {
                     NSLog("create favorites failure code:%i error:\(error)", code)
-                    Static.favorites.removeValueForKey(statusID)
-                    EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
                 }
-                return
             })
         }
     }
@@ -314,23 +310,19 @@ extension Twitter {
                 NSLog("no favorites")
                 return
             }
-            Static.favorites.removeValueForKey(statusID)
-            EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
-            NSLog("destroy favorites")
             Twitter.getClient()?.postDestroyFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
+                Async.customQueue(Static.favoritesQueue) {
+                    Static.favorites.removeValueForKey(statusID)
+                    EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
+                }
                 NSLog("destroy favorites success")
                 }, failure: { (error) -> Void in
                     let code = Twitter.getErrorCode(error)
                     if code == 34 {
                         NSLog("no favorites failure code:%i", code)
-                        return
-                    }
-                    Async.customQueue(Static.favoritesQueue) {
+                    } else {
                         NSLog("destroy favorites failure code:%s error:\(error)", code)
-                        Static.favorites[statusID] = true
-                        EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
                     }
-                    return
             })
         }
     }
@@ -347,30 +339,44 @@ extension Twitter {
                 NSLog("aleady retweets")
                 return
             }
-            Static.retweets[statusID] = "0"
-            EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
-            NSLog("create retweets")
             Twitter.getClient()?.postStatusRetweetWithID(statusID, trimUser: nil, success: { (status: [String : JSONValue]?) -> Void in
                 Async.customQueue(Static.retweetsQueue) {
-                    NSLog("create retweets success")
                     if let id = status?["id_str"]?.string {
                         Static.retweets[statusID] = id
+                        EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
                     }
-                    EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
                 }
-                return
+                NSLog("create retweets success")
             }, failure: { (error) -> Void in
                 let code = Twitter.getErrorCode(error)
                 if code == 34 {
                     NSLog("aleady retweets failure code:%i", code)
-                    return
-                }
-                Async.customQueue(Static.retweetsQueue) {
+                } else {
                     NSLog("create retweets failure code:%i error:\(error)", code)
+                }
+            })
+        }
+    }
+    
+    class func destroyRetweet(statusID: String, retweetedStatusID: String) {
+        Async.customQueue(Static.retweetsQueue) {
+            if Static.retweets[statusID] == nil {
+                NSLog("no retweets")
+                return
+            }
+            Twitter.getClient()?.postStatusesDestroyWithID(retweetedStatusID, trimUser: nil, success: { (status) -> Void in
+                Async.customQueue(Static.retweetsQueue) {
                     Static.retweets.removeValueForKey(statusID)
                     EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
                 }
-                return
+                NSLog("destroy retweets success")
+            }, failure: { (error) -> Void in
+                    let code = Twitter.getErrorCode(error)
+                    if code == 34 {
+                        NSLog("no retweets failure code:%i", code)
+                    } else {
+                        NSLog("destroy retweets failure code:%s error:\(error)", code)
+                    }
             })
         }
     }

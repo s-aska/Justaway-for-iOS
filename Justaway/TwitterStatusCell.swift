@@ -122,6 +122,13 @@ class TwitterStatusCell: UITableViewCell {
                 UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseIn, animations: zoomIn, completion: zoomInCompletion)
             }
         }
+        
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyRetweet.rawValue) { (n) -> Void in
+            let statusID = n.object as String
+            if self.status?.statusID == statusID {
+                self.retweetButton.selected = false
+            }
+        }
     }
     
     // MARK: - UITableViewCell
@@ -208,10 +215,7 @@ class TwitterStatusCell: UITableViewCell {
     @IBAction func retweet(sender: BaseButton) {
         if sender.lock() {
             if let statusID = self.status?.statusID {
-                let actionSheet = RetweetAlertController.create(statusID)
-                if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
-                    vc.presentViewController(actionSheet, animated: true, completion: nil)
-                }
+                RetweetAlert.show(statusID)
             }
         }
     }

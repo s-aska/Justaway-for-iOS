@@ -127,12 +127,7 @@ class TimelineViewController: UIViewController {
     }
     
     func streamingSwitch(sender: AnyObject) {
-        if Twitter.connectionStatus == .DISCONNECTED {
-            Twitter.startStreamingAndEnable()
-        } else if Twitter.connectionStatus == .CONNECTED {
-            Twitter.stopStreamingAndDisable()
-        }
-        
+        StreamingAlert.show()
     }
     
     @IBAction func signInButtonClick(sender: UIButton) {
