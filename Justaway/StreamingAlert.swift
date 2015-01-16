@@ -10,7 +10,7 @@ import UIKit
 
 class StreamingAlert {
     class func show() {
-        let actionSheet = UIAlertController()
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .Alert)
         actionSheet.addAction(UIAlertAction(
             title: "Cancel",
             style: .Cancel,
@@ -18,15 +18,17 @@ class StreamingAlert {
                 actionSheet.dismissViewControllerAnimated(true, completion: nil)
         }))
         if Twitter.connectionStatus == Twitter.ConnectionStatus.DISCONNECTED {
+            actionSheet.message = "Connect to the streaming"
             actionSheet.addAction(UIAlertAction(
-                title: "Connect streaming",
+                title: "Connect",
                 style: .Default,
                 handler: { action in
                     Twitter.startStreamingAndEnable()
             }))
         } else if Twitter.connectionStatus == Twitter.ConnectionStatus.CONNECTED {
+            actionSheet.message = "Disconnect to the streaming"
             actionSheet.addAction(UIAlertAction(
-                title: "Disconnect streaming",
+                title: "Disconnect",
                 style: .Destructive,
                 handler: { action in
                     Twitter.stopStreamingAndDisable()

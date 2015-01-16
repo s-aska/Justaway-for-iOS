@@ -81,6 +81,7 @@
 		6AB8CDEB1A29BB3B00D22268 /* TwitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A694F319E4E6E800DD6072 /* TwitterTests.swift */; };
 		6AD963DD1A69AAC000136B53 /* StreamingAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD963DC1A69AAC000136B53 /* StreamingAlert.swift */; };
 		6AD963E51A69ABBC00136B53 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD963E41A69ABBC00136B53 /* AlertController.swift */; };
+		6AD963E81A69BB1900136B53 /* ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD963E71A69BB1900136B53 /* ErrorAlert.swift */; };
 		6ADB647A1A5348D800602B2B /* KeyClip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADB64771A5348D800602B2B /* KeyClip.framework */; };
 		6ADB647B1A5348D800602B2B /* KeyClip.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADB64771A5348D800602B2B /* KeyClip.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6ADB648C1A5DD65800602B2B /* BaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADB648B1A5DD65800602B2B /* BaseButton.swift */; };
@@ -234,6 +235,7 @@
 		6AB55B5919D0B7B700DC6442 /* AccountSettingsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsStore.swift; sourceTree = "<group>"; };
 		6AD963DC1A69AAC000136B53 /* StreamingAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamingAlert.swift; sourceTree = "<group>"; };
 		6AD963E41A69ABBC00136B53 /* AlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
+		6AD963E71A69BB1900136B53 /* ErrorAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorAlert.swift; sourceTree = "<group>"; };
 		6ADB64771A5348D800602B2B /* KeyClip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeyClip.framework; path = Carthage/Build/iOS/KeyClip.framework; sourceTree = "<group>"; };
 		6ADB648B1A5DD65800602B2B /* BaseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseButton.swift; sourceTree = "<group>"; };
 		6ADB648F1A5DE75A00602B2B /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 				6A3469BA1A699D21004AD091 /* RetweetAlert.swift */,
 				6AD963DC1A69AAC000136B53 /* StreamingAlert.swift */,
 				6AD963E41A69ABBC00136B53 /* AlertController.swift */,
+				6AD963E71A69BB1900136B53 /* ErrorAlert.swift */,
 			);
 			name = Alert;
 			sourceTree = "<group>";
@@ -747,6 +750,7 @@
 				6ADB648C1A5DD65800602B2B /* BaseButton.swift in Sources */,
 				3805DE971A5F1C6A00FBD015 /* ThemeColor.swift in Sources */,
 				6ADB64901A5DE75A00602B2B /* Theme.swift in Sources */,
+				6AD963E81A69BB1900136B53 /* ErrorAlert.swift in Sources */,
 				6AB55B4319C5843000DC6442 /* SettingsViewController.swift in Sources */,
 				3805DEAA1A67F52400FBD015 /* ThemeSolarizedLight.swift in Sources */,
 				3868B94D19EFCCEC001221BF /* TwitterStatus.swift in Sources */,

@@ -86,13 +86,11 @@ class Twitter {
             error in
             
             if error.code == 401 {
-                NSLog("%@", "[FATAL] Please set a Your Twitter Consumer Key and Secret for the Secret.swift")
-            } else if error.code == -1009 {
-                NSLog("%@", "[FATAL] offline")
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+            } else if error.code == 429 {
+                ErrorAlert.show("Tweet failure", message: "API Limit")
             } else {
-                NSLog("%@", error.debugDescription)
-                
-                // TODO: Alert
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
                 EventBox.post(TwitterAuthorizeNotification)
             }
         }
@@ -224,13 +222,11 @@ class Twitter {
         
         let f = { (error: NSError) -> Void in
             if error.code == 401 {
-                NSLog("%@", "[FATAL] Please set a Your Twitter Consumer Key and Secret for the Secret.swift")
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
             } else if error.code == 429 {
-                NSLog("%@", "[FATAL] API Limit")
+                ErrorAlert.show("Tweet failure", message: "API Limit")
             } else {
-                NSLog("%@", error.debugDescription)
-                
-                // TODO: Alert
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
             }
             failure(error)
         }
@@ -245,13 +241,11 @@ class Twitter {
         
         let f = { (error: NSError) -> Void in
             if error.code == 401 {
-                NSLog("%@", "[FATAL] Please set a Your Twitter Consumer Key and Secret for the Secret.swift")
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
             } else if error.code == 429 {
-                NSLog("%@", "[FATAL] API Limit")
+                ErrorAlert.show("Tweet failure", message: "API Limit")
             } else {
-                NSLog("%@", error.debugDescription)
-                
-                // TODO: Alert
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
             }
         }
         
@@ -284,7 +278,7 @@ extension Twitter {
     class func createFavorite(statusID: String) {
         Async.customQueue(Static.favoritesQueue) {
             if Static.favorites[statusID] == true {
-                NSLog("aleady favorites")
+                ErrorAlert.show("Favorite failure", message: "already favorite.")
                 return
             }
             Twitter.getClient()?.postCreateFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
@@ -292,13 +286,13 @@ extension Twitter {
                     Static.favorites[statusID] = true
                     EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
                 }
-                NSLog("create favorites success")
+                return
             }, failure: { (error) -> Void in
                 let code = Twitter.getErrorCode(error)
                 if code == 139 {
-                    NSLog("aleady favorites failure code:%i", code)
+                    ErrorAlert.show("Favorite failure", message: "already favorite.")
                 } else {
-                    NSLog("create favorites failure code:%i error:\(error)", code)
+                    ErrorAlert.show("Favorite failure", message: error.localizedDescription)
                 }
             })
         }
@@ -307,7 +301,7 @@ extension Twitter {
     class func destroyFavorite(statusID: String) {
         Async.customQueue(Static.favoritesQueue) {
             if Static.favorites[statusID] == nil {
-                NSLog("no favorites")
+                ErrorAlert.show("Unfavorite failure", message: "missing favorite.")
                 return
             }
             Twitter.getClient()?.postDestroyFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
@@ -315,13 +309,13 @@ extension Twitter {
                     Static.favorites.removeValueForKey(statusID)
                     EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
                 }
-                NSLog("destroy favorites success")
-                }, failure: { (error) -> Void in
+                return
+            }, failure: { (error) -> Void in
                     let code = Twitter.getErrorCode(error)
                     if code == 34 {
-                        NSLog("no favorites failure code:%i", code)
+                        ErrorAlert.show("Unfavorite failure", message: "missing favorite.")
                     } else {
-                        NSLog("destroy favorites failure code:%s error:\(error)", code)
+                        ErrorAlert.show("Unfavorite failure", message: error.localizedDescription)
                     }
             })
         }
@@ -336,7 +330,7 @@ extension Twitter {
     class func createRetweet(statusID: String) {
         Async.customQueue(Static.retweetsQueue) {
             if Static.retweets[statusID] != nil {
-                NSLog("aleady retweets")
+                ErrorAlert.show("Retweet failure", message: "already retweets.")
                 return
             }
             Twitter.getClient()?.postStatusRetweetWithID(statusID, trimUser: nil, success: { (status: [String : JSONValue]?) -> Void in
@@ -346,13 +340,13 @@ extension Twitter {
                         EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
                     }
                 }
-                NSLog("create retweets success")
+                return
             }, failure: { (error) -> Void in
                 let code = Twitter.getErrorCode(error)
                 if code == 34 {
-                    NSLog("aleady retweets failure code:%i", code)
+                    ErrorAlert.show("Retweet failure", message: "already retweets.")
                 } else {
-                    NSLog("create retweets failure code:%i error:\(error)", code)
+                    ErrorAlert.show("Retweet failure", message: error.localizedDescription)
                 }
             })
         }
@@ -361,7 +355,7 @@ extension Twitter {
     class func destroyRetweet(statusID: String, retweetedStatusID: String) {
         Async.customQueue(Static.retweetsQueue) {
             if Static.retweets[statusID] == nil {
-                NSLog("no retweets")
+                ErrorAlert.show("Unod Retweet failure", message: "missing retweets.")
                 return
             }
             Twitter.getClient()?.postStatusesDestroyWithID(retweetedStatusID, trimUser: nil, success: { (status) -> Void in
@@ -369,13 +363,13 @@ extension Twitter {
                     Static.retweets.removeValueForKey(statusID)
                     EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
                 }
-                NSLog("destroy retweets success")
+                return
             }, failure: { (error) -> Void in
                     let code = Twitter.getErrorCode(error)
                     if code == 34 {
-                        NSLog("no retweets failure code:%i", code)
+                        ErrorAlert.show("Unod Retweet failure", message: "missing retweets.")
                     } else {
-                        NSLog("destroy retweets failure code:%s error:\(error)", code)
+                        ErrorAlert.show("Unod Retweet failure", message: error.localizedDescription)
                     }
             })
         }
