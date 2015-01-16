@@ -104,6 +104,24 @@ class TwitterStatusCell: UITableViewCell {
                 self.favoriteButton.selected = false
             }
         }
+        
+        EventBox.onMainThread(self, name: Twitter.Event.CreateRetweet.rawValue) { (n) -> Void in
+            let statusID = n.object as String
+            if self.status?.statusID == statusID {
+                self.retweetButton.selected = true
+                self.retweetButton.transform = CGAffineTransformMakeScale(1, 1)
+                let zoomOut = {
+                    self.retweetButton.transform = CGAffineTransformMakeScale(1, 1)
+                }
+                let zoomIn: (() -> Void) = {
+                    self.retweetButton.transform = CGAffineTransformMakeScale(1.4, 1.4)
+                }
+                let zoomInCompletion: ((Bool) -> Void) = { _ in
+                    UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseIn, animations: zoomOut, completion: { _ in })
+                }
+                UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseIn, animations: zoomIn, completion: zoomInCompletion)
+            }
+        }
     }
     
     // MARK: - UITableViewCell
@@ -187,8 +205,15 @@ class TwitterStatusCell: UITableViewCell {
         
     }
     
-    @IBAction func retweet(sender: UIButton) {
-        
+    @IBAction func retweet(sender: BaseButton) {
+        if sender.lock() {
+            if let statusID = self.status?.statusID {
+                let actionSheet = RetweetAlertController.create(statusID)
+                if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
+                    vc.presentViewController(actionSheet, animated: true, completion: nil)
+                }
+            }
+        }
     }
     
     @IBAction func favorite(sender: BaseButton) {

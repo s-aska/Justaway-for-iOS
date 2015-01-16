@@ -30,6 +30,7 @@ class Twitter {
         static var connectionStatus: ConnectionStatus = .DISCONNECTED
         static var streamingRequest: SwifterHTTPRequest?
         static var favorites = [String: Bool]()
+        static var retweets = [String: String]()
         private static let connectionQueue = dispatch_queue_create("pw.aska.justaway.twitter.connection", DISPATCH_QUEUE_SERIAL)
         private static let favoritesQueue = dispatch_queue_create("pw.aska.justaway.twitter.favorites", DISPATCH_QUEUE_SERIAL)
         private static let retweetsQueue = dispatch_queue_create("pw.aska.justaway.twitter.retweets", DISPATCH_QUEUE_SERIAL)
@@ -330,6 +331,46 @@ extension Twitter {
                         EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
                     }
                     return
+            })
+        }
+    }
+    
+    class func isRetweet(statusID: String, handler: (String?) -> Void) {
+        Async.customQueue(Static.retweetsQueue) {
+            handler(Static.retweets[statusID])
+        }
+    }
+    
+    class func createRetweet(statusID: String) {
+        Async.customQueue(Static.retweetsQueue) {
+            if Static.retweets[statusID] != nil {
+                NSLog("aleady retweets")
+                return
+            }
+            Static.retweets[statusID] = "0"
+            EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
+            NSLog("create retweets")
+            Twitter.getClient()?.postStatusRetweetWithID(statusID, trimUser: nil, success: { (status: [String : JSONValue]?) -> Void in
+                Async.customQueue(Static.retweetsQueue) {
+                    NSLog("create retweets success")
+                    if let id = status?["id_str"]?.string {
+                        Static.retweets[statusID] = id
+                    }
+                    EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
+                }
+                return
+            }, failure: { (error) -> Void in
+                let code = Twitter.getErrorCode(error)
+                if code == 34 {
+                    NSLog("aleady retweets failure code:%i", code)
+                    return
+                }
+                Async.customQueue(Static.retweetsQueue) {
+                    NSLog("create retweets failure code:%i error:\(error)", code)
+                    Static.retweets.removeValueForKey(statusID)
+                    EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
+                }
+                return
             })
         }
     }
