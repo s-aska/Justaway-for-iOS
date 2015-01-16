@@ -31,11 +31,6 @@ class TimelineViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         configureView()
-        configureEvent()
-    }
-    
-    deinit {
-        EventBox.off(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -44,10 +39,12 @@ class TimelineViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        configureEvent()
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+        EventBox.off(self)
     }
     
     // MARK: - Configuration

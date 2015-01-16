@@ -42,11 +42,6 @@ class TimelineTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        configureEvent()
-    }
-    
-    deinit {
-        EventBox.off(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -55,6 +50,7 @@ class TimelineTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        configureEvent()
         
         if lastID == nil {
             self.loadCache()
@@ -63,6 +59,7 @@ class TimelineTableViewController: UITableViewController {
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+        EventBox.off(self)
     }
     
     // MARK: - Configuration

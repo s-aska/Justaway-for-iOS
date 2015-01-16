@@ -33,9 +33,6 @@ class ThemeViewController: UIViewController {
             default:
                 break
             }
-            if t.view.tag == self.themeLight.tag {
-                NSLog("themeLight touched")
-            }
         }
     }
 }

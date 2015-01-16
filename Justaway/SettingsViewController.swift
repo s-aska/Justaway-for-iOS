@@ -28,11 +28,6 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        // configureEvent()
-    }
-    
-    deinit {
-        // EventBox.off(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -41,10 +36,12 @@ class SettingsViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        // configureEvent()
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+        // EventBox.off(self)
     }
     
     // MARK: - Configuration
