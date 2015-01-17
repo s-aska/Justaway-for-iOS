@@ -281,17 +281,18 @@ extension Twitter {
                 ErrorAlert.show("Favorite failure", message: "already favorite.")
                 return
             }
+            Static.favorites[statusID] = true
+            EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
             Twitter.getClient()?.postCreateFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
-                Async.customQueue(Static.favoritesQueue) {
-                    Static.favorites[statusID] = true
-                    EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
-                }
-                return
             }, failure: { (error) -> Void in
                 let code = Twitter.getErrorCode(error)
                 if code == 139 {
                     ErrorAlert.show("Favorite failure", message: "already favorite.")
                 } else {
+                    Async.customQueue(Static.favoritesQueue) {
+                        Static.favorites.removeValueForKey(statusID)
+                        EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
+                    }
                     ErrorAlert.show("Favorite failure", message: error.localizedDescription)
                 }
             })
@@ -304,17 +305,18 @@ extension Twitter {
                 ErrorAlert.show("Unfavorite failure", message: "missing favorite.")
                 return
             }
+            Static.favorites.removeValueForKey(statusID)
+            EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
             Twitter.getClient()?.postDestroyFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
-                Async.customQueue(Static.favoritesQueue) {
-                    Static.favorites.removeValueForKey(statusID)
-                    EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
-                }
-                return
             }, failure: { (error) -> Void in
                     let code = Twitter.getErrorCode(error)
                     if code == 34 {
                         ErrorAlert.show("Unfavorite failure", message: "missing favorite.")
                     } else {
+                        Async.customQueue(Static.favoritesQueue) {
+                            Static.favorites[statusID] = true
+                            EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
+                        }
                         ErrorAlert.show("Unfavorite failure", message: error.localizedDescription)
                     }
             })
@@ -333,11 +335,12 @@ extension Twitter {
                 ErrorAlert.show("Retweet failure", message: "already retweets.")
                 return
             }
+            Static.retweets[statusID] = "0"
+            EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
             Twitter.getClient()?.postStatusRetweetWithID(statusID, trimUser: nil, success: { (status: [String : JSONValue]?) -> Void in
                 Async.customQueue(Static.retweetsQueue) {
                     if let id = status?["id_str"]?.string {
                         Static.retweets[statusID] = id
-                        EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
                     }
                 }
                 return
@@ -346,6 +349,10 @@ extension Twitter {
                 if code == 34 {
                     ErrorAlert.show("Retweet failure", message: "already retweets.")
                 } else {
+                    Async.customQueue(Static.retweetsQueue) {
+                        Static.retweets.removeValueForKey(statusID)
+                        EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
+                    }
                     ErrorAlert.show("Retweet failure", message: error.localizedDescription)
                 }
             })
@@ -358,17 +365,18 @@ extension Twitter {
                 ErrorAlert.show("Unod Retweet failure", message: "missing retweets.")
                 return
             }
+            Static.retweets.removeValueForKey(statusID)
+            EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
             Twitter.getClient()?.postStatusesDestroyWithID(retweetedStatusID, trimUser: nil, success: { (status) -> Void in
-                Async.customQueue(Static.retweetsQueue) {
-                    Static.retweets.removeValueForKey(statusID)
-                    EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
-                }
-                return
             }, failure: { (error) -> Void in
                     let code = Twitter.getErrorCode(error)
                     if code == 34 {
                         ErrorAlert.show("Unod Retweet failure", message: "missing retweets.")
                     } else {
+                        Async.customQueue(Static.retweetsQueue) {
+                            Static.retweets[statusID] = retweetedStatusID
+                            EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
+                        }
                         ErrorAlert.show("Unod Retweet failure", message: error.localizedDescription)
                     }
             })

@@ -12,7 +12,7 @@ class TimelineViewController: UIViewController {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var streamingStatusLabel: UILabel!
     @IBOutlet weak var streamingView: UIView!
-    @IBOutlet weak var streamingIcon: UILabel!
+    @IBOutlet weak var streamingButton: StreamingButton!
     
     var editorViewController: EditorViewController!
     var settingsViewController: SettingsViewController!
@@ -98,20 +98,25 @@ class TimelineViewController: UIViewController {
             switch Twitter.connectionStatus {
             case .CONNECTED:
                 self.streamingStatusLabel.text = "connected"
-                self.streamingIcon.textColor = ThemeController.currentTheme.streamingConnected()
+                self.streamingButton.enabled = true
+                self.streamingButton.selected = true
             case .CONNECTING:
                 self.streamingStatusLabel.text = "connecting..."
-                self.streamingIcon.textColor = ThemeController.currentTheme.bodyTextColor()
+                self.streamingButton.enabled = true
+                self.streamingButton.selected = false
             case .DISCONNECTED:
                 self.streamingStatusLabel.text = "disconnected"
                 if Twitter.enableStreaming {
-                    self.streamingIcon.textColor = ThemeController.currentTheme.streamingError()
+                    self.streamingButton.enabled = false
+                    self.streamingButton.selected = false
                 } else {
-                    self.streamingIcon.textColor = ThemeController.currentTheme.bodyTextColor()
+                    self.streamingButton.enabled = true
+                    self.streamingButton.selected = false
                 }
             case .DISCONNECTING:
                 self.streamingStatusLabel.text = "disconnecting..."
-                self.streamingIcon.textColor = ThemeController.currentTheme.bodyTextColor()
+                self.streamingButton.enabled = true
+                self.streamingButton.selected = false
             }
         }
     }

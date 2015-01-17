@@ -31,7 +31,7 @@ class ThemeSolarizedLight: Theme {
     func buttonNormal() -> UIColor { return ThemeColor.Solarized.baes1 }
     func retweetButtonSelected() -> UIColor { return ThemeColor.Solarized.cyan }
     func favoritesButtonSelected() -> UIColor { return ThemeColor.Solarized.orange }
-    func streamingConnected() -> UIColor { return ThemeColor.Solarized.green }
+    func streamingConnected() -> UIColor { return ThemeColor.Solarized.cyan }
     func streamingError() -> UIColor { return ThemeColor.Solarized.red }
     
 }

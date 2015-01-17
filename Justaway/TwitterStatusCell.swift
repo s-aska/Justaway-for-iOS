@@ -161,6 +161,13 @@ class TwitterStatusCell: UITableViewCell {
             }
         }
         
+        Twitter.isRetweet(status.statusID) { retweetedStatusID in
+            let isRetweet = retweetedStatusID != nil ? true : false
+            if self.retweetButton.selected != isRetweet {
+                Async.main { self.retweetButton.selected = isRetweet }
+            }
+        }
+        
         self.iconImageView.image = nil
         self.nameLabel.text = status.user.name
         self.screenNameLabel.text = "@" + status.user.screenName

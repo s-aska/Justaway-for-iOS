@@ -77,6 +77,9 @@ class ThemeController {
         RetweetButton.appearance().setTitleColor(theme.retweetButtonSelected(), forState: .Selected)
         FavoritesButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Normal)
         FavoritesButton.appearance().setTitleColor(theme.favoritesButtonSelected(), forState: .Selected)
+        StreamingButton.appearance().setTitleColor(theme.bodyTextColor(), forState: .Normal)
+        StreamingButton.appearance().setTitleColor(theme.streamingConnected(), forState: .Selected)
+        StreamingButton.appearance().setTitleColor(theme.streamingError(), forState: .Disabled)
         
         if refresh {
             refreshAppearance(theme)
@@ -139,6 +142,10 @@ class ThemeController {
             case let v as FavoritesButton:
                 v.setTitleColor(theme.buttonNormal(), forState: .Normal)
                 v.setTitleColor(theme.favoritesButtonSelected(), forState: .Selected)
+            case let v as StreamingButton:
+                v.setTitleColor(theme.bodyTextColor(), forState: .Normal)
+                v.setTitleColor(theme.streamingConnected(), forState: .Selected)
+                v.setTitleColor(theme.streamingError(), forState: .Disabled)
             default:
                 break
             }

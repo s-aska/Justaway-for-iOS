@@ -15,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Pinwheel.DiskCache.sharedInstance().clear()
         Pinwheel.setup(
             Pinwheel.Configuration.Builder()
-                .debug()
                 .maxConcurrent(5)
                 .defaultTimeoutIntervalForRequest(5)
                 .build())

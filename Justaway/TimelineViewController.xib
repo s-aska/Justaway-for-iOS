@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="fontello.ttf">
@@ -18,7 +18,7 @@
                 <outlet property="iconImageView" destination="eI8-Uh-DCZ" id="RKU-Sn-Att"/>
                 <outlet property="scrollView" destination="QzD-8n-VHR" id="uQa-aB-Crg"/>
                 <outlet property="scrollWrapperView" destination="YQA-1l-jex" id="Qcu-44-ZzZ"/>
-                <outlet property="streamingIcon" destination="jDy-2M-2Kq" id="MMU-r2-Sw8"/>
+                <outlet property="streamingButton" destination="Hgv-8Y-sHi" id="sT9-FX-Plk"/>
                 <outlet property="streamingStatusLabel" destination="i4e-3u-LDz" id="AzD-uC-8w0"/>
                 <outlet property="streamingView" destination="zsL-HL-Z8V" id="g3Z-kd-dON"/>
                 <outlet property="view" destination="iN0-l3-epB" id="diP-QV-l6C"/>
@@ -119,12 +119,15 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zsL-HL-Z8V">
                     <rect key="frame" x="490" y="0.0" width="110" height="40"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="雷" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDy-2M-2Kq" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="17" y="5" width="6" height="12.5"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hgv-8Y-sHi" customClass="StreamingButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="5" y="-1" width="30" height="25"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="12"/>
-                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <state key="normal" title="雷">
+                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disconnected" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i4e-3u-LDz" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="28" y="2" width="77" height="14.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -134,10 +137,10 @@
                     </subviews>
                     <constraints>
                         <constraint firstItem="i4e-3u-LDz" firstAttribute="top" secondItem="zsL-HL-Z8V" secondAttribute="top" constant="2" id="Cvh-dd-uDf"/>
-                        <constraint firstItem="jDy-2M-2Kq" firstAttribute="top" secondItem="zsL-HL-Z8V" secondAttribute="top" constant="5" id="SfQ-tK-lNn"/>
                         <constraint firstAttribute="width" constant="110" id="WsF-YJ-4F8"/>
-                        <constraint firstItem="i4e-3u-LDz" firstAttribute="leading" secondItem="jDy-2M-2Kq" secondAttribute="trailing" constant="5" id="ZT0-eg-FOi"/>
                         <constraint firstAttribute="trailing" secondItem="i4e-3u-LDz" secondAttribute="trailing" constant="5" id="bnX-aB-heS"/>
+                        <constraint firstItem="Hgv-8Y-sHi" firstAttribute="top" secondItem="zsL-HL-Z8V" secondAttribute="top" constant="-1" id="hTL-4r-2Ac"/>
+                        <constraint firstItem="i4e-3u-LDz" firstAttribute="leading" secondItem="Hgv-8Y-sHi" secondAttribute="trailing" constant="-7" id="kN8-7c-I2v"/>
                         <constraint firstAttribute="height" constant="40" id="kNz-iZ-hxS"/>
                     </constraints>
                 </view>
@@ -160,7 +163,7 @@
                 <constraint firstAttribute="trailing" secondItem="YQA-1l-jex" secondAttribute="trailing" id="cl5-qc-HBy"/>
                 <constraint firstItem="eI8-Uh-DCZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="7" id="gcR-LL-7aJ"/>
             </constraints>
-            <point key="canvasLocation" x="459" y="333"/>
+            <point key="canvasLocation" x="412" y="336"/>
         </view>
     </objects>
 </document>

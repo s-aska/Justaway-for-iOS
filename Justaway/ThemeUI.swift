@@ -15,6 +15,7 @@ class BackgroundView: UIView {}
 
 // MARK: - Buttons
 
+class StreamingButton: UIButton {}
 class MenuButton: BaseButton {}
 class FavoritesButton: BaseButton {}
 class ReplyButton: BaseButton {}
