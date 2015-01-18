@@ -12,6 +12,17 @@ import UIKit
 
 class MenuView: UIView {}
 class BackgroundView: UIView {}
+class CellSeparator: UIView {
+    let borderLayer = CALayer()
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let borderWidth: CGFloat = (1.0 / UIScreen.mainScreen().scale) / 2
+        borderLayer.frame = CGRectMake(0, bounds.size.height - borderWidth, bounds.size.width, borderWidth);
+        borderLayer.backgroundColor = ThemeController.currentTheme.menuBackgroundColor().CGColor
+        layer.addSublayer(borderLayer)
+    }
+}
 
 // MARK: - Buttons
 

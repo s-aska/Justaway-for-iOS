@@ -50,6 +50,8 @@ class ThemeController {
     
     class func apply(theme: Theme, refresh: Bool = true) {
         
+        Static.currentTheme = theme
+        
         // for UIKit
         
         // Note: Adding "View controller-based status bar appearance" to info.plist and setting it to "NO"
@@ -82,7 +84,10 @@ class ThemeController {
         StreamingButton.appearance().setTitleColor(theme.streamingError(), forState: .Disabled)
         
         if refresh {
+            CATransaction.begin()
+            CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
             refreshAppearance(theme)
+            CATransaction.commit()
         }
     }
     
@@ -146,6 +151,8 @@ class ThemeController {
                 v.setTitleColor(theme.bodyTextColor(), forState: .Normal)
                 v.setTitleColor(theme.streamingConnected(), forState: .Selected)
                 v.setTitleColor(theme.streamingError(), forState: .Disabled)
+            case let v as CellSeparator:
+                v.borderLayer?.backgroundColor = theme.menuBackgroundColor().CGColor
             default:
                 break
             }
