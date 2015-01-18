@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import KeyClip
 
 protocol Theme {
+    
+    func name() -> String
     
     func statusBarStyle() -> UIStatusBarStyle
     
@@ -39,13 +42,22 @@ protocol Theme {
 class ThemeController {
     
     struct Static {
+        static let themes: [Theme] = [ThemeLight(), ThemeDark(), ThemeSolarizedLight(), ThemeSolarizedDark(), ThemeMonokai()]
         static var currentTheme: Theme = ThemeLight()
     }
     
     class var currentTheme: Theme { return Static.currentTheme }
     
     class func apply() {
-        apply(Static.currentTheme, refresh: false)
+        if let themeName = KeyClip.load("theme") as String? {
+            for theme in Static.themes {
+                if theme.name() == themeName {
+                    apply(theme)
+                    return
+                }
+            }
+        }
+        apply(currentTheme, refresh: false)
     }
     
     class func apply(theme: Theme, refresh: Bool = true) {
@@ -88,6 +100,8 @@ class ThemeController {
             CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
             refreshAppearance(theme)
             CATransaction.commit()
+            
+            KeyClip.save("theme", string: theme.name())
         }
     }
     

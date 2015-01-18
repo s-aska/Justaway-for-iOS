@@ -10,6 +10,8 @@ import UIKit
 
 class ThemeDark: Theme {
     
+    func name() -> String { return "Dark" }
+    
     func statusBarStyle() -> UIStatusBarStyle { return .LightContent }
     
     func mainBackgroundColor() -> UIColor { return UIColor(red: 0.10, green: 0.10, blue: 0.10, alpha: 1) }

@@ -10,6 +10,8 @@ import UIKit
 
 class ThemeMonokai: Theme {
     
+    func name() -> String { return "Monokai" }
+    
     func statusBarStyle() -> UIStatusBarStyle { return .LightContent }
     
     func mainBackgroundColor() -> UIColor { return ThemeColor.Monokai.black }

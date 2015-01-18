@@ -10,6 +10,8 @@ import UIKit
 
 class ThemeSolarizedDark: Theme {
     
+    func name() -> String { return "SolarizedDark" }
+    
     func statusBarStyle() -> UIStatusBarStyle { return .LightContent }
     
     func mainBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes03 }
