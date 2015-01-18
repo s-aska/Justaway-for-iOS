@@ -120,7 +120,7 @@
                     <rect key="frame" x="490" y="0.0" width="110" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hgv-8Y-sHi" customClass="StreamingButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="5" y="-1" width="30" height="25"/>
+                            <rect key="frame" x="6.5" y="-1" width="30" height="25"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="12"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <state key="normal" title="雷">
@@ -128,15 +128,15 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disconnected" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i4e-3u-LDz" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="28" y="2" width="77" height="14.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="disconnected" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i4e-3u-LDz" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="29.5" y="3" width="75.5" height="14.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="i4e-3u-LDz" firstAttribute="top" secondItem="zsL-HL-Z8V" secondAttribute="top" constant="2" id="Cvh-dd-uDf"/>
+                        <constraint firstItem="i4e-3u-LDz" firstAttribute="top" secondItem="zsL-HL-Z8V" secondAttribute="top" constant="3" id="Cvh-dd-uDf"/>
                         <constraint firstAttribute="width" constant="110" id="WsF-YJ-4F8"/>
                         <constraint firstAttribute="trailing" secondItem="i4e-3u-LDz" secondAttribute="trailing" constant="5" id="bnX-aB-heS"/>
                         <constraint firstItem="Hgv-8Y-sHi" firstAttribute="top" secondItem="zsL-HL-Z8V" secondAttribute="top" constant="-1" id="hTL-4r-2Ac"/>

@@ -31,6 +31,7 @@ class Twitter {
         static var streamingRequest: SwifterHTTPRequest?
         static var favorites = [String: Bool]()
         static var retweets = [String: String]()
+        static var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
         private static let connectionQueue = dispatch_queue_create("pw.aska.justaway.twitter.connection", DISPATCH_QUEUE_SERIAL)
         private static let favoritesQueue = dispatch_queue_create("pw.aska.justaway.twitter.favorites", DISPATCH_QUEUE_SERIAL)
         private static let retweetsQueue = dispatch_queue_create("pw.aska.justaway.twitter.retweets", DISPATCH_QUEUE_SERIAL)
@@ -460,6 +461,16 @@ extension Twitter {
             
             println(error)
         }
+        
+        if Static.backgroundTaskIdentifier == UIBackgroundTaskInvalid {
+            Static.backgroundTaskIdentifier = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler() {
+                if Static.backgroundTaskIdentifier != UIBackgroundTaskInvalid {
+                    UIApplication.sharedApplication().endBackgroundTask(Static.backgroundTaskIdentifier)
+                    Static.backgroundTaskIdentifier = UIBackgroundTaskInvalid
+                }
+            }
+        }
+        
         Static.streamingRequest = getClient()?.getUserStreamDelimited(nil,
             stallWarnings: nil,
             includeMessagesFromFollowedAccounts: nil,
