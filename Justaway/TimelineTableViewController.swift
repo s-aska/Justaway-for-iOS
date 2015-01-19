@@ -16,6 +16,7 @@ class TimelineTableViewController: UITableViewController {
     var footerIndicatorView: UIActivityIndicatorView?
     var isTop: Bool = true
     var scrolling: Bool = false
+    var fastScrolling: Bool = false
     private let loadDataQueue = NSOperationQueue().serial()
     private let mainQueue = NSOperationQueue.mainQueue().serial()
     
@@ -104,14 +105,14 @@ class TimelineTableViewController: UITableViewController {
         cell.setText(status)
         cell.textHeightConstraint.constant = row.textHeight
         
-        ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: cell.iconImageView)
-        
-        if let actionedBy = status.actionedBy {
-            ImageLoaderClient.displayActionedUserIcon(actionedBy.profileImageURL, imageView: cell.actionedIconImageView)
-        }
-        
-        if (!scrolling) {
+        if !scrolling {
             cell.setImage(status)
+        } else if !fastScrolling {
+            ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: cell.iconImageView)
+            
+            if let actionedBy = status.actionedBy {
+                ImageLoaderClient.displayActionedUserIcon(actionedBy.profileImageURL, imageView: cell.actionedIconImageView)
+            }
         }
         
         return cell
@@ -188,6 +189,7 @@ class TimelineTableViewController: UITableViewController {
     
     func scrollEnd() {
         scrolling = false
+        fastScrolling = false
         loadDataQueue.suspended = false
         mainQueue.suspended = false
         isTop = self.tableView.contentOffset.y == 0 ? true : false
@@ -207,6 +209,7 @@ class TimelineTableViewController: UITableViewController {
     }
     
     func scrollToTop() {
+        fastScrolling = true
         self.tableView.setContentOffset(CGPointZero, animated: true)
     }
     
