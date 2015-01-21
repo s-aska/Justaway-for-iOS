@@ -132,7 +132,7 @@ class TimelineTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if footerView == nil {
             footerView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, TIMELINE_FOOTER_HEIGHT))
-            footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+            footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
             footerView?.addSubview(footerIndicatorView!)
             footerIndicatorView?.hidesWhenStopped = true
             footerIndicatorView?.center = (footerView?.center)!

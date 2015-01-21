@@ -13,6 +13,8 @@ class ThemeSolarizedLight: Theme {
     func name() -> String { return "SolarizedLight" }
     
     func statusBarStyle() -> UIStatusBarStyle { return .Default }
+    func activityIndicatorStyle() -> UIActivityIndicatorViewStyle { return .Gray }
+    func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle { return .Black }
     
     func mainBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes3 }
     func mainHighlightBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes2 }

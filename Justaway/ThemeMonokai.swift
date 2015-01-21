@@ -13,6 +13,8 @@ class ThemeMonokai: Theme {
     func name() -> String { return "Monokai" }
     
     func statusBarStyle() -> UIStatusBarStyle { return .LightContent }
+    func activityIndicatorStyle() -> UIActivityIndicatorViewStyle { return .White }
+    func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle { return .White }
     
     func mainBackgroundColor() -> UIColor { return ThemeColor.Monokai.black }
     func mainHighlightBackgroundColor() -> UIColor { return UIColor.darkGrayColor() }
