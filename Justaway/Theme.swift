@@ -71,7 +71,7 @@ class ThemeController {
         // Note: Adding "View controller-based status bar appearance" to info.plist and setting it to "NO"
         UIApplication.sharedApplication().statusBarStyle = theme.statusBarStyle()
         UITableViewCell.appearance().backgroundColor = theme.mainBackgroundColor()
-        UITableView.appearance().backgroundColor = theme.mainBackgroundColor()
+        UIScrollView.appearance().backgroundColor = theme.mainBackgroundColor()
         UIScrollView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         
         // for CustomView
@@ -133,8 +133,6 @@ class ThemeController {
             switch subview {
             case let v as UIScrollView:
                 v.indicatorStyle = theme.scrollViewIndicatorStyle()
-            case let v as UITableView:
-                // v.indicatorStyle = theme.scrollViewIndicatorStyle()
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as UITableViewCell:
                 v.backgroundColor = theme.mainBackgroundColor()
