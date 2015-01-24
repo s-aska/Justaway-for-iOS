@@ -186,7 +186,7 @@ class TwitterStatusCell: UITableViewCell {
         self.absoluteCreatedAtLabel.text = status.createdAt.absoluteString
         self.viaLabel.text = status.via.name
         if let actionedBy = status.actionedBy {
-            self.actionedTextLabel.text = "@" + actionedBy.screenName
+            self.actionedTextLabel.text = "\(actionedBy.name) @\(actionedBy.screenName)"
             self.actionedIconImageView.image = nil
         }
         if status.media.count > 0 {

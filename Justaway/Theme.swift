@@ -74,6 +74,7 @@ class ThemeController {
         UITableView.appearance().backgroundColor = theme.mainBackgroundColor()
         UITableView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         UITextView.appearance().textColor = theme.bodyTextColor()
+        UITextView.appearance().backgroundColor = theme.mainBackgroundColor()
         
         // for CustomView
         TextLable.appearance().textColor = theme.bodyTextColor()
@@ -142,6 +143,7 @@ class ThemeController {
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as UITextView:
                 v.textColor = theme.bodyTextColor()
+                v.backgroundColor = theme.mainBackgroundColor()
             case let v as UITableViewCell:
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as BackgroundView:
