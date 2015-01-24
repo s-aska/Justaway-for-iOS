@@ -17,6 +17,7 @@ class TimelineTableViewController: UITableViewController {
     var footerIndicatorView: UIActivityIndicatorView?
     var isTop: Bool = true
     var scrolling: Bool = false
+    var setup = false
     private let loadDataQueue = NSOperationQueue().serial()
     private let mainQueue = NSOperationQueue.mainQueue().serial()
     
@@ -52,10 +53,7 @@ class TimelineTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
-        
-        if lastID == nil {
-            self.loadCache()
-        }
+        self.loadCache()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -68,6 +66,7 @@ class TimelineTableViewController: UITableViewController {
     func configureView() {
         self.tableView.separatorInset = UIEdgeInsetsZero
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView.scrollsToTop = true
         
         let nib = UINib(nibName: "TwitterStatusCell", bundle: nil)
         for layout in TwitterStatusCellLayout.allValues {

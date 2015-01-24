@@ -34,4 +34,12 @@ class ViewTools {
         containerView.addConstraints(constraints)
     }
     
+    class func addSubviewWithCenter(containerView: UIView, view: UIView) {
+        view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        containerView.addSubview(view)
+        var constraints = [NSLayoutConstraint]()
+        constraints.append(NSLayoutConstraint(item: containerView, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1.0, constant: 0.0))
+        constraints.append(NSLayoutConstraint(item: containerView, attribute: .CenterY, relatedBy: .Equal, toItem: view, attribute: .CenterY, multiplier: 1.0, constant: 0.0))
+        containerView.addConstraints(constraints)
+    }
 }

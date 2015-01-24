@@ -9,7 +9,7 @@
 import UIKit
 
 class ErrorAlert {
-    class func show(title: String, message: String) {
+    class func show(title: String, message: String? = nil) {
         let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         actionSheet.addAction(UIAlertAction(
             title: "Close",

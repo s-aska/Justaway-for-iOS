@@ -17,6 +17,8 @@ class TimelineViewController: UIViewController {
     var editorViewController: EditorViewController!
     var settingsViewController: SettingsViewController!
     var tableViewControllers = [TimelineTableViewController]()
+    var imageViewController: ImageViewController?
+    var setupView = false
     
     struct Static {
         private static let connectionQueue = NSOperationQueue().serial()
@@ -30,7 +32,10 @@ class TimelineViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        configureView()
+        if !setupView {
+            setupView = true
+            configureView()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -62,7 +67,6 @@ class TimelineViewController: UIViewController {
         }
         
         var size = scrollWrapperView.frame.size
-        println(size.width)
         let contentView = UIView(frame: CGRectMake(0, 0, size.width * 3, size.height))
         
         for i in 0 ... 0 {
@@ -118,6 +122,17 @@ class TimelineViewController: UIViewController {
                 self.streamingButton.enabled = true
                 self.streamingButton.selected = false
             }
+        }
+        
+        EventBox.onMainThread(self, name: "showImage") { n in
+            let request = n.object as ImageViewController.ImageViewRequest
+            if self.imageViewController == nil {
+                self.imageViewController = ImageViewController()
+            }
+            self.imageViewController!.view.frame = self.view.frame
+            self.view.addSubview(self.imageViewController!.view)
+            self.imageViewController!.show(request)
+
         }
     }
     

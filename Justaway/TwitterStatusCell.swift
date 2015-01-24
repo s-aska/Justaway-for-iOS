@@ -77,6 +77,10 @@ class TwitterStatusCell: UITableViewCell {
         separatorInset = UIEdgeInsetsZero
         layoutMargins = UIEdgeInsetsZero
         preservesSuperviewLayoutMargins = false
+        
+        imageView1.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
+        imageView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
+        imageView3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
     }
     
     func configureEvent() {
@@ -211,7 +215,7 @@ class TwitterStatusCell: UITableViewCell {
         var i = 0
         let imageViews = [self.imageView1, self.imageView2, self.imageView3];
         for media in status.media {
-            ImageLoaderClient.displayImage(media.mediaThumbURL, imageView: imageViews[i])
+            ImageLoaderClient.displayThumbnailImage(media.mediaThumbURL, imageView: imageViews[i])
             i++
             if i > 2 {
                 break
@@ -221,8 +225,12 @@ class TwitterStatusCell: UITableViewCell {
     
     // MARK: - Actions
     
-    func showImage(sender: AnyObject) {
-        
+    func showImage(sender: UIGestureRecognizer) {
+        let tag = sender.view?.tag ?? 0
+        if let status = self.status? {
+            let request = ImageViewController.ImageViewRequest(media: status.media, page: tag)
+            EventBox.post("showImage", sender: request)
+        }
     }
     
     @IBAction func reply(sender: UIButton) {
@@ -244,5 +252,4 @@ class TwitterStatusCell: UITableViewCell {
             }
         }
     }
-    
 }

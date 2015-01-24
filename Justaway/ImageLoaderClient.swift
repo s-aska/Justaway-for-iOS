@@ -5,6 +5,11 @@ class ImageLoaderClient {
     
     struct Static {
         static let defaultOptions = Pinwheel.DisplayOptions.Builder()
+            .displayer(Pinwheel.FadeInDisplayer())
+            .queuePriority(NSOperationQueuePriority.Low)
+            .build()
+        
+        static let thumbnailOptions = Pinwheel.DisplayOptions.Builder()
             .addFilter(RoundedFilter(6, w: 80, h: 80), hook: .BeforeMemory)
             .displayer(Pinwheel.FadeInDisplayer())
             .queuePriority(NSOperationQueuePriority.Low)
@@ -28,6 +33,10 @@ class ImageLoaderClient {
     
     class func displayImage(url: NSURL, imageView: UIImageView) {
         Pinwheel.displayImage(url, imageView: imageView, options: Static.defaultOptions)
+    }
+    
+    class func displayThumbnailImage(url: NSURL, imageView: UIImageView) {
+        Pinwheel.displayImage(url, imageView: imageView, options: Static.thumbnailOptions)
     }
     
     class func displayUserIcon(url: NSURL, imageView: UIImageView) {
