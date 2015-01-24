@@ -171,7 +171,7 @@ class TwitterStatusCell: UITableViewCell {
         self.iconImageView.image = nil
         self.nameLabel.text = status.user.name
         self.screenNameLabel.text = "@" + status.user.screenName
-        self.protectedLabel.hidden = status.isProtected ? false : true
+        self.protectedLabel.hidden = status.user.isProtected ? false : true
         self.statusLabel.text = status.text
         self.retweetCountLabel.text = status.retweetCount > 0 ? numberFormatter.stringFromNumber(status.retweetCount) : ""
         self.favoriteCountLabel.text = status.favoriteCount > 0 ? numberFormatter.stringFromNumber(status.favoriteCount) : ""
@@ -191,6 +191,16 @@ class TwitterStatusCell: UITableViewCell {
     }
     
     func setImage(status: TwitterStatus) {
+        
+        if self.iconImageView.image == nil {
+            ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: self.iconImageView)
+        }
+        
+        if let actionedBy = status.actionedBy {
+            if self.actionedIconImageView.image == nil {
+                ImageLoaderClient.displayActionedUserIcon(actionedBy.profileImageURL, imageView: self.actionedIconImageView)
+            }
+        }
         
         if status.media.count == 0 || self.imagesContainerView.hidden == false {
             return

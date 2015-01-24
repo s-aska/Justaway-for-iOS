@@ -12,7 +12,6 @@ class TwitterStatus {
     let urls: [TwitterURL]
     let mentions: [TwitterUser]
     let hashtags: [TwitterHashtag]
-    let isProtected: Bool
     let media: [TwitterMedia]
     let actionedBy: TwitterUser?
     let referenceStatusID: String?
@@ -48,8 +47,6 @@ class TwitterStatus {
             self.hashtags = [TwitterHashtag]()
         }
         
-        self.isProtected = statusJson["protected"].boolValue
-        
         if let extended_entities = statusJson["extended_entities"]["media"].array {
             self.media = extended_entities.map { TwitterMedia($0) }
         } else if let media = statusJson["entities"]["media"].array {
@@ -67,7 +64,7 @@ class TwitterStatus {
     }
     
     init(_ dictionary: [String: AnyObject]) {
-        self.user = TwitterUser(dictionary["user"] as? [String: String] ?? [:])
+        self.user = TwitterUser(dictionary["user"] as? [String: AnyObject] ?? [:])
         self.statusID = dictionary["statusID"] as? String ?? ""
         self.text = dictionary["text"] as? String ?? ""
         self.createdAt = TwitterDate(NSDate(timeIntervalSince1970: (dictionary["createdAt"] as? NSNumber ?? 0).doubleValue))
@@ -91,8 +88,6 @@ class TwitterStatus {
         } else {
             self.hashtags = [TwitterHashtag]()
         }
-        
-        self.isProtected = dictionary["isProtected"] as Bool
         
         if let media = dictionary["media"] as? [[String: AnyObject]] {
             self.media = media.map({ TwitterMedia($0) })
@@ -130,7 +125,6 @@ class TwitterStatus {
             "urls": urls.map({ $0.dictionaryValue }),
             "mentions": mentions.map({ $0.dictionaryValue }),
             "hashtags": hashtags.map({ $0.dictionaryValue }),
-            "isProtected": isProtected,
             "media": media.map({ $0.dictionaryValue }),
             "via": via.dictionaryValue
         ]

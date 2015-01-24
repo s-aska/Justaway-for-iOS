@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="fontello.ttf">
@@ -44,7 +44,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="鍵" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3w5-v7-Bbj">
-                                <rect key="frame" x="97" y="4" width="6.5" height="10"/>
+                                <rect key="frame" x="99.5" y="4" width="6.5" height="10"/>
                                 <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="10"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -56,7 +56,7 @@
                             <constraint firstItem="hbJ-3K-Eoq" firstAttribute="top" secondItem="y1M-cQ-9LC" secondAttribute="top" constant="2" id="FCn-wC-85S"/>
                             <constraint firstItem="4lU-BV-VYh" firstAttribute="leading" secondItem="y1M-cQ-9LC" secondAttribute="leading" id="Jzp-nk-2xW"/>
                             <constraint firstItem="hbJ-3K-Eoq" firstAttribute="leading" secondItem="4lU-BV-VYh" secondAttribute="trailing" constant="5" id="K3d-5P-GcH"/>
-                            <constraint firstItem="3w5-v7-Bbj" firstAttribute="leading" secondItem="hbJ-3K-Eoq" secondAttribute="trailing" constant="2" id="lw2-Yi-xs2"/>
+                            <constraint firstItem="3w5-v7-Bbj" firstAttribute="leading" secondItem="hbJ-3K-Eoq" secondAttribute="trailing" constant="4" id="lw2-Yi-xs2"/>
                             <constraint firstItem="3w5-v7-Bbj" firstAttribute="top" secondItem="y1M-cQ-9LC" secondAttribute="top" constant="4" id="rsy-Eq-Xao"/>
                             <constraint firstAttribute="height" constant="17" id="zjv-tI-wRl"/>
                         </constraints>

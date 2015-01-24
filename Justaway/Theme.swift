@@ -14,6 +14,8 @@ protocol Theme {
     func name() -> String
     
     func statusBarStyle() -> UIStatusBarStyle
+    func activityIndicatorStyle() -> UIActivityIndicatorViewStyle
+    func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle
     
     func mainBackgroundColor() -> UIColor
     func mainHighlightBackgroundColor() -> UIColor
@@ -69,7 +71,8 @@ class ThemeController {
         // Note: Adding "View controller-based status bar appearance" to info.plist and setting it to "NO"
         UIApplication.sharedApplication().statusBarStyle = theme.statusBarStyle()
         UITableViewCell.appearance().backgroundColor = theme.mainBackgroundColor()
-        UITableView.appearance().backgroundColor = theme.mainBackgroundColor()
+        UIScrollView.appearance().backgroundColor = theme.mainBackgroundColor()
+        UIScrollView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         
         // for CustomView
         TextLable.appearance().textColor = theme.bodyTextColor()
@@ -128,9 +131,10 @@ class ThemeController {
         for subview in view.subviews as [UIView] {
             refreshView(subview, theme: theme, indent: indent + "  ")
             switch subview {
-            case let v as UITableViewCell:
+            case let v as UIScrollView:
+                v.indicatorStyle = theme.scrollViewIndicatorStyle()
                 v.backgroundColor = theme.mainBackgroundColor()
-            case let v as UITableView:
+            case let v as UITableViewCell:
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as BackgroundView:
                 v.backgroundColor = theme.mainBackgroundColor()
@@ -167,6 +171,8 @@ class ThemeController {
                 v.setTitleColor(theme.streamingError(), forState: .Disabled)
             case let v as CellSeparator:
                 v.borderLayer?.backgroundColor = theme.menuBackgroundColor().CGColor
+            case let v as UIActivityIndicatorView:
+                v.activityIndicatorViewStyle = theme.activityIndicatorStyle()
             default:
                 break
             }

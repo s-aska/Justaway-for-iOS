@@ -2,6 +2,7 @@ import UIKit
 import SwifteriOS
 import EventBox
 import KeyClip
+import Pinwheel
 
 let TIMELINE_ROWS_LIMIT = 1000
 let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
@@ -101,16 +102,10 @@ class TimelineTableViewController: UITableViewController {
         
         cell.status = status
         cell.setLayout(layout)
-        cell.setText(status)
         cell.textHeightConstraint.constant = row.textHeight
+        cell.setText(status)
         
-        ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: cell.iconImageView)
-        
-        if let actionedBy = status.actionedBy {
-            ImageLoaderClient.displayActionedUserIcon(actionedBy.profileImageURL, imageView: cell.actionedIconImageView)
-        }
-        
-        if (!scrolling) {
+        if !Pinwheel.suspend {
             cell.setImage(status)
         }
         
@@ -137,7 +132,7 @@ class TimelineTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if footerView == nil {
             footerView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, TIMELINE_FOOTER_HEIGHT))
-            footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+            footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
             footerView?.addSubview(footerIndicatorView!)
             footerIndicatorView?.hidesWhenStopped = true
             footerIndicatorView?.center = (footerView?.center)!
@@ -190,6 +185,7 @@ class TimelineTableViewController: UITableViewController {
         scrolling = false
         loadDataQueue.suspended = false
         mainQueue.suspended = false
+        Pinwheel.suspend = false
         isTop = self.tableView.contentOffset.y == 0 ? true : false
         let y = self.tableView.contentOffset.y + self.tableView.bounds.size.height - self.tableView.contentInset.bottom
         let h = self.tableView.contentSize.height
@@ -197,7 +193,7 @@ class TimelineTableViewController: UITableViewController {
         if f < TIMELINE_FOOTER_HEIGHT {
             didScrollToBottom()
         }
-        self.renderImages()
+        renderImages()
     }
     
     func didScrollToBottom() {
@@ -207,6 +203,7 @@ class TimelineTableViewController: UITableViewController {
     }
     
     func scrollToTop() {
+        Pinwheel.suspend = true
         self.tableView.setContentOffset(CGPointZero, animated: true)
     }
     
