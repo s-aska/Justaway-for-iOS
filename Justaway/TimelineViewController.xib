@@ -83,7 +83,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQA-1l-jex">
                     <rect key="frame" x="0.0" y="20" width="600" height="530"/>
                     <subviews>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QzD-8n-VHR">
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QzD-8n-VHR" customClass="BackgroundScrollView" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="530"/>
                         </scrollView>
                     </subviews>

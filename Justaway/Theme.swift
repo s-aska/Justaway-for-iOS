@@ -71,11 +71,14 @@ class ThemeController {
         // Note: Adding "View controller-based status bar appearance" to info.plist and setting it to "NO"
         UIApplication.sharedApplication().statusBarStyle = theme.statusBarStyle()
         UITableViewCell.appearance().backgroundColor = theme.mainBackgroundColor()
-        UIScrollView.appearance().backgroundColor = theme.mainBackgroundColor()
-        UIScrollView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
+        UITableView.appearance().backgroundColor = theme.mainBackgroundColor()
+        UITableView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
+        UITextView.appearance().textColor = theme.bodyTextColor()
         
         // for CustomView
         TextLable.appearance().textColor = theme.bodyTextColor()
+        BackgroundScrollView.appearance().backgroundColor = theme.mainBackgroundColor()
+        BackgroundScrollView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         BackgroundView.appearance().backgroundColor = theme.mainBackgroundColor()
         MenuView.appearance().backgroundColor = theme.menuBackgroundColor()
         MenuButton.appearance().setTitleColor(theme.menuTextColor(), forState: .Normal)
@@ -131,9 +134,14 @@ class ThemeController {
         for subview in view.subviews as [UIView] {
             refreshView(subview, theme: theme, indent: indent + "  ")
             switch subview {
-            case let v as UIScrollView:
+            case let v as BackgroundScrollView:
                 v.indicatorStyle = theme.scrollViewIndicatorStyle()
                 v.backgroundColor = theme.mainBackgroundColor()
+            case let v as UITableView:
+                v.indicatorStyle = theme.scrollViewIndicatorStyle()
+                v.backgroundColor = theme.mainBackgroundColor()
+            case let v as UITextView:
+                v.textColor = theme.bodyTextColor()
             case let v as UITableViewCell:
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as BackgroundView:

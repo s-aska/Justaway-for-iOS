@@ -12,6 +12,7 @@ import UIKit
 
 class MenuView: UIView {}
 class BackgroundView: UIView {}
+class BackgroundScrollView: UIScrollView {}
 class CellSeparator: UIView {
     let borderLayer = CALayer()
     
