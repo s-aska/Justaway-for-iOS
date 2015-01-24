@@ -89,7 +89,7 @@ class StatusAlert {
                     title: "Quote Tweet URL",
                     style: .Default,
                     handler: { action in
-                        
+                        Twitter.quoteURL(status)
                 }))
                 
                 // Share
@@ -100,7 +100,7 @@ class StatusAlert {
                     handler: { action in
                         let items = [
                             status.text,
-                            NSURL(string: "https://twitter.com/\(status.user.screenName)/status/\(status.statusID)")!
+                            status.statusURL
                         ]
                         let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
                         if let rootVc: UIViewController = UIApplication.sharedApplication().keyWindow?.rootViewController {

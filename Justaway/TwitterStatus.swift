@@ -114,6 +114,10 @@ class TwitterStatus {
         return self.referenceStatusID ?? self.statusID
     }
     
+    var statusURL: NSURL {
+        return NSURL(string: "https://twitter.com/\(user.screenName)/status/\(statusID)")!
+    }
+    
     var dictionaryValue: [String: AnyObject] {
         var dictionary: [String: AnyObject] = [
             "user": user.dictionaryValue,

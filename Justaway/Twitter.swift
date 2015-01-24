@@ -279,6 +279,11 @@ extension Twitter {
         EventBox.post(EditorRequest.eventName, sender: req)
     }
     
+    class func quoteURL(status: TwitterStatus) {
+        let req = EditorRequest(text: " \(status.statusURL)", range: NSMakeRange(0, 0), inReplyToStatusId: status.statusID)
+        EventBox.post(EditorRequest.eventName, sender: req)
+    }
+    
 }
 
 // MARK: - REST API
