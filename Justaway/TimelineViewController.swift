@@ -124,22 +124,22 @@ class TimelineViewController: UIViewController {
             }
         }
         
-        EventBox.onMainThread(self, name: "showImage") { n in
-            let request = n.object as ImageViewController.ImageViewRequest
+        EventBox.onMainThread(self, name: ImageViewEvent.name) { n in
+            let event = n.object as ImageViewEvent
             if self.imageViewController == nil {
                 self.imageViewController = ImageViewController()
             }
             self.imageViewController!.view.frame = self.view.frame
             self.view.addSubview(self.imageViewController!.view)
-            self.imageViewController!.show(request)
+            self.imageViewController!.show(event)
         }
         
-        EventBox.onMainThread(self, name: Twitter.EditorRequest.eventName) { n in
-            let request = n.object as Twitter.EditorRequest
+        EventBox.onMainThread(self, name: EditorEvent.name) { n in
+            let event = n.object as EditorEvent
             self.editorViewController.show()
-            self.editorViewController.inReplyToStatusId = request.inReplyToStatusId
-            self.editorViewController.textView.text = request.text
-            if let range = request.range {
+            self.editorViewController.inReplyToStatusId = event.inReplyToStatusId
+            self.editorViewController.textView.text = event.text
+            if let range = event.range {
                 self.editorViewController.textView.selectedRange = range
             }
         }

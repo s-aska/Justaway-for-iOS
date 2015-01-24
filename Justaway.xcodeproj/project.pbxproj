@@ -68,6 +68,7 @@
 		6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3219BB514900D50D78 /* Main.storyboard */; };
 		6A4B9D3619BB514900D50D78 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3519BB514900D50D78 /* Images.xcassets */; };
 		6A4B9D4219BB514900D50D78 /* JustawayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D4119BB514900D50D78 /* JustawayTests.swift */; };
+		6A5357D31A74027000291E95 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5357D21A74027000291E95 /* Event.swift */; };
 		6AB55B3E19C562CF00DC6442 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */; };
 		6AB55B4019C563F600DC6442 /* EditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB55B3F19C563F600DC6442 /* EditorViewController.xib */; };
 		6AB55B4319C5843000DC6442 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB55B4219C5843000DC6442 /* SettingsViewController.swift */; };
@@ -227,6 +228,7 @@
 		6A4B9D3B19BB514900D50D78 /* JustawayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustawayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4B9D4019BB514900D50D78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A4B9D4119BB514900D50D78 /* JustawayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustawayTests.swift; sourceTree = "<group>"; };
+		6A5357D21A74027000291E95 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
 		6AB55B3F19C563F600DC6442 /* EditorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditorViewController.xib; sourceTree = "<group>"; };
 		6AB55B4219C5843000DC6442 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -329,6 +331,7 @@
 			children = (
 				3805DE8A1A5F17E600FBD015 /* Theme */,
 				381E6E0919DD500700139654 /* Settings */,
+				6A5357D21A74027000291E95 /* Event.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -725,6 +728,7 @@
 			files = (
 				3899C6AD1A5C441800F8AE87 /* NSOperationQueue-Serial.swift in Sources */,
 				38F4EAEC19F14E4700CBD23F /* RoundedFilter.swift in Sources */,
+				6A5357D31A74027000291E95 /* Event.swift in Sources */,
 				381E6E8519E2A69200139654 /* TwitterStatusCell.swift in Sources */,
 				6AD963DD1A69AAC000136B53 /* StreamingAlert.swift in Sources */,
 				6AB55B4919C5984800DC6442 /* TransparentView.swift in Sources */,

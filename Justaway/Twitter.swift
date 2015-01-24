@@ -42,18 +42,6 @@ class Twitter {
     class var enableStreaming: Bool { return Static.enableStreaming }
     
     
-    class EditorRequest {
-        let text: String
-        let range: NSRange?
-        let inReplyToStatusId: String?
-        init(text: String, range: NSRange?, inReplyToStatusId: String?) {
-            self.text = text
-            self.range = range
-            self.inReplyToStatusId = inReplyToStatusId
-        }
-        class var eventName: String { return "EditorRequest" }
-    }
-    
     // MARK: - Class Methods
     
     class func setup() {
@@ -87,7 +75,7 @@ class Twitter {
         }
     }
     
-    class func getClient() -> Swifter? {
+    class func getCurrentClient() -> Swifter? {
         if let account = AccountSettingsStore.get() {
             return getClient(account.account())
         } else {
@@ -245,7 +233,7 @@ class Twitter {
             failure(error)
         }
         
-        getClient()?.getStatusesHomeTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
+        getCurrentClient()?.getStatusesHomeTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
     }
     
     class func statusUpdate(status: String, inReplyToStatusID: String?) {
@@ -263,7 +251,7 @@ class Twitter {
             }
         }
         
-        getClient()?.postStatusUpdate(status, inReplyToStatusID: inReplyToStatusID, lat: nil, long: nil, placeID: nil, displayCoordinates: nil, trimUser: nil, success: s, failure: f)
+        getCurrentClient()?.postStatusUpdate(status, inReplyToStatusID: inReplyToStatusID, lat: nil, long: nil, placeID: nil, displayCoordinates: nil, trimUser: nil, success: s, failure: f)
     }
 }
 
@@ -275,13 +263,11 @@ extension Twitter {
         let prefix = "@\(status.user.screenName) "
         let mentions = join(" ", status.mentions.map({ "@\($0.screenName)" }))
         let range = NSMakeRange(countElements(prefix), countElements(mentions))
-        let req = EditorRequest(text: prefix + mentions, range: range, inReplyToStatusId: status.statusID)
-        EventBox.post(EditorRequest.eventName, sender: req)
+        EditorEvent(text: prefix + mentions, range: range, inReplyToStatusId: status.statusID).post()
     }
     
     class func quoteURL(status: TwitterStatus) {
-        let req = EditorRequest(text: " \(status.statusURL)", range: NSMakeRange(0, 0), inReplyToStatusId: status.statusID)
-        EventBox.post(EditorRequest.eventName, sender: req)
+        EditorEvent(text: " \(status.statusURL)", range: NSMakeRange(0, 0), inReplyToStatusId: status.statusID).post()
     }
     
 }
@@ -316,7 +302,7 @@ extension Twitter {
             }
             Static.favorites[statusID] = true
             EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
-            Twitter.getClient()?.postCreateFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
+            Twitter.getCurrentClient()?.postCreateFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
             }, failure: { (error) -> Void in
                 let code = Twitter.getErrorCode(error)
                 if code == 139 {
@@ -340,7 +326,7 @@ extension Twitter {
             }
             Static.favorites.removeValueForKey(statusID)
             EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
-            Twitter.getClient()?.postDestroyFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
+            Twitter.getCurrentClient()?.postDestroyFavoriteWithID(statusID, includeEntities: false, success: { (status) -> Void in
             }, failure: { (error) -> Void in
                     let code = Twitter.getErrorCode(error)
                     if code == 34 {
@@ -370,7 +356,7 @@ extension Twitter {
             }
             Static.retweets[statusID] = "0"
             EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
-            Twitter.getClient()?.postStatusRetweetWithID(statusID, trimUser: nil, success: { (status: [String : JSONValue]?) -> Void in
+            Twitter.getCurrentClient()?.postStatusRetweetWithID(statusID, trimUser: nil, success: { (status: [String : JSONValue]?) -> Void in
                 Async.customQueue(Static.retweetsQueue) {
                     if let id = status?["id_str"]?.string {
                         Static.retweets[statusID] = id
@@ -400,7 +386,7 @@ extension Twitter {
             }
             Static.retweets.removeValueForKey(statusID)
             EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
-            Twitter.getClient()?.postStatusesDestroyWithID(retweetedStatusID, trimUser: nil, success: { (status) -> Void in
+            Twitter.getCurrentClient()?.postStatusesDestroyWithID(retweetedStatusID, trimUser: nil, success: { (status) -> Void in
             }, failure: { (error) -> Void in
                     let code = Twitter.getErrorCode(error)
                     if code == 34 {
@@ -503,7 +489,7 @@ extension Twitter {
             }
         }
         
-        Static.streamingRequest = getClient()?.getUserStreamDelimited(nil,
+        Static.streamingRequest = getCurrentClient()?.getUserStreamDelimited(nil,
             stallWarnings: nil,
             includeMessagesFromFollowedAccounts: nil,
             includeReplies: nil,

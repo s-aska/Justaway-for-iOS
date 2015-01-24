@@ -235,8 +235,7 @@ class TwitterStatusCell: UITableViewCell {
     func showImage(sender: UIGestureRecognizer) {
         let tag = sender.view?.tag ?? 0
         if let status = self.status? {
-            let request = ImageViewController.ImageViewRequest(media: status.media, page: tag)
-            EventBox.post("showImage", sender: request)
+            ImageViewEvent(media: status.media, page: tag).post()
         }
     }
     

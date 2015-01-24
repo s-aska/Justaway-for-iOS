@@ -21,15 +21,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     var imageViews = [UIImageView]()
     var currentPage = 0
     
-    class ImageViewRequest {
-        let media: [TwitterMedia]
-        let page: Int
-        init(media: [TwitterMedia], page: Int) {
-            self.media = media
-            self.page = page
-        }
-    }
-    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -78,12 +69,12 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Configuration
     
-    func show(request: ImageViewRequest) {
+    func show(event: ImageViewEvent) {
         var size = view.frame.size
-        let contentView = UIView(frame: CGRectMake(0, 0, size.width * CGFloat(request.media.count), size.height))
+        let contentView = UIView(frame: CGRectMake(0, 0, size.width * CGFloat(event.media.count), size.height))
         contentView.backgroundColor = UIColor.clearColor()
         var i = 0
-        for image in request.media {
+        for image in event.media {
             let imageView = UIImageView(frame: CGRectMake(0, 0, size.width, size.height))
             imageView.contentMode = .ScaleAspectFit
             imageView.tag = i
@@ -106,7 +97,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
-        scrollView.setContentOffset(CGPointMake(size.width * CGFloat(request.page), 0), animated: false)
+        scrollView.setContentOffset(CGPointMake(size.width * CGFloat(event.page), 0), animated: false)
     }
     
     func hide(sender: AnyObject) {
