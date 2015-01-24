@@ -97,7 +97,7 @@ class TwitterStatus {
         
         self.via = TwitterVia(dictionary["via"] as [String: String])
         
-        if let actionedBy = dictionary["actionedBy"] as? [String: String] {
+        if let actionedBy = dictionary["actionedBy"] as? [String: AnyObject] {
             self.actionedBy = TwitterUser(actionedBy)
         }
         
