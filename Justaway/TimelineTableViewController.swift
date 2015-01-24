@@ -5,6 +5,7 @@ import KeyClip
 import Pinwheel
 
 let TIMELINE_ROWS_LIMIT = 1000
+let TIMELINE_HEADER_HEIGHT: CGFloat = 5.5
 let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
 
 class TimelineTableViewController: UITableViewController {
@@ -13,6 +14,7 @@ class TimelineTableViewController: UITableViewController {
     var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
     var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
     var lastID: Int64?
+    var headerView: MenuView?
     var footerView: UIView?
     var footerIndicatorView: UIActivityIndicatorView?
     var isTop: Bool = true
@@ -124,6 +126,18 @@ class TimelineTableViewController: UITableViewController {
 //        }
 //    }
     
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return TIMELINE_HEADER_HEIGHT
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if headerView == nil {
+            headerView = MenuView()
+            headerView?.frame = CGRectMake(0, 0, view.frame.size.width, TIMELINE_HEADER_HEIGHT)
+        }
+        return headerView
+    }
+    
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return TIMELINE_FOOTER_HEIGHT
     }
@@ -154,6 +168,7 @@ class TimelineTableViewController: UITableViewController {
     
     override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         isTop = false
+        headerView?.hidden = true
         scrollBegin() // begin of flick scrolling
     }
     
@@ -193,6 +208,9 @@ class TimelineTableViewController: UITableViewController {
             didScrollToBottom()
         }
         renderImages()
+        if isTop == headerView?.hidden {
+            headerView?.hidden = !isTop
+        }
     }
     
     func didScrollToBottom() {
@@ -209,13 +227,13 @@ class TimelineTableViewController: UITableViewController {
     func createRow(status: TwitterStatus, fontSize: CGFloat) -> Row {
         let layout = TwitterStatusCellLayout.fromStatus(status)
         if let height = layoutHeight[layout] {
-            let textHeight = heightForText(status.text, fontSize: fontSize)
+            let textHeight = measure(status.text, fontSize: fontSize)
             let totalHeight = ceil(height + textHeight)
             return Row(status: status, height: totalHeight, textHeight: textHeight)
         } else if let cell = self.layoutHeightCell[layout] {
             cell.frame = self.tableView.bounds
             cell.setLayout(layout)
-            let textHeight = heightForText(status.text, fontSize: fontSize)
+            let textHeight = measure(status.text, fontSize: fontSize)
             cell.textHeightConstraint.constant = 0
             let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
             layoutHeight[layout] = height
@@ -226,7 +244,7 @@ class TimelineTableViewController: UITableViewController {
         }
     }
     
-    func heightForText(text: NSString, fontSize: CGFloat) -> CGFloat {
+    func measure(text: NSString, fontSize: CGFloat) -> CGFloat {
         return ceil(text.boundingRectWithSize(
             CGSizeMake((self.layoutHeightCell[.Normal]?.statusLabel.frame.size.width)!, 0),
             options: NSStringDrawingOptions.UsesLineFragmentOrigin,
@@ -236,10 +254,8 @@ class TimelineTableViewController: UITableViewController {
     
     func loadCache() {
         if loadDataQueue.operationCount > 0 {
-            println("loadData busy")
             return
         }
-        println("loadCache addOperation")
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (()-> Void) = {
                 op.finish()
@@ -255,7 +271,7 @@ class TimelineTableViewController: UITableViewController {
                 self.renderData(statuses, mode: .OVER, handler: always)
             }
             let failure = { (error: NSError) -> Void in
-//                println("loadData error: \(error)")
+                ErrorAlert.show("Error", message: error.localizedDescription)
                 always()
             }
             dispatch_sync(dispatch_get_main_queue(), {
