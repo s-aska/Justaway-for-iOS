@@ -132,7 +132,6 @@ class TimelineViewController: UIViewController {
             self.imageViewController!.view.frame = self.view.frame
             self.view.addSubview(self.imageViewController!.view)
             self.imageViewController!.show(request)
-
         }
     }
     
@@ -143,6 +142,9 @@ class TimelineViewController: UIViewController {
     // MARK: - Actions
     
     func refresh(sender: AnyObject) {
+        if (sender.state != .Began) {
+            return
+        }
         tableViewControllers.first?.loadData(nil)
     }
     

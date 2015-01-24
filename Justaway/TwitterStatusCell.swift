@@ -78,9 +78,12 @@ class TwitterStatusCell: UITableViewCell {
         layoutMargins = UIEdgeInsetsZero
         preservesSuperviewLayoutMargins = false
         
+        contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showMenu:"))
+        
         imageView1.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
         imageView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
         imageView3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
+        
     }
     
     func configureEvent() {
@@ -212,14 +215,18 @@ class TwitterStatusCell: UITableViewCell {
         
         self.imagesContainerView.hidden = false
         
-        var i = 0
-        let imageViews = [self.imageView1, self.imageView2, self.imageView3];
+        var imageViews = [self.imageView1, self.imageView2, self.imageView3];
         for media in status.media {
-            ImageLoaderClient.displayThumbnailImage(media.mediaThumbURL, imageView: imageViews[i])
-            i++
-            if i > 2 {
+            if let imageView = imageViews.removeAtIndex(0) {
+                imageView.hidden = false
+                ImageLoaderClient.displayThumbnailImage(media.mediaThumbURL, imageView: imageView)
+            }
+            if imageViews.count == 0 {
                 break
             }
+        }
+        for imageView in imageViews {
+            imageView.hidden = true
         }
     }
     
@@ -230,6 +237,12 @@ class TwitterStatusCell: UITableViewCell {
         if let status = self.status? {
             let request = ImageViewController.ImageViewRequest(media: status.media, page: tag)
             EventBox.post("showImage", sender: request)
+        }
+    }
+    
+    func showMenu(sender: UIGestureRecognizer) {
+        if let status = self.status {
+            StatusAlert.show(status)
         }
     }
     
