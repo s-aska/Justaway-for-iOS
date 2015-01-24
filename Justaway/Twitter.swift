@@ -41,6 +41,19 @@ class Twitter {
     class var connectionStatus: ConnectionStatus { return Static.connectionStatus }
     class var enableStreaming: Bool { return Static.enableStreaming }
     
+    
+    class EditorRequest {
+        let text: String
+        let range: NSRange?
+        let inReplyToStatusId: String?
+        init(text: String, range: NSRange?, inReplyToStatusId: String?) {
+            self.text = text
+            self.range = range
+            self.inReplyToStatusId = inReplyToStatusId
+        }
+        class var eventName: String { return "EditorRequest" }
+    }
+    
     // MARK: - Class Methods
     
     class func setup() {
@@ -252,6 +265,20 @@ class Twitter {
         
         getClient()?.postStatusUpdate(status, inReplyToStatusID: inReplyToStatusID, lat: nil, long: nil, placeID: nil, displayCoordinates: nil, trimUser: nil, success: s, failure: f)
     }
+}
+
+// MARK: - Virtual
+
+extension Twitter {
+    
+    class func reply(status: TwitterStatus) {
+        let prefix = "@\(status.user.screenName) "
+        let mentions = join(" ", status.mentions.map({ "@\($0.screenName)" }))
+        let range = NSMakeRange(countElements(prefix), countElements(mentions))
+        let req = EditorRequest(text: prefix + mentions, range: range, inReplyToStatusId: status.statusID)
+        EventBox.post(EditorRequest.eventName, sender: req)
+    }
+    
 }
 
 // MARK: - REST API

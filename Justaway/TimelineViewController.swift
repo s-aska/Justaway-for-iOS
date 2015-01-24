@@ -133,6 +133,16 @@ class TimelineViewController: UIViewController {
             self.view.addSubview(self.imageViewController!.view)
             self.imageViewController!.show(request)
         }
+        
+        EventBox.onMainThread(self, name: Twitter.EditorRequest.eventName) { n in
+            let request = n.object as Twitter.EditorRequest
+            self.editorViewController.show()
+            self.editorViewController.inReplyToStatusId = request.inReplyToStatusId
+            self.editorViewController.textView.text = request.text
+            if let range = request.range {
+                self.editorViewController.textView.selectedRange = range
+            }
+        }
     }
     
     func toggleStreaming() {

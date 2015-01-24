@@ -15,6 +15,7 @@
 //
 
 import UIKit
+import EventBox
 
 class StatusAlert {
     class func show(status: TwitterStatus) {
@@ -28,6 +29,15 @@ class StatusAlert {
         }))
         Twitter.isRetweet(statusID) { (retweetedStatusID) -> Void in
             Twitter.isFavorite(statusID) { (isFavorite) -> Void in
+                
+                // Reply
+                
+                actionSheet.addAction(UIAlertAction(
+                    title: "Reply",
+                    style: .Default,
+                    handler: { action in
+                        Twitter.reply(status)
+                }))
                 
                 // Favorite and Retweet
                 

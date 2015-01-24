@@ -247,7 +247,9 @@ class TwitterStatusCell: UITableViewCell {
     }
     
     @IBAction func reply(sender: UIButton) {
-        
+        if let status = self.status {
+            Twitter.reply(status)
+        }
     }
     
     @IBAction func retweet(sender: BaseButton) {

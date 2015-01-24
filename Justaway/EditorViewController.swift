@@ -15,6 +15,8 @@ class EditorViewController: UIViewController {
         return "EditorViewController"
     }
     
+    var inReplyToStatusId: String?
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -97,7 +99,7 @@ class EditorViewController: UIViewController {
         if text.isEmpty {
             hide()
         } else {
-            Twitter.statusUpdate(text, inReplyToStatusID: nil)
+            Twitter.statusUpdate(text, inReplyToStatusID: inReplyToStatusId)
             hide()
         }
         
@@ -110,6 +112,7 @@ class EditorViewController: UIViewController {
     
     func hide() {
         textView.reset()
+        inReplyToStatusId = nil
         
         if (textView.isFirstResponder()) {
             textView.resignFirstResponder()
