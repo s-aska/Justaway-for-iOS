@@ -11,11 +11,9 @@ import EventBox
 
 class Event {
     class var name: String {
-        NSLog("name: \(NSStringFromClass(self))")
         return NSStringFromClass(self)
     }
     func post() {
-        NSLog("post: \(NSStringFromClass(self.dynamicType))")
         EventBox.post(NSStringFromClass(self.dynamicType), sender: self)
     }
 }
