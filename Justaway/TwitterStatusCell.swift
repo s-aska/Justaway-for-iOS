@@ -78,8 +78,6 @@ class TwitterStatusCell: UITableViewCell {
         layoutMargins = UIEdgeInsetsZero
         preservesSuperviewLayoutMargins = false
         
-        contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showMenu:"))
-        
         imageView1.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
         imageView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
         imageView3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
@@ -236,12 +234,6 @@ class TwitterStatusCell: UITableViewCell {
         let tag = sender.view?.tag ?? 0
         if let status = self.status? {
             ImageViewEvent(media: status.media, page: tag).post()
-        }
-    }
-    
-    func showMenu(sender: UIGestureRecognizer) {
-        if let status = self.status {
-            StatusAlert.show(status)
         }
     }
     

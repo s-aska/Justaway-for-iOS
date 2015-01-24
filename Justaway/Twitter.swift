@@ -202,7 +202,7 @@ class Twitter {
                     return
                 }
             }
-            failure(NSError())
+            success([TwitterStatus]())
         }
     }
     
@@ -234,6 +234,48 @@ class Twitter {
         }
         
         getCurrentClient()?.getStatusesHomeTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
+    }
+    
+    class func getMentionTimelineCache(success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        Async.background {
+            if let cache = KeyClip.load("mentionTimeline") as NSDictionary? {
+                if let statuses = cache["statuses"] as? [[String: AnyObject]] {
+                    success(statuses.map({ TwitterStatus($0) }))
+                    return
+                }
+            }
+            success([TwitterStatus]())
+        }
+    }
+    
+    class func getMentionTimeline(maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        let s = { (array: [JSONValue]?) -> Void in
+            
+            if let statuses = array?.map({ TwitterStatus($0) }) {
+                
+                success(statuses)
+                
+                if maxID == nil {
+                    let dictionary = ["statuses": statuses.map({ $0.dictionaryValue })]
+                    if KeyClip.save("mentionTimeline", dictionary: dictionary) {
+                        NSLog("mentionTimeline cache success.")
+                    }
+                }
+            }
+        }
+        
+        let f = { (error: NSError) -> Void in
+            if error.code == 401 {
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+            } else if error.code == 429 {
+                ErrorAlert.show("Tweet failure", message: "API Limit")
+            } else {
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+            }
+            failure(error)
+        }
+        
+        getCurrentClient()?.getStatusesMentionTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
     }
     
     class func statusUpdate(status: String, inReplyToStatusID: String?) {

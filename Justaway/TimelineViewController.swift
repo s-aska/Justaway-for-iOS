@@ -69,8 +69,8 @@ class TimelineViewController: UIViewController {
         var size = scrollWrapperView.frame.size
         let contentView = UIView(frame: CGRectMake(0, 0, size.width * 3, size.height))
         
-        for i in 0 ... 0 {
-            let vc = TimelineTableViewController()
+        for i in 0 ... 1 {
+            let vc: TimelineTableViewController = i == 0 ? HomeTimelineTableViewController() : NotificationsViewController()
             vc.view.frame = CGRectMake(0, 0, size.width, size.height)
             let view = UIView(frame: CGRectMake(size.width * CGFloat(i), 0, size.width, size.height))
             view.addSubview(vc.view)
@@ -95,7 +95,16 @@ class TimelineViewController: UIViewController {
     func configureEvent() {
         EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
             let status = n.object as TwitterStatus
-            self.tableViewControllers.first?.renderData([status], mode: .TOP, handler: {})
+            for tableViewController in self.tableViewControllers {
+                switch tableViewController {
+                case let vc as StatusTableViewController:
+                    if vc.accept(status) {
+                        vc.renderData([status], mode: .TOP, handler: {})
+                    }
+                default:
+                    break
+                }
+            }
         }
         
         EventBox.onMainThread(self, name: "streamingStatusChange") { _ in
@@ -155,7 +164,7 @@ class TimelineViewController: UIViewController {
         if (sender.state != .Began) {
             return
         }
-        tableViewControllers.first?.loadData(nil)
+        tableViewControllers.first?.refresh()
     }
     
     func streamingSwitch(sender: AnyObject) {

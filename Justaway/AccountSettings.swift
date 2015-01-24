@@ -107,12 +107,16 @@ class AccountSettings {
     }
     
     func find(userID: String) -> Int? {
-        for i in 0 ... accounts.count {
+        for i in 0 ..< accounts.count {
             if accounts[i].userID == userID {
                 return i
             }
         }
         return nil
+    }
+    
+    func isMe(userID: String) -> Bool {
+        return find(userID) == nil ? false : true
     }
     
     var dictionaryValue: NSDictionary {

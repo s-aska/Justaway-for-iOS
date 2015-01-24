@@ -6,14 +6,6 @@
 //  Copyright (c) 2015 Shinichiro Aska. All rights reserved.
 //
 
-//
-//  RetweetAlert.swift
-//  Justaway
-//
-//  Created by Shinichiro Aska on 1/17/15.
-//  Copyright (c) 2015 Shinichiro Aska. All rights reserved.
-//
-
 import UIKit
 import EventBox
 
@@ -21,6 +13,7 @@ class StatusAlert {
     class func show(status: TwitterStatus) {
         let statusID = status.statusID
         let actionSheet = UIAlertController()
+        actionSheet.message = status.text
         actionSheet.addAction(UIAlertAction(
             title: "Cancel",
             style: .Cancel,
@@ -120,6 +113,16 @@ class StatusAlert {
                                 return
                         }))
                     }
+                }
+                
+                if let viaURL = status.via.URL {
+                    actionSheet.addAction(UIAlertAction(
+                        title: status.via.name,
+                        style: .Default,
+                        handler: { action in
+                            UIApplication.sharedApplication().openURL(viaURL)
+                            return
+                    }))
                 }
                 
                 AlertController.showViewController(actionSheet)
