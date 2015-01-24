@@ -82,6 +82,22 @@ class StatusAlert {
                         
                 }))
                 
+                // Share
+                
+                actionSheet.addAction(UIAlertAction(
+                    title: "Share",
+                    style: .Default,
+                    handler: { action in
+                        let items = [
+                            status.text,
+                            NSURL(string: "https://twitter.com/\(status.user.screenName)/status/\(status.statusID)")!
+                        ]
+                        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+                        if let rootVc: UIViewController = UIApplication.sharedApplication().keyWindow?.rootViewController {
+                            rootVc.presentViewController(activityVC, animated: true, completion: nil)
+                        }
+                }))
+                
                 // URL
                 
                 for url in status.urls {
