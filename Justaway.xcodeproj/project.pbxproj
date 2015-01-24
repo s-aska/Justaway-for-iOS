@@ -60,6 +60,8 @@
 		6A0A1D321A40B7D30035A03C /* Pinwheel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */; };
 		6A0A1D331A40B7D30035A03C /* Pinwheel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6A3469BB1A699D21004AD091 /* RetweetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3469BA1A699D21004AD091 /* RetweetAlert.swift */; };
+		6A35A1C51A6C193400A8E46D /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A35A1C41A6C193400A8E46D /* ImageViewController.swift */; };
+		6A35A1CD1A6C196700A8E46D /* ImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
 		6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3019BB514900D50D78 /* ViewController.swift */; };
 		6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3219BB514900D50D78 /* Main.storyboard */; };
@@ -212,6 +214,8 @@
 		38F7B8F219E5720F0081C735 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
 		6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pinwheel.xcodeproj; path = Pinwheel/Pinwheel.xcodeproj; sourceTree = "<group>"; };
 		6A3469BA1A699D21004AD091 /* RetweetAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetweetAlert.swift; sourceTree = "<group>"; };
+		6A35A1C41A6C193400A8E46D /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageViewController.xib; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4B9D2D19BB514900D50D78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -486,6 +490,8 @@
 			isa = PBXGroup;
 			children = (
 				6A4B9D3019BB514900D50D78 /* ViewController.swift */,
+				6A35A1C41A6C193400A8E46D /* ImageViewController.swift */,
+				6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */,
 				3894C24B19E557120038AEF8 /* TimelineViewController.swift */,
 				3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */,
 				3894C24A19E556070038AEF8 /* Timeline */,
@@ -694,6 +700,7 @@
 				6AB55B5719C9F20B00DC6442 /* AccountViewController.xib in Resources */,
 				3894C24E19E557BF0038AEF8 /* TimelineViewController.xib in Resources */,
 				6AB55B4519C584B300DC6442 /* SettingsViewController.xib in Resources */,
+				6A35A1CD1A6C196700A8E46D /* ImageViewController.xib in Resources */,
 				381E6E8319E2A56A00139654 /* TwitterStatusCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -750,6 +757,7 @@
 				6ADB648C1A5DD65800602B2B /* BaseButton.swift in Sources */,
 				3805DE971A5F1C6A00FBD015 /* ThemeColor.swift in Sources */,
 				6ADB64901A5DE75A00602B2B /* Theme.swift in Sources */,
+				6A35A1C51A6C193400A8E46D /* ImageViewController.swift in Sources */,
 				6AD963E81A69BB1900136B53 /* ErrorAlert.swift in Sources */,
 				6AB55B4319C5843000DC6442 /* SettingsViewController.swift in Sources */,
 				3805DEAA1A67F52400FBD015 /* ThemeSolarizedLight.swift in Sources */,
