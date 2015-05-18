@@ -12,7 +12,7 @@ struct TwitterHashtag {
     
     init(_ dictionary: [String: AnyObject]) {
         self.text = dictionary["text"] as? String ?? ""
-        self.indices = dictionary["indices"] as [Int]
+        self.indices = dictionary["indices"] as! [Int]
     }
     
     var dictionaryValue: [String: AnyObject] {

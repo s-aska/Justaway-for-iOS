@@ -62,8 +62,8 @@ class EditorViewController: UIViewController {
     
     func keyboardWillChangeFrame(notification: NSNotification, showsKeyboard: Bool) {
         let userInfo = notification.userInfo!
-        let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as NSNumber).doubleValue
-        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
+        let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey]as! NSValue).CGRectValue()
         
         if showsKeyboard {
             let orientation: UIInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation

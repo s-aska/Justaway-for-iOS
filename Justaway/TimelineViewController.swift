@@ -94,7 +94,7 @@ class TimelineViewController: UIViewController {
     
     func configureEvent() {
         EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
-            let status = n.object as TwitterStatus
+            let status = n.object as! TwitterStatus
             for tableViewController in self.tableViewControllers {
                 switch tableViewController {
                 case let vc as StatusTableViewController:
@@ -134,7 +134,7 @@ class TimelineViewController: UIViewController {
         }
         
         EventBox.onMainThread(self, name: ImageViewEvent.name) { n in
-            let event = n.object as ImageViewEvent
+            let event = n.object as! ImageViewEvent
             if self.imageViewController == nil {
                 self.imageViewController = ImageViewController()
             }
@@ -144,7 +144,7 @@ class TimelineViewController: UIViewController {
         }
         
         EventBox.onMainThread(self, name: EditorEvent.name) { n in
-            let event = n.object as EditorEvent
+            let event = n.object as! EditorEvent
             self.editorViewController.show()
             self.editorViewController.inReplyToStatusId = event.inReplyToStatusId
             self.editorViewController.textView.text = event.text

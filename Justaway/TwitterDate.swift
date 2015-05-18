@@ -11,7 +11,7 @@ class TwitterDateFormatter {
     private class func makeTwitter() -> NSDateFormatter {
         let formatter = NSDateFormatter()
         formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-        formatter.calendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)
+        formatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
         formatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
         return formatter
     }
@@ -19,7 +19,7 @@ class TwitterDateFormatter {
     private class func makeAbsolute() -> NSDateFormatter {
         let formatter = NSDateFormatter()
         formatter.locale = NSLocale.currentLocale()
-        formatter.calendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)
+        formatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
         formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
         return formatter
     }
@@ -53,15 +53,15 @@ struct TwitterDate {
         if (diff < 1) {
             return "now";
         } else if (diff < 60) {
-            return NSString(format: "%ds", diff)
+            return NSString(format: "%ds", diff) as String
         } else if (diff < 3600) {
-            return NSString(format: "%dm", diff / 60)
+            return NSString(format: "%dm", diff / 60) as String
         } else if (diff < 86400) {
-            return NSString(format: "%dh", diff / 3600)
+            return NSString(format: "%dh", diff / 3600) as String
         } else if (diff < 86400_000) {
-            return NSString(format: "%dd", diff / 86400)
+            return NSString(format: "%dd", diff / 86400) as String
         } else {
-            return NSString(format: "%dy", diff / (86400 * 365))
+            return NSString(format: "%dy", diff / (86400 * 365)) as String
         }
     }
 }

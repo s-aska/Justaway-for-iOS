@@ -102,7 +102,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     func hide(sender: AnyObject) {
         imageViews.removeAll(keepCapacity: true)
-        for view in scrollView.subviews as [UIView] {
+        for view in scrollView.subviews as! [UIView] {
             view.removeFromSuperview()
         }
         self.view.removeFromSuperview()

@@ -65,7 +65,7 @@ class Account {
                 Constants.profileImageURL : self.profileImageURL.absoluteString!
             ]
         } else {
-            assertionFailure("Invalid credential.")
+            fatalError("Invalid credential.")
         }
     }
 }
@@ -92,8 +92,8 @@ class AccountSettings {
     }
     
     init(_ dictionary: NSDictionary) {
-        self.current = dictionary[Constants.current] as Int
-        self.accounts = (dictionary[Constants.accounts] as [Dictionary]).map({ Account($0) })
+        self.current = dictionary[Constants.current] as! Int
+        self.accounts = (dictionary[Constants.accounts] as! [Dictionary]).map({ Account($0) })
     }
     
     // MARK: - Public Methods

@@ -117,7 +117,7 @@ class StatusAlert {
                 
                 if let viaURL = status.via.URL {
                     actionSheet.addAction(UIAlertAction(
-                        title: status.via.name,
+                        title: "via " + status.via.name,
                         style: .Default,
                         handler: { action in
                             UIApplication.sharedApplication().openURL(viaURL)

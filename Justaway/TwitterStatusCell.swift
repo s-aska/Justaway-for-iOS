@@ -86,7 +86,7 @@ class TwitterStatusCell: UITableViewCell {
     
     func configureEvent() {
         EventBox.onMainThread(self, name: Twitter.Event.CreateFavorites.rawValue) { (n) -> Void in
-            let statusID = n.object as String
+            let statusID = n.object as! String
             if self.status?.statusID == statusID {
                 self.favoriteButton.selected = true
                 self.favoriteButton.transform = CGAffineTransformMakeScale(1, 1)
@@ -104,14 +104,14 @@ class TwitterStatusCell: UITableViewCell {
         }
         
         EventBox.onMainThread(self, name: Twitter.Event.DestroyFavorites.rawValue) { (n) -> Void in
-            let statusID = n.object as String
+            let statusID = n.object as! String
             if self.status?.statusID == statusID {
                 self.favoriteButton.selected = false
             }
         }
         
         EventBox.onMainThread(self, name: Twitter.Event.CreateRetweet.rawValue) { (n) -> Void in
-            let statusID = n.object as String
+            let statusID = n.object as! String
             if self.status?.statusID == statusID {
                 self.retweetButton.selected = true
                 self.retweetButton.transform = CGAffineTransformMakeScale(1, 1)
@@ -129,7 +129,7 @@ class TwitterStatusCell: UITableViewCell {
         }
         
         EventBox.onMainThread(self, name: Twitter.Event.DestroyRetweet.rawValue) { (n) -> Void in
-            let statusID = n.object as String
+            let statusID = n.object as! String
             if self.status?.statusID == statusID {
                 self.retweetButton.selected = false
             }
@@ -232,7 +232,7 @@ class TwitterStatusCell: UITableViewCell {
     
     func showImage(sender: UIGestureRecognizer) {
         let tag = sender.view?.tag ?? 0
-        if let status = self.status? {
+        if let status = self.status {
             ImageViewEvent(media: status.media, page: tag).post()
         }
     }

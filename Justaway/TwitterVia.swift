@@ -13,13 +13,14 @@ struct TwitterVia {
     
     init(_ source: String) {
         let s = source as NSString
-        if let match = Static.regexp.firstMatchInString(source, options: NSMatchingOptions(0), range: NSMakeRange(0, source.utf16Count)) {
+        if let match = Static.regexp.firstMatchInString(source, options: NSMatchingOptions(0), range: NSMakeRange(0, count(source.utf8))) {
             if match.numberOfRanges > 0 {
                 self.URL = NSURL(string: (source as NSString).substringWithRange(match.rangeAtIndex(1)) as String)
                 self.name = (source as NSString).substringWithRange(match.rangeAtIndex(2))
                 return
             }
         }
+        self.URL = nil
         self.name = source
     }
     

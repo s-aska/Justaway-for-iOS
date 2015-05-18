@@ -85,7 +85,7 @@ class StatusTableViewController: TimelineTableViewController {
         let row = rows[indexPath.row]
         let status = row.status
         let layout = TwitterStatusCellLayout.fromStatus(status)
-        let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as TwitterStatusCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as! TwitterStatusCell
         
         if let s = cell.status {
             if s.uniqueID == status.uniqueID {
@@ -140,9 +140,8 @@ class StatusTableViewController: TimelineTableViewController {
             layoutHeight[layout] = height
             let totalHeight = ceil(height + textHeight)
             return Row(status: status, height: totalHeight, textHeight: textHeight)
-        } else {
-            assertionFailure("cellForHeight is missing.")
         }
+        fatalError("cellForHeight is missing.")
     }
     
     func measure(text: NSString, fontSize: CGFloat) -> CGFloat {
@@ -245,7 +244,7 @@ class StatusTableViewController: TimelineTableViewController {
     }
     
     func accept(status: TwitterStatus) -> Bool {
-        assertionFailure("not implements.")
+        fatalError("not implements.")
     }
     
     func renderData(statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
@@ -323,7 +322,7 @@ class StatusTableViewController: TimelineTableViewController {
     }
     
     override func renderImages() {
-        for cell in self.tableView.visibleCells() as [TwitterStatusCell] {
+        for cell in self.tableView.visibleCells() as! [TwitterStatusCell] {
             if let status = cell.status {
                 cell.setImage(status)
             }

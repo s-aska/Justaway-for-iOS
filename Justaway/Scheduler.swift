@@ -17,7 +17,7 @@ class Scheduler {
     
     class func regsiter(#min: NSTimeInterval, max: NSTimeInterval, target: AnyObject, selector: Selector) {
         dispatch_sync(Static.serial) {
-            let key = "\(ObjectIdentifier(target).uintValue()):\(selector)"
+            let key = "\(ObjectIdentifier(target).uintValue):\(selector)"
             if let async = Static.asyncs.removeValueForKey(key) {
                 async.cancel()
             }

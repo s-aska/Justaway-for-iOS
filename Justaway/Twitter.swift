@@ -275,7 +275,7 @@ class Twitter {
             failure(error)
         }
         
-        getCurrentClient()?.getStatusesMentionTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
+        getCurrentClient()?.getStatusesMentionTimelineWithCount(count: 200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
     }
     
     class func statusUpdate(status: String, inReplyToStatusID: String?) {
@@ -304,7 +304,7 @@ extension Twitter {
     class func reply(status: TwitterStatus) {
         let prefix = "@\(status.user.screenName) "
         let mentions = join(" ", status.mentions.map({ "@\($0.screenName)" }))
-        let range = NSMakeRange(countElements(prefix), countElements(mentions))
+        let range = NSMakeRange(count(prefix), count(mentions))
         EditorEvent(text: prefix + mentions, range: range, inReplyToStatusId: status.statusID).post()
     }
     
@@ -531,7 +531,7 @@ extension Twitter {
             }
         }
         
-        Static.streamingRequest = getCurrentClient()?.getUserStreamDelimited(nil,
+        Static.streamingRequest = getCurrentClient()?.getUserStreamDelimited(delimited: nil,
             stallWarnings: nil,
             includeMessagesFromFollowedAccounts: nil,
             includeReplies: nil,

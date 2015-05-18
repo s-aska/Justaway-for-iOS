@@ -20,14 +20,17 @@ class TwitterStatus {
         let statusJson = json["retweeted_status"].object != nil ? json["retweeted_status"] : json
         self.user = TwitterUser(statusJson["user"])
         self.statusID = statusJson["id_str"].string ?? ""
-        self.text = statusJson["text"].string ?? ""
         self.createdAt = TwitterDate(statusJson["created_at"].string!)
         self.retweetCount = statusJson["retweet_count"].integer ?? 0
         self.favoriteCount = statusJson["favorite_count"].integer ?? 0
         
-        self.text = self.text.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: nil, range: nil)
-        self.text = self.text.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
-        self.text = self.text.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
+        self.text = {
+            var text = statusJson["text"].string ?? ""
+            text = text.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: nil, range: nil)
+            text = text.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
+            text = text.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
+            return text
+        }()
         
         if let urls = statusJson["entities"]["urls"].array {
             self.urls = urls.map { TwitterURL($0) }
@@ -60,6 +63,9 @@ class TwitterStatus {
         if json["retweeted_status"].object != nil {
             self.actionedBy = TwitterUser(json["user"])
             self.referenceStatusID = json["id_str"].string
+        } else {
+            self.actionedBy = nil
+            self.referenceStatusID = nil
         }
     }
     
@@ -95,14 +101,18 @@ class TwitterStatus {
             self.media = [TwitterMedia]()
         }
         
-        self.via = TwitterVia(dictionary["via"] as [String: String])
+        self.via = TwitterVia(dictionary["via"] as! [String: String])
         
         if let actionedBy = dictionary["actionedBy"] as? [String: AnyObject] {
             self.actionedBy = TwitterUser(actionedBy)
+        } else {
+            self.actionedBy = nil
         }
         
         if let referenceStatusID = dictionary["referenceStatusID"] as? String {
             self.referenceStatusID = referenceStatusID
+        } else {
+            self.referenceStatusID = nil
         }
     }
     

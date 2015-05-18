@@ -14,11 +14,11 @@ class ThemeViewController: UIViewController {
     @IBOutlet weak var themeSolarizedDark: UILabel!
     @IBOutlet weak var themeMonokai: UILabel!
     
-    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-        super.touchesEnded(touches, withEvent: event)
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        super.touchesEnded(touches as Set<NSObject>, withEvent: event)
         
         for touch: AnyObject in touches {
-            var t: UITouch = touch as UITouch
+            var t: UITouch = touch as! UITouch
             switch t.view.tag {
             case self.themeLight.tag:
                 ThemeController.apply(ThemeLight())

@@ -113,11 +113,11 @@ class ThemeController {
     }
     
     class func refreshAppearance(theme: Theme) {
-        let windows = UIApplication.sharedApplication().windows as [UIWindow]
+        let windows = UIApplication.sharedApplication().windows as! [UIWindow]
         for window in windows {
             refreshWindow(window, theme: theme)
         }
-        if let rootView = windows.first?.subviews.first? as? UIView {
+        if let rootView = windows.first?.subviews.first as? UIView {
             rootView.backgroundColor = theme.mainBackgroundColor()
         }
         windows.first?.rootViewController?.setNeedsStatusBarAppearanceUpdate()
@@ -125,14 +125,14 @@ class ThemeController {
     
     class func refreshWindow(window: UIWindow, theme: Theme) {
         // NSLog("+ \(NSStringFromClass(window.dynamicType))")
-        for subview in window.subviews as [UIView] {
+        for subview in window.subviews as! [UIView] {
             refreshView(subview, theme: theme)
         }
     }
     
     class func refreshView(view: UIView, theme: Theme, indent: String = "  ") {
         // NSLog("\(indent)- \(NSStringFromClass(view.dynamicType))")
-        for subview in view.subviews as [UIView] {
+        for subview in view.subviews as! [UIView] {
             refreshView(subview, theme: theme, indent: indent + "  ")
             switch subview {
             case let v as BackgroundScrollView:
@@ -192,9 +192,9 @@ class ThemeController {
     // viewWillAppear of various ViewController is executed.
     // very heavy.
     class func refreshAppearanceSuperSlow() {
-        let windows = UIApplication.sharedApplication().windows as [UIWindow]
+        let windows = UIApplication.sharedApplication().windows as! [UIWindow]
         for window in windows {
-            let subviews = window.subviews as [UIView]
+            let subviews = window.subviews as! [UIView]
             for v in subviews {
                 v.removeFromSuperview()
                 window.addSubview(v)

@@ -118,7 +118,7 @@ class SettingsViewController: UIViewController {
                 view.frame.origin.y,
                 view.frame.size.width,
                 view.frame.size.height)
-        }, { finished in
+        }, completion: { finished in
             view.hidden = true
             if completion != nil {
                 completion!()
@@ -131,7 +131,7 @@ class SettingsViewController: UIViewController {
         
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
             self.view.layoutIfNeeded()
-        }, { finished in
+        }, completion: { finished in
         })
     }
     
@@ -142,12 +142,12 @@ class SettingsViewController: UIViewController {
             
             UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
                 self.view.layoutIfNeeded()
-            }, { finished in
+            }, completion: { finished in
             })
         }
         
         if currentSettingsView != nil {
-            hideSettingsView(currentSettingsView, hideContainer)
+            hideSettingsView(currentSettingsView, completion: hideContainer)
         } else {
             hideContainer()
         }

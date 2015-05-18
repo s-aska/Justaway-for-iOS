@@ -172,7 +172,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             granted, error in
             
             if granted {
-                let twitterAccounts = accountStore.accountsWithAccountType(accountType) as [ACAccount]
+                let twitterAccounts = accountStore.accountsWithAccountType(accountType) as! [ACAccount]
                 
                 if twitterAccounts.count == 0 {
                     self.alertWithTitle("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
@@ -181,7 +181,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
                         twitterAccounts.map({ (twitterAccount: ACAccount) in
                             Account(
                                 credential: SwifterCredential(account: twitterAccount),
-                                userID: twitterAccount.valueForKeyPath("properties.user_id") as String,
+                                userID: twitterAccount.valueForKeyPath("properties.user_id") as! String,
                                 screenName: twitterAccount.username,
                                 name: twitterAccount.username,
                                 profileImageURL: NSURL(string: "")!)
