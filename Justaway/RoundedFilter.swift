@@ -22,6 +22,6 @@ class RoundedFilter: PinwheelFilter {
     }
     
     func cacheKey() -> String {
-        return String(format: "?size=%@x%@&radius=%@", size.width, size.height, radius)
+        return String(format: "?size=%@x%@&radius=%@", size.width.description, size.height.description, radius.description)
     }
 }
