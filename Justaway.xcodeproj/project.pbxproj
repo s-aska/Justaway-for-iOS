@@ -53,6 +53,7 @@
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; };
 		38D6DDF81A5AC317001C94F7 /* EventBox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		38E8D70F1B0A0E0B002C2A57 /* GoogleChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8D70E1B0A0E0B002C2A57 /* GoogleChrome.swift */; };
 		38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */; };
 		38F4EAEC19F14E4700CBD23F /* RoundedFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAEB19F14E4700CBD23F /* RoundedFilter.swift */; };
 		38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */; };
@@ -213,6 +214,7 @@
 		38AB8BCC19F167D30065D869 /* ImageLoaderClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderClient.swift; sourceTree = "<group>"; };
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		38D6DDF61A5AC317001C94F7 /* EventBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventBox.framework; path = Carthage/Build/iOS/EventBox.framework; sourceTree = "<group>"; };
+		38E8D70E1B0A0E0B002C2A57 /* GoogleChrome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleChrome.swift; sourceTree = "<group>"; };
 		38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		38F4EAEB19F14E4700CBD23F /* RoundedFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedFilter.swift; sourceTree = "<group>"; };
 		38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoExpandTextView.swift; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 				381E6E7D19DE4FB000139654 /* Secret.swift */,
 				3894C24F19E55C770038AEF8 /* ViewTools.swift */,
 				3805DE9A1A5FFCD400FBD015 /* Scheduler.swift */,
+				38E8D70E1B0A0E0B002C2A57 /* GoogleChrome.swift */,
 				6A0B236719DC49A3004819BB /* OS */,
 				381E6E8119DE9DB300139654 /* Network */,
 				382340C219D031FF00554D8C /* Models */,
@@ -613,6 +616,7 @@
 				TargetAttributes = {
 					6A4B9D2819BB514900D50D78 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = ERYSSE5R77;
 					};
 					6A4B9D3A19BB514900D50D78 = {
 						CreatedOnToolsVersion = 6.0;
@@ -749,6 +753,7 @@
 				3894C25019E55C770038AEF8 /* ViewTools.swift in Sources */,
 				6A5357D71A741E5F00291E95 /* TimelineTableViewController.swift in Sources */,
 				6A3469BB1A699D21004AD091 /* RetweetAlert.swift in Sources */,
+				38E8D70F1B0A0E0B002C2A57 /* GoogleChrome.swift in Sources */,
 				3805DE941A5F193100FBD015 /* ThemeLight.swift in Sources */,
 				6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */,
 				3805DE451A5D8DBD00FBD015 /* Reachability.swift in Sources */,
@@ -920,6 +925,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -928,6 +935,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -937,6 +945,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -945,6 +955,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;
