@@ -93,6 +93,20 @@ class TimelineViewController: UIViewController {
     }
     
     func configureEvent() {
+        EventBox.onMainThread(self, name: TwitterAuthorizeNotification, handler: { _ in
+            if let account = AccountSettingsStore.get() {
+                ImageLoaderClient.displayTitleIcon(account.account().profileImageURL, imageView: self.iconImageView)
+                for tableViewController in self.tableViewControllers {
+                    switch tableViewController {
+                    case let vc as StatusTableViewController:
+                        vc.refresh()
+                    default:
+                        break
+                    }
+                }
+            }
+        })
+        
         EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
             let status = n.object as! TwitterStatus
             for tableViewController in self.tableViewControllers {
