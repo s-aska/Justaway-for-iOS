@@ -73,6 +73,9 @@ class StatusTableViewController: TimelineTableViewController {
         EventBox.onBackgroundThread(self, name: "applicationDidEnterBackground") { (n) -> Void in
             self.saveCache()
         }
+        EventBox.onMainThread(self, name: "statusBarTouched", handler: { (n) -> Void in
+            self.scrollToTop()
+        })
     }
     
     // MARK: - UITableViewDataSource

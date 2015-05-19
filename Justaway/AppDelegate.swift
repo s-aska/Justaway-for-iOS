@@ -69,5 +69,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        super.touchesBegan(touches, withEvent: event)
+        let touch = touches.first as! UITouch
+        let location = touch.locationInView(self.window)
+        if CGRectContainsPoint(UIApplication.sharedApplication().statusBarFrame, location) {
+            EventBox.post("statusBarTouched")
+        }
+    }
 }
 
