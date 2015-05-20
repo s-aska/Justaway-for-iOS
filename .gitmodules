@@ -4,9 +4,9 @@
 [submodule "Pinwheel"]
 	path = Pinwheel
 	url = git@github.com:s-aska/Pinwheel.git
-[submodule "Reachability.swift"]
-	path = Reachability.swift
-	url = git@github.com:ashleymills/Reachability.swift.git
 [submodule "Async"]
 	path = Async
 	url = git@github.com:duemunk/Async.git
+[submodule "Reachability"]
+	path = Reachability
+	url = git@github.com:ashleymills/Reachability.swift.git
