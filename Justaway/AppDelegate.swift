@@ -8,6 +8,7 @@ import EventBox
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    var fontSize: Float = 12.0
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -27,6 +28,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
         
         ThemeController.apply()
+        
+        if let fontSize :String = KeyClip.load("fontSize") {
+            self.fontSize = NSString(string: fontSize).floatValue
+        }
+        
+        EventBox.onMainThread(self, name: "fontSizeFixed") { (n) -> Void in
+            if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
+                self.fontSize = fontSize.floatValue
+                KeyClip.save("fontSize", string: fontSize.stringValue)
+            }
+        }
         
         return true
     }

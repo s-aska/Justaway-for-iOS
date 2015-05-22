@@ -3,9 +3,15 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="fontello.ttf">
+            <string>fontello</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FontSizeViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
+                <outlet property="fontSizeSlider" destination="BnS-sj-KDZ" id="nDN-Jz-g6a"/>
                 <outlet property="view" destination="yGC-W7-Fys" id="tjE-mC-Cpt"/>
             </connections>
         </placeholder>
@@ -13,17 +19,20 @@
         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yGC-W7-Fys" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
             <subviews>
-                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="BnS-sj-KDZ">
-                    <rect key="frame" x="6" y="10" width="513" height="31"/>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="12" minValue="6" maxValue="24" translatesAutoresizingMaskIntoConstraints="NO" id="BnS-sj-KDZ">
+                    <rect key="frame" x="6" y="10" width="543" height="31"/>
                 </slider>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ri-tn-lLJ">
-                    <rect key="frame" x="525" y="-1" width="75" height="51"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ri-tn-lLJ" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                    <rect key="frame" x="555" y="1" width="45" height="47"/>
+                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="17"/>
                     <inset key="contentEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                    <state key="normal" title="Reset">
+                    <state key="normal" title="三">
                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="menuAction:" destination="-1" eventType="touchUpInside" id="Tbe-FG-nha"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>

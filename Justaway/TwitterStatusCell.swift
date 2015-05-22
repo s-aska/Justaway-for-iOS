@@ -134,6 +134,12 @@ class TwitterStatusCell: UITableViewCell {
                 self.retweetButton.selected = false
             }
         }
+        
+        EventBox.onMainThread(self, name: "fontSizeChanged") { (n) -> Void in
+            if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
+                self.statusLabel.font = UIFont.systemFontOfSize(CGFloat(fontSize.floatValue))
+            }
+        }
     }
     
     // MARK: - UITableViewCell

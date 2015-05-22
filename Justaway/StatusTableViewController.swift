@@ -22,11 +22,13 @@ class StatusTableViewController: TimelineTableViewController {
     
     struct Row {
         let status: TwitterStatus
-        var height: CGFloat
-        var textHeight: CGFloat
+        let fontSize: CGFloat
+        let height: CGFloat
+        let textHeight: CGFloat
         
-        init(status: TwitterStatus, height: CGFloat, textHeight: CGFloat) {
+        init(status: TwitterStatus, fontSize: CGFloat, height: CGFloat, textHeight: CGFloat) {
             self.status = status
+            self.fontSize = fontSize
             self.height = height
             self.textHeight = textHeight
         }
@@ -75,6 +77,37 @@ class StatusTableViewController: TimelineTableViewController {
         EventBox.onMainThread(self, name: "statusBarTouched", handler: { (n) -> Void in
             self.scrollToTop()
         })
+        EventBox.onBackgroundThread(self, name: "fontSizeFixed") { (n) -> Void in
+            let userInfo = n.userInfo!
+            let fontSize = CGFloat((userInfo["fontSize"] as! NSNumber).floatValue)
+            
+            let newNows = self.rows.map({ self.createRow($0.status, fontSize: fontSize) })
+            
+            let op = AsyncBlockOperation { (op) -> Void in
+                if var firstCell = self.tableView.visibleCells().first as? UITableViewCell {
+                    var offset = self.tableView.contentOffset.y - firstCell.frame.origin.y
+                    var firstPath: NSIndexPath
+                    
+                    // セルが半分以上隠れているている場合、2番目の表示セルを基準にする
+                    let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows() as! [NSIndexPath]
+                    if indexPathsForVisibleRows.count > 1 && offset > (firstCell.frame.size.height / 2) {
+                        firstPath = indexPathsForVisibleRows[1]
+                        firstCell = self.tableView.cellForRowAtIndexPath(firstPath)!
+                        offset = self.tableView.contentOffset.y - firstCell.frame.origin.y
+                    } else {
+                        firstPath = indexPathsForVisibleRows.first!
+                    }
+                    
+                    self.rows = newNows
+                    
+                    self.tableView.reloadData()
+                    self.tableView.scrollToRowAtIndexPath(firstPath, atScrollPosition: .Top, animated: false)
+                    self.tableView.setContentOffset(CGPointMake(0, self.tableView.contentOffset.y + offset), animated: false)
+                }
+                op.finish()
+            }
+            self.mainQueue.addOperation(op)
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -89,15 +122,23 @@ class StatusTableViewController: TimelineTableViewController {
         let layout = TwitterStatusCellLayout.fromStatus(status)
         let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as! TwitterStatusCell
         
+        if cell.textHeightConstraint.constant != row.textHeight {
+            cell.textHeightConstraint.constant = row.textHeight
+        }
+        
+        if row.fontSize != cell.statusLabel.font.pointSize {
+            cell.statusLabel.font = UIFont.systemFontOfSize(row.fontSize)
+        }
+        
         if let s = cell.status {
             if s.uniqueID == status.uniqueID {
+                cell.textHeightConstraint.constant = row.textHeight
                 return cell
             }
         }
         
         cell.status = status
         cell.setLayout(layout)
-        cell.textHeightConstraint.constant = row.textHeight
         cell.setText(status)
         
         if !Pinwheel.suspend {
@@ -132,7 +173,7 @@ class StatusTableViewController: TimelineTableViewController {
         if let height = layoutHeight[layout] {
             let textHeight = measure(status.text, fontSize: fontSize)
             let totalHeight = ceil(height + textHeight)
-            return Row(status: status, height: totalHeight, textHeight: textHeight)
+            return Row(status: status, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
         } else if let cell = self.layoutHeightCell[layout] {
             cell.frame = self.tableView.bounds
             cell.setLayout(layout)
@@ -141,7 +182,7 @@ class StatusTableViewController: TimelineTableViewController {
             let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
             layoutHeight[layout] = height
             let totalHeight = ceil(height + textHeight)
-            return Row(status: status, height: totalHeight, textHeight: textHeight)
+            return Row(status: status, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
         }
         fatalError("cellForHeight is missing.")
     }
@@ -250,8 +291,10 @@ class StatusTableViewController: TimelineTableViewController {
     }
     
     func renderData(statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
-        
-        let fontSize = self.layoutHeightCell[.Normal]?.statusLabel.font.pointSize ?? 12.0
+        var fontSize :CGFloat = 12.0
+        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            fontSize = CGFloat(delegate.fontSize)
+        }
         
         let op = AsyncBlockOperation { (op) -> Void in
             
@@ -269,7 +312,7 @@ class StatusTableViewController: TimelineTableViewController {
             if let lastCell = self.tableView.visibleCells().last as? UITableViewCell {
                 
                 let isTop = self.isTop
-                let offset = lastCell.frame.origin.y - self.tableView.contentOffset.y;
+                let offset = lastCell.frame.origin.y - self.tableView.contentOffset.y
                 UIView.setAnimationsEnabled(false)
                 self.tableView.beginUpdates()
                 if deleteIndexPaths.count > 0 {
