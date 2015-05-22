@@ -20,6 +20,7 @@ class ThemeMonokai: Theme {
     func mainHighlightBackgroundColor() -> UIColor { return UIColor.darkGrayColor() }
     func titleTextColor() -> UIColor { return UIColor.whiteColor() }
     func bodyTextColor() -> UIColor { return UIColor.whiteColor() }
+    func cellSeparatorColor() -> UIColor { return UIColor.lightGrayColor() }
     
     func displayNameTextColor() -> UIColor { return ThemeColor.Monokai.yellow }
     func screenNameTextColor() -> UIColor { return ThemeColor.Monokai.red }

@@ -20,6 +20,7 @@ class ThemeLight: Theme {
     func mainHighlightBackgroundColor() -> UIColor { return UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1) }
     func titleTextColor() -> UIColor { return UIColor.darkGrayColor() }
     func bodyTextColor() -> UIColor { return UIColor.darkGrayColor() }
+    func cellSeparatorColor() -> UIColor { return UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1) }
     
     func displayNameTextColor() -> UIColor { return UIColor.darkGrayColor() }
     func screenNameTextColor() -> UIColor { return UIColor.lightGrayColor() }

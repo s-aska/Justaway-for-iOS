@@ -22,14 +22,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="d8g-lI-qp9">
-                        <rect key="frame" x="7" y="7" width="42" height="42"/>
+                        <rect key="frame" x="7" y="8" width="42" height="42"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="41j-QI-7y0"/>
                             <constraint firstAttribute="height" constant="42" id="sej-SH-2r4"/>
                         </constraints>
                     </imageView>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1M-cQ-9LC">
-                        <rect key="frame" x="56" y="6" width="235" height="17"/>
+                        <rect key="frame" x="56" y="7" width="235" height="17"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aska" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4lU-BV-VYh" customClass="DisplayNameLable" customModule="Justaway" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="28" height="14.5"/>
@@ -62,7 +62,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1d" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="umq-Pc-zJg" customClass="RelativeDateLable" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="291" y="4" width="24" height="14"/>
+                        <rect key="frame" x="291" y="5" width="24" height="14"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="MlW-bI-Dc9"/>
                         </constraints>
@@ -71,7 +71,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="257" translatesAutoresizingMaskIntoConstraints="NO" id="KVr-ac-HTT" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="58" y="26" width="257" height="14"/>
+                        <rect key="frame" x="58" y="27" width="257" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="ROJ-g6-GRa"/>
                         </constraints>
@@ -80,7 +80,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bIb-jf-cxi">
-                        <rect key="frame" x="56" y="50" width="259" height="80"/>
+                        <rect key="frame" x="56" y="51" width="259" height="80"/>
                         <subviews>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N6t-fp-5dC">
                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -141,7 +141,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hkc-nJ-RXe">
-                        <rect key="frame" x="49" y="133" width="266" height="32"/>
+                        <rect key="frame" x="49" y="134" width="266" height="32"/>
                         <subviews>
                             <button opaque="NO" tag="1000" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iUW-IA-CLC" customClass="ReplyButton" customModule="Justaway" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="-4" width="35" height="36"/>
@@ -227,7 +227,7 @@
                         </constraints>
                     </view>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHQ-ey-O8Q" customClass="CellSeparator" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="187.5" width="320" height="1"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="DVi-NC-Cvn"/>
@@ -235,9 +235,9 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="y1M-cQ-9LC" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" constant="6" id="7bD-Fu-yGj"/>
+                    <constraint firstItem="y1M-cQ-9LC" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" constant="7" id="7bD-Fu-yGj"/>
                     <constraint firstItem="KVr-ac-HTT" firstAttribute="top" secondItem="y1M-cQ-9LC" secondAttribute="bottom" constant="3" id="8TH-hC-tB1"/>
-                    <constraint firstItem="d8g-lI-qp9" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" constant="7" id="BG5-ja-eF3"/>
+                    <constraint firstItem="d8g-lI-qp9" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" constant="8" id="BG5-ja-eF3"/>
                     <constraint firstItem="bIb-jf-cxi" firstAttribute="leading" secondItem="d8g-lI-qp9" secondAttribute="trailing" constant="7" id="DIE-4a-vxU"/>
                     <constraint firstItem="y1M-cQ-9LC" firstAttribute="leading" secondItem="d8g-lI-qp9" secondAttribute="trailing" constant="7" id="FYM-G0-Vm8"/>
                     <constraint firstItem="Hkc-nJ-RXe" firstAttribute="leading" secondItem="d8g-lI-qp9" secondAttribute="trailing" id="JAP-Uf-g86"/>
@@ -245,8 +245,9 @@
                     <constraint firstItem="Hkc-nJ-RXe" firstAttribute="top" secondItem="KVr-ac-HTT" secondAttribute="bottom" priority="250" id="N6u-UD-lnm"/>
                     <constraint firstAttribute="trailing" secondItem="KVr-ac-HTT" secondAttribute="trailing" constant="5" id="O0u-eF-urm"/>
                     <constraint firstAttribute="bottom" secondItem="qHQ-ey-O8Q" secondAttribute="bottom" id="RNG-0M-zge"/>
+                    <constraint firstItem="qHQ-ey-O8Q" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" id="Rd5-3k-36A"/>
                     <constraint firstAttribute="trailing" secondItem="umq-Pc-zJg" secondAttribute="trailing" constant="5" id="Rxu-gr-wp6"/>
-                    <constraint firstItem="umq-Pc-zJg" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" constant="4" id="WRm-Tv-eup"/>
+                    <constraint firstItem="umq-Pc-zJg" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" constant="5" id="WRm-Tv-eup"/>
                     <constraint firstAttribute="bottom" secondItem="rcK-bH-pWp" secondAttribute="bottom" id="XVy-DJ-mWX"/>
                     <constraint firstItem="bIb-jf-cxi" firstAttribute="top" secondItem="KVr-ac-HTT" secondAttribute="bottom" constant="10" id="dP6-jd-iW5"/>
                     <constraint firstItem="umq-Pc-zJg" firstAttribute="leading" secondItem="y1M-cQ-9LC" secondAttribute="trailing" id="g7Y-BN-kKr"/>
@@ -261,6 +262,11 @@
                     <constraint firstAttribute="trailing" secondItem="bIb-jf-cxi" secondAttribute="trailing" constant="5" id="ykw-J3-phd"/>
                     <constraint firstAttribute="trailing" secondItem="rcK-bH-pWp" secondAttribute="trailing" constant="5" id="ysX-ZX-PdK"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="RNG-0M-zge"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="absoluteCreatedAtLabel" destination="SR5-WN-luB" id="GCU-h0-ljM"/>

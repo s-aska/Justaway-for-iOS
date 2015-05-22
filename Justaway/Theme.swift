@@ -21,6 +21,7 @@ protocol Theme {
     func mainHighlightBackgroundColor() -> UIColor
     func titleTextColor() -> UIColor
     func bodyTextColor() -> UIColor
+    func cellSeparatorColor() -> UIColor
     
     func displayNameTextColor() -> UIColor
     func screenNameTextColor() -> UIColor
@@ -180,7 +181,7 @@ class ThemeController {
                 v.setTitleColor(theme.streamingConnected(), forState: .Selected)
                 v.setTitleColor(theme.streamingError(), forState: .Disabled)
             case let v as CellSeparator:
-                v.borderLayer?.backgroundColor = theme.menuBackgroundColor().CGColor
+                v.borderLayer?.backgroundColor = theme.cellSeparatorColor().CGColor
             case let v as UIActivityIndicatorView:
                 v.activityIndicatorViewStyle = theme.activityIndicatorStyle()
             default:

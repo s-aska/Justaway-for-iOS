@@ -20,6 +20,7 @@ class ThemeSolarizedLight: Theme {
     func mainHighlightBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes2 }
     func titleTextColor() -> UIColor { return ThemeColor.Solarized.baes01 }
     func bodyTextColor() -> UIColor { return ThemeColor.Solarized.baes01 }
+    func cellSeparatorColor() -> UIColor { return ThemeColor.Solarized.baes01 }
     
     func displayNameTextColor() -> UIColor { return ThemeColor.Solarized.yellow }
     func screenNameTextColor() -> UIColor { return ThemeColor.Solarized.red }

@@ -11,7 +11,6 @@ import Pinwheel
 
 class TimelineTableViewController: UITableViewController {
     
-    var headerView: MenuView?
     var footerView: UIView?
     var footerIndicatorView: UIActivityIndicatorView?
     var isTop: Bool = true
@@ -21,18 +20,6 @@ class TimelineTableViewController: UITableViewController {
     let mainQueue = NSOperationQueue.mainQueue().serial()
     
     // MARK: UITableViewDelegate
-    
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return TIMELINE_HEADER_HEIGHT
-    }
-    
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if headerView == nil {
-            headerView = MenuView()
-            headerView?.frame = CGRectMake(0, 0, view.frame.size.width, TIMELINE_HEADER_HEIGHT)
-        }
-        return headerView
-    }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return TIMELINE_FOOTER_HEIGHT
@@ -84,7 +71,6 @@ class TimelineTableViewController: UITableViewController {
         scrolling = true
         loadDataQueue.suspended = true
         mainQueue.suspended = true
-        headerView?.hidden = true
     }
     
     func scrollEnd() {
@@ -100,9 +86,6 @@ class TimelineTableViewController: UITableViewController {
             didScrollToBottom()
         }
         renderImages()
-        if isTop == headerView?.hidden {
-            headerView?.hidden = !isTop
-        }
     }
     
     func didScrollToBottom() {

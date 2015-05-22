@@ -5,7 +5,6 @@ import KeyClip
 import Pinwheel
 
 let TIMELINE_ROWS_LIMIT = 1000
-let TIMELINE_HEADER_HEIGHT: CGFloat = 5.5
 let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
 
 class StatusTableViewController: TimelineTableViewController {
