@@ -68,6 +68,10 @@ class StatusTableViewController: TimelineTableViewController {
             self.tableView.registerNib(nib, forCellReuseIdentifier: layout.rawValue)
             self.layoutHeightCell[layout] = self.tableView.dequeueReusableCellWithIdentifier(layout.rawValue) as? TwitterStatusCell
         }
+        
+        var refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl = refreshControl
     }
     
     func configureEvent() {
@@ -203,6 +207,7 @@ class StatusTableViewController: TimelineTableViewController {
             let always: (()-> Void) = {
                 op.finish()
                 self.footerIndicatorView?.stopAnimating()
+                self.refreshControl?.endRefreshing()
             }
             let success = { (statuses: [TwitterStatus]) -> Void in
                 for status in statuses {
@@ -255,6 +260,7 @@ class StatusTableViewController: TimelineTableViewController {
             let always: (()-> Void) = {
                 op.finish()
                 self.footerIndicatorView?.stopAnimating()
+                self.refreshControl?.endRefreshing()
             }
             let success = { (statuses: [TwitterStatus]) -> Void in
                 
