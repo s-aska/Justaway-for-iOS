@@ -19,6 +19,7 @@ class TimelineViewController: UIViewController {
     var tableViewControllers = [TimelineTableViewController]()
     var imageViewController: ImageViewController?
     var setupView = false
+    var userID = ""
     
     struct Static {
         private static let connectionQueue = NSOperationQueue().serial()
@@ -63,6 +64,7 @@ class TimelineViewController: UIViewController {
         ViewTools.addSubviewWithEqual(self.view, view: settingsViewController.view)
         
         if let account = AccountSettingsStore.get() {
+            userID = account.account().userID
             ImageLoaderClient.displayTitleIcon(account.account().profileImageURL, imageView: iconImageView)
         }
         
@@ -94,17 +96,11 @@ class TimelineViewController: UIViewController {
     
     func configureEvent() {
         EventBox.onMainThread(self, name: TwitterAuthorizeNotification, handler: { _ in
-            if let account = AccountSettingsStore.get() {
-                ImageLoaderClient.displayTitleIcon(account.account().profileImageURL, imageView: self.iconImageView)
-                for tableViewController in self.tableViewControllers {
-                    switch tableViewController {
-                    case let vc as StatusTableViewController:
-                        vc.refresh()
-                    default:
-                        break
-                    }
-                }
-            }
+            self.reset()
+        })
+        
+        EventBox.onMainThread(self, name: "AccountChange", handler: { _ in
+            self.reset()
         })
         
         EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
@@ -170,6 +166,26 @@ class TimelineViewController: UIViewController {
     
     func toggleStreaming() {
         
+    }
+    
+    func reset() {
+        if let account = AccountSettingsStore.get() {
+            ImageLoaderClient.displayTitleIcon(account.account().profileImageURL, imageView: self.iconImageView)
+            
+            // other account
+            if userID != account.account().userID {
+                userID = account.account().userID
+                for tableViewController in self.tableViewControllers {
+                    switch tableViewController {
+                    case let vc as StatusTableViewController:
+                        vc.refresh()
+                    default:
+                        break
+                    }
+                }
+            }
+        }
+        self.settingsViewController.hide()
     }
     
     // MARK: - Actions

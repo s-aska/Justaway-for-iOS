@@ -17,6 +17,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var leftButton: UIButton!
     @IBOutlet weak var rightButton: UIButton!
+    let refreshControl = UIRefreshControl()
     
     var settings: AccountSettings?
     
@@ -48,8 +49,15 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     // MARK: - Configuration
     
     func configureView() {
+        tableView.separatorInset = UIEdgeInsetsZero
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.registerNib(UINib(nibName: "AccountCell", bundle: nil), forCellReuseIdentifier: "Account")
+        tableView.addSubview(refreshControl)
+        
+        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
+        
         settings = AccountSettingsStore.get()
     }
     
@@ -57,6 +65,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         EventBox.onMainThread(self, name: TwitterAuthorizeNotification) {
             (notification: NSNotification!) in
             
+            self.refreshControl.endRefreshing()
             self.cancel()
         }
     }
@@ -68,12 +77,12 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: TableViewConstants.tableViewCellIdentifier)
-        cell.accessoryType = self.settings?.current == indexPath.row ? .Checkmark : UITableViewCellAccessoryType.None
-//        cell.textLabel.text = self.settings?.accounts[indexPath.row].name
-        cell.detailTextLabel?.text = self.settings?.accounts[indexPath.row].screenName
-        if let url = self.settings?.accounts[indexPath.row].profileImageBiggerURL {
-//            ImageLoaderClient.displayImage(url, imageView: cell.imageView)
+        let cell = tableView.dequeueReusableCellWithIdentifier("Account", forIndexPath: indexPath) as! AccountCell
+        if let account = self.settings?.accounts[indexPath.row] {
+            cell.displayNameLabel.text = account.name
+            cell.screenNameLabel.text = account.screenName
+            cell.clientNameLabel.text = account.credential.accessToken != nil ? "Justaway" : "iOS"
+            ImageLoaderClient.displayUserIcon(account.profileImageBiggerURL, imageView: cell.iconImageView)
         }
         return cell
     }
@@ -99,11 +108,16 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // MARK: UITableViewDelegate
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let settings = self.settings {
             self.settings = AccountSettings(current: indexPath.row, accounts: settings.accounts)
             self.tableView.reloadData()
             AccountSettingsStore.save(self.settings!)
+            EventBox.post("AccountChange")
         }
     }
     
@@ -227,4 +241,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         initEditing()
     }
     
+    func refresh() {
+        Twitter.refreshAccounts([])
+    }
 }

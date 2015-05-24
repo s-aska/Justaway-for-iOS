@@ -64,6 +64,8 @@
 		6A35A1C51A6C193400A8E46D /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A35A1C41A6C193400A8E46D /* ImageViewController.swift */; };
 		6A35A1CD1A6C196700A8E46D /* ImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */; };
 		6A35A1D11A73B1C700A8E46D /* StatusAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A35A1D01A73B1C700A8E46D /* StatusAlert.swift */; };
+		6A3F4F3C1B110E74009F80C4 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */; };
+		6A3F4F3E1B110E8E009F80C4 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A3F4F3D1B110E8E009F80C4 /* AccountCell.xib */; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
 		6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3019BB514900D50D78 /* ViewController.swift */; };
 		6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3219BB514900D50D78 /* Main.storyboard */; };
@@ -224,6 +226,8 @@
 		6A35A1C41A6C193400A8E46D /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageViewController.xib; sourceTree = "<group>"; };
 		6A35A1D01A73B1C700A8E46D /* StatusAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusAlert.swift; sourceTree = "<group>"; };
+		6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
+		6A3F4F3D1B110E8E009F80C4 /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4B9D2D19BB514900D50D78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -349,6 +353,8 @@
 			children = (
 				381E6E8419E2A69200139654 /* TwitterStatusCell.swift */,
 				381E6E8219E2A56A00139654 /* TwitterStatusCell.xib */,
+				6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */,
+				6A3F4F3D1B110E8E009F80C4 /* AccountCell.xib */,
 			);
 			name = Table;
 			sourceTree = "<group>";
@@ -716,6 +722,7 @@
 				6AB55B4019C563F600DC6442 /* EditorViewController.xib in Resources */,
 				38B4475D19C062460055F074 /* fontello.ttf in Resources */,
 				6AB55B5319C8B2D500DC6442 /* ThemeViewController.xib in Resources */,
+				6A3F4F3E1B110E8E009F80C4 /* AccountCell.xib in Resources */,
 				6A4B9D3619BB514900D50D78 /* Images.xcassets in Resources */,
 				6AB55B5719C9F20B00DC6442 /* AccountViewController.xib in Resources */,
 				3894C24E19E557BF0038AEF8 /* TimelineViewController.xib in Resources */,
@@ -805,6 +812,7 @@
 				3805DEAA1A67F52400FBD015 /* ThemeSolarizedLight.swift in Sources */,
 				3868B94D19EFCCEC001221BF /* TwitterStatus.swift in Sources */,
 				6AB55B5519C9F1EB00DC6442 /* AccountViewController.swift in Sources */,
+				6A3F4F3C1B110E74009F80C4 /* AccountCell.swift in Sources */,
 				3805DEA81A67F34900FBD015 /* ThemeMonokai.swift in Sources */,
 				3868B94719EFCCCF001221BF /* TwitterVia.swift in Sources */,
 			);
