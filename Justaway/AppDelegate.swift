@@ -79,7 +79,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        Swifter.handleOpenURL(url)
+        if url.absoluteString?.hasPrefix("justaway://success") ?? false {
+            Swifter.handleOpenURL(url)
+        }
         
         return true
     }
