@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         ThemeController.apply()
         
-        if let fontSize :String = KeyClip.load("fontSize") {
+        if let fontSize: String = KeyClip.load("fontSize") {
             self.fontSize = NSString(string: fontSize).floatValue
         }
         
@@ -88,11 +88,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         super.touchesBegan(touches, withEvent: event)
-        let touch = touches.first as! UITouch
-        let location = touch.locationInView(self.window)
-        if CGRectContainsPoint(UIApplication.sharedApplication().statusBarFrame, location) {
-            EventBox.post("statusBarTouched")
+        
+        // observe statusBar touch
+        if let touch = touches.first as? UITouch {
+            let location = touch.locationInView(self.window)
+            if CGRectContainsPoint(UIApplication.sharedApplication().statusBarFrame, location) {
+                EventBox.post("statusBarTouched")
+            }
         }
     }
 }
-
