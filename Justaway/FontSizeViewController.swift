@@ -42,7 +42,7 @@ class FontSizeViewController: UIViewController {
                 style: style,
                 handler: { action in
                     self.fontSizeSlider.value = Float(size)
-                    EventBox.post("fontSizeFixed", userInfo: ["fontSize": NSNumber(integer: size)])
+                    EventBox.post(EventFontSizeApplied, userInfo: ["fontSize": NSNumber(integer: size)])
                     KeyClip.save("fontSize", string: fontSize)
             }))
         }
@@ -59,10 +59,10 @@ class FontSizeViewController: UIViewController {
     // MARK: - Event
     
     func fontSizeChanged() {
-        EventBox.post("fontSizeChanged", userInfo: ["fontSize": fontSizeSlider.value as NSNumber])
+        EventBox.post(EventFontSizePreview, userInfo: ["fontSize": fontSizeSlider.value as NSNumber])
     }
     
     func fontSizeFixed() {
-        EventBox.post("fontSizeFixed", userInfo: ["fontSize": fontSizeSlider.value as NSNumber])
+        EventBox.post(EventFontSizeApplied, userInfo: ["fontSize": fontSizeSlider.value as NSNumber])
     }
 }

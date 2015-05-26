@@ -99,7 +99,7 @@ class TimelineViewController: UIViewController {
             self.reset()
         })
         
-        EventBox.onMainThread(self, name: "AccountChange", handler: { _ in
+        EventBox.onMainThread(self, name: EventAccountChanged, handler: { _ in
             self.reset()
         })
         
@@ -117,7 +117,7 @@ class TimelineViewController: UIViewController {
             }
         }
         
-        EventBox.onMainThread(self, name: "streamingStatusChange") { _ in
+        EventBox.onMainThread(self, name: Twitter.Event.StreamingStatusChanged.rawValue) { _ in
             switch Twitter.connectionStatus {
             case .CONNECTED:
                 self.streamingStatusLabel.text = "connected"

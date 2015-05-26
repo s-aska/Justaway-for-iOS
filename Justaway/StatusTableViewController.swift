@@ -77,39 +77,38 @@ class StatusTableViewController: TimelineTableViewController {
         EventBox.onBackgroundThread(self, name: "applicationDidEnterBackground") { (n) -> Void in
             self.saveCache()
         }
-        EventBox.onMainThread(self, name: "statusBarTouched", handler: { (n) -> Void in
+        EventBox.onMainThread(self, name: EventStatusBarTouched, handler: { (n) -> Void in
             self.scrollToTop()
         })
-        EventBox.onBackgroundThread(self, name: "fontSizeFixed") { (n) -> Void in
-            let userInfo = n.userInfo!
-            let fontSize = CGFloat((userInfo["fontSize"] as! NSNumber).floatValue)
-            
-            let newNows = self.rows.map({ self.createRow($0.status, fontSize: fontSize) })
-            
-            let op = AsyncBlockOperation { (op) -> Void in
-                if var firstCell = self.tableView.visibleCells().first as? UITableViewCell {
-                    var offset = self.tableView.contentOffset.y - firstCell.frame.origin.y
-                    var firstPath: NSIndexPath
-                    
-                    // セルが半分以上隠れているている場合、2番目の表示セルを基準にする
-                    let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows() as! [NSIndexPath]
-                    if indexPathsForVisibleRows.count > 1 && offset > (firstCell.frame.size.height / 2) {
-                        firstPath = indexPathsForVisibleRows[1]
-                        firstCell = self.tableView.cellForRowAtIndexPath(firstPath)!
-                        offset = self.tableView.contentOffset.y - firstCell.frame.origin.y
-                    } else {
-                        firstPath = indexPathsForVisibleRows.first!
+        EventBox.onBackgroundThread(self, name: EventFontSizeApplied) { (n) -> Void in
+            if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
+                let newNows = self.rows.map({ self.createRow($0.status, fontSize: CGFloat(fontSize.floatValue)) })
+                
+                let op = AsyncBlockOperation { (op) -> Void in
+                    if var firstCell = self.tableView.visibleCells().first as? UITableViewCell {
+                        var offset = self.tableView.contentOffset.y - firstCell.frame.origin.y
+                        var firstPath: NSIndexPath
+                        
+                        // セルが半分以上隠れているている場合、2番目の表示セルを基準にする
+                        let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows() as! [NSIndexPath]
+                        if indexPathsForVisibleRows.count > 1 && offset > (firstCell.frame.size.height / 2) {
+                            firstPath = indexPathsForVisibleRows[1]
+                            firstCell = self.tableView.cellForRowAtIndexPath(firstPath)!
+                            offset = self.tableView.contentOffset.y - firstCell.frame.origin.y
+                        } else {
+                            firstPath = indexPathsForVisibleRows.first!
+                        }
+                        
+                        self.rows = newNows
+                        
+                        self.tableView.reloadData()
+                        self.tableView.scrollToRowAtIndexPath(firstPath, atScrollPosition: .Top, animated: false)
+                        self.tableView.setContentOffset(CGPointMake(0, self.tableView.contentOffset.y + offset), animated: false)
                     }
-                    
-                    self.rows = newNows
-                    
-                    self.tableView.reloadData()
-                    self.tableView.scrollToRowAtIndexPath(firstPath, atScrollPosition: .Top, animated: false)
-                    self.tableView.setContentOffset(CGPointMake(0, self.tableView.contentOffset.y + offset), animated: false)
+                    op.finish()
                 }
-                op.finish()
+                self.mainQueue.addOperation(op)
             }
-            self.mainQueue.addOperation(op)
         }
     }
     

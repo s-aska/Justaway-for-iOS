@@ -22,6 +22,7 @@ class Twitter {
         case DestroyFavorites = "DestroyFavorites"
         case CreateRetweet = "CreateRetweet"
         case DestroyRetweet = "DestroyRetweet"
+        case StreamingStatusChanged = "StreamingStatusChanged"
     }
     
     struct Static {
@@ -473,7 +474,7 @@ extension Twitter {
         Async.customQueue(Static.connectionQueue) {
             if Static.connectionStatus == .DISCONNECTED {
                 Static.connectionStatus = .CONNECTING
-                EventBox.post("streamingStatusChange")
+                EventBox.post(Event.StreamingStatusChanged.rawValue)
                 NSLog("connectionStatus: CONNECTING")
                 Twitter.startStreaming()
             }
@@ -486,7 +487,7 @@ extension Twitter {
             
             if Static.connectionStatus != .CONNECTED {
                 Static.connectionStatus = .CONNECTED
-                EventBox.post("streamingStatusChange")
+                EventBox.post(Event.StreamingStatusChanged.rawValue)
                 NSLog("connectionStatus: CONNECTED")
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }
@@ -516,7 +517,7 @@ extension Twitter {
             (error: NSError) -> Void in
             
             Static.connectionStatus = .DISCONNECTED
-            EventBox.post("streamingStatusChange")
+            EventBox.post(Event.StreamingStatusChanged.rawValue)
             NSLog("connectionStatus: DISCONNECTED")
             
             println(error)
@@ -553,7 +554,7 @@ extension Twitter {
         Async.customQueue(Static.connectionQueue) {
             if Static.connectionStatus == .CONNECTED {
                 Static.connectionStatus = .DISCONNECTED
-                EventBox.post("streamingStatusChange")
+                EventBox.post(Event.StreamingStatusChanged.rawValue)
                 NSLog("connectionStatus: DISCONNECTED")
                 Twitter.stopStreaming()
             }

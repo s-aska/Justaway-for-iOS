@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.fontSize = NSString(string: fontSize).floatValue
         }
         
-        EventBox.onMainThread(self, name: "fontSizeFixed") { (n) -> Void in
+        EventBox.onMainThread(self, name: EventFontSizeApplied) { (n) -> Void in
             if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
                 self.fontSize = fontSize.floatValue
                 KeyClip.save("fontSize", string: fontSize.stringValue)
@@ -93,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let touch = touches.first as? UITouch {
             let location = touch.locationInView(self.window)
             if CGRectContainsPoint(UIApplication.sharedApplication().statusBarFrame, location) {
-                EventBox.post("statusBarTouched")
+                EventBox.post(EventStatusBarTouched)
             }
         }
     }

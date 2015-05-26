@@ -53,7 +53,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.registerNib(UINib(nibName: "AccountCell", bundle: nil), forCellReuseIdentifier: "Account")
+        tableView.registerNib(UINib(nibName: "AccountCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         tableView.addSubview(refreshControl)
         
         refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
@@ -77,7 +77,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Account", forIndexPath: indexPath) as! AccountCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! AccountCell
         if let account = self.settings?.accounts[indexPath.row] {
             cell.displayNameLabel.text = account.name
             cell.screenNameLabel.text = account.screenName
@@ -117,7 +117,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             self.settings = AccountSettings(current: indexPath.row, accounts: settings.accounts)
             self.tableView.reloadData()
             AccountSettingsStore.save(self.settings!)
-            EventBox.post("AccountChange")
+            EventBox.post(EventAccountChanged)
         }
     }
     
