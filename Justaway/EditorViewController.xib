@@ -25,7 +25,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GiI-4f-pcf" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GiI-4f-pcf" customClass="MenuShadowView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="506" width="600" height="94"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAS-wm-Zms" customClass="AutoExpandTextView" customModule="Justaway" customModuleProvider="target">

@@ -38,4 +38,6 @@ class ThemeLight: Theme {
     func favoritesButtonSelected() -> UIColor { return ThemeColor.Holo.orangeDark }
     func streamingConnected() -> UIColor { return ThemeColor.Holo.greenDark }
     func streamingError() -> UIColor { return ThemeColor.Holo.redDark }
+    
+    func shadowOpacity() -> Float { return 0.5 }
 }

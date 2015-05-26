@@ -39,4 +39,5 @@ class ThemeMonokai: Theme {
     func streamingConnected() -> UIColor { return ThemeColor.Monokai.green }
     func streamingError() -> UIColor { return ThemeColor.Monokai.red }
     
+    func shadowOpacity() -> Float { return 1 }
 }

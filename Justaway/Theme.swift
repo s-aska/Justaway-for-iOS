@@ -40,6 +40,8 @@ protocol Theme {
     
     func streamingConnected() -> UIColor
     func streamingError() -> UIColor
+    
+    func shadowOpacity() -> Float
 }
 
 class ThemeController {
@@ -83,6 +85,7 @@ class ThemeController {
         BackgroundScrollView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         BackgroundView.appearance().backgroundColor = theme.mainBackgroundColor()
         MenuView.appearance().backgroundColor = theme.menuBackgroundColor()
+        MenuShadowView.appearance().layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         MenuButton.appearance().setTitleColor(theme.menuTextColor(), forState: .Normal)
         
         // for TwitterStatus
@@ -102,7 +105,7 @@ class ThemeController {
         StreamingButton.appearance().setTitleColor(theme.bodyTextColor(), forState: .Normal)
         StreamingButton.appearance().setTitleColor(theme.streamingConnected(), forState: .Selected)
         StreamingButton.appearance().setTitleColor(theme.streamingError(), forState: .Disabled)
-        
+
         if refresh {
             CATransaction.begin()
             CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
@@ -149,6 +152,9 @@ class ThemeController {
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as BackgroundView:
                 v.backgroundColor = theme.mainBackgroundColor()
+            case let v as MenuShadowView:
+                v.backgroundColor = theme.menuBackgroundColor()
+                v.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
             case let v as MenuView:
                 v.backgroundColor = theme.menuBackgroundColor()
             case let v as MenuButton:

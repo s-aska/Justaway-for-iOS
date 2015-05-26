@@ -29,7 +29,21 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rWY-A3-4yL" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQA-1l-jex">
+                    <rect key="frame" x="0.0" y="25" width="600" height="525"/>
+                    <subviews>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QzD-8n-VHR" customClass="BackgroundScrollView" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="525"/>
+                        </scrollView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="QzD-8n-VHR" secondAttribute="trailing" id="79i-S3-TIK"/>
+                        <constraint firstItem="QzD-8n-VHR" firstAttribute="leading" secondItem="YQA-1l-jex" secondAttribute="leading" id="FFB-7C-piX"/>
+                        <constraint firstAttribute="bottom" secondItem="QzD-8n-VHR" secondAttribute="bottom" id="SAW-dz-IdC"/>
+                        <constraint firstItem="QzD-8n-VHR" firstAttribute="top" secondItem="YQA-1l-jex" secondAttribute="top" id="d7I-HP-uBl"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rWY-A3-4yL" customClass="MenuShadowView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Wb-6D-iQt" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
@@ -78,20 +92,6 @@
                         <constraint firstAttribute="centerY" secondItem="YWo-Rz-RMv" secondAttribute="centerY" id="mpy-ec-iMO"/>
                         <constraint firstAttribute="trailing" secondItem="jEn-1F-PMd" secondAttribute="trailing" id="n6y-Pf-MlQ"/>
                         <constraint firstAttribute="height" constant="50" id="nmZ-Xw-cE3"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQA-1l-jex">
-                    <rect key="frame" x="0.0" y="25" width="600" height="525"/>
-                    <subviews>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QzD-8n-VHR" customClass="BackgroundScrollView" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="525"/>
-                        </scrollView>
-                    </subviews>
-                    <constraints>
-                        <constraint firstAttribute="trailing" secondItem="QzD-8n-VHR" secondAttribute="trailing" id="79i-S3-TIK"/>
-                        <constraint firstItem="QzD-8n-VHR" firstAttribute="leading" secondItem="YQA-1l-jex" secondAttribute="leading" id="FFB-7C-piX"/>
-                        <constraint firstAttribute="bottom" secondItem="QzD-8n-VHR" secondAttribute="bottom" id="SAW-dz-IdC"/>
-                        <constraint firstItem="QzD-8n-VHR" firstAttribute="top" secondItem="YQA-1l-jex" secondAttribute="top" id="d7I-HP-uBl"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YBJ-Kd-WdX" customClass="BackgroundView" customModule="Justaway" customModuleProvider="target">

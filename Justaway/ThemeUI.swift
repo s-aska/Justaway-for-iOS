@@ -11,6 +11,15 @@ import UIKit
 // MARK: - ContainerView
 
 class MenuView: UIView {}
+class MenuShadowView: MenuView {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.layer.shadowColor = UIColor.blackColor().CGColor
+        self.layer.shadowOffset = CGSizeMake(0, -4.0)
+        self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
+        self.layer.shadowRadius = 2.0
+    }
+}
 class BackgroundView: UIView {}
 class BackgroundScrollView: UIScrollView {}
 class CellSeparator: UIView {
