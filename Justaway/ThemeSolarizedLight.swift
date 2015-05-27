@@ -39,5 +39,5 @@ class ThemeSolarizedLight: Theme {
     func streamingConnected() -> UIColor { return ThemeColor.Solarized.cyan }
     func streamingError() -> UIColor { return ThemeColor.Solarized.red }
     
-    func shadowOpacity() -> Float { return 0.5 }
+    func shadowOpacity() -> Float { return 0.2 }
 }
