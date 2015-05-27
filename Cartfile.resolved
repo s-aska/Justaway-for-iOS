@@ -1,3 +1,4 @@
 github "s-aska/EventBox" "0.0.3"
 github "s-aska/KeyClip" "1.2.2"
+github "questbeat/QBImagePicker" "3.2.0"
 github "gavinbunney/Toucan" "0.2.0"

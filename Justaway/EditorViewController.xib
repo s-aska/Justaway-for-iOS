@@ -15,6 +15,8 @@
             <connections>
                 <outlet property="containerView" destination="GiI-4f-pcf" id="zU9-2h-jpG"/>
                 <outlet property="containerViewButtomConstraint" destination="hpk-3M-F0T" id="Wb7-U4-L0j"/>
+                <outlet property="imageContainerHeightConstraint" destination="Mrt-n2-BTM" id="W3G-T6-gzw"/>
+                <outlet property="imageContainerView" destination="XI3-zv-gQX" id="O03-Uc-jT4"/>
                 <outlet property="textView" destination="pAS-wm-Zms" id="SmZ-cI-pnh"/>
                 <outlet property="textViewHeightConstraint" destination="36B-3S-QRz" id="04U-qg-a2q"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ljW-bN-VJk"/>
@@ -26,7 +28,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GiI-4f-pcf" customClass="MenuShadowView" customModule="Justaway" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="506" width="600" height="94"/>
+                    <rect key="frame" x="0.0" y="386" width="600" height="214"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAS-wm-Zms" customClass="AutoExpandTextView" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="10" y="10" width="580" height="34"/>
@@ -88,16 +90,25 @@
                                 <constraint firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="y1y-gb-4En"/>
                             </constraints>
                         </view>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XI3-zv-gQX" customClass="BackgroundScrollView" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="94" width="600" height="120"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="120" id="Mrt-n2-BTM"/>
+                            </constraints>
+                        </scrollView>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="pAS-wm-Zms" secondAttribute="trailing" constant="10" id="A5I-o1-lhK"/>
+                        <constraint firstItem="XI3-zv-gQX" firstAttribute="top" secondItem="cpB-WM-7Qz" secondAttribute="bottom" id="I4N-EN-URh"/>
                         <constraint firstItem="pAS-wm-Zms" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" constant="10" id="N9c-mZ-Q3i"/>
                         <constraint firstItem="cpB-WM-7Qz" firstAttribute="top" secondItem="pAS-wm-Zms" secondAttribute="bottom" id="OSW-sG-aTj"/>
                         <constraint firstItem="pAS-wm-Zms" firstAttribute="top" secondItem="GiI-4f-pcf" secondAttribute="top" constant="10" id="PW5-Fa-Djp"/>
                         <constraint firstItem="cpB-WM-7Qz" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="Rcs-Ty-EE5"/>
+                        <constraint firstAttribute="bottom" secondItem="XI3-zv-gQX" secondAttribute="bottom" id="SVC-2n-itf"/>
+                        <constraint firstAttribute="trailing" secondItem="XI3-zv-gQX" secondAttribute="trailing" id="dCX-2c-3kc"/>
                         <constraint firstAttribute="trailing" secondItem="cpB-WM-7Qz" secondAttribute="trailing" id="eev-EE-je8"/>
-                        <constraint firstAttribute="bottom" secondItem="cpB-WM-7Qz" secondAttribute="bottom" id="rj4-RY-uIQ"/>
+                        <constraint firstItem="XI3-zv-gQX" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="vYp-8Y-qAu"/>
                     </constraints>
                 </view>
             </subviews>

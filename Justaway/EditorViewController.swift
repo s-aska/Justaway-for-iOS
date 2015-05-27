@@ -12,7 +12,12 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     @IBOutlet weak var textView: AutoExpandTextView!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint! // Used to AutoExpandTextView
     
-    let imagePickerController = QBImagePickerController.new()
+    var imagePickerController = QBImagePickerController.new()
+    
+    @IBOutlet weak var imageContainerView: BackgroundScrollView!
+    @IBOutlet weak var imageContainerHeightConstraint: NSLayoutConstraint!
+    
+    var images :[NSData] = []
     
     override var nibName: String {
         return "EditorViewController"
@@ -45,25 +50,30 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     
     func configureView() {
         textView.configure(heightConstraint: textViewHeightConstraint)
-        
-        imagePickerController.delegate = self
-        imagePickerController.allowsMultipleSelection = true
-        imagePickerController.maximumNumberOfSelection = 6
-        imagePickerController.showsNumberOfSelectedAssets = true
+        imageContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "image"))
+        resetPickerController()
     }
     
     func configureEvent() {
         EventBox.onMainThread(self, name: UIKeyboardWillShowNotification) { n in
-            if self.view.hidden == false {
-                self.keyboardWillChangeFrame(n, showsKeyboard: true)
-            }
+            self.keyboardWillChangeFrame(n, showsKeyboard: true)
         }
         
         EventBox.onMainThread(self, name: UIKeyboardWillHideNotification) { n in
-            if self.view.hidden == false {
-                self.keyboardWillChangeFrame(n, showsKeyboard: false)
-            }
+            self.keyboardWillChangeFrame(n, showsKeyboard: false)
         }
+    }
+    
+    func resetPickerController() {
+        images = []
+        imagePickerController = QBImagePickerController.new() // reset
+        imagePickerController.delegate = self
+        imagePickerController.allowsMultipleSelection = true
+        imagePickerController.minimumNumberOfSelection = 0
+        imagePickerController.maximumNumberOfSelection = 4
+        imagePickerController.showsNumberOfSelectedAssets = true
+        imagePickerController.mediaType = QBImagePickerMediaType.Image
+        imageContainerHeightConstraint.constant = 0
     }
     
     // MARK: - Keyboard Event Notifications
@@ -79,6 +89,9 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
                 containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.width
             } else {
                 containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
+            }
+            if self.view.hidden == true {
+                self.view.hidden = false
             }
         } else {
             containerViewButtomConstraint.constant = 0
@@ -96,6 +109,47 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
         })
     }
     
+    // MARK: - QBImagePickerControllerDelegate
+    
+    func qb_imagePickerController(imagePickerController: QBImagePickerController!, didFinishPickingAssets assets: [AnyObject]!) {
+        images = []
+        if assets.count > 0 {
+            for view in imageContainerView.subviews {
+                view.removeFromSuperview()
+            }
+            var i = 0
+            let contentView = UIView(frame: CGRectMake(0, 0, 100 * CGFloat(assets.count), 120))
+            for asset in assets {
+                if let phasset = asset as? PHAsset {
+                    PHImageManager.defaultManager().requestImageDataForAsset(phasset, options: nil, resultHandler: {
+                        (imageData: NSData!, dataUTI: String!, orientation: UIImageOrientation, info: [NSObject : AnyObject]!) -> Void in
+                        if let fileUrl = info["PHImageFileURLKey"] as? NSURL {
+                            self.images.append(imageData)
+                            let imageView = UIImageView(frame: CGRectMake(100 * CGFloat(i) + 10, 10, 90, 100))
+                            imageView.clipsToBounds = true
+                            imageView.contentMode = .ScaleAspectFill
+                            imageView.image = UIImage(data: imageData)
+                            contentView.addSubview(imageView)
+                            i++
+                        }
+                    })
+                }
+            }
+            imageContainerView.addSubview(contentView)
+            imageContainerView.contentSize = contentView.frame.size
+            imageContainerHeightConstraint.constant = 120
+        } else {
+            imageContainerHeightConstraint.constant = 0
+        }
+        imagePickerController.dismissViewControllerAnimated(true, completion: nil)
+        show()
+    }
+    
+    func qb_imagePickerControllerDidCancel(imagePickerController: QBImagePickerController!) {
+        imagePickerController.dismissViewControllerAnimated(true, completion: nil)
+        show()
+    }
+    
     // MARK: - Actions
     
     @IBAction func hide(sender: UIButton) {
@@ -103,18 +157,21 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     }
     
     @IBAction func image(sender: UIButton) {
-        self.view.window?.rootViewController?.presentViewController(imagePickerController, animated: true, completion: nil)
+        image()
     }
     
     @IBAction func send(sender: UIButton) {
         let text = textView.text
-        if text.isEmpty {
+        if text.isEmpty && images.count == 0 {
             hide()
         } else {
-            Twitter.statusUpdate(text, inReplyToStatusID: inReplyToStatusId)
+            Twitter.statusUpdate(text, inReplyToStatusID: inReplyToStatusId, images: images, media_ids: [])
             hide()
         }
-        
+    }
+    
+    func image() {
+        self.view.window?.rootViewController?.presentViewController(imagePickerController, animated: true, completion: nil)
     }
     
     func show() {
@@ -123,8 +180,9 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     }
     
     func hide() {
-        textView.reset()
         inReplyToStatusId = nil
+        textView.reset()
+        resetPickerController()
         
         if (textView.isFirstResponder()) {
             textView.resignFirstResponder()

@@ -279,7 +279,34 @@ class Twitter {
         getCurrentClient()?.getStatusesMentionTimelineWithCount(count: 200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
     }
     
-    class func statusUpdate(status: String, inReplyToStatusID: String?) {
+    class func statusUpdate(status: String, inReplyToStatusID: String?, var images: [NSData], var media_ids: [String]) {
+        if images.count == 0 {
+            return statusUpdate(status, inReplyToStatusID: inReplyToStatusID, media_ids: media_ids)
+        }
+        
+        let image = images.removeAtIndex(0)
+        
+        let f = { (error: NSError) -> Void in
+            if error.code == 401 {
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+            } else if error.code == 429 {
+                ErrorAlert.show("Tweet failure", message: "API Limit")
+            } else {
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+            }
+        }
+        
+        let s = { (res: [String: JSONValue]?) -> Void in
+            if let media_id = res?["media_id_string"]?.string {
+                media_ids.append(media_id)
+            }
+            self.statusUpdate(status, inReplyToStatusID: inReplyToStatusID, images: images, media_ids: media_ids)
+        }
+        
+        getCurrentClient()?.postMedia(image, success: s, failure: f)
+    }
+    
+    class func statusUpdate(status: String, inReplyToStatusID: String?, media_ids: [String]) {
         
         let s = { (status: [String: JSONValue]?) -> Void in
         }
@@ -294,7 +321,7 @@ class Twitter {
             }
         }
         
-        getCurrentClient()?.postStatusUpdate(status, inReplyToStatusID: inReplyToStatusID, lat: nil, long: nil, placeID: nil, displayCoordinates: nil, trimUser: nil, success: s, failure: f)
+        getCurrentClient()?.postStatusUpdate(status, inReplyToStatusID: inReplyToStatusID, media_ids: media_ids, success: s, failure: f)
     }
 }
 
