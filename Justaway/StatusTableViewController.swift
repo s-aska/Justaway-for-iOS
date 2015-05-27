@@ -61,6 +61,7 @@ class StatusTableViewController: TimelineTableViewController {
     func configureView() {
         self.tableView.separatorInset = UIEdgeInsetsZero
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView.backgroundColor = UIColor.clearColor()
         
         let nib = UINib(nibName: "TwitterStatusCell", bundle: nil)
         for layout in TwitterStatusCellLayout.allValues {

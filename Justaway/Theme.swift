@@ -73,14 +73,14 @@ class ThemeController {
         
         // Note: Adding "View controller-based status bar appearance" to info.plist and setting it to "NO"
         UIApplication.sharedApplication().statusBarStyle = theme.statusBarStyle()
-        UITableViewCell.appearance().backgroundColor = theme.mainBackgroundColor()
-        UITableView.appearance().backgroundColor = theme.mainBackgroundColor()
-        UITableView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         UITextView.appearance().textColor = theme.bodyTextColor()
         UITextView.appearance().backgroundColor = theme.mainBackgroundColor()
         
         // for CustomView
         TextLable.appearance().textColor = theme.bodyTextColor()
+        BackgroundTableView.appearance().backgroundColor = theme.mainBackgroundColor()
+        BackgroundTableView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
+        BackgroundTableViewCell.appearance().backgroundColor = theme.mainBackgroundColor()
         BackgroundScrollView.appearance().backgroundColor = theme.mainBackgroundColor()
         BackgroundScrollView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         BackgroundView.appearance().backgroundColor = theme.mainBackgroundColor()
@@ -142,13 +142,13 @@ class ThemeController {
             case let v as BackgroundScrollView:
                 v.indicatorStyle = theme.scrollViewIndicatorStyle()
                 v.backgroundColor = theme.mainBackgroundColor()
-            case let v as UITableView:
+            case let v as BackgroundTableView:
                 v.indicatorStyle = theme.scrollViewIndicatorStyle()
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as UITextView:
                 v.textColor = theme.bodyTextColor()
                 v.backgroundColor = theme.mainBackgroundColor()
-            case let v as UITableViewCell:
+            case let v as BackgroundTableViewCell:
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as BackgroundView:
                 v.backgroundColor = theme.mainBackgroundColor()

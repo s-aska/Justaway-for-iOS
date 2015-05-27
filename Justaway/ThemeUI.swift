@@ -21,6 +21,8 @@ class MenuShadowView: MenuView {
     }
 }
 class BackgroundView: UIView {}
+class BackgroundTableView: UITableView {}
+class BackgroundTableViewCell: UITableViewCell {}
 class BackgroundScrollView: UIScrollView {}
 class CellSeparator: UIView {
     let borderLayer = CALayer()

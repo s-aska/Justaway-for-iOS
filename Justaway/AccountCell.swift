@@ -9,7 +9,7 @@
 import UIKit
 import EventBox
 
-class AccountCell: UITableViewCell {
+class AccountCell: BackgroundTableViewCell {
     
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var displayNameLabel: DisplayNameLable!

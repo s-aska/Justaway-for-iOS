@@ -61,7 +61,7 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="hide:" destination="-1" eventType="touchUpInside" id="SaI-Ym-ZnA"/>
+                                        <action selector="image:" destination="-1" eventType="touchUpInside" id="IY0-VR-Ta4"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbk-4F-WpO" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">

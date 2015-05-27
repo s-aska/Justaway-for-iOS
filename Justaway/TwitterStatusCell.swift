@@ -24,7 +24,7 @@ enum TwitterStatusCellLayout: String {
     }
 }
 
-class TwitterStatusCell: UITableViewCell {
+class TwitterStatusCell: BackgroundTableViewCell {
 
     // MARK: Properties
     var status: TwitterStatus?

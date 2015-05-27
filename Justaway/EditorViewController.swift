@@ -1,7 +1,8 @@
 import UIKit
 import EventBox
+import QBImagePicker
 
-class EditorViewController: UIViewController {
+class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     
     // MARK: Properties
     
@@ -10,6 +11,8 @@ class EditorViewController: UIViewController {
     
     @IBOutlet weak var textView: AutoExpandTextView!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint! // Used to AutoExpandTextView
+    
+    let imagePickerController = QBImagePickerController.new()
     
     override var nibName: String {
         return "EditorViewController"
@@ -42,6 +45,11 @@ class EditorViewController: UIViewController {
     
     func configureView() {
         textView.configure(heightConstraint: textViewHeightConstraint)
+        
+        imagePickerController.delegate = self
+        imagePickerController.allowsMultipleSelection = true
+        imagePickerController.maximumNumberOfSelection = 6
+        imagePickerController.showsNumberOfSelectedAssets = true
     }
     
     func configureEvent() {
@@ -92,6 +100,10 @@ class EditorViewController: UIViewController {
     
     @IBAction func hide(sender: UIButton) {
         hide()
+    }
+    
+    @IBAction func image(sender: UIButton) {
+        self.view.window?.rootViewController?.presentViewController(imagePickerController, animated: true, completion: nil)
     }
     
     @IBAction func send(sender: UIButton) {
