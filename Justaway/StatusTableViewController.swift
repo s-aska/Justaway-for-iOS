@@ -278,9 +278,11 @@ class StatusTableViewController: TimelineTableViewController {
                 ErrorAlert.show("Error", message: error.localizedDescription)
                 always()
             }
-            Async.main {
-                self.footerIndicatorView?.startAnimating()
-                return
+            if maxID != nil {
+                Async.main {
+                    self.footerIndicatorView?.startAnimating()
+                    return
+                }
             }
             self.loadData(maxID?.stringValue, success: success, failure: failure)
         })
