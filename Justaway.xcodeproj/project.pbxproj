@@ -51,6 +51,8 @@
 		38AB8BCF19F6A1DE0065D869 /* SwifteriOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 381E6E7619DE47EC00139654 /* SwifteriOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38B4475D19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
+		38CE6BB91B18171D00E0198B /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38CE6BB81B18171D00E0198B /* QBImagePicker.framework */; };
+		38CE6BBA1B18171D00E0198B /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38CE6BB81B18171D00E0198B /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; };
 		38D6DDF81A5AC317001C94F7 /* EventBox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38E8D70F1B0A0E0B002C2A57 /* GoogleChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8D70E1B0A0E0B002C2A57 /* GoogleChrome.swift */; };
@@ -66,8 +68,6 @@
 		6A35A1D11A73B1C700A8E46D /* StatusAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A35A1D01A73B1C700A8E46D /* StatusAlert.swift */; };
 		6A3F4F3C1B110E74009F80C4 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */; };
 		6A3F4F3E1B110E8E009F80C4 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A3F4F3D1B110E8E009F80C4 /* AccountCell.xib */; };
-		6A3F4F691B161547009F80C4 /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A3F4F681B161547009F80C4 /* QBImagePicker.framework */; };
-		6A3F4F6A1B161547009F80C4 /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A3F4F681B161547009F80C4 /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
 		6A4B9D3119BB514900D50D78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3019BB514900D50D78 /* ViewController.swift */; };
 		6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A4B9D3219BB514900D50D78 /* Main.storyboard */; };
@@ -157,34 +157,6 @@
 			remoteGlobalIDString = 38E82B411A40747C00EFDC81;
 			remoteInfo = Pinwheel;
 		};
-		6A3F4F5D1B161316009F80C4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6A3F4F561B161316009F80C4 /* QBImagePicker.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AAA8FE031ACDA079002A9710;
-			remoteInfo = QBImagePicker;
-		};
-		6A3F4F5F1B161316009F80C4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6A3F4F561B161316009F80C4 /* QBImagePicker.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AAA8FE0E1ACDA079002A9710;
-			remoteInfo = QBImagePickerTests;
-		};
-		6A3F4F611B161316009F80C4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6A3F4F561B161316009F80C4 /* QBImagePicker.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AAA8FE271ACDA0CE002A9710;
-			remoteInfo = QBImagePickerDemo;
-		};
-		6A3F4F631B161316009F80C4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6A3F4F561B161316009F80C4 /* QBImagePicker.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AAA8FE3F1ACDA0CE002A9710;
-			remoteInfo = QBImagePickerDemoTests;
-		};
 		6A4B9D3C19BB514900D50D78 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6A4B9D2119BB514900D50D78 /* Project object */;
@@ -206,7 +178,7 @@
 				38D6DDF81A5AC317001C94F7 /* EventBox.framework in Embed Frameworks */,
 				6ADB647B1A5348D800602B2B /* KeyClip.framework in Embed Frameworks */,
 				6A0A1D331A40B7D30035A03C /* Pinwheel.framework in Embed Frameworks */,
-				6A3F4F6A1B161547009F80C4 /* QBImagePicker.framework in Embed Frameworks */,
+				38CE6BBA1B18171D00E0198B /* QBImagePicker.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -247,6 +219,7 @@
 		38A694F319E4E6E800DD6072 /* TwitterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTests.swift; sourceTree = "<group>"; };
 		38AB8BCC19F167D30065D869 /* ImageLoaderClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderClient.swift; sourceTree = "<group>"; };
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
+		38CE6BB81B18171D00E0198B /* QBImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QBImagePicker.framework; path = Carthage/Build/iOS/QBImagePicker.framework; sourceTree = "<group>"; };
 		38D6DDF61A5AC317001C94F7 /* EventBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventBox.framework; path = Carthage/Build/iOS/EventBox.framework; sourceTree = "<group>"; };
 		38E8D70E1B0A0E0B002C2A57 /* GoogleChrome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleChrome.swift; sourceTree = "<group>"; };
 		38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
@@ -260,8 +233,6 @@
 		6A35A1D01A73B1C700A8E46D /* StatusAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusAlert.swift; sourceTree = "<group>"; };
 		6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		6A3F4F3D1B110E8E009F80C4 /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
-		6A3F4F561B161316009F80C4 /* QBImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QBImagePicker.xcodeproj; path = QBImagePicker/QBImagePicker.xcodeproj; sourceTree = "<group>"; };
-		6A3F4F681B161547009F80C4 /* QBImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QBImagePicker.framework; path = Carthage/Build/iOS/QBImagePicker.framework; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A4B9D2D19BB514900D50D78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -305,7 +276,7 @@
 				38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */,
 				6ADB647A1A5348D800602B2B /* KeyClip.framework in Frameworks */,
 				6A0A1D321A40B7D30035A03C /* Pinwheel.framework in Frameworks */,
-				6A3F4F691B161547009F80C4 /* QBImagePicker.framework in Frameworks */,
+				38CE6BB91B18171D00E0198B /* QBImagePicker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,17 +446,6 @@
 			name = Alert;
 			sourceTree = "<group>";
 		};
-		6A3F4F571B161316009F80C4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6A3F4F5E1B161316009F80C4 /* QBImagePicker.framework */,
-				6A3F4F601B161316009F80C4 /* QBImagePickerTests.xctest */,
-				6A3F4F621B161316009F80C4 /* QBImagePickerDemo.app */,
-				6A3F4F641B161316009F80C4 /* QBImagePickerDemoTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		6A4B9D2019BB514900D50D78 = {
 			isa = PBXGroup;
 			children = (
@@ -494,7 +454,6 @@
 				3805DE461A5D8FE200FBD015 /* Libraries */,
 				6AB8CDEE1A29C13700D22268 /* Frameworks */,
 				6A4B9D2A19BB514900D50D78 /* Products */,
-				6A3F4F561B161316009F80C4 /* QBImagePicker.xcodeproj */,
 				6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */,
 				381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */,
 			);
@@ -612,7 +571,7 @@
 		6AB8CDEE1A29C13700D22268 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6A3F4F681B161547009F80C4 /* QBImagePicker.framework */,
+				38CE6BB81B18171D00E0198B /* QBImagePicker.framework */,
 				3805DE3C1A5D8AC000FBD015 /* Toucan.framework */,
 				38D6DDF61A5AC317001C94F7 /* EventBox.framework */,
 				6ADB64771A5348D800602B2B /* KeyClip.framework */,
@@ -696,10 +655,6 @@
 					ProjectRef = 6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */;
 				},
 				{
-					ProductGroup = 6A3F4F571B161316009F80C4 /* Products */;
-					ProjectRef = 6A3F4F561B161316009F80C4 /* QBImagePicker.xcodeproj */;
-				},
-				{
 					ProductGroup = 381E6E6C19DE47EB00139654 /* Products */;
 					ProjectRef = 381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */;
 				},
@@ -760,34 +715,6 @@
 			fileType = wrapper.cfbundle;
 			path = PinwheelTests.xctest;
 			remoteRef = 6A0A1D301A40B7310035A03C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6A3F4F5E1B161316009F80C4 /* QBImagePicker.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = QBImagePicker.framework;
-			remoteRef = 6A3F4F5D1B161316009F80C4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6A3F4F601B161316009F80C4 /* QBImagePickerTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = QBImagePickerTests.xctest;
-			remoteRef = 6A3F4F5F1B161316009F80C4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6A3F4F621B161316009F80C4 /* QBImagePickerDemo.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = QBImagePickerDemo.app;
-			remoteRef = 6A3F4F611B161316009F80C4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6A3F4F641B161316009F80C4 /* QBImagePickerDemoTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = QBImagePickerDemoTests.xctest;
-			remoteRef = 6A3F4F631B161316009F80C4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

@@ -12,12 +12,22 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     @IBOutlet weak var textView: AutoExpandTextView!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint! // Used to AutoExpandTextView
     
-    var imagePickerController = QBImagePickerController.new()
-    
-    @IBOutlet weak var imageContainerView: BackgroundScrollView!
+    @IBOutlet weak var imageContainerView: UIScrollView!
     @IBOutlet weak var imageContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageContentView: UIView!
     
-    var images :[NSData] = []
+    @IBOutlet weak var imageView1: UIImageView!
+    @IBOutlet weak var imageView2: UIImageView!
+    @IBOutlet weak var imageView3: UIImageView!
+    @IBOutlet weak var imageView4: UIImageView!
+    @IBOutlet weak var imageButton1: MenuButton!
+    @IBOutlet weak var imageButton2: MenuButton!
+    @IBOutlet weak var imageButton3: MenuButton!
+    @IBOutlet weak var imageButton4: MenuButton!
+    
+    var images: [NSData] = []
+    var imageViews: [UIImageView] = []
+    var imageButtons: [MenuButton] = []
     
     override var nibName: String {
         return "EditorViewController"
@@ -50,7 +60,14 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     
     func configureView() {
         textView.configure(heightConstraint: textViewHeightConstraint)
-        imageContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "image"))
+        
+        imageViews = [imageView1, imageView2, imageView3, imageView4]
+        for imageView in imageViews {
+            imageView.clipsToBounds = true
+            imageView.contentMode = .ScaleAspectFill
+        }
+        imageButtons = [imageButton1, imageButton2, imageButton3, imageButton4]
+        
         resetPickerController()
     }
     
@@ -66,13 +83,12 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     
     func resetPickerController() {
         images = []
-        imagePickerController = QBImagePickerController.new() // reset
-        imagePickerController.delegate = self
-        imagePickerController.allowsMultipleSelection = true
-        imagePickerController.minimumNumberOfSelection = 0
-        imagePickerController.maximumNumberOfSelection = 4
-        imagePickerController.showsNumberOfSelectedAssets = true
-        imagePickerController.mediaType = QBImagePickerMediaType.Image
+        for imageView in imageViews {
+            imageView.image = nil
+        }
+        for imageButton in imageButtons {
+            imageButton.hidden = true
+        }
         imageContainerHeightConstraint.constant = 0
     }
     
@@ -112,32 +128,22 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     // MARK: - QBImagePickerControllerDelegate
     
     func qb_imagePickerController(imagePickerController: QBImagePickerController!, didFinishPickingAssets assets: [AnyObject]!) {
-        images = []
         if assets.count > 0 {
-            for view in imageContainerView.subviews {
-                view.removeFromSuperview()
-            }
-            var i = 0
-            let contentView = UIView(frame: CGRectMake(0, 0, 100 * CGFloat(assets.count), 120))
+            var i = images.count
             for asset in assets {
                 if let phasset = asset as? PHAsset {
                     PHImageManager.defaultManager().requestImageDataForAsset(phasset, options: nil, resultHandler: {
                         (imageData: NSData!, dataUTI: String!, orientation: UIImageOrientation, info: [NSObject : AnyObject]!) -> Void in
                         if let fileUrl = info["PHImageFileURLKey"] as? NSURL {
                             self.images.append(imageData)
-                            let imageView = UIImageView(frame: CGRectMake(100 * CGFloat(i) + 10, 10, 90, 100))
-                            imageView.clipsToBounds = true
-                            imageView.contentMode = .ScaleAspectFill
-                            imageView.image = UIImage(data: imageData)
-                            contentView.addSubview(imageView)
+                            self.imageViews[i].image = UIImage(data: imageData)
+                            self.imageButtons[i].hidden = false
                             i++
                         }
                     })
                 }
             }
-            imageContainerView.addSubview(contentView)
-            imageContainerView.contentSize = contentView.frame.size
-            imageContainerHeightConstraint.constant = 120
+            imageContainerHeightConstraint.constant = 110
         } else {
             imageContainerHeightConstraint.constant = 0
         }
@@ -170,7 +176,42 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
         }
     }
     
+    @IBAction func removeImage(sender: UIButton) {
+        if images.count <= sender.tag {
+            return
+        }
+        images.removeAtIndex(sender.tag)
+        var i = 0
+        for imageView in imageViews {
+            if images.count > i {
+                imageView.image = UIImage(data: images[i])
+            } else {
+                imageView.image = nil
+                self.imageButtons[i].hidden = true
+            }
+            i++
+        }
+        if images.count == 0 {
+            self.imageContainerHeightConstraint.constant = 0
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
     func image() {
+        let capacity = UInt(4 - images.count)
+        if capacity < 1 {
+            ErrorAlert.show("You can select up to 4 images to tweet at once.")
+            return;
+        }
+        var imagePickerController = QBImagePickerController.new()
+        imagePickerController.delegate = self
+        imagePickerController.allowsMultipleSelection = true
+        imagePickerController.minimumNumberOfSelection = 0
+        imagePickerController.maximumNumberOfSelection = capacity
+        imagePickerController.showsNumberOfSelectedAssets = true
+        imagePickerController.mediaType = QBImagePickerMediaType.Image
         self.view.window?.rootViewController?.presentViewController(imagePickerController, animated: true, completion: nil)
     }
     
