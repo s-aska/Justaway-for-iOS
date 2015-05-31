@@ -1,4 +1,5 @@
 import UIKit
+import Accounts
 import SwifteriOS
 import EventBox
 import KeyClip
@@ -114,6 +115,37 @@ class Twitter {
         }
         
         swifter.authorizeWithCallbackURL(NSURL(string: "justaway://success")!, success: success, failure: failure)
+    }
+    
+    class func addACAccount() {
+        let accountStore = ACAccountStore()
+        let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+        
+        // Prompt the user for permission to their twitter account stored in the phone's settings
+        accountStore.requestAccessToAccountsWithType(accountType, options: nil) {
+            granted, error in
+            
+            if granted {
+                let twitterAccounts = accountStore.accountsWithAccountType(accountType) as! [ACAccount]
+                
+                if twitterAccounts.count == 0 {
+                    MessageAlert.show("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
+                } else {
+                    Twitter.refreshAccounts(
+                        twitterAccounts.map({ (twitterAccount: ACAccount) in
+                            Account(
+                                credential: SwifterCredential(account: twitterAccount),
+                                userID: twitterAccount.valueForKeyPath("properties.user_id") as! String,
+                                screenName: twitterAccount.username,
+                                name: twitterAccount.username,
+                                profileImageURL: NSURL(string: "")!)
+                        })
+                    )
+                }
+            } else {
+                MessageAlert.show("Error", message: error.localizedDescription)
+            }
+        }
     }
     
     class func refreshAccounts(newAccounts: [Account]) {
