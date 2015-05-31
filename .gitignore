@@ -26,3 +26,8 @@ Justaway.xcworkspace
 # Secret
 Justaway/JFISecret.m
 Carthage
+
+# shenzhen
+build
+*.ipa
+*.app.dSYM.zip
