@@ -9,7 +9,7 @@
 import UIKit
 
 class AddAccountAlert {
-    class func show() {
+    class func show(sender: UIView) {
         var actionSheet =  UIAlertController(title: "Add Account", message: "Choose via", preferredStyle: .ActionSheet)
         actionSheet.addAction(UIAlertAction(title: "via iOS", style: .Default, handler: { action in
             Twitter.addACAccount()
@@ -18,6 +18,11 @@ class AddAccountAlert {
             Twitter.addOAuthAccount()
         }))
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        // iPad
+        actionSheet.popoverPresentationController?.sourceView = sender
+        actionSheet.popoverPresentationController?.sourceRect = sender.bounds
+        
         AlertController.showViewController(actionSheet)
     }
 }

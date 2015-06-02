@@ -160,7 +160,9 @@ class StatusTableViewController: TimelineTableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let row = rows[indexPath.row]
-        StatusAlert.show(row.status)
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+            StatusAlert.show(cell, status: row.status)
+        }
     }
     
     // MARK: Public Methods

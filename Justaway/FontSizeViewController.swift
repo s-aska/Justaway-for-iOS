@@ -53,6 +53,11 @@ class FontSizeViewController: UIViewController {
     }
     
     @IBAction func menuAction(sender: UIButton) {
+        
+        // iPad
+        actionSheet.popoverPresentationController?.sourceView = sender
+        actionSheet.popoverPresentationController?.sourceRect = sender.bounds
+        
         AlertController.showViewController(actionSheet)
     }
     

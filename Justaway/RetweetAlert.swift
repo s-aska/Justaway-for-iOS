@@ -9,7 +9,7 @@
 import UIKit
 
 class RetweetAlert {
-    class func show(statusID: String) {
+    class func show(sender: UIView, statusID: String) {
         let actionSheet = UIAlertController()
         actionSheet.addAction(UIAlertAction(
             title: "Cancel",
@@ -42,6 +42,11 @@ class RetweetAlert {
                     
             }))
         }
+        
+        // iPad
+        actionSheet.popoverPresentationController?.sourceView = sender
+        actionSheet.popoverPresentationController?.sourceRect = sender.bounds
+        
         AlertController.showViewController(actionSheet)
     }
 }

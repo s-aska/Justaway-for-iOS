@@ -197,8 +197,8 @@ class TimelineViewController: UIViewController {
         tableViewControllers.first?.refresh()
     }
     
-    func streamingSwitch(sender: AnyObject) {
-        StreamingAlert.show()
+    func streamingSwitch(sender: UIView) {
+        StreamingAlert.show(sender)
     }
     
     @IBAction func signInButtonClick(sender: UIButton) {

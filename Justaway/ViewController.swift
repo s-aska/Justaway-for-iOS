@@ -63,7 +63,7 @@ class ViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func signInButtonClick(sender: UIButton) {
-        AddAccountAlert.show()
+        AddAccountAlert.show(sender)
     }
     
 }

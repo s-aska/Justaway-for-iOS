@@ -10,7 +10,7 @@ import UIKit
 import EventBox
 
 class StatusAlert {
-    class func show(status: TwitterStatus) {
+    class func show(sender: UIView, status: TwitterStatus) {
         let statusID = status.statusID
         let actionSheet = UIAlertController()
         actionSheet.message = status.text
@@ -124,6 +124,10 @@ class StatusAlert {
                             return
                     }))
                 }
+                
+                // iPad
+                actionSheet.popoverPresentationController?.sourceView = sender
+                actionSheet.popoverPresentationController?.sourceRect = sender.bounds
                 
                 AlertController.showViewController(actionSheet)
             }

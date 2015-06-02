@@ -9,7 +9,7 @@
 import UIKit
 
 class StreamingAlert {
-    class func show() {
+    class func show(sender: UIView) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .Alert)
         actionSheet.addAction(UIAlertAction(
             title: "Cancel",
@@ -34,6 +34,11 @@ class StreamingAlert {
                     Twitter.stopStreamingAndDisable()
             }))
         }
+        
+        // iPad
+        actionSheet.popoverPresentationController?.sourceView = sender
+        actionSheet.popoverPresentationController?.sourceRect = sender.bounds
+        
         AlertController.showViewController(actionSheet)
     }
 }

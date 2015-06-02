@@ -147,7 +147,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         if (tableView.editing == true) {
             cancel()
         } else {
-            AddAccountAlert.show()
+            AddAccountAlert.show(sender)
         }
     }
     
