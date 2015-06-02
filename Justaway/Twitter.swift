@@ -49,15 +49,16 @@ class Twitter {
     class func setup() {
         let reachability = Reachability.reachabilityForInternetConnection()
         reachability.whenReachable = { reachability in
+            NSLog("whenReachable")
             Async.main(after: 2) {
                 Twitter.startStreamingIfEnable()
             }
             return
         }
         
-//        reachability.whenUnreachable = { reachability in
-//            println("Not reachable")
-//        }
+        reachability.whenUnreachable = { reachability in
+            NSLog("whenUnreachable")
+        }
         
         reachability.startNotifier()
         
@@ -583,8 +584,12 @@ extension Twitter {
         }
         
         if Static.backgroundTaskIdentifier == UIBackgroundTaskInvalid {
+            NSLog("backgroundTaskIdentifier: beginBackgroundTask")
             Static.backgroundTaskIdentifier = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler() {
+                NSLog("backgroundTaskIdentifier: Expiration")
                 if Static.backgroundTaskIdentifier != UIBackgroundTaskInvalid {
+                    NSLog("backgroundTaskIdentifier: endBackgroundTask")
+                    self.stopStreamingIFConnected()
                     UIApplication.sharedApplication().endBackgroundTask(Static.backgroundTaskIdentifier)
                     Static.backgroundTaskIdentifier = UIBackgroundTaskInvalid
                 }
@@ -592,7 +597,7 @@ extension Twitter {
         }
         
         Static.streamingRequest = getCurrentClient()?.getUserStreamDelimited(delimited: nil,
-            stallWarnings: nil,
+            stallWarnings: true,
             includeMessagesFromFollowedAccounts: nil,
             includeReplies: nil,
             track: nil,
