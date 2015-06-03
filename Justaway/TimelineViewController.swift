@@ -38,6 +38,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         if !setupView {
             setupView = true
             configureView()
+            
+            // ViewDidDisappear is performed When you view the ProfileViewController.
+            configureEvent()
         }
     }
     
@@ -47,11 +50,13 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        configureEvent()
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+    }
+    
+    deinit {
         EventBox.off(self)
     }
     

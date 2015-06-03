@@ -13,6 +13,7 @@ class StatusTableViewController: TimelineTableViewController {
     var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
     var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
     var lastID: Int64?
+    var cacheLoaded = false
     
     enum RenderMode {
         case TOP
@@ -48,7 +49,10 @@ class StatusTableViewController: TimelineTableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
-        self.loadCache()
+        if !cacheLoaded {
+            cacheLoaded = true
+            loadCache()
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {

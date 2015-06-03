@@ -93,6 +93,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
             imageView.contentMode = .ScaleAspectFill
             imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
         }
+        
+        iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "openProfile:"))
     }
     
     func configureEvent() {
@@ -292,6 +294,12 @@ class TwitterStatusCell: BackgroundTableViewCell {
     }
     
     // MARK: - Actions
+    
+    func openProfile(sender: UIGestureRecognizer) {
+        if let user = status?.user {
+            ProfileViewController.show(user)
+        }
+    }
     
     func showImage(sender: UIGestureRecognizer) {
         let tag = sender.view?.tag ?? 0
