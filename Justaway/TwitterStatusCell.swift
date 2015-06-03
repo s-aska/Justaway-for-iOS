@@ -43,6 +43,16 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var imageView1: UIImageView!
     @IBOutlet weak var imageView2: UIImageView!
     @IBOutlet weak var imageView3: UIImageView!
+    @IBOutlet weak var imageView4: UIImageView!
+    
+    @IBOutlet weak var imageView1HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageView1WidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageView2HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageView2WidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageView3HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageView3WidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageView4HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageView4WidthConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var replyButton: UIButton!
     @IBOutlet weak var retweetButton: UIButton!
@@ -78,10 +88,11 @@ class TwitterStatusCell: BackgroundTableViewCell {
         layoutMargins = UIEdgeInsetsZero
         preservesSuperviewLayoutMargins = false
         
-        imageView1.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
-        imageView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
-        imageView3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
-        
+        for imageView in [imageView1, imageView2, imageView3, imageView4] {
+            imageView.clipsToBounds = true
+            imageView.contentMode = .ScaleAspectFill
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
+        }
     }
     
     func configureEvent() {
@@ -152,13 +163,13 @@ class TwitterStatusCell: BackgroundTableViewCell {
         if self.layout == nil || self.layout != layout {
             self.layout = layout
             if layout == .Normal || layout == .NormalWithImage {
-                self.actionedContainerView.removeFromSuperview()
+                actionedContainerView.removeFromSuperview()
             }
             if layout == .Normal || layout == .Actioned {
-                self.imagesContainerView.removeFromSuperview()
+                imagesContainerView.removeFromSuperview()
             }
-            self.setNeedsLayout()
-            self.layoutIfNeeded()
+            setNeedsLayout()
+            layoutIfNeeded()
         }
     }
     
@@ -179,58 +190,104 @@ class TwitterStatusCell: BackgroundTableViewCell {
             }
         }
         
-        self.iconImageView.image = nil
-        self.nameLabel.text = status.user.name
-        self.screenNameLabel.text = "@" + status.user.screenName
-        self.protectedLabel.hidden = status.user.isProtected ? false : true
-        self.statusLabel.text = status.text
-        self.retweetCountLabel.text = status.retweetCount > 0 ? numberFormatter.stringFromNumber(status.retweetCount) : ""
-        self.favoriteCountLabel.text = status.favoriteCount > 0 ? numberFormatter.stringFromNumber(status.favoriteCount) : ""
-        self.relativeCreatedAtLabel.text = status.createdAt.relativeString
-        self.absoluteCreatedAtLabel.text = status.createdAt.absoluteString
-        self.viaLabel.text = status.via.name
+        iconImageView.image = nil
+        nameLabel.text = status.user.name
+        screenNameLabel.text = "@" + status.user.screenName
+        protectedLabel.hidden = status.user.isProtected ? false : true
+        statusLabel.text = status.text
+        retweetCountLabel.text = status.retweetCount > 0 ? numberFormatter.stringFromNumber(status.retweetCount) : ""
+        favoriteCountLabel.text = status.favoriteCount > 0 ? numberFormatter.stringFromNumber(status.favoriteCount) : ""
+        relativeCreatedAtLabel.text = status.createdAt.relativeString
+        absoluteCreatedAtLabel.text = status.createdAt.absoluteString
+        viaLabel.text = status.via.name
         if let actionedBy = status.actionedBy {
-            self.actionedTextLabel.text = "\(actionedBy.name) @\(actionedBy.screenName)"
-            self.actionedIconImageView.image = nil
+            actionedTextLabel.text = "\(actionedBy.name) @\(actionedBy.screenName)"
+            actionedIconImageView.image = nil
         }
         if status.media.count > 0 {
-            self.imagesContainerView.hidden = true
-            self.imageView1.image = nil
-            self.imageView2.image = nil
-            self.imageView3.image = nil
+            imagesContainerView.hidden = true
+            imageView1.image = nil
+            imageView2.image = nil
+            imageView3.image = nil
+            imageView4.image = nil
         }
     }
     
     func setImage(status: TwitterStatus) {
         
-        if self.iconImageView.image == nil {
-            ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: self.iconImageView)
+        if iconImageView.image == nil {
+            ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: iconImageView)
         }
         
         if let actionedBy = status.actionedBy {
-            if self.actionedIconImageView.image == nil {
-                ImageLoaderClient.displayActionedUserIcon(actionedBy.profileImageURL, imageView: self.actionedIconImageView)
+            if actionedIconImageView.image == nil {
+                ImageLoaderClient.displayActionedUserIcon(actionedBy.profileImageURL, imageView: actionedIconImageView)
             }
         }
         
-        if status.media.count == 0 || self.imagesContainerView.hidden == false {
+        if status.media.count == 0 || imagesContainerView.hidden == false {
             return
         }
         
-        self.imagesContainerView.hidden = false
+        imagesContainerView.hidden = false
         
-        var imageViews = [self.imageView1, self.imageView2, self.imageView3];
-        for media in status.media {
-            if let imageView = imageViews.removeAtIndex(0) {
-                imageView.hidden = false
-                ImageLoaderClient.displayThumbnailImage(media.mediaThumbURL, imageView: imageView)
-            }
-            if imageViews.count == 0 {
-                break
-            }
-        }
-        for imageView in imageViews {
-            imageView.hidden = true
+        let fullHeight = imagesContainerView.frame.height
+        let fullWidth = imagesContainerView.frame.width
+        let harfHeight = (fullHeight - 5) / 2
+        let halfWidth = (fullWidth - 5) / 2
+        switch status.media.count {
+        case 1:
+            imageView1HeightConstraint.constant = fullHeight
+            imageView1WidthConstraint.constant = fullWidth
+            ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
+            imageView1.hidden = false
+            imageView2.hidden = true
+            imageView3.hidden = true
+            imageView4.hidden = true
+        case 2:
+            imageView1HeightConstraint.constant = fullHeight
+            imageView1WidthConstraint.constant = halfWidth
+            imageView3HeightConstraint.constant = fullHeight
+            imageView3WidthConstraint.constant = halfWidth
+            ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
+            ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView3)
+            imageView1.hidden = false
+            imageView2.hidden = true
+            imageView3.hidden = false
+            imageView4.hidden = true
+        case 3:
+            imageView1HeightConstraint.constant = fullHeight
+            imageView1WidthConstraint.constant = halfWidth
+            imageView3HeightConstraint.constant = harfHeight
+            imageView3WidthConstraint.constant = halfWidth
+            imageView4HeightConstraint.constant = harfHeight
+            imageView4WidthConstraint.constant = halfWidth
+            ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
+            ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView3)
+            ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView4)
+            imageView1.hidden = false
+            imageView2.hidden = true
+            imageView3.hidden = false
+            imageView4.hidden = false
+        case 4:
+            imageView1HeightConstraint.constant = harfHeight
+            imageView1WidthConstraint.constant = halfWidth
+            imageView2HeightConstraint.constant = harfHeight
+            imageView2WidthConstraint.constant = halfWidth
+            imageView3HeightConstraint.constant = harfHeight
+            imageView3WidthConstraint.constant = halfWidth
+            imageView4HeightConstraint.constant = harfHeight
+            imageView4WidthConstraint.constant = halfWidth
+            ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
+            ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
+            ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView3)
+            ImageLoaderClient.displayThumbnailImage(status.media[3].mediaThumbURL, imageView: imageView4)
+            imageView1.hidden = false
+            imageView2.hidden = false
+            imageView3.hidden = false
+            imageView4.hidden = false
+        default:
+            break
         }
     }
     

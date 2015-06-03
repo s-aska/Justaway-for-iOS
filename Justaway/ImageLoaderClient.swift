@@ -10,7 +10,7 @@ class ImageLoaderClient {
             .build()
         
         static let thumbnailOptions = Pinwheel.DisplayOptions.Builder()
-            .addFilter(RoundedFilter(6, w: 80, h: 80), hook: .BeforeMemory)
+            .addFilter(RoundedFilter(0, w: 80, h: 80), hook: .BeforeMemory)
             .displayer(Pinwheel.FadeInDisplayer())
             .queuePriority(NSOperationQueuePriority.Low)
             .build()
