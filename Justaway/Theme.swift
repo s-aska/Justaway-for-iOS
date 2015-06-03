@@ -31,7 +31,7 @@ protocol Theme {
     
     func menuBackgroundColor() -> UIColor
     func menuTextColor() -> UIColor
-    func menuHighlightTextColor() -> UIColor
+    func menuSelectedTextColor() -> UIColor
     func menuDisabledTextColor() -> UIColor
     
     func buttonNormal() -> UIColor
@@ -87,6 +87,7 @@ class ThemeController {
         MenuView.appearance().backgroundColor = theme.menuBackgroundColor()
         MenuShadowView.appearance().layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         MenuButton.appearance().setTitleColor(theme.menuTextColor(), forState: .Normal)
+        MenuButton.appearance().setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)
         
         // for TwitterStatus
         DisplayNameLable.appearance().textColor = theme.displayNameTextColor()
@@ -159,6 +160,7 @@ class ThemeController {
                 v.backgroundColor = theme.menuBackgroundColor()
             case let v as MenuButton:
                 v.setTitleColor(theme.menuTextColor(), forState: .Normal)
+                v.setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)
             case let v as TextLable:
                 v.textColor = theme.titleTextColor()
             case let v as DisplayNameLable:

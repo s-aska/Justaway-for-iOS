@@ -30,7 +30,7 @@ class ThemeSolarizedLight: Theme {
     
     func menuBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes2 }
     func menuTextColor() -> UIColor { return ThemeColor.Solarized.baes01 }
-    func menuHighlightTextColor() -> UIColor { return ThemeColor.Solarized.blue }
+    func menuSelectedTextColor() -> UIColor { return ThemeColor.Solarized.blue }
     func menuDisabledTextColor() -> UIColor { return ThemeColor.Solarized.baes1 }
     
     func buttonNormal() -> UIColor { return ThemeColor.Solarized.baes1 }

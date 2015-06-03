@@ -2,24 +2,26 @@ import UIKit
 import SwifteriOS
 import EventBox
 
-class TimelineViewController: UIViewController {
+class TimelineViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: Properties
     
     @IBOutlet weak var scrollWrapperView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var homeButton: UIButton!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var streamingStatusLabel: UILabel!
     @IBOutlet weak var streamingView: UIView!
     @IBOutlet weak var streamingButton: StreamingButton!
+    @IBOutlet weak var tabWraperView: UIView!
     
     var editorViewController: EditorViewController!
     var settingsViewController: SettingsViewController!
     var tableViewControllers = [TimelineTableViewController]()
+    var tabButtons = [MenuButton]()
     var imageViewController: ImageViewController?
     var setupView = false
     var userID = ""
+    var currentPage = 0
     
     struct Static {
         private static let connectionQueue = NSOperationQueue().serial()
@@ -78,15 +80,29 @@ class TimelineViewController: UIViewController {
             view.addSubview(vc.view)
             contentView.addSubview(view)
             tableViewControllers.append(vc)
+            
+            if let button = MenuButton.buttonWithType(UIButtonType.System) as? MenuButton {
+                button.tag = i
+                button.tintColor = UIColor.clearColor()
+                button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
+                button.frame = CGRectMake(58 * CGFloat(i), 0, 58, 58)
+                button.contentEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
+                button.setTitle(i == 0 ? "家" : "@", forState: UIControlState.Normal)
+                button.sizeToFit()
+                button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tabButton:"))
+                
+                var longPress = UILongPressGestureRecognizer(target: self, action: "refresh:")
+                longPress.minimumPressDuration = 2.0;
+                button.addGestureRecognizer(longPress)
+                
+                tabWraperView.addSubview(button)
+                tabButtons.append(button)
+            }
         }
         
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
         scrollView.pagingEnabled = true
-        
-        var longPress = UILongPressGestureRecognizer(target: self, action: "refresh:")
-        longPress.minimumPressDuration = 2.0;
-        homeButton.addGestureRecognizer(longPress)
         
         streamingView.userInteractionEnabled = true
         var gesture = UITapGestureRecognizer(target: self, action: "streamingSwitch:")
@@ -105,15 +121,20 @@ class TimelineViewController: UIViewController {
         
         EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
             let status = n.object as! TwitterStatus
+            var page = 0
             for tableViewController in self.tableViewControllers {
                 switch tableViewController {
                 case let vc as StatusTableViewController:
                     if vc.accept(status) {
                         vc.renderData([status], mode: .TOP, handler: {})
+                        if self.currentPage != page || !vc.isTop {
+                            self.tabButtons[page].selected = true
+                        }
                     }
                 default:
                     break
                 }
+                page++
             }
         }
         
@@ -162,6 +183,10 @@ class TimelineViewController: UIViewController {
                 self.editorViewController.textView.selectedRange = range
             }
         }
+        
+        EventBox.onMainThread(self, name: "timelineScrollToTop", handler: { _ in
+            self.tabButtons[self.currentPage].selected = false
+        })
     }
     
     func toggleStreaming() {
@@ -188,25 +213,51 @@ class TimelineViewController: UIViewController {
         self.settingsViewController.hide()
     }
     
+    // MARK: - UIScrollViewDelegate
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let page = Int((scrollView.contentOffset.y + (scrollWrapperView.frame.size.width / 2)) / scrollWrapperView.frame.size.width)
+        if currentPage != page {
+            currentPage = page
+            self.highlightUpdate(page)
+        }
+        
+    }
+    
     // MARK: - Actions
     
-    func refresh(sender: AnyObject) {
+    func highlightUpdate(page: Int) {
+        NSLog("highlightUpdate page:\(page) y:\(tableViewControllers[page].tableView.contentOffset.y)")
+        if tableViewControllers[page].tableView.contentOffset.y == 0 {
+            tabButtons[page].selected = false
+        }
+    }
+    
+    func refresh(sender: UILongPressGestureRecognizer) {
         if (sender.state != .Began) {
             return
         }
-        tableViewControllers.first?.refresh()
+        tableViewControllers[currentPage].refresh()
     }
     
     func streamingSwitch(sender: UIView) {
         StreamingAlert.show(sender)
     }
     
-    @IBAction func signInButtonClick(sender: UIButton) {
-        
-    }
-    
-    @IBAction func homeButton(sender: UIButton) {
-        tableViewControllers.first?.scrollToTop()
+    func tabButton(sender: UITapGestureRecognizer) {
+        if let page = sender.view?.tag {
+            if currentPage == page {
+                tableViewControllers[page].scrollToTop()
+                tabButtons[page].selected = false
+            } else {
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width * CGFloat(page), 0)
+                }, completion: { (flag) -> Void in
+                    self.currentPage = page
+                    self.highlightUpdate(page)
+                })
+            }
+        }
     }
     
     @IBAction func showEditor(sender: UIButton) {

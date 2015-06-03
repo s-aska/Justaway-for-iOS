@@ -8,19 +8,18 @@
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
-            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TimelineViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
-                <outlet property="homeButton" destination="YWo-Rz-RMv" id="3Ug-7w-3b2"/>
                 <outlet property="iconImageView" destination="eI8-Uh-DCZ" id="RKU-Sn-Att"/>
                 <outlet property="scrollView" destination="QzD-8n-VHR" id="uQa-aB-Crg"/>
                 <outlet property="scrollWrapperView" destination="YQA-1l-jex" id="Qcu-44-ZzZ"/>
                 <outlet property="streamingButton" destination="Hgv-8Y-sHi" id="sT9-FX-Plk"/>
                 <outlet property="streamingStatusLabel" destination="i4e-3u-LDz" id="AzD-uC-8w0"/>
                 <outlet property="streamingView" destination="zsL-HL-Z8V" id="g3Z-kd-dON"/>
+                <outlet property="tabWraperView" destination="KCl-rs-HPg" id="iiq-OE-Wsx"/>
                 <outlet property="view" destination="iN0-l3-epB" id="diP-QV-l6C"/>
             </connections>
         </placeholder>
@@ -70,26 +69,33 @@
                                 <action selector="showEditor:" destination="-1" eventType="touchUpInside" id="aNv-DA-Fec"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWo-Rz-RMv" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="58" height="50"/>
-                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
-                            <state key="normal" title="家">
-                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="homeButton:" destination="-1" eventType="touchUpInside" id="Jee-lf-EEz"/>
-                            </connections>
-                        </button>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iuO-p3-lF5">
+                            <rect key="frame" x="0.0" y="0.0" width="481" height="50"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KCl-rs-HPg">
+                                    <rect key="frame" x="0.0" y="0.0" width="481" height="50"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="KCl-rs-HPg" firstAttribute="height" secondItem="iuO-p3-lF5" secondAttribute="height" id="0TT-WM-5dX"/>
+                                <constraint firstItem="KCl-rs-HPg" firstAttribute="leading" secondItem="iuO-p3-lF5" secondAttribute="leading" id="0yk-kv-jHW"/>
+                                <constraint firstItem="KCl-rs-HPg" firstAttribute="width" secondItem="iuO-p3-lF5" secondAttribute="width" priority="250" id="9GI-cb-dil"/>
+                                <constraint firstAttribute="bottom" secondItem="KCl-rs-HPg" secondAttribute="bottom" id="HQq-py-v3w"/>
+                                <constraint firstItem="KCl-rs-HPg" firstAttribute="top" secondItem="iuO-p3-lF5" secondAttribute="top" id="iNP-xV-eLp"/>
+                                <constraint firstAttribute="trailing" secondItem="KCl-rs-HPg" secondAttribute="trailing" id="mOC-LS-CRG"/>
+                            </constraints>
+                        </scrollView>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="8Wb-6D-iQt" firstAttribute="leading" secondItem="iuO-p3-lF5" secondAttribute="trailing" id="Cy8-0Z-kCe"/>
                         <constraint firstItem="jEn-1F-PMd" firstAttribute="leading" secondItem="8Wb-6D-iQt" secondAttribute="trailing" id="TVv-ac-3mM"/>
+                        <constraint firstItem="iuO-p3-lF5" firstAttribute="top" secondItem="rWY-A3-4yL" secondAttribute="top" id="UOc-gr-aRE"/>
                         <constraint firstAttribute="centerY" secondItem="jEn-1F-PMd" secondAttribute="centerY" id="WU2-H7-AXv"/>
-                        <constraint firstItem="YWo-Rz-RMv" firstAttribute="leading" secondItem="rWY-A3-4yL" secondAttribute="leading" id="cKe-pw-geK"/>
+                        <constraint firstAttribute="bottom" secondItem="iuO-p3-lF5" secondAttribute="bottom" id="bcC-PS-Uoa"/>
+                        <constraint firstItem="iuO-p3-lF5" firstAttribute="leading" secondItem="rWY-A3-4yL" secondAttribute="leading" id="e1O-Ne-e0p"/>
                         <constraint firstAttribute="centerY" secondItem="8Wb-6D-iQt" secondAttribute="centerY" id="lVV-F5-OiX"/>
-                        <constraint firstAttribute="centerY" secondItem="YWo-Rz-RMv" secondAttribute="centerY" id="mpy-ec-iMO"/>
                         <constraint firstAttribute="trailing" secondItem="jEn-1F-PMd" secondAttribute="trailing" id="n6y-Pf-MlQ"/>
                         <constraint firstAttribute="height" constant="50" id="nmZ-Xw-cE3"/>
                     </constraints>
@@ -120,7 +126,7 @@
                     <rect key="frame" x="490" y="0.0" width="110" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hgv-8Y-sHi" customClass="StreamingButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="6.5" y="-1" width="30" height="25"/>
+                            <rect key="frame" x="6" y="-1" width="30" height="25"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="12"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <state key="normal" title="雷">
@@ -129,7 +135,7 @@
                             </state>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="disconnected" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i4e-3u-LDz" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="29.5" y="3" width="75.5" height="14.5"/>
+                            <rect key="frame" x="29" y="3" width="75.5" height="14.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -165,5 +171,16 @@
             </constraints>
             <point key="canvasLocation" x="412" y="336"/>
         </view>
+        <viewController id="fwg-O2-Tgy">
+            <layoutGuides>
+                <viewControllerLayoutGuide type="top" id="7he-O5-nai"/>
+                <viewControllerLayoutGuide type="bottom" id="R1p-pc-ZTD"/>
+            </layoutGuides>
+            <view key="view" contentMode="scaleToFill" id="Bgl-BT-A84">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            </view>
+        </viewController>
     </objects>
 </document>

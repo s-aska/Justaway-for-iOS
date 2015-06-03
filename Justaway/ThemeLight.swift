@@ -30,7 +30,7 @@ class ThemeLight: Theme {
     
     func menuBackgroundColor() -> UIColor { return UIColor(red: 0.90, green: 0.90, blue: 0.90, alpha: 1) }
     func menuTextColor() -> UIColor { return UIColor.darkGrayColor() }
-    func menuHighlightTextColor() -> UIColor { return ThemeColor.Holo.blueDark }
+    func menuSelectedTextColor() -> UIColor { return ThemeColor.Holo.blueDark }
     func menuDisabledTextColor() -> UIColor { return UIColor.grayColor() }
     
     func buttonNormal() -> UIColor { return UIColor.lightGrayColor() }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EventBox
 import Pinwheel
 
 class TimelineTableViewController: UITableViewController {
@@ -86,6 +87,9 @@ class TimelineTableViewController: UITableViewController {
             didScrollToBottom()
         }
         renderImages()
+        if isTop {
+            EventBox.post("timelineScrollToTop")
+        }
     }
     
     func didScrollToBottom() {
