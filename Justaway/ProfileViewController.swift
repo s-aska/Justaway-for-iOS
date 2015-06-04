@@ -88,7 +88,7 @@ class ProfileViewController: UIViewController {
                     self.followerCountLabel.text = user.followersCount.description
                     self.listedCountLabel.text = user.listedCount.description
                     self.favoritesCountLabel.text = user.favouritesCount.description
-                    ImageLoaderClient.displayImage(user.profileBackgroundImageURL, imageView: self.coverImageView)
+                    ImageLoaderClient.displayImage(user.profileBannerURL, imageView: self.coverImageView)
                 }
             }
             
