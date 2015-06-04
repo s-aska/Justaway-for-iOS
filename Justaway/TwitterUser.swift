@@ -51,7 +51,7 @@ struct TwitterUserFull {
     let followRequestSent: Bool
     let following: Bool
     let location: String
-    let profileBackgroundImageURL: NSURL
+    let profileBannerURL: NSURL
     let siteURL: NSURL
     let favouritesCount: Int
     let followersCount: Int
@@ -69,11 +69,7 @@ struct TwitterUserFull {
         } else {
             self.profileImageURL = NSURL(string: json["profile_image_url"].string ?? "")!
         }
-        if let url = json["profile_background_image_url"].string {
-            self.profileBackgroundImageURL = NSURL(string: url.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: nil, range: nil))!
-        } else {
-            self.profileBackgroundImageURL = NSURL(string: json["profile_background_image_url"].string ?? "")!
-        }
+        self.profileBannerURL = NSURL(string: json["profile_banner_url"].string ?? json["profile_background_image_url"].string ?? "")!
         self.createdAt = json["created_at"].string ?? ""
         self.description = json["description"].string ?? ""
         if let urls = json["entities"]["urls"].array {
