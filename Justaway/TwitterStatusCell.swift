@@ -241,7 +241,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         case 1:
             imageView1HeightConstraint.constant = fullHeight
             imageView1WidthConstraint.constant = fullWidth
-            ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
+            ImageLoaderClient.displayImage(status.media[0].mediaURL, imageView: imageView1)
             imageView1.hidden = false
             imageView2.hidden = true
             imageView3.hidden = true

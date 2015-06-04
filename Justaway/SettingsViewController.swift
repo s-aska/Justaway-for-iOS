@@ -97,7 +97,6 @@ class SettingsViewController: UIViewController {
             view.frame.origin.y,
             view.frame.size.width,
             view.frame.size.height)
-        view.hidden = false
         
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
             view.frame = CGRectMake(0,

@@ -69,7 +69,11 @@ struct TwitterUserFull {
         } else {
             self.profileImageURL = NSURL(string: json["profile_image_url"].string ?? "")!
         }
-        self.profileBannerURL = NSURL(string: json["profile_banner_url"].string ?? json["profile_background_image_url"].string ?? "")!
+        if let url = json["profile_banner_url"].string {
+            self.profileBannerURL = NSURL(string: url + "/mobile_retina")!
+        } else {
+            self.profileBannerURL = NSURL(string: json["profile_background_image_url"].string ?? "")!
+        }
         self.createdAt = json["created_at"].string ?? ""
         self.description = json["description"].string ?? ""
         if let urls = json["entities"]["urls"].array {
