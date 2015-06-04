@@ -89,25 +89,25 @@
                                     <constraint firstAttribute="width" constant="60" id="JkI-tC-c2I"/>
                                 </constraints>
                             </imageView>
-                            <imageView tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QKx-0D-I2P">
-                                <rect key="frame" x="0.0" y="65" width="60" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="B1B-i7-GeY"/>
-                                    <constraint firstAttribute="width" constant="60" id="rjY-SP-sPL"/>
-                                </constraints>
-                            </imageView>
-                            <imageView tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YEI-yN-jrO">
+                            <imageView tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YEI-yN-jrO">
                                 <rect key="frame" x="199" y="0.0" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="QIF-I1-ysl"/>
                                     <constraint firstAttribute="width" constant="60" id="rhY-PH-gib"/>
                                 </constraints>
                             </imageView>
-                            <imageView tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lxf-3g-dTw">
+                            <imageView tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lxf-3g-dTw">
                                 <rect key="frame" x="199" y="65" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="QQe-fm-WeU"/>
                                     <constraint firstAttribute="height" constant="60" id="cy1-2I-CBz"/>
+                                </constraints>
+                            </imageView>
+                            <imageView tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QKx-0D-I2P">
+                                <rect key="frame" x="0.0" y="65" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="B1B-i7-GeY"/>
+                                    <constraint firstAttribute="width" constant="60" id="rjY-SP-sPL"/>
                                 </constraints>
                             </imageView>
                         </subviews>
@@ -288,15 +288,15 @@
                 <outlet property="imageView1" destination="N6t-fp-5dC" id="kWF-A6-QRv"/>
                 <outlet property="imageView1HeightConstraint" destination="DWS-hd-8aB" id="Jto-nL-EAl"/>
                 <outlet property="imageView1WidthConstraint" destination="JkI-tC-c2I" id="stp-SY-2jN"/>
-                <outlet property="imageView2" destination="QKx-0D-I2P" id="hDi-8z-tqX"/>
-                <outlet property="imageView2HeightConstraint" destination="B1B-i7-GeY" id="HM3-Hd-6l6"/>
-                <outlet property="imageView2WidthConstraint" destination="rjY-SP-sPL" id="yju-aP-KtE"/>
-                <outlet property="imageView3" destination="YEI-yN-jrO" id="Nar-S4-2NQ"/>
-                <outlet property="imageView3HeightConstraint" destination="QIF-I1-ysl" id="B5O-9c-nNb"/>
-                <outlet property="imageView3WidthConstraint" destination="rhY-PH-gib" id="MCg-9y-RLI"/>
-                <outlet property="imageView4" destination="lxf-3g-dTw" id="mkk-LR-Ye6"/>
-                <outlet property="imageView4HeightConstraint" destination="cy1-2I-CBz" id="r8X-ry-z9z"/>
-                <outlet property="imageView4WidthConstraint" destination="QQe-fm-WeU" id="kHe-1B-hXa"/>
+                <outlet property="imageView2" destination="YEI-yN-jrO" id="Bmf-KI-fHu"/>
+                <outlet property="imageView2HeightConstraint" destination="QIF-I1-ysl" id="RLJ-lM-qix"/>
+                <outlet property="imageView2WidthConstraint" destination="rhY-PH-gib" id="Opj-g4-bHx"/>
+                <outlet property="imageView3" destination="lxf-3g-dTw" id="Cul-vs-ITQ"/>
+                <outlet property="imageView3HeightConstraint" destination="cy1-2I-CBz" id="rLy-Kl-RzP"/>
+                <outlet property="imageView3WidthConstraint" destination="QQe-fm-WeU" id="bb9-c1-2ym"/>
+                <outlet property="imageView4" destination="QKx-0D-I2P" id="gzx-wd-nFg"/>
+                <outlet property="imageView4HeightConstraint" destination="B1B-i7-GeY" id="Q6N-vd-Hc3"/>
+                <outlet property="imageView4WidthConstraint" destination="rjY-SP-sPL" id="wCw-Nl-GQ6"/>
                 <outlet property="imagesContainerView" destination="bIb-jf-cxi" id="hDW-Jk-Vmr"/>
                 <outlet property="nameLabel" destination="4lU-BV-VYh" id="Yuq-l7-v5T"/>
                 <outlet property="protectedLabel" destination="3w5-v7-Bbj" id="SDh-vW-feq"/>

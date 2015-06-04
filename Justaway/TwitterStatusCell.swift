@@ -249,28 +249,28 @@ class TwitterStatusCell: BackgroundTableViewCell {
         case 2:
             imageView1HeightConstraint.constant = fullHeight
             imageView1WidthConstraint.constant = halfWidth
-            imageView3HeightConstraint.constant = fullHeight
-            imageView3WidthConstraint.constant = halfWidth
+            imageView2HeightConstraint.constant = fullHeight
+            imageView2WidthConstraint.constant = halfWidth
             ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
-            ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView3)
+            ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
             imageView1.hidden = false
-            imageView2.hidden = true
-            imageView3.hidden = false
+            imageView2.hidden = false
+            imageView3.hidden = true
             imageView4.hidden = true
         case 3:
             imageView1HeightConstraint.constant = fullHeight
             imageView1WidthConstraint.constant = halfWidth
+            imageView2HeightConstraint.constant = harfHeight
+            imageView2WidthConstraint.constant = halfWidth
             imageView3HeightConstraint.constant = harfHeight
             imageView3WidthConstraint.constant = halfWidth
-            imageView4HeightConstraint.constant = harfHeight
-            imageView4WidthConstraint.constant = halfWidth
             ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
-            ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView3)
-            ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView4)
+            ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
+            ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView3)
             imageView1.hidden = false
-            imageView2.hidden = true
+            imageView2.hidden = false
             imageView3.hidden = false
-            imageView4.hidden = false
+            imageView4.hidden = true
         case 4:
             imageView1HeightConstraint.constant = harfHeight
             imageView1WidthConstraint.constant = halfWidth
@@ -282,8 +282,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
             imageView4WidthConstraint.constant = halfWidth
             ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
             ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
-            ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView3)
-            ImageLoaderClient.displayThumbnailImage(status.media[3].mediaThumbURL, imageView: imageView4)
+            ImageLoaderClient.displayThumbnailImage(status.media[3].mediaThumbURL, imageView: imageView3)
+            ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView4)
             imageView1.hidden = false
             imageView2.hidden = false
             imageView3.hidden = false
@@ -301,10 +301,23 @@ class TwitterStatusCell: BackgroundTableViewCell {
         }
     }
     
+    // 1 ... left top (tag:0, page:0)
+    // 2 ... left top (tag:0, page:0) => right top (tag:1, page:1)
+    // 3 ... left top (tag:0, page:0) => right top (tag:1, page:1) => right bottom (tag:2, page:2)
+    // 4 ... left top (tag:0, page:0) => right top (tag:1, page:1) => left  bottom (tag:3, page:2) => right bottom (tag:2, page:3)
+    let tagToPage = [
+        1: [0:0],
+        2: [0:0, 1:1],
+        3: [0:0, 1:1, 2:2],
+        4: [0:0, 1:1, 3:2, 2:3],
+    ]
+    
     func showImage(sender: UIGestureRecognizer) {
         let tag = sender.view?.tag ?? 0
         if let status = self.status {
-            ImageViewEvent(media: status.media, page: tag).post()
+            if let page = tagToPage[status.media.count]?[tag] {
+                ImageViewEvent(media: status.media, page: page).post()
+            }
         }
     }
     
