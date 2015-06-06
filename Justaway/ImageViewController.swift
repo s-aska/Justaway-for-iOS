@@ -10,6 +10,10 @@ import UIKit
 
 class ImageViewController: UIViewController, UIScrollViewDelegate {
     
+    struct Static {
+        static let instance = ImageViewController()
+    }
+    
     // MARK: Properties
     
     override var nibName: String {
@@ -18,7 +22,9 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
+    var imageURLs = [NSURL]()
     var imageViews = [UIImageView]()
+    var initialPage = 0
     var currentPage = 0
     
     // MARK: - View Life Cycle
@@ -34,7 +40,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        // configureEvent()
+        showImage()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -52,6 +58,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func configureEvent() {
+        
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -69,12 +76,12 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Configuration
     
-    func show(event: ImageViewEvent) {
+    func showImage() {
         var size = view.frame.size
-        let contentView = UIView(frame: CGRectMake(0, 0, size.width * CGFloat(event.media.count), size.height))
+        let contentView = UIView(frame: CGRectMake(0, 0, size.width * CGFloat(imageURLs.count), size.height))
         contentView.backgroundColor = UIColor.clearColor()
         var i = 0
-        for image in event.media {
+        for imageURL in imageURLs {
             let imageView = UIImageView(frame: CGRectMake(0, 0, size.width, size.height))
             imageView.contentMode = .ScaleAspectFit
             imageView.tag = i
@@ -91,13 +98,23 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             zoomScrolliew.addSubview(imageView)
             contentView.addSubview(zoomScrolliew)
             imageViews.append(imageView)
-            ImageLoaderClient.displayImage(image.mediaURL, imageView: imageView)
+            ImageLoaderClient.displayImage(imageURL, imageView: imageView)
             i++
         }
         
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
-        scrollView.setContentOffset(CGPointMake(size.width * CGFloat(event.page), 0), animated: false)
+        scrollView.setContentOffset(CGPointMake(size.width * CGFloat(initialPage), 0), animated: false)
+    }
+    
+    class func show(imageURLs: [NSURL], initialPage: Int) {
+        Static.instance.imageURLs = imageURLs
+        Static.instance.initialPage = initialPage
+        
+        if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
+            Static.instance.view.frame = CGRectMake(0, 0, vc.view.frame.width, vc.view.frame.height)
+            vc.view.addSubview(Static.instance.view)
+        }
     }
     
     func hide(sender: AnyObject) {

@@ -17,23 +17,3 @@ class Event {
         EventBox.post(NSStringFromClass(self.dynamicType), sender: self)
     }
 }
-
-class EditorEvent: Event {
-    let text: String
-    let range: NSRange?
-    let inReplyToStatusId: String?
-    init(text: String, range: NSRange?, inReplyToStatusId: String?) {
-        self.text = text
-        self.range = range
-        self.inReplyToStatusId = inReplyToStatusId
-    }
-}
-
-class ImageViewEvent: Event {
-    let media: [TwitterMedia]
-    let page: Int
-    init(media: [TwitterMedia], page: Int) {
-        self.media = media
-        self.page = page
-    }
-}

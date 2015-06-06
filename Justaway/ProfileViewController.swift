@@ -13,7 +13,7 @@ import Pinwheel
 class ProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     struct Static {
-        static let instance = ProfileViewController()
+        static var instances = [ProfileViewController]()
     }
     
     // MARK: Types
@@ -58,7 +58,12 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var listedCountLabel: UILabel!
     @IBOutlet weak var favoritesCountLabel: UILabel!
     
+    @IBOutlet weak var bottomContainerTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomDisplayNameLabel: UILabel!
+    @IBOutlet weak var bottomScreenNameLabel: UILabel!
+    
     var user: TwitterUser?
+    var userFull: TwitterUserFull?
     var rows: [Row] = []
     var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
     var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
@@ -112,7 +117,8 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         gradient.frame = coverImageView.frame
         coverImageView.layer.insertSublayer(gradient, atIndex: 0)
         
-        coverImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hideHeader:"))
+        iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showIcon:"))
+        coverImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showCover:"))
     }
     
     func configureEvent() {
@@ -127,6 +133,15 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             headerViewTopContraint.constant = 0
         } else {
             headerViewTopContraint.constant = -margin
+        }
+        let bottomTop = -offset - 28
+        NSLog("offset:\(offset) margin:\(margin) bottomTop:\(bottomTop)")
+        if bottomTop <= 0 {
+            bottomContainerTopConstraint.constant = 0
+        } else if bottomTop < 100 {
+            bottomContainerTopConstraint.constant = bottomTop
+        } else {
+            bottomContainerTopConstraint.constant = 100
         }
     }
     
@@ -178,7 +193,10 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        let row = rows[indexPath.row]
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+            StatusAlert.show(cell, status: row.status)
+        }
     }
     
     func createRow(status: TwitterStatus, fontSize: CGFloat) -> Row {
@@ -215,7 +233,6 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         self.rows = statuses.map({ self.createRow($0, fontSize: fontSize) })
         Async.main {
-            // self.tableView.setContentOffset(CGPointZero, animated: false)
             self.tableView.reloadData()
         }
     }
@@ -234,11 +251,13 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
         if let user = self.user {
             displayNameLabel.text = user.name
             screenNameLabel.text = "@" + user.screenName
-            statusCountLabel.text = ""
-            followingCountLabel.text = ""
-            followerCountLabel.text = ""
-            listedCountLabel.text = ""
-            favoritesCountLabel.text = ""
+            bottomDisplayNameLabel.text = user.name
+            bottomScreenNameLabel.text = user.screenName
+            statusCountLabel.text = "-"
+            followingCountLabel.text = "-"
+            followerCountLabel.text = "-"
+            listedCountLabel.text = "-"
+            favoritesCountLabel.text = "-"
             iconImageView.image = nil
             coverImageView.image = nil
             protectedLabel.hidden = user.isProtected ? false : true
@@ -256,6 +275,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                     self.listedCountLabel.text = user.listedCount.description
                     self.favoritesCountLabel.text = user.favouritesCount.description
                     ImageLoaderClient.displayImage(user.profileBannerURL, imageView: self.coverImageView)
+                    self.userFull = user
                 }
             }
             
@@ -282,39 +302,19 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func showCover(sender: AnyObject) {
+        if let imageURL = userFull?.profileBannerURL {
+            ImageViewController.show([imageURL], initialPage: 0)
+        }
     }
     
     func showIcon(sender: AnyObject) {
-    }
-    
-    func hideHeader(sender: AnyObject) {
-        headerViewTopContraint.constant = -160
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-        })
+        if let imageURL = user?.profileImageURL {
+            ImageViewController.show([imageURL], initialPage: 0)
+        }
     }
     
     @IBAction func hide(sender: UIButton) {
         hide()
-    }
-    
-    class func show(user: TwitterUser) {
-        
-        if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
-            Static.instance.user = user
-            Static.instance.view.hidden = true
-            vc.view.addSubview(Static.instance.view)
-            Static.instance.view.frame = CGRectMake(vc.view.frame.width, 0, vc.view.frame.width, vc.view.frame.height)
-            Static.instance.view.hidden = false
-            
-            UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
-                Static.instance.view.frame = CGRectMake(0,
-                    vc.view.frame.origin.y,
-                    vc.view.frame.size.width,
-                    vc.view.frame.size.height)
-                }) { (finished) -> Void in
-            }
-        }
     }
     
     func hide() {
@@ -327,7 +327,33 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             }, completion: { finished in
                 self.view.hidden = true
                 self.view.removeFromSuperview()
+                Static.instances.removeAtIndex(Static.instances.endIndex.predecessor()) // purge instance
         })
+    }
+    
+    // MARK: - Class Methods
+    
+    class func show(user: TwitterUser) {
+        
+        EditorViewController.hide() // TODO: think seriously about
+        
+        if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
+            let instance = ProfileViewController()
+            instance.user = user
+            instance.view.hidden = true
+            vc.view.addSubview(instance.view)
+            instance.view.frame = CGRectMake(vc.view.frame.width, 0, vc.view.frame.width, vc.view.frame.height)
+            instance.view.hidden = false
+            
+            UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
+                instance.view.frame = CGRectMake(0,
+                    vc.view.frame.origin.y,
+                    vc.view.frame.size.width,
+                    vc.view.frame.size.height)
+                }) { (finished) -> Void in
+            }
+            Static.instances.append(instance) // keep instance
+        }
     }
 }
 

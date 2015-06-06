@@ -106,10 +106,10 @@ class AccountSettings {
         return accounts[index]
     }
     
-    func find(userID: String) -> Int? {
+    func find(userID: String) -> Account? {
         for i in 0 ..< accounts.count {
             if accounts[i].userID == userID {
-                return i
+                return accounts[i]
             }
         }
         return nil

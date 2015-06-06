@@ -1016,7 +1016,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS/QBImagePicker.framework",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "5d37d8d5-834d-43c2-add2-ac15cf77d6c8";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;

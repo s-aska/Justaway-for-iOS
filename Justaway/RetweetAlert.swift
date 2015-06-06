@@ -36,7 +36,7 @@ class RetweetAlert {
                 }))
             }
             actionSheet.addAction(UIAlertAction(
-                title: "Quote Tweet URL",
+                title: "Quote",
                 style: .Default,
                 handler: { action in
                     

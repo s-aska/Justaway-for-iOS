@@ -388,11 +388,11 @@ extension Twitter {
         let prefix = "@\(status.user.screenName) "
         let mentions = join(" ", status.mentions.map({ "@\($0.screenName)" }))
         let range = NSMakeRange(count(prefix), count(mentions))
-        EditorEvent(text: prefix + mentions, range: range, inReplyToStatusId: status.statusID).post()
+        EditorViewController.show(text: prefix + mentions, range: range, inReplyToStatusId: status.statusID)
     }
     
     class func quoteURL(status: TwitterStatus) {
-        EditorEvent(text: " \(status.statusURL)", range: NSMakeRange(0, 0), inReplyToStatusId: status.statusID).post()
+        EditorViewController.show(text: " \(status.statusURL)", range: NSMakeRange(0, 0), inReplyToStatusId: status.statusID)
     }
     
 }
@@ -515,16 +515,24 @@ extension Twitter {
             }, failure: { (error) -> Void in
                     let code = Twitter.getErrorCode(error)
                     if code == 34 {
-                        ErrorAlert.show("Unod Retweet failure", message: "missing retweets.")
+                        ErrorAlert.show("Undo Retweet failure", message: "missing retweets.")
                     } else {
                         Async.customQueue(Static.retweetsQueue) {
                             Static.retweets[statusID] = retweetedStatusID
                             EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
                         }
-                        ErrorAlert.show("Unod Retweet failure", message: error.localizedDescription)
+                        ErrorAlert.show("Undo Retweet failure", message: error.localizedDescription)
                     }
             })
         }
+    }
+    
+    class func destroyStatus(account: Account, statusID: String) {
+        Twitter.getClient(account).postStatusesDestroyWithID(statusID, success: { (status) -> Void in
+        }, failure: { (error) -> Void in
+            let code = Twitter.getErrorCode(error)
+            ErrorAlert.show("Undo Tweet failure code:\(code)", message: error.localizedDescription)
+        })
     }
     
     class func getErrorCode(error: NSError) -> Int {

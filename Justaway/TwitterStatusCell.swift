@@ -12,7 +12,7 @@ enum TwitterStatusCellLayout: String {
     case ActionedWithImage = "ActionedWithImage"
     
     static func fromStatus(status: TwitterStatus) -> TwitterStatusCellLayout {
-        if status.isActioned {
+        if status.actionedBy != nil {
             return status.media.count > 0 ? ActionedWithImage : Actioned
         } else {
             return status.media.count > 0 ? NormalWithImage : Normal
@@ -316,7 +316,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         let tag = sender.view?.tag ?? 0
         if let status = self.status {
             if let page = tagToPage[status.media.count]?[tag] {
-                ImageViewEvent(media: status.media, page: page).post()
+                ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
             }
         }
     }

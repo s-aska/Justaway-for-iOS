@@ -4,6 +4,10 @@ import QBImagePicker
 
 class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     
+    struct Static {
+        static let instance = EditorViewController()
+    }
+    
     // MARK: Properties
     
     @IBOutlet weak var containerView: UIView!
@@ -49,6 +53,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
+        show()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -106,9 +111,6 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
             } else {
                 containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
             }
-            if self.view.hidden == true {
-                self.view.hidden = false
-            }
         } else {
             containerViewButtomConstraint.constant = 0
         }
@@ -120,7 +122,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
             self.view.layoutIfNeeded()
         }, completion: { finished in
             if !showsKeyboard {
-                self.view.hidden = true
+                self.view.removeFromSuperview()
             }
         })
     }
@@ -216,7 +218,6 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     }
     
     func show() {
-        view.hidden = false
         textView.becomeFirstResponder()
     }
     
@@ -228,8 +229,27 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
         if (textView.isFirstResponder()) {
             textView.resignFirstResponder()
         } else {
-            view.hidden = true
+            view.removeFromSuperview()
         }
+    }
+    
+    class func show(text: String? = nil, range: NSRange? = nil, inReplyToStatusId: String? = nil) {
+        if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
+            Static.instance.view.frame = CGRectMake(0, 0, vc.view.frame.width, vc.view.frame.height)
+            vc.view.addSubview(Static.instance.view)
+            Static.instance.textView.text = text ?? ""
+            Static.instance.inReplyToStatusId = inReplyToStatusId
+            if let selectedRange = range {
+                Static.instance.textView.selectedRange = selectedRange
+            }
+        }
+    }
+    
+    class func hide() {
+        if Static.instance.textView == nil {
+            return
+        }
+        Static.instance.hide()
     }
     
 }

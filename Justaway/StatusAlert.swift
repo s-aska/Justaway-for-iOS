@@ -36,7 +36,7 @@ class StatusAlert {
                 
                 if !isFavorite && retweetedStatusID == nil {
                     actionSheet.addAction(UIAlertAction(
-                        title: "Favorite and Retweet",
+                        title: "Fav & RT",
                         style: .Default,
                         handler: { action in
                             Twitter.createFavorite(statusID)
@@ -79,7 +79,7 @@ class StatusAlert {
                 }
                 
                 actionSheet.addAction(UIAlertAction(
-                    title: "Quote Tweet URL",
+                    title: "Quote",
                     style: .Default,
                     handler: { action in
                         Twitter.quoteURL(status)
@@ -122,6 +122,17 @@ class StatusAlert {
                         handler: { action in
                             UIApplication.sharedApplication().openURL(viaURL)
                             return
+                    }))
+                }
+                
+                // Delete
+                
+                if let account = AccountSettingsStore.get()?.find(status.user.userID) {
+                    actionSheet.addAction(UIAlertAction(
+                        title: "Delete Tweet",
+                        style: .Destructive,
+                        handler: { action in
+                            Twitter.destroyStatus(account, statusID: statusID)
                     }))
                 }
                 

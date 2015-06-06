@@ -14,11 +14,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var streamingButton: StreamingButton!
     @IBOutlet weak var tabWraperView: UIView!
     
-    var editorViewController: EditorViewController!
+    // var editorViewController: EditorViewController!
     var settingsViewController: SettingsViewController!
     var tableViewControllers = [TimelineTableViewController]()
     var tabButtons = [MenuButton]()
-    var imageViewController: ImageViewController?
     var setupView = false
     var userID = ""
     var currentPage = 0
@@ -63,9 +62,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Configuration
     
     func configureView() {
-        editorViewController = EditorViewController()
-        editorViewController.view.hidden = true
-        ViewTools.addSubviewWithEqual(self.view, view: editorViewController.view)
+        // editorViewController = EditorViewController()
+        // editorViewController.view.hidden = true
+        // ViewTools.addSubviewWithEqual(self.view, view: editorViewController.view)
         
         settingsViewController = SettingsViewController()
         ViewTools.addSubviewWithEqual(self.view, view: settingsViewController.view)
@@ -169,25 +168,15 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             }
         }
         
-        EventBox.onMainThread(self, name: ImageViewEvent.name) { n in
-            let event = n.object as! ImageViewEvent
-            if self.imageViewController == nil {
-                self.imageViewController = ImageViewController()
-            }
-            self.imageViewController!.view.frame = self.view.frame
-            self.view.addSubview(self.imageViewController!.view)
-            self.imageViewController!.show(event)
-        }
-        
-        EventBox.onMainThread(self, name: EditorEvent.name) { n in
-            let event = n.object as! EditorEvent
-            self.editorViewController.show()
-            self.editorViewController.inReplyToStatusId = event.inReplyToStatusId
-            self.editorViewController.textView.text = event.text
-            if let range = event.range {
-                self.editorViewController.textView.selectedRange = range
-            }
-        }
+//        EventBox.onMainThread(self, name: EditorEvent.name) { n in
+//            let event = n.object as! EditorEvent
+//            self.editorViewController.show()
+//            self.editorViewController.inReplyToStatusId = event.inReplyToStatusId
+//            self.editorViewController.textView.text = event.text
+//            if let range = event.range {
+//                self.editorViewController.textView.selectedRange = range
+//            }
+//        }
         
         EventBox.onMainThread(self, name: "timelineScrollToTop", handler: { _ in
             self.tabButtons[self.currentPage].selected = false
@@ -266,7 +255,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func showEditor(sender: UIButton) {
-        editorViewController.show()
+        EditorViewController.show()
     }
     
     @IBAction func showSettings(sender: UIButton) {
