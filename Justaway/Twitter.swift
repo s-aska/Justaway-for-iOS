@@ -334,6 +334,24 @@ class Twitter {
         getCurrentClient()?.getStatusesMentionTimelineWithCount(count: 200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
     }
     
+    class func getFriendships(targetID: String, success: (TwitterRelationship) -> Void, failure: (NSError) -> Void) {
+        let s = { (dictionary: Dictionary<String, JSONValue>?) -> Void in
+            if let source = dictionary?["relationship"]?["source"] {
+                let relationship = TwitterRelationship(source)
+                success(relationship)
+            }
+        }
+        
+        let f = { (error: NSError) -> Void in
+            ErrorAlert.show("Show friendships failure", message: error.localizedDescription)
+            failure(error)
+        }
+        
+        if let account = AccountSettingsStore.get() {
+            getClient(account.account()).getFriendshipsShowWithSourceID(sourceID: account.account().userID, targetID: targetID, success: s, failure: f)
+        }
+    }
+    
     class func statusUpdate(status: String, inReplyToStatusID: String?, var images: [NSData], var media_ids: [String]) {
         if images.count == 0 {
             return statusUpdate(status, inReplyToStatusID: inReplyToStatusID, media_ids: media_ids)

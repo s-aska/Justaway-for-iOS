@@ -64,6 +64,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     
     var user: TwitterUser?
     var userFull: TwitterUserFull?
+    var relationship: TwitterRelationship?
     var rows: [Row] = []
     var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
     var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
@@ -261,6 +262,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             iconImageView.image = nil
             coverImageView.image = nil
             protectedLabel.hidden = user.isProtected ? false : true
+            followedByLabel.hidden = true
             ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: iconImageView)
             headerViewTopContraint.constant = 0
             rows = []
@@ -284,6 +286,11 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             }
             
             Twitter.getCurrentClient()?.getUsersLookupWithUserIDs([user.userID], includeEntities: false, success: success, failure: failure)
+            
+            Twitter.getFriendships(user.userID, success: { (relationship) -> Void in
+                self.followedByLabel.hidden = !relationship.followedBy
+                self.relationship = relationship
+            }, failure: failure)
             
             load()
         }
