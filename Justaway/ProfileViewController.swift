@@ -136,7 +136,6 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             headerViewTopContraint.constant = -margin
         }
         let bottomTop = -offset - 28
-        NSLog("offset:\(offset) margin:\(margin) bottomTop:\(bottomTop)")
         if bottomTop <= 0 {
             bottomContainerTopConstraint.constant = 0
         } else if bottomTop < 100 {

@@ -257,17 +257,17 @@
                     <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xv0-xv-9ud">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                            <rect key="frame" x="50" y="0.0" width="500" height="50"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shinichiro Aska" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="032-7M-HZY" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
-                                    <rect key="frame" x="237" y="4" width="126.5" height="23.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shinichiro Aska" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="032-7M-HZY" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="4" width="500" height="23.5"/>
                                     <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                     <size key="shadowOffset" width="0.0" height="2"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@su_aska" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TEc-Gn-36O" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
-                                    <rect key="frame" x="273" y="23" width="55" height="16.5"/>
+                                    <rect key="frame" x="223" y="23" width="55" height="16.5"/>
                                     <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -276,11 +276,12 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="centerX" secondItem="032-7M-HZY" secondAttribute="centerX" constant="-0.25" id="LNE-az-E2r"/>
+                                <constraint firstAttribute="trailing" secondItem="032-7M-HZY" secondAttribute="trailing" id="4US-sS-VzX"/>
+                                <constraint firstItem="032-7M-HZY" firstAttribute="leading" secondItem="xv0-xv-9ud" secondAttribute="leading" id="DGT-FD-wmx"/>
                                 <constraint firstItem="032-7M-HZY" firstAttribute="top" secondItem="xv0-xv-9ud" secondAttribute="top" constant="4" id="RIj-0s-8qn"/>
                                 <constraint firstItem="TEc-Gn-36O" firstAttribute="top" secondItem="032-7M-HZY" secondAttribute="bottom" constant="-4" id="UGq-Bd-6ad"/>
                                 <constraint firstAttribute="height" constant="50" id="dZD-kd-EDU"/>
-                                <constraint firstAttribute="centerX" secondItem="TEc-Gn-36O" secondAttribute="centerX" constant="-0.5" id="uJP-oP-n6a"/>
+                                <constraint firstAttribute="centerX" secondItem="TEc-Gn-36O" secondAttribute="centerX" id="uJP-oP-n6a"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hd4-4z-b1t" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
@@ -311,9 +312,9 @@
                         <constraint firstAttribute="bottom" secondItem="hd4-4z-b1t" secondAttribute="bottom" id="Dgs-De-apY"/>
                         <constraint firstItem="hd4-4z-b1t" firstAttribute="leading" secondItem="f0r-st-qkE" secondAttribute="leading" id="E9W-tT-DtY"/>
                         <constraint firstItem="gTr-Tm-tmD" firstAttribute="top" secondItem="f0r-st-qkE" secondAttribute="top" id="P55-TP-xuy"/>
-                        <constraint firstAttribute="trailing" secondItem="xv0-xv-9ud" secondAttribute="trailing" id="T64-zB-2ve"/>
+                        <constraint firstAttribute="trailing" secondItem="xv0-xv-9ud" secondAttribute="trailing" constant="50" id="T64-zB-2ve"/>
                         <constraint firstItem="xv0-xv-9ud" firstAttribute="top" secondItem="f0r-st-qkE" secondAttribute="top" id="XAh-7y-PhO"/>
-                        <constraint firstItem="xv0-xv-9ud" firstAttribute="leading" secondItem="f0r-st-qkE" secondAttribute="leading" id="XPi-qu-4TK"/>
+                        <constraint firstItem="xv0-xv-9ud" firstAttribute="leading" secondItem="f0r-st-qkE" secondAttribute="leading" constant="50" id="XPi-qu-4TK"/>
                         <constraint firstAttribute="trailing" secondItem="gTr-Tm-tmD" secondAttribute="trailing" id="iRr-MX-MPf"/>
                     </constraints>
                 </view>
