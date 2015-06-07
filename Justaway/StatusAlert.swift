@@ -115,6 +115,27 @@ class StatusAlert {
                     }
                 }
                 
+                // User
+                var users = [status.user] + status.mentions
+                if let actionedBy = status.actionedBy {
+                    users.append(actionedBy)
+                }
+                var userMap = [String: Bool]()
+                for user in users {
+                    if userMap.indexForKey(user.userID) != nil {
+                        continue
+                    }
+                    userMap.updateValue(true, forKey: user.userID)
+                    actionSheet.addAction(UIAlertAction(
+                        title: "@" + user.screenName,
+                        style: .Default,
+                        handler: { action in
+                            ProfileViewController.show(user)
+                    }))
+                }
+                
+                // via
+                
                 if let viaURL = status.via.URL {
                     actionSheet.addAction(UIAlertAction(
                         title: "via " + status.via.name,

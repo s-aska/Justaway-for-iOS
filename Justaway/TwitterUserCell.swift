@@ -1,20 +1,21 @@
 //
-//  AccountCell.swift
+//  TwitterUserCell.swift
 //  Justaway
 //
-//  Created by Shinichiro Aska on 5/24/15.
+//  Created by Shinichiro Aska on 6/7/15.
 //  Copyright (c) 2015 Shinichiro Aska. All rights reserved.
 //
 
 import UIKit
-import EventBox
 
-class AccountCell: BackgroundTableViewCell {
+class TwitterUserCell: BackgroundTableViewCell {
     
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var displayNameLabel: DisplayNameLable!
     @IBOutlet weak var screenNameLabel: ScreenNameLable!
-    @IBOutlet weak var clientNameLabel: ClientNameLable!
+    @IBOutlet weak var protectedLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: StatusLable!
+    @IBOutlet weak var textHeightConstraint: NSLayoutConstraint!
     
     // MARK: - View Life Cycle
     

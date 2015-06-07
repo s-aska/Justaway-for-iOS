@@ -32,6 +32,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     var images: [NSData] = []
     var imageViews: [UIImageView] = []
     var imageButtons: [MenuButton] = []
+    var picking = false
     
     override var nibName: String {
         return "EditorViewController"
@@ -53,7 +54,10 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
-        show()
+        Async.main {
+            self.view.hidden = false
+            self.show()
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -64,6 +68,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     // MARK: - Configuration
     
     func configureView() {
+        view.hidden = true
         textView.configure(heightConstraint: textViewHeightConstraint)
         
         imageViews = [imageView1, imageView2, imageView3, imageView4]
@@ -122,7 +127,9 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
             self.view.layoutIfNeeded()
         }, completion: { finished in
             if !showsKeyboard {
-                self.view.removeFromSuperview()
+                if !self.picking {
+                    self.view.removeFromSuperview()
+                }
             }
         })
     }
@@ -130,6 +137,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     // MARK: - QBImagePickerControllerDelegate
     
     func qb_imagePickerController(imagePickerController: QBImagePickerController!, didFinishPickingAssets assets: [AnyObject]!) {
+        picking = false
         if assets.count > 0 {
             var i = images.count
             for asset in assets {
@@ -150,12 +158,13 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
             imageContainerHeightConstraint.constant = 0
         }
         imagePickerController.dismissViewControllerAnimated(true, completion: nil)
-        show()
+        self.show()
     }
     
     func qb_imagePickerControllerDidCancel(imagePickerController: QBImagePickerController!) {
+        picking = false
         imagePickerController.dismissViewControllerAnimated(true, completion: nil)
-        show()
+        self.show()
     }
     
     // MARK: - Actions
@@ -207,6 +216,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
             ErrorAlert.show("You can select up to 4 images to tweet at once.")
             return;
         }
+        picking = true
         var imagePickerController = QBImagePickerController.new()
         imagePickerController.delegate = self
         imagePickerController.allowsMultipleSelection = true
@@ -236,12 +246,13 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     class func show(text: String? = nil, range: NSRange? = nil, inReplyToStatusId: String? = nil) {
         if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
             Static.instance.view.frame = CGRectMake(0, 0, vc.view.frame.width, vc.view.frame.height)
-            vc.view.addSubview(Static.instance.view)
+            Static.instance.resetPickerController()
             Static.instance.textView.text = text ?? ""
             Static.instance.inReplyToStatusId = inReplyToStatusId
             if let selectedRange = range {
                 Static.instance.textView.selectedRange = selectedRange
             }
+            vc.view.addSubview(Static.instance.view)
         }
     }
     

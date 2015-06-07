@@ -289,7 +289,7 @@ class Twitter {
             failure(error)
         }
         
-        getCurrentClient()?.getStatusesUserTimelineWithUserID(userID, count: 200, success: s, failure: f)
+        getCurrentClient()?.getStatusesUserTimelineWithUserID(userID, maxID: maxID, count: 200, success: s, failure: f)
     }
     
     class func getMentionTimelineCache(success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
@@ -350,6 +350,36 @@ class Twitter {
         if let account = AccountSettingsStore.get() {
             getClient(account.account()).getFriendshipsShowWithSourceID(sourceID: account.account().userID, targetID: targetID, success: s, failure: f)
         }
+    }
+    
+    class func getFollowingUsers(userID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
+        let s = { (users: [JSONValue]?, previousCursor: String?, nextCursor: String?) -> Void in
+            if let users = users?.map({ TwitterUserFull($0) }) {
+                success(users)
+            }
+        }
+        
+        let f = { (error: NSError) -> Void in
+            ErrorAlert.show("get following failure", message: error.localizedDescription)
+            failure(error)
+        }
+        
+        getCurrentClient()?.getFriendsListWithID(userID, cursor: nil, count: 200, skipStatus: nil, includeUserEntities: nil, success: s, failure: f)
+    }
+    
+    class func getFollowerUsers(userID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
+        let s = { (users: [JSONValue]?, previousCursor: String?, nextCursor: String?) -> Void in
+            if let users = users?.map({ TwitterUserFull($0) }) {
+                success(users)
+            }
+        }
+        
+        let f = { (error: NSError) -> Void in
+            ErrorAlert.show("get follower failure", message: error.localizedDescription)
+            failure(error)
+        }
+        
+        getCurrentClient()?.getFollowersListWithID(userID, cursor: nil, count: 200, skipStatus: nil, includeUserEntities: nil, success: s, failure: f)
     }
     
     class func statusUpdate(status: String, inReplyToStatusID: String?, var images: [NSData], var media_ids: [String]) {
@@ -550,6 +580,94 @@ extension Twitter {
         }, failure: { (error) -> Void in
             let code = Twitter.getErrorCode(error)
             ErrorAlert.show("Undo Tweet failure code:\(code)", message: error.localizedDescription)
+        })
+    }
+    
+    class func follow(userID: String) {
+        getCurrentClient()?.postCreateFriendshipWithID(userID, follow: nil, success: { (user) -> Void in
+            ErrorAlert.show("Follow success")
+        }, failure: { (error) -> Void in
+            ErrorAlert.show("Follow failure", message: error.localizedDescription)
+        })
+    }
+    
+    class func unfollow(userID: String) {
+        getCurrentClient()?.postDestroyFriendshipWithID(userID, success: { (user) -> Void in
+            ErrorAlert.show("Unfollow success")
+        }, failure: { (error) -> Void in
+            ErrorAlert.show("Unfollow failure", message: error.localizedDescription)
+        })
+    }
+    
+    class func turnOnNotification(userID: String) {
+        getCurrentClient()?.postUpdateFriendshipWithID(userID, device: true, retweets: nil, success: { (user) -> Void in
+            ErrorAlert.show("Turn on notification success")
+        }, failure: { (error) -> Void in
+            ErrorAlert.show("Turn on notification failure", message: error.localizedDescription)
+        })
+    }
+    
+    class func turnOffNotification(userID: String) {
+        getCurrentClient()?.postUpdateFriendshipWithID(userID, device: false, retweets: nil, success: { (user) -> Void in
+            ErrorAlert.show("Turn off notification success")
+        }, failure: { (error) -> Void in
+            ErrorAlert.show("Turn off notification failure", message: error.localizedDescription)
+        })
+    }
+    
+    class func turnOnRetweets(userID: String) {
+        getCurrentClient()?.postUpdateFriendshipWithID(userID, device: nil, retweets: true, success: { (user) -> Void in
+            ErrorAlert.show("Turn on retweets success")
+        }, failure: { (error) -> Void in
+            ErrorAlert.show("Turn on retweets failure", message: error.localizedDescription)
+        })
+    }
+    
+    class func turnOffRetweets(userID: String) {
+        getCurrentClient()?.postUpdateFriendshipWithID(userID, device: nil, retweets: false, success: { (user) -> Void in
+            ErrorAlert.show("Turn off retweets success")
+        }, failure: { (error) -> Void in
+            ErrorAlert.show("Turn off retweets failure", message: error.localizedDescription)
+        })
+    }
+    
+    class func mute(userID: String) {
+        getCurrentClient()?.postMutesUsersCreateForUserID(userID, success: { (user) -> Void in
+            ErrorAlert.show("Mute success")
+        }, failure: { (error) -> Void in
+            ErrorAlert.show("Mute failure", message: error.localizedDescription)
+        })
+    }
+    
+    class func unmute(userID: String) {
+        getCurrentClient()?.postMutesUsersDestroyForUserID(userID, success: { (user) -> Void in
+            ErrorAlert.show("Unmute success")
+        }, failure: { (error) -> Void in
+            ErrorAlert.show("Unmute failure", message: error.localizedDescription)
+        })
+    }
+    
+    class func block(userID: String) {
+        getCurrentClient()?.postBlocksCreateWithUserID(userID, success: { (user) -> Void in
+            ErrorAlert.show("Block success")
+        }, failure: { (error) -> Void in
+            ErrorAlert.show("Block failure", message: error.localizedDescription)
+        })
+    }
+    
+    class func unblock(userID: String) {
+        getCurrentClient()?.postDestroyBlocksWithUserID(userID, success: { (user) -> Void in
+            ErrorAlert.show("Unblock success")
+        }, failure: { (error) -> Void in
+            ErrorAlert.show("Unblock failure", message: error.localizedDescription)
+        })
+    }
+    
+    class func reportSpam(userID: String) {
+        getCurrentClient()?.postUsersReportSpamWithUserID(userID, success: { (user) -> Void in
+            ErrorAlert.show("Report success")
+        }, failure: { (error) -> Void in
+            ErrorAlert.show("Report failure", message: error.localizedDescription)
         })
     }
     

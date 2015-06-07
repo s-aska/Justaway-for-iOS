@@ -37,6 +37,10 @@ struct TwitterUser {
             "profileImageURL": profileImageURL.absoluteString ?? ""
         ]
     }
+    
+    var profileOriginalImageURL: NSURL? {
+        return NSURL(string: profileImageURL.absoluteString!.stringByReplacingOccurrencesOfString("_bigger", withString: "", options: nil, range: nil))
+    }
 }
 
 struct TwitterUserFull {
@@ -45,14 +49,15 @@ struct TwitterUserFull {
     let name: String
     let profileImageURL: NSURL
     let isProtected: Bool
-    let createdAt: String
+    let createdAt: TwitterDate
     let description: String
     let urls: [TwitterURL]
     let followRequestSent: Bool
     let following: Bool
     let location: String
     let profileBannerURL: NSURL
-    let siteURL: NSURL
+    let displayURL: String
+    let expandedURL: NSURL?
     let favouritesCount: Int
     let followersCount: Int
     let friendsCount: Int
@@ -74,9 +79,9 @@ struct TwitterUserFull {
         } else {
             self.profileBannerURL = NSURL(string: json["profile_background_image_url"].string ?? "")!
         }
-        self.createdAt = json["created_at"].string ?? ""
+        self.createdAt = TwitterDate(json["created_at"].string ?? "")
         self.description = json["description"].string ?? ""
-        if let urls = json["entities"]["urls"].array {
+        if let urls = json["entities"]["url"]["urls"].array {
             self.urls = urls.map { TwitterURL($0) }
         } else {
             self.urls = [TwitterURL]()
@@ -85,33 +90,22 @@ struct TwitterUserFull {
         self.following = json["following"].boolValue
         self.location = json["location"].string ?? ""
 
-        self.siteURL = NSURL(string: json["url"].string ?? "")!
+        var displayURL = json["url"].string ?? ""
+        var expandedURL: NSURL?
         self.favouritesCount = json["favourites_count"].integer ?? 0
         self.followersCount = json["followers_count"].integer ?? 0
         self.friendsCount = json["friends_count"].integer ?? 0
         self.listedCount = json["listed_count"].integer ?? 0
         self.statusesCount = json["statuses_count"].integer ?? 0
+        
+        for url in self.urls {
+            if url.shortURL == displayURL {
+                displayURL = url.displayURL
+                expandedURL = NSURL(string: url.expandedURL)
+                break
+            }
+        }
+        self.expandedURL = expandedURL
+        self.displayURL = displayURL
     }
-    
-//    init(_ dictionary: [String: AnyObject]) {
-//        self.userID = dictionary["userID"] as? String ?? ""
-//        self.screenName = dictionary["screenName"] as? String ?? ""
-//        self.name = dictionary["name"] as? String ?? ""
-//        self.profileImageURL = NSURL(string: dictionary["profileImageURL"] as? String ?? "")!
-//        self.isProtected = dictionary["isProtected"] as? Bool ?? false
-//        self.createdAt = dictionary["createdAt"] as? String ?? ""
-//        self.description = dictionary["description"] as? String ?? ""
-//    }
-//    
-//    var dictionaryValue: [String: AnyObject] {
-//        return [
-//            "userID": userID,
-//            "screenName": screenName,
-//            "name": name,
-//            "isProtected": isProtected,
-//            "profileImageURL": profileImageURL.absoluteString ?? "",
-//            "createdAt": createdAt,
-//            "description": description
-//        ]
-//    }
 }

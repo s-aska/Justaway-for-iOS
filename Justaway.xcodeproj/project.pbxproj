@@ -63,6 +63,13 @@
 		6A0449441B1F4F0400758061 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0449431B1F4F0400758061 /* ProfileViewController.swift */; };
 		6A0449461B1F4F2400758061 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A0449451B1F4F2400758061 /* ProfileViewController.xib */; };
 		6A0449481B2315E700758061 /* TwitterRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0449471B2315E700758061 /* TwitterRelationship.swift */; };
+		6A04494A1B241FEF00758061 /* UserTimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0449491B241FEF00758061 /* UserTimelineViewController.swift */; };
+		6A04494C1B247E0000758061 /* UserTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A04494B1B247E0000758061 /* UserTableViewController.swift */; };
+		6A04494E1B24812E00758061 /* TwitterUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A04494D1B24812E00758061 /* TwitterUserCell.swift */; };
+		6A0449501B24817C00758061 /* TwitterUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A04494F1B24817C00758061 /* TwitterUserCell.xib */; };
+		6A0449521B2489B400758061 /* FollowingUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0449511B2489B400758061 /* FollowingUserViewController.swift */; };
+		6A0449541B24952000758061 /* FollowerUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0449531B24952000758061 /* FollowerUserViewController.swift */; };
+		6A0449561B249CE100758061 /* UserAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0449551B249CE100758061 /* UserAlert.swift */; };
 		6A0A1D321A40B7D30035A03C /* Pinwheel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */; };
 		6A0A1D331A40B7D30035A03C /* Pinwheel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6A3469BB1A699D21004AD091 /* RetweetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3469BA1A699D21004AD091 /* RetweetAlert.swift */; };
@@ -234,6 +241,13 @@
 		6A0449431B1F4F0400758061 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		6A0449451B1F4F2400758061 /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
 		6A0449471B2315E700758061 /* TwitterRelationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterRelationship.swift; sourceTree = "<group>"; };
+		6A0449491B241FEF00758061 /* UserTimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTimelineViewController.swift; sourceTree = "<group>"; };
+		6A04494B1B247E0000758061 /* UserTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableViewController.swift; sourceTree = "<group>"; };
+		6A04494D1B24812E00758061 /* TwitterUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterUserCell.swift; sourceTree = "<group>"; };
+		6A04494F1B24817C00758061 /* TwitterUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterUserCell.xib; sourceTree = "<group>"; };
+		6A0449511B2489B400758061 /* FollowingUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingUserViewController.swift; sourceTree = "<group>"; };
+		6A0449531B24952000758061 /* FollowerUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowerUserViewController.swift; sourceTree = "<group>"; };
+		6A0449551B249CE100758061 /* UserAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAlert.swift; sourceTree = "<group>"; };
 		6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pinwheel.xcodeproj; path = Pinwheel/Pinwheel.xcodeproj; sourceTree = "<group>"; };
 		6A3469BA1A699D21004AD091 /* RetweetAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetweetAlert.swift; sourceTree = "<group>"; };
 		6A35A1C41A6C193400A8E46D /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
@@ -371,6 +385,8 @@
 				381E6E8219E2A56A00139654 /* TwitterStatusCell.xib */,
 				6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */,
 				6A3F4F3D1B110E8E009F80C4 /* AccountCell.xib */,
+				6A04494D1B24812E00758061 /* TwitterUserCell.swift */,
+				6A04494F1B24817C00758061 /* TwitterUserCell.xib */,
 			);
 			name = Table;
 			sourceTree = "<group>";
@@ -391,6 +407,10 @@
 				38F7B8F219E5720F0081C735 /* StatusTableViewController.swift */,
 				6A5357D41A741C5900291E95 /* HomeTimelineViewController.swift */,
 				6A5357D81A7429A600291E95 /* NotificationsViewController.swift */,
+				6A0449491B241FEF00758061 /* UserTimelineViewController.swift */,
+				6A04494B1B247E0000758061 /* UserTableViewController.swift */,
+				6A0449511B2489B400758061 /* FollowingUserViewController.swift */,
+				6A0449531B24952000758061 /* FollowerUserViewController.swift */,
 			);
 			name = Timeline;
 			sourceTree = "<group>";
@@ -450,6 +470,7 @@
 			children = (
 				6A3469BA1A699D21004AD091 /* RetweetAlert.swift */,
 				6A35A1D01A73B1C700A8E46D /* StatusAlert.swift */,
+				6A0449551B249CE100758061 /* UserAlert.swift */,
 				6AD963DC1A69AAC000136B53 /* StreamingAlert.swift */,
 				6AD963E41A69ABBC00136B53 /* AlertController.swift */,
 				6AD963E71A69BB1900136B53 /* ErrorAlert.swift */,
@@ -746,6 +767,7 @@
 				6A0449461B1F4F2400758061 /* ProfileViewController.xib in Resources */,
 				38B4475D19C062460055F074 /* fontello.ttf in Resources */,
 				6AB55B5319C8B2D500DC6442 /* ThemeViewController.xib in Resources */,
+				6A0449501B24817C00758061 /* TwitterUserCell.xib in Resources */,
 				6A3F4F3E1B110E8E009F80C4 /* AccountCell.xib in Resources */,
 				6A4B9D3619BB514900D50D78 /* Images.xcassets in Resources */,
 				6AB55B5719C9F20B00DC6442 /* AccountViewController.xib in Resources */,
@@ -800,6 +822,7 @@
 				6AD963DD1A69AAC000136B53 /* StreamingAlert.swift in Sources */,
 				6AB55B4919C5984800DC6442 /* TransparentView.swift in Sources */,
 				3868B94B19EFCCE2001221BF /* TwitterURL.swift in Sources */,
+				6A04494C1B247E0000758061 /* UserTableViewController.swift in Sources */,
 				38AB8BCD19F167D30065D869 /* ImageLoaderClient.swift in Sources */,
 				3805DE871A5DAA1600FBD015 /* Async.swift in Sources */,
 				6A0449481B2315E700758061 /* TwitterRelationship.swift in Sources */,
@@ -822,8 +845,10 @@
 				381E6E0719D98A7300139654 /* AccountSettings.swift in Sources */,
 				3805DE9B1A5FFCD400FBD015 /* Scheduler.swift in Sources */,
 				38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */,
+				6A0449541B24952000758061 /* FollowerUserViewController.swift in Sources */,
 				6AB55B4D19C8ADBE00DC6442 /* FontSizeViewController.swift in Sources */,
 				6AB55B5119C8B2B200DC6442 /* ThemeViewController.swift in Sources */,
+				6A04494E1B24812E00758061 /* TwitterUserCell.swift in Sources */,
 				3805DE991A5F20CB00FBD015 /* ThemeDark.swift in Sources */,
 				6A56F5C81B19EB6C0058D6DD /* AddAccountAlert.swift in Sources */,
 				6AD963E51A69ABBC00136B53 /* AlertController.swift in Sources */,
@@ -841,10 +866,13 @@
 				6A0449441B1F4F0400758061 /* ProfileViewController.swift in Sources */,
 				6AB55B4319C5843000DC6442 /* SettingsViewController.swift in Sources */,
 				3805DEAA1A67F52400FBD015 /* ThemeSolarizedLight.swift in Sources */,
+				6A0449521B2489B400758061 /* FollowingUserViewController.swift in Sources */,
+				6A04494A1B241FEF00758061 /* UserTimelineViewController.swift in Sources */,
 				3868B94D19EFCCEC001221BF /* TwitterStatus.swift in Sources */,
 				6AB55B5519C9F1EB00DC6442 /* AccountViewController.swift in Sources */,
 				6A3F4F3C1B110E74009F80C4 /* AccountCell.swift in Sources */,
 				3839245F1B14A1020025176D /* Constants.swift in Sources */,
+				6A0449561B249CE100758061 /* UserAlert.swift in Sources */,
 				3805DEA81A67F34900FBD015 /* ThemeMonokai.swift in Sources */,
 				6A56F5CA1B19ECDC0058D6DD /* MessageAlert.swift in Sources */,
 				3868B94719EFCCCF001221BF /* TwitterVia.swift in Sources */,
@@ -1020,7 +1048,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS/QBImagePicker.framework",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5d37d8d5-834d-43c2-add2-ac15cf77d6c8";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;

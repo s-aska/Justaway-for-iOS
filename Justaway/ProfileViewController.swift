@@ -10,7 +10,7 @@ import UIKit
 import SwifteriOS
 import Pinwheel
 
-class ProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     struct Static {
         static var instances = [ProfileViewController]()
@@ -18,32 +18,16 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // MARK: Types
     
-    struct TableViewConstants {
-        static let tableViewCellIdentifier = "Cell"
-    }
-    
     struct Constants {
         static let duration: Double = 0.2
         static let delay: NSTimeInterval = 0
     }
     
-    struct Row {
-        let status: TwitterStatus
-        let fontSize: CGFloat
-        let height: CGFloat
-        let textHeight: CGFloat
-        
-        init(status: TwitterStatus, fontSize: CGFloat, height: CGFloat, textHeight: CGFloat) {
-            self.status = status
-            self.fontSize = fontSize
-            self.height = height
-            self.textHeight = textHeight
-        }
-    }
-    
     // MARK: Properties
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var scrollView: BackgroundScrollView!
+    
+    @IBOutlet weak var headerViewLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var headerViewTopContraint: NSLayoutConstraint!
     @IBOutlet weak var coverImageView: UIImageView!
     @IBOutlet weak var iconImageView: UIImageView!
@@ -51,6 +35,10 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var screenNameLabel: UILabel!
     @IBOutlet weak var followedByLabel: UILabel!
     @IBOutlet weak var protectedLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var sinceLabel: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var siteLabel: UILabel!
     
     @IBOutlet weak var statusCountLabel: UILabel!
     @IBOutlet weak var followingCountLabel: UILabel!
@@ -65,9 +53,17 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     var user: TwitterUser?
     var userFull: TwitterUserFull?
     var relationship: TwitterRelationship?
-    var rows: [Row] = []
-    var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
-    var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
+    
+    let userTimelineTableViewController = UserTimelineTableViewController()
+    let followingTableViewController = FollowingUserViewController()
+    let followerTableViewController = FollowerUserViewController()
+    let sinceDateFormatter: NSDateFormatter = {
+        let formatter = NSDateFormatter()
+        formatter.locale = NSLocale.currentLocale()
+        formatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+        formatter.dateFormat = "yyyy.MM.dd"
+        return formatter
+    }()
     
     override var nibName: String {
         return "ProfileViewController"
@@ -98,28 +94,56 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     // MARK: - Configuration
     
     func configureView() {
-        tableView.separatorInset = UIEdgeInsetsZero
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.contentInset = UIEdgeInsetsMake(159, 0, 0, 0)
-        
-        let nib = UINib(nibName: "TwitterStatusCell", bundle: nil)
-        for layout in TwitterStatusCellLayout.allValues {
-            self.tableView.registerNib(nib, forCellReuseIdentifier: layout.rawValue)
-            self.layoutHeightCell[layout] = tableView.dequeueReusableCellWithIdentifier(layout.rawValue) as? TwitterStatusCell
-        }
+        scrollView.delegate = self
         
         coverImageView.clipsToBounds = true
         coverImageView.contentMode = .ScaleAspectFill
         
         let gradient = CAGradientLayer()
-        gradient.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0).CGColor, UIColor(red: 0, green: 0, blue: 0, alpha: 0.3).CGColor]
+        gradient.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0).CGColor, UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).CGColor]
         gradient.frame = coverImageView.frame
         coverImageView.layer.insertSublayer(gradient, atIndex: 0)
         
         iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showIcon:"))
         coverImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showCover:"))
+        siteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "openURL:"))
+        
+        // setup tabview
+        if let size = UIApplication.sharedApplication().keyWindow?.rootViewController?.view.frame.size {
+            NSLog("size:\(size)")
+            let contentView = UIView(frame: CGRectMake(0, 0, size.width * 3, size.height))
+            var i = 0
+            for vc in [userTimelineTableViewController, followingTableViewController, followerTableViewController] {
+                let marginTop: CGFloat = 20
+                vc.view.frame = CGRectMake(0, marginTop, size.width, size.height - marginTop)
+                let view = UIView(frame: CGRectMake(size.width * CGFloat(i), 0, size.width, size.height))
+                view.addSubview(vc.view)
+                contentView.addSubview(view)
+                i++
+            }
+            
+            scrollView.addSubview(contentView)
+            scrollView.contentSize = contentView.frame.size
+            scrollView.pagingEnabled = true
+        }
+        
+        userTimelineTableViewController.scrollCallback = { (scrollView: UIScrollView) -> Void in
+            let offset = scrollView.contentOffset.y - 20
+            let margin = 179 + offset
+            if margin <= 0 {
+                self.headerViewTopContraint.constant = 0
+            } else {
+                self.headerViewTopContraint.constant = -margin
+            }
+            let bottomTop = -offset - 28
+            if bottomTop <= 0 {
+                self.bottomContainerTopConstraint.constant = 0
+            } else if bottomTop < 100 {
+                self.bottomContainerTopConstraint.constant = bottomTop
+            } else {
+                self.bottomContainerTopConstraint.constant = 100
+            }
+        }
     }
     
     func configureEvent() {
@@ -128,121 +152,9 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     // MARK: - UITableViewDataSource
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        let offset = tableView.contentOffset.y
-        let margin = 159 + offset
-        if margin <= 0 {
-            headerViewTopContraint.constant = 0
-        } else {
-            headerViewTopContraint.constant = -margin
-        }
-        let bottomTop = -offset - 28
-        if bottomTop <= 0 {
-            bottomContainerTopConstraint.constant = 0
-        } else if bottomTop < 100 {
-            bottomContainerTopConstraint.constant = bottomTop
-        } else {
-            bottomContainerTopConstraint.constant = 100
-        }
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rows.count
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let row = rows[indexPath.row]
-        let status = row.status
-        let layout = TwitterStatusCellLayout.fromStatus(status)
-        let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as! TwitterStatusCell
-        
-        if cell.textHeightConstraint.constant != row.textHeight {
-            cell.textHeightConstraint.constant = row.textHeight
-        }
-        
-        if row.fontSize != cell.statusLabel.font.pointSize {
-            cell.statusLabel.font = UIFont.systemFontOfSize(row.fontSize)
-        }
-        
-        if let s = cell.status {
-            if s.uniqueID == status.uniqueID {
-                cell.textHeightConstraint.constant = row.textHeight
-                return cell
-            }
-        }
-        
-        cell.status = status
-        cell.setLayout(layout)
-        cell.setText(status)
-        
-        if !Pinwheel.suspend {
-            cell.setImage(status)
-        }
-        
-        return cell
-    }
-    
-    // MARK: UITableViewDelegate
-    
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 90
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let row = rows[indexPath.row]
-        return row.height
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let row = rows[indexPath.row]
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-            StatusAlert.show(cell, status: row.status)
-        }
-    }
-    
-    func createRow(status: TwitterStatus, fontSize: CGFloat) -> Row {
-        let layout = TwitterStatusCellLayout.fromStatus(status)
-        if let height = layoutHeight[layout] {
-            let textHeight = measure(status.text, fontSize: fontSize)
-            let totalHeight = ceil(height + textHeight)
-            return Row(status: status, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
-        } else if let cell = self.layoutHeightCell[layout] {
-            cell.frame = self.tableView.bounds
-            cell.setLayout(layout)
-            let textHeight = measure(status.text, fontSize: fontSize)
-            cell.textHeightConstraint.constant = 0
-            let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
-            layoutHeight[layout] = height
-            let totalHeight = ceil(height + textHeight)
-            return Row(status: status, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
-        }
-        fatalError("cellForHeight is missing.")
-    }
-    
-    func measure(text: NSString, fontSize: CGFloat) -> CGFloat {
-        return ceil(text.boundingRectWithSize(
-            CGSizeMake((self.layoutHeightCell[.Normal]?.statusLabel.frame.size.width)!, 0),
-            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
-            attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
-            context: nil).size.height)
-    }
-    
-    func renderData(statuses: [TwitterStatus]) {
-        var fontSize :CGFloat = 12.0
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            fontSize = CGFloat(delegate.fontSize)
-        }
-        self.rows = statuses.map({ self.createRow($0, fontSize: fontSize) })
-        Async.main {
-            self.tableView.reloadData()
-        }
-    }
-    
-    func renderImages() {
-        for cell in self.tableView.visibleCells() as! [TwitterStatusCell] {
-            if let status = cell.status {
-                cell.setImage(status)
-            }
-        }
+        let offset = scrollView.contentOffset.x
+        NSLog("offset:\(offset)")
+        headerViewLeftConstraint.constant = -offset
     }
     
     // MARK: - Actions
@@ -258,25 +170,42 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             followerCountLabel.text = "-"
             listedCountLabel.text = "-"
             favoritesCountLabel.text = "-"
+            descriptionLabel.text = ""
+            locationLabel.text = ""
+            siteLabel.text = ""
+            sinceLabel.text = ""
             iconImageView.image = nil
             coverImageView.image = nil
-            protectedLabel.hidden = user.isProtected ? false : true
-            followedByLabel.hidden = true
+            if !user.isProtected {
+                protectedLabel.removeFromSuperview()
+            }
+            // followedByLabel.alpha = 0
             ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: iconImageView)
+            
             headerViewTopContraint.constant = 0
-            rows = []
-            tableView.reloadData()
+            bottomContainerTopConstraint.constant = 100
+            
+            userTimelineTableViewController.userID = user.userID
+            userTimelineTableViewController.loadData(nil)
+            followingTableViewController.userID = user.userID
+            followingTableViewController.loadData(nil)
+            followerTableViewController.userID = user.userID
+            followerTableViewController.loadData(nil)
             
             let success :(([JSONValue]?) -> Void) = { (rows) in
                 if let row = rows?.first {
                     let user = TwitterUserFull(row)
+                    self.userFull = user
                     self.statusCountLabel.text = user.statusesCount.description
                     self.followingCountLabel.text = user.friendsCount.description
                     self.followerCountLabel.text = user.followersCount.description
                     self.listedCountLabel.text = user.listedCount.description
                     self.favoritesCountLabel.text = user.favouritesCount.description
+                    self.descriptionLabel.text = user.description
+                    self.locationLabel.text = user.location
+                    self.siteLabel.text = user.displayURL
+                    self.sinceLabel.text = self.sinceDateFormatter.stringFromDate(user.createdAt.date)
                     ImageLoaderClient.displayImage(user.profileBannerURL, imageView: self.coverImageView)
-                    self.userFull = user
                 }
             }
             
@@ -287,23 +216,11 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
             Twitter.getCurrentClient()?.getUsersLookupWithUserIDs([user.userID], includeEntities: false, success: success, failure: failure)
             
             Twitter.getFriendships(user.userID, success: { (relationship) -> Void in
-                self.followedByLabel.hidden = !relationship.followedBy
                 self.relationship = relationship
+                if !relationship.followedBy {
+                    self.followedByLabel.removeFromSuperview()
+                }
             }, failure: failure)
-            
-            load()
-        }
-    }
-    
-    func load() {
-        if let user = self.user {
-            let success = { (statuses: [TwitterStatus]) -> Void in
-                self.renderData(statuses)
-            }
-            let failure = { (error: NSError) -> Void in
-                ErrorAlert.show("Error", message: error.localizedDescription)
-            }
-            Twitter.getUserTimeline(user.userID, success: success, failure: failure)
         }
     }
     
@@ -314,8 +231,22 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func showIcon(sender: AnyObject) {
-        if let imageURL = user?.profileImageURL {
+        if let imageURL = user?.profileOriginalImageURL {
             ImageViewController.show([imageURL], initialPage: 0)
+        }
+    }
+    
+    func openURL(sender: AnyObject) {
+        if let expandedURL = userFull?.expandedURL {
+            GoogleChrome.openURL(expandedURL)
+        }
+    }
+    
+    @IBAction func menu(sender: UIButton) {
+        if let userFull = userFull {
+            if let relationship = relationship {
+                UserAlert.show(sender, user: userFull, relationship: relationship)
+            }
         }
     }
     

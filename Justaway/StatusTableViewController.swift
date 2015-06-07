@@ -260,7 +260,7 @@ class StatusTableViewController: TimelineTableViewController {
         if maxID == nil {
             self.lastID = nil
         }
-        NSLog("loadData addOperation: \(maxID ?? 0)")
+        NSLog("loadData addOperation: \(maxID ?? 0) suspended:\(loadDataQueue.suspended)")
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (()-> Void) = {
                 op.finish()
@@ -323,7 +323,6 @@ class StatusTableViewController: TimelineTableViewController {
             // println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count)")
             
             if let lastCell = self.tableView.visibleCells().last as? UITableViewCell {
-                
                 let isTop = self.isTop
                 let offset = lastCell.frame.origin.y - self.tableView.contentOffset.y
                 UIView.setAnimationsEnabled(false)
@@ -365,7 +364,7 @@ class StatusTableViewController: TimelineTableViewController {
                 for status in statuses {
                     self.rows.append(self.createRow(status, fontSize: fontSize))
                 }
-                self.tableView.setContentOffset(CGPointZero, animated: false)
+                self.tableView.setContentOffset(CGPointMake(0, -self.tableView.contentInset.top), animated: false)
                 self.tableView.reloadData()
                 self.saveCacheSchedule()
                 self.scrollEnd()

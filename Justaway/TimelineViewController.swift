@@ -14,7 +14,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var streamingButton: StreamingButton!
     @IBOutlet weak var tabWraperView: UIView!
     
-    // var editorViewController: EditorViewController!
     var settingsViewController: SettingsViewController!
     var tableViewControllers = [TimelineTableViewController]()
     var tabButtons = [MenuButton]()
@@ -62,10 +61,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Configuration
     
     func configureView() {
-        // editorViewController = EditorViewController()
-        // editorViewController.view.hidden = true
-        // ViewTools.addSubviewWithEqual(self.view, view: editorViewController.view)
-        
         settingsViewController = SettingsViewController()
         ViewTools.addSubviewWithEqual(self.view, view: settingsViewController.view)
         
@@ -167,16 +162,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 self.streamingButton.selected = false
             }
         }
-        
-//        EventBox.onMainThread(self, name: EditorEvent.name) { n in
-//            let event = n.object as! EditorEvent
-//            self.editorViewController.show()
-//            self.editorViewController.inReplyToStatusId = event.inReplyToStatusId
-//            self.editorViewController.textView.text = event.text
-//            if let range = event.range {
-//                self.editorViewController.textView.selectedRange = range
-//            }
-//        }
         
         EventBox.onMainThread(self, name: "timelineScrollToTop", handler: { _ in
             self.tabButtons[self.currentPage].selected = false
