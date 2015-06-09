@@ -20,6 +20,14 @@ struct TwitterUser {
         }
     }
     
+    init(_ userFull: TwitterUserFull) {
+        self.userID = userFull.userID
+        self.screenName = userFull.screenName
+        self.name = userFull.name
+        self.profileImageURL = userFull.profileImageURL
+        self.isProtected = userFull.isProtected
+    }
+    
     init(_ dictionary: [String: AnyObject]) {
         self.userID = dictionary["userID"] as? String ?? ""
         self.screenName = dictionary["screenName"] as? String ?? ""

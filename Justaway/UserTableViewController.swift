@@ -135,7 +135,7 @@ class UserTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let row = rows[indexPath.row]
         if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-            // StatusAlert.show(cell, status: row.status)
+            ProfileViewController.show(TwitterUser(row.user))
         }
     }
     
