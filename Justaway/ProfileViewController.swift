@@ -23,6 +23,16 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         static let delay: NSTimeInterval = 0
     }
     
+    struct TabMenu {
+        let count: UILabel
+        let label: UILabel
+        
+        init(count: UILabel, label: UILabel) {
+            self.count = count
+            self.label = label
+        }
+    }
+    
     // MARK: Properties
     
     @IBOutlet weak var scrollView: BackgroundScrollView!
@@ -40,11 +50,21 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var siteLabel: UILabel!
     
-    @IBOutlet weak var statusCountLabel: UILabel!
-    @IBOutlet weak var followingCountLabel: UILabel!
-    @IBOutlet weak var followerCountLabel: UILabel!
-    @IBOutlet weak var listedCountLabel: UILabel!
-    @IBOutlet weak var favoritesCountLabel: UILabel!
+    @IBOutlet weak var statusCountLabel: MenuLable!
+    @IBOutlet weak var statusLabel: MenuLable!
+    @IBOutlet weak var statusView: UIView!
+    @IBOutlet weak var followingCountLabel: MenuLable!
+    @IBOutlet weak var followingLabel: MenuLable!
+    @IBOutlet weak var followingView: UIView!
+    @IBOutlet weak var followerCountLabel: MenuLable!
+    @IBOutlet weak var followerLabel: MenuLable!
+    @IBOutlet weak var followerView: UIView!
+    @IBOutlet weak var listedCountLabel: MenuLable!
+    @IBOutlet weak var listedLabel: MenuLable!
+    @IBOutlet weak var listedView: UIView!
+    @IBOutlet weak var favoritesCountLabel: MenuLable!
+    @IBOutlet weak var favoritesLabel: MenuLable!
+    @IBOutlet weak var favoritesView: UIView!
     
     @IBOutlet weak var bottomContainerTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomDisplayNameLabel: UILabel!
@@ -54,6 +74,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     var userFull: TwitterUserFull?
     var relationship: TwitterRelationship?
     
+    var tabMenus = [TabMenu]()
     let userTimelineTableViewController = UserTimelineTableViewController()
     let followingTableViewController = FollowingUserViewController()
     let followerTableViewController = FollowerUserViewController()
@@ -94,6 +115,22 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Configuration
     
     func configureView() {
+        tabMenus = [
+            TabMenu(count: statusCountLabel, label: statusLabel),
+            TabMenu(count: followingCountLabel, label: followingLabel),
+            TabMenu(count: followerCountLabel, label: followerLabel),
+            TabMenu(count: listedCountLabel, label: listedLabel),
+            TabMenu(count: favoritesCountLabel, label: favoritesLabel)
+        ]
+        
+        highlightUpdate(0)
+        
+        statusView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
+        followingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
+        followerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
+        listedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
+        favoritesView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
+        
         scrollView.delegate = self
         
         coverImageView.clipsToBounds = true
@@ -153,8 +190,23 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.x
-        NSLog("offset:\(offset)")
         headerViewLeftConstraint.constant = -offset
+        let page = Int((offset + (view.frame.size.width / 2)) / view.frame.size.width)
+        highlightUpdate(page)
+    }
+    
+    func highlightUpdate(page: Int) {
+        var count = 0
+        for tabMenu in tabMenus {
+            if page == count {
+                tabMenu.count.highlighted = true
+                tabMenu.label.highlighted = true
+            } else {
+                tabMenu.count.highlighted = false
+                tabMenu.label.highlighted = false
+            }
+            count++
+        }
     }
     
     // MARK: - Actions
@@ -233,6 +285,16 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     func showIcon(sender: AnyObject) {
         if let imageURL = user?.profileOriginalImageURL {
             ImageViewController.show([imageURL], initialPage: 0)
+        }
+    }
+    
+    func showPage(sender: UITapGestureRecognizer) {
+        if let page = sender.view?.tag {
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.scrollView.contentOffset = CGPointMake(self.view.frame.size.width * CGFloat(page), 0)
+            }, completion: { (flag) -> Void in
+                self.highlightUpdate(page)
+            })
         }
     }
     

@@ -81,6 +81,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             tableViewControllers.append(vc)
             
             if let button = MenuButton.buttonWithType(UIButtonType.System) as? MenuButton {
+                if i == 0 {
+                    button.highlighted = true
+                }
                 button.tag = i
                 button.tintColor = UIColor.clearColor()
                 button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
@@ -102,6 +105,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
         scrollView.pagingEnabled = true
+        scrollView.delegate = self
         
         streamingView.userInteractionEnabled = true
         var gesture = UITapGestureRecognizer(target: self, action: "streamingSwitch:")
@@ -195,7 +199,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - UIScrollViewDelegate
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        let page = Int((scrollView.contentOffset.y + (scrollWrapperView.frame.size.width / 2)) / scrollWrapperView.frame.size.width)
+        let page = Int((scrollView.contentOffset.x + (scrollWrapperView.frame.size.width / 2)) / scrollWrapperView.frame.size.width)
         if currentPage != page {
             currentPage = page
             self.highlightUpdate(page)
@@ -206,9 +210,13 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Actions
     
     func highlightUpdate(page: Int) {
-        NSLog("highlightUpdate page:\(page) y:\(tableViewControllers[page].tableView.contentOffset.y)")
-        if tableViewControllers[page].tableView.contentOffset.y == 0 {
-            tabButtons[page].selected = false
+        
+        for tabButton in tabButtons {
+            if tabButton.tag == page {
+                tabButton.highlighted = true
+            } else {
+                tabButton.highlighted = false
+            }
         }
     }
     

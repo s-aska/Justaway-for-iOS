@@ -47,6 +47,7 @@ class RetweetButton: BaseButton {}
 // MARK: - Lable
 
 class TextLable: UILabel {}
+class MenuLable: UILabel {}
 class DisplayNameLable: UILabel {}
 class ScreenNameLable: UILabel {}
 class RelativeDateLable: UILabel {}
