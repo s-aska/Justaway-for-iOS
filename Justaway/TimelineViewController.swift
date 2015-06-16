@@ -13,6 +13,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var streamingView: UIView!
     @IBOutlet weak var streamingButton: StreamingButton!
     @IBOutlet weak var tabWraperView: UIView!
+    @IBOutlet weak var tabCurrentMaskLeftConstraint: NSLayoutConstraint!
     
     var settingsViewController: SettingsViewController!
     var tableViewControllers = [TimelineTableViewController]()
@@ -81,11 +82,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             tableViewControllers.append(vc)
             
             if let button = MenuButton.buttonWithType(UIButtonType.System) as? MenuButton {
-                if i == 0 {
-                    button.highlighted = true
-                }
                 button.tag = i
-                button.tintColor = UIColor.clearColor()
                 button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
                 button.frame = CGRectMake(58 * CGFloat(i), 0, 58, 58)
                 button.contentEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
@@ -211,13 +208,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     
     func highlightUpdate(page: Int) {
         
-        for tabButton in tabButtons {
-            if tabButton.tag == page {
-                tabButton.highlighted = true
-            } else {
-                tabButton.highlighted = false
-            }
-        }
+        tabCurrentMaskLeftConstraint.constant = CGFloat(page * 58)
     }
     
     func refresh(sender: UILongPressGestureRecognizer) {

@@ -50,6 +50,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var siteLabel: UILabel!
     
+    @IBOutlet weak var CurrentTabMaskLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var statusCountLabel: MenuLable!
     @IBOutlet weak var statusLabel: MenuLable!
     @IBOutlet weak var statusView: UIView!
@@ -196,17 +197,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func highlightUpdate(page: Int) {
-        var count = 0
-        for tabMenu in tabMenus {
-            if page == count {
-                tabMenu.count.highlighted = true
-                tabMenu.label.highlighted = true
-            } else {
-                tabMenu.count.highlighted = false
-                tabMenu.label.highlighted = false
-            }
-            count++
-        }
+        CurrentTabMaskLeftConstraint.constant = CGFloat(CGFloat(page) * self.view.frame.size.width / 5)
     }
     
     // MARK: - Actions

@@ -85,12 +85,12 @@ class ThemeController {
         BackgroundScrollView.appearance().backgroundColor = theme.mainBackgroundColor()
         BackgroundScrollView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         BackgroundView.appearance().backgroundColor = theme.mainBackgroundColor()
+        CurrentTabMaskView.appearance().backgroundColor = theme.menuTextColor()
         MenuView.appearance().backgroundColor = theme.menuBackgroundColor()
         MenuShadowView.appearance().layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         MenuButton.appearance().setTitleColor(theme.menuTextColor(), forState: .Normal)
         MenuButton.appearance().setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)
         MenuLable.appearance().textColor = theme.menuTextColor()
-        MenuLable.appearance().highlightedTextColor = theme.menuHighlightedTextColor()
         
         // for TwitterStatus
         DisplayNameLable.appearance().textColor = theme.displayNameTextColor()
@@ -156,6 +156,8 @@ class ThemeController {
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as BackgroundView:
                 v.backgroundColor = theme.mainBackgroundColor()
+            case let v as CurrentTabMaskView:
+                v.backgroundColor = theme.menuTextColor()
             case let v as MenuShadowView:
                 v.backgroundColor = theme.menuBackgroundColor()
                 v.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
@@ -168,7 +170,6 @@ class ThemeController {
                 v.textColor = theme.titleTextColor()
             case let v as MenuLable:
                 v.textColor = theme.menuTextColor()
-                v.highlightedTextColor = theme.menuHighlightedTextColor()
             case let v as DisplayNameLable:
                 v.textColor = theme.displayNameTextColor()
             case let v as ScreenNameLable:
@@ -215,5 +216,18 @@ class ThemeController {
                 window.addSubview(v)
             }
         }
+    }
+}
+
+private extension UIColor {
+    var imageValue: UIImage {
+        let view = UIView(frame: CGRectMake(0, 0, 1, 1))
+        view.backgroundColor = self
+        view.alpha = 1
+        UIGraphicsBeginImageContext(view.frame.size)
+        let context = UIGraphicsGetCurrentContext()
+        view.layer.renderInContext(context)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        return image
     }
 }

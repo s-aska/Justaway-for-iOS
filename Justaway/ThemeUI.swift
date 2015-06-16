@@ -24,6 +24,7 @@ class BackgroundView: UIView {}
 class BackgroundTableView: UITableView {}
 class BackgroundTableViewCell: UITableViewCell {}
 class BackgroundScrollView: UIScrollView {}
+class CurrentTabMaskView: UIView {}
 class CellSeparator: UIView {
     let borderLayer = CALayer()
     

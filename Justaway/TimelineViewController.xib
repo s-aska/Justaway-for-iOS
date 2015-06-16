@@ -19,6 +19,7 @@
                 <outlet property="streamingButton" destination="Hgv-8Y-sHi" id="sT9-FX-Plk"/>
                 <outlet property="streamingStatusLabel" destination="i4e-3u-LDz" id="AzD-uC-8w0"/>
                 <outlet property="streamingView" destination="zsL-HL-Z8V" id="g3Z-kd-dON"/>
+                <outlet property="tabCurrentMaskLeftConstraint" destination="whI-qc-OmR" id="lhK-Wl-2aN"/>
                 <outlet property="tabWraperView" destination="KCl-rs-HPg" id="iiq-OE-Wsx"/>
                 <outlet property="view" destination="iN0-l3-epB" id="diP-QV-l6C"/>
             </connections>
@@ -74,7 +75,21 @@
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KCl-rs-HPg">
                                     <rect key="frame" x="0.0" y="0.0" width="481" height="50"/>
+                                    <subviews>
+                                        <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mmk-es-vLE" customClass="CurrentTabMaskView" customModule="Justaway" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="58" height="50"/>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="58" id="gLt-S1-vRv"/>
+                                                <constraint firstAttribute="height" constant="50" id="qCM-gT-DB0"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="mmk-es-vLE" firstAttribute="top" secondItem="KCl-rs-HPg" secondAttribute="top" id="oez-6o-rbR"/>
+                                        <constraint firstItem="mmk-es-vLE" firstAttribute="leading" secondItem="KCl-rs-HPg" secondAttribute="leading" id="whI-qc-OmR"/>
+                                    </constraints>
                                 </view>
                             </subviews>
                             <constraints>
