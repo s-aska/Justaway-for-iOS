@@ -83,6 +83,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             
             if let button = MenuButton.buttonWithType(UIButtonType.System) as? MenuButton {
                 button.tag = i
+                button.tintColor = UIColor.clearColor()
                 button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
                 button.frame = CGRectMake(58 * CGFloat(i), 0, 58, 58)
                 button.contentEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
@@ -209,6 +210,11 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     func highlightUpdate(page: Int) {
         
         tabCurrentMaskLeftConstraint.constant = CGFloat(page * 58)
+        
+        
+        if tableViewControllers[currentPage].isTop {
+            tabButtons[currentPage].selected = false
+        }
     }
     
     func refresh(sender: UILongPressGestureRecognizer) {
