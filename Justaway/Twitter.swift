@@ -382,6 +382,21 @@ class Twitter {
         getCurrentClient()?.getFollowersListWithID(userID, cursor: nil, count: 200, skipStatus: nil, includeUserEntities: nil, success: s, failure: f)
     }
     
+    class func getListsMemberOf(userID: String, success: ([TwitterUserList]) -> Void, failure: (NSError) -> Void) {
+        let s = { (lists: [JSONValue]?, previousCursor: Int?, nextCursor: Int?) -> Void in
+            if let userLists = lists?.map({ TwitterUserList($0) }) {
+                success(userLists)
+            }
+        }
+        
+        let f = { (error: NSError) -> Void in
+            ErrorAlert.show("get follower failure", message: error.localizedDescription)
+            failure(error)
+        }
+        
+        getCurrentClient()?.getListsMembershipsWithUserID(userID, cursor: nil, filterToOwnedLists: nil, success: s, failure: f)
+    }
+    
     class func statusUpdate(status: String, inReplyToStatusID: String?, var images: [NSData], var media_ids: [String]) {
         if images.count == 0 {
             return statusUpdate(status, inReplyToStatusID: inReplyToStatusID, media_ids: media_ids)

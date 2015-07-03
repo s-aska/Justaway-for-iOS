@@ -115,7 +115,7 @@
                 <outlet property="screenNameLabel" destination="UW9-cO-Ev5" id="FCa-eH-OiH"/>
                 <outlet property="textHeightConstraint" destination="EDA-0K-baf" id="XJb-sw-g5m"/>
             </connections>
-            <point key="canvasLocation" x="431" y="22"/>
+            <point key="canvasLocation" x="357" y="92"/>
         </tableViewCell>
     </objects>
 </document>
