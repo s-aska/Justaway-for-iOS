@@ -1,5 +1,5 @@
 //
-//  TwitterUserList.swift
+//  TwitterList.swift
 //  Justaway
 //
 //  Created by Shinichiro Aska on 7/3/15.
@@ -9,7 +9,7 @@
 import Foundation
 import SwifteriOS
 
-struct TwitterUserList {
+struct TwitterList {
     let id: String
     let name: String
     let description: String

@@ -45,7 +45,7 @@ class UserTableViewController: UITableViewController {
     // MARK: UITableViewDelegate
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return TIMELINE_FOOTER_HEIGHT
+        return TIMELINE_FOOTER_HEIGHT + 50
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -113,13 +113,20 @@ class UserTableViewController: UITableViewController {
         let user = row.user
         let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! TwitterUserCell
         
+        if cell.textHeightConstraint.constant != row.textHeight {
+            cell.textHeightConstraint.constant = row.textHeight
+        }
+        
+        if row.fontSize != cell.descriptionLabel.font.pointSize {
+            cell.descriptionLabel.font = UIFont.systemFontOfSize(row.fontSize)
+        }
+        
         cell.displayNameLabel.text = user.name
         cell.screenNameLabel.text = user.screenName
         cell.protectedLabel.hidden = !user.isProtected
         cell.descriptionLabel.text = user.description
         
-        cell.textHeightConstraint.constant = row.textHeight
-        
+        cell.iconImageView.image = nil
         ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: cell.iconImageView)
         
         return cell

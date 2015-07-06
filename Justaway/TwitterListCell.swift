@@ -1,5 +1,5 @@
 //
-//  TwitterUserListCell.swift
+//  TwitterListCell.swift
 //  Justaway
 //
 //  Created by Shinichiro Aska on 7/3/15.
@@ -8,13 +8,14 @@
 
 import UIKit
 
-class TwitterUserListCell: BackgroundTableViewCell {
+class TwitterListCell: BackgroundTableViewCell {
     
     @IBOutlet weak var iconImageView: UIImageView!
-    @IBOutlet weak var userListNameLabel: DisplayNameLable!
+    @IBOutlet weak var listNameLabel: DisplayNameLable!
     @IBOutlet weak var userNameLabel: ScreenNameLable!
     @IBOutlet weak var protectedLabel: UILabel!
     @IBOutlet weak var descriptionLabel: StatusLable!
+    @IBOutlet weak var memberCountLabel: UILabel!
     @IBOutlet weak var textHeightConstraint: NSLayoutConstraint!
     
     // MARK: - View Life Cycle

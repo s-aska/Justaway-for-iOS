@@ -9,7 +9,7 @@
 import UIKit
 import EventBox
 
-class UserListTableViewController: UITableViewController {
+class ListTableViewController: UITableViewController {
     
     // MARK: Types
     
@@ -25,17 +25,17 @@ class UserListTableViewController: UITableViewController {
     var userID: String?
     
     var rows = [Row]()
-    var layoutHeightCell: TwitterUserListCell?
+    var layoutHeightCell: TwitterListCell?
     var layoutHeight: CGFloat?
     
     struct Row {
-        let userList: TwitterUserList
+        let list: TwitterList
         let fontSize: CGFloat
         let height: CGFloat
         let textHeight: CGFloat
         
-        init(userList: TwitterUserList, fontSize: CGFloat, height: CGFloat, textHeight: CGFloat) {
-            self.userList = userList
+        init(list: TwitterList, fontSize: CGFloat, height: CGFloat, textHeight: CGFloat) {
+            self.list = list
             self.fontSize = fontSize
             self.height = height
             self.textHeight = textHeight
@@ -45,7 +45,7 @@ class UserListTableViewController: UITableViewController {
     // MARK: UITableViewDelegate
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return TIMELINE_FOOTER_HEIGHT
+        return TIMELINE_FOOTER_HEIGHT + 50
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -87,9 +87,9 @@ class UserListTableViewController: UITableViewController {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableView.backgroundColor = UIColor.clearColor()
         
-        let nib = UINib(nibName: "TwitterUserListCell", bundle: nil)
+        let nib = UINib(nibName: "TwitterListCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
-        self.layoutHeightCell = self.tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier) as? TwitterUserListCell
+        self.layoutHeightCell = self.tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier) as? TwitterListCell
         
         // var refreshControl = UIRefreshControl()
         // refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
@@ -110,17 +110,25 @@ class UserListTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let row = rows[indexPath.row]
-        let userList = row.userList
-        let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! TwitterUserListCell
+        let list = row.list
+        let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! TwitterListCell
         
-        cell.userListNameLabel.text = userList.name
-        cell.userNameLabel.text = "by " + userList.user.name
+        if cell.textHeightConstraint.constant != row.textHeight {
+            cell.textHeightConstraint.constant = row.textHeight
+        }
+        
+        if row.fontSize != cell.descriptionLabel.font.pointSize {
+            cell.descriptionLabel.font = UIFont.systemFontOfSize(row.fontSize)
+        }
+        
+        cell.listNameLabel.text = list.name
+        cell.userNameLabel.text = "by " + list.user.name
+        cell.memberCountLabel.text = "\(list.memberCount) members"
         // cell.protectedLabel.hidden = !userList.isProtected
-        cell.descriptionLabel.text = userList.description
+        cell.descriptionLabel.text = list.description
         
-        // cell.textHeightConstraint.constant = row.textHeight
-        
-        ImageLoaderClient.displayUserIcon(userList.user.profileImageURL, imageView: cell.iconImageView)
+        cell.iconImageView.image = nil
+        ImageLoaderClient.displayUserIcon(list.user.profileImageURL, imageView: cell.iconImageView)
         
         return cell
     }
@@ -139,19 +147,19 @@ class UserListTableViewController: UITableViewController {
         }
     }
     
-    func createRow(userList: TwitterUserList, fontSize: CGFloat) -> Row {
+    func createRow(list: TwitterList, fontSize: CGFloat) -> Row {
         if let height = layoutHeight {
-            let textHeight = measure(userList.description, fontSize: fontSize)
+            let textHeight = measure(list.description, fontSize: fontSize)
             let totalHeight = ceil(height + textHeight)
-            return Row(userList: userList, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
+            return Row(list: list, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
         } else if let cell = self.layoutHeightCell {
             cell.frame = self.tableView.bounds
-            let textHeight = measure(userList.description, fontSize: fontSize)
+            let textHeight = measure(list.description, fontSize: fontSize)
             cell.textHeightConstraint.constant = 0
             let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
             layoutHeight = height
             let totalHeight = ceil(height + textHeight)
-            return Row(userList: userList, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
+            return Row(list: list, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
         }
         fatalError("cellForHeight is missing.")
     }
@@ -170,7 +178,7 @@ class UserListTableViewController: UITableViewController {
             fontSize = CGFloat(delegate.fontSize)
         }
         
-        let s = { (userLists: [TwitterUserList]) -> Void in
+        let s = { (userLists: [TwitterList]) -> Void in
             self.rows = userLists.map({ self.createRow($0, fontSize: fontSize) })
             self.tableView.reloadData()
         }
@@ -182,7 +190,7 @@ class UserListTableViewController: UITableViewController {
         loadData(maxID?.stringValue, success: s, failure: f)
     }
     
-    func loadData(id: String?, success: ((userLists: [TwitterUserList]) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadData(id: String?, success: ((userLists: [TwitterList]) -> Void), failure: ((error: NSError) -> Void)) {
         assertionFailure("not implements.")
     }
 }

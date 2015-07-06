@@ -76,9 +76,12 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     var relationship: TwitterRelationship?
     
     var tabMenus = [TabMenu]()
+    var tabViews = [UITableViewController]()
     let userTimelineTableViewController = UserTimelineTableViewController()
     let followingTableViewController = FollowingUserViewController()
     let followerTableViewController = FollowerUserViewController()
+    let listMemberOfViewController = ListMemberOfViewController()
+    let favoritesTableViewController = FavoritesTableViewController()
     let sinceDateFormatter: NSDateFormatter = {
         let formatter = NSDateFormatter()
         formatter.locale = NSLocale.currentLocale()
@@ -124,6 +127,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             TabMenu(count: favoritesCountLabel, label: favoritesLabel)
         ]
         
+        tabViews = [userTimelineTableViewController, followingTableViewController, followerTableViewController, listMemberOfViewController, favoritesTableViewController]
+        
         highlightUpdate(0)
         
         statusView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
@@ -148,10 +153,9 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         
         // setup tabview
         if let size = UIApplication.sharedApplication().keyWindow?.rootViewController?.view.frame.size {
-            NSLog("size:\(size)")
-            let contentView = UIView(frame: CGRectMake(0, 0, size.width * 3, size.height))
+            let contentView = UIView(frame: CGRectMake(0, 0, size.width * 5, size.height))
             var i = 0
-            for vc in [userTimelineTableViewController, followingTableViewController, followerTableViewController] {
+            for vc in tabViews {
                 let marginTop: CGFloat = 20
                 vc.view.frame = CGRectMake(0, marginTop, size.width, size.height - marginTop)
                 let view = UIView(frame: CGRectMake(size.width * CGFloat(i), 0, size.width, size.height))
@@ -234,6 +238,10 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             followingTableViewController.loadData(nil)
             followerTableViewController.userID = user.userID
             followerTableViewController.loadData(nil)
+            listMemberOfViewController.userID = user.userID
+            listMemberOfViewController.loadData(nil)
+            favoritesTableViewController.userID = user.userID
+            favoritesTableViewController.loadData(nil)
             
             let success :(([JSONValue]?) -> Void) = { (rows) in
                 if let row = rows?.first {
@@ -281,11 +289,18 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     func showPage(sender: UITapGestureRecognizer) {
         if let page = sender.view?.tag {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.scrollView.contentOffset = CGPointMake(self.view.frame.size.width * CGFloat(page), 0)
-            }, completion: { (flag) -> Void in
-                self.highlightUpdate(page)
-            })
+            let offset = self.view.frame.size.width * CGFloat(page)
+            if offset == self.scrollView.contentOffset.x {
+                 tabViews[page].tableView.setContentOffset(CGPointZero, animated: true)
+            } else {
+                self.headerViewLeftConstraint.constant = -offset
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.scrollView.contentOffset = CGPointMake(offset, 0)
+                    self.view.layoutIfNeeded()
+                    }, completion: { (flag) -> Void in
+                        self.highlightUpdate(page)
+                })
+            }
         }
     }
     

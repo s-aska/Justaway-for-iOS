@@ -334,6 +334,27 @@ class Twitter {
         getCurrentClient()?.getStatusesMentionTimelineWithCount(count: 200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
     }
     
+    class func getFavorites(userID: String, maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        let s = { (statuses: [JSONValue]?) -> Void in
+            if let statuses = statuses?.map({ TwitterStatus($0) }) {
+                success(statuses)
+            }
+        }
+        
+        let f = { (error: NSError) -> Void in
+            if error.code == 401 {
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+            } else if error.code == 429 {
+                ErrorAlert.show("Tweet failure", message: "API Limit")
+            } else {
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+            }
+            failure(error)
+        }
+        
+        getCurrentClient()?.getFavoritesListWithUserID(userID, count: 200, sinceID: nil, maxID: maxID, success: s, failure: f)
+    }
+    
     class func getFriendships(targetID: String, success: (TwitterRelationship) -> Void, failure: (NSError) -> Void) {
         let s = { (dictionary: Dictionary<String, JSONValue>?) -> Void in
             if let source = dictionary?["relationship"]?["source"] {
@@ -382,10 +403,10 @@ class Twitter {
         getCurrentClient()?.getFollowersListWithID(userID, cursor: nil, count: 200, skipStatus: nil, includeUserEntities: nil, success: s, failure: f)
     }
     
-    class func getListsMemberOf(userID: String, success: ([TwitterUserList]) -> Void, failure: (NSError) -> Void) {
-        let s = { (lists: [JSONValue]?, previousCursor: Int?, nextCursor: Int?) -> Void in
-            if let userLists = lists?.map({ TwitterUserList($0) }) {
-                success(userLists)
+    class func getListsMemberOf(userID: String, success: ([TwitterList]) -> Void, failure: (NSError) -> Void) {
+        let s = { (lists: [JSONValue]?, previousCursor: String?, nextCursor: String?) -> Void in
+            if let lists = lists?.map({ TwitterList($0) }) {
+                success(lists)
             }
         }
         

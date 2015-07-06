@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="78" id="vqy-oC-mZK" customClass="TwitterUserListCell" customModule="Justaway" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="81"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="75" id="vqy-oC-mZK" customClass="TwitterListCell" customModule="Justaway" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vqy-oC-mZK" id="Gcd-32-VLB">
                 <autoresizingMask key="autoresizingMask"/>
@@ -20,7 +21,10 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ベネディクト17世候補者" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GsG-13-GgA" customClass="DisplayNameLable" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="8" y="8" width="134" height="14.5"/>
+                        <rect key="frame" x="8" y="8" width="134" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="yEZ-2l-VrO"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -31,39 +35,56 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="いつか殴りに行く" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NKz-7Q-2fm" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
+                        <rect key="frame" x="8" y="31" width="254" height="14.5"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="c7Q-Pd-wZP"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="85 members" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cz2-ZY-wWs" customClass="ScreenNameLable" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="8" y="55.5" width="80.5" height="17"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <rect key="frame" x="8" y="52" width="304" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="いつか殴りに行く" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NKz-7Q-2fm" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="8" y="30" width="254" height="17.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQH-K7-BqR" customClass="CellSeparator" customModule="Justaway" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="HkY-Oo-wM2"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="zOT-22-GGk" firstAttribute="leading" secondItem="GsG-13-GgA" secondAttribute="trailing" constant="8" id="5ZO-vb-3LK"/>
-                    <constraint firstAttribute="bottom" secondItem="Cz2-ZY-wWs" secondAttribute="bottom" constant="8" id="6VU-b8-Tdx"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="NKz-7Q-2fm" secondAttribute="bottom" priority="250" constant="21" id="89S-Si-Tm4"/>
+                    <constraint firstAttribute="bottom" secondItem="Cz2-ZY-wWs" secondAttribute="bottom" constant="8" id="Phd-4p-9Zh"/>
                     <constraint firstItem="NKz-7Q-2fm" firstAttribute="top" secondItem="GsG-13-GgA" secondAttribute="bottom" constant="8" id="asu-ye-tKX"/>
+                    <constraint firstAttribute="trailing" secondItem="Cz2-ZY-wWs" secondAttribute="trailing" constant="8" id="bpR-j8-oZo"/>
                     <constraint firstItem="GsG-13-GgA" firstAttribute="leading" secondItem="Gcd-32-VLB" secondAttribute="leading" constant="8" id="ckc-LH-2Fn"/>
+                    <constraint firstAttribute="trailing" secondItem="bQH-K7-BqR" secondAttribute="trailing" id="d2u-hE-5FM"/>
                     <constraint firstItem="oe4-MB-UUe" firstAttribute="top" secondItem="Gcd-32-VLB" secondAttribute="top" constant="8" id="ezI-RU-CNJ"/>
                     <constraint firstItem="zOT-22-GGk" firstAttribute="top" secondItem="Gcd-32-VLB" secondAttribute="top" constant="10" id="fHk-Sw-xKh"/>
+                    <constraint firstItem="oe4-MB-UUe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zOT-22-GGk" secondAttribute="trailing" constant="8" id="ggW-yj-Wjy"/>
+                    <constraint firstItem="bQH-K7-BqR" firstAttribute="leading" secondItem="Gcd-32-VLB" secondAttribute="leading" id="ljH-Re-BoP"/>
                     <constraint firstItem="oe4-MB-UUe" firstAttribute="leading" secondItem="NKz-7Q-2fm" secondAttribute="trailing" constant="8" id="mXq-eC-SBP"/>
                     <constraint firstItem="Cz2-ZY-wWs" firstAttribute="leading" secondItem="Gcd-32-VLB" secondAttribute="leading" constant="8" id="mxC-lm-cfe"/>
                     <constraint firstAttribute="trailing" secondItem="oe4-MB-UUe" secondAttribute="trailing" constant="8" id="rcz-nZ-YxB"/>
                     <constraint firstItem="GsG-13-GgA" firstAttribute="top" secondItem="Gcd-32-VLB" secondAttribute="top" constant="8" id="sTZ-82-eAz"/>
                     <constraint firstItem="NKz-7Q-2fm" firstAttribute="leading" secondItem="Gcd-32-VLB" secondAttribute="leading" constant="8" id="yM8-gc-nFq"/>
+                    <constraint firstItem="bQH-K7-BqR" firstAttribute="top" secondItem="Gcd-32-VLB" secondAttribute="top" id="z4D-FY-vgZ"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="descriptionLabel" destination="NKz-7Q-2fm" id="ows-hJ-kH5"/>
-                <outlet property="iconImageView" destination="oe4-MB-UUe" id="tHo-Ev-cwt"/>
-                <outlet property="userListNameLabel" destination="GsG-13-GgA" id="vc6-MO-8Hg"/>
-                <outlet property="userNameLabel" destination="zOT-22-GGk" id="ioe-1u-M9l"/>
+                <outlet property="descriptionLabel" destination="NKz-7Q-2fm" id="kes-g6-jzJ"/>
+                <outlet property="iconImageView" destination="oe4-MB-UUe" id="g4e-Si-emC"/>
+                <outlet property="listNameLabel" destination="GsG-13-GgA" id="xSE-V9-Fre"/>
+                <outlet property="memberCountLabel" destination="Cz2-ZY-wWs" id="6gs-eU-rQR"/>
+                <outlet property="textHeightConstraint" destination="c7Q-Pd-wZP" id="qyt-R4-Srv"/>
+                <outlet property="userNameLabel" destination="zOT-22-GGk" id="eeD-qO-0Ve"/>
             </connections>
-            <point key="canvasLocation" x="284" y="270"/>
+            <point key="canvasLocation" x="284" y="266.5"/>
         </tableViewCell>
     </objects>
 </document>
