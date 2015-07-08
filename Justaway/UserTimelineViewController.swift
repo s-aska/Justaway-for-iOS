@@ -17,8 +17,6 @@ class UserTimelineTableViewController: StatusTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         cacheLoaded = true // no cache
-        tableView.contentInset = UIEdgeInsetsMake(159, 0, 0, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(159, 0, 0, 0)
         scrollEnd() // contentInset call scrollViewDidScroll, but call scrollEnd
     }
     

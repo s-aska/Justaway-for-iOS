@@ -406,22 +406,14 @@
 			name = Twitter;
 			sourceTree = "<group>";
 		};
-		3894C24A19E556070038AEF8 /* Timeline */ = {
+		3894C24A19E556070038AEF8 /* Table */ = {
 			isa = PBXGroup;
 			children = (
-				6A5357D61A741E5F00291E95 /* TimelineTableViewController.swift */,
-				38F7B8F219E5720F0081C735 /* StatusTableViewController.swift */,
-				6A5357D41A741C5900291E95 /* HomeTimelineViewController.swift */,
-				6A5357D81A7429A600291E95 /* NotificationsViewController.swift */,
-				6A0449491B241FEF00758061 /* UserTimelineViewController.swift */,
-				6A04494B1B247E0000758061 /* UserTableViewController.swift */,
-				6A0449511B2489B400758061 /* FollowingUserViewController.swift */,
-				6A0449531B24952000758061 /* FollowerUserViewController.swift */,
-				38F9B5791B46CCB500F429E7 /* ListTableViewController.swift */,
-				38F9B5731B46C30600F429E7 /* ListMemberOfViewController.swift */,
-				6A5176991B487085003D0A86 /* FavoritesViewController.swift */,
+				6A51769B1B4D8F5B003D0A86 /* Status */,
+				6A51769C1B4D8F63003D0A86 /* User */,
+				6A51769D1B4D8F6A003D0A86 /* List */,
 			);
-			name = Timeline;
+			name = Table;
 			sourceTree = "<group>";
 		};
 		38AB8BC219F1678B0065D869 /* ImageLoader */ = {
@@ -561,6 +553,38 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		6A51769B1B4D8F5B003D0A86 /* Status */ = {
+			isa = PBXGroup;
+			children = (
+				6A5357D61A741E5F00291E95 /* TimelineTableViewController.swift */,
+				38F7B8F219E5720F0081C735 /* StatusTableViewController.swift */,
+				6A5357D41A741C5900291E95 /* HomeTimelineViewController.swift */,
+				6A0449491B241FEF00758061 /* UserTimelineViewController.swift */,
+				6A5357D81A7429A600291E95 /* NotificationsViewController.swift */,
+				6A5176991B487085003D0A86 /* FavoritesViewController.swift */,
+			);
+			name = Status;
+			sourceTree = "<group>";
+		};
+		6A51769C1B4D8F63003D0A86 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				6A04494B1B247E0000758061 /* UserTableViewController.swift */,
+				6A0449511B2489B400758061 /* FollowingUserViewController.swift */,
+				6A0449531B24952000758061 /* FollowerUserViewController.swift */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
+		6A51769D1B4D8F6A003D0A86 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				38F9B5791B46CCB500F429E7 /* ListTableViewController.swift */,
+				38F9B5731B46C30600F429E7 /* ListMemberOfViewController.swift */,
+			);
+			name = List;
+			sourceTree = "<group>";
+		};
 		6AB55B3C19C5629C00DC6442 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -573,7 +597,7 @@
 				3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */,
 				6A0449431B1F4F0400758061 /* ProfileViewController.swift */,
 				6A0449451B1F4F2400758061 /* ProfileViewController.xib */,
-				3894C24A19E556070038AEF8 /* Timeline */,
+				3894C24A19E556070038AEF8 /* Table */,
 				6AB55B4219C5843000DC6442 /* SettingsViewController.swift */,
 				6AB55B4419C584B300DC6442 /* SettingsViewController.xib */,
 				6AB55B4B19C8AC2A00DC6442 /* Settings */,

@@ -45,7 +45,7 @@ class UserTableViewController: UITableViewController {
     // MARK: UITableViewDelegate
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return TIMELINE_FOOTER_HEIGHT + 50
+        return TIMELINE_FOOTER_HEIGHT
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

@@ -1,5 +1,5 @@
 //
-//  UserListTableViewController.swift
+//  ListTableViewController.swift
 //  Justaway
 //
 //  Created by Shinichiro Aska on 7/3/15.
@@ -45,7 +45,7 @@ class ListTableViewController: UITableViewController {
     // MARK: UITableViewDelegate
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return TIMELINE_FOOTER_HEIGHT + 50
+        return TIMELINE_FOOTER_HEIGHT
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

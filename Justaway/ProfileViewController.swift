@@ -35,10 +35,12 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: Properties
     
+    @IBOutlet weak var scrollWapperView: UIView!
     @IBOutlet weak var scrollView: BackgroundScrollView!
     
     @IBOutlet weak var headerViewLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var headerViewTopContraint: NSLayoutConstraint!
+    @IBOutlet weak var headerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var coverImageView: UIImageView!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var displayNameLabel: UILabel!
@@ -152,26 +154,29 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         siteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "openURL:"))
         
         // setup tabview
-        if let size = UIApplication.sharedApplication().keyWindow?.rootViewController?.view.frame.size {
-            let contentView = UIView(frame: CGRectMake(0, 0, size.width * 5, size.height))
-            var i = 0
-            for vc in tabViews {
-                let marginTop: CGFloat = 20
-                vc.view.frame = CGRectMake(0, marginTop, size.width, size.height - marginTop)
-                let view = UIView(frame: CGRectMake(size.width * CGFloat(i), 0, size.width, size.height))
-                view.addSubview(vc.view)
-                contentView.addSubview(view)
-                i++
-            }
-            
-            scrollView.addSubview(contentView)
-            scrollView.contentSize = contentView.frame.size
-            scrollView.pagingEnabled = true
+        if let windowSize = UIApplication.sharedApplication().keyWindow?.rootViewController?.view.frame.size {
+            view.frame = CGRectMake(0, 0, windowSize.width, windowSize.height)
+            view.layoutIfNeeded()
+            headerViewWidthConstraint.constant = windowSize.width
+        }
+        let size = scrollWapperView.frame.size
+        let contentView = UIView(frame: CGRectMake(0, 0, size.width * CGFloat(tabViews.count), size.height))
+        var i = 0
+        for vc in tabViews {
+            vc.view.frame = CGRectMake(0, 0, size.width, size.height)
+            let view = UIView(frame: CGRectMake(size.width * CGFloat(i), 0, size.width, size.height))
+            view.addSubview(vc.view)
+            contentView.addSubview(view)
+            i++
         }
         
+        scrollView.addSubview(contentView)
+        scrollView.contentSize = contentView.frame.size
+        scrollView.pagingEnabled = true
+        
         userTimelineTableViewController.scrollCallback = { (scrollView: UIScrollView) -> Void in
-            let offset = scrollView.contentOffset.y - 20
-            let margin = 179 + offset
+            let offset = scrollView.contentOffset.y
+            let margin = 159 + offset
             if margin <= 0 {
                 self.headerViewTopContraint.constant = 0
             } else {
@@ -186,6 +191,9 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
                 self.bottomContainerTopConstraint.constant = 100
             }
         }
+        
+        userTimelineTableViewController.tableView.contentInset = UIEdgeInsetsMake(159, 0, 0, 0)
+        userTimelineTableViewController.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(159, 0, 0, 0)
     }
     
     func configureEvent() {
