@@ -2,6 +2,11 @@ import Foundation
 import SwifteriOS
 
 class TwitterStatus {
+    
+    enum TwitterStatusType {
+        case Normal, Event, Message
+    }
+    
     let user: TwitterUser
     let statusID: String
     let text: String
@@ -15,8 +20,10 @@ class TwitterStatus {
     let media: [TwitterMedia]
     let actionedBy: TwitterUser?
     let referenceStatusID: String?
+    let type: TwitterStatusType
     
     init(_ json: JSONValue) {
+        self.type = .Normal
         let statusJson = json["retweeted_status"].object != nil ? json["retweeted_status"] : json
         self.user = TwitterUser(statusJson["user"])
         self.statusID = statusJson["id_str"].string ?? ""
@@ -26,9 +33,9 @@ class TwitterStatus {
         
         self.text = {
             var text = statusJson["text"].string ?? ""
-            text = text.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: nil, range: nil)
-            text = text.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
-            text = text.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
+            text = text.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: [], range: nil)
+            text = text.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: [], range: nil)
+            text = text.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: [], range: nil)
             return text
         }()
         
@@ -70,6 +77,7 @@ class TwitterStatus {
     }
     
     init(_ dictionary: [String: AnyObject]) {
+        self.type = .Normal
         self.user = TwitterUser(dictionary["user"] as? [String: AnyObject] ?? [:])
         self.statusID = dictionary["statusID"] as? String ?? ""
         self.text = dictionary["text"] as? String ?? ""

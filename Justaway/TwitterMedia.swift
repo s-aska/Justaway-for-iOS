@@ -11,13 +11,13 @@ struct TwitterMedia {
     init(_ json: JSONValue) {
         self.displayURL = json["display_url"].string ?? ""
         self.expandedURL = json["expanded_url"].string ?? ""
-        self.mediaURL = NSURL(string: json["media_url"].string ?? "")!
+        self.mediaURL = NSURL(string: json["media_url_https"].string ?? "")!
         self.height = json["sizes"]["large"]["h"].integer ?? 0
         self.width = json["sizes"]["large"]["w"].integer ?? 0
     }
     
     var mediaThumbURL: NSURL {
-        return NSURL(string: self.mediaURL.absoluteString! + ":thumb")!
+        return NSURL(string: self.mediaURL.absoluteString + ":thumb")!
     }
     
     init(_ dictionary: [String: AnyObject]) {

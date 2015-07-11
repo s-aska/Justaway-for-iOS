@@ -29,7 +29,7 @@ class NotificationsViewController: StatusTableViewController {
     
     override func accept(status: TwitterStatus) -> Bool {
         if let accountSettings = AccountSettingsStore.get() {
-            let account = accountSettings.account()
+            // let account = accountSettings.account()
             
             for mention in status.mentions {
                 if accountSettings.isMe(mention.userID) {

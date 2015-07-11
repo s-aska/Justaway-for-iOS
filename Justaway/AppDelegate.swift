@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Pinwheel.Configuration.Builder()
                 .maxConcurrent(5)
                 .defaultTimeoutIntervalForRequest(5)
+                .debug()
                 .build())
         
         Twitter.setup()
@@ -78,19 +79,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSLog("applicationWillTerminate")
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        if url.absoluteString?.hasPrefix("justaway://success") ?? false {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        if url.absoluteString.hasPrefix("justaway://success") ?? false {
             Swifter.handleOpenURL(url)
         }
         
         return true
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesBegan(touches, withEvent: event)
         
         // observe statusBar touch
-        if let touch = touches.first as? UITouch {
+        if let touch = touches.first {
             let location = touch.locationInView(self.window)
             if CGRectContainsPoint(UIApplication.sharedApplication().statusBarFrame, location) {
                 EventBox.post(EventStatusBarTouched)

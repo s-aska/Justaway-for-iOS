@@ -77,6 +77,7 @@
 		6A0449561B249CE100758061 /* UserAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0449551B249CE100758061 /* UserAlert.swift */; };
 		6A0A1D321A40B7D30035A03C /* Pinwheel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */; };
 		6A0A1D331A40B7D30035A03C /* Pinwheel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6A0AE9E51B5177FD00FBF937 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A0AE9E41B5177FD00FBF937 /* Default-568h@2x.png */; };
 		6A3469BB1A699D21004AD091 /* RetweetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3469BA1A699D21004AD091 /* RetweetAlert.swift */; };
 		6A35A1C51A6C193400A8E46D /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A35A1C41A6C193400A8E46D /* ImageViewController.swift */; };
 		6A35A1CD1A6C196700A8E46D /* ImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */; };
@@ -253,6 +254,7 @@
 		6A0449531B24952000758061 /* FollowerUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowerUserViewController.swift; sourceTree = "<group>"; };
 		6A0449551B249CE100758061 /* UserAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAlert.swift; sourceTree = "<group>"; };
 		6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pinwheel.xcodeproj; path = Pinwheel/Pinwheel.xcodeproj; sourceTree = "<group>"; };
+		6A0AE9E41B5177FD00FBF937 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		6A3469BA1A699D21004AD091 /* RetweetAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetweetAlert.swift; sourceTree = "<group>"; };
 		6A35A1C41A6C193400A8E46D /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageViewController.xib; sourceTree = "<group>"; };
@@ -530,6 +532,7 @@
 			children = (
 				38B4475C19C062460055F074 /* fontello.ttf */,
 				6A4B9D2D19BB514900D50D78 /* Info.plist */,
+				6A0AE9E41B5177FD00FBF937 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -696,7 +699,9 @@
 		6A4B9D2119BB514900D50D78 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Shinichiro Aska";
 				TargetAttributes = {
 					6A4B9D2819BB514900D50D78 = {
@@ -801,6 +806,7 @@
 				3894C24E19E557BF0038AEF8 /* TimelineViewController.xib in Resources */,
 				6AB55B4519C584B300DC6442 /* SettingsViewController.xib in Resources */,
 				38F9B5781B46C6E800F429E7 /* TwitterListCell.xib in Resources */,
+				6A0AE9E51B5177FD00FBF937 /* Default-568h@2x.png in Resources */,
 				6A35A1CD1A6C196700A8E46D /* ImageViewController.xib in Resources */,
 				381E6E8319E2A56A00139654 /* TwitterStatusCell.xib in Resources */,
 			);
@@ -979,6 +985,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -993,7 +1000,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1030,7 +1037,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1042,20 +1049,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Shinichiro Aska (4626Q25X45)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Justaway/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS/QBImagePicker.framework",
 				);
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1066,7 +1073,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shinichiro Aska (ERYSSE5R77)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1074,12 +1080,13 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Justaway/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS/QBImagePicker.framework",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -1101,6 +1108,7 @@
 				);
 				INFOPLIST_FILE = JustawayTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "info.justaway.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Justaway.app/Justaway";
 			};
@@ -1117,6 +1125,7 @@
 				);
 				INFOPLIST_FILE = JustawayTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "info.justaway.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Justaway.app/Justaway";
 			};

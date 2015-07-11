@@ -43,17 +43,17 @@ class Account {
     }
     
     var profileImageBiggerURL: NSURL {
-        return NSURL(string: profileImageURL.absoluteString!.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: nil, range: nil))!
+        return NSURL(string: profileImageURL.absoluteString.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: [], range: nil))!
     }
     
     var dictionaryValue: [String: String] {
         if let account = credential.account {
             return [
-                Constants.identifier      : account.identifier,
+                Constants.identifier      : account.identifier!,
                 Constants.userID          : self.userID,
                 Constants.screenName      : self.screenName,
                 Constants.name            : self.name,
-                Constants.profileImageURL : self.profileImageURL.absoluteString!
+                Constants.profileImageURL : self.profileImageURL.absoluteString
             ]
         } else if let accessToken = credential.accessToken {
             return [
@@ -62,7 +62,7 @@ class Account {
                 Constants.userID          : self.userID,
                 Constants.screenName      : self.screenName,
                 Constants.name            : self.name,
-                Constants.profileImageURL : self.profileImageURL.absoluteString!
+                Constants.profileImageURL : self.profileImageURL.absoluteString
             ]
         } else {
             fatalError("Invalid credential.")

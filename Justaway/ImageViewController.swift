@@ -62,9 +62,9 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        var pageWidth = self.scrollView.frame.size.width
-        var fractionalPage = Double(self.scrollView.contentOffset.x / pageWidth)
-        var page = Int(lround(fractionalPage))
+        let pageWidth = self.scrollView.frame.size.width
+        let fractionalPage = Double(self.scrollView.contentOffset.x / pageWidth)
+        let page = Int(lround(fractionalPage))
         if page != currentPage {
             currentPage = page
         }
@@ -77,7 +77,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Configuration
     
     func showImage() {
-        var size = view.frame.size
+        let size = view.frame.size
         let contentView = UIView(frame: CGRectMake(0, 0, size.width * CGFloat(imageURLs.count), size.height))
         contentView.backgroundColor = UIColor.clearColor()
         var i = 0
@@ -119,7 +119,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     
     func hide(sender: AnyObject) {
         imageViews.removeAll(keepCapacity: true)
-        for view in scrollView.subviews as! [UIView] {
+        for view in scrollView.subviews as [UIView] {
             view.removeFromSuperview()
         }
         self.view.removeFromSuperview()

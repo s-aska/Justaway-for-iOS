@@ -47,20 +47,21 @@ class Twitter {
     // MARK: - Class Methods
     
     class func setup() {
-        let reachability = Reachability.reachabilityForInternetConnection()
-        reachability.whenReachable = { reachability in
-            NSLog("whenReachable")
-            Async.main(after: 2) {
-                Twitter.startStreamingIfEnable()
+        if let reachability = Reachability.reachabilityForInternetConnection() {
+            reachability.whenReachable = { reachability in
+                NSLog("whenReachable")
+                Async.main(after: 2) {
+                    Twitter.startStreamingIfEnable()
+                }
+                return
             }
-            return
+            
+            reachability.whenUnreachable = { reachability in
+                NSLog("whenUnreachable")
+            }
+            
+            reachability.startNotifier()
         }
-        
-        reachability.whenUnreachable = { reachability in
-            NSLog("whenUnreachable")
-        }
-        
-        reachability.startNotifier()
         
         let enableStreaming: String = KeyClip.load("settings.enableStreaming") ?? "0"
         if enableStreaming == "1" {
@@ -331,7 +332,7 @@ class Twitter {
             failure(error)
         }
         
-        getCurrentClient()?.getStatusesMentionTimelineWithCount(count: 200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
+        getCurrentClient()?.getStatusesMentionTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
     }
     
     class func getFavorites(userID: String, maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
@@ -369,7 +370,7 @@ class Twitter {
         }
         
         if let account = AccountSettingsStore.get() {
-            getClient(account.account()).getFriendshipsShowWithSourceID(sourceID: account.account().userID, targetID: targetID, success: s, failure: f)
+            getClient(account.account()).getFriendshipsShowWithSourceID(account.account().userID, targetID: targetID, success: s, failure: f)
         }
     }
     
@@ -470,13 +471,13 @@ extension Twitter {
     
     class func reply(status: TwitterStatus) {
         let prefix = "@\(status.user.screenName) "
-        let mentions = join(" ", status.mentions.map({ "@\($0.screenName)" }))
-        let range = NSMakeRange(count(prefix), count(mentions))
-        EditorViewController.show(text: prefix + mentions, range: range, inReplyToStatusId: status.statusID)
+        let mentions = " ".join(status.mentions.map({ "@\($0.screenName)" }))
+        let range = NSMakeRange(prefix.characters.count, mentions.characters.count)
+        EditorViewController.show(prefix + mentions, range: range, inReplyToStatusId: status.statusID)
     }
     
     class func quoteURL(status: TwitterStatus) {
-        EditorViewController.show(text: " \(status.statusURL)", range: NSMakeRange(0, 0), inReplyToStatusId: status.statusID)
+        EditorViewController.show(" \(status.statusURL)", range: NSMakeRange(0, 0), inReplyToStatusId: status.statusID)
     }
     
 }
@@ -708,10 +709,8 @@ extension Twitter {
     }
     
     class func getErrorCode(error: NSError) -> Int {
-        if let userInfo = error.userInfo {
-            if let errorCode = userInfo["Response-ErrorCode"] as? Int {
-                return errorCode
-            }
+        if let errorCode = error.userInfo["Response-ErrorCode"] as? Int {
+            return errorCode
         }
         return 0
     }
@@ -773,7 +772,7 @@ extension Twitter {
         let stallWarningHandler = {
             (code: String?, message: String?, percentFull: Int?) -> Void in
             
-            println("code:\(code) message:\(message) percentFull:\(percentFull)")
+            print("code:\(code) message:\(message) percentFull:\(percentFull)")
         }
         let failure = {
             (error: NSError) -> Void in
@@ -782,7 +781,7 @@ extension Twitter {
             EventBox.post(Event.StreamingStatusChanged.rawValue)
             NSLog("connectionStatus: DISCONNECTED")
             
-            println(error)
+            print(error)
         }
         
         if Static.backgroundTaskIdentifier == UIBackgroundTaskInvalid {
@@ -798,7 +797,7 @@ extension Twitter {
             }
         }
         
-        Static.streamingRequest = getCurrentClient()?.getUserStreamDelimited(delimited: nil,
+        Static.streamingRequest = getCurrentClient()?.getUserStreamDelimited(nil,
             stallWarnings: true,
             includeMessagesFromFollowedAccounts: nil,
             includeReplies: nil,

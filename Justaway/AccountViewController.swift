@@ -125,7 +125,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         if editingStyle == .Delete {
             if let settings = self.settings {
                 var accounts = settings.accounts
-                var current =
+                let current =
                     indexPath.row == settings.current ? 0 :
                     indexPath.row < settings.current ? settings.current - 1 :
                     settings.current

@@ -70,7 +70,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             ImageLoaderClient.displayTitleIcon(account.account().profileImageURL, imageView: iconImageView)
         }
         
-        var size = scrollWrapperView.frame.size
+        let size = scrollWrapperView.frame.size
         let contentView = UIView(frame: CGRectMake(0, 0, size.width * 3, size.height))
         
         for i in 0 ... 1 {
@@ -81,23 +81,22 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             contentView.addSubview(view)
             tableViewControllers.append(vc)
             
-            if let button = MenuButton.buttonWithType(UIButtonType.System) as? MenuButton {
-                button.tag = i
-                button.tintColor = UIColor.clearColor()
-                button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
-                button.frame = CGRectMake(58 * CGFloat(i), 0, 58, 58)
-                button.contentEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
-                button.setTitle(i == 0 ? "家" : "@", forState: UIControlState.Normal)
-                button.sizeToFit()
-                button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tabButton:"))
-                
-                var longPress = UILongPressGestureRecognizer(target: self, action: "refresh:")
-                longPress.minimumPressDuration = 2.0;
-                button.addGestureRecognizer(longPress)
-                
-                tabWraperView.addSubview(button)
-                tabButtons.append(button)
-            }
+            let button = MenuButton(type: UIButtonType.System)
+            button.tag = i
+            button.tintColor = UIColor.clearColor()
+            button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
+            button.frame = CGRectMake(58 * CGFloat(i), 0, 58, 58)
+            button.contentEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
+            button.setTitle(i == 0 ? "家" : "@", forState: UIControlState.Normal)
+            button.sizeToFit()
+            button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tabButton:"))
+            
+            let longPress = UILongPressGestureRecognizer(target: self, action: "refresh:")
+            longPress.minimumPressDuration = 2.0;
+            button.addGestureRecognizer(longPress)
+            
+            tabWraperView.addSubview(button)
+            tabButtons.append(button)
         }
         
         scrollView.addSubview(contentView)
@@ -106,7 +105,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         scrollView.delegate = self
         
         streamingView.userInteractionEnabled = true
-        var gesture = UITapGestureRecognizer(target: self, action: "streamingSwitch:")
+        let gesture = UITapGestureRecognizer(target: self, action: "streamingSwitch:")
         gesture.numberOfTapsRequired = 1
         streamingView.addGestureRecognizer(gesture)
     }

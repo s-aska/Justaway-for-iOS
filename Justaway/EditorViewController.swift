@@ -143,8 +143,8 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
             for asset in assets {
                 if let phasset = asset as? PHAsset {
                     PHImageManager.defaultManager().requestImageDataForAsset(phasset, options: nil, resultHandler: {
-                        (imageData: NSData!, dataUTI: String!, orientation: UIImageOrientation, info: [NSObject : AnyObject]!) -> Void in
-                        if let fileUrl = info["PHImageFileURLKey"] as? NSURL {
+                        (imageData: NSData?, dataUTI: String?, orientation: UIImageOrientation, info: [NSObject : AnyObject]?) -> Void in
+                        if let imageData = imageData {
                             self.images.append(imageData)
                             self.imageViews[i].image = UIImage(data: imageData)
                             self.imageButtons[i].hidden = false
@@ -217,7 +217,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
             return;
         }
         picking = true
-        var imagePickerController = QBImagePickerController.new()
+        let imagePickerController = QBImagePickerController.new()
         imagePickerController.delegate = self
         imagePickerController.allowsMultipleSelection = true
         imagePickerController.minimumNumberOfSelection = 0

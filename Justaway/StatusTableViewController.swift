@@ -73,7 +73,7 @@ class StatusTableViewController: TimelineTableViewController {
             self.layoutHeightCell[layout] = self.tableView.dequeueReusableCellWithIdentifier(layout.rawValue) as? TwitterStatusCell
         }
         
-        var refreshControl = UIRefreshControl()
+        let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshControl
     }
@@ -90,25 +90,26 @@ class StatusTableViewController: TimelineTableViewController {
                 let newNows = self.rows.map({ self.createRow($0.status, fontSize: CGFloat(fontSize.floatValue)) })
                 
                 let op = AsyncBlockOperation { (op) -> Void in
-                    if var firstCell = self.tableView.visibleCells().first as? UITableViewCell {
+                    if var firstCell = self.tableView.visibleCells.first {
                         var offset = self.tableView.contentOffset.y - firstCell.frame.origin.y
                         var firstPath: NSIndexPath
                         
                         // セルが半分以上隠れているている場合、2番目の表示セルを基準にする
-                        let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows() as! [NSIndexPath]
-                        if indexPathsForVisibleRows.count > 1 && offset > (firstCell.frame.size.height / 2) {
-                            firstPath = indexPathsForVisibleRows[1]
-                            firstCell = self.tableView.cellForRowAtIndexPath(firstPath)!
-                            offset = self.tableView.contentOffset.y - firstCell.frame.origin.y
-                        } else {
-                            firstPath = indexPathsForVisibleRows.first!
+                        if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
+                            if indexPathsForVisibleRows.count > 1 && offset > (firstCell.frame.size.height / 2) {
+                                firstPath = indexPathsForVisibleRows[1]
+                                firstCell = self.tableView.cellForRowAtIndexPath(firstPath)!
+                                offset = self.tableView.contentOffset.y - firstCell.frame.origin.y
+                            } else {
+                                firstPath = indexPathsForVisibleRows.first!
+                            }
+                            
+                            self.rows = newNows
+                            
+                            self.tableView.reloadData()
+                            self.tableView.scrollToRowAtIndexPath(firstPath, atScrollPosition: .Top, animated: false)
+                            self.tableView.setContentOffset(CGPointMake(0, self.tableView.contentOffset.y + offset), animated: false)
                         }
-                        
-                        self.rows = newNows
-                        
-                        self.tableView.reloadData()
-                        self.tableView.scrollToRowAtIndexPath(firstPath, atScrollPosition: .Top, animated: false)
-                        self.tableView.setContentOffset(CGPointMake(0, self.tableView.contentOffset.y + offset), animated: false)
                     }
                     op.finish()
                 }
@@ -322,7 +323,7 @@ class StatusTableViewController: TimelineTableViewController {
             
             // println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count)")
             
-            if let lastCell = self.tableView.visibleCells().last as? UITableViewCell {
+            if let lastCell = self.tableView.visibleCells.last {
                 let isTop = self.isTop
                 let offset = lastCell.frame.origin.y - self.tableView.contentOffset.y
                 UIView.setAnimationsEnabled(false)
@@ -379,7 +380,7 @@ class StatusTableViewController: TimelineTableViewController {
     }
     
     override func renderImages() {
-        for cell in self.tableView.visibleCells() as! [TwitterStatusCell] {
+        for cell in self.tableView.visibleCells as! [TwitterStatusCell] {
             if let status = cell.status {
                 cell.setImage(status)
             }

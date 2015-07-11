@@ -141,9 +141,7 @@ class UserTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let row = rows[indexPath.row]
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-            ProfileViewController.show(TwitterUser(row.user))
-        }
+        ProfileViewController.show(TwitterUser(row.user))
     }
     
     func createRow(user: TwitterUserFull, fontSize: CGFloat) -> Row {

@@ -43,7 +43,7 @@ class ViewController: UIViewController {
     }
     
     func toggleView() {
-        if let accountSettings = AccountSettingsStore.get() {
+        if let _ = AccountSettingsStore.get() {
             timelineViewController.view.hidden = false
             signInButton.hidden = true
             signInButton.enabled = false

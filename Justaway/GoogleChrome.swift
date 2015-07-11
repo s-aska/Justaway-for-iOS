@@ -26,7 +26,7 @@ class GoogleChrome {
     
     class func openChromeURL(url: NSURL) {
         if url.scheme == "http" || url.scheme == "https" {
-            if let openURLString = url.absoluteString?.encodeURIComponent() {
+            if let openURLString = url.absoluteString.encodeURIComponent() {
                 let chromeURLString = String(format: Static.format, arguments: [Static.source, Static.callback, openURLString])
                 if let chromeURL = NSURL(string: chromeURLString) {
                     UIApplication.sharedApplication().openURL(chromeURL)

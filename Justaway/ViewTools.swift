@@ -5,7 +5,7 @@ class ViewTools {
     // 上下左右ピッタリにviewを追加する
     // 使用例: Storyboard で top/bottom layout guide に合わせた containerView に別のVCのviewを追加する
     class func addSubviewWithEqual(containerView: UIView, view: UIView) {
-        view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        view.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(view)
         var constraints = [NSLayoutConstraint]()
         constraints.append(NSLayoutConstraint(item: containerView, attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .Top, multiplier: 1.0, constant: 0.0))
@@ -16,7 +16,7 @@ class ViewTools {
     }
     
     class func addSubviewWithEqual(containerView: UIView, view: UIView, top: CGFloat?, right: CGFloat?, bottom: CGFloat?, left: CGFloat?) {
-        view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        view.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(view)
         var constraints = [NSLayoutConstraint]()
         if let t = top {
@@ -35,7 +35,7 @@ class ViewTools {
     }
     
     class func addSubviewWithCenter(containerView: UIView, view: UIView) {
-        view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        view.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(view)
         var constraints = [NSLayoutConstraint]()
         constraints.append(NSLayoutConstraint(item: containerView, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1.0, constant: 0.0))

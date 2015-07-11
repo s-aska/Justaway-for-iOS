@@ -15,7 +15,7 @@ class Scheduler {
         private static let serial = dispatch_queue_create("pw.aska.Debouncer", DISPATCH_QUEUE_SERIAL)
     }
     
-    class func regsiter(#min: NSTimeInterval, max: NSTimeInterval, target: AnyObject, selector: Selector) {
+    class func regsiter(min min: NSTimeInterval, max: NSTimeInterval, target: AnyObject, selector: Selector) {
         dispatch_sync(Static.serial) {
             let key = "\(ObjectIdentifier(target).uintValue):\(selector)"
             if let async = Static.asyncs.removeValueForKey(key) {

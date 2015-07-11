@@ -141,10 +141,10 @@ class ListTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let row = rows[indexPath.row]
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-            // ProfileViewController.show(TwitterUser(row.user))
-        }
+//        let row = rows[indexPath.row]
+//        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+//            ProfileViewController.show(TwitterUser(row.user))
+//        }
     }
     
     func createRow(list: TwitterList, fontSize: CGFloat) -> Row {
