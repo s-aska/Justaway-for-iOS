@@ -11,7 +11,7 @@ class Account {
         static let userID = "user_id"
         static let screenName = "screen_name"
         static let name = "name"
-        static let profileImageURL = "profile_image_url"
+        static let profileImageURL = "profile_image_url_https"
     }
     
     let credential: SwifterCredential
@@ -29,10 +29,14 @@ class Account {
     }
     
     init(_ dictionary: [String: String]) {
-        self.userID = dictionary[Constants.userID]!
-        self.screenName = dictionary[Constants.screenName]!
-        self.name = dictionary[Constants.name]!
-        self.profileImageURL = NSURL(string: dictionary[Constants.profileImageURL]!)!
+        self.userID = dictionary[Constants.userID] ?? "-"
+        self.screenName = dictionary[Constants.screenName] ?? "-"
+        self.name = dictionary[Constants.name] ?? "-"
+        if let profileImageURL = dictionary[Constants.profileImageURL] {
+            self.profileImageURL = NSURL(string: profileImageURL) ?? NSURL()
+        } else {
+            self.profileImageURL = NSURL()
+        }
         if dictionary[Constants.identifier] != nil {
             let account = ACAccountStore().accountWithIdentifier(dictionary[Constants.identifier])
             self.credential = SwifterCredential(account: account)
