@@ -31,7 +31,7 @@ class ThemeMonokai: Theme {
     func menuBackgroundColor() -> UIColor { return ThemeColor.Monokai.gray }
     func menuTextColor() -> UIColor { return UIColor.whiteColor() }
     func menuHighlightedTextColor() -> UIColor { return UIColor(red: 1, green: 1, blue: 1, alpha: 0.5) }
-    func menuSelectedTextColor() -> UIColor { return ThemeColor.Holo.blueLight }
+    func menuSelectedTextColor() -> UIColor { return ThemeColor.Monokai.blue }
     func menuDisabledTextColor() -> UIColor { return UIColor.grayColor() }
     
     func buttonNormal() -> UIColor { return UIColor.lightGrayColor() }
