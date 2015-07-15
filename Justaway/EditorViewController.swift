@@ -117,6 +117,12 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
                 containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
             }
         } else {
+            
+            // en: UIKeyboardWillHideNotification occurs when you scroll through the conversion candidates in iOS9
+            // ja: iOS9 では変換候補をスクロールする際 UIKeyboardWillHideNotification が発生する
+            if !textView.text.isEmpty {
+                return
+            }
             containerViewButtomConstraint.constant = 0
         }
         
