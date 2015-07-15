@@ -4,7 +4,7 @@ import SwifteriOS
 class TwitterStatus {
     
     enum TwitterStatusType {
-        case Normal, Event, Message
+        case Normal, Favorite
     }
     
     let user: TwitterUser
@@ -23,8 +23,7 @@ class TwitterStatus {
     let type: TwitterStatusType
     
     init(_ json: JSONValue) {
-        self.type = .Normal
-        let statusJson = json["retweeted_status"].object != nil ? json["retweeted_status"] : json
+        let statusJson = json["retweeted_status"].object != nil ? json["retweeted_status"] : json["target_object"].object != nil ? json["target_object"] : json
         self.user = TwitterUser(statusJson["user"])
         self.statusID = statusJson["id_str"].string ?? ""
         self.createdAt = TwitterDate(statusJson["created_at"].string!)
@@ -68,9 +67,15 @@ class TwitterStatus {
         self.via = TwitterVia(statusJson["source"].string ?? "unknown")
         
         if json["retweeted_status"].object != nil {
+            self.type = .Normal
             self.actionedBy = TwitterUser(json["user"])
             self.referenceStatusID = json["id_str"].string
+        } else if json["source"].object != nil {
+            self.type = .Favorite
+            self.actionedBy = TwitterUser(json["source"])
+            self.referenceStatusID = nil
         } else {
+            self.type = .Normal
             self.actionedBy = nil
             self.referenceStatusID = nil
         }

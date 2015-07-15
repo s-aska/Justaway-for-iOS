@@ -23,6 +23,7 @@ class Twitter {
         case DestroyFavorites = "DestroyFavorites"
         case CreateRetweet = "CreateRetweet"
         case DestroyRetweet = "DestroyRetweet"
+        case DestroyStatus = "DestroyStatus"
         case StreamingStatusChanged = "StreamingStatusChanged"
     }
     
@@ -759,13 +760,24 @@ extension Twitter {
             
             let responce = JSON.JSONObject(data!)
             
-            if let event = responce["event"].object {
-                
-            } else if let delete = responce["delete"].object {
-            } else if let status = responce["delete"]["status"].object {
-            } else if let direct_message = responce["delete"]["direct_message"].object {
-            } else if let direct_message = responce["direct_message"].object {
-            } else if let text = responce["text"].string {
+            if responce["event"].string != nil {
+                NSLog("event")
+                let status = TwitterStatus(responce)
+                if let source = status.actionedBy {
+                    if AccountSettingsStore.get()?.find(source.userID) != nil {
+                        NSLog("by me")
+                    } else {
+                        NSLog("by other")
+                        EventBox.post(Event.CreateStatus.rawValue, sender: status)
+                    }
+                } else {
+                    NSLog("??")
+                }
+            } else if let statusID = responce["delete"]["status"]["id_str"].string {
+                EventBox.post(Event.DestroyStatus.rawValue, sender: statusID)
+            } else if responce["delete"]["direct_message"].object != nil {
+            } else if responce["direct_message"].object != nil {
+            } else if responce["text"].string != nil {
                 EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
             }
         }

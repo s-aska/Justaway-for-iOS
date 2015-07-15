@@ -379,6 +379,36 @@ class StatusTableViewController: TimelineTableViewController {
         mainQueue.addOperation(op)
     }
     
+    func eraseData(statusID: String, handler: (() -> Void)?) {
+        let op = AsyncBlockOperation { (op) -> Void in
+            
+            var deleteIndexPaths = [NSIndexPath]()
+            var i = 0
+            for row in self.rows {
+                if row.status.statusID == statusID {
+                    deleteIndexPaths.append(NSIndexPath(forRow: i, inSection: 0))
+                    continue
+                }
+                i++
+            }
+            
+            if deleteIndexPaths.count > 0 {
+                self.tableView.beginUpdates()
+                while let index = self.rows.map({ $0.status.statusID }).indexOf(statusID) {
+                    self.rows.removeAtIndex(index)
+                }
+                self.tableView.deleteRowsAtIndexPaths(deleteIndexPaths, withRowAnimation: .Fade)
+                self.tableView.endUpdates()
+            }
+            op.finish()
+            
+            if let h = handler {
+                h()
+            }
+        }
+        mainQueue.addOperation(op)
+    }
+    
     override func renderImages() {
         for cell in self.tableView.visibleCells as! [TwitterStatusCell] {
             if let status = cell.status {

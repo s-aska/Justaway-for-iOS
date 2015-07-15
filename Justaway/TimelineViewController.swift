@@ -138,6 +138,20 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             }
         }
         
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyStatus.rawValue, sender: nil) { n in
+            let statusID = n.object as! String
+            var page = 0
+            for tableViewController in self.tableViewControllers {
+                switch tableViewController {
+                case let vc as StatusTableViewController:
+                    vc.eraseData(statusID, handler: {})
+                default:
+                    break
+                }
+                page++
+            }
+        }
+        
         EventBox.onMainThread(self, name: Twitter.Event.StreamingStatusChanged.rawValue) { _ in
             switch Twitter.connectionStatus {
             case .CONNECTED:
