@@ -203,6 +203,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         absoluteCreatedAtLabel.text = status.createdAt.absoluteString
         viaLabel.text = status.via.name
         if let actionedBy = status.actionedBy {
+            let type = status.type == .Favorite ? "Favorited by" : "Retweeted by"
             actionedTextLabel.text = "\(actionedBy.name) @\(actionedBy.screenName)"
             actionedIconImageView.image = nil
         }

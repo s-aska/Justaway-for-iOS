@@ -24,7 +24,7 @@ class AccountTests: XCTestCase {
         
         XCTAssertEqual(account.screenName, "su_aska")
         
-        XCTAssertEqual(account.profileImageBiggerURL.absoluteString!, biggerURL)
+        XCTAssertEqual(account.profileImageBiggerURL.absoluteString, biggerURL)
         
         XCTAssertTrue(AccountSettingsStore.save(AccountSettings(current: 0, accounts: [account])))
         
