@@ -30,6 +30,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
     var status: TwitterStatus?
     var layout: TwitterStatusCellLayout?
     
+    @IBOutlet weak var sourceView: UIView!
+    @IBOutlet weak var sourceViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var iconImageView: UIImageView!
     
     @IBOutlet weak var nameLabel: UILabel!
@@ -170,6 +172,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
             if layout == .Normal || layout == .Actioned {
                 imagesContainerView.removeFromSuperview()
             }
+            sourceView.hidden = true
+            sourceViewHeightConstraint.constant = 0
             setNeedsLayout()
             layoutIfNeeded()
         }
@@ -203,7 +207,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         absoluteCreatedAtLabel.text = status.createdAt.absoluteString
         viaLabel.text = status.via.name
         if let actionedBy = status.actionedBy {
-            let type = status.type == .Favorite ? "Favorited by" : "Retweeted by"
+            // let type = status.type == .Favorite ? "Favorited by" : "Retweeted by"
             actionedTextLabel.text = "\(actionedBy.name) @\(actionedBy.screenName)"
             actionedIconImageView.image = nil
         }

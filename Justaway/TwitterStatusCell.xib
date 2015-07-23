@@ -308,7 +308,7 @@
                     <constraint firstItem="umq-Pc-zJg" firstAttribute="leading" secondItem="y1M-cQ-9LC" secondAttribute="trailing" id="g7Y-BN-kKr"/>
                     <constraint firstItem="rcK-bH-pWp" firstAttribute="leading" secondItem="EVK-7k-lkK" secondAttribute="leading" constant="56" id="hfz-vj-46s"/>
                     <constraint firstItem="Hkc-nJ-RXe" firstAttribute="top" secondItem="bIb-jf-cxi" secondAttribute="bottom" priority="750" constant="3" id="icE-kb-pWg"/>
-                    <constraint firstItem="rcK-bH-pWp" firstAttribute="top" secondItem="Hkc-nJ-RXe" secondAttribute="bottom" priority="750" id="m8m-pv-Ru3"/>
+                    <constraint firstItem="rcK-bH-pWp" firstAttribute="top" secondItem="Hkc-nJ-RXe" secondAttribute="bottom" id="m8m-pv-Ru3"/>
                     <constraint firstItem="y1M-cQ-9LC" firstAttribute="top" secondItem="HoK-3O-aH8" secondAttribute="bottom" constant="7" id="mbX-l7-hUg"/>
                     <constraint firstItem="HoK-3O-aH8" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" id="qZ1-Nj-KQS"/>
                     <constraint firstAttribute="bottom" secondItem="Hkc-nJ-RXe" secondAttribute="bottom" priority="750" constant="5" id="u6d-Nv-jS3"/>
@@ -353,6 +353,8 @@
                 <outlet property="retweetButton" destination="gv3-p4-SV9" id="WNC-Mv-ZHM"/>
                 <outlet property="retweetCountLabel" destination="QaO-Qr-3Ua" id="ZoV-Cn-A9p"/>
                 <outlet property="screenNameLabel" destination="hbJ-3K-Eoq" id="LJT-d3-Q6s"/>
+                <outlet property="sourceView" destination="HoK-3O-aH8" id="27w-X7-ekK"/>
+                <outlet property="sourceViewHeightConstraint" destination="0pE-L9-kpJ" id="exT-xT-zKY"/>
                 <outlet property="statusLabel" destination="KVr-ac-HTT" id="2o5-q3-LGf"/>
                 <outlet property="textHeightConstraint" destination="ROJ-g6-GRa" id="asv-KJ-iJy"/>
                 <outlet property="viaLabel" destination="U1p-l9-QUq" id="M8z-bd-GKr"/>
