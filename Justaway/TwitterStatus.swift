@@ -4,7 +4,7 @@ import SwifteriOS
 class TwitterStatus {
     
     enum TwitterStatusType {
-        case Normal, Favorite
+        case Normal, Favorite, UnFavorite
     }
     
     let user: TwitterUser
@@ -70,8 +70,12 @@ class TwitterStatus {
             self.type = .Normal
             self.actionedBy = TwitterUser(json["user"])
             self.referenceStatusID = json["id_str"].string
-        } else if json["source"].object != nil {
+        } else if json["event"].string == "favorite" {
             self.type = .Favorite
+            self.actionedBy = TwitterUser(json["source"])
+            self.referenceStatusID = nil
+        } else if json["event"].string == "unfavorite" {
+            self.type = .UnFavorite
             self.actionedBy = TwitterUser(json["source"])
             self.referenceStatusID = nil
         } else {

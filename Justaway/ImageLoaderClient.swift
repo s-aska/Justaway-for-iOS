@@ -21,11 +21,11 @@ class ImageLoaderClient {
             .build()
         
         static let actionedUserIconOptions = Pinwheel.DisplayOptions.Builder()
-            .addFilter(RoundedFilter(2, w: 16, h: 16), hook: .BeforeMemory)
+            .addFilter(RoundedFilter(3, w: 20, h: 20), hook: .BeforeMemory)
             .displayer(Pinwheel.FadeInDisplayer())
             .build()
         
-        static let actionedTitleIconOptions = Pinwheel.DisplayOptions.Builder()
+        static let titleIconOptions = Pinwheel.DisplayOptions.Builder()
             .addFilter(RoundedFilter(3, w: 20, h: 20), hook: .BeforeMemory)
             .displayer(Pinwheel.FadeInDisplayer())
             .build()
@@ -44,7 +44,7 @@ class ImageLoaderClient {
     }
     
     class func displayTitleIcon(url: NSURL, imageView: UIImageView) {
-        Pinwheel.displayImage(url, imageView: imageView, options: Static.actionedTitleIconOptions)
+        Pinwheel.displayImage(url, imageView: imageView, options: Static.titleIconOptions)
     }
     
     class func displayActionedUserIcon(url: NSURL, imageView: UIImageView) {

@@ -760,18 +760,20 @@ extension Twitter {
             
             let responce = JSON.JSONObject(data!)
             
-            if responce["event"].string != nil {
-                NSLog("event")
-                let status = TwitterStatus(responce)
-                if let source = status.actionedBy {
-                    if AccountSettingsStore.get()?.find(source.userID) != nil {
-                        NSLog("by me")
-                    } else {
-                        NSLog("by other")
-                        EventBox.post(Event.CreateStatus.rawValue, sender: status)
+            if let event = responce["event"].string {
+                NSLog("event:\(event)")
+                if event == "favorite" {
+                    let status = TwitterStatus(responce)
+                    if let source = status.actionedBy {
+                        if AccountSettingsStore.get()?.find(source.userID) != nil {
+                            NSLog("by me")
+                        } else {
+                            NSLog("by other")
+                            EventBox.post(Event.CreateStatus.rawValue, sender: status)
+                        }
                     }
-                } else {
-                    NSLog("??")
+                } else if event == "unfavorite" {
+                    // TODO: unfavorite event
                 }
             } else if let statusID = responce["delete"]["status"]["id_str"].string {
                 EventBox.post(Event.DestroyStatus.rawValue, sender: statusID)

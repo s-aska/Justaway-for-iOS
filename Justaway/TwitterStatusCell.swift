@@ -32,6 +32,11 @@ class TwitterStatusCell: BackgroundTableViewCell {
     
     @IBOutlet weak var sourceView: UIView!
     @IBOutlet weak var sourceViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sourceFavoriteButton: FavoritesButton!
+    @IBOutlet weak var sourceRetweetButton: RetweetButton!
+    @IBOutlet weak var sourceTextLabel: TextLable!
+    @IBOutlet weak var sourceScreenNameLabel: TextLable!
+    
     @IBOutlet weak var iconImageView: UIImageView!
     
     @IBOutlet weak var nameLabel: UILabel!
@@ -65,9 +70,6 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var viaLabel: UILabel!
     @IBOutlet weak var absoluteCreatedAtLabel: UILabel!
     
-    @IBOutlet weak var actionedContainerView: UIView!
-    @IBOutlet weak var actionedIconImageView: UIImageView!
-    @IBOutlet weak var actionedTextLabel: UILabel!
     @IBOutlet weak var textHeightConstraint: NSLayoutConstraint!
     
     // MARK: - View Life Cycle
@@ -166,14 +168,13 @@ class TwitterStatusCell: BackgroundTableViewCell {
     func setLayout(layout: TwitterStatusCellLayout) {
         if self.layout == nil || self.layout != layout {
             self.layout = layout
-            if layout == .Normal || layout == .NormalWithImage {
-                actionedContainerView.removeFromSuperview()
+            if layout != .Actioned && layout != .ActionedWithImage {
+                sourceView.hidden = true
+                sourceViewHeightConstraint.constant = 0
             }
             if layout == .Normal || layout == .Actioned {
                 imagesContainerView.removeFromSuperview()
             }
-            sourceView.hidden = true
-            sourceViewHeightConstraint.constant = 0
             setNeedsLayout()
             layoutIfNeeded()
         }
@@ -207,9 +208,17 @@ class TwitterStatusCell: BackgroundTableViewCell {
         absoluteCreatedAtLabel.text = status.createdAt.absoluteString
         viaLabel.text = status.via.name
         if let actionedBy = status.actionedBy {
-            // let type = status.type == .Favorite ? "Favorited by" : "Retweeted by"
-            actionedTextLabel.text = "\(actionedBy.name) @\(actionedBy.screenName)"
-            actionedIconImageView.image = nil
+            sourceTextLabel.text = actionedBy.name
+            sourceScreenNameLabel.text = "@" + actionedBy.screenName
+            if status.type == .Favorite {
+                sourceRetweetButton.hidden = true
+                sourceFavoriteButton.hidden = false
+                sourceFavoriteButton.selected = AccountSettingsStore.get()?.isMe(status.user.userID) ?? false
+            } else {
+                sourceFavoriteButton.hidden = true
+                sourceRetweetButton.hidden = false
+                sourceRetweetButton.selected = AccountSettingsStore.get()?.isMe(status.user.userID) ?? false
+            }
         }
         if status.media.count > 0 {
             imagesContainerView.hidden = true
@@ -224,12 +233,6 @@ class TwitterStatusCell: BackgroundTableViewCell {
         
         if iconImageView.image == nil {
             ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: iconImageView)
-        }
-        
-        if let actionedBy = status.actionedBy {
-            if actionedIconImageView.image == nil {
-                ImageLoaderClient.displayActionedUserIcon(actionedBy.profileImageURL, imageView: actionedIconImageView)
-            }
         }
         
         if status.media.count == 0 || imagesContainerView.hidden == false {
