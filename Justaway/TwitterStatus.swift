@@ -9,6 +9,7 @@ class TwitterStatus {
     
     let user: TwitterUser
     let statusID: String
+    let inReplyToStatusID: String?
     let text: String
     let createdAt: TwitterDate
     let via: TwitterVia
@@ -26,6 +27,7 @@ class TwitterStatus {
         let statusJson = json["retweeted_status"].object != nil ? json["retweeted_status"] : json["target_object"].object != nil ? json["target_object"] : json
         self.user = TwitterUser(statusJson["user"])
         self.statusID = statusJson["id_str"].string ?? ""
+        self.inReplyToStatusID = statusJson["in_reply_to_status_id_str"].string
         self.createdAt = TwitterDate(statusJson["created_at"].string!)
         self.retweetCount = statusJson["retweet_count"].integer ?? 0
         self.favoriteCount = statusJson["favorite_count"].integer ?? 0
@@ -126,6 +128,12 @@ class TwitterStatus {
             self.actionedBy = nil
         }
         
+        if let inReplyToStatusID = dictionary["inReplyToStatusID"] as? String {
+            self.inReplyToStatusID = inReplyToStatusID
+        } else {
+            self.inReplyToStatusID = nil
+        }
+        
         if let referenceStatusID = dictionary["referenceStatusID"] as? String {
             self.referenceStatusID = referenceStatusID
         } else {
@@ -162,6 +170,10 @@ class TwitterStatus {
         
         if let actionedBy = self.actionedBy {
             dictionary["actionedBy"] = actionedBy.dictionaryValue
+        }
+        
+        if let inReplyToStatusID = self.inReplyToStatusID {
+            dictionary["inReplyToStatusID"] = inReplyToStatusID
         }
         
         if let referenceStatusID = self.referenceStatusID {

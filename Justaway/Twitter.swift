@@ -272,6 +272,29 @@ class Twitter {
         getCurrentClient()?.getStatusesHomeTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
     }
     
+    class func getStatuses(statusIDs: [String], success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        let s = { (array: [JSONValue]?) -> Void in
+            
+            if let statuses = array?.map({ TwitterStatus($0) }) {
+                
+                success(statuses)
+            }
+        }
+        
+        let f = { (error: NSError) -> Void in
+            if error.code == 401 {
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+            } else if error.code == 429 {
+                ErrorAlert.show("Tweet failure", message: "API Limit")
+            } else {
+                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+            }
+            failure(error)
+        }
+        
+        getCurrentClient()?.getStatusesLookupTweetIDs(statusIDs, includeEntities: nil, map: nil, success: s, failure: f)
+    }
+    
     class func getUserTimeline(userID: String, maxID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         let s = { (array: [JSONValue]?) -> Void in
             

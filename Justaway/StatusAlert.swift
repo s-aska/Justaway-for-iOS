@@ -32,6 +32,15 @@ class StatusAlert {
                         Twitter.reply(status)
                 }))
                 
+                if status.inReplyToStatusID != nil {
+                    actionSheet.addAction(UIAlertAction(
+                        title: "Show in Reply to...",
+                        style: .Default,
+                        handler: { action in
+                            TalkViewController.show(status)
+                    }))
+                }
+                
                 // Favorite and Retweet
                 
                 if !isFavorite && retweetedStatusID == nil {
