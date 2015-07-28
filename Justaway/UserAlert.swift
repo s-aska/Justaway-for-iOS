@@ -28,7 +28,7 @@ class UserAlert {
             handler: { action in
                 let prefix = "@\(user.screenName) "
                 let range = NSMakeRange(prefix.characters.count, 0)
-                EditorViewController.show(prefix, range: range, inReplyToStatusId: nil)
+                EditorViewController.show(prefix, range: range)
         }))
         
         if relationship.followedBy {
@@ -38,7 +38,7 @@ class UserAlert {
                 handler: { action in
                     let prefix = "D \(user.screenName) "
                     let range = NSMakeRange(prefix.characters.count, 0)
-                    EditorViewController.show(prefix, range: range, inReplyToStatusId: nil)
+                    EditorViewController.show(prefix, range: range)
             }))
         }
         

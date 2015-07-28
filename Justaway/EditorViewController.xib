@@ -13,6 +13,7 @@
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
+            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -31,6 +32,11 @@
                 <outlet property="imageView2" destination="dnk-wF-xpj" id="0jK-2g-ayy"/>
                 <outlet property="imageView3" destination="0ND-to-q7R" id="NXt-il-FqO"/>
                 <outlet property="imageView4" destination="K7T-qg-Jtu" id="tmz-wU-YaJ"/>
+                <outlet property="replyToContainerView" destination="eKe-LY-kay" id="VWE-Xy-uki"/>
+                <outlet property="replyToIconImageView" destination="lNk-An-B31" id="wWb-6X-t0B"/>
+                <outlet property="replyToNameLabel" destination="SIn-Bp-8NL" id="8E0-cY-XEF"/>
+                <outlet property="replyToScreenNameLabel" destination="Wd3-qa-Z4m" id="yRy-CR-ISR"/>
+                <outlet property="replyToStatusLabel" destination="YZx-Mt-RUx" id="FCq-2T-lnx"/>
                 <outlet property="textView" destination="pAS-wm-Zms" id="SmZ-cI-pnh"/>
                 <outlet property="textViewHeightConstraint" destination="36B-3S-QRz" id="04U-qg-a2q"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ljW-bN-VJk"/>
@@ -235,11 +241,84 @@
                         <constraint firstItem="XI3-zv-gQX" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="vYp-8Y-qAu"/>
                     </constraints>
                 </view>
+                <view alpha="0.94999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eKe-LY-kay" customClass="BackgroundView" customModule="Justaway" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="341" width="600" height="54.5"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lNk-An-B31">
+                            <rect key="frame" x="10" y="6" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="erP-o3-Mua"/>
+                                <constraint firstAttribute="height" constant="20" id="hOo-6w-cyE"/>
+                            </constraints>
+                        </imageView>
+                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ibm-Xa-avJ">
+                            <rect key="frame" x="40" y="10" width="519" height="17"/>
+                            <subviews>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aska" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIn-Bp-8NL" customClass="DisplayNameLable" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="29.5" height="14.5"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="screen_name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wd3-qa-Z4m" customClass="ScreenNameLable" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="34" y="2" width="63.5" height="12"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="Wd3-qa-Z4m" firstAttribute="leading" secondItem="SIn-Bp-8NL" secondAttribute="trailing" constant="5" id="DVO-4y-F57"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="17" id="Gic-wx-fo7"/>
+                                <constraint firstAttribute="height" constant="17" id="LWO-h4-PWd"/>
+                                <constraint firstItem="SIn-Bp-8NL" firstAttribute="top" secondItem="Ibm-Xa-avJ" secondAttribute="top" id="ZKw-Rp-9el"/>
+                                <constraint firstItem="SIn-Bp-8NL" firstAttribute="leading" secondItem="Ibm-Xa-avJ" secondAttribute="leading" id="j3W-4Y-u2E"/>
+                                <constraint firstItem="Wd3-qa-Z4m" firstAttribute="top" secondItem="Ibm-Xa-avJ" secondAttribute="top" constant="2" id="r8W-a8-ahA"/>
+                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="SIn-Bp-8NL" secondAttribute="trailing" id="zqF-zZ-6zN"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="257" translatesAutoresizingMaskIntoConstraints="NO" id="YZx-Mt-RUx" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="10" y="30" width="580" height="14.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5NA-kE-3L2" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="559" y="0.0" width="41" height="45"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                            <inset key="contentEdgeInsets" minX="15" minY="10" maxX="10" maxY="15"/>
+                            <state key="normal" title="✖">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="replyCancel:" destination="-1" eventType="touchUpInside" id="ECa-sd-Mz5"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Ibm-Xa-avJ" firstAttribute="leading" secondItem="lNk-An-B31" secondAttribute="trailing" constant="10" id="C7R-V0-7hK"/>
+                        <constraint firstItem="lNk-An-B31" firstAttribute="leading" secondItem="eKe-LY-kay" secondAttribute="leading" constant="10" id="Dou-y2-kWf"/>
+                        <constraint firstItem="YZx-Mt-RUx" firstAttribute="leading" secondItem="eKe-LY-kay" secondAttribute="leading" constant="10" id="GiH-NO-2vg"/>
+                        <constraint firstItem="Ibm-Xa-avJ" firstAttribute="top" secondItem="eKe-LY-kay" secondAttribute="top" constant="10" id="NNu-7Y-PqJ"/>
+                        <constraint firstItem="lNk-An-B31" firstAttribute="top" secondItem="eKe-LY-kay" secondAttribute="top" constant="6" id="THJ-GF-tQv"/>
+                        <constraint firstItem="YZx-Mt-RUx" firstAttribute="top" secondItem="Ibm-Xa-avJ" secondAttribute="bottom" constant="3" id="Ty6-3X-kMy"/>
+                        <constraint firstItem="5NA-kE-3L2" firstAttribute="leading" secondItem="Ibm-Xa-avJ" secondAttribute="trailing" id="YAE-NN-ALK"/>
+                        <constraint firstAttribute="trailing" secondItem="YZx-Mt-RUx" secondAttribute="trailing" constant="10" id="ZYN-gw-cfy"/>
+                        <constraint firstAttribute="bottom" secondItem="YZx-Mt-RUx" secondAttribute="bottom" priority="750" constant="10" id="ZYy-sz-KHe"/>
+                        <constraint firstAttribute="trailing" secondItem="5NA-kE-3L2" secondAttribute="trailing" id="ngy-BU-1JW"/>
+                        <constraint firstItem="5NA-kE-3L2" firstAttribute="top" secondItem="eKe-LY-kay" secondAttribute="top" id="pMu-Bt-AaJ"/>
+                    </constraints>
+                </view>
             </subviews>
             <constraints>
+                <constraint firstItem="eKe-LY-kay" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Zag-s2-U3I"/>
                 <constraint firstAttribute="trailing" secondItem="GiI-4f-pcf" secondAttribute="trailing" id="gvC-FL-Sob"/>
                 <constraint firstAttribute="bottom" secondItem="GiI-4f-pcf" secondAttribute="bottom" id="hpk-3M-F0T"/>
                 <constraint firstItem="GiI-4f-pcf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="iwb-Zy-IdV"/>
+                <constraint firstAttribute="trailing" secondItem="eKe-LY-kay" secondAttribute="trailing" id="qLn-vx-f0c"/>
+                <constraint firstItem="GiI-4f-pcf" firstAttribute="top" secondItem="eKe-LY-kay" secondAttribute="bottom" id="qXJ-do-BhF"/>
             </constraints>
         </view>
     </objects>

@@ -10,6 +10,13 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     
     // MARK: Properties
     
+    @IBOutlet weak var replyToContainerView: BackgroundView!
+    @IBOutlet weak var replyToIconImageView: UIImageView!
+    @IBOutlet weak var replyToNameLabel: DisplayNameLable!
+    @IBOutlet weak var replyToScreenNameLabel: ScreenNameLable!
+    @IBOutlet weak var replyToStatusLabel: StatusLable!
+    
+    
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerViewButtomConstraint: NSLayoutConstraint! // Used to adjust the height when the keyboard hides and shows.
     
@@ -216,6 +223,12 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
         }
     }
     
+    @IBAction func replyCancel(sender: UIButton) {
+        inReplyToStatusId = nil
+        replyToContainerView.hidden = true
+        textView.text = textView.text.stringByReplacingOccurrencesOfString("^.*@[0-9a-zA-Z_]+ *", withString: "", options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
+    }
+    
     func image() {
         let capacity = UInt(4 - images.count)
         if capacity < 1 {
@@ -239,6 +252,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     
     func hide() {
         inReplyToStatusId = nil
+        replyToContainerView.hidden = true
         textView.reset()
         resetPickerController()
         
@@ -249,12 +263,22 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
         }
     }
     
-    class func show(text: String? = nil, range: NSRange? = nil, inReplyToStatusId: String? = nil) {
+    class func show(text: String? = nil, range: NSRange? = nil, inReplyToStatus: TwitterStatus? = nil) {
         if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
             Static.instance.view.frame = CGRectMake(0, 0, vc.view.frame.width, vc.view.frame.height)
             Static.instance.resetPickerController()
             Static.instance.textView.text = text ?? ""
-            Static.instance.inReplyToStatusId = inReplyToStatusId
+            if let inReplyToStatus = inReplyToStatus {
+                Static.instance.inReplyToStatusId = inReplyToStatus.statusID
+                Static.instance.replyToNameLabel.text = inReplyToStatus.user.name
+                Static.instance.replyToScreenNameLabel.text = "@" + inReplyToStatus.user.screenName
+                Static.instance.replyToStatusLabel.text = inReplyToStatus.text
+                Static.instance.replyToContainerView.hidden = false
+                ImageLoaderClient.displayUserIcon(inReplyToStatus.user.profileImageURL, imageView: Static.instance.replyToIconImageView)
+            } else {
+                Static.instance.inReplyToStatusId = nil
+                Static.instance.replyToContainerView.hidden = true
+            }
             if let selectedRange = range {
                 Static.instance.textView.selectedRange = selectedRange
             }
