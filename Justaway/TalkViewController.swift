@@ -24,12 +24,14 @@ class TalkViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let fontSize: CGFloat
         let height: CGFloat
         let textHeight: CGFloat
+        let quotedTextHeight: CGFloat
         
-        init(status: TwitterStatus, fontSize: CGFloat, height: CGFloat, textHeight: CGFloat) {
+        init(status: TwitterStatus, fontSize: CGFloat, height: CGFloat, textHeight: CGFloat, quotedTextHeight: CGFloat) {
             self.status = status
             self.fontSize = fontSize
             self.height = height
             self.textHeight = textHeight
+            self.quotedTextHeight = quotedTextHeight
         }
     }
     
@@ -112,6 +114,7 @@ class TalkViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     // MARK: - 
+    
     func loadStatus(statusID: String) {
         var fontSize :CGFloat = 12.0
         if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
@@ -148,13 +151,20 @@ class TalkViewController: UIViewController, UITableViewDataSource, UITableViewDe
             cell.textHeightConstraint.constant = row.textHeight
         }
         
+        if cell.quotedStatusLabelHeightConstraint.constant != row.quotedTextHeight {
+            cell.quotedStatusLabelHeightConstraint.constant = row.quotedTextHeight
+        }
+        
         if row.fontSize != cell.statusLabel.font.pointSize {
             cell.statusLabel.font = UIFont.systemFontOfSize(row.fontSize)
         }
         
+        if row.fontSize != cell.quotedStatusLabel.font.pointSize {
+            cell.quotedStatusLabel.font = UIFont.systemFontOfSize(row.fontSize)
+        }
+        
         if let s = cell.status {
             if s.uniqueID == status.uniqueID {
-                cell.textHeightConstraint.constant = row.textHeight
                 return cell
             }
         }
@@ -190,17 +200,20 @@ class TalkViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let layout = TwitterStatusCellLayout.fromStatus(status)
         if let height = layoutHeight[layout] {
             let textHeight = measure(status.text, fontSize: fontSize)
-            let totalHeight = ceil(height + textHeight)
-            return Row(status: status, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
+            let quotedTextHeight = measureQuoted(status, fontSize: fontSize)
+            let totalHeight = ceil(height + textHeight + quotedTextHeight)
+            return Row(status: status, fontSize: fontSize, height: totalHeight, textHeight: textHeight, quotedTextHeight: quotedTextHeight)
         } else if let cell = self.layoutHeightCell[layout] {
             cell.frame = self.tableView.bounds
             cell.setLayout(layout)
             let textHeight = measure(status.text, fontSize: fontSize)
+            let quotedTextHeight = measureQuoted(status, fontSize: fontSize)
             cell.textHeightConstraint.constant = 0
+            cell.quotedStatusLabelHeightConstraint.constant = 0
             let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
             layoutHeight[layout] = height
-            let totalHeight = ceil(height + textHeight)
-            return Row(status: status, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
+            let totalHeight = ceil(height + textHeight + quotedTextHeight)
+            return Row(status: status, fontSize: fontSize, height: totalHeight, textHeight: textHeight, quotedTextHeight: quotedTextHeight)
         }
         fatalError("cellForHeight is missing.")
     }
@@ -211,6 +224,18 @@ class TalkViewController: UIViewController, UITableViewDataSource, UITableViewDe
             options: NSStringDrawingOptions.UsesLineFragmentOrigin,
             attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
             context: nil).size.height)
+    }
+    
+    func measureQuoted(status: TwitterStatus, fontSize: CGFloat) -> CGFloat {
+        if let quotedStatus = status.quotedStatus {
+            return ceil(quotedStatus.text.boundingRectWithSize(
+                CGSizeMake((self.layoutHeightCell[.Normal]?.quotedStatusLabel.frame.size.width)!, 0),
+                options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+                attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
+                context: nil).size.height)
+        } else {
+            return 0
+        }
     }
     
     // MARK: - Actions

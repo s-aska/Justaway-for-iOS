@@ -197,6 +197,8 @@ class ThemeController {
                 v.setTitleColor(theme.streamingError(), forState: .Disabled)
             case let v as CellSeparator:
                 v.borderLayer.backgroundColor = theme.cellSeparatorColor().CGColor
+            case let v as QuotedStatusContainerView:
+                v.layer.borderColor = theme.cellSeparatorColor().CGColor
             case let v as UIActivityIndicatorView:
                 v.activityIndicatorViewStyle = theme.activityIndicatorStyle()
             default:

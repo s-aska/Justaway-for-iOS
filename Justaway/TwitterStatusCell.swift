@@ -10,17 +10,70 @@ enum TwitterStatusCellLayout: String {
     case Actioned = "Actioned"
     case NormalWithImage = "NormalWithImage"
     case ActionedWithImage = "ActionedWithImage"
+    case NormalWithQuote = "NormalWithQuote"
+    case ActionedWithQuote = "ActionedWithQuote"
+    case NormalWithImageWithQuote = "NormalWithImageWithQuote"
+    case ActionedWithImageWithQuote = "ActionedWithImageWithQuote"
+    case NormalWithQuoteImage = "NormalWithQuoteImage"
+    case ActionedWithQuoteImage = "ActionedWithQuoteImage"
+    case NormalWithImageWithQuoteImage = "NormalWithImageWithQuoteImage"
+    case ActionedWithImageWithQuoteImage = "ActionedWithImageWithQuoteImage"
     
     static func fromStatus(status: TwitterStatus) -> TwitterStatusCellLayout {
-        if status.actionedBy != nil {
-            return status.media.count > 0 ? ActionedWithImage : Actioned
+        if let quotedStatus = status.quotedStatus {
+            if quotedStatus.media.count > 0 {
+                if status.actionedBy != nil {
+                    return status.media.count > 0 ? ActionedWithImageWithQuoteImage : ActionedWithQuoteImage
+                } else {
+                    return status.media.count > 0 ? NormalWithImageWithQuoteImage : NormalWithQuoteImage
+                }
+            } else {
+                if status.actionedBy != nil {
+                    return status.media.count > 0 ? ActionedWithImageWithQuote : ActionedWithQuote
+                } else {
+                    return status.media.count > 0 ? NormalWithImageWithQuote : NormalWithQuote
+                }
+            }
         } else {
-            return status.media.count > 0 ? NormalWithImage : Normal
+            if status.actionedBy != nil {
+                return status.media.count > 0 ? ActionedWithImage : Actioned
+            } else {
+                return status.media.count > 0 ? NormalWithImage : Normal
+            }
         }
     }
     
     static var allValues: [TwitterStatusCellLayout] {
-        return [Normal, Actioned, NormalWithImage, ActionedWithImage]
+        return [
+            Normal,
+            Actioned,
+            NormalWithImage,
+            ActionedWithImage,
+            NormalWithQuote,
+            ActionedWithQuote,
+            NormalWithImageWithQuote,
+            ActionedWithImageWithQuote,
+            NormalWithQuoteImage,
+            ActionedWithQuoteImage,
+            NormalWithImageWithQuoteImage,
+            ActionedWithImageWithQuoteImage
+        ]
+    }
+    
+    var hasAction: Bool {
+        return self.rawValue.rangeOfString("Actioned") != nil
+    }
+    
+    var hasQuote: Bool {
+        return self.rawValue.rangeOfString("WithQuote") != nil
+    }
+    
+    var hasQuoteImage: Bool {
+        return self.rawValue.rangeOfString("WithQuoteImage") != nil
+    }
+    
+    var hasImage: Bool {
+        return self.rawValue.rangeOfString("WithImage") != nil
     }
 }
 
@@ -46,6 +99,28 @@ class TwitterStatusCell: BackgroundTableViewCell {
     
     @IBOutlet weak var statusLabel: UILabel!
     
+    @IBOutlet weak var quotedStatusContainerView: QuotedStatusContainerView!
+    @IBOutlet weak var quotedNameLabel: DisplayNameLable!
+    @IBOutlet weak var quotedScreenNameLabel: ScreenNameLable!
+    @IBOutlet weak var quotedProtectedLabel: UILabel!
+    @IBOutlet weak var quotedStatusLabel: StatusLable!
+    @IBOutlet weak var quotedStatusLabelHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var quotedImagesContainerView: UIView!
+    @IBOutlet weak var quotedImageView1: UIImageView!
+    @IBOutlet weak var quotedImageView2: UIImageView!
+    @IBOutlet weak var quotedImageView3: UIImageView!
+    @IBOutlet weak var quotedImageView4: UIImageView!
+    
+    @IBOutlet weak var quotedImageView1HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var quotedImageView1WidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var quotedImageView2HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var quotedImageView2WidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var quotedImageView3HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var quotedImageView3WidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var quotedImageView4HeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var quotedImageView4WidthConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var imagesContainerView: UIView!
     @IBOutlet weak var imageView1: UIImageView!
     @IBOutlet weak var imageView2: UIImageView!
@@ -60,6 +135,10 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var imageView3WidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageView4HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageView4WidthConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var buttonsStatusTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonsQuotedTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonsImageTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var replyButton: UIButton!
     @IBOutlet weak var retweetButton: UIButton!
@@ -96,6 +175,12 @@ class TwitterStatusCell: BackgroundTableViewCell {
             imageView.clipsToBounds = true
             imageView.contentMode = .ScaleAspectFill
             imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
+        }
+        
+        for imageView in [quotedImageView1, quotedImageView2, quotedImageView3, quotedImageView4] {
+            imageView.clipsToBounds = true
+            imageView.contentMode = .ScaleAspectFill
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showQuotedImage:"))
         }
         
         iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "openProfile:"))
@@ -154,7 +239,9 @@ class TwitterStatusCell: BackgroundTableViewCell {
         
         EventBox.onMainThread(self, name: EventFontSizePreview) { (n) -> Void in
             if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
-                self.statusLabel.font = UIFont.systemFontOfSize(CGFloat(fontSize.floatValue))
+                let font = UIFont.systemFontOfSize(CGFloat(fontSize.floatValue))
+                self.statusLabel.font = font
+                self.quotedStatusLabel.font = font
             }
         }
     }
@@ -168,12 +255,31 @@ class TwitterStatusCell: BackgroundTableViewCell {
     func setLayout(layout: TwitterStatusCellLayout) {
         if self.layout == nil || self.layout != layout {
             self.layout = layout
-            if layout != .Actioned && layout != .ActionedWithImage {
+            if !layout.hasAction {
                 sourceView.hidden = true
                 sourceViewHeightConstraint.constant = 0
             }
-            if layout == .Normal || layout == .Actioned {
+            if !layout.hasImage {
                 imagesContainerView.removeFromSuperview()
+            }
+            if !layout.hasQuote {
+                quotedStatusContainerView.removeFromSuperview()
+            }
+            if !layout.hasQuoteImage {
+                quotedImagesContainerView.removeFromSuperview()
+            }
+            if layout.hasImage {
+                buttonsImageTopConstraint.priority = UILayoutPriorityDefaultHigh
+                buttonsQuotedTopConstraint.priority = UILayoutPriorityDefaultLow
+                buttonsStatusTopConstraint.priority = UILayoutPriorityDefaultLow
+            } else if layout.hasQuote {
+                buttonsImageTopConstraint.priority = UILayoutPriorityDefaultLow
+                buttonsQuotedTopConstraint.priority = UILayoutPriorityDefaultHigh
+                buttonsStatusTopConstraint.priority = UILayoutPriorityDefaultLow
+            } else {
+                buttonsImageTopConstraint.priority = UILayoutPriorityDefaultLow
+                buttonsQuotedTopConstraint.priority = UILayoutPriorityDefaultLow
+                buttonsStatusTopConstraint.priority = UILayoutPriorityDefaultHigh
             }
             setNeedsLayout()
             layoutIfNeeded()
@@ -207,6 +313,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         relativeCreatedAtLabel.text = status.createdAt.relativeString
         absoluteCreatedAtLabel.text = status.createdAt.absoluteString
         viaLabel.text = status.via.name
+        
         if let actionedBy = status.actionedBy {
             sourceTextLabel.text = actionedBy.name
             sourceScreenNameLabel.text = "@" + actionedBy.screenName
@@ -220,12 +327,29 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 sourceRetweetButton.selected = AccountSettingsStore.get()?.isMe(status.user.userID) ?? false
             }
         }
+        
         if status.media.count > 0 {
             imagesContainerView.hidden = true
             imageView1.image = nil
             imageView2.image = nil
             imageView3.image = nil
             imageView4.image = nil
+        }
+        
+        if let quotedStatus = status.quotedStatus {
+            
+            quotedNameLabel.text = quotedStatus.user.name
+            quotedScreenNameLabel.text = "@" + quotedStatus.user.screenName
+            quotedStatusLabel.text = quotedStatus.text
+            quotedProtectedLabel.hidden = quotedStatus.user.isProtected ? false : true
+            
+            if quotedStatus.media.count > 0 {
+                quotedImagesContainerView.hidden = true
+                quotedImageView1.image = nil
+                quotedImageView2.image = nil
+                quotedImageView3.image = nil
+                quotedImageView4.image = nil
+            }
         }
     }
     
@@ -235,69 +359,132 @@ class TwitterStatusCell: BackgroundTableViewCell {
             ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: iconImageView)
         }
         
-        if status.media.count == 0 || imagesContainerView.hidden == false {
-            return
+        if status.media.count > 0 && imagesContainerView.hidden == true {
+            imagesContainerView.hidden = false
+            
+            let fullHeight = imagesContainerView.frame.height
+            let fullWidth = imagesContainerView.frame.width
+            let harfHeight = (fullHeight - 5) / 2
+            let halfWidth = (fullWidth - 5) / 2
+            switch status.media.count {
+            case 1:
+                imageView1HeightConstraint.constant = fullHeight
+                imageView1WidthConstraint.constant = fullWidth
+                ImageLoaderClient.displayImage(status.media[0].mediaURL, imageView: imageView1)
+                imageView1.hidden = false
+                imageView2.hidden = true
+                imageView3.hidden = true
+                imageView4.hidden = true
+            case 2:
+                imageView1HeightConstraint.constant = fullHeight
+                imageView1WidthConstraint.constant = halfWidth
+                imageView2HeightConstraint.constant = fullHeight
+                imageView2WidthConstraint.constant = halfWidth
+                ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
+                ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
+                imageView1.hidden = false
+                imageView2.hidden = false
+                imageView3.hidden = true
+                imageView4.hidden = true
+            case 3:
+                imageView1HeightConstraint.constant = fullHeight
+                imageView1WidthConstraint.constant = halfWidth
+                imageView2HeightConstraint.constant = harfHeight
+                imageView2WidthConstraint.constant = halfWidth
+                imageView3HeightConstraint.constant = harfHeight
+                imageView3WidthConstraint.constant = halfWidth
+                ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
+                ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
+                ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView3)
+                imageView1.hidden = false
+                imageView2.hidden = false
+                imageView3.hidden = false
+                imageView4.hidden = true
+            case 4:
+                imageView1HeightConstraint.constant = harfHeight
+                imageView1WidthConstraint.constant = halfWidth
+                imageView2HeightConstraint.constant = harfHeight
+                imageView2WidthConstraint.constant = halfWidth
+                imageView3HeightConstraint.constant = harfHeight
+                imageView3WidthConstraint.constant = halfWidth
+                imageView4HeightConstraint.constant = harfHeight
+                imageView4WidthConstraint.constant = halfWidth
+                ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
+                ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
+                ImageLoaderClient.displayThumbnailImage(status.media[3].mediaThumbURL, imageView: imageView3)
+                ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView4)
+                imageView1.hidden = false
+                imageView2.hidden = false
+                imageView3.hidden = false
+                imageView4.hidden = false
+            default:
+                break
+            }
         }
         
-        imagesContainerView.hidden = false
-        
-        let fullHeight = imagesContainerView.frame.height
-        let fullWidth = imagesContainerView.frame.width
-        let harfHeight = (fullHeight - 5) / 2
-        let halfWidth = (fullWidth - 5) / 2
-        switch status.media.count {
-        case 1:
-            imageView1HeightConstraint.constant = fullHeight
-            imageView1WidthConstraint.constant = fullWidth
-            ImageLoaderClient.displayImage(status.media[0].mediaURL, imageView: imageView1)
-            imageView1.hidden = false
-            imageView2.hidden = true
-            imageView3.hidden = true
-            imageView4.hidden = true
-        case 2:
-            imageView1HeightConstraint.constant = fullHeight
-            imageView1WidthConstraint.constant = halfWidth
-            imageView2HeightConstraint.constant = fullHeight
-            imageView2WidthConstraint.constant = halfWidth
-            ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
-            ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
-            imageView1.hidden = false
-            imageView2.hidden = false
-            imageView3.hidden = true
-            imageView4.hidden = true
-        case 3:
-            imageView1HeightConstraint.constant = fullHeight
-            imageView1WidthConstraint.constant = halfWidth
-            imageView2HeightConstraint.constant = harfHeight
-            imageView2WidthConstraint.constant = halfWidth
-            imageView3HeightConstraint.constant = harfHeight
-            imageView3WidthConstraint.constant = halfWidth
-            ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
-            ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
-            ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView3)
-            imageView1.hidden = false
-            imageView2.hidden = false
-            imageView3.hidden = false
-            imageView4.hidden = true
-        case 4:
-            imageView1HeightConstraint.constant = harfHeight
-            imageView1WidthConstraint.constant = halfWidth
-            imageView2HeightConstraint.constant = harfHeight
-            imageView2WidthConstraint.constant = halfWidth
-            imageView3HeightConstraint.constant = harfHeight
-            imageView3WidthConstraint.constant = halfWidth
-            imageView4HeightConstraint.constant = harfHeight
-            imageView4WidthConstraint.constant = halfWidth
-            ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
-            ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
-            ImageLoaderClient.displayThumbnailImage(status.media[3].mediaThumbURL, imageView: imageView3)
-            ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView4)
-            imageView1.hidden = false
-            imageView2.hidden = false
-            imageView3.hidden = false
-            imageView4.hidden = false
-        default:
-            break
+        if let quotedStatus = status.quotedStatus {
+            if quotedStatus.media.count > 0 && quotedImagesContainerView.hidden == true {
+                quotedImagesContainerView.hidden = false
+                
+                let fullHeight = quotedImagesContainerView.frame.height
+                let fullWidth = quotedImagesContainerView.frame.width
+                let harfHeight = (fullHeight - 5) / 2
+                let halfWidth = (fullWidth - 5) / 2
+                switch quotedStatus.media.count {
+                case 1:
+                    quotedImageView1HeightConstraint.constant = fullHeight
+                    quotedImageView1WidthConstraint.constant = fullWidth
+                    ImageLoaderClient.displayImage(quotedStatus.media[0].mediaURL, imageView: quotedImageView1)
+                    quotedImageView1.hidden = false
+                    quotedImageView2.hidden = true
+                    quotedImageView3.hidden = true
+                    quotedImageView4.hidden = true
+                case 2:
+                    quotedImageView1HeightConstraint.constant = fullHeight
+                    quotedImageView1WidthConstraint.constant = halfWidth
+                    quotedImageView2HeightConstraint.constant = fullHeight
+                    quotedImageView2WidthConstraint.constant = halfWidth
+                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
+                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
+                    quotedImageView1.hidden = false
+                    quotedImageView2.hidden = false
+                    quotedImageView3.hidden = true
+                    quotedImageView4.hidden = true
+                case 3:
+                    quotedImageView1HeightConstraint.constant = fullHeight
+                    quotedImageView1WidthConstraint.constant = halfWidth
+                    quotedImageView2HeightConstraint.constant = harfHeight
+                    quotedImageView2WidthConstraint.constant = halfWidth
+                    quotedImageView3HeightConstraint.constant = harfHeight
+                    quotedImageView3WidthConstraint.constant = halfWidth
+                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
+                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
+                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[2].mediaThumbURL, imageView: quotedImageView3)
+                    quotedImageView1.hidden = false
+                    quotedImageView2.hidden = false
+                    quotedImageView3.hidden = false
+                    quotedImageView4.hidden = true
+                case 4:
+                    quotedImageView1HeightConstraint.constant = harfHeight
+                    quotedImageView1WidthConstraint.constant = halfWidth
+                    quotedImageView2HeightConstraint.constant = harfHeight
+                    quotedImageView2WidthConstraint.constant = halfWidth
+                    quotedImageView3HeightConstraint.constant = harfHeight
+                    quotedImageView3WidthConstraint.constant = halfWidth
+                    quotedImageView4HeightConstraint.constant = harfHeight
+                    quotedImageView4WidthConstraint.constant = halfWidth
+                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
+                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
+                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[3].mediaThumbURL, imageView: quotedImageView3)
+                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[2].mediaThumbURL, imageView: quotedImageView4)
+                    quotedImageView1.hidden = false
+                    quotedImageView2.hidden = false
+                    quotedImageView3.hidden = false
+                    quotedImageView4.hidden = false
+                default:
+                    break
+                }
+            }
         }
     }
     
@@ -323,6 +510,15 @@ class TwitterStatusCell: BackgroundTableViewCell {
     func showImage(sender: UIGestureRecognizer) {
         let tag = sender.view?.tag ?? 0
         if let status = self.status {
+            if let page = tagToPage[status.media.count]?[tag] {
+                ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
+            }
+        }
+    }
+    
+    func showQuotedImage(sender: UIGestureRecognizer) {
+        let tag = sender.view?.tag ?? 0
+        if let status = self.status?.quotedStatus {
             if let page = tagToPage[status.media.count]?[tag] {
                 ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
             }

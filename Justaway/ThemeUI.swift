@@ -36,6 +36,13 @@ class CellSeparator: UIView {
         layer.addSublayer(borderLayer)
     }
 }
+class QuotedStatusContainerView: UIView {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        layer.borderColor = ThemeController.currentTheme.cellSeparatorColor().CGColor
+        layer.borderWidth = (1.0 / UIScreen.mainScreen().scale) / 1
+    }
+}
 
 // MARK: - Buttons
 
