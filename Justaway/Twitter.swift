@@ -494,10 +494,12 @@ class Twitter {
 extension Twitter {
     
     class func reply(status: TwitterStatus) {
-        let prefix = "@\(status.user.screenName) "
-        let mentions = " ".join(status.mentions.map({ "@\($0.screenName)" }))
-        let range = NSMakeRange(prefix.characters.count, mentions.characters.count)
-        EditorViewController.show(prefix + mentions, range: range, inReplyToStatusId: status.statusID)
+        if let account = AccountSettingsStore.get()?.account() {
+            let prefix = "@\(status.user.screenName) "
+            let mentions = " ".join(status.mentions.filter({ $0.userID != status.user.userID && account.userID != $0.userID }).map({ "@\($0.screenName)" }))
+            let range = NSMakeRange(prefix.characters.count, mentions.characters.count)
+            EditorViewController.show(prefix + mentions, range: range, inReplyToStatusId: status.statusID)
+        }
     }
     
     class func quoteURL(status: TwitterStatus) {
