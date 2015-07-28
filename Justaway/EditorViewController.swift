@@ -16,6 +16,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     @IBOutlet weak var replyToScreenNameLabel: ScreenNameLable!
     @IBOutlet weak var replyToStatusLabel: StatusLable!
     
+    @IBOutlet weak var countLabel: MenuLable!
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerViewButtomConstraint: NSLayoutConstraint! // Used to adjust the height when the keyboard hides and shows.
@@ -86,6 +87,22 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
         imageButtons = [imageButton1, imageButton2, imageButton3, imageButton4]
         
         resetPickerController()
+        
+        let regexp = try! NSRegularExpression(pattern: "https?://[0-9a-zA-Z/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+", options: NSRegularExpressionOptions.CaseInsensitive)
+        textView.callback = {
+            var count = self.textView.text.characters.count
+            let s = self.textView.text as NSString
+            let matches = regexp.matchesInString(self.textView.text, options: NSMatchingOptions(rawValue: 0), range: NSMakeRange(0, self.textView.text.utf16.count))
+            for match in matches {
+                let url = s.substringWithRange(match.rangeAtIndex(0)) as String
+                let urlCount = url.hasPrefix("https") ? 23 : 22
+                count = count + urlCount - url.characters.count
+            }
+            if self.images.count > 0 {
+                count = count + 23
+            }
+            self.countLabel.text = String(140 - count)
+        }
     }
     
     func configureEvent() {
@@ -248,6 +265,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     
     func show() {
         textView.becomeFirstResponder()
+        textView.callback?()
     }
     
     func hide() {

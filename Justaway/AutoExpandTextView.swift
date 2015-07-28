@@ -6,6 +6,7 @@ class AutoExpandTextView: UITextView, UITextViewDelegate {
     
     weak var constraint: NSLayoutConstraint!
     var minHeight: CGFloat!
+    var callback: ((Void) -> Void)?
     
     // MARK: Configuration
     
@@ -19,6 +20,7 @@ class AutoExpandTextView: UITextView, UITextViewDelegate {
     
     func textViewDidChange(textView: UITextView) {
         exapnd(max(textView.contentSize.height, minHeight))
+        callback?()
     }
     
     // MARK: Public
@@ -26,6 +28,7 @@ class AutoExpandTextView: UITextView, UITextViewDelegate {
     func reset() {
         text = ""
         exapnd(minHeight)
+        callback?()
     }
     
     func exapnd(height: CGFloat) {

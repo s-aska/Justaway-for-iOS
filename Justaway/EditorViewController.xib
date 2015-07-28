@@ -21,6 +21,7 @@
             <connections>
                 <outlet property="containerView" destination="GiI-4f-pcf" id="zU9-2h-jpG"/>
                 <outlet property="containerViewButtomConstraint" destination="hpk-3M-F0T" id="Wb7-U4-L0j"/>
+                <outlet property="countLabel" destination="VpL-cL-hHt" id="z8h-ae-V0g"/>
                 <outlet property="imageButton1" destination="eSq-hE-Jlx" id="mui-gj-dp6"/>
                 <outlet property="imageButton2" destination="cSH-5Z-LFF" id="S2t-yI-md8"/>
                 <outlet property="imageButton3" destination="ECH-1W-WMn" id="BcD-AV-4Pq"/>
@@ -98,15 +99,23 @@
                                         <action selector="send:" destination="-1" eventType="touchUpInside" id="e3h-hl-4bj"/>
                                     </connections>
                                 </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="140" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VpL-cL-hHt" customClass="MenuLable" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="524.5" y="17" width="24" height="17"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="centerY" secondItem="NN0-dj-HHc" secondAttribute="centerY" id="0RW-J6-0qG"/>
+                                <constraint firstItem="VpL-cL-hHt" firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="0Ui-k7-Mi1"/>
                                 <constraint firstAttribute="height" constant="50" id="QA0-KP-aqU"/>
                                 <constraint firstItem="NN0-dj-HHc" firstAttribute="leading" secondItem="cpB-WM-7Qz" secondAttribute="leading" id="RPs-BP-itF"/>
                                 <constraint firstItem="AcO-tg-NdG" firstAttribute="leading" secondItem="NN0-dj-HHc" secondAttribute="trailing" id="cZu-qX-yjw"/>
                                 <constraint firstAttribute="centerY" secondItem="AcO-tg-NdG" secondAttribute="centerY" id="fS4-To-Vfx"/>
                                 <constraint firstAttribute="trailing" secondItem="mbk-4F-WpO" secondAttribute="trailing" id="ht5-bz-Fwc"/>
+                                <constraint firstItem="mbk-4F-WpO" firstAttribute="leading" secondItem="VpL-cL-hHt" secondAttribute="trailing" constant="-8" id="wxk-Cr-Nxf"/>
                                 <constraint firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="y1y-gb-4En"/>
                             </constraints>
                         </view>
