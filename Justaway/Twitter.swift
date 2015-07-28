@@ -496,14 +496,18 @@ extension Twitter {
     class func reply(status: TwitterStatus) {
         if let account = AccountSettingsStore.get()?.account() {
             let prefix = "@\(status.user.screenName) "
-            let mentions = " ".join(status.mentions.filter({ $0.userID != status.user.userID && account.userID != $0.userID }).map({ "@\($0.screenName)" }))
+            var users = status.mentions
+            if let actionedBy = status.actionedBy {
+                users.append(actionedBy)
+            }
+            var mentions = " ".join(users.filter({ $0.userID != status.user.userID && account.userID != $0.userID }).map({ "@\($0.screenName)" }))
             let range = NSMakeRange(prefix.characters.count, mentions.characters.count)
-            EditorViewController.show(prefix + mentions, range: range, inReplyToStatusId: status.statusID)
+            EditorViewController.show(prefix + mentions, range: range, inReplyToStatus: status)
         }
     }
     
     class func quoteURL(status: TwitterStatus) {
-        EditorViewController.show(" \(status.statusURL)", range: NSMakeRange(0, 0), inReplyToStatusId: status.statusID)
+        EditorViewController.show(" \(status.statusURL)", range: NSMakeRange(0, 0), inReplyToStatus: status)
     }
     
 }
