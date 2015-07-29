@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import SwifteriOS
 
 class TwitterStatus {
@@ -33,14 +33,6 @@ class TwitterStatus {
         self.retweetCount = statusJson["retweet_count"].integer ?? 0
         self.favoriteCount = statusJson["favorite_count"].integer ?? 0
         
-        self.text = {
-            var text = statusJson["text"].string ?? ""
-            text = text.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: [], range: nil)
-            text = text.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: [], range: nil)
-            text = text.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: [], range: nil)
-            return text
-        }()
-        
         if let urls = statusJson["entities"]["urls"].array {
             self.urls = urls.map { TwitterURL($0) }
         } else {
@@ -66,6 +58,20 @@ class TwitterStatus {
         } else {
             self.media = [TwitterMedia]()
         }
+        
+        self.text = { (urls, media) in
+            var text = statusJson["text"].string ?? ""
+            text = text.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: [], range: nil)
+            text = text.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: [], range: nil)
+            text = text.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: [], range: nil)
+            for url in urls {
+                text = text.stringByReplacingOccurrencesOfString(url.shortURL, withString: url.displayURL, options: NSStringCompareOptions.LiteralSearch, range: nil)
+            }
+            for media in media {
+                text = text.stringByReplacingOccurrencesOfString(media.shortURL, withString: media.displayURL, options: NSStringCompareOptions.LiteralSearch, range: nil)
+            }
+            return text
+        }(self.urls, self.media)
         
         self.via = TwitterVia(statusJson["source"].string ?? "unknown")
         

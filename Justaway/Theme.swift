@@ -182,6 +182,7 @@ class ThemeController {
                 v.textColor = theme.absoluteDateTextColor()
             case let v as StatusLable:
                 v.textColor = theme.bodyTextColor()
+                v.setAttributes()
             case let v as ReplyButton:
                 v.setTitleColor(theme.buttonNormal(), forState: .Normal)
                 v.setTitleColor(theme.buttonNormal(), forState: .Selected)

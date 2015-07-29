@@ -2,6 +2,7 @@ import Foundation
 import SwifteriOS
 
 struct TwitterMedia {
+    let shortURL: String
     let displayURL: String
     let expandedURL: String
     let mediaURL: NSURL
@@ -9,6 +10,7 @@ struct TwitterMedia {
     let width: Int
     
     init(_ json: JSONValue) {
+        self.shortURL = json["url"].string ?? ""
         self.displayURL = json["display_url"].string ?? ""
         self.expandedURL = json["expanded_url"].string ?? ""
         self.mediaURL = NSURL(string: json["media_url_https"].string ?? "")!
@@ -21,6 +23,7 @@ struct TwitterMedia {
     }
     
     init(_ dictionary: [String: AnyObject]) {
+        self.shortURL = dictionary["shortURL"] as? String ?? ""
         self.displayURL = dictionary["displayURL"] as? String ?? ""
         self.expandedURL = dictionary["expandedURL"] as? String ?? ""
         self.mediaURL = NSURL(string: dictionary["mediaURL"] as? String ?? "")!
@@ -30,6 +33,7 @@ struct TwitterMedia {
     
     var dictionaryValue: [String: AnyObject] {
         return [
+            "shortURL": shortURL,
             "displayURL": displayURL,
             "expandedURL": expandedURL,
             "mediaURL": mediaURL.absoluteString ?? "",

@@ -97,7 +97,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var protectedLabel: UILabel!
     @IBOutlet weak var relativeCreatedAtLabel: UILabel!
     
-    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var statusLabel: StatusLable!
     
     @IBOutlet weak var quotedStatusContainerView: QuotedStatusContainerView!
     @IBOutlet weak var quotedNameLabel: DisplayNameLable!
@@ -308,6 +308,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
         screenNameLabel.text = "@" + status.user.screenName
         protectedLabel.hidden = status.user.isProtected ? false : true
         statusLabel.text = status.text
+        statusLabel.displayURLs = status.urls.map({ $0.displayURL }) + status.media.map({ $0.displayURL })
+        statusLabel.setAttributes()
         retweetCountLabel.text = status.retweetCount > 0 ? numberFormatter.stringFromNumber(status.retweetCount) : ""
         favoriteCountLabel.text = status.favoriteCount > 0 ? numberFormatter.stringFromNumber(status.favoriteCount) : ""
         relativeCreatedAtLabel.text = status.createdAt.relativeString
