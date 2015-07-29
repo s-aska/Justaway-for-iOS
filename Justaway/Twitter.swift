@@ -500,7 +500,7 @@ extension Twitter {
             if let actionedBy = status.actionedBy {
                 users.append(actionedBy)
             }
-            var mentions = " ".join(users.filter({ $0.userID != status.user.userID && account.userID != $0.userID }).map({ "@\($0.screenName)" }))
+            var mentions = "".join(users.filter({ $0.userID != status.user.userID && account.userID != $0.userID }).map({ "@\($0.screenName) " }))
             let range = NSMakeRange(prefix.characters.count, mentions.characters.count)
             EditorViewController.show(prefix + mentions, range: range, inReplyToStatus: status)
         }
