@@ -71,13 +71,13 @@ class RelativeDateLable: UILabel {}
 class AbsoluteDateLable: UILabel {}
 class ClientNameLable: UILabel {}
 class StatusLable: UILabel {
-    var displayURLs = [String]()
+    var highlightWords = [String]()
     
     func setAttributes() {
         if let text = self.text {
             let attributedText = NSMutableAttributedString(string: text)
-            for displayURL in displayURLs {
-                let pattern = NSRegularExpression.escapedPatternForString(displayURL)
+            for highlightWord in highlightWords {
+                let pattern = NSRegularExpression.escapedPatternForString(highlightWord)
                 let regexp = try! NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions(rawValue: 0))
                 let results = regexp.matchesInString(text, options: NSMatchingOptions(rawValue: 0), range: NSMakeRange(0, text.utf16.count))
                 for result in results {
