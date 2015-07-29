@@ -194,6 +194,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         
         userTimelineTableViewController.tableView.contentInset = UIEdgeInsetsMake(159, 0, 0, 0)
         userTimelineTableViewController.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(159, 0, 0, 0)
+        userTimelineTableViewController.scrollEnd()
     }
     
     func configureEvent() {
