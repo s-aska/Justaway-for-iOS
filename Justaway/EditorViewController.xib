@@ -100,7 +100,7 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="140" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VpL-cL-hHt" customClass="MenuLable" customModule="Justaway" customModuleProvider="target">
-                                    <rect key="frame" x="524.5" y="17" width="24" height="17"/>
+                                    <rect key="frame" x="525" y="17" width="24" height="17"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -115,7 +115,7 @@
                                 <constraint firstItem="AcO-tg-NdG" firstAttribute="leading" secondItem="NN0-dj-HHc" secondAttribute="trailing" id="cZu-qX-yjw"/>
                                 <constraint firstAttribute="centerY" secondItem="AcO-tg-NdG" secondAttribute="centerY" id="fS4-To-Vfx"/>
                                 <constraint firstAttribute="trailing" secondItem="mbk-4F-WpO" secondAttribute="trailing" id="ht5-bz-Fwc"/>
-                                <constraint firstItem="mbk-4F-WpO" firstAttribute="leading" secondItem="VpL-cL-hHt" secondAttribute="trailing" constant="-8" id="wxk-Cr-Nxf"/>
+                                <constraint firstItem="mbk-4F-WpO" firstAttribute="leading" secondItem="VpL-cL-hHt" secondAttribute="leading" constant="16" id="wxk-Cr-Nxf"/>
                                 <constraint firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="y1y-gb-4En"/>
                             </constraints>
                         </view>
