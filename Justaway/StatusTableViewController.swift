@@ -309,7 +309,7 @@ class StatusTableViewController: TimelineTableViewController {
                 ErrorAlert.show("Error", message: error.localizedDescription)
                 always()
             }
-            if maxID != nil {
+            if !(self.refreshControl?.refreshing ?? false) {
                 Async.main {
                     self.footerIndicatorView?.startAnimating()
                     return

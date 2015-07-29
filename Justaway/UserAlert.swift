@@ -21,129 +21,135 @@ class UserAlert {
                 actionSheet.dismissViewControllerAnimated(true, completion: nil)
         }))
 
-        
-        actionSheet.addAction(UIAlertAction(
-            title: "Reply",
-            style: .Default,
-            handler: { action in
-                let prefix = "@\(user.screenName) "
-                let range = NSMakeRange(prefix.characters.count, 0)
-                EditorViewController.show(prefix, range: range)
-        }))
-        
-        if relationship.followedBy {
+        if AccountSettingsStore.isCurrent(user.userID) {
+            
+            // EditProfile
+            
+        } else {
+            
             actionSheet.addAction(UIAlertAction(
-                title: "Direct Message",
+                title: "Reply",
                 style: .Default,
                 handler: { action in
-                    let prefix = "D \(user.screenName) "
+                    let prefix = "@\(user.screenName) "
                     let range = NSMakeRange(prefix.characters.count, 0)
                     EditorViewController.show(prefix, range: range)
             }))
-        }
-        
-        // Follow
-        
-        if relationship.following {
+            
+            if relationship.followedBy {
+                actionSheet.addAction(UIAlertAction(
+                    title: "Direct Message",
+                    style: .Default,
+                    handler: { action in
+                        let prefix = "D \(user.screenName) "
+                        let range = NSMakeRange(prefix.characters.count, 0)
+                        EditorViewController.show(prefix, range: range)
+                }))
+            }
+            
+            // Follow
+            
+            if relationship.following {
+                actionSheet.addAction(UIAlertAction(
+                    title: "Unfollow",
+                    style: .Destructive,
+                    handler: { action in
+                        Twitter.unfollow(user.userID)
+                }))
+            } else {
+                actionSheet.addAction(UIAlertAction(
+                    title: "Follow",
+                    style: .Default,
+                    handler: { action in
+                        Twitter.follow(user.userID)
+                }))
+            }
+            
+            // Notifications
+            
+            if relationship.notificationsEnabled {
+                actionSheet.addAction(UIAlertAction(
+                    title: "Turn off notifications",
+                    style: .Default,
+                    handler: { action in
+                        Twitter.turnOffNotification(user.userID)
+                }))
+            } else {
+                actionSheet.addAction(UIAlertAction(
+                    title: "Turn on notifications",
+                    style: .Default,
+                    handler: { action in
+                        Twitter.turnOnNotification(user.userID)
+                }))
+            }
+            
+            // Retweets
+            
+            if relationship.wantRetweets {
+                actionSheet.addAction(UIAlertAction(
+                    title: "Turn off retweets",
+                    style: .Default,
+                    handler: { action in
+                        Twitter.turnOffRetweets(user.userID)
+                }))
+            } else {
+                actionSheet.addAction(UIAlertAction(
+                    title: "Turn on retweets",
+                    style: .Default,
+                    handler: { action in
+                        Twitter.turnOnRetweets(user.userID)
+                }))
+            }
+            
+            // Add/remove from lists
+            
+            
+            
+            // Mute
+            
+            if relationship.muting {
+                actionSheet.addAction(UIAlertAction(
+                    title: "Unmute",
+                    style: .Default,
+                    handler: { action in
+                        Twitter.unmute(user.userID)
+                }))
+            } else {
+                actionSheet.addAction(UIAlertAction(
+                    title: "Mute",
+                    style: .Default,
+                    handler: { action in
+                        Twitter.mute(user.userID)
+                }))
+            }
+            
+            // Block
+            
+            if relationship.blocking {
+                actionSheet.addAction(UIAlertAction(
+                    title: "Unblock",
+                    style: .Default,
+                    handler: { action in
+                        Twitter.unblock(user.userID)
+                }))
+            } else {
+                actionSheet.addAction(UIAlertAction(
+                    title: "Block",
+                    style: .Default,
+                    handler: { action in
+                        Twitter.block(user.userID)
+                }))
+            }
+            
+            // Report
+            
             actionSheet.addAction(UIAlertAction(
-                title: "Unfollow",
+                title: "Report",
                 style: .Destructive,
                 handler: { action in
-                    Twitter.unfollow(user.userID)
-            }))
-        } else {
-            actionSheet.addAction(UIAlertAction(
-                title: "Follow",
-                style: .Default,
-                handler: { action in
-                    Twitter.follow(user.userID)
+                    Twitter.reportSpam(user.userID)
             }))
         }
-        
-        // Notifications
-        
-        if relationship.notificationsEnabled {
-            actionSheet.addAction(UIAlertAction(
-                title: "Turn off notifications",
-                style: .Default,
-                handler: { action in
-                    Twitter.turnOffNotification(user.userID)
-            }))
-        } else {
-            actionSheet.addAction(UIAlertAction(
-                title: "Turn on notifications",
-                style: .Default,
-                handler: { action in
-                    Twitter.turnOnNotification(user.userID)
-            }))
-        }
-        
-        // Retweets
-        
-        if relationship.wantRetweets {
-            actionSheet.addAction(UIAlertAction(
-                title: "Turn off retweets",
-                style: .Default,
-                handler: { action in
-                    Twitter.turnOffRetweets(user.userID)
-            }))
-        } else {
-            actionSheet.addAction(UIAlertAction(
-                title: "Turn on retweets",
-                style: .Default,
-                handler: { action in
-                    Twitter.turnOnRetweets(user.userID)
-            }))
-        }
-        
-        // Add/remove from lists
-        
-        
-        
-        // Mute
-        
-        if relationship.muting {
-            actionSheet.addAction(UIAlertAction(
-                title: "Unmute",
-                style: .Default,
-                handler: { action in
-                    Twitter.unmute(user.userID)
-            }))
-        } else {
-            actionSheet.addAction(UIAlertAction(
-                title: "Mute",
-                style: .Default,
-                handler: { action in
-                    Twitter.mute(user.userID)
-            }))
-        }
-        
-        // Block
-        
-        if relationship.blocking {
-            actionSheet.addAction(UIAlertAction(
-                title: "Unblock",
-                style: .Default,
-                handler: { action in
-                    Twitter.unblock(user.userID)
-            }))
-        } else {
-            actionSheet.addAction(UIAlertAction(
-                title: "Block",
-                style: .Default,
-                handler: { action in
-                    Twitter.block(user.userID)
-            }))
-        }
-        
-        // Report
-        
-        actionSheet.addAction(UIAlertAction(
-            title: "Report",
-            style: .Destructive,
-            handler: { action in
-                Twitter.reportSpam(user.userID)
-        }))
         
         // URL
         

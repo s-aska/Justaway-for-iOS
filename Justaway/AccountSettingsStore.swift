@@ -54,4 +54,11 @@ class AccountSettingsStore {
         KeyClip.delete(Constants.keychainKey)
     }
     
+    class func isCurrent(userID: String) -> Bool {
+        if let account = get()?.account() {
+            return account.userID == userID
+        }
+        return false
+    }
+    
 }

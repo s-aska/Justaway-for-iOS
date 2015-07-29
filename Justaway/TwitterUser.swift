@@ -28,6 +28,14 @@ struct TwitterUser {
         self.isProtected = userFull.isProtected
     }
     
+    init(_ account: Account) {
+        self.userID = account.userID
+        self.screenName = account.screenName
+        self.name = account.name
+        self.profileImageURL = account.profileImageURL
+        self.isProtected = false
+    }
+    
     init(_ dictionary: [String: AnyObject]) {
         self.userID = dictionary["userID"] as? String ?? ""
         self.screenName = dictionary["screenName"] as? String ?? ""

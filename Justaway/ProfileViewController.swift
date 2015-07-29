@@ -232,8 +232,12 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             sinceLabel.text = ""
             iconImageView.image = nil
             coverImageView.image = nil
-            if !user.isProtected {
-                protectedLabel.removeFromSuperview()
+            if AccountSettingsStore.isCurrent(user.userID) {
+                self.followedByLabel.removeFromSuperview()
+            } else {
+                if !user.isProtected {
+                    protectedLabel.removeFromSuperview()
+                }
             }
             // followedByLabel.alpha = 0
             ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: iconImageView)
@@ -256,6 +260,9 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
                 if let row = rows?.first {
                     let user = TwitterUserFull(row)
                     self.userFull = user
+                    if !user.isProtected {
+                        self.protectedLabel?.removeFromSuperview()
+                    }
                     self.statusCountLabel.text = user.statusesCount.description
                     self.followingCountLabel.text = user.friendsCount.description
                     self.followerCountLabel.text = user.followersCount.description
@@ -278,7 +285,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             Twitter.getFriendships(user.userID, success: { (relationship) -> Void in
                 self.relationship = relationship
                 if !relationship.followedBy {
-                    self.followedByLabel.removeFromSuperview()
+                    self.followedByLabel?.removeFromSuperview()
                 }
             }, failure: failure)
         }

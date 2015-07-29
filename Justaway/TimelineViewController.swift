@@ -104,6 +104,11 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         scrollView.pagingEnabled = true
         scrollView.delegate = self
         
+        iconImageView.userInteractionEnabled = true
+        let iconGesture = UITapGestureRecognizer(target: self, action: "openProfile:")
+        iconGesture.numberOfTapsRequired = 1
+        iconImageView.addGestureRecognizer(iconGesture)
+        
         streamingView.userInteractionEnabled = true
         let gesture = UITapGestureRecognizer(target: self, action: "streamingSwitch:")
         gesture.numberOfTapsRequired = 1
@@ -235,6 +240,12 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             return
         }
         tableViewControllers[currentPage].refresh()
+    }
+    
+    func openProfile(sender: UIView) {
+        if let account = AccountSettingsStore.get()?.account() {
+            ProfileViewController.show(TwitterUser(account))
+        }
     }
     
     func streamingSwitch(sender: UIView) {
