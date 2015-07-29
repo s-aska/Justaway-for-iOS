@@ -241,6 +241,10 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
     }
     
     @IBAction func replyCancel(sender: UIButton) {
+        if let inReplyToStatusId = inReplyToStatusId {
+            let pattern = " ?https?://twitter\\.com/[0-9a-zA-Z_]+/status/\(inReplyToStatusId)"
+            textView.text = textView.text.stringByReplacingOccurrencesOfString(pattern, withString: "", options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
+        }
         inReplyToStatusId = nil
         replyToContainerView.hidden = true
         textView.text = textView.text.stringByReplacingOccurrencesOfString("^.*@[0-9a-zA-Z_]+ *", withString: "", options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
