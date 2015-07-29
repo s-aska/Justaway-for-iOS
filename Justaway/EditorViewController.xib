@@ -250,7 +250,7 @@
                         <constraint firstItem="XI3-zv-gQX" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="vYp-8Y-qAu"/>
                     </constraints>
                 </view>
-                <view alpha="0.94999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eKe-LY-kay" customClass="BackgroundView" customModule="Justaway" customModuleProvider="target">
+                <view alpha="0.94999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eKe-LY-kay" customClass="BackgroundShadowView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="341" width="600" height="54.5"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lNk-An-B31">

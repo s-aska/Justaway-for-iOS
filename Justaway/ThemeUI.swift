@@ -21,6 +21,15 @@ class MenuShadowView: MenuView {
     }
 }
 class BackgroundView: UIView {}
+class BackgroundShadowView: BackgroundView {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.layer.shadowColor = UIColor.blackColor().CGColor
+        self.layer.shadowOffset = CGSizeMake(0, -2.0)
+        self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
+        self.layer.shadowRadius = 1.0
+    }
+}
 class BackgroundTableView: UITableView {}
 class BackgroundTableViewCell: UITableViewCell {}
 class BackgroundScrollView: UIScrollView {}
