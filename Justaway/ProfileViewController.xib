@@ -123,6 +123,9 @@
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="鍵" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QLz-8Y-71S">
                                     <rect key="frame" x="54.5" y="4" width="6.5" height="10"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="6.5" id="kBb-ag-mCd"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="10"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -139,7 +142,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="18" id="4Vn-Yb-wOi"/>
-                                <constraint firstItem="0Rg-pn-yCN" firstAttribute="leading" secondItem="LRM-Iu-ZLc" secondAttribute="trailing" priority="250" constant="8" id="BHH-ZR-V4b"/>
+                                <constraint firstItem="0Rg-pn-yCN" firstAttribute="leading" secondItem="LRM-Iu-ZLc" secondAttribute="trailing" priority="750" constant="8" id="BHH-ZR-V4b"/>
                                 <constraint firstAttribute="trailing" secondItem="LRM-Iu-ZLc" secondAttribute="trailing" priority="250" id="L1o-QC-yav"/>
                                 <constraint firstItem="QLz-8Y-71S" firstAttribute="top" secondItem="jOY-QS-EKV" secondAttribute="top" constant="4" id="S3I-4P-YAW"/>
                                 <constraint firstItem="0Rg-pn-yCN" firstAttribute="top" secondItem="jOY-QS-EKV" secondAttribute="top" constant="3" id="SM6-0W-siW"/>
