@@ -233,7 +233,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             iconImageView.image = nil
             coverImageView.image = nil
             if AccountSettingsStore.isCurrent(user.userID) {
-                self.followedByLabel.removeFromSuperview()
+                followedByLabel.removeFromSuperview()
             } else {
                 if !user.isProtected {
                     protectedLabel.removeFromSuperview()
