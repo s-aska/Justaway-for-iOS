@@ -17,13 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Pinwheel.Configuration.Builder()
                 .maxConcurrent(5)
                 .defaultTimeoutIntervalForRequest(5)
-                .debug()
+                //.debug()
                 .build())
         
         Twitter.setup()
         
         #if DEBUG
-            Pinwheel.DiskCache.sharedInstance().clear()
+            // Pinwheel.DiskCache.sharedInstance().clear()
             KeyClip.printError(true)
             NSLog("debug")
         #endif

@@ -42,6 +42,14 @@ class NotificationsViewController: StatusTableViewController {
                     return true
                 }
             }
+            
+            if status.event != nil {
+                if let quotedStatus = status.quotedStatus {
+                    if accountSettings.isMe(quotedStatus.user.userID) {
+                        return true
+                    }
+                }
+            }
         }
         
         return false

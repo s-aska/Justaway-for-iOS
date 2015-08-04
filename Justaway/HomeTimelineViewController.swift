@@ -28,7 +28,7 @@ class HomeTimelineTableViewController: StatusTableViewController {
     }
     
     override func accept(status: TwitterStatus) -> Bool {
-        if status.type == .Favorite {
+        if status.event != nil {
             return false
         }
         return true

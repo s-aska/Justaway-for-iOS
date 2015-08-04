@@ -23,9 +23,11 @@ class TwitterStatus {
     let referenceStatusID: String?
     let type: TwitterStatusType
     let quotedStatus: TwitterStatus?
+    let event: String?
     
     init(_ json: JSONValue) {
         let statusJson = json["retweeted_status"].object != nil ? json["retweeted_status"] : json["target_object"].object != nil ? json["target_object"] : json
+        self.event = json["event"].string
         self.user = TwitterUser(statusJson["user"])
         self.statusID = statusJson["id_str"].string ?? ""
         self.inReplyToStatusID = statusJson["in_reply_to_status_id_str"].string
@@ -93,8 +95,8 @@ class TwitterStatus {
             self.referenceStatusID = nil
         }
         
-        if json["quoted_status"].object != nil {
-            self.quotedStatus = TwitterStatus(json["quoted_status"])
+        if statusJson["quoted_status"].object != nil {
+            self.quotedStatus = TwitterStatus(statusJson["quoted_status"])
         } else {
             self.quotedStatus = nil
         }
@@ -139,6 +141,12 @@ class TwitterStatus {
             self.actionedBy = TwitterUser(actionedBy)
         } else {
             self.actionedBy = nil
+        }
+        
+        if let event = dictionary["event"] as? String {
+            self.event = event
+        } else {
+            self.event = nil
         }
         
         if let inReplyToStatusID = dictionary["inReplyToStatusID"] as? String {
@@ -186,6 +194,10 @@ class TwitterStatus {
             "media": media.map({ $0.dictionaryValue }),
             "via": via.dictionaryValue
         ]
+        
+        if let event = self.event {
+            dictionary["event"] = event
+        }
         
         if let actionedBy = self.actionedBy {
             dictionary["actionedBy"] = actionedBy.dictionaryValue

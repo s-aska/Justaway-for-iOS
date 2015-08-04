@@ -803,12 +803,15 @@ extension Twitter {
                     }
                 } else if event == "unfavorite" {
                     // TODO: unfavorite event
+                } else if event == "quoted_tweet" {
+                    EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
                 }
             } else if let statusID = responce["delete"]["status"]["id_str"].string {
                 EventBox.post(Event.DestroyStatus.rawValue, sender: statusID)
             } else if responce["delete"]["direct_message"].object != nil {
             } else if responce["direct_message"].object != nil {
             } else if responce["text"].string != nil {
+                NSLog("tweet:" + (responce["text"].string ?? "") + " quoted_status_id_str:" + (responce["quoted_status_id_str"].string ?? ""))
                 EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
             }
         }

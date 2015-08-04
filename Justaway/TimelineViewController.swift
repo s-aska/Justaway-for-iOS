@@ -87,7 +87,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
             button.frame = CGRectMake(58 * CGFloat(i), 0, 58, 58)
             button.contentEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
-            button.setTitle(i == 0 ? "家" : "@", forState: UIControlState.Normal)
+            button.setTitle(i == 0 ? "家" : "鐘", forState: UIControlState.Normal)
             button.sizeToFit()
             button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tabButton:"))
             
