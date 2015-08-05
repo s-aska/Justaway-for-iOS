@@ -33,6 +33,13 @@ class FavoritesTableViewController: StatusTableViewController {
     }
     
     override func accept(status: TwitterStatus) -> Bool {
+        if let userID = self.userID {
+            if let actionedByUserID = status.actionedBy?.userID {
+                if actionedByUserID == userID {
+                    return true
+                }
+            }
+        }
         return false
     }
 }

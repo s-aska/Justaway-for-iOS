@@ -792,15 +792,7 @@ extension Twitter {
             if let event = responce["event"].string {
                 NSLog("event:\(event)")
                 if event == "favorite" {
-                    let status = TwitterStatus(responce)
-                    if let source = status.actionedBy {
-                        if AccountSettingsStore.get()?.find(source.userID) != nil {
-                            NSLog("by me")
-                        } else {
-                            NSLog("by other")
-                            EventBox.post(Event.CreateStatus.rawValue, sender: status)
-                        }
-                    }
+                    EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
                 } else if event == "unfavorite" {
                     // TODO: unfavorite event
                 } else if event == "quoted_tweet" {
@@ -811,7 +803,6 @@ extension Twitter {
             } else if responce["delete"]["direct_message"].object != nil {
             } else if responce["direct_message"].object != nil {
             } else if responce["text"].string != nil {
-                NSLog("tweet:" + (responce["text"].string ?? "") + " quoted_status_id_str:" + (responce["quoted_status_id_str"].string ?? ""))
                 EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
             }
         }
