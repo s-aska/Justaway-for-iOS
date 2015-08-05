@@ -86,7 +86,6 @@ class TimelineTableViewController: UITableViewController {
         if f < TIMELINE_FOOTER_HEIGHT {
             didScrollToBottom()
         }
-        renderImages()
         if isTop {
             EventBox.post("timelineScrollToTop")
         }
@@ -102,10 +101,6 @@ class TimelineTableViewController: UITableViewController {
     }
     
     func refresh() {
-        assertionFailure("not implements.")
-    }
-    
-    func renderImages() {
         assertionFailure("not implements.")
     }
 }

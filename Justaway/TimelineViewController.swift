@@ -73,13 +73,17 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         let size = scrollWrapperView.frame.size
         let contentView = UIView(frame: CGRectMake(0, 0, size.width * 3, size.height))
         
-        for i in 0 ... 1 {
-            let vc: TimelineTableViewController = i == 0 ? HomeTimelineTableViewController() : NotificationsViewController()
+        for i in 0 ... 2 {
+            let vc: TimelineTableViewController = i == 0 ? HomeTimelineTableViewController() : i == 1 ? NotificationsViewController() : FavoritesTableViewController()
             vc.view.frame = CGRectMake(0, 0, size.width, size.height)
             let view = UIView(frame: CGRectMake(size.width * CGFloat(i), 0, size.width, size.height))
             view.addSubview(vc.view)
             contentView.addSubview(view)
             tableViewControllers.append(vc)
+            
+            if let favoritesTableViewController = vc as? FavoritesTableViewController {
+                favoritesTableViewController.userID = userID
+            }
             
             let button = MenuButton(type: UIButtonType.System)
             button.tag = i
@@ -87,7 +91,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
             button.frame = CGRectMake(58 * CGFloat(i), 0, 58, 58)
             button.contentEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
-            button.setTitle(i == 0 ? "家" : "鐘", forState: UIControlState.Normal)
+            button.setTitle(i == 0 ? "家" : i == 1 ? "鐘" : "★", forState: UIControlState.Normal)
             button.sizeToFit()
             button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tabButton:"))
             

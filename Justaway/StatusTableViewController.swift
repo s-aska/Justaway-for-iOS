@@ -9,33 +9,9 @@ let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
 
 class StatusTableViewController: TimelineTableViewController {
     
-    var rows = [Row]()
-    var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
-    var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
+    let adapter = TwitterStatusAdapter()
     var lastID: Int64?
     var cacheLoaded = false
-    
-    enum RenderMode {
-        case TOP
-        case BOTTOM
-        case OVER
-    }
-    
-    struct Row {
-        let status: TwitterStatus
-        let fontSize: CGFloat
-        let height: CGFloat
-        let textHeight: CGFloat
-        let quotedTextHeight: CGFloat
-        
-        init(status: TwitterStatus, fontSize: CGFloat, height: CGFloat, textHeight: CGFloat, quotedTextHeight: CGFloat) {
-            self.status = status
-            self.fontSize = fontSize
-            self.height = height
-            self.textHeight = textHeight
-            self.quotedTextHeight = quotedTextHeight
-        }
-    }
     
     // MARK: - View Life Cycle
     
@@ -65,15 +41,9 @@ class StatusTableViewController: TimelineTableViewController {
     // MARK: - Configuration
     
     func configureView() {
-        self.tableView.separatorInset = UIEdgeInsetsZero
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableView.backgroundColor = UIColor.clearColor()
         
-        let nib = UINib(nibName: "TwitterStatusCell", bundle: nil)
-        for layout in TwitterStatusCellLayout.allValues {
-            self.tableView.registerNib(nib, forCellReuseIdentifier: layout.rawValue)
-            self.layoutHeightCell[layout] = self.tableView.dequeueReusableCellWithIdentifier(layout.rawValue) as? TwitterStatusCell
-        }
+        adapter.configureView(tableView)
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
@@ -89,7 +59,7 @@ class StatusTableViewController: TimelineTableViewController {
         })
         EventBox.onBackgroundThread(self, name: EventFontSizeApplied) { (n) -> Void in
             if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
-                let newNows = self.rows.map({ self.createRow($0.status, fontSize: CGFloat(fontSize.floatValue)) })
+                let newNows = self.adapter.rows.map({ self.adapter.createRow($0.status, fontSize: CGFloat(fontSize.floatValue), tableView: self.tableView) })
                 
                 let op = AsyncBlockOperation { (op) -> Void in
                     if var firstCell = self.tableView.visibleCells.first {
@@ -106,7 +76,7 @@ class StatusTableViewController: TimelineTableViewController {
                                 firstPath = indexPathsForVisibleRows.first!
                             }
                             
-                            self.rows = newNows
+                            self.adapter.rows = newNows
                             
                             self.tableView.reloadData()
                             self.tableView.scrollToRowAtIndexPath(firstPath, atScrollPosition: .Top, animated: false)
@@ -123,60 +93,21 @@ class StatusTableViewController: TimelineTableViewController {
     // MARK: - UITableViewDataSource
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rows.count ?? 0
+        return self.adapter.tableView(tableView, numberOfRowsInSection: section)
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let row = rows[indexPath.row]
-        let status = row.status
-        let layout = TwitterStatusCellLayout.fromStatus(status)
-        let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as! TwitterStatusCell
-        
-        if cell.textHeightConstraint.constant != row.textHeight {
-            cell.textHeightConstraint.constant = row.textHeight
-        }
-        
-        if cell.quotedStatusLabelHeightConstraint.constant != row.quotedTextHeight {
-            cell.quotedStatusLabelHeightConstraint.constant = row.quotedTextHeight
-        }
-        
-        if row.fontSize != cell.statusLabel.font.pointSize {
-            cell.statusLabel.font = UIFont.systemFontOfSize(row.fontSize)
-        }
-        
-        if row.fontSize != cell.quotedStatusLabel.font.pointSize {
-            cell.quotedStatusLabel.font = UIFont.systemFontOfSize(row.fontSize)
-        }
-        
-        if let s = cell.status {
-            if s.uniqueID == status.uniqueID {
-                return cell
-            }
-        }
-        
-        cell.status = status
-        cell.setLayout(layout)
-        cell.setText(status)
-        
-        if !Pinwheel.suspend {
-            cell.setImage(status)
-        }
-        
-        return cell
+        return self.adapter.tableView(tableView, cellForRowAtIndexPath: indexPath)
     }
     
     // MARK: UITableViewDelegate
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let row = rows[indexPath.row]
-        return row.height
+        return self.adapter.tableView(tableView, heightForRowAtIndexPath: indexPath)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let row = rows[indexPath.row]
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-            StatusAlert.show(cell, status: row.status)
-        }
+        self.adapter.tableView(tableView, didSelectRowAtIndexPath: indexPath)
     }
     
     // MARK: Public Methods
@@ -184,48 +115,6 @@ class StatusTableViewController: TimelineTableViewController {
     override func didScrollToBottom() {
         if let maxID = lastID {
             self.loadData(maxID - 1)
-        }
-    }
-    
-    func createRow(status: TwitterStatus, fontSize: CGFloat) -> Row {
-        let layout = TwitterStatusCellLayout.fromStatus(status)
-        if let height = layoutHeight[layout] {
-            let textHeight = measure(status.text, fontSize: fontSize)
-            let quotedTextHeight = measureQuoted(status, fontSize: fontSize)
-            let totalHeight = ceil(height + textHeight + quotedTextHeight)
-            return Row(status: status, fontSize: fontSize, height: totalHeight, textHeight: textHeight, quotedTextHeight: quotedTextHeight)
-        } else if let cell = self.layoutHeightCell[layout] {
-            cell.frame = self.tableView.bounds
-            cell.setLayout(layout)
-            let textHeight = measure(status.text, fontSize: fontSize)
-            let quotedTextHeight = measureQuoted(status, fontSize: fontSize)
-            cell.textHeightConstraint.constant = 0
-            cell.quotedStatusLabelHeightConstraint.constant = 0
-            let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
-            layoutHeight[layout] = height
-            let totalHeight = ceil(height + textHeight + quotedTextHeight)
-            return Row(status: status, fontSize: fontSize, height: totalHeight, textHeight: textHeight, quotedTextHeight: quotedTextHeight)
-        }
-        fatalError("cellForHeight is missing.")
-    }
-    
-    func measure(text: NSString, fontSize: CGFloat) -> CGFloat {
-        return ceil(text.boundingRectWithSize(
-            CGSizeMake((self.layoutHeightCell[.Normal]?.statusLabel.frame.size.width)!, 0),
-            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
-            attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
-            context: nil).size.height)
-    }
-    
-    func measureQuoted(status: TwitterStatus, fontSize: CGFloat) -> CGFloat {
-        if let quotedStatus = status.quotedStatus {
-            return ceil(quotedStatus.text.boundingRectWithSize(
-                CGSizeMake((self.layoutHeightCell[.Normal]?.quotedStatusLabel.frame.size.width)!, 0),
-                options: NSStringDrawingOptions.UsesLineFragmentOrigin,
-                attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
-                context: nil).size.height)
-        } else {
-            return 0
         }
     }
     
@@ -328,73 +217,15 @@ class StatusTableViewController: TimelineTableViewController {
         fatalError("not implements.")
     }
     
-    func renderData(statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
-        var fontSize :CGFloat = 12.0
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            fontSize = CGFloat(delegate.fontSize)
-        }
-        
+    func renderData(statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
         let op = AsyncBlockOperation { (op) -> Void in
-            
-            let limit = mode == .OVER ? 0 : TIMELINE_ROWS_LIMIT
-            let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + statuses.count) - limit, 0)
-            let deleteStart = mode == .TOP ? self.rows.count - deleteCount : 0
-            let deleteRange = deleteStart ..< (deleteStart + deleteCount)
-            let deleteIndexPaths = deleteRange.map { i in NSIndexPath(forRow: i, inSection: 0) }
-            
-            let insertStart = mode == .BOTTOM ? self.rows.count - deleteCount : 0
-            let insertIndexPaths = (insertStart ..< (insertStart + statuses.count)).map { i in NSIndexPath(forRow: i, inSection: 0) }
-            
-            // println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count)")
-            
-            if let lastCell = self.tableView.visibleCells.last {
-                let isTop = self.isTop
-                let offset = lastCell.frame.origin.y - self.tableView.contentOffset.y
-                UIView.setAnimationsEnabled(false)
-                self.tableView.beginUpdates()
-                if deleteIndexPaths.count > 0 {
-                    self.tableView.deleteRowsAtIndexPaths(deleteIndexPaths, withRowAnimation: .None)
-                    self.rows.removeRange(deleteRange)
+            self.adapter.renderData(self.tableView, statuses: statuses, mode: mode, handler: { () -> Void in
+                if self.isTop {
+                    self.scrollEnd()
                 }
-                if insertIndexPaths.count > 0 {
-                    var i = 0
-                    for insertIndexPath in insertIndexPaths {
-                        let row = self.createRow(statuses[i], fontSize: fontSize)
-                        self.rows.insert(row, atIndex: insertIndexPath.row)
-                        i++
-                    }
-                    self.tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
-                }
-                self.tableView.endUpdates()
-                self.tableView.setContentOffset(CGPointMake(0, lastCell.frame.origin.y - offset), animated: false)
-                UIView.setAnimationsEnabled(true)
-                if isTop {
-                    UIView.animateWithDuration(0.3, animations: { _ in
-                        self.tableView.contentOffset = CGPointZero
-                    }, completion: { _ in
-                        self.renderImages()
-                        self.saveCacheSchedule()
-                        self.scrollEnd()
-                        op.finish()
-                    })
-                } else {
-                    self.saveCacheSchedule()
-                    op.finish()
-                }
-                
-            } else {
-                if deleteIndexPaths.count > 0 {
-                    self.rows.removeRange(deleteRange)
-                }
-                for status in statuses {
-                    self.rows.append(self.createRow(status, fontSize: fontSize))
-                }
-                self.tableView.setContentOffset(CGPointMake(0, -self.tableView.contentInset.top), animated: false)
-                self.tableView.reloadData()
                 self.saveCacheSchedule()
-                self.scrollEnd()
                 op.finish()
-            }
+            })
             
             if let h = handler {
                 h()
@@ -405,40 +236,15 @@ class StatusTableViewController: TimelineTableViewController {
     
     func eraseData(statusID: String, handler: (() -> Void)?) {
         let op = AsyncBlockOperation { (op) -> Void in
-            
-            var deleteIndexPaths = [NSIndexPath]()
-            var i = 0
-            for row in self.rows {
-                if row.status.statusID == statusID {
-                    deleteIndexPaths.append(NSIndexPath(forRow: i, inSection: 0))
-                    continue
-                }
-                i++
-            }
-            
-            if deleteIndexPaths.count > 0 {
-                self.tableView.beginUpdates()
-                while let index = self.rows.map({ $0.status.statusID }).indexOf(statusID) {
-                    self.rows.removeAtIndex(index)
-                }
-                self.tableView.deleteRowsAtIndexPaths(deleteIndexPaths, withRowAnimation: .Fade)
-                self.tableView.endUpdates()
-            }
-            op.finish()
+            self.adapter.eraseData(self.tableView, statusID: statusID, handler: { () -> Void in
+                op.finish()
+            })
             
             if let h = handler {
                 h()
             }
         }
         mainQueue.addOperation(op)
-    }
-    
-    override func renderImages() {
-        for cell in self.tableView.visibleCells as! [TwitterStatusCell] {
-            if let status = cell.status {
-                cell.setImage(status)
-            }
-        }
     }
 }
 

@@ -12,8 +12,8 @@ import KeyClip
 class HomeTimelineTableViewController: StatusTableViewController {
     
     override func saveCache() {
-        if self.rows.count > 0 {
-            let dictionary = ["statuses": ( self.rows.count > 100 ? Array(self.rows[0 ..< 100]) : self.rows ).map({ $0.status.dictionaryValue })]
+        if self.adapter.rows.count > 0 {
+            let dictionary = ["statuses": ( self.adapter.rows.count > 100 ? Array(self.adapter.rows[0 ..< 100]) : self.adapter.rows ).map({ $0.status.dictionaryValue })]
             KeyClip.save("homeTimeline", dictionary: dictionary)
             NSLog("homeTimeline saveCache.")
         }

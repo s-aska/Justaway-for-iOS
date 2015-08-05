@@ -12,8 +12,8 @@ import KeyClip
 class NotificationsViewController: StatusTableViewController {
     
     override func saveCache() {
-        if self.rows.count > 0 {
-            let dictionary = ["statuses": ( self.rows.count > 100 ? Array(self.rows[0 ..< 100]) : self.rows ).map({ $0.status.dictionaryValue })]
+        if self.adapter.rows.count > 0 {
+            let dictionary = ["statuses": ( self.adapter.rows.count > 100 ? Array(self.adapter.rows[0 ..< 100]) : self.adapter.rows ).map({ $0.status.dictionaryValue })]
             KeyClip.save("notifications", dictionary: dictionary)
             NSLog("notifications saveCache.")
         }

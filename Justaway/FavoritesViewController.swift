@@ -14,7 +14,7 @@ class FavoritesTableViewController: StatusTableViewController {
     var userID: String?
     
     override func saveCache() {
-        if self.rows.count > 0 {
+        if self.adapter.rows.count > 0 {
             // let dictionary = ["statuses": ( self.rows.count > 100 ? Array(self.rows[0 ..< 100]) : self.rows ).map({ $0.status.dictionaryValue })]
             // KeyClip.save("homeTimeline", dictionary: dictionary)
             // NSLog("homeTimeline saveCache.")
@@ -22,6 +22,7 @@ class FavoritesTableViewController: StatusTableViewController {
     }
     
     override func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+        success(statuses: [])
         // Twitter.getHomeTimelineCache(success, failure: failure)
     }
     
