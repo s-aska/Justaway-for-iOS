@@ -89,10 +89,11 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             button.tag = i
             button.tintColor = UIColor.clearColor()
             button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
-            button.frame = CGRectMake(58 * CGFloat(i), 0, 58, 58)
-            button.contentEdgeInsets = UIEdgeInsetsMake(15, 20, 15, 20)
+            button.frame = CGRectMake(58 * CGFloat(i), 0, 58, 50)
+            // button.contentEdgeInsets = UIEdgeInsetsMake(15, 0, 15, 0)
+            button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+            button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
             button.setTitle(i == 0 ? "家" : i == 1 ? "鐘" : "★", forState: UIControlState.Normal)
-            button.sizeToFit()
             button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tabButton:"))
             
             let longPress = UILongPressGestureRecognizer(target: self, action: "refresh:")
