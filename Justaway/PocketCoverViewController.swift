@@ -46,7 +46,7 @@ class PocketCoverViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.timer?.invalidate()
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "timeout", userInfo: nil, repeats: false)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1800, target: self, selector: "timeout", userInfo: nil, repeats: false)
         
         self.state = 1
         self.button1.hidden = false
