@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8152.3" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8124.4"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PocketCoverViewController" customModule="Justaway" customModuleProvider="target">
+            <connections>
+                <outlet property="button1" destination="5J0-ol-IPP" id="dmv-xt-T6q"/>
+                <outlet property="button2" destination="qHK-kw-7GW" id="Ao6-Tp-sxr"/>
+                <outlet property="button3" destination="MWL-K8-0R8" id="tLX-tK-fCZ"/>
+                <outlet property="button4" destination="3Ea-BX-ioA" id="fez-ry-2fX"/>
+                <outlet property="view" destination="iN0-l3-epB" id="qr1-m8-7ym"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xLZ-5b-rMe">
+                    <rect key="frame" x="180" y="180" width="240" height="240"/>
+                    <subviews>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5J0-ol-IPP">
+                            <rect key="frame" x="8" y="8" width="82" height="88"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="48"/>
+                            <inset key="contentEdgeInsets" minX="30" minY="15" maxX="30" maxY="15"/>
+                            <state key="normal" title="1"/>
+                            <connections>
+                                <action selector="button:" destination="-1" eventType="touchUpInside" id="ozj-mN-Oln"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qHK-kw-7GW">
+                            <rect key="frame" x="144" y="8" width="88" height="88"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="48"/>
+                            <inset key="contentEdgeInsets" minX="30" minY="15" maxX="30" maxY="15"/>
+                            <state key="normal" title="2"/>
+                            <connections>
+                                <action selector="button:" destination="-1" eventType="touchUpInside" id="YJ3-y3-tGu"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MWL-K8-0R8">
+                            <rect key="frame" x="8" y="144" width="89" height="88"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="48"/>
+                            <inset key="contentEdgeInsets" minX="30" minY="15" maxX="30" maxY="15"/>
+                            <state key="normal" title="3"/>
+                            <connections>
+                                <action selector="button:" destination="-1" eventType="touchUpInside" id="cEt-8o-Wks"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ea-BX-ioA">
+                            <rect key="frame" x="142" y="144" width="90" height="88"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="48"/>
+                            <inset key="contentEdgeInsets" minX="30" minY="15" maxX="30" maxY="15"/>
+                            <state key="normal" title="4"/>
+                            <connections>
+                                <action selector="button:" destination="-1" eventType="touchUpInside" id="t68-1p-h7X"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="qHK-kw-7GW" secondAttribute="trailing" constant="8" id="2Qp-7t-Lw8"/>
+                        <constraint firstAttribute="bottom" secondItem="3Ea-BX-ioA" secondAttribute="bottom" constant="8" id="AUi-cE-j7U"/>
+                        <constraint firstItem="5J0-ol-IPP" firstAttribute="top" secondItem="xLZ-5b-rMe" secondAttribute="top" constant="8" id="CqK-ly-y6C"/>
+                        <constraint firstAttribute="bottom" secondItem="MWL-K8-0R8" secondAttribute="bottom" constant="8" id="QsB-cP-YCR"/>
+                        <constraint firstAttribute="height" constant="240" id="XXa-xm-510"/>
+                        <constraint firstAttribute="trailing" secondItem="3Ea-BX-ioA" secondAttribute="trailing" constant="8" id="bsH-N5-DRd"/>
+                        <constraint firstItem="5J0-ol-IPP" firstAttribute="leading" secondItem="xLZ-5b-rMe" secondAttribute="leading" constant="8" id="deh-FX-Pqt"/>
+                        <constraint firstItem="MWL-K8-0R8" firstAttribute="leading" secondItem="xLZ-5b-rMe" secondAttribute="leading" constant="8" id="rs7-rh-TlW"/>
+                        <constraint firstItem="qHK-kw-7GW" firstAttribute="top" secondItem="xLZ-5b-rMe" secondAttribute="top" constant="8" id="vN6-hU-o3V"/>
+                        <constraint firstAttribute="width" constant="240" id="zOW-mf-iXN"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="xLZ-5b-rMe" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="fWr-5I-daL"/>
+                <constraint firstItem="xLZ-5b-rMe" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="kAX-dP-8TN"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

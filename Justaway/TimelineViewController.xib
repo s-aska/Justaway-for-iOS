@@ -138,11 +138,21 @@
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wty-Yr-sEa">
+                    <rect key="frame" x="262.5" y="-4" width="74" height="27"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <state key="normal" title="pocket cover">
+                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="showPocketCover:" destination="-1" eventType="touchUpInside" id="u42-Rt-JlH"/>
+                    </connections>
+                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zsL-HL-Z8V">
                     <rect key="frame" x="490" y="0.0" width="110" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hgv-8Y-sHi" customClass="StreamingButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="4.5" y="-1" width="30" height="25"/>
+                            <rect key="frame" x="5" y="-1" width="30" height="25"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="12"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <state key="normal" title="雷">
@@ -151,7 +161,7 @@
                             </state>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="disconnected" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i4e-3u-LDz" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="27.5" y="3" width="77" height="14.5"/>
+                            <rect key="frame" x="28" y="3" width="77" height="14.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -175,8 +185,10 @@
                 <constraint firstItem="rWY-A3-4yL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Dse-Nr-pj0"/>
                 <constraint firstItem="YBJ-Kd-WdX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="GYv-WM-02G"/>
                 <constraint firstItem="YBJ-Kd-WdX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="H6o-wN-CCs"/>
+                <constraint firstItem="Wty-Yr-sEa" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="HPB-MA-uRh"/>
                 <constraint firstItem="YQA-1l-jex" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="25" id="HTj-dX-PrM"/>
                 <constraint firstItem="rWY-A3-4yL" firstAttribute="top" secondItem="YQA-1l-jex" secondAttribute="bottom" id="L5Y-T6-0Dv"/>
+                <constraint firstItem="Wty-Yr-sEa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="-4" id="QcO-ys-NF3"/>
                 <constraint firstAttribute="bottom" secondItem="rWY-A3-4yL" secondAttribute="bottom" id="Rl2-co-V9R"/>
                 <constraint firstItem="X0p-bW-fE8" firstAttribute="leading" secondItem="eI8-Uh-DCZ" secondAttribute="trailing" constant="5" id="RnE-KM-t8m"/>
                 <constraint firstAttribute="trailing" secondItem="YBJ-Kd-WdX" secondAttribute="trailing" id="Y4q-tr-NPQ"/>
@@ -187,16 +199,5 @@
             </constraints>
             <point key="canvasLocation" x="412" y="336"/>
         </view>
-        <viewController id="fwg-O2-Tgy">
-            <layoutGuides>
-                <viewControllerLayoutGuide type="top" id="7he-O5-nai"/>
-                <viewControllerLayoutGuide type="bottom" id="R1p-pc-ZTD"/>
-            </layoutGuides>
-            <view key="view" contentMode="scaleToFill" id="Bgl-BT-A84">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-            </view>
-        </viewController>
     </objects>
 </document>

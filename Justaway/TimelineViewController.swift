@@ -280,4 +280,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         settingsViewController.show()
     }
     
+    @IBAction func showPocketCover(sender: UIButton) {
+        PocketCoverViewController.show()
+    }
+    
 }
