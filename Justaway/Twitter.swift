@@ -792,9 +792,18 @@ extension Twitter {
             if let event = responce["event"].string {
                 NSLog("event:\(event)")
                 if event == "favorite" {
-                    EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
+                    let status = TwitterStatus(responce)
+                    EventBox.post(Event.CreateStatus.rawValue, sender: status)
+                    if AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
+                        Static.favorites[status.statusID] = true
+                        EventBox.post(Event.CreateFavorites.rawValue, sender: status.statusID)
+                    }
                 } else if event == "unfavorite" {
-                    // TODO: unfavorite event
+                    let status = TwitterStatus(responce)
+                    if AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
+                        Static.favorites.removeValueForKey(status.statusID)
+                        EventBox.post(Event.DestroyFavorites.rawValue, sender: status.statusID)
+                    }
                 } else if event == "quoted_tweet" {
                     EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
                 }

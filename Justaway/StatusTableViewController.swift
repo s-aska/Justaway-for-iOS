@@ -45,6 +45,12 @@ class StatusTableViewController: TimelineTableViewController {
         
         adapter.configureView(tableView)
         
+        adapter.didScrollToBottom = {
+            if let maxID = self.lastID {
+                self.loadData(maxID - 1)
+            }
+        }
+        
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshControl
@@ -55,7 +61,7 @@ class StatusTableViewController: TimelineTableViewController {
             self.saveCache()
         }
         EventBox.onMainThread(self, name: EventStatusBarTouched, handler: { (n) -> Void in
-            self.scrollToTop()
+            self.adapter.scrollToTop(self.tableView)
         })
         EventBox.onBackgroundThread(self, name: EventFontSizeApplied) { (n) -> Void in
             if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
@@ -85,7 +91,7 @@ class StatusTableViewController: TimelineTableViewController {
                     }
                     op.finish()
                 }
-                self.mainQueue.addOperation(op)
+                self.adapter.mainQueue.addOperation(op)
             }
         }
     }
@@ -93,33 +99,27 @@ class StatusTableViewController: TimelineTableViewController {
     // MARK: - UITableViewDataSource
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.adapter.tableView(tableView, numberOfRowsInSection: section)
+        return adapter.tableView(tableView, numberOfRowsInSection: section)
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return self.adapter.tableView(tableView, cellForRowAtIndexPath: indexPath)
+        return adapter.tableView(tableView, cellForRowAtIndexPath: indexPath)
     }
     
     // MARK: UITableViewDelegate
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return self.adapter.tableView(tableView, heightForRowAtIndexPath: indexPath)
+        return adapter.tableView(tableView, heightForRowAtIndexPath: indexPath)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.adapter.tableView(tableView, didSelectRowAtIndexPath: indexPath)
+        adapter.tableView(tableView, didSelectRowAtIndexPath: indexPath)
     }
     
     // MARK: Public Methods
     
-    override func didScrollToBottom() {
-        if let maxID = lastID {
-            self.loadData(maxID - 1)
-        }
-    }
-    
     func loadCache() {
-        if loadDataQueue.operationCount > 0 {
+        if self.adapter.loadDataQueue.operationCount > 0 {
             return
         }
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
@@ -147,7 +147,7 @@ class StatusTableViewController: TimelineTableViewController {
             })
             self.loadCache(success, failure: failure)
         })
-        loadDataQueue.addOperation(op)
+        self.adapter.loadDataQueue.addOperation(op)
     }
     
     func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
@@ -167,14 +167,14 @@ class StatusTableViewController: TimelineTableViewController {
     }
     
     func loadData(maxID: Int64?) {
-        if loadDataQueue.operationCount > 0 {
+        if self.adapter.loadDataQueue.operationCount > 0 {
             NSLog("loadData busy")
             return
         }
         if maxID == nil {
             self.lastID = nil
         }
-        NSLog("loadData addOperation: \(maxID ?? 0) suspended:\(loadDataQueue.suspended)")
+        NSLog("loadData addOperation: \(maxID ?? 0) suspended:\(self.adapter.loadDataQueue.suspended)")
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (()-> Void) = {
                 op.finish()
@@ -206,7 +206,7 @@ class StatusTableViewController: TimelineTableViewController {
             }
             self.loadData(maxID?.stringValue, success: success, failure: failure)
         })
-        loadDataQueue.addOperation(op)
+        self.adapter.loadDataQueue.addOperation(op)
     }
     
     func loadData(id: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
@@ -220,8 +220,8 @@ class StatusTableViewController: TimelineTableViewController {
     func renderData(statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
         let op = AsyncBlockOperation { (op) -> Void in
             self.adapter.renderData(self.tableView, statuses: statuses, mode: mode, handler: { () -> Void in
-                if self.isTop {
-                    self.scrollEnd()
+                if self.adapter.isTop {
+                    self.adapter.scrollEnd(self.tableView)
                 }
                 self.saveCacheSchedule()
                 op.finish()
@@ -231,7 +231,7 @@ class StatusTableViewController: TimelineTableViewController {
                 h()
             }
         }
-        mainQueue.addOperation(op)
+        self.adapter.mainQueue.addOperation(op)
     }
     
     func eraseData(statusID: String, handler: (() -> Void)?) {
@@ -244,7 +244,7 @@ class StatusTableViewController: TimelineTableViewController {
                 h()
             }
         }
-        mainQueue.addOperation(op)
+        self.adapter.mainQueue.addOperation(op)
     }
 }
 

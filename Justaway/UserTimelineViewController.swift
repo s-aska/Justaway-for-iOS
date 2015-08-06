@@ -17,7 +17,7 @@ class UserTimelineTableViewController: StatusTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         cacheLoaded = true // no cache
-        scrollEnd() // contentInset call scrollViewDidScroll, but call scrollEnd
+        adapter.scrollEnd(tableView) // contentInset call scrollViewDidScroll, but call scrollEnd
     }
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {

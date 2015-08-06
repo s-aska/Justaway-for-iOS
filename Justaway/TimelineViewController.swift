@@ -90,7 +90,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             button.tintColor = UIColor.clearColor()
             button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
             button.frame = CGRectMake(58 * CGFloat(i), 0, 58, 50)
-            // button.contentEdgeInsets = UIEdgeInsetsMake(15, 0, 15, 0)
             button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
             button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
             button.setTitle(i == 0 ? "家" : i == 1 ? "鐘" : "★", forState: UIControlState.Normal)
@@ -137,7 +136,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 case let vc as StatusTableViewController:
                     if vc.accept(status) {
                         vc.renderData([status], mode: .TOP, handler: {})
-                        if self.currentPage != page || !vc.isTop {
+                        if self.currentPage != page || !vc.adapter.isTop {
                             self.tabButtons[page].selected = true
                         }
                     }
@@ -189,7 +188,11 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         }
         
         EventBox.onMainThread(self, name: "timelineScrollToTop", handler: { _ in
-            self.tabButtons[self.currentPage].selected = false
+            if let vc = self.tableViewControllers[self.currentPage] as? StatusTableViewController {
+                if vc.adapter.isTop {
+                    self.tabButtons[self.currentPage].selected = false
+                }
+            }
         })
     }
     
@@ -234,9 +237,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         
         tabCurrentMaskLeftConstraint.constant = CGFloat(page * 58)
         
-        
-        if tableViewControllers[currentPage].isTop {
-            tabButtons[currentPage].selected = false
+        if let vc = tableViewControllers[currentPage] as? StatusTableViewController {
+            if vc.adapter.isTop {
+                tabButtons[currentPage].selected = false
+            }
         }
     }
     
@@ -260,7 +264,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     func tabButton(sender: UITapGestureRecognizer) {
         if let page = sender.view?.tag {
             if currentPage == page {
-                tableViewControllers[page].scrollToTop()
+                if let vc = tableViewControllers[page] as? StatusTableViewController {
+                    vc.adapter.scrollToTop(vc.tableView)
+                }
                 tabButtons[page].selected = false
             } else {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in

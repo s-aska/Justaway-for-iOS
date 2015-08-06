@@ -70,7 +70,6 @@ class PocketCoverViewController: UIViewController {
     }
     
     func timeout() {
-        NSLog("timeout")
         UIApplication.sharedApplication().idleTimerDisabled = false
     }
     

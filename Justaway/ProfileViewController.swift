@@ -12,11 +12,11 @@ import Pinwheel
 
 class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
+    // MARK: Types
+    
     struct Static {
         static var instances = [ProfileViewController]()
     }
-    
-    // MARK: Types
     
     struct Constants {
         static let duration: Double = 0.2
@@ -194,7 +194,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         
         userTimelineTableViewController.tableView.contentInset = UIEdgeInsetsMake(159, 0, 0, 0)
         userTimelineTableViewController.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(159, 0, 0, 0)
-        userTimelineTableViewController.scrollEnd()
+        userTimelineTableViewController.adapter.scrollEnd(userTimelineTableViewController.tableView)
     }
     
     func configureEvent() {

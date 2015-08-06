@@ -8,6 +8,7 @@
 
 import Foundation
 import KeyClip
+import EventBox
 
 class FavoritesTableViewController: StatusTableViewController {
     
@@ -35,11 +36,19 @@ class FavoritesTableViewController: StatusTableViewController {
     override func accept(status: TwitterStatus) -> Bool {
         if let userID = self.userID {
             if let actionedByUserID = status.actionedBy?.userID {
-                if actionedByUserID == userID {
+                if actionedByUserID == userID && status.type == .Favorite {
                     return true
                 }
             }
         }
         return false
+    }
+    
+    override func configureEvent() {
+        super.configureEvent()
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyFavorites.rawValue, sender: nil) { n in
+            let statusID = n.object as! String
+            self.eraseData(statusID, handler: {})
+        }
     }
 }

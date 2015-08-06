@@ -14,11 +14,7 @@ class TimelineTableViewController: UITableViewController {
     
     var footerView: UIView?
     var footerIndicatorView: UIActivityIndicatorView?
-    var isTop: Bool = true
-    var scrolling: Bool = false
     var setup = false
-    let loadDataQueue = NSOperationQueue().serial()
-    let mainQueue = NSOperationQueue.mainQueue().serial()
     
     // MARK: UITableViewDelegate
     
@@ -35,69 +31,6 @@ class TimelineTableViewController: UITableViewController {
             footerIndicatorView?.center = (footerView?.center)!
         }
         return footerView
-    }
-    
-    // MARK: UIScrollViewDelegate
-    
-    override func scrollViewDidScroll(scrollView: UIScrollView) {
-        if (loadDataQueue.suspended) {
-            return
-        }
-        scrollBegin() // now scrolling
-    }
-    
-    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        scrollBegin() // begin of flick scrolling
-    }
-    
-    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if (decelerate) {
-            return
-        }
-        scrollEnd() // end of flick scrolling no deceleration
-    }
-    
-    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        scrollEnd() // end of deceleration of flick scrolling
-    }
-    
-    override func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-        scrollEnd() // end of setContentOffset
-    }
-    
-    // MARK: -
-    
-    func scrollBegin() {
-        isTop = false
-        scrolling = true
-        loadDataQueue.suspended = true
-        mainQueue.suspended = true
-    }
-    
-    func scrollEnd() {
-        scrolling = false
-        loadDataQueue.suspended = false
-        mainQueue.suspended = false
-        Pinwheel.suspend = false
-        isTop = self.tableView.contentOffset.y == 0 ? true : false
-        let y = self.tableView.contentOffset.y + self.tableView.bounds.size.height - self.tableView.contentInset.bottom
-        let h = self.tableView.contentSize.height
-        let f = h - y
-        if f < TIMELINE_FOOTER_HEIGHT {
-            didScrollToBottom()
-        }
-        if isTop {
-            EventBox.post("timelineScrollToTop")
-        }
-    }
-    
-    func didScrollToBottom() {
-        
-    }
-    
-    func scrollToTop() {
-        Pinwheel.suspend = true
-        self.tableView.setContentOffset(CGPointZero, animated: true)
     }
     
     func refresh() {

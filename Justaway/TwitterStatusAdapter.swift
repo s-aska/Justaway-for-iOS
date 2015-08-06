@@ -8,6 +8,7 @@
 
 import UIKit
 import Pinwheel
+import EventBox
 
 class TwitterStatusAdapter: NSObject {
     
@@ -40,6 +41,11 @@ class TwitterStatusAdapter: NSObject {
     var rows = [Row]()
     var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
     var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
+    var isTop: Bool = true
+    var scrolling: Bool = false
+    var didScrollToBottom: (Void -> Void)?
+    let loadDataQueue = NSOperationQueue().serial()
+    let mainQueue = NSOperationQueue.mainQueue().serial()
     
     // MARK: Configuration
     
@@ -102,6 +108,38 @@ class TwitterStatusAdapter: NSObject {
     
     // MARK: Public Methods
     
+    func scrollBegin() {
+        isTop = false
+        scrolling = true
+        loadDataQueue.suspended = true
+        mainQueue.suspended = true
+    }
+    
+    func scrollEnd(scrollView: UIScrollView) {
+        scrolling = false
+        loadDataQueue.suspended = false
+        mainQueue.suspended = false
+        Pinwheel.suspend = false
+        if let tableView = scrollView as? UITableView {
+            renderImages(tableView)
+        }
+        isTop = scrollView.contentOffset.y == 0 ? true : false
+        let y = scrollView.contentOffset.y + scrollView.bounds.size.height - scrollView.contentInset.bottom
+        let h = scrollView.contentSize.height
+        let f = h - y
+        if f < TIMELINE_FOOTER_HEIGHT {
+            didScrollToBottom?()
+        }
+        if isTop {
+            EventBox.post("timelineScrollToTop")
+        }
+    }
+    
+    func scrollToTop(scrollView: UIScrollView) {
+        Pinwheel.suspend = true
+        scrollView.setContentOffset(CGPointZero, animated: true)
+    }
+    
     func renderData(tableView: UITableView, statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
         var fontSize :CGFloat = 12.0
         if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
@@ -144,7 +182,7 @@ class TwitterStatusAdapter: NSObject {
                 UIView.animateWithDuration(0.3, animations: { _ in
                     tableView.contentOffset = CGPointZero
                     }, completion: { _ in
-                        self.renderImages(tableView)
+                        self.scrollEnd(tableView)
                         handler?()
                 })
             } else {
@@ -257,5 +295,35 @@ extension TwitterStatusAdapter: UITableViewDelegate {
         if let cell = tableView.cellForRowAtIndexPath(indexPath) {
             StatusAlert.show(cell, status: row.status)
         }
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension TwitterStatusAdapter {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if loadDataQueue.suspended {
+            return
+        }
+        scrollBegin() // now scrolling
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        scrollBegin() // begin of flick scrolling
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate {
+            return
+        }
+        scrollEnd(scrollView) // end of flick scrolling no deceleration
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        scrollEnd(scrollView) // end of deceleration of flick scrolling
+    }
+    
+    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+        scrollEnd(scrollView) // end of setContentOffset
     }
 }
