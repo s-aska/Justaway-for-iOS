@@ -804,7 +804,7 @@ extension Twitter {
                         Static.favorites.removeValueForKey(status.statusID)
                         EventBox.post(Event.DestroyFavorites.rawValue, sender: status.statusID)
                     }
-                } else if event == "quoted_tweet" {
+                } else if event == "quoted_tweet" || event == "favorited_retweet" || event == "retweeted_retweet" {
                     EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
                 }
             } else if let statusID = responce["delete"]["status"]["id_str"].string {

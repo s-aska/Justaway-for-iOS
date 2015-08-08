@@ -26,7 +26,8 @@ class TwitterStatus {
     let event: String?
     
     init(_ json: JSONValue) {
-        let statusJson = json["retweeted_status"].object != nil ? json["retweeted_status"] : json["target_object"].object != nil ? json["target_object"] : json
+        let targetJson = json["target_object"].object != nil ? json["target_object"] : json
+        let statusJson = targetJson["retweeted_status"].object != nil ? targetJson["retweeted_status"] : targetJson
         self.event = json["event"].string
         self.user = TwitterUser(statusJson["user"])
         self.statusID = statusJson["id_str"].string ?? ""
@@ -77,11 +78,7 @@ class TwitterStatus {
         
         self.via = TwitterVia(statusJson["source"].string ?? "unknown")
         
-        if json["retweeted_status"].object != nil {
-            self.type = .Normal
-            self.actionedBy = TwitterUser(json["user"])
-            self.referenceStatusID = json["id_str"].string
-        } else if json["event"].string == "favorite" {
+        if json["event"].string == "favorite" || json["event"].string == "favorited_retweet" {
             self.type = .Favorite
             self.actionedBy = TwitterUser(json["source"])
             self.referenceStatusID = nil
@@ -89,6 +86,14 @@ class TwitterStatus {
             self.type = .UnFavorite
             self.actionedBy = TwitterUser(json["source"])
             self.referenceStatusID = nil
+        } else if json["event"].string == "retweeted_retweet" {
+            self.type = .Normal
+            self.actionedBy = TwitterUser(json["source"])
+            self.referenceStatusID = targetJson["id_str"].string
+        } else if targetJson["retweeted_status"].object != nil {
+            self.type = .Normal
+            self.actionedBy = TwitterUser(targetJson["user"])
+            self.referenceStatusID = targetJson["id_str"].string
         } else {
             self.type = .Normal
             self.actionedBy = nil

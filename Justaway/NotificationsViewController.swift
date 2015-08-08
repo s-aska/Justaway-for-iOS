@@ -28,8 +28,14 @@ class NotificationsViewController: StatusTableViewController {
     }
     
     override func accept(status: TwitterStatus) -> Bool {
+        
+        if let event = status.event {
+            if event == "quoted_tweet" || event == "favorited_retweet" || event == "retweeted_retweet" {
+                return true
+            }
+        }
+        
         if let accountSettings = AccountSettingsStore.get() {
-            // let account = accountSettings.account()
             
             for mention in status.mentions {
                 if accountSettings.isMe(mention.userID) {
@@ -40,14 +46,6 @@ class NotificationsViewController: StatusTableViewController {
             if status.isActioned {
                 if accountSettings.isMe(status.user.userID) {
                     return true
-                }
-            }
-            
-            if status.event != nil {
-                if let quotedStatus = status.quotedStatus {
-                    if accountSettings.isMe(quotedStatus.user.userID) {
-                        return true
-                    }
                 }
             }
         }
