@@ -136,7 +136,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 case let vc as StatusTableViewController:
                     if vc.accept(status) {
                         vc.renderData([status], mode: .TOP, handler: {})
-                        if self.currentPage != page || !vc.adapter.isTop {
+                        let actionedByUserID = status.actionedBy?.userID ?? ""
+                        let actionedByMe = AccountSettingsStore.get()?.isMe(actionedByUserID) ?? false
+                        if !actionedByMe && ( self.currentPage != page || !vc.adapter.isTop ) {
                             self.tabButtons[page].selected = true
                         }
                     }
