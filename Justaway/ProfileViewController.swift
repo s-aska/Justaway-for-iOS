@@ -322,7 +322,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     func openURL(sender: AnyObject) {
         if let expandedURL = userFull?.expandedURL {
-            GoogleChrome.openURL(expandedURL)
+            UIApplication.sharedApplication().openURL(expandedURL)
         }
     }
     

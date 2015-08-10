@@ -118,7 +118,7 @@ class StatusAlert {
                             title: url.displayURL,
                             style: .Default,
                             handler: { action in
-                                GoogleChrome.openURL(expandedURL)
+                                UIApplication.sharedApplication().openURL(expandedURL)
                                 return
                         }))
                     }

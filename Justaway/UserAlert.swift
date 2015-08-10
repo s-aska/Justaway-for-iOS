@@ -159,7 +159,7 @@ class UserAlert {
                     title: url.displayURL,
                     style: .Default,
                     handler: { action in
-                        GoogleChrome.openURL(openURL)
+                        UIApplication.sharedApplication().openURL(openURL)
                 }))
             }
         }
