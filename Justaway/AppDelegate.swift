@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Twitter.startStreamingIfEnable()
         }
         
-        application.idleTimerDisabled = true // don't sleep
+        application.idleTimerDisabled = GenericSettings.get().disableSleep
     }
     
     func applicationWillTerminate(application: UIApplication) {

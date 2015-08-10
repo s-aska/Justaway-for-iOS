@@ -14,6 +14,7 @@ class GenericSettings {
     
     struct Constants {
         static let fontSize = "font_size"
+        static let disableSleep = "disable_sleep"
         static let keychainKey = "GenericSettings"
     }
     
@@ -22,13 +23,16 @@ class GenericSettings {
     }
     
     let fontSize: Float
+    let disableSleep: Bool
     
     init() {
         self.fontSize = 12.0
+        self.disableSleep = false
     }
     
-    init(fontSize: Float) {
+    init(fontSize: Float, disableSleep: Bool) {
         self.fontSize = fontSize
+        self.disableSleep = disableSleep
     }
     
     init(_ dictionary: NSDictionary) {
@@ -37,11 +41,17 @@ class GenericSettings {
         } else {
             self.fontSize = 12.0
         }
+        if let disableSleep = dictionary[Constants.disableSleep] as? Bool {
+            self.disableSleep = disableSleep
+        } else {
+            self.disableSleep = false
+        }
     }
     
     var dictionaryValue: NSDictionary {
         return [
-            Constants.fontSize: self.fontSize
+            Constants.fontSize    : self.fontSize,
+            Constants.disableSleep: self.disableSleep
         ]
     }
     
@@ -73,8 +83,16 @@ class GenericSettings {
     }
     
     class func update(fontSize: Float) -> GenericSettings {
-        let genericSettings = GenericSettings(fontSize: fontSize)
-        save(genericSettings)
-        return genericSettings
+        let currentSettings = get()
+        let updatedSettings = GenericSettings(fontSize: fontSize, disableSleep: currentSettings.disableSleep)
+        save(updatedSettings)
+        return updatedSettings
+    }
+    
+    class func update(disableSleep: Bool) -> GenericSettings {
+        let currentSettings = get()
+        let updatedSettings = GenericSettings(fontSize: currentSettings.fontSize, disableSleep: disableSleep)
+        save(updatedSettings)
+        return updatedSettings
     }
 }

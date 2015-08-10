@@ -53,6 +53,8 @@
 		38B057E01B72704300295C23 /* PocketCoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38B057DF1B72704300295C23 /* PocketCoverViewController.xib */; };
 		38B4475D19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
+		38C44C8C1B78E7BF00C22A52 /* GeneralSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C44C8B1B78E7BF00C22A52 /* GeneralSettingsViewController.swift */; };
+		38C44C931B78E7D500C22A52 /* GeneralSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38C44C921B78E7D500C22A52 /* GeneralSettingsViewController.xib */; };
 		38CE6BB91B18171D00E0198B /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38CE6BB81B18171D00E0198B /* QBImagePicker.framework */; };
 		38CE6BBA1B18171D00E0198B /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38CE6BB81B18171D00E0198B /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; };
@@ -249,6 +251,8 @@
 		38B057D81B72702A00295C23 /* PocketCoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketCoverViewController.swift; sourceTree = "<group>"; };
 		38B057DF1B72704300295C23 /* PocketCoverViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PocketCoverViewController.xib; sourceTree = "<group>"; };
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
+		38C44C8B1B78E7BF00C22A52 /* GeneralSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingsViewController.swift; sourceTree = "<group>"; };
+		38C44C921B78E7D500C22A52 /* GeneralSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralSettingsViewController.xib; sourceTree = "<group>"; };
 		38CE6BB81B18171D00E0198B /* QBImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QBImagePicker.framework; path = Carthage/Build/iOS/QBImagePicker.framework; sourceTree = "<group>"; };
 		38D6DDF61A5AC317001C94F7 /* EventBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventBox.framework; path = Carthage/Build/iOS/EventBox.framework; sourceTree = "<group>"; };
 		38E7367E1B78DA1800F49336 /* GenericSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericSettings.swift; sourceTree = "<group>"; };
@@ -678,6 +682,8 @@
 				6AB55B5219C8B2D500DC6442 /* ThemeViewController.xib */,
 				6AB55B5419C9F1EB00DC6442 /* AccountViewController.swift */,
 				6AB55B5619C9F20B00DC6442 /* AccountViewController.xib */,
+				38C44C8B1B78E7BF00C22A52 /* GeneralSettingsViewController.swift */,
+				38C44C921B78E7D500C22A52 /* GeneralSettingsViewController.xib */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -841,6 +847,7 @@
 				38B4475D19C062460055F074 /* fontello.ttf in Resources */,
 				6AB55B5319C8B2D500DC6442 /* ThemeViewController.xib in Resources */,
 				6AB839D51B669D5500B772C8 /* TalkViewController.xib in Resources */,
+				38C44C931B78E7D500C22A52 /* GeneralSettingsViewController.xib in Resources */,
 				6A0449501B24817C00758061 /* TwitterUserCell.xib in Resources */,
 				38B057E01B72704300295C23 /* PocketCoverViewController.xib in Resources */,
 				6A3F4F3E1B110E8E009F80C4 /* AccountCell.xib in Resources */,
@@ -918,6 +925,7 @@
 				3868B94519EFCCC7001221BF /* TwitterDate.swift in Sources */,
 				38206C641B0C3A5600480542 /* Reachability.swift in Sources */,
 				38A1A9A719F786EC0085EE12 /* TwitterHashtag.swift in Sources */,
+				38C44C8C1B78E7BF00C22A52 /* GeneralSettingsViewController.swift in Sources */,
 				3894C24C19E557120038AEF8 /* TimelineViewController.swift in Sources */,
 				3805DE921A5F181900FBD015 /* ThemeUI.swift in Sources */,
 				381E6E0719D98A7300139654 /* AccountSettings.swift in Sources */,

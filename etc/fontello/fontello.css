@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'fontello';
-  src: url('../font/fontello.eot?49583245');
-  src: url('../font/fontello.eot?49583245#iefix') format('embedded-opentype'),
-       url('../font/fontello.woff?49583245') format('woff'),
-       url('../font/fontello.ttf?49583245') format('truetype'),
-       url('../font/fontello.svg?49583245#fontello') format('svg');
+  src: url('../font/fontello.eot?44596887');
+  src: url('../font/fontello.eot?44596887#iefix') format('embedded-opentype'),
+       url('../font/fontello.woff?44596887') format('woff'),
+       url('../font/fontello.ttf?44596887') format('truetype'),
+       url('../font/fontello.svg?44596887#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?49583245#fontello') format('svg');
+    src: url('../font/fontello.svg?44596887#fontello') format('svg');
   }
 }
 */
@@ -72,6 +72,7 @@
 .icon-undo:before { content: '\623b'; } /* '戻' */
 .icon-paper-plane:before { content: '\6295'; } /* '投' */
 .icon-search:before { content: '\63a2'; } /* '探' */
+.icon-sliders:before { content: '\6574'; } /* '整' */
 .icon-mail:before { content: '\6587'; } /* '文' */
 .icon-edit-alt:before { content: '\66f8'; } /* '書' */
 .icon-list-bullet:before { content: '\6b04'; } /* '欄' */

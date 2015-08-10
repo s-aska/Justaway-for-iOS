@@ -15,6 +15,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var containerViewBottomConstraint: NSLayoutConstraint!
     
     var currentSettingsView: UIView!
+    var generalSettingsViewController: GeneralSettingsViewController!
     var fontSizeViewController: FontSizeViewController!
     var themeViewController: ThemeViewController!
     var accountViewController: AccountViewController!
@@ -51,6 +52,10 @@ class SettingsViewController: UIViewController {
         
         containerViewBottomConstraint.constant = -menuHeight
         
+        generalSettingsViewController = GeneralSettingsViewController()
+        generalSettingsViewController.view.hidden = true
+        ViewTools.addSubviewWithEqual(view, view: generalSettingsViewController.view, top: nil, right: 0.0, bottom: menuHeight, left: 0.0)
+        
         fontSizeViewController = FontSizeViewController()
         fontSizeViewController.view.hidden = true
         ViewTools.addSubviewWithEqual(view, view: fontSizeViewController.view, top: nil, right: 0.0, bottom: menuHeight, left: 0.0)
@@ -68,6 +73,10 @@ class SettingsViewController: UIViewController {
     
     @IBAction func hide(sender: UIButton) {
         hide()
+    }
+    
+    @IBAction func generalSettingsViewController(sender: UIButton) {
+        showSettingsView(generalSettingsViewController.view)
     }
     
     @IBAction func showFontSizeSettingsView(sender: UIButton) {

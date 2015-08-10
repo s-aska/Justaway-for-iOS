@@ -10,6 +10,7 @@
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
+            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -29,7 +30,7 @@
                     <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KGE-1q-n9x" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="59" height="50"/>
+                            <rect key="frame" x="0.0" y="0.0" width="60" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                             <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                             <state key="normal" title="下">
@@ -76,16 +77,30 @@
                                 <action selector="showFontSizeSettingsView:" destination="-1" eventType="touchUpInside" id="WAw-QL-f6V"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iq2-GQ-BBD" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="364" y="0.0" width="58" height="50"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                            <state key="normal" title="整">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="generalSettingsViewController:" destination="-1" eventType="touchUpInside" id="F6H-n4-Ygm"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="4ly-iZ-nc7" secondAttribute="centerY" id="GVK-GQ-uyd"/>
+                        <constraint firstItem="iq2-GQ-BBD" firstAttribute="centerY" secondItem="xif-2B-jzt" secondAttribute="centerY" id="XeH-ly-0kj"/>
                         <constraint firstAttribute="centerY" secondItem="6QV-2N-74j" secondAttribute="centerY" id="ZKN-mr-CF6"/>
                         <constraint firstAttribute="centerY" secondItem="KGE-1q-n9x" secondAttribute="centerY" id="iDT-qS-Acv"/>
                         <constraint firstItem="4ly-iZ-nc7" firstAttribute="leading" secondItem="hNt-l5-Cr2" secondAttribute="trailing" id="oEl-a2-ZJF"/>
                         <constraint firstAttribute="trailing" secondItem="4ly-iZ-nc7" secondAttribute="trailing" id="p24-Qy-uxH"/>
                         <constraint firstItem="hNt-l5-Cr2" firstAttribute="leading" secondItem="6QV-2N-74j" secondAttribute="trailing" id="rOY-4e-E0X"/>
                         <constraint firstItem="KGE-1q-n9x" firstAttribute="leading" secondItem="xif-2B-jzt" secondAttribute="leading" id="sB0-Xq-4Z0"/>
+                        <constraint firstItem="6QV-2N-74j" firstAttribute="leading" secondItem="iq2-GQ-BBD" secondAttribute="trailing" id="sUz-tV-iGl"/>
                         <constraint firstAttribute="height" constant="50" id="t9s-Bj-rZ8"/>
                         <constraint firstAttribute="centerY" secondItem="hNt-l5-Cr2" secondAttribute="centerY" id="wZU-eP-Wb6"/>
                     </constraints>
