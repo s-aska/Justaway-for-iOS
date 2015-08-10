@@ -48,10 +48,7 @@ class TalkViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
-        var fontSize :CGFloat = 12.0
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            fontSize = CGFloat(delegate.fontSize)
-        }
+        let fontSize = CGFloat(GenericSettings.get().fontSize)
         if let status = rootStatus {
             adapter.rows.append(adapter.createRow(status, fontSize: fontSize, tableView: tableView))
             tableView.reloadData()

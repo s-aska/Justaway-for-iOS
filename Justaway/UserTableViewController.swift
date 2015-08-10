@@ -170,10 +170,7 @@ class UserTableViewController: UITableViewController {
     }
     
     func loadData(maxID: Int64?) {
-        var fontSize :CGFloat = 12.0
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            fontSize = CGFloat(delegate.fontSize)
-        }
+        let fontSize = CGFloat(GenericSettings.get().fontSize)
         
         let s = { (users: [TwitterUserFull]) -> Void in
             self.rows = users.map({ self.createRow($0, fontSize: fontSize) })

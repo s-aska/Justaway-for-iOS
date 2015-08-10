@@ -47,9 +47,7 @@ class FontSizeViewController: UIViewController {
             }))
         }
         
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            fontSizeSlider.value = delegate.fontSize
-        }
+        fontSizeSlider.value = GenericSettings.get().fontSize
     }
     
     @IBAction func menuAction(sender: UIButton) {

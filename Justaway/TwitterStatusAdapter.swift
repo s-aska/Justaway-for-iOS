@@ -141,11 +141,7 @@ class TwitterStatusAdapter: NSObject {
     }
     
     func renderData(tableView: UITableView, statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
-        var fontSize :CGFloat = 12.0
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            fontSize = CGFloat(delegate.fontSize)
-        }
-        
+        let fontSize = CGFloat(GenericSettings.get().fontSize)
         let limit = mode == .OVER ? 0 : TIMELINE_ROWS_LIMIT
         let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + statuses.count) - limit, 0)
         let deleteStart = mode == .TOP ? self.rows.count - deleteCount : 0

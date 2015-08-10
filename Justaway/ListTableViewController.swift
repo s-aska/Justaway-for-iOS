@@ -173,10 +173,7 @@ class ListTableViewController: UITableViewController {
     }
     
     func loadData(maxID: Int64?) {
-        var fontSize :CGFloat = 12.0
-        if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-            fontSize = CGFloat(delegate.fontSize)
-        }
+        let fontSize = CGFloat(GenericSettings.get().fontSize)
         
         let s = { (userLists: [TwitterList]) -> Void in
             self.rows = userLists.map({ self.createRow($0, fontSize: fontSize) })
