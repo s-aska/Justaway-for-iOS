@@ -257,7 +257,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
             return;
         }
         picking = true
-        let imagePickerController = QBImagePickerController.new()
+        let imagePickerController = QBImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.allowsMultipleSelection = true
         imagePickerController.minimumNumberOfSelection = 0

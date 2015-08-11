@@ -228,7 +228,7 @@ private extension UIColor {
         view.backgroundColor = self
         view.alpha = 1
         UIGraphicsBeginImageContext(view.frame.size)
-        let context = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()!
         view.layer.renderInContext(context)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         return image
