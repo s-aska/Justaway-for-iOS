@@ -93,11 +93,11 @@ class Twitter {
             error in
             
             if error.code == 401 {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter auth failure", message: error.localizedDescription)
             } else if error.code == 429 {
-                ErrorAlert.show("Tweet failure", message: "API Limit")
+                ErrorAlert.show("Twitter auth failure", message: "API Limit")
             } else {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter auth failure", message: error.localizedDescription)
                 EventBox.post(TwitterAuthorizeNotification)
             }
         }
@@ -117,7 +117,8 @@ class Twitter {
             }
         }
         
-        swifter.authorizeWithCallbackURL(NSURL(string: "justaway://success")!, success: success, failure: failure)
+        Swifter(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret)
+            .authorizeWithCallbackURL(NSURL(string: "justaway://success")!, success: success, failure: failure)
     }
     
     class func addACAccount() {
@@ -179,7 +180,7 @@ class Twitter {
             }
             
             // Update credential from current account
-            swifter.client.credential = accountSettings.account().credential
+            swifter.client.credential = accounts[current].credential
         } else if newAccounts.count > 0 {
             
             // Merge accounts and newAccounts
@@ -260,11 +261,11 @@ class Twitter {
         
         let f = { (error: NSError) -> Void in
             if error.code == 401 {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter HomeTimeline load failure", message: error.localizedDescription)
             } else if error.code == 429 {
-                ErrorAlert.show("Tweet failure", message: "API Limit")
+                ErrorAlert.show("Twitter HomeTimeline load failure", message: "API Limit")
             } else {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter HomeTimeline load failure", message: error.localizedDescription)
             }
             failure(error)
         }
@@ -283,11 +284,11 @@ class Twitter {
         
         let f = { (error: NSError) -> Void in
             if error.code == 401 {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter status load failure", message: error.localizedDescription)
             } else if error.code == 429 {
-                ErrorAlert.show("Tweet failure", message: "API Limit")
+                ErrorAlert.show("Twitter status load failure", message: "API Limit")
             } else {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter status load failure", message: error.localizedDescription)
             }
             failure(error)
         }
@@ -305,11 +306,11 @@ class Twitter {
         
         let f = { (error: NSError) -> Void in
             if error.code == 401 {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter UserTimeline load failure", message: error.localizedDescription)
             } else if error.code == 429 {
-                ErrorAlert.show("Tweet failure", message: "API Limit")
+                ErrorAlert.show("Twitter UserTimeline load failure", message: "API Limit")
             } else {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter UserTimeline load failure", message: error.localizedDescription)
             }
             failure(error)
         }
@@ -347,11 +348,11 @@ class Twitter {
         
         let f = { (error: NSError) -> Void in
             if error.code == 401 {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter MentionTimeline load failure", message: error.localizedDescription)
             } else if error.code == 429 {
-                ErrorAlert.show("Tweet failure", message: "API Limit")
+                ErrorAlert.show("Twitter MentionTimeline load failure", message: "API Limit")
             } else {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter MentionTimeline load failure", message: error.localizedDescription)
             }
             failure(error)
         }
@@ -368,11 +369,11 @@ class Twitter {
         
         let f = { (error: NSError) -> Void in
             if error.code == 401 {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter Favorites load failure", message: error.localizedDescription)
             } else if error.code == 429 {
-                ErrorAlert.show("Tweet failure", message: "API Limit")
+                ErrorAlert.show("Twitter Favorites load failure", message: "API Limit")
             } else {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter Favorites load failure", message: error.localizedDescription)
             }
             failure(error)
         }
@@ -452,11 +453,11 @@ class Twitter {
         
         let f = { (error: NSError) -> Void in
             if error.code == 401 {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter post tweet failure", message: error.localizedDescription)
             } else if error.code == 429 {
-                ErrorAlert.show("Tweet failure", message: "API Limit")
+                ErrorAlert.show("Twitter post tweet failure", message: "API Limit")
             } else {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter post tweet failure", message: error.localizedDescription)
             }
         }
         
@@ -477,11 +478,11 @@ class Twitter {
         
         let f = { (error: NSError) -> Void in
             if error.code == 401 {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter post tweet failure", message: error.localizedDescription)
             } else if error.code == 429 {
-                ErrorAlert.show("Tweet failure", message: "API Limit")
+                ErrorAlert.show("Twitter post tweet failure", message: "API Limit")
             } else {
-                ErrorAlert.show("Tweet failure", message: error.localizedDescription)
+                ErrorAlert.show("Twitter post tweet failure", message: error.localizedDescription)
             }
         }
         
@@ -776,20 +777,22 @@ extension Twitter {
         let progress = {
             (data: [String: JSONValue]?) -> Void in
             
-            if Static.connectionStatus != .CONNECTED {
-                Static.connectionStatus = .CONNECTED
-                EventBox.post(Event.StreamingStatusChanged.rawValue)
-                NSLog("connectionStatus: CONNECTED")
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            }
-            
             if data == nil {
                 return
             }
             
             let responce = JSON.JSONObject(data!)
             
-            if let event = responce["event"].string {
+            NSLog(responce.description)
+            
+            if responce["friends"].array != nil {
+                if Static.connectionStatus != .CONNECTED {
+                    Static.connectionStatus = .CONNECTED
+                    EventBox.post(Event.StreamingStatusChanged.rawValue)
+                    NSLog("connectionStatus: CONNECTED")
+                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                }
+            } else if let event = responce["event"].string {
                 NSLog("event:\(event)")
                 if event == "favorite" {
                     let status = TwitterStatus(responce)
@@ -806,6 +809,8 @@ extension Twitter {
                     }
                 } else if event == "quoted_tweet" || event == "favorited_retweet" || event == "retweeted_retweet" {
                     EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
+                } else if event == "access_revoked" {
+                    revoked()
                 }
             } else if let statusID = responce["delete"]["status"]["id_str"].string {
                 EventBox.post(Event.DestroyStatus.rawValue, sender: statusID)
@@ -813,6 +818,16 @@ extension Twitter {
             } else if responce["direct_message"].object != nil {
             } else if responce["text"].string != nil {
                 EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
+            } else if responce["disconnect"].object != nil {
+                Static.enableStreaming = false
+                Static.connectionStatus = .DISCONNECTED
+                EventBox.post(Event.StreamingStatusChanged.rawValue)
+                let code = responce["disconnect"]["code"].integer ?? 0
+                let reason = responce["disconnect"]["reason"].string ?? "Unknown"
+                ErrorAlert.show("Streaming disconnect", message: "\(reason) (\(code))")
+                if code == 6 {
+                    revoked()
+                }
             }
         }
         let stallWarningHandler = {
@@ -874,5 +889,19 @@ extension Twitter {
     
     class func stopStreaming() {
         Static.streamingRequest?.stop()
+    }
+    
+    class func revoked() {
+        if let settings = AccountSettingsStore.get() {
+            let currentUserID = settings.account().userID
+            let newAccounts = settings.accounts.filter({ $0.userID != currentUserID })
+            if newAccounts.count > 0 {
+                let newSettings = AccountSettings(current: 0, accounts: newAccounts)
+                AccountSettingsStore.save(newSettings)
+            } else {
+                AccountSettingsStore.clear()
+            }
+            EventBox.post(TwitterAuthorizeNotification)
+        }
     }
 }
