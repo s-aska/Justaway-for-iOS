@@ -21,11 +21,11 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var pageControl: UIPageControl!
     
     var imageURLs = [NSURL]()
     var imageViews = [UIImageView]()
     var initialPage = 0
-    var currentPage = 0
     
     // MARK: - View Life Cycle
     
@@ -53,8 +53,10 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     func configureView() {
         let tapGesture = UITapGestureRecognizer(target: self, action: "hide:")
         tapGesture.numberOfTapsRequired = 1
+        scrollView.delegate = self
         scrollView.addGestureRecognizer(tapGesture)
-        scrollView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        scrollView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        pageControl.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     }
     
     func configureEvent() {
@@ -62,16 +64,16 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        let pageWidth = self.scrollView.frame.size.width
-        let fractionalPage = Double(self.scrollView.contentOffset.x / pageWidth)
+        let pageWidth = scrollView.frame.size.width
+        let fractionalPage = Double(scrollView.contentOffset.x / pageWidth)
         let page = Int(lround(fractionalPage))
-        if page != currentPage {
-            currentPage = page
+        if page != pageControl.currentPage {
+            pageControl.currentPage = page
         }
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        return currentPage < imageViews.count ? imageViews[currentPage] : nil
+        return pageControl.currentPage < imageViews.count ? imageViews[pageControl.currentPage] : nil
     }
     
     // MARK: - Configuration
@@ -87,6 +89,11 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             imageView.tag = i
             imageView.userInteractionEnabled = true
             imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "menu:"))
+            
+            let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
+            indicatorView.hidesWhenStopped = true
+            indicatorView.center = imageView.center
+            
             let zoomScrolliew = UIScrollView(frame: CGRectMake(size.width * CGFloat(i), 0, size.width, size.height))
             zoomScrolliew.delegate = self
             zoomScrolliew.directionalLockEnabled = true
@@ -96,15 +103,30 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             zoomScrolliew.contentSize = view.frame.size
             zoomScrolliew.backgroundColor = UIColor.clearColor()
             zoomScrolliew.addSubview(imageView)
+            zoomScrolliew.addSubview(indicatorView)
             contentView.addSubview(zoomScrolliew)
             imageViews.append(imageView)
-            ImageLoaderClient.displayImage(imageURL, imageView: imageView)
+            
+            indicatorView.startAnimating()
+            ImageLoaderClient.displayImage(imageURL, imageView: imageView) {
+                indicatorView.stopAnimating()
+            }
+            
             i++
         }
+        
+        pageControl.hidden = i == 1
+        pageControl.numberOfPages = i
+        pageControl.currentPage = initialPage
         
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
         scrollView.setContentOffset(CGPointMake(size.width * CGFloat(initialPage), 0), animated: false)
+    }
+    
+    @IBAction func pageControlChange(sender: UIPageControl) {
+        let size = view.frame.size
+        scrollView.setContentOffset(CGPointMake(size.width * CGFloat(sender.currentPage), 0), animated: false)
     }
     
     class func show(imageURLs: [NSURL], initialPage: Int) {

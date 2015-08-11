@@ -31,8 +31,29 @@ class ImageLoaderClient {
             .build()
     }
     
+    class CallbackDisplayer: PinwheelDisplayer {
+        
+        let callback: (() -> Void)
+        
+        init(callback: (() -> Void)) {
+            self.callback = callback
+        }
+        
+        func display(image: UIImage, imageView: UIImageView, loadedFrom: Pinwheel.LoadedFrom) {
+            callback()
+            imageView.image = image
+        }
+    }
+    
     class func displayImage(url: NSURL, imageView: UIImageView) {
         Pinwheel.displayImage(url, imageView: imageView, options: Static.defaultOptions)
+    }
+    
+    class func displayImage(url: NSURL, imageView: UIImageView, callback: (() -> Void)) {
+        let options = Pinwheel.DisplayOptions.Builder()
+            .displayer(CallbackDisplayer(callback: callback))
+            .build()
+        Pinwheel.displayImage(url, imageView: imageView, options: options)
     }
     
     class func displayThumbnailImage(url: NSURL, imageView: UIImageView) {
