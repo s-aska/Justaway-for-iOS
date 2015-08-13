@@ -1,4 +1,5 @@
 github "s-aska/EventBox"
 github "s-aska/KeyClip"
 github "s-aska/Toucan"
+github "s-aska/OAuthSwift"
 github "questbeat/QBImagePicker"

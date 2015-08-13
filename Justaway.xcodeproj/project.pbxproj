@@ -18,6 +18,8 @@
 		3805DEA81A67F34900FBD015 /* ThemeMonokai.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEA71A67F34900FBD015 /* ThemeMonokai.swift */; };
 		3805DEAA1A67F52400FBD015 /* ThemeSolarizedLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEA91A67F52400FBD015 /* ThemeSolarizedLight.swift */; };
 		3805DEAC1A67F63300FBD015 /* ThemeSolarizedDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEAB1A67F63300FBD015 /* ThemeSolarizedDark.swift */; };
+		3815C68A1B7C97DF0014B0A2 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */; };
+		3815C68B1B7C97DF0014B0A2 /* OAuthSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		381E6E0719D98A7300139654 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E0619D98A7300139654 /* AccountSettings.swift */; };
 		381E6E0819D98CA500139654 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E0619D98A7300139654 /* AccountSettings.swift */; };
 		381E6E7E19DE4FB000139654 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7D19DE4FB000139654 /* Secret.swift */; };
@@ -208,6 +210,7 @@
 				6ADB647B1A5348D800602B2B /* KeyClip.framework in Embed Frameworks */,
 				6A0A1D331A40B7D30035A03C /* Pinwheel.framework in Embed Frameworks */,
 				38CE6BBA1B18171D00E0198B /* QBImagePicker.framework in Embed Frameworks */,
+				3815C68B1B7C97DF0014B0A2 /* OAuthSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,6 +228,7 @@
 		3805DEA71A67F34900FBD015 /* ThemeMonokai.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeMonokai.swift; sourceTree = "<group>"; };
 		3805DEA91A67F52400FBD015 /* ThemeSolarizedLight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeSolarizedLight.swift; sourceTree = "<group>"; };
 		3805DEAB1A67F63300FBD015 /* ThemeSolarizedDark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeSolarizedDark.swift; sourceTree = "<group>"; };
+		3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
 		381E6E0619D98A7300139654 /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
 		381E6E6B19DE47EB00139654 /* Swifter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Swifter.xcodeproj; path = Swifter/Swifter.xcodeproj; sourceTree = "<group>"; };
 		381E6E7D19DE4FB000139654 /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
@@ -332,6 +336,7 @@
 				6ADB647A1A5348D800602B2B /* KeyClip.framework in Frameworks */,
 				6A0A1D321A40B7D30035A03C /* Pinwheel.framework in Frameworks */,
 				38CE6BB91B18171D00E0198B /* QBImagePicker.framework in Frameworks */,
+				3815C68A1B7C97DF0014B0A2 /* OAuthSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -691,6 +696,7 @@
 		6AB8CDEE1A29C13700D22268 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */,
 				38CE6BB81B18171D00E0198B /* QBImagePicker.framework */,
 				3805DE3C1A5D8AC000FBD015 /* Toucan.framework */,
 				38D6DDF61A5AC317001C94F7 /* EventBox.framework */,

@@ -3,6 +3,7 @@ import Accounts
 import SwifteriOS
 import EventBox
 import KeyClip
+import OAuthSwift
 
 let TwitterAuthorizeNotification = "TwitterAuthorizeNotification"
 
@@ -102,23 +103,31 @@ class Twitter {
             }
         }
         
-        let success = { (accessToken: SwifterCredential.OAuthAccessToken?, response: NSURLResponse) -> Void in
-            if let token = accessToken {
-                Twitter.refreshAccounts([
-                    Account(
-                        credential: SwifterCredential(accessToken: token),
-                        userID: token.userID!,
-                        screenName: token.screenName ?? "",
-                        name: token.screenName! ?? "",
-                        profileImageURL: NSURL())
-                    ])
-            } else {
-                EventBox.post(TwitterAuthorizeNotification)
-            }
-        }
-        
-        Swifter(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret)
-            .authorizeWithCallbackURL(NSURL(string: "justaway://success")!, success: success, failure: failure)
+        let oauthswift = OAuth1Swift(
+            consumerKey:    TwitterConsumerKey,
+            consumerSecret: TwitterConsumerSecret,
+            requestTokenUrl: "https://api.twitter.com/oauth/request_token",
+            authorizeUrl:    "https://api.twitter.com/oauth/authorize",
+            accessTokenUrl:  "https://api.twitter.com/oauth/access_token"
+        )
+        oauthswift.authorizeWithCallbackURL( NSURL(string: "justaway://success")!, success: {
+            credential, response in
+            let accessToken = SwifterCredential.OAuthAccessToken(key: credential.oauth_token, secret: credential.oauth_token_secret)
+            let swifterCredential = SwifterCredential(accessToken: accessToken)
+            swifter.client.credential = swifterCredential
+            swifter.getAccountVerifyCredentials(nil, skipStatus: nil, success: { (myInfo) -> Void in
+                if let myInfo = myInfo {
+                    let user = TwitterUser(JSON.JSONObject(myInfo))
+                    let account = Account(
+                        credential: swifterCredential,
+                        userID: user.userID,
+                        screenName: user.screenName,
+                        name: user.name,
+                        profileImageURL: user.profileImageURL)
+                    Twitter.refreshAccounts([account])
+                }
+            }, failure: failure)
+        }, failure: failure)
     }
     
     class func addACAccount() {
