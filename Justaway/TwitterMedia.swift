@@ -18,6 +18,17 @@ struct TwitterMedia {
         self.width = json["sizes"]["large"]["w"].integer ?? 0
     }
     
+    init(json: [String: AnyObject]) {
+        self.shortURL = json["url"] as? String ?? ""
+        self.displayURL = json["display_url"] as? String ?? ""
+        self.expandedURL = json["expanded_url"] as? String ?? ""
+        self.mediaURL = NSURL(string: json["media_url_https"] as? String ?? "")!
+        let sizes = json["sizes"] as! [String: AnyObject]
+        let large = sizes["large"] as! [String: AnyObject]
+        self.height = large["h"] as? Int ?? 0
+        self.width = large["w"] as? Int ?? 0
+    }
+    
     var mediaThumbURL: NSURL {
         return NSURL(string: self.mediaURL.absoluteString + ":thumb")!
     }

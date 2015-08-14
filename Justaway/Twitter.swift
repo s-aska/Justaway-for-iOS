@@ -784,59 +784,58 @@ extension Twitter {
     
     class func startStreaming() {
         let progress = {
-            (data: [String: JSONValue]?) -> Void in
+            (responce: [String: AnyObject]) -> Void in
             
-            if data == nil {
-                return
-            }
+            NSLog("progress")
             
-            let responce = JSON.JSONObject(data!)
-            
-            NSLog(responce.description)
-            
-            if responce["friends"].array != nil {
+            if responce["friends"] != nil {
+                NSLog("friends is not null")
                 if Static.connectionStatus != .CONNECTED {
                     Static.connectionStatus = .CONNECTED
                     EventBox.post(Event.StreamingStatusChanged.rawValue)
                     NSLog("connectionStatus: CONNECTED")
                     UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 }
-            } else if let event = responce["event"].string {
+            } else if let event = responce["event"] as? String {
                 NSLog("event:\(event)")
                 if event == "favorite" {
-                    let status = TwitterStatus(responce)
+                    let status = TwitterStatus(json: responce)
                     EventBox.post(Event.CreateStatus.rawValue, sender: status)
                     if AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
                         Static.favorites[status.statusID] = true
                         EventBox.post(Event.CreateFavorites.rawValue, sender: status.statusID)
                     }
                 } else if event == "unfavorite" {
-                    let status = TwitterStatus(responce)
+                    let status = TwitterStatus(json: responce)
                     if AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
                         Static.favorites.removeValueForKey(status.statusID)
                         EventBox.post(Event.DestroyFavorites.rawValue, sender: status.statusID)
                     }
                 } else if event == "quoted_tweet" || event == "favorited_retweet" || event == "retweeted_retweet" {
-                    EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
+                    EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(json: responce))
                 } else if event == "access_revoked" {
                     revoked()
                 }
-            } else if let statusID = responce["delete"]["status"]["id_str"].string {
-                EventBox.post(Event.DestroyStatus.rawValue, sender: statusID)
-            } else if responce["delete"]["direct_message"].object != nil {
-            } else if responce["direct_message"].object != nil {
-            } else if responce["text"].string != nil {
-                EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
-            } else if responce["disconnect"].object != nil {
+//            } else if let statusID = responce["delete"]["status"]["id_str"].string {
+//                EventBox.post(Event.DestroyStatus.rawValue, sender: statusID)
+//            } else if responce["delete"]["direct_message"].object != nil {
+//            } else if responce["direct_message"].object != nil {
+            } else if responce["text"] != nil {
+                NSLog("exists text")
+                let status = TwitterStatus(json: responce)
+                EventBox.post(Event.CreateStatus.rawValue, sender: status)
+            } else if let disconnect = responce["disconnect"] as? [String: AnyObject] {
                 Static.enableStreaming = false
                 Static.connectionStatus = .DISCONNECTED
                 EventBox.post(Event.StreamingStatusChanged.rawValue)
-                let code = responce["disconnect"]["code"].integer ?? 0
-                let reason = responce["disconnect"]["reason"].string ?? "Unknown"
+                let code = disconnect["code"] as? Int ?? 0
+                let reason = disconnect["reason"] as? String ?? "Unknown"
                 ErrorAlert.show("Streaming disconnect", message: "\(reason) (\(code))")
                 if code == 6 {
                     revoked()
                 }
+            } else {
+                NSLog("??: \(responce.debugDescription)")
             }
         }
         let stallWarningHandler = {
@@ -867,16 +866,45 @@ extension Twitter {
             }
         }
         
-        Static.streamingRequest = getCurrentClient()?.getUserStreamDelimited(nil,
-            stallWarnings: true,
-            includeMessagesFromFollowedAccounts: nil,
-            includeReplies: nil,
-            track: nil,
-            locations: nil,
-            stringifyFriendIDs: nil,
-            progress: progress,
-            stallWarningHandler: stallWarningHandler,
-            failure: failure)
+        if let account = AccountSettingsStore.get()?.account() {
+            let urlRequest = TwitterAPI.request(account, method: "GET", url: NSURL(string: "https://userstream.twitter.com/1.1/user.json")!, parameters: [:])
+            let progress = {
+                (data: NSData) -> Void in
+                NSLog("progress begin")
+                do {
+                    NSLog("progress json parse begin")
+                    let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
+                    if let dictionary = json as? [String: AnyObject] {
+                        // NSLog("error:\(dictionary)")
+                        NSLog("progress json parse ok")
+                        progress(dictionary)
+                    }
+                } catch let error as NSError {
+                    NSLog("error:\(error.description)")
+                    // failure(error)
+                } catch _ {
+                    
+                }
+                return
+            }
+            
+            let request = TwitterStreamingRequest(request: urlRequest, progressHander: progress, failureHander: { (request, error) -> Void in
+                failure(error)
+            })
+            request.start()
+            return
+        }
+        
+//        Static.streamingRequest = getCurrentClient()?.getUserStreamDelimited(nil,
+//            stallWarnings: true,
+//            includeMessagesFromFollowedAccounts: nil,
+//            includeReplies: nil,
+//            track: nil,
+//            locations: nil,
+//            stringifyFriendIDs: nil,
+//            progress: progress,
+//            stallWarningHandler: stallWarningHandler,
+//            failure: failure)
     }
     
     class func stopStreamingAndDisable() {

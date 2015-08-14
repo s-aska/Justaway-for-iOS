@@ -20,6 +20,18 @@ struct TwitterUser {
         }
     }
     
+    init(json: [String: AnyObject]) {
+        self.userID = json["id_str"] as? String ?? ""
+        self.screenName = json["screen_name"] as? String ?? ""
+        self.name = json["name"] as? String ?? ""
+        self.isProtected = json["protected"] as? Bool ?? false
+        if let url = json["profile_image_url_https"] as? String {
+            self.profileImageURL = NSURL(string: url.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: [], range: nil))!
+        } else {
+            self.profileImageURL = NSURL(string: json["profile_image_url_https"] as? String ?? "")!
+        }
+    }
+    
     init(_ userFull: TwitterUserFull) {
         self.userID = userFull.userID
         self.screenName = userFull.screenName

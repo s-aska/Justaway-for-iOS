@@ -107,6 +107,92 @@ class TwitterStatus {
         }
     }
     
+    init(json: [String: AnyObject]) {
+        let targetJson = json["target_object"] as? [String: AnyObject] ?? json
+        let statusJson = targetJson["retweeted_status"] as? [String: AnyObject] ?? targetJson
+        self.event = json["event"] as? String
+        self.user = TwitterUser(json: statusJson["user"] as! [String: AnyObject])
+        self.statusID = statusJson["id_str"] as! String
+        self.inReplyToStatusID = statusJson["in_reply_to_status_id_str"] as? String
+        self.createdAt = TwitterDate(statusJson["created_at"]as! String)
+        self.retweetCount = statusJson["retweet_count"] as? Int ?? 0
+        self.favoriteCount = statusJson["favorite_count"] as? Int ?? 0
+        
+        let entitiesJson = statusJson["entities"] as? [String: AnyObject] ?? [String: AnyObject]()
+        let extendedEntitiesJson = statusJson["extended_entities"] as? [String: AnyObject] ?? [String: AnyObject]()
+        
+        if let urls = entitiesJson["urls"] as? [[String: AnyObject]] {
+            self.urls = urls.map { TwitterURL(json: $0) }
+        } else {
+            self.urls = [TwitterURL]()
+        }
+        
+        if let userMentions = entitiesJson["user_mentions"] as? [[String: AnyObject]] {
+            self.mentions = userMentions.map { TwitterUser(json: $0) }
+        } else {
+            self.mentions = [TwitterUser]()
+        }
+        
+        if let hashtags = entitiesJson["hashtags"] as? [[String: AnyObject]] {
+            self.hashtags = hashtags.map { TwitterHashtag(json: $0) }
+        } else {
+            self.hashtags = [TwitterHashtag]()
+        }
+        
+        if let extended_entities = extendedEntitiesJson["media"] as? [[String: AnyObject]] {
+            self.media = extended_entities.map { TwitterMedia(json: $0) }
+        } else if let media = entitiesJson["media"] as? [[String: AnyObject]] {
+            self.media = media.map { TwitterMedia($0) }
+        } else {
+            self.media = [TwitterMedia]()
+        }
+        
+        self.text = { (urls, media) in
+            var text = statusJson["text"] as? String ?? ""
+            text = text.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: [], range: nil)
+            text = text.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: [], range: nil)
+            text = text.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: [], range: nil)
+            for url in urls {
+                text = text.stringByReplacingOccurrencesOfString(url.shortURL, withString: url.displayURL, options: NSStringCompareOptions.LiteralSearch, range: nil)
+            }
+            for media in media {
+                text = text.stringByReplacingOccurrencesOfString(media.shortURL, withString: media.displayURL, options: NSStringCompareOptions.LiteralSearch, range: nil)
+            }
+            return text
+            }(self.urls, self.media)
+        
+        self.via = TwitterVia(statusJson["source"] as? String ?? "unknown")
+        
+        let event = json["event"] as? String
+        if event == "favorite" || event == "favorited_retweet" {
+            self.type = .Favorite
+            self.actionedBy = TwitterUser(json: json["source"] as! [String: AnyObject])
+            self.referenceStatusID = nil
+        } else if event == "unfavorite" {
+            self.type = .UnFavorite
+            self.actionedBy = TwitterUser(json: json["source"] as! [String: AnyObject])
+            self.referenceStatusID = nil
+        } else if event == "retweeted_retweet" {
+            self.type = .Normal
+            self.actionedBy = TwitterUser(json: json["source"] as! [String: AnyObject])
+            self.referenceStatusID = targetJson["id_str"] as? String ?? ""
+        } else if targetJson["retweeted_status"] != nil {
+            self.type = .Normal
+            self.actionedBy = TwitterUser(json: targetJson["user"] as! [String: AnyObject])
+            self.referenceStatusID = targetJson["id_str"] as? String ?? ""
+        } else {
+            self.type = .Normal
+            self.actionedBy = nil
+            self.referenceStatusID = nil
+        }
+        
+        if let quotedStatus = statusJson["quoted_status"] as? [String: AnyObject] {
+            self.quotedStatus = TwitterStatus(json: quotedStatus)
+        } else {
+            self.quotedStatus = nil
+        }
+    }
+    
     init(_ dictionary: [String: AnyObject]) {
         self.type = .Normal
         self.user = TwitterUser(dictionary["user"] as? [String: AnyObject] ?? [:])
