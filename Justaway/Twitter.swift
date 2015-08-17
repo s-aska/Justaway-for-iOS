@@ -252,34 +252,54 @@ class Twitter {
         }
     }
     
-    class func getHomeTimeline(maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
-        let s = { (array: [JSONValue]?) -> Void in
-            
-            if let statuses = array?.map({ TwitterStatus($0) }) {
-                
-                success(statuses)
-                
-                if maxID == nil {
-                    let dictionary = ["statuses": statuses.map({ $0.dictionaryValue })]
-                    if KeyClip.save("homeTimeline", dictionary: dictionary) {
-                        NSLog("homeTimeline cache success.")
+    class func requestJSON(method: String, url: NSURL, parameters: [String: String], success: ([String: AnyObject]) -> Void) {
+        if let request = AccountSettingsStore.get()?.account().twitterAPICredential.request(method, url: url, parameters: parameters) {
+            TwitterAPI.send(request, completion: { (responseData, response, error) -> Void in
+                if let error = error {
+                    ErrorAlert.show("Twitter API Error", message: "url:\(url.absoluteString) error:\(error.localizedDescription)")
+                    return
+                }
+                if let data = responseData {
+                    if let dictionary = dataToDictionary(data) {
+                        success(dictionary)
                     }
+                }
+            })
+        }
+    }
+    
+    class func requestJSONArray(method: String, url: NSURL, parameters: [String: String], success: ([[String: AnyObject]]) -> Void) {
+        if let request = AccountSettingsStore.get()?.account().twitterAPICredential.request(method, url: url, parameters: parameters) {
+            TwitterAPI.send(request, completion: { (responseData, response, error) -> Void in
+                if let error = error {
+                    ErrorAlert.show("Twitter API Error", message: "url:\(url.absoluteString) error:\(error.localizedDescription)")
+                    return
+                }
+                if let data = responseData {
+                    if let array = dataToArray(data) {
+                        success(array)
+                    }
+                }
+            })
+        }
+    }
+    
+    class func getHomeTimeline(maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        var parameters = [String: String]()
+        if let maxID = maxID {
+            parameters["max_id"] = maxID
+        }
+        let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")!
+        requestJSONArray("GET", url: url, parameters: parameters) { (array) -> Void in
+            let statuses = array.map({ TwitterStatus(json: $0) })
+            success(statuses)
+            if maxID == nil {
+                let dictionary = ["statuses": statuses.map({ $0.dictionaryValue })]
+                if KeyClip.save("homeTimeline", dictionary: dictionary) {
+                    NSLog("homeTimeline cache success.")
                 }
             }
         }
-        
-        let f = { (error: NSError) -> Void in
-            if error.code == 401 {
-                ErrorAlert.show("Twitter HomeTimeline load failure", message: error.localizedDescription)
-            } else if error.code == 429 {
-                ErrorAlert.show("Twitter HomeTimeline load failure", message: "API Limit")
-            } else {
-                ErrorAlert.show("Twitter HomeTimeline load failure", message: error.localizedDescription)
-            }
-            failure(error)
-        }
-        
-        getCurrentClient()?.getStatusesHomeTimelineWithCount(200, sinceID: nil, maxID: maxID, trimUser: nil, contributorDetails: nil, includeEntities: nil, success: s, failure: f)
     }
     
     class func getStatuses(statusIDs: [String], success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
