@@ -495,7 +495,20 @@ class Twitter {
             }
         }
         
-        getCurrentClient()?.postStatusUpdate(status, inReplyToStatusID: inReplyToStatusID, media_ids: media_ids, success: s, failure: f)
+        var parameters = [String: String]()
+        parameters["status"] = status
+        if let inReplyToStatusID = inReplyToStatusID {
+            parameters["in_reply_to_status_id"] = inReplyToStatusID
+        }
+        if media_ids.count > 0 {
+            parameters["media_ids"] = ",".join(media_ids)
+        }
+        let url = NSURL(string: "https://api.twitter.com/1.1/statuses/update.json")!
+        if let request = AccountSettingsStore.get()?.account().twitterAPICredential.request("POST", url: url, parameters: parameters) {
+            TwitterAPI.send(request, completion: { (responseData, response, error) -> Void in
+                NSLog("completion")
+            })
+        }
     }
 }
 
@@ -838,6 +851,12 @@ extension Twitter {
                 NSLog("??: \(responce.debugDescription)")
             }
         }
+        let success = {
+            (data: NSData) -> Void in
+            if let responce = dataToDictionary(data) {
+                progress(responce)
+            }
+        }
         let stallWarningHandler = {
             (code: String?, message: String?, percentFull: Int?) -> Void in
             
@@ -874,11 +893,14 @@ extension Twitter {
                 //     failure(error)
                 // })
                 // request.start()
-                Static.streamingRequest = TwitterAPI.connectStreaming(request, success: progress, completion: { (response, responseData, error) -> Void in
+                Static.streamingRequest = TwitterAPI.connectStreaming(request, progress: success, completion: { (responseData, response, error) -> Void in
                     Static.connectionStatus = .DISCONNECTED
                     EventBox.post(Event.StreamingStatusChanged.rawValue)
                     NSLog("connectionStatus: DISCONNECTED")
                     NSLog("completion")
+                    if let response = response as? NSHTTPURLResponse {
+                        NSLog("[connectionDidFinishLoading] code:\(response.statusCode) data:\(NSString(data: responseData!, encoding: NSUTF8StringEncoding))")
+                    }
                 })
             } catch let error as NSError {
                 NSLog("error:\(error.description)")
@@ -931,5 +953,35 @@ extension Twitter {
             }
             EventBox.post(TwitterAuthorizeNotification)
         }
+    }
+    
+    class func dataToDictionary(data: NSData) -> [String: AnyObject]? {
+        var dictionary: [String: AnyObject]?
+        do {
+            let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
+            if let jsonDictionary = json as? [String: AnyObject] {
+                dictionary = jsonDictionary
+            }
+        } catch let error as NSError {
+            NSLog("[dataToDictionary] invalid data error:\(error.debugDescription)")
+        } catch _ {
+            NSLog("[dataToDictionary] invalid data uknown error")
+        }
+        return dictionary
+    }
+    
+    class func dataToArray(data: NSData) -> [[String: AnyObject]]? {
+        var array: [[String: AnyObject]]?
+        do {
+            let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
+            if let jsonArray = json as? [[String: AnyObject]] {
+                array = jsonArray
+            }
+        } catch let error as NSError {
+            NSLog("[dataToArray] invalid data error:\(error.debugDescription)")
+        } catch _ {
+            NSLog("[dataToArray] invalid data uknown error")
+        }
+        return array
     }
 }

@@ -9,10 +9,16 @@
 import Foundation
 import OAuthSwift
 
-class TwitterAPIOAuthClient {
-    class func request(client: OAuthSwiftClient, method: String, url: NSURL, parameters: Dictionary<String, String>, var headers: [String : String] = [:]) throws -> NSURLRequest {
+public class TwitterAPIOAuthClient {
+    public class func request(client: OAuthSwiftClient, method: String, url: NSURL, parameters: Dictionary<String, String>, var headers: [String : String] = [:]) -> NSURLRequest {
         let authorization = OAuthSwiftClient.authorizationHeaderForMethod(method, url: url, parameters: parameters, credential: client.credential)
         headers.updateValue(authorization, forKey: "Authorization")
-        return try OAuthSwiftHTTPRequest.makeRequest(url, method: method, headers: headers, parameters: parameters, dataEncoding: NSUTF8StringEncoding, encodeParameters: true)
+        let request: NSURLRequest
+        do {
+            request = try OAuthSwiftHTTPRequest.makeRequest(url, method: method, headers: headers, parameters: parameters, dataEncoding: NSUTF8StringEncoding, encodeParameters: true)
+        } catch let error as NSError {
+            fatalError("TwitterAPIOAuthClient#request invalid request error:\(error.description)")
+        }
+        return request
     }
 }

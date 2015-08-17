@@ -7,16 +7,17 @@
 //
 
 import Foundation
+import DelimitedReader
 
-public class TwitterAPIStreamingRequest: NSObject, NSURLConnectionDataDelegate {
+public class TwitterAPIStreamingRequest: NSObject, NSURLSessionDataDelegate {
     
-    private let serial = dispatch_queue_create("TwitterStreamingRequest", DISPATCH_QUEUE_SERIAL)
+    private let serial = dispatch_queue_create("pw.aska.TwitterAPI.TwitterStreamingRequest", DISPATCH_QUEUE_SERIAL)
     
     public var connection: NSURLConnection?
     public let request: NSURLRequest
-    public var response: NSHTTPURLResponse!
+    public var response: NSURLResponse!
     public let delimitedReader = DelimitedReader(delimiter: "\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-    public var dataHandler: TwitterAPI.DataHandler?
+    public var progressHandler: TwitterAPI.ProgressHandler?
     public var completionHandler: TwitterAPI.CompletionHandler?
     
     public init(_ request: NSURLRequest) {
@@ -40,7 +41,7 @@ public class TwitterAPIStreamingRequest: NSObject, NSURLConnectionDataDelegate {
             while let data = self.delimitedReader.readData() {
                 if let chunk = NSString(data: data, encoding: NSUTF8StringEncoding) {
                     if chunk.hasPrefix("{") {
-                        self.dataHandler?(data: data)
+                        self.progressHandler?(data: data)
                     } else if data.length > 0 {
                         NSLog("[didReceiveData] not json data:\(NSString(data: data, encoding: NSUTF8StringEncoding))")
                     }
@@ -50,16 +51,14 @@ public class TwitterAPIStreamingRequest: NSObject, NSURLConnectionDataDelegate {
     }
     
     public func connection(connection: NSURLConnection, didFailWithError error: NSError) {
-        self.completionHandler?(response: nil, responseData: nil, error: error)
-        NSLog("[didFailWithError] error:\(error.debugDescription)")
+        self.completionHandler?(responseData: nil, response: nil, error: error)
     }
     
     public func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
-        self.response = response as? NSHTTPURLResponse
+        self.response = response
     }
     
     public func connectionDidFinishLoading(connection: NSURLConnection) {
-        NSLog("[connectionDidFinishLoading] code:\(self.response.statusCode) data:\(NSString(data: self.delimitedReader.buffer, encoding: NSUTF8StringEncoding))")
-        self.completionHandler?(response: self.response, responseData: self.delimitedReader.buffer, error: nil)
+        self.completionHandler?(responseData: self.delimitedReader.buffer, response: self.response, error: nil)
     }
 }

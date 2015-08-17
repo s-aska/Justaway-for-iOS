@@ -10,8 +10,8 @@ import Foundation
 import Accounts
 import Social
 
-class TwitterAPISocialClient {
-    class func request(account: ACAccount, method: String, url: NSURL, parameters: Dictionary<String, String>) -> NSURLRequest {
+public class TwitterAPISocialClient {
+    public class func request(account: ACAccount, method: String, url: NSURL, parameters: Dictionary<String, String>) -> NSURLRequest {
         let requestMethod: SLRequestMethod = method == "GET" ? .GET : .POST
         let socialRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: requestMethod, URL: url, parameters: parameters)
         socialRequest.account = account
