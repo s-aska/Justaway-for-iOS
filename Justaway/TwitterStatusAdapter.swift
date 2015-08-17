@@ -41,6 +41,8 @@ class TwitterStatusAdapter: NSObject {
     var rows = [Row]()
     var layoutHeight = [TwitterStatusCellLayout: CGFloat]()
     var layoutHeightCell = [TwitterStatusCellLayout: TwitterStatusCell]()
+    var footerView: UIView?
+    var footerIndicatorView: UIActivityIndicatorView?
     var isTop: Bool = true
     var scrolling: Bool = false
     var didScrollToBottom: (Void -> Void)?
@@ -291,6 +293,21 @@ extension TwitterStatusAdapter: UITableViewDelegate {
         if let cell = tableView.cellForRowAtIndexPath(indexPath) {
             StatusAlert.show(cell, status: row.status)
         }
+    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return TIMELINE_FOOTER_HEIGHT
+    }
+    
+    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if footerView == nil {
+            footerView = UIView(frame: CGRectMake(0, 0, tableView.frame.size.width, TIMELINE_FOOTER_HEIGHT))
+            footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
+            footerView?.addSubview(footerIndicatorView!)
+            footerIndicatorView?.hidesWhenStopped = true
+            footerIndicatorView?.center = (footerView?.center)!
+        }
+        return footerView
     }
 }
 
