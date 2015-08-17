@@ -8,20 +8,20 @@
 
 import Foundation
 
-class DelimitedReader {
+public class DelimitedReader {
     var delimiter: NSData
     var buffer: NSMutableData
     
-    init(delimiter: NSData =  "\n".dataUsingEncoding(NSUTF8StringEncoding)!) {
+    public init(delimiter: NSData =  "\n".dataUsingEncoding(NSUTF8StringEncoding)!) {
         self.delimiter = delimiter
         self.buffer = NSMutableData()
     }
     
-    func appendData(data: NSData) {
+    public func appendData(data: NSData) {
         buffer.appendData(data)
     }
     
-    func readData() -> NSData? {
+    public func readData() -> NSData? {
         let range = buffer.rangeOfData(delimiter, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, buffer.length))
         if range.location != NSNotFound {
             let line = buffer.subdataWithRange(NSMakeRange(0, range.location))

@@ -72,6 +72,16 @@ class Account {
             fatalError("Invalid credential.")
         }
     }
+    
+    var twitterAPICredential: TwitterAPICredential {
+        if let account = credential.account {
+            return TwitterAPICredentialSocial(account)
+        } else if let accessToken = credential.accessToken {
+            return TwitterAPICredentialOAuth(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret, accessToken: accessToken.key, accessTokenSecret: accessToken.secret)
+        } else {
+            fatalError("Invalid credential.")
+        }
+    }
 }
 
 class AccountSettings {

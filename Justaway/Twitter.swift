@@ -32,7 +32,7 @@ class Twitter {
         static let swifter = Swifter(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret)
         static var enableStreaming = false
         static var connectionStatus: ConnectionStatus = .DISCONNECTED
-        static var streamingRequest: SwifterHTTPRequest?
+        static var streamingRequest: TwitterAPIStreamingRequest?
         static var favorites = [String: Bool]()
         static var retweets = [String: String]()
         static var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
@@ -794,7 +794,7 @@ extension Twitter {
                     Static.connectionStatus = .CONNECTED
                     EventBox.post(Event.StreamingStatusChanged.rawValue)
                     NSLog("connectionStatus: CONNECTED")
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    // UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 }
             } else if let event = responce["event"] as? String {
                 NSLog("event:\(event)")
@@ -867,31 +867,22 @@ extension Twitter {
         }
         
         if let account = AccountSettingsStore.get()?.account() {
-            let urlRequest = TwitterAPI.request(account, method: "GET", url: NSURL(string: "https://userstream.twitter.com/1.1/user.json")!, parameters: [:])
-            let progress = {
-                (data: NSData) -> Void in
-                NSLog("progress begin")
-                do {
-                    NSLog("progress json parse begin")
-                    let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
-                    if let dictionary = json as? [String: AnyObject] {
-                        // NSLog("error:\(dictionary)")
-                        NSLog("progress json parse ok")
-                        progress(dictionary)
-                    }
-                } catch let error as NSError {
-                    NSLog("error:\(error.description)")
-                    // failure(error)
-                } catch _ {
-                    
-                }
-                return
+            do {
+                let request = try account.twitterAPICredential.request("GET", url: NSURL(string: "https://userstream.twitter.com/1.1/user.json")!, parameters: [:])
+                // let urlRequest = try TwitterAPI.request(account.twitterAPICredential, method: "GET", url: NSURL(string: "https://userstream.twitter.com/1.1/user.json")!, parameters: [:])
+                // let request = TwitterAPIStreamingRequest(request: urlRequest, successHander: progress, failureHander: { (request, error) -> Void in
+                //     failure(error)
+                // })
+                // request.start()
+                Static.streamingRequest = TwitterAPI.connectStreaming(request, success: progress, completion: { (response, responseData, error) -> Void in
+                    Static.connectionStatus = .DISCONNECTED
+                    EventBox.post(Event.StreamingStatusChanged.rawValue)
+                    NSLog("connectionStatus: DISCONNECTED")
+                    NSLog("completion")
+                })
+            } catch let error as NSError {
+                NSLog("error:\(error.description)")
             }
-            
-            let request = TwitterStreamingRequest(request: urlRequest, progressHander: progress, failureHander: { (request, error) -> Void in
-                failure(error)
-            })
-            request.start()
             return
         }
         

@@ -8,80 +8,75 @@
 
 import Foundation
 import OAuthSwift
+import Accounts
 
-class TwitterAPI {
-    class func send(request: NSURLRequest) {
+public class TwitterAPI {
+    
+    public typealias DataHandler = (data: NSData) -> Void
+    public typealias JsonHandler = (json: [String: AnyObject]) -> Void
+    public typealias JsonArrayHandler = (array: [[String: AnyObject]]) -> Void
+    public typealias CompletionHandler = (response: NSHTTPURLResponse?, responseData: NSData?, error: NSError?) -> Void
+    
+    public class func send(request: NSURLRequest) {
         
     }
     
-    class func request(account: Account, method: String, url: NSURL, parameters: Dictionary<String, String>) -> NSURLRequest {
-        return TwitterAPIOAuthClient.request(account.credential.accessToken?.key ?? "", accessTokenSecret: account.credential.accessToken?.secret ?? "", method: method, url: url, parameters: parameters)
-    }
-}
-
-class TwitterStreamingRequest: NSObject, NSURLConnectionDataDelegate {
-    private let serial = dispatch_queue_create("TwitterStreamingRequest", DISPATCH_QUEUE_SERIAL)
-    
-    let request: NSURLRequest
-    var response: NSHTTPURLResponse!
-    let finishHander: (TwitterStreamingRequest -> Void)?
-    let failureHander: ((request: TwitterStreamingRequest, error: NSError) -> Void)?
-    let progressHander: ((NSData) -> Void)
-    let progressReader = DelimitedReader(delimiter: "\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-    let receivedData = NSMutableData()
-    
-    init(request: NSURLRequest, progressHander: ((NSData) -> Void), failureHander: ((request: TwitterStreamingRequest, error: NSError) -> Void)) {
-        self.request = request
-        self.progressHander = progressHander
-        self.failureHander = failureHander
-        self.finishHander = nil
+    public class func connectStreaming(request: NSURLRequest, success: JsonHandler, completion: CompletionHandler? = nil) -> TwitterAPIStreamingRequest {
+        let streamingRequest = TwitterAPIStreamingRequest(request)
+        streamingRequest.dataHandler = toDataHandler(success)
+        streamingRequest.completionHandler = completion
+        streamingRequest.start()
+        return streamingRequest
     }
     
-    func start() {
-        dispatch_async(dispatch_get_main_queue()) {
-            let connection = NSURLConnection(request: self.request, delegate: self)
-            connection?.start()
-        }
-    }
-    
-    func connection(connection: NSURLConnection, didReceiveData data: NSData) {
-        NSLog("didReceiveData data:\(NSString(data: data, encoding: NSUTF8StringEncoding))")
-        dispatch_sync(serial) {
-            self.receivedData.appendData(data)
-            self.progressReader.appendData(data)
-            while let data = self.progressReader.readData() {
-                if let chunk = NSString(data: data, encoding: NSUTF8StringEncoding) {
-                    if chunk.hasPrefix("{") {
-                        self.progressHander(data)
-                    } else if data.length > 0 {
-                        self.receivedData.appendData(data)
-                        NSLog("not json data:\(NSString(data: data, encoding: NSUTF8StringEncoding))")
-                    }
+    public class func toDataHandler(handler: JsonHandler) -> DataHandler {
+        let dataHander: DataHandler = { (data: NSData) in
+            do {
+                let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
+                if let dictionary = json as? [String: AnyObject] {
+                    handler(json: dictionary)
                 }
+            } catch let error as NSError {
+                NSLog("[toDataHandler] invalid data error:\(error.debugDescription)")
+            } catch _ {
+                NSLog("[toDataHandler] invalid data uknown error")
             }
         }
-    }
-    
-    func connection(connection: NSURLConnection, didFailWithError error: NSError) {
-        self.failureHander?(request: self, error: error)
-    }
-    
-    func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
-        self.response = response as? NSHTTPURLResponse
-    }
-    
-    func connectionDidFinishLoading(connection: NSURLConnection) {
-        if self.response.statusCode >= 400 {
-            let error = NSError(domain: NSURLErrorDomain, code: self.response.statusCode, userInfo: nil)
-            self.failureHander?(request: self, error: error)
-            if let receivedBody = NSString(data: self.receivedData, encoding: NSUTF8StringEncoding) {
-                NSLog("receivedError:\(receivedBody)")
-            }
-            return
-        }
-        
-        self.finishHander?(self)
+        return dataHander
     }
 }
 
+public protocol TwitterAPICredential {
+    func request(method: String, url: NSURL, parameters: Dictionary<String, String>) throws -> NSURLRequest
+}
 
+public class TwitterAPICredentialOAuth: TwitterAPICredential {
+    let consumerKey: String
+    let consumerSecret: String
+    let accessToken: String
+    let accessTokenSecret: String
+    
+    public init (consumerKey: String, consumerSecret: String, accessToken: String, accessTokenSecret: String) {
+        self.consumerKey = consumerKey
+        self.consumerSecret = consumerSecret
+        self.accessToken = accessToken
+        self.accessTokenSecret = accessTokenSecret
+    }
+    
+    public func request(method: String, url: NSURL, parameters: Dictionary<String, String>) throws -> NSURLRequest {
+        let clinet = OAuthSwiftClient(consumerKey: self.consumerKey, consumerSecret: self.consumerSecret, accessToken: self.accessToken, accessTokenSecret: self.accessTokenSecret)
+        return try TwitterAPIOAuthClient.request(clinet, method: method, url: url, parameters: parameters)
+    }
+}
+
+public class TwitterAPICredentialSocial: TwitterAPICredential {
+    let account: ACAccount
+    
+    public init (_ account: ACAccount) {
+        self.account = account
+    }
+    
+    public func request(method: String, url: NSURL, parameters: Dictionary<String, String>) throws -> NSURLRequest {
+        return TwitterAPISocialClient.request(self.account, method: method, url: url, parameters: parameters)
+    }
+}

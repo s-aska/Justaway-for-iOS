@@ -103,6 +103,7 @@
 		6A5357D51A741C5900291E95 /* HomeTimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5357D41A741C5900291E95 /* HomeTimelineViewController.swift */; };
 		6A5357D71A741E5F00291E95 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5357D61A741E5F00291E95 /* TimelineTableViewController.swift */; };
 		6A5357D91A7429A600291E95 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5357D81A7429A600291E95 /* NotificationsViewController.swift */; };
+		6A541B171B7E5D780060F248 /* TwitterAPISocialClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A541B161B7E5D780060F248 /* TwitterAPISocialClient.swift */; };
 		6A56F5C81B19EB6C0058D6DD /* AddAccountAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A56F5C71B19EB6C0058D6DD /* AddAccountAlert.swift */; };
 		6A56F5CA1B19ECDC0058D6DD /* MessageAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A56F5C91B19ECDC0058D6DD /* MessageAlert.swift */; };
 		6A83EDA01B693FFE000F3C43 /* TwitterStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3868B94C19EFCCEC001221BF /* TwitterStatus.swift */; };
@@ -139,6 +140,7 @@
 		6ADB647B1A5348D800602B2B /* KeyClip.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6ADB64771A5348D800602B2B /* KeyClip.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6ADB648C1A5DD65800602B2B /* BaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADB648B1A5DD65800602B2B /* BaseButton.swift */; };
 		6ADB64901A5DE75A00602B2B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADB648F1A5DE75A00602B2B /* Theme.swift */; };
+		6AEA925F1B7F595A005F30A9 /* TwitterAPIStreamingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEA925E1B7F595A005F30A9 /* TwitterAPIStreamingRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -307,6 +309,7 @@
 		6A5357D41A741C5900291E95 /* HomeTimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTimelineViewController.swift; sourceTree = "<group>"; };
 		6A5357D61A741E5F00291E95 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
 		6A5357D81A7429A600291E95 /* NotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
+		6A541B161B7E5D780060F248 /* TwitterAPISocialClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterAPISocialClient.swift; sourceTree = "<group>"; };
 		6A56F5C71B19EB6C0058D6DD /* AddAccountAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAccountAlert.swift; sourceTree = "<group>"; };
 		6A56F5C91B19ECDC0058D6DD /* MessageAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAlert.swift; sourceTree = "<group>"; };
 		6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
@@ -329,6 +332,7 @@
 		6ADB64771A5348D800602B2B /* KeyClip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeyClip.framework; path = Carthage/Build/iOS/KeyClip.framework; sourceTree = "<group>"; };
 		6ADB648B1A5DD65800602B2B /* BaseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseButton.swift; sourceTree = "<group>"; };
 		6ADB648F1A5DE75A00602B2B /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		6AEA925E1B7F595A005F30A9 /* TwitterAPIStreamingRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterAPIStreamingRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -439,7 +443,10 @@
 			isa = PBXGroup;
 			children = (
 				38C9714C1B7DF7C7008E05CE /* TwitterAPI.swift */,
+				6AEA925E1B7F595A005F30A9 /* TwitterAPIStreamingRequest.swift */,
+				6A541B161B7E5D780060F248 /* TwitterAPISocialClient.swift */,
 				38C971531B7DF9AF008E05CE /* TwitterAPIOAuthClient.swift */,
+				6AEA92651B7F5981005F30A9 /* API */,
 				381E6E7F19DE9DAB00139654 /* Twitter.swift */,
 				38F1B0A819EFEB7900A3608E /* Entities */,
 			);
@@ -714,6 +721,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6AEA92651B7F5981005F30A9 /* API */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -898,6 +912,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/KeyClip.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/QBImagePicker.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Toucan.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/OAuthSwift.framework",
 			);
 			outputPaths = (
 			);
@@ -918,6 +933,7 @@
 				38E7367F1B78DA1800F49336 /* GenericSettings.swift in Sources */,
 				381E6E8519E2A69200139654 /* TwitterStatusCell.swift in Sources */,
 				6A5357D51A741C5900291E95 /* HomeTimelineViewController.swift in Sources */,
+				6A541B171B7E5D780060F248 /* TwitterAPISocialClient.swift in Sources */,
 				6A5357D91A7429A600291E95 /* NotificationsViewController.swift in Sources */,
 				6AD963DD1A69AAC000136B53 /* StreamingAlert.swift in Sources */,
 				6AB55B4919C5984800DC6442 /* TransparentView.swift in Sources */,
@@ -973,6 +989,7 @@
 				6A35A1C51A6C193400A8E46D /* ImageViewController.swift in Sources */,
 				6A35A1D11A73B1C700A8E46D /* StatusAlert.swift in Sources */,
 				6AD963E81A69BB1900136B53 /* ErrorAlert.swift in Sources */,
+				6AEA925F1B7F595A005F30A9 /* TwitterAPIStreamingRequest.swift in Sources */,
 				6A0449441B1F4F0400758061 /* ProfileViewController.swift in Sources */,
 				6AB55B4319C5843000DC6442 /* SettingsViewController.swift in Sources */,
 				3805DEAA1A67F52400FBD015 /* ThemeSolarizedLight.swift in Sources */,
