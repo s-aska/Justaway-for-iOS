@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import SwifteriOS
 import Pinwheel
+import SwiftyJSON
 
 class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
@@ -256,8 +256,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             favoritesTableViewController.userID = user.userID
             favoritesTableViewController.loadData(nil)
             
-            let success :(([JSONValue]?) -> Void) = { (rows) in
-                if let row = rows?.first {
+            let success :(([JSON]) -> Void) = { (rows) in
+                if let row = rows.first {
                     let user = TwitterUserFull(row)
                     self.userFull = user
                     if !user.isProtected {
@@ -276,18 +276,15 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
                 }
             }
             
-            let failure = { (error: NSError) -> Void in
-                NSLog("%@", error.debugDescription)
-            }
-            
-            Twitter.getCurrentClient()?.getUsersLookupWithUserIDs([user.userID], includeEntities: false, success: success, failure: failure)
-            
+            let url = NSURL(string: "https://api.twitter.com/1.1/users/lookup.json")!
+            Twitter.requestJSONArray("GET", url: url, parameters: ["user_id": user.userID], success: success)
+
             Twitter.getFriendships(user.userID, success: { (relationship) -> Void in
                 self.relationship = relationship
                 if !relationship.followedBy {
                     self.followedByLabel?.removeFromSuperview()
                 }
-            }, failure: failure)
+            })
         }
     }
     

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SwifteriOS
+import SwiftyJSON
 
 struct TwitterList {
     let id: String
@@ -20,12 +20,12 @@ struct TwitterList {
     let user: TwitterUser
     let createdAt: TwitterDate
 
-    init(_ json: JSONValue) {
+    init(_ json: JSON) {
         self.id = json["id_str"].string ?? ""
         self.name = json["name"].string ?? ""
         self.description = json["description"].string ?? ""
-        self.subscriberCount = json["subscriber_count"].integer ?? 0
-        self.memberCount = json["member_count"].integer ?? 0
+        self.subscriberCount = json["subscriber_count"].int ?? 0
+        self.memberCount = json["member_count"].int ?? 0
         self.following = json["member_count"].boolValue
         self.mode = json["mode"].string ?? ""
         self.createdAt = TwitterDate(json["created_at"].string ?? "")

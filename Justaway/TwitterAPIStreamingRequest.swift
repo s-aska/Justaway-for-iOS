@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import DelimitedReader
+import MutableDataScanner
 
 public class TwitterAPIStreamingRequest: NSObject, NSURLSessionDataDelegate {
     
@@ -16,7 +16,7 @@ public class TwitterAPIStreamingRequest: NSObject, NSURLSessionDataDelegate {
     public var connection: NSURLConnection?
     public let request: NSURLRequest
     public var response: NSURLResponse!
-    public let delimitedReader = DelimitedReader(delimiter: "\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+    public let scanner = MutableDataScanner(delimiter: "\r\n")
     public var progressHandler: TwitterAPI.ProgressHandler?
     public var completionHandler: TwitterAPI.CompletionHandler?
     
@@ -37,21 +37,21 @@ public class TwitterAPIStreamingRequest: NSObject, NSURLSessionDataDelegate {
     
     public func connection(connection: NSURLConnection, didReceiveData data: NSData) {
         dispatch_sync(serial) {
-            self.delimitedReader.appendData(data)
-            while let data = self.delimitedReader.readData() {
-                if let chunk = NSString(data: data, encoding: NSUTF8StringEncoding) {
-                    if chunk.hasPrefix("{") {
-                        self.progressHandler?(data: data)
-                    } else if data.length > 0 {
-                        NSLog("[didReceiveData] not json data:\(NSString(data: data, encoding: NSUTF8StringEncoding))")
-                    }
+            self.scanner.appendData(data)
+            while let data = self.scanner.nextLine() {
+                if data.length > 0 {
+                    self.progressHandler?(data: data)
+                } else {
+                    NSLog("break line.")
                 }
             }
         }
     }
     
     public func connection(connection: NSURLConnection, didFailWithError error: NSError) {
-        self.completionHandler?(responseData: nil, response: nil, error: error)
+        dispatch_async(dispatch_get_main_queue(), {
+            self.completionHandler?(responseData: nil, response: nil, error: error)
+        })
     }
     
     public func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
@@ -59,6 +59,8 @@ public class TwitterAPIStreamingRequest: NSObject, NSURLSessionDataDelegate {
     }
     
     public func connectionDidFinishLoading(connection: NSURLConnection) {
-        self.completionHandler?(responseData: self.delimitedReader.buffer, response: self.response, error: nil)
+        dispatch_async(dispatch_get_main_queue(), {
+            self.completionHandler?(responseData: self.scanner.data, response: self.response, error: nil)
+        })
     }
 }

@@ -1,13 +1,13 @@
 import Foundation
-import SwifteriOS
+import SwiftyJSON
 
 struct TwitterHashtag {
     let text: String
     let indices: [Int]
     
-    init(_ json: JSONValue) {
+    init(_ json: JSON) {
         self.text = json["text"].string ?? ""
-        self.indices = json["indices"].array?.map({ $0.integer ?? 0 }) ?? [Int]()
+        self.indices = json["indices"].array?.map({ $0.int ?? 0 }) ?? [Int]()
     }
     
     init(json: [String: AnyObject]) {

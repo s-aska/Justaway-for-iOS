@@ -1,6 +1,7 @@
 github "s-aska/EventBox"
 github "s-aska/KeyClip"
-github "s-aska/DelimitedReader"
+github "s-aska/MutableDataScanner"
 github "s-aska/Toucan"
 github "rpowelll/OAuthSwift" "swift2"
 github "questbeat/QBImagePicker"
+github "SwiftyJSON/SwiftyJSON" "xcode7"

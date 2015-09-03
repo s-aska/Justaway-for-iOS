@@ -1,5 +1,4 @@
 import UIKit
-import SwifteriOS
 import EventBox
 
 class TimelineViewController: UIViewController, UIScrollViewDelegate {

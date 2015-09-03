@@ -19,7 +19,8 @@ class Scheduler {
         dispatch_sync(Static.serial) {
             let key = "\(ObjectIdentifier(target).uintValue):\(selector)"
             if let async = Static.asyncs.removeValueForKey(key) {
-                async.cancel()
+                return // http://www.openradar.me/22437691 dispatch_block_t re-audit causes GCD APIs to crashし
+                // async.cancel()
             }
             let block: (() -> Void) = {
                 Static.lasts[key] = NSDate().timeIntervalSince1970

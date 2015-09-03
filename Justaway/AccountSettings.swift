@@ -1,6 +1,5 @@
 import Foundation
 import Accounts
-import SwifteriOS
 
 class Account {
     
@@ -14,13 +13,13 @@ class Account {
         static let profileImageURL = "profile_image_url_https"
     }
     
-    let credential: SwifterCredential
+    let credential: TwitterAPICredential
     let userID: String
     let screenName: String
     let name: String
     let profileImageURL: NSURL
     
-    init(credential: SwifterCredential, userID: String, screenName: String, name: String, profileImageURL: NSURL) {
+    init(credential: TwitterAPICredential, userID: String, screenName: String, name: String, profileImageURL: NSURL) {
         self.credential = credential
         self.userID = userID
         self.screenName = screenName
@@ -39,10 +38,13 @@ class Account {
         }
         if dictionary[Constants.identifier] != nil {
             let account = ACAccountStore().accountWithIdentifier(dictionary[Constants.identifier])
-            self.credential = SwifterCredential(account: account)
+            self.credential = TwitterAPICredentialSocial(account)
         } else {
-            let accessToken = SwifterCredential.OAuthAccessToken(key: dictionary[Constants.key]!, secret: dictionary[Constants.secret]!)
-            self.credential = SwifterCredential(accessToken: accessToken)
+            self.credential = TwitterAPICredentialOAuth(
+                consumerKey: TwitterConsumerKey,
+                consumerSecret: TwitterConsumerSecret,
+                accessToken: dictionary[Constants.key]!,
+                accessTokenSecret: dictionary[Constants.secret]!)
         }
     }
     
@@ -51,33 +53,23 @@ class Account {
     }
     
     var dictionaryValue: [String: String] {
-        if let account = credential.account {
+        if let account = credential as? TwitterAPICredentialSocial {
             return [
-                Constants.identifier      : account.identifier!,
+                Constants.identifier      : account.account.identifier!,
                 Constants.userID          : self.userID,
                 Constants.screenName      : self.screenName,
                 Constants.name            : self.name,
                 Constants.profileImageURL : self.profileImageURL.absoluteString
             ]
-        } else if let accessToken = credential.accessToken {
+        } else if let accessToken = credential as? TwitterAPICredentialOAuth {
             return [
-                Constants.key             : accessToken.key,
-                Constants.secret          : accessToken.secret,
+                Constants.key             : accessToken.accessToken,
+                Constants.secret          : accessToken.accessTokenSecret,
                 Constants.userID          : self.userID,
                 Constants.screenName      : self.screenName,
                 Constants.name            : self.name,
                 Constants.profileImageURL : self.profileImageURL.absoluteString
             ]
-        } else {
-            fatalError("Invalid credential.")
-        }
-    }
-    
-    var twitterAPICredential: TwitterAPICredential {
-        if let account = credential.account {
-            return TwitterAPICredentialSocial(account)
-        } else if let accessToken = credential.accessToken {
-            return TwitterAPICredentialOAuth(consumerKey: TwitterConsumerKey, consumerSecret: TwitterConsumerSecret, accessToken: accessToken.key, accessTokenSecret: accessToken.secret)
         } else {
             fatalError("Invalid credential.")
         }

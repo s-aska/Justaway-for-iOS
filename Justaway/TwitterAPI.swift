@@ -16,7 +16,11 @@ public class TwitterAPI {
     public class func send(request: NSURLRequest, completion: CompletionHandler) -> NSURLSessionDataTask {
         let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
         let session = NSURLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
-        let task = session.dataTaskWithRequest(request, completionHandler: completion)
+        let task = session.dataTaskWithRequest(request) { (responseData, response, error) -> Void in
+            dispatch_async(dispatch_get_main_queue(), {
+                completion(responseData: responseData, response: response, error: error)
+            })
+        }
         task.resume()
         return task
     }

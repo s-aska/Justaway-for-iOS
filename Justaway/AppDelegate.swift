@@ -1,5 +1,4 @@
 import UIKit
-import SwifteriOS
 import Pinwheel
 import KeyClip
 import EventBox

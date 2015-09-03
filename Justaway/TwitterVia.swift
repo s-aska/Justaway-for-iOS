@@ -1,5 +1,4 @@
 import Foundation
-import SwifteriOS
 
 struct TwitterVia {
     let name: String

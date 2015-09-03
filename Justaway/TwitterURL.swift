@@ -1,12 +1,12 @@
 import Foundation
-import SwifteriOS
+import SwiftyJSON
 
 struct TwitterURL {
     let shortURL: String
     let displayURL: String
     let expandedURL: String
     
-    init(_ json: JSONValue) {
+    init(_ json: JSON) {
         self.shortURL = json["url"].string ?? ""
         self.displayURL = json["display_url"].string ?? ""
         self.expandedURL = json["expanded_url"].string ?? ""

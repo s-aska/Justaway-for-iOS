@@ -1,5 +1,5 @@
 import Foundation
-import SwifteriOS
+import SwiftyJSON
 
 struct TwitterMedia {
     let shortURL: String
@@ -9,13 +9,13 @@ struct TwitterMedia {
     let height: Int
     let width: Int
     
-    init(_ json: JSONValue) {
+    init(_ json: JSON) {
         self.shortURL = json["url"].string ?? ""
         self.displayURL = json["display_url"].string ?? ""
         self.expandedURL = json["expanded_url"].string ?? ""
         self.mediaURL = NSURL(string: json["media_url_https"].string ?? "")!
-        self.height = json["sizes"]["large"]["h"].integer ?? 0
-        self.width = json["sizes"]["large"]["w"].integer ?? 0
+        self.height = json["sizes"]["large"]["h"].int ?? 0
+        self.width = json["sizes"]["large"]["w"].int ?? 0
     }
     
     init(json: [String: AnyObject]) {

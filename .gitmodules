@@ -1,6 +1,3 @@
-[submodule "Swifter"]
-	path = Swifter
-	url = git@github.com:s-aska/Swifter.git
 [submodule "Pinwheel"]
 	path = Pinwheel
 	url = git@github.com:s-aska/Pinwheel.git

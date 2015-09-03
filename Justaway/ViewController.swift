@@ -1,7 +1,6 @@
 import UIKit
 import Accounts
 import Social
-import SwifteriOS
 import EventBox
 
 class ViewController: UIViewController {

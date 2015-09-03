@@ -1,5 +1,5 @@
 import Foundation
-import SwifteriOS
+import SwiftyJSON
 
 struct TwitterUser {
     let userID: String
@@ -8,7 +8,7 @@ struct TwitterUser {
     let profileImageURL: NSURL
     let isProtected: Bool
     
-    init(_ json: JSONValue) {
+    init(_ json: JSON) {
         self.userID = json["id_str"].string ?? ""
         self.screenName = json["screen_name"].string ?? ""
         self.name = json["name"].string ?? ""
@@ -92,7 +92,7 @@ struct TwitterUserFull {
     let listedCount: Int
     let statusesCount: Int
     
-    init(_ json: JSONValue) {
+    init(_ json: JSON) {
         self.userID = json["id_str"].string ?? ""
         self.screenName = json["screen_name"].string ?? ""
         self.name = json["name"].string ?? ""
@@ -120,11 +120,11 @@ struct TwitterUserFull {
 
         var displayURL = json["url"].string ?? ""
         var expandedURL: NSURL?
-        self.favouritesCount = json["favourites_count"].integer ?? 0
-        self.followersCount = json["followers_count"].integer ?? 0
-        self.friendsCount = json["friends_count"].integer ?? 0
-        self.listedCount = json["listed_count"].integer ?? 0
-        self.statusesCount = json["statuses_count"].integer ?? 0
+        self.favouritesCount = json["favourites_count"].int ?? 0
+        self.followersCount = json["followers_count"].int ?? 0
+        self.friendsCount = json["friends_count"].int ?? 0
+        self.listedCount = json["listed_count"].int ?? 0
+        self.statusesCount = json["statuses_count"].int ?? 0
         
         for url in self.urls {
             if url.shortURL == displayURL {

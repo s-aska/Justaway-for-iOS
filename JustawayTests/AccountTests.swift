@@ -1,6 +1,5 @@
 import UIKit
 import XCTest
-import SwifteriOS
 
 class AccountTests: XCTestCase {
     
@@ -18,8 +17,7 @@ class AccountTests: XCTestCase {
         let normalURL = "https://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
         let biggerURL = "https://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_bigger.png"
         
-        let accessToken = SwifterCredential.OAuthAccessToken(key: "", secret: "")
-        let credential = SwifterCredential(accessToken: accessToken)
+        let credential = TwitterAPICredentialOAuth(consumerKey: "", consumerSecret: "", accessToken: "", accessTokenSecret: "")
         let account = Account(credential: credential, userID: "1", screenName: "su_aska", name: "Shinichiro Aska", profileImageURL: NSURL(string: normalURL)!)
         
         XCTAssertEqual(account.screenName, "su_aska")

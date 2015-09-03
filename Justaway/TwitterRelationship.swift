@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SwifteriOS
+import SwiftyJSON
 
 struct TwitterRelationship {
     let canDM: Bool
@@ -20,7 +20,7 @@ struct TwitterRelationship {
     let allReplies: Bool
     let notificationsEnabled: Bool
     
-    init(_ json: JSONValue) {
+    init(_ json: JSON) {
         self.canDM = json["can_dm"].boolValue
         self.blocking = json["blocking"].boolValue
         self.muting = json["muting"].boolValue
