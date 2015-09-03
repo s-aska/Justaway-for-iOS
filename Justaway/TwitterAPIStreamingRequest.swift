@@ -41,8 +41,6 @@ public class TwitterAPIStreamingRequest: NSObject, NSURLSessionDataDelegate {
             while let data = self.scanner.nextLine() {
                 if data.length > 0 {
                     self.progressHandler?(data: data)
-                } else {
-                    NSLog("break line.")
                 }
             }
         }
