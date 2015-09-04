@@ -1,5 +1,5 @@
 //
-//  TwitterAPICredential.swift
+//  Credential.swift
 //  Justaway
 //
 //  Created by Shinichiro Aska on 8/17/15.

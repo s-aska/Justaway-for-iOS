@@ -1,5 +1,5 @@
 //
-//  TwitterAPIRequest.swift
+//  Request.swift
 //  Justaway
 //
 //  Created by Shinichiro Aska on 9/5/15.
