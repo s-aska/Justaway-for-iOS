@@ -13,7 +13,8 @@ public class TwitterAPIStreamingRequest: NSObject, NSURLSessionDataDelegate {
     
     private let serial = dispatch_queue_create("pw.aska.TwitterAPI.TwitterStreamingRequest", DISPATCH_QUEUE_SERIAL)
     
-    public var connection: NSURLConnection?
+    public var session: NSURLSession?
+    public var task: NSURLSessionDataTask?
     public let request: NSURLRequest
     public var response: NSURLResponse!
     public let scanner = MutableDataScanner(delimiter: "\r\n")
@@ -25,20 +26,20 @@ public class TwitterAPIStreamingRequest: NSObject, NSURLSessionDataDelegate {
     }
     
     public func start() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.connection = NSURLConnection(request: self.request, delegate: self)
-            self.connection?.start()
-        }
+        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
+        self.session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+        self.task = self.session?.dataTaskWithRequest(self.request)
+        self.task?.resume()
     }
     
     public func stop() {
-        self.connection?.cancel()
+        self.task?.cancel()
     }
     
-    public func connection(connection: NSURLConnection, didReceiveData data: NSData) {
+    public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
         dispatch_sync(serial) {
             self.scanner.appendData(data)
-            while let data = self.scanner.nextLine() {
+            while let data = self.scanner.next() {
                 if data.length > 0 {
                     self.progressHandler?(data: data)
                 }
@@ -46,19 +47,28 @@ public class TwitterAPIStreamingRequest: NSObject, NSURLSessionDataDelegate {
         }
     }
     
-    public func connection(connection: NSURLConnection, didFailWithError error: NSError) {
-        dispatch_async(dispatch_get_main_queue(), {
-            self.completionHandler?(responseData: nil, response: nil, error: error)
-        })
-    }
-    
-    public func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
+    public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveResponse response: NSURLResponse, completionHandler: (NSURLSessionResponseDisposition) -> Void) {
         self.response = response
+        if let httpURLResponse = response as? NSHTTPURLResponse {
+            if httpURLResponse.statusCode == 200 {
+                completionHandler(NSURLSessionResponseDisposition.Allow)
+            }
+        }
     }
     
-    public func connectionDidFinishLoading(connection: NSURLConnection) {
+    public func URLSession(session: NSURLSession, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
+        if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+            if challenge.protectionSpace.host == "userstream.twitter.com" {
+                completionHandler(
+                    NSURLSessionAuthChallengeDisposition.UseCredential,
+                    NSURLCredential(forTrust: challenge.protectionSpace.serverTrust!))
+            }
+        }
+    }
+    
+    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
         dispatch_async(dispatch_get_main_queue(), {
-            self.completionHandler?(responseData: self.scanner.data, response: self.response, error: nil)
+            self.completionHandler?(responseData: self.scanner.data, response: self.response, error: error)
         })
     }
 }
