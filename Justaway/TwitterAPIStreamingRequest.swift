@@ -18,22 +18,33 @@ public class TwitterAPIStreamingRequest: NSObject, NSURLSessionDataDelegate {
     public let request: NSURLRequest
     public var response: NSURLResponse!
     public let scanner = MutableDataScanner(delimiter: "\r\n")
-    public var progressHandler: TwitterAPI.ProgressHandler?
-    public var completionHandler: TwitterAPI.CompletionHandler?
+    private var progressHandler: TwitterAPI.ProgressHandler?
+    private var completionHandler: TwitterAPI.CompletionHandler?
     
     public init(_ request: NSURLRequest) {
         self.request = request
     }
     
-    public func start() {
+    public func start() -> TwitterAPIStreamingRequest {
         let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        self.session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-        self.task = self.session?.dataTaskWithRequest(self.request)
-        self.task?.resume()
+        session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+        task = self.session?.dataTaskWithRequest(self.request)
+        task?.resume()
+        return self
     }
     
     public func stop() {
-        self.task?.cancel()
+        task?.cancel()
+    }
+    
+    public func progress(progress: TwitterAPI.ProgressHandler) -> TwitterAPIStreamingRequest {
+        progressHandler = progress
+        return self
+    }
+    
+    public func completion(completion: TwitterAPI.CompletionHandler) -> TwitterAPIStreamingRequest {
+        completionHandler = completion
+        return self
     }
     
     public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
@@ -52,7 +63,11 @@ public class TwitterAPIStreamingRequest: NSObject, NSURLSessionDataDelegate {
         if let httpURLResponse = response as? NSHTTPURLResponse {
             if httpURLResponse.statusCode == 200 {
                 completionHandler(NSURLSessionResponseDisposition.Allow)
+            } else {
+                self.completionHandler?(responseData: self.scanner.data, response: self.response, error: nil)
             }
+        } else {
+            fatalError("didReceiveResponse is not NSHTTPURLResponse")
         }
     }
     

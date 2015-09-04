@@ -276,9 +276,10 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
                 }
             }
             
+            let parameters = ["user_id": user.userID]
             let url = NSURL(string: "https://api.twitter.com/1.1/users/lookup.json")!
-            Twitter.requestJSONArray("GET", url: url, parameters: ["user_id": user.userID], success: success)
-
+            Twitter.credential()?.get(url, parameters: parameters).send(success)
+            
             Twitter.getFriendships(user.userID, success: { (relationship) -> Void in
                 self.relationship = relationship
                 if !relationship.followedBy {

@@ -13,23 +13,26 @@ public class TwitterAPI {
     public typealias ProgressHandler = (data: NSData) -> Void
     public typealias CompletionHandler = (responseData: NSData?, response: NSURLResponse?, error: NSError?) -> Void
     
-    public class func send(request: NSURLRequest, completion: CompletionHandler) -> NSURLSessionDataTask {
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
-        let task = session.dataTaskWithRequest(request) { (responseData, response, error) -> Void in
-            dispatch_async(dispatch_get_main_queue(), {
-                completion(responseData: responseData, response: response, error: error)
-            })
+    public class Request {
+        
+        public let request: NSURLRequest
+        
+        init(_ request: NSURLRequest) {
+            self.request = request
         }
-        task.resume()
-        return task
-    }
-    
-    public class func connectStreaming(request: NSURLRequest, progress: ProgressHandler, completion: CompletionHandler? = nil) -> TwitterAPIStreamingRequest {
-        let streamingRequest = TwitterAPIStreamingRequest(request)
-        streamingRequest.progressHandler = progress
-        streamingRequest.completionHandler = completion
-        streamingRequest.start()
-        return streamingRequest
+        
+        public func streaming() -> TwitterAPIStreamingRequest {
+            return TwitterAPIStreamingRequest(request)
+        }
+        
+        public func send(completion: CompletionHandler?) -> NSURLSessionDataTask {
+            let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
+            let session = NSURLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
+            let task = session.dataTaskWithRequest(request) { (responseData, response, error) -> Void in
+                completion?(responseData: responseData, response: response, error: error)
+            }
+            task.resume()
+            return task
+        }
     }
 }

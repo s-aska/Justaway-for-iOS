@@ -11,11 +11,11 @@ import Accounts
 import Social
 
 public class TwitterAPISocialClient {
-    public class func request(account: ACAccount, method: String, url: NSURL, parameters: Dictionary<String, String>) -> NSURLRequest {
+    public class func request(account: ACAccount, method: String, url: NSURL, parameters: Dictionary<String, String>) -> TwitterAPI.Request {
         let requestMethod: SLRequestMethod = method == "GET" ? .GET : .POST
         let socialRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: requestMethod, URL: url, parameters: parameters)
         socialRequest.account = account
         let request = socialRequest.preparedURLRequest()
-        return request
+        return TwitterAPI.Request(request)
     }
 }
