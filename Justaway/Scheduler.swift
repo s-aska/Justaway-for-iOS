@@ -18,7 +18,7 @@ class Scheduler {
     class func regsiter(min min: NSTimeInterval, max: NSTimeInterval, target: AnyObject, selector: Selector) {
         dispatch_sync(Static.serial) {
             let key = "\(ObjectIdentifier(target).uintValue):\(selector)"
-            if let async = Static.asyncs.removeValueForKey(key) {
+            if let _ = Static.asyncs.removeValueForKey(key) {
                 return // http://www.openradar.me/22437691 dispatch_block_t re-audit causes GCD APIs to crashし
                 // async.cancel()
             }

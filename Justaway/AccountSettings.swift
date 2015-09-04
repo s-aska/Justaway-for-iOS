@@ -38,9 +38,9 @@ class Account {
         }
         if dictionary[Constants.identifier] != nil {
             let account = ACAccountStore().accountWithIdentifier(dictionary[Constants.identifier])
-            self.credential = TwitterAPICredentialSocial(account)
+            self.credential = TwitterAPI.CredentialAccount(account)
         } else {
-            self.credential = TwitterAPICredentialOAuth(
+            self.credential = TwitterAPI.CredentialOAuth(
                 consumerKey: TwitterConsumerKey,
                 consumerSecret: TwitterConsumerSecret,
                 accessToken: dictionary[Constants.key]!,
@@ -53,7 +53,7 @@ class Account {
     }
     
     var dictionaryValue: [String: String] {
-        if let account = credential as? TwitterAPICredentialSocial {
+        if let account = credential as? TwitterAPI.CredentialAccount {
             return [
                 Constants.identifier      : account.account.identifier!,
                 Constants.userID          : self.userID,
@@ -61,7 +61,7 @@ class Account {
                 Constants.name            : self.name,
                 Constants.profileImageURL : self.profileImageURL.absoluteString
             ]
-        } else if let accessToken = credential as? TwitterAPICredentialOAuth {
+        } else if let accessToken = credential as? TwitterAPI.CredentialOAuth {
             return [
                 Constants.key             : accessToken.accessToken,
                 Constants.secret          : accessToken.accessTokenSecret,

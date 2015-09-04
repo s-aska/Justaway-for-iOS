@@ -31,7 +31,7 @@ class Twitter {
     struct Static {
         static var enableStreaming = false
         static var connectionStatus: ConnectionStatus = .DISCONNECTED
-        static var streamingRequest: TwitterAPIStreamingRequest?
+        static var streamingRequest: TwitterAPI.StreamingRequest?
         static var favorites = [String: Bool]()
         static var retweets = [String: String]()
         static var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
@@ -94,7 +94,7 @@ class Twitter {
         oauthswift.authorizeWithCallbackURL( NSURL(string: "justaway://success")!, success: {
             credential, response in
             
-            let credential: TwitterAPICredential = TwitterAPICredentialOAuth(
+            let credential: TwitterAPICredential = TwitterAPI.CredentialOAuth(
                 consumerKey: TwitterConsumerKey,
                 consumerSecret: TwitterConsumerSecret,
                 accessToken: credential.oauth_token,
@@ -134,7 +134,7 @@ class Twitter {
                     Twitter.refreshAccounts(
                         twitterAccounts.map({ (twitterAccount: ACAccount) in
                             Account(
-                                credential: TwitterAPICredentialSocial(twitterAccount),
+                                credential: TwitterAPI.CredentialAccount(twitterAccount),
                                 userID: twitterAccount.valueForKeyPath("properties.user_id") as! String,
                                 screenName: twitterAccount.username,
                                 name: twitterAccount.username,
@@ -451,8 +451,7 @@ extension Twitter {
             let url = NSURL(string: "https://api.twitter.com/1.1/favorites/create.json")!
             credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
                 
-                }, failure: { (error) -> Void in
-                    let code = Twitter.getErrorCode(error)
+                }, failure: { (code, message, error) -> Void in
                     if code == 139 {
                         ErrorAlert.show("Favorite failure", message: "already favorite.")
                     } else {
@@ -460,7 +459,7 @@ extension Twitter {
                             Static.favorites.removeValueForKey(statusID)
                             EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
                         }
-                        ErrorAlert.show("Favorite failure", message: error.localizedDescription)
+                        ErrorAlert.show("Favorite failure", message: message ?? error?.localizedDescription)
                     }
             })
         }
@@ -478,8 +477,7 @@ extension Twitter {
             let url = NSURL(string: "https://api.twitter.com/1.1/favorites/destroy.json")!
             credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
                 
-                }, failure: { (error) -> Void in
-                    let code = Twitter.getErrorCode(error)
+                }, failure: { (code, message, error) -> Void in
                     if code == 34 {
                         ErrorAlert.show("Unfavorite failure", message: "missing favorite.")
                     } else {
@@ -487,7 +485,7 @@ extension Twitter {
                             Static.favorites[statusID] = true
                             EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
                         }
-                        ErrorAlert.show("Unfavorite failure", message: error.localizedDescription)
+                        ErrorAlert.show("Unfavorite failure", message: message ?? error?.localizedDescription)
                     }
             })
         }
@@ -515,8 +513,7 @@ extension Twitter {
                     }
                 }
                 return
-            }, failure: { (error) -> Void in
-                let code = Twitter.getErrorCode(error)
+            }, failure: { (code, message, error) -> Void in
                 if code == 34 {
                     ErrorAlert.show("Retweet failure", message: "already retweets.")
                 } else {
@@ -524,7 +521,7 @@ extension Twitter {
                         Static.retweets.removeValueForKey(statusID)
                         EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
                     }
-                    ErrorAlert.show("Retweet failure", message: error.localizedDescription)
+                    ErrorAlert.show("Retweet failure", message: message ?? error?.localizedDescription)
                 }
             })
         }
@@ -540,8 +537,7 @@ extension Twitter {
             EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
             let url = NSURL(string: "https://api.twitter.com/1.1/statuses/destroy/\(retweetedStatusID).json")!
             credential()?.post(url, parameters: [:]).send({ (json: JSON) -> Void in
-            }, failure: { (error) -> Void in
-                    let code = Twitter.getErrorCode(error)
+            }, failure: { (code, message, error) -> Void in
                     if code == 34 {
                         ErrorAlert.show("Undo Retweet failure", message: "missing retweets.")
                     } else {
@@ -549,7 +545,7 @@ extension Twitter {
                             Static.retweets[statusID] = retweetedStatusID
                             EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
                         }
-                        ErrorAlert.show("Undo Retweet failure", message: error.localizedDescription)
+                        ErrorAlert.show("Undo Retweet failure", message: message ?? error?.localizedDescription)
                     }
             })
         }
@@ -558,9 +554,8 @@ extension Twitter {
     class func destroyStatus(account: Account, statusID: String) {
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/destroy/\(statusID).json")!
         credential()?.post(url, parameters: [:]).send({ (json: JSON) -> Void in
-        }, failure: { (error) -> Void in
-            let code = Twitter.getErrorCode(error)
-            ErrorAlert.show("Undo Tweet failure code:\(code)", message: error.localizedDescription)
+        }, failure: { (code, message, error) -> Void in
+            ErrorAlert.show("Undo Tweet failure code:\(code)", message: message ?? error?.localizedDescription)
         })
     }
     
@@ -650,13 +645,6 @@ extension Twitter {
         credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Report success")
         })
-    }
-    
-    class func getErrorCode(error: NSError) -> Int {
-        if let errorCode = error.userInfo["errorCode"] as? Int {
-            return errorCode
-        }
-        return 0
     }
 }
 
@@ -826,6 +814,7 @@ extension Twitter {
 }
 
 extension TwitterAPI.Request {
+    
     public func send(success: ((JSON) -> Void)) -> NSURLSessionDataTask {
         return send(success, failure: nil)
     }
@@ -839,36 +828,31 @@ extension TwitterAPI.Request {
         return send(s, failure: nil)
     }
     
-    public func send(success: ((JSON) -> Void)?, failure: ((error: NSError) -> Void)?) -> NSURLSessionDataTask {
+    public func send(success: ((JSON) -> Void)?, failure: ((code: Int?, message: String?, error: NSError?) -> Void)?) -> NSURLSessionDataTask {
         return send({ (responseData, response, error) -> Void in
-            let url = self.request.URL?.absoluteString ?? "-"
+            let url = self.urlRequest.URL?.absoluteString ?? "-"
             if let error = error {
-                if let data = responseData {
-                    let json = JSON(data: data)
-                    if let errors = json.array {
-                        let errorMessage = errors[0]["message"].string ?? "Unknown"
-                        let errorCode = errors[0]["code"].int ?? 0
-                        let userInfo: [NSObject : AnyObject] = ["errorMessage": errorMessage, "errorCode": errorCode]
-                        let httpResponse = response as? NSHTTPURLResponse
-                        let code = httpResponse?.statusCode ?? 0
-                        let error = NSError(domain: NSURLErrorDomain, code: code, userInfo: userInfo)
-                        if let f = failure {
-                            f(error: error)
-                        } else {
-                            ErrorAlert.show("Twitter API Error", message: "\(errorMessage)(\(errorCode)) url:\(url) code:\(code)")
-                        }
-                        return
-                    }
-                }
-                if let f = failure {
-                    f(error: error)
+                if let failure = failure {
+                    failure(code: nil, message: nil, error: error)
                 } else {
                     ErrorAlert.show("Twitter API Error", message: "url:\(url) error:\(error.localizedDescription)")
                 }
-                return
-            }
-            if let data = responseData {
-                success?(JSON(data: data))
+            } else if let data = responseData {
+                let json = JSON(data: data)
+                if let errors = json["errors"].array {
+                    let code = errors[0]["code"].int ?? 0
+                    let message = errors[0]["message"].string ?? "Unknown"
+                    let HTTPResponse = response as? NSHTTPURLResponse
+                    let HTTPStatusCode = HTTPResponse?.statusCode ?? 0
+                    let error = NSError(domain: NSURLErrorDomain, code: HTTPStatusCode, userInfo: nil)
+                    if let failure = failure {
+                        failure(code: code, message: message, error: error)
+                    } else {
+                        ErrorAlert.show("Twitter API Error", message: "\(message)(\(code)) url:\(url) code:\(HTTPStatusCode)")
+                    }
+                } else {
+                    success?(json)
+                }
             }
         })
     }

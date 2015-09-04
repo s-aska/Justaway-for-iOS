@@ -80,7 +80,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         if let account = self.settings?.accounts[indexPath.row] {
             cell.displayNameLabel.text = account.name
             cell.screenNameLabel.text = account.screenName
-            cell.clientNameLabel.text = account.credential as? TwitterAPICredentialOAuth != nil ? "Justaway" : "iOS"
+            cell.clientNameLabel.text = account.credential as? TwitterAPI.CredentialOAuth != nil ? "Justaway" : "iOS"
             ImageLoaderClient.displayUserIcon(account.profileImageBiggerURL, imageView: cell.iconImageView)
         }
         return cell
