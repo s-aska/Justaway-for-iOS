@@ -125,6 +125,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         
         EventBox.onMainThread(self, name: EventAccountChanged, handler: { _ in
             self.reset()
+            self.settingsViewController.hide()
         })
         
         EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
@@ -218,7 +219,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 }
             }
         }
-        self.settingsViewController.hide()
     }
     
     // MARK: - UIScrollViewDelegate

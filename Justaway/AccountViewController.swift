@@ -62,8 +62,10 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func configureEvent() {
         EventBox.onMainThread(self, name: TwitterAuthorizeNotification) {
-            (notification: NSNotification!) in
-            
+            [weak self] (notification: NSNotification!) in
+            guard let `self` = self else {
+                return
+            }
             self.refreshControl.endRefreshing()
             self.cancel()
         }
@@ -166,7 +168,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func cancel() {
-        self.settings = AccountSettingsStore.get()
+        settings = AccountSettingsStore.get()
         tableView.reloadData()
         initEditing()
     }
