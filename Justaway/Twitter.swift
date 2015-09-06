@@ -101,19 +101,16 @@ class Twitter {
                 accessTokenSecret: credential.oauth_token_secret)
             
             let url = NSURL(string: "https://api.twitter.com/1.1/account/verify_credentials.json")!
-            credential.get(url).send({ (responseData, response, error) -> Void in
-                if let data = responseData {
-                    let json = JSON(data: data)
-                    let user = TwitterUser(json)
-                    let account = Account(
-                        credential: credential,
-                        userID: user.userID,
-                        screenName: user.screenName,
-                        name: user.name,
-                        profileImageURL: user.profileImageURL)
-                    Twitter.refreshAccounts([account])
-                }
-            })
+            credential.get(url).send() { (json: JSON) -> Void in
+                let user = TwitterUser(json)
+                let account = Account(
+                    credential: credential,
+                    userID: user.userID,
+                    screenName: user.screenName,
+                    name: user.name,
+                    profileImageURL: user.profileImageURL)
+                Twitter.refreshAccounts([account])
+            }
         }, failure: failure)
     }
     
@@ -151,6 +148,7 @@ class Twitter {
     class func refreshAccounts(newAccounts: [Account]) {
         var accounts = [Account]()
         var current = 0
+        var credential: TwitterAPICredential?
         
         if let accountSettings = AccountSettingsStore.get() {
             
@@ -176,14 +174,14 @@ class Twitter {
             }
             
             // Update credential from current account
-            // swifter.client.credential = accounts[current].credential
+            credential = accounts[current].credential
         } else if newAccounts.count > 0 {
             
             // Merge accounts and newAccounts
             accounts = newAccounts
             
             // Update credential from newAccounts
-            // swifter.client.credential = accounts[0].credential
+            credential = accounts[0].credential
         } else {
             return
         }
@@ -221,7 +219,7 @@ class Twitter {
         
         let parameters = ["user_id": userIDs]
         let url = NSURL(string: "https://api.twitter.com/1.1/users/lookup.json")!
-        credential()?.get(url, parameters: parameters).send(success)
+        credential?.get(url, parameters: parameters).send(success)
     }
     
     class func getHomeTimelineCache(success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
@@ -370,11 +368,13 @@ class Twitter {
             return statusUpdate(status, inReplyToStatusID: inReplyToStatusID, media_ids: media_ids)
         }
         let image = images.removeAtIndex(0)
-        credential()?.postMedia(image).send { (json: JSON) -> Void in
-            if let media_id = json["media_id_string"].string {
-                media_ids.append(media_id)
+        Async.background { () -> Void in
+            credential()?.postMedia(image).send { (json: JSON) -> Void in
+                if let media_id = json["media_id_string"].string {
+                    media_ids.append(media_id)
+                }
+                self.statusUpdate(status, inReplyToStatusID: inReplyToStatusID, images: images, media_ids: media_ids)
             }
-            self.statusUpdate(status, inReplyToStatusID: inReplyToStatusID, images: images, media_ids: media_ids)
         }
     }
     
@@ -506,7 +506,7 @@ extension Twitter {
             Static.retweets[statusID] = "0"
             EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
             let url = NSURL(string: "https://api.twitter.com/1.1/statuses/retweet/\(statusID).json")!
-            credential()?.post(url, parameters: [:]).send({ (json: JSON) -> Void in
+            credential()?.post(url).send({ (json: JSON) -> Void in
                 Async.customQueue(Static.retweetsQueue) {
                     if let id = json["id_str"].string {
                         Static.retweets[statusID] = id
@@ -553,7 +553,7 @@ extension Twitter {
     
     class func destroyStatus(account: Account, statusID: String) {
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/destroy/\(statusID).json")!
-        credential()?.post(url, parameters: [:]).send({ (json: JSON) -> Void in
+        account.credential.post(url).send({ (json: JSON) -> Void in
         }, failure: { (code, message, error) -> Void in
             ErrorAlert.show("Undo Tweet failure code:\(code)", message: message ?? error?.localizedDescription)
         })

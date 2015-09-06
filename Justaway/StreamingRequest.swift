@@ -28,7 +28,7 @@ extension TwitterAPI {
         }
         
         public func start() -> StreamingRequest {
-            let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("background")
+            let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
             session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
             task = self.session?.dataTaskWithRequest(self.request)
             task?.resume()

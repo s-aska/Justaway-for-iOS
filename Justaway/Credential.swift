@@ -58,7 +58,7 @@ extension TwitterAPI {
                 accessTokenSecret: self.accessTokenSecret)
             
             let authorization = OAuthSwiftClient.authorizationHeaderForMethod(method, url: url, parameters: parameters, credential: client.credential)
-            let headers: [String : String] = ["Authorization": authorization]
+            let headers = ["Authorization": authorization]
             
             let request: NSURLRequest
             do {

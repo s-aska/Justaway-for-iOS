@@ -212,9 +212,7 @@ class EditorViewController: UIViewController, QBImagePickerControllerDelegate {
         if text.isEmpty && images.count == 0 {
             hide()
         } else {
-            Async.background({ () -> Void in
-                Twitter.statusUpdate(text, inReplyToStatusID: self.inReplyToStatusId, images: self.images, media_ids: [])
-            })
+            Twitter.statusUpdate(text, inReplyToStatusID: self.inReplyToStatusId, images: self.images, media_ids: [])
             hide()
         }
     }
