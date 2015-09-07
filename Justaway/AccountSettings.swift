@@ -38,9 +38,9 @@ class Account {
         }
         if dictionary[Constants.identifier] != nil {
             let account = ACAccountStore().accountWithIdentifier(dictionary[Constants.identifier])
-            self.credential = TwitterAPI.CredentialAccount(account)
+            self.credential = TwitterAPI.credential(account)
         } else {
-            self.credential = TwitterAPI.CredentialOAuth(
+            self.credential = TwitterAPI.credential(
                 consumerKey: TwitterConsumerKey,
                 consumerSecret: TwitterConsumerSecret,
                 accessToken: dictionary[Constants.key]!,
@@ -53,7 +53,9 @@ class Account {
     }
     
     var dictionaryValue: [String: String] {
-        if let account = credential as? TwitterAPI.CredentialAccount {
+        switch credential.type {
+        case .OAuth:
+            let account = credential as! TwitterAPI.CredentialAccount
             return [
                 Constants.identifier      : account.account.identifier!,
                 Constants.userID          : self.userID,
@@ -61,7 +63,8 @@ class Account {
                 Constants.name            : self.name,
                 Constants.profileImageURL : self.profileImageURL.absoluteString
             ]
-        } else if let accessToken = credential as? TwitterAPI.CredentialOAuth {
+        case .Account:
+            let accessToken = credential as! TwitterAPI.CredentialOAuth
             return [
                 Constants.key             : accessToken.accessToken,
                 Constants.secret          : accessToken.accessTokenSecret,
@@ -70,8 +73,6 @@ class Account {
                 Constants.name            : self.name,
                 Constants.profileImageURL : self.profileImageURL.absoluteString
             ]
-        } else {
-            fatalError("Invalid credential.")
         }
     }
 }

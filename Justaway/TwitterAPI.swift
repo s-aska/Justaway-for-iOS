@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Accounts
 
 public class TwitterAPI {
     public typealias ProgressHandler = (data: NSData) -> Void
@@ -19,5 +20,18 @@ public class TwitterAPI {
     public class var showIndicator: Bool {
         get { return Static.indicator }
         set { Static.indicator = newValue }
+    }
+    
+    public enum CredentialType {
+        case OAuth
+        case Account
+    }
+    
+    public class func credential(consumerKey consumerKey: String, consumerSecret: String, accessToken: String, accessTokenSecret: String) -> TwitterAPICredential {
+        return TwitterAPI.CredentialOAuth(consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: accessToken, accessTokenSecret: accessTokenSecret)
+    }
+    
+    public class func credential(account: ACAccount) -> TwitterAPICredential {
+        return TwitterAPI.CredentialAccount(account: account)
     }
 }

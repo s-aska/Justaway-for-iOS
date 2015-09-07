@@ -14,6 +14,7 @@ import Social
 
 public protocol TwitterAPICredential {
     func request(method: String, url: NSURL, parameters: Dictionary<String, String>) -> TwitterAPI.Request
+    var type: TwitterAPI.CredentialType { get }
 }
 
 extension TwitterAPICredential {
@@ -43,11 +44,15 @@ extension TwitterAPI {
         let accessToken: String
         let accessTokenSecret: String
         
-        public init (consumerKey: String, consumerSecret: String, accessToken: String, accessTokenSecret: String) {
+        init (consumerKey: String, consumerSecret: String, accessToken: String, accessTokenSecret: String) {
             self.consumerKey = consumerKey
             self.consumerSecret = consumerSecret
             self.accessToken = accessToken
             self.accessTokenSecret = accessTokenSecret
+        }
+        
+        public var type: TwitterAPI.CredentialType {
+            return .OAuth
         }
         
         public func request(method: String, url: NSURL, parameters: Dictionary<String, String>) -> TwitterAPI.Request {
@@ -77,8 +82,12 @@ extension TwitterAPI {
     public class CredentialAccount: TwitterAPICredential {
         let account: ACAccount
         
-        public init (_ account: ACAccount) {
+        init (account: ACAccount) {
             self.account = account
+        }
+        
+        public var type: TwitterAPI.CredentialType {
+            return .Account
         }
         
         public func request(method: String, url: NSURL, parameters: Dictionary<String, String>) -> TwitterAPI.Request {
