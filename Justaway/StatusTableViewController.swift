@@ -158,7 +158,7 @@ class StatusTableViewController: TimelineTableViewController {
     }
     
     func saveCacheSchedule() {
-        Scheduler.regsiter(min: 30, max: 60, target: self, selector: Selector("saveCache"))
+        Scheduler.regsiter(interval: 30, target: self, selector: Selector("saveCache"))
     }
     
     override func refresh() {
