@@ -204,23 +204,30 @@ class TwitterStatusAdapter: NSObject {
     func eraseData(tableView: UITableView, statusID: String, handler: (() -> Void)?) {
         var deleteIndexPaths = [NSIndexPath]()
         var i = 0
+        var newRows = [Row]()
         for row in self.rows {
             if row.status.statusID == statusID {
                 deleteIndexPaths.append(NSIndexPath(forRow: i, inSection: 0))
                 continue
+            } else {
+                newRows.append(row)
             }
             i++
         }
         
         if deleteIndexPaths.count > 0 {
-            tableView.beginUpdates()
-            while let index = self.rows.map({ $0.status.statusID }).indexOf(statusID) {
-                self.rows.removeAtIndex(index)
+            CATransaction.begin()
+            if let handler = handler {
+                CATransaction.setCompletionBlock(handler)
             }
+            tableView.beginUpdates()
+            self.rows = newRows
             tableView.deleteRowsAtIndexPaths(deleteIndexPaths, withRowAnimation: .Fade)
             tableView.endUpdates()
+            CATransaction.commit()
+        } else {
+            handler?()
         }
-        handler?()
     }
     
     func renderImages(tableView: UITableView) {

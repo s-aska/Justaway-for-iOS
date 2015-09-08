@@ -129,12 +129,12 @@ class Twitter {
                     MessageAlert.show("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
                 } else {
                     Twitter.refreshAccounts(
-                        twitterAccounts.map({ (twitterAccount: ACAccount) in
+                        twitterAccounts.map({ (account: ACAccount) in
                             Account(
-                                credential: TwitterAPI.CredentialAccount(twitterAccount),
-                                userID: twitterAccount.valueForKeyPath("properties.user_id") as! String,
-                                screenName: twitterAccount.username,
-                                name: twitterAccount.username,
+                                credential: TwitterAPI.credential(account: account),
+                                userID: account.valueForKeyPath("properties.user_id") as! String,
+                                screenName: account.username,
+                                name: account.username,
                                 profileImageURL: NSURL(string: "")!)
                         })
                     )

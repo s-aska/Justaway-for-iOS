@@ -38,7 +38,7 @@ class Account {
         }
         if dictionary[Constants.identifier] != nil {
             let account = ACAccountStore().accountWithIdentifier(dictionary[Constants.identifier])
-            self.credential = TwitterAPI.credential(account)
+            self.credential = TwitterAPI.credential(account: account)
         } else {
             self.credential = TwitterAPI.credential(
                 consumerKey: TwitterConsumerKey,

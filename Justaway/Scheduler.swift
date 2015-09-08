@@ -23,13 +23,16 @@ class Scheduler {
                 // async.cancel()
             }
             let block: (() -> Void) = {
-                Static.lasts[key] = NSDate().timeIntervalSince1970
-                NSTimer.scheduledTimerWithTimeInterval(0, target: target, selector: selector, userInfo: nil, repeats: false)
+                dispatch_sync(Static.serial) {
+                    Static.lasts[key] = NSDate().timeIntervalSince1970
+                    NSTimer.scheduledTimerWithTimeInterval(0, target: target, selector: selector, userInfo: nil, repeats: false)
+                }
             }
             let last = Static.lasts[key] ?? 0
             let now = NSDate().timeIntervalSince1970
             if (now - last) > max {
-                block()
+                Static.lasts[key] = NSDate().timeIntervalSince1970
+                NSTimer.scheduledTimerWithTimeInterval(0, target: target, selector: selector, userInfo: nil, repeats: false)
             } else {
                 Static.asyncs[key] = Async.background(after: min, block: block)
             }

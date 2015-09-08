@@ -8,10 +8,6 @@
 
 import Foundation
 
-#if os(iOS)
-    import UIKit
-#endif
-
 extension TwitterAPI {
     
     public class Request {
@@ -27,22 +23,10 @@ extension TwitterAPI {
             let session = NSURLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
             let task = session.dataTaskWithRequest(urlRequest) { (responseData, response, error) -> Void in
                 dispatch_async(dispatch_get_main_queue(), {
-                    #if os(iOS)
-                        if TwitterAPI.showIndicator {
-                            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                        }
-                    #endif
-                    
                     completion?(responseData: responseData, response: response, error: error)
                 })
             }
             task.resume()
-            
-            #if os(iOS)
-                if TwitterAPI.showIndicator {
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-                }
-            #endif
             
             return task
         }
