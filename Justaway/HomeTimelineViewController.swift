@@ -23,8 +23,8 @@ class HomeTimelineTableViewController: StatusTableViewController {
         Twitter.getHomeTimelineCache(success, failure: failure)
     }
     
-    override func loadData(id: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-        Twitter.getHomeTimeline(id, success: success, failure: failure)
+    override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+        Twitter.getHomeTimeline(maxID: maxID, success: success, failure: failure)
     }
     
     override func loadData(sinceID sinceID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {

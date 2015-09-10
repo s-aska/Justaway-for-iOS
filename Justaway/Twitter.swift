@@ -238,10 +238,15 @@ class Twitter {
         return AccountSettingsStore.get()?.account().credential
     }
     
-    class func getHomeTimeline(maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+    class func getHomeTimeline(maxID maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         var parameters = [String: String]()
         if let maxID = maxID {
             parameters["max_id"] = maxID
+            parameters["count"] = "200"
+        }
+        if let sinceID = sinceID {
+            parameters["since_id"] = sinceID
+            parameters["count"] = "200"
         }
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")!
         credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
@@ -256,18 +261,6 @@ class Twitter {
         }
     }
     
-    class func getHomeTimeline(sinceID sinceID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
-        var parameters = ["count": "200"]
-        if let sinceID = sinceID {
-            parameters["since_id"] = sinceID
-        }
-        let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")!
-        credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
-            let statuses = array.map({ TwitterStatus($0) })
-            success(statuses)
-        }
-    }
-    
     class func getStatuses(statusIDs: [String], success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         let parameters = ["id": statusIDs.joinWithSeparator(",")]
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/lookup.json")!
@@ -276,10 +269,14 @@ class Twitter {
         }
     }
     
-    class func getUserTimeline(userID: String, maxID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+    class func getUserTimeline(userID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         var parameters = ["user_id": userID]
         if let maxID = maxID {
             parameters["max_id"] = maxID
+            parameters["count"] = "200"
+        }
+        if let sinceID = sinceID {
+            parameters["since_id"] = sinceID
             parameters["count"] = "200"
         }
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/user_timeline.json")!
@@ -300,10 +297,15 @@ class Twitter {
         }
     }
     
-    class func getMentionTimeline(maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
-        var parameters = ["count": "200"]
+    class func getMentionTimeline(maxID maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        var parameters: [String: String] = [:]
         if let maxID = maxID {
             parameters["max_id"] = maxID
+            parameters["count"] = "200"
+        }
+        if let sinceID = sinceID {
+            parameters["since_id"] = sinceID
+            parameters["count"] = "200"
         }
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/mentions_timeline.json")!
         credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
@@ -321,10 +323,15 @@ class Twitter {
         }
     }
     
-    class func getFavorites(userID: String, maxID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
-        var parameters = ["user_id": userID, "count": "200"]
+    class func getFavorites(userID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        var parameters = ["user_id": userID]
         if let maxID = maxID {
             parameters["max_id"] = maxID
+            parameters["count"] = "200"
+        }
+        if let sinceID = sinceID {
+            parameters["since_id"] = sinceID
+            parameters["count"] = "200"
         }
         let url = NSURL(string: "https://api.twitter.com/1.1/favorites/list.json")!
         credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in

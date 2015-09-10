@@ -130,6 +130,7 @@ class StatusTableViewController: TimelineTableViewController {
                 op.finish()
                 self.adapter.footerIndicatorView?.stopAnimating()
                 self.refreshControl?.endRefreshing()
+                self.loadDataInSleep()
             }
             let success = { (statuses: [TwitterStatus]) -> Void in
                 for status in statuses {
@@ -212,7 +213,7 @@ class StatusTableViewController: TimelineTableViewController {
         self.adapter.loadDataQueue.addOperation(op)
     }
     
-    func loadData(id: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadData(maxID: String? = nil, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         assertionFailure("not implements.")
     }
     

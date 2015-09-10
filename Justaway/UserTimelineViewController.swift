@@ -22,9 +22,15 @@ class UserTimelineTableViewController: StatusTableViewController {
     override func saveCache() {
     }
     
-    override func loadData(id: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         if let userID = userID {
-            Twitter.getUserTimeline(userID, maxID: id, success: success, failure: failure)
+            Twitter.getUserTimeline(userID, maxID: maxID, success: success, failure: failure)
+        }
+    }
+    
+    override func loadData(sinceID sinceID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+        if let userID = userID {
+            Twitter.getUserTimeline(userID, sinceID: sinceID, success: success, failure: failure)
         }
     }
     

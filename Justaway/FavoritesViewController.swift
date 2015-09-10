@@ -27,9 +27,17 @@ class FavoritesTableViewController: StatusTableViewController {
         // Twitter.getHomeTimelineCache(success, failure: failure)
     }
     
-    override func loadData(id: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         if let userID = self.userID {
-            Twitter.getFavorites(userID, maxID: nil, success: success, failure: failure)
+            Twitter.getFavorites(userID, maxID: maxID, success: success, failure: failure)
+        } else {
+            success(statuses: [])
+        }
+    }
+    
+    override func loadData(sinceID sinceID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+        if let userID = self.userID {
+            Twitter.getFavorites(userID, sinceID: sinceID, success: success, failure: failure)
         } else {
             success(statuses: [])
         }
