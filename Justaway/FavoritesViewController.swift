@@ -30,6 +30,8 @@ class FavoritesTableViewController: StatusTableViewController {
     override func loadData(id: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         if let userID = self.userID {
             Twitter.getFavorites(userID, maxID: nil, success: success, failure: failure)
+        } else {
+            success(statuses: [])
         }
     }
     

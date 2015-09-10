@@ -12,17 +12,11 @@ import KeyClip
 class UserTimelineTableViewController: StatusTableViewController {
     
     var userID: String?
-    var scrollCallback: ((scrollView: UIScrollView) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         cacheLoaded = true // no cache
         adapter.scrollEnd(tableView) // contentInset call scrollViewDidScroll, but call scrollEnd
-    }
-    
-    override func scrollViewDidScroll(scrollView: UIScrollView) {
-        super.scrollViewDidScroll(scrollView)
-        scrollCallback?(scrollView: scrollView)
     }
     
     override func saveCache() {

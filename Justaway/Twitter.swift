@@ -277,9 +277,10 @@ class Twitter {
     }
     
     class func getUserTimeline(userID: String, maxID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
-        var parameters = ["user_id": userID, "count": "200"]
+        var parameters = ["user_id": userID]
         if let maxID = maxID {
             parameters["max_id"] = maxID
+            parameters["count"] = "200"
         }
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/user_timeline.json")!
         credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in

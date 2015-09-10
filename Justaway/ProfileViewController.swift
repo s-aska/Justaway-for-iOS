@@ -78,7 +78,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     var relationship: TwitterRelationship?
     
     var tabMenus = [TabMenu]()
-    var tabViews = [UITableViewController]()
+    var tabViews = [TimelineTableViewController]()
+    var tabLoaded = [Int: Bool]()
     let userTimelineTableViewController = UserTimelineTableViewController()
     let followingTableViewController = FollowingUserViewController()
     let followerTableViewController = FollowerUserViewController()
@@ -174,7 +175,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         scrollView.contentSize = contentView.frame.size
         scrollView.pagingEnabled = true
         
-        userTimelineTableViewController.scrollCallback = { (scrollView: UIScrollView) -> Void in
+        userTimelineTableViewController.adapter.scrollCallback = { (scrollView: UIScrollView) -> Void in
             let offset = scrollView.contentOffset.y
             let margin = 159 + offset
             if margin <= 0 {
@@ -207,10 +208,18 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         headerViewLeftConstraint.constant = -offset
         let page = Int((offset + (view.frame.size.width / 2)) / view.frame.size.width)
         highlightUpdate(page)
+        loadData(page)
     }
     
     func highlightUpdate(page: Int) {
         CurrentTabMaskLeftConstraint.constant = CGFloat(CGFloat(page) * self.view.frame.size.width / 5)
+    }
+    
+    func loadData(page: Int) {
+        if !(tabLoaded[page] ?? false) {
+            tabLoaded[page] = true
+            tabViews[page].refresh()
+        }
     }
     
     // MARK: - Actions
@@ -247,14 +256,13 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             
             userTimelineTableViewController.userID = user.userID
             userTimelineTableViewController.loadData(nil)
+            
+            tabLoaded = [0: true]
+            
             followingTableViewController.userID = user.userID
-            followingTableViewController.loadData(nil)
             followerTableViewController.userID = user.userID
-            followerTableViewController.loadData(nil)
             listMemberOfViewController.userID = user.userID
-            listMemberOfViewController.loadData(nil)
             favoritesTableViewController.userID = user.userID
-            favoritesTableViewController.loadData(nil)
             
             let success :(([JSON]) -> Void) = { (rows) in
                 if let row = rows.first {
@@ -307,7 +315,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             if offset == self.scrollView.contentOffset.x {
                  tabViews[page].tableView.setContentOffset(CGPointZero, animated: true)
             } else {
-                self.headerViewLeftConstraint.constant = -offset
+                headerViewLeftConstraint.constant = -offset
+                loadData(page)
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     self.scrollView.contentOffset = CGPointMake(offset, 0)
                     self.view.layoutIfNeeded()

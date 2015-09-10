@@ -9,7 +9,7 @@
 import UIKit
 import EventBox
 
-class UserTableViewController: UITableViewController {
+class UserTableViewController: TimelineTableViewController {
     
     // MARK: Types
     
@@ -91,9 +91,9 @@ class UserTableViewController: UITableViewController {
         self.tableView.registerNib(nib, forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         self.layoutHeightCell = self.tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier) as? TwitterUserCell
         
-        // var refreshControl = UIRefreshControl()
-        // refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
-        // self.refreshControl = refreshControl
+//        let refreshControl = UIRefreshControl()
+//        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
+//        self.refreshControl = refreshControl
     }
     
     func configureEvent() {
@@ -169,16 +169,28 @@ class UserTableViewController: UITableViewController {
             context: nil).size.height)
     }
     
+    override func refresh() {
+        loadData(nil)
+    }
+    
     func loadData(maxID: Int64?) {
         let fontSize = CGFloat(GenericSettings.get().fontSize)
         
         let s = { (users: [TwitterUserFull]) -> Void in
             self.rows = users.map({ self.createRow($0, fontSize: fontSize) })
             self.tableView.reloadData()
+            self.footerIndicatorView?.stopAnimating()
         }
         
         let f = { (error: NSError) -> Void in
+            self.footerIndicatorView?.stopAnimating()
+        }
         
+        if !(self.refreshControl?.refreshing ?? false) {
+            Async.main {
+                self.footerIndicatorView?.startAnimating()
+                return
+            }
         }
         
         loadData(maxID?.stringValue, success: s, failure: f)

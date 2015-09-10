@@ -128,7 +128,7 @@ class StatusTableViewController: TimelineTableViewController {
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (()-> Void) = {
                 op.finish()
-                self.footerIndicatorView?.stopAnimating()
+                self.adapter.footerIndicatorView?.stopAnimating()
                 self.refreshControl?.endRefreshing()
             }
             let success = { (statuses: [TwitterStatus]) -> Void in
@@ -145,7 +145,7 @@ class StatusTableViewController: TimelineTableViewController {
                 always()
             }
             dispatch_sync(dispatch_get_main_queue(), {
-                self.footerIndicatorView?.startAnimating()
+                self.adapter.footerIndicatorView?.startAnimating()
                 return
             })
             self.loadCache(success, failure: failure)
@@ -181,7 +181,7 @@ class StatusTableViewController: TimelineTableViewController {
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (()-> Void) = {
                 op.finish()
-                self.footerIndicatorView?.stopAnimating()
+                self.adapter.footerIndicatorView?.stopAnimating()
                 self.refreshControl?.endRefreshing()
             }
             let success = { (statuses: [TwitterStatus]) -> Void in
@@ -203,7 +203,7 @@ class StatusTableViewController: TimelineTableViewController {
             }
             if !(self.refreshControl?.refreshing ?? false) {
                 Async.main {
-                    self.footerIndicatorView?.startAnimating()
+                    self.adapter.footerIndicatorView?.startAnimating()
                     return
                 }
             }

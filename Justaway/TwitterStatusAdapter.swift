@@ -46,6 +46,7 @@ class TwitterStatusAdapter: NSObject {
     var isTop: Bool = true
     var scrolling: Bool = false
     var didScrollToBottom: (Void -> Void)?
+    var scrollCallback: ((scrollView: UIScrollView) -> Void)?
     let loadDataQueue = NSOperationQueue().serial()
     let mainQueue = NSOperationQueue.mainQueue().serial()
     
@@ -322,6 +323,7 @@ extension TwitterStatusAdapter: UITableViewDelegate {
 
 extension TwitterStatusAdapter {
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollCallback?(scrollView: scrollView)
         if loadDataQueue.suspended {
             return
         }
