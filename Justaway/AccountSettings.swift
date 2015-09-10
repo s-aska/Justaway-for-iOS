@@ -54,7 +54,7 @@ class Account {
     
     var dictionaryValue: [String: String] {
         switch credential.type {
-        case .OAuth:
+        case .Account:
             let account = credential as! TwitterAPI.CredentialAccount
             return [
                 Constants.identifier      : account.account.identifier!,
@@ -63,7 +63,7 @@ class Account {
                 Constants.name            : self.name,
                 Constants.profileImageURL : self.profileImageURL.absoluteString
             ]
-        case .Account:
+        case .OAuth:
             let accessToken = credential as! TwitterAPI.CredentialOAuth
             return [
                 Constants.key             : accessToken.accessToken,

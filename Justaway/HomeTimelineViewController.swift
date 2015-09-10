@@ -27,6 +27,10 @@ class HomeTimelineTableViewController: StatusTableViewController {
         Twitter.getHomeTimeline(id, success: success, failure: failure)
     }
     
+    override func loadData(sinceID sinceID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+        Twitter.getHomeTimeline(sinceID: sinceID, success: success, failure: failure)
+    }
+    
     override func accept(status: TwitterStatus) -> Bool {
         if status.event != nil {
             return false

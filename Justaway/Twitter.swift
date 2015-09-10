@@ -256,6 +256,18 @@ class Twitter {
         }
     }
     
+    class func getHomeTimeline(sinceID sinceID: String?, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        var parameters = ["count": "200"]
+        if let sinceID = sinceID {
+            parameters["since_id"] = sinceID
+        }
+        let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")!
+        credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
+            let statuses = array.map({ TwitterStatus($0) })
+            success(statuses)
+        }
+    }
+    
     class func getStatuses(statusIDs: [String], success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         let parameters = ["id": statusIDs.joinWithSeparator(",")]
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/lookup.json")!

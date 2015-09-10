@@ -11,6 +11,7 @@ class StatusTableViewController: TimelineTableViewController {
     let adapter = TwitterStatusAdapter()
     var lastID: Int64?
     var cacheLoaded = false
+    var lastUpdated: NSTimeInterval = 0
     
     // MARK: - View Life Cycle
     
@@ -58,6 +59,9 @@ class StatusTableViewController: TimelineTableViewController {
     func configureEvent() {
         EventBox.onBackgroundThread(self, name: "applicationDidEnterBackground") { (n) -> Void in
             self.saveCache()
+        }
+        EventBox.onBackgroundThread(self, name: "applicationWillEnterForeground") { (n) -> Void in
+            self.loadDataInSleep()
         }
         EventBox.onMainThread(self, name: EventStatusBarTouched, handler: { (n) -> Void in
             self.adapter.scrollToTop(self.tableView)
@@ -210,6 +214,49 @@ class StatusTableViewController: TimelineTableViewController {
     
     func loadData(id: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         assertionFailure("not implements.")
+    }
+    
+    func loadData(sinceID sinceID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+        success(statuses: [TwitterStatus]())
+    }
+    
+    func loadDataInSleep() {
+        if AccountSettingsStore.get() == nil {
+            return
+        }
+        
+        if self.adapter.loadDataQueue.operationCount > 0 {
+            NSLog("loadDataInSleep busy")
+            return
+        }
+        
+        let elapsed = NSDate().timeIntervalSince1970 - lastUpdated
+        if elapsed < 30 {
+            NSLog("loadDataInSleep short")
+            return
+        }
+        
+        lastUpdated = NSDate().timeIntervalSince1970
+        
+        NSLog("loadDataInSleep addOperation: suspended:\(self.adapter.loadDataQueue.suspended)")
+        
+        let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
+            let always: (()-> Void) = {
+                op.finish()
+            }
+            let success = { (statuses: [TwitterStatus]) -> Void in
+                
+                // render statuses
+                self.renderData(statuses, mode: .TOP, handler: always)
+            }
+            let failure = { (error: NSError) -> Void in
+                ErrorAlert.show("Error", message: error.localizedDescription)
+                always()
+            }
+            let sinceID = self.adapter.rows.first?.status.statusID
+            self.loadData(sinceID: sinceID, success: success, failure: failure)
+        })
+        self.adapter.loadDataQueue.addOperation(op)
     }
     
     func accept(status: TwitterStatus) -> Bool {
