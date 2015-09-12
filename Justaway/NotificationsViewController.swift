@@ -49,15 +49,15 @@ class NotificationsViewController: StatusTableViewController {
         
         if let accountSettings = AccountSettingsStore.get() {
             
-            for mention in status.mentions {
-                if accountSettings.isMe(mention.userID) {
-                    return true
-                }
-            }
-            
             if let actionedBy = status.actionedBy {
                 if accountSettings.isMe(actionedBy.userID) {
                     return false
+                }
+            }
+            
+            for mention in status.mentions {
+                if accountSettings.isMe(mention.userID) {
+                    return true
                 }
             }
             
