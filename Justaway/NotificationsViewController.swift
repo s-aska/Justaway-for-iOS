@@ -55,6 +55,12 @@ class NotificationsViewController: StatusTableViewController {
                 }
             }
             
+            if let actionedBy = status.actionedBy {
+                if accountSettings.isMe(actionedBy.userID) {
+                    return false
+                }
+            }
+            
             if status.isActioned {
                 if accountSettings.isMe(status.user.userID) {
                     return true
