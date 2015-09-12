@@ -20,7 +20,15 @@ class NotificationsViewController: StatusTableViewController {
     }
     
     override func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-        Twitter.getMentionTimelineCache(success, failure: failure)
+        Async.background {
+            if let cache = KeyClip.load("notifications") as NSDictionary? {
+                if let statuses = cache["statuses"] as? [[String: AnyObject]] {
+                    success(statuses: statuses.map({ TwitterStatus($0) }))
+                    return
+                }
+            }
+            success(statuses: [TwitterStatus]())
+        }
     }
     
     override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {

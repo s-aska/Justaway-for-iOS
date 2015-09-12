@@ -248,8 +248,12 @@ class StatusTableViewController: TimelineTableViewController {
                 ErrorAlert.show("Error", message: error.localizedDescription)
                 always()
             }
-            let sinceID = self.adapter.rows.first?.status.statusID
-            self.loadData(sinceID: sinceID, success: success, failure: failure)
+            if let sinceID = self.adapter.rows.first?.status.statusID {
+                NSLog("loadDataInSleep load sinceID:\(sinceID)")
+                self.loadData(sinceID: sinceID, success: success, failure: failure)
+            } else {
+                op.finish()
+            }
         })
         self.adapter.loadDataQueue.addOperation(op)
     }
@@ -264,7 +268,6 @@ class StatusTableViewController: TimelineTableViewController {
                 if self.adapter.isTop {
                     self.adapter.scrollEnd(self.tableView)
                 }
-                self.saveCacheSchedule()
                 op.finish()
             })
             

@@ -151,6 +151,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                         if !actionedByMe && ( self.currentPage != page || !vc.adapter.isTop ) {
                             self.tabButtons[page].selected = true
                         }
+                        vc.saveCacheSchedule()
                     }
                 default:
                     break

@@ -50,10 +50,10 @@ class Twitter {
         if let reachability = Reachability.reachabilityForInternetConnection() {
             reachability.whenReachable = { reachability in
                 NSLog("whenReachable")
-                Async.main(after: 2) {
-                    Twitter.startStreamingIfEnable()
-                }
-                return
+//                Async.main(after: 2) {
+//                    Twitter.startStreamingIfEnable()
+//                }
+//                return
             }
             
             reachability.whenUnreachable = { reachability in
@@ -65,8 +65,8 @@ class Twitter {
         
         let enableStreaming: String = KeyClip.load("settings.enableStreaming") ?? "0"
         if enableStreaming == "1" {
-            Static.enableStreaming = true
-            Twitter.startStreamingIfDisconnected()
+//            Static.enableStreaming = true
+//            Twitter.startStreamingIfDisconnected()
         }
     }
     
@@ -222,18 +222,6 @@ class Twitter {
         credential?.get(url, parameters: parameters).send(success)
     }
     
-    class func getHomeTimelineCache(success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
-        Async.background {
-            if let cache = KeyClip.load("homeTimeline") as NSDictionary? {
-                if let statuses = cache["statuses"] as? [[String: AnyObject]] {
-                    success(statuses.map({ TwitterStatus($0) }))
-                    return
-                }
-            }
-            success([TwitterStatus]())
-        }
-    }
-    
     class func credential() -> TwitterAPICredential? {
         return AccountSettingsStore.get()?.account().credential
     }
@@ -282,18 +270,6 @@ class Twitter {
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/user_timeline.json")!
         credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
             success(array.map({ TwitterStatus($0) }))
-        }
-    }
-    
-    class func getMentionTimelineCache(success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
-        Async.background {
-            if let cache = KeyClip.load("mentionTimeline") as NSDictionary? {
-                if let statuses = cache["statuses"] as? [[String: AnyObject]] {
-                    success(statuses.map({ TwitterStatus($0) }))
-                    return
-                }
-            }
-            success([TwitterStatus]())
         }
     }
     

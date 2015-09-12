@@ -62,8 +62,8 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpB-WM-7Qz" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="44" width="600" height="50"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NN0-dj-HHc" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="59" height="50"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NN0-dj-HHc" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="60" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                                     <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                                     <state key="normal" title="下">
@@ -74,8 +74,8 @@
                                         <action selector="hide:" destination="-1" eventType="touchUpInside" id="WfZ-ML-tyE"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcO-tg-NdG" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                    <rect key="frame" x="59" y="0.0" width="62" height="50"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcO-tg-NdG" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="60" y="0.0" width="62" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                                     <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                                     <state key="normal" title="画">
