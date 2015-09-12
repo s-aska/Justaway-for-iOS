@@ -84,6 +84,8 @@ class ThemeController {
         BackgroundTableViewCell.appearance().backgroundColor = theme.mainBackgroundColor()
         BackgroundScrollView.appearance().backgroundColor = theme.mainBackgroundColor()
         BackgroundScrollView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
+        ImagePickerCollectionView.appearance().backgroundColor = theme.mainBackgroundColor()
+        ImagePickerCollectionView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         BackgroundView.appearance().backgroundColor = theme.mainBackgroundColor()
         CurrentTabMaskView.appearance().backgroundColor = theme.menuTextColor()
         MenuView.appearance().backgroundColor = theme.menuBackgroundColor()
@@ -155,6 +157,9 @@ class ThemeController {
             case let v as BackgroundTableViewCell:
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as BackgroundView:
+                v.backgroundColor = theme.mainBackgroundColor()
+            case let v as ImagePickerCollectionView:
+                v.indicatorStyle = theme.scrollViewIndicatorStyle()
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as CurrentTabMaskView:
                 v.backgroundColor = theme.menuTextColor()

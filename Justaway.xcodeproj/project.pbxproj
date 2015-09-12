@@ -60,8 +60,6 @@
 		38C44C8C1B78E7BF00C22A52 /* GeneralSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C44C8B1B78E7BF00C22A52 /* GeneralSettingsViewController.swift */; };
 		38C44C931B78E7D500C22A52 /* GeneralSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38C44C921B78E7D500C22A52 /* GeneralSettingsViewController.xib */; };
 		38C9714D1B7DF7C7008E05CE /* TwitterAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C9714C1B7DF7C7008E05CE /* TwitterAPI.swift */; };
-		38CE6BB91B18171D00E0198B /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38CE6BB81B18171D00E0198B /* QBImagePicker.framework */; };
-		38CE6BBA1B18171D00E0198B /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38CE6BB81B18171D00E0198B /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; };
 		38D6DDF81A5AC317001C94F7 /* EventBox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38DA2D4D1B9876E50090CBDD /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */; };
@@ -70,6 +68,11 @@
 		38DA2D561B9A22590090CBDD /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D541B9A19A50090CBDD /* Request.swift */; settings = {ASSET_TAGS = (); }; };
 		38DFD8001B86F03C0073C8CD /* MutableDataScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */; };
 		38DFD8011B86F03C0073C8CD /* MutableDataScanner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		38E0528E1BA4692600B67EB2 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38E0528D1BA4692600B67EB2 /* ImageCell.xib */; settings = {ASSET_TAGS = (); }; };
+		38E052901BA4697800B67EB2 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E0528F1BA4697800B67EB2 /* ImageCell.swift */; settings = {ASSET_TAGS = (); }; };
+		38E052921BA46B9200B67EB2 /* ImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E052911BA46B9200B67EB2 /* ImagePickerCollectionView.swift */; settings = {ASSET_TAGS = (); }; };
+		38E052931BA4845300B67EB2 /* ImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E052911BA46B9200B67EB2 /* ImagePickerCollectionView.swift */; settings = {ASSET_TAGS = (); }; };
+		38E052941BA4848200B67EB2 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E0528F1BA4697800B67EB2 /* ImageCell.swift */; settings = {ASSET_TAGS = (); }; };
 		38E7367F1B78DA1800F49336 /* GenericSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E7367E1B78DA1800F49336 /* GenericSettings.swift */; };
 		38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */; };
 		38F4EAEC19F14E4700CBD23F /* RoundedFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAEB19F14E4700CBD23F /* RoundedFilter.swift */; };
@@ -191,7 +194,6 @@
 				38D6DDF81A5AC317001C94F7 /* EventBox.framework in Embed Frameworks */,
 				6ADB647B1A5348D800602B2B /* KeyClip.framework in Embed Frameworks */,
 				6A0A1D331A40B7D30035A03C /* Pinwheel.framework in Embed Frameworks */,
-				38CE6BBA1B18171D00E0198B /* QBImagePicker.framework in Embed Frameworks */,
 				38DFD8011B86F03C0073C8CD /* MutableDataScanner.framework in Embed Frameworks */,
 				3815C68B1B7C97DF0014B0A2 /* OAuthSwift.framework in Embed Frameworks */,
 			);
@@ -241,11 +243,13 @@
 		38C44C8B1B78E7BF00C22A52 /* GeneralSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingsViewController.swift; sourceTree = "<group>"; };
 		38C44C921B78E7D500C22A52 /* GeneralSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralSettingsViewController.xib; sourceTree = "<group>"; };
 		38C9714C1B7DF7C7008E05CE /* TwitterAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterAPI.swift; sourceTree = "<group>"; };
-		38CE6BB81B18171D00E0198B /* QBImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QBImagePicker.framework; path = Carthage/Build/iOS/QBImagePicker.framework; sourceTree = "<group>"; };
 		38D6DDF61A5AC317001C94F7 /* EventBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventBox.framework; path = Carthage/Build/iOS/EventBox.framework; sourceTree = "<group>"; };
 		38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		38DA2D541B9A19A50090CBDD /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MutableDataScanner.framework; path = Carthage/Build/iOS/MutableDataScanner.framework; sourceTree = "<group>"; };
+		38E0528D1BA4692600B67EB2 /* ImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
+		38E0528F1BA4697800B67EB2 /* ImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		38E052911BA46B9200B67EB2 /* ImagePickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionView.swift; sourceTree = "<group>"; };
 		38E7367E1B78DA1800F49336 /* GenericSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericSettings.swift; sourceTree = "<group>"; };
 		38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		38F4EAEB19F14E4700CBD23F /* RoundedFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedFilter.swift; sourceTree = "<group>"; };
@@ -323,7 +327,6 @@
 				38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */,
 				6ADB647A1A5348D800602B2B /* KeyClip.framework in Frameworks */,
 				6A0A1D321A40B7D30035A03C /* Pinwheel.framework in Frameworks */,
-				38CE6BB91B18171D00E0198B /* QBImagePicker.framework in Frameworks */,
 				38DFD8001B86F03C0073C8CD /* MutableDataScanner.framework in Frameworks */,
 				3815C68A1B7C97DF0014B0A2 /* OAuthSwift.framework in Frameworks */,
 			);
@@ -454,6 +457,16 @@
 				38F4EAEB19F14E4700CBD23F /* RoundedFilter.swift */,
 			);
 			name = ImageLoader;
+			sourceTree = "<group>";
+		};
+		38E0528C1BA468D800B67EB2 /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				38E0528F1BA4697800B67EB2 /* ImageCell.swift */,
+				38E0528D1BA4692600B67EB2 /* ImageCell.xib */,
+				38E052911BA46B9200B67EB2 /* ImagePickerCollectionView.swift */,
+			);
+			name = Collection;
 			sourceTree = "<group>";
 		};
 		38F1B0A819EFEB7900A3608E /* Entities */ = {
@@ -646,6 +659,7 @@
 				6A3469B31A699CFF004AD091 /* Alert */,
 				6AB55B4A19C8AA1600DC6442 /* Controls */,
 				38373FE219C9477100DBCB24 /* Table */,
+				38E0528C1BA468D800B67EB2 /* Collection */,
 				6AB55B4819C5984800DC6442 /* TransparentView.swift */,
 			);
 			name = Views;
@@ -681,7 +695,6 @@
 				38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */,
 				38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */,
 				3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */,
-				38CE6BB81B18171D00E0198B /* QBImagePicker.framework */,
 				3805DE3C1A5D8AC000FBD015 /* Toucan.framework */,
 				38D6DDF61A5AC317001C94F7 /* EventBox.framework */,
 				6ADB64771A5348D800602B2B /* KeyClip.framework */,
@@ -818,6 +831,7 @@
 				6A3F4F3E1B110E8E009F80C4 /* AccountCell.xib in Resources */,
 				6A4B9D3619BB514900D50D78 /* Images.xcassets in Resources */,
 				6AB55B5719C9F20B00DC6442 /* AccountViewController.xib in Resources */,
+				38E0528E1BA4692600B67EB2 /* ImageCell.xib in Resources */,
 				3894C24E19E557BF0038AEF8 /* TimelineViewController.xib in Resources */,
 				6AB55B4519C584B300DC6442 /* SettingsViewController.xib in Resources */,
 				38F9B5781B46C6E800F429E7 /* TwitterListCell.xib in Resources */,
@@ -846,7 +860,6 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/EventBox.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/KeyClip.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/QBImagePicker.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Toucan.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/OAuthSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/MutableDataScanner.framework",
@@ -903,6 +916,7 @@
 				38DA2D551B9A19A50090CBDD /* Request.swift in Sources */,
 				6AB55B4D19C8ADBE00DC6442 /* FontSizeViewController.swift in Sources */,
 				6AB55B5119C8B2B200DC6442 /* ThemeViewController.swift in Sources */,
+				38E052921BA46B9200B67EB2 /* ImagePickerCollectionView.swift in Sources */,
 				6A04494E1B24812E00758061 /* TwitterUserCell.swift in Sources */,
 				38B057D91B72702A00295C23 /* PocketCoverViewController.swift in Sources */,
 				38C9714D1B7DF7C7008E05CE /* TwitterAPI.swift in Sources */,
@@ -933,6 +947,7 @@
 				6A0449521B2489B400758061 /* FollowingUserViewController.swift in Sources */,
 				6A04494A1B241FEF00758061 /* UserTimelineViewController.swift in Sources */,
 				3868B94D19EFCCEC001221BF /* TwitterStatus.swift in Sources */,
+				38E052901BA4697800B67EB2 /* ImageCell.swift in Sources */,
 				38F9B5761B46C6D000F429E7 /* TwitterListCell.swift in Sources */,
 				6AB55B5519C9F1EB00DC6442 /* AccountViewController.swift in Sources */,
 				6A3F4F3C1B110E74009F80C4 /* AccountCell.swift in Sources */,
@@ -963,6 +978,7 @@
 				386B6C4D1B81F31B0066EB80 /* AccountSettings.swift in Sources */,
 				3868B94E19EFCCF4001221BF /* TwitterDate.swift in Sources */,
 				3868B95019EFCCF4001221BF /* TwitterUser.swift in Sources */,
+				38E052941BA4848200B67EB2 /* ImageCell.swift in Sources */,
 				6A83EDAA1B69422E000F3C43 /* Async.swift in Sources */,
 				38DA2D561B9A22590090CBDD /* Request.swift in Sources */,
 				386B6C511B81F3230066EB80 /* StreamingRequest.swift in Sources */,
@@ -974,6 +990,7 @@
 				6A83EDA71B69400B000F3C43 /* ThemeSolarizedLight.swift in Sources */,
 				6A83EDA21B69400B000F3C43 /* ThemeColor.swift in Sources */,
 				6A83EDA61B69400B000F3C43 /* ThemeMonokai.swift in Sources */,
+				38E052931BA4845300B67EB2 /* ImagePickerCollectionView.swift in Sources */,
 				6A83EDA51B69400B000F3C43 /* ThemeDark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1101,7 +1118,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS/QBImagePicker.framework",
 				);
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
@@ -1126,7 +1142,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS/QBImagePicker.framework",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

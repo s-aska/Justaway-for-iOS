@@ -9,22 +9,16 @@
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
-            <string>fontello</string>
-            <string>fontello</string>
-            <string>fontello</string>
-            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditorViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
+                <outlet property="collectionHeightConstraint" destination="KsW-qQ-hiP" id="cGN-ne-fCm"/>
+                <outlet property="collectionView" destination="EOl-gm-5Uw" id="e67-0y-2eF"/>
                 <outlet property="containerView" destination="GiI-4f-pcf" id="zU9-2h-jpG"/>
                 <outlet property="containerViewButtomConstraint" destination="hpk-3M-F0T" id="Wb7-U4-L0j"/>
                 <outlet property="countLabel" destination="VpL-cL-hHt" id="z8h-ae-V0g"/>
-                <outlet property="imageButton1" destination="eSq-hE-Jlx" id="mui-gj-dp6"/>
-                <outlet property="imageButton2" destination="cSH-5Z-LFF" id="S2t-yI-md8"/>
-                <outlet property="imageButton3" destination="ECH-1W-WMn" id="BcD-AV-4Pq"/>
-                <outlet property="imageButton4" destination="WLu-yY-Sns" id="pn2-59-Il0"/>
                 <outlet property="imageContainerHeightConstraint" destination="Jny-ey-M1t" id="O4r-20-Sn9"/>
                 <outlet property="imageContainerView" destination="XI3-zv-gQX" id="O03-Uc-jT4"/>
                 <outlet property="imageContentView" destination="m8N-aa-y1q" id="Hm5-50-OQ3"/>
@@ -48,7 +42,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GiI-4f-pcf" customClass="MenuShadowView" customModule="Justaway" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="396" width="600" height="204"/>
+                    <rect key="frame" x="0.0" y="206" width="600" height="394"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAS-wm-Zms" customClass="AutoExpandTextView" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="10" y="10" width="580" height="34"/>
@@ -119,107 +113,51 @@
                             </constraints>
                         </view>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XI3-zv-gQX">
-                            <rect key="frame" x="0.0" y="94" width="600" height="110"/>
+                            <rect key="frame" x="0.0" y="94" width="600" height="100"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m8N-aa-y1q">
-                                    <rect key="frame" x="0.0" y="0.0" width="450" height="110"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="410" height="100"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lge-wZ-W7r">
-                                            <rect key="frame" x="10" y="0.0" width="100" height="100"/>
+                                            <rect key="frame" x="10" y="0.0" width="90" height="90"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="100" id="GHJ-67-t8h"/>
-                                                <constraint firstAttribute="width" constant="100" id="exd-sm-noD"/>
+                                                <constraint firstAttribute="height" constant="90" id="GHJ-67-t8h"/>
+                                                <constraint firstAttribute="width" constant="90" id="exd-sm-noD"/>
                                             </constraints>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSq-hE-Jlx" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                            <rect key="frame" x="69" y="0.0" width="41" height="45"/>
-                                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                            <inset key="contentEdgeInsets" minX="15" minY="10" maxX="10" maxY="15"/>
-                                            <state key="normal" title="✖">
-                                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="removeImage:" destination="-1" eventType="touchUpInside" id="FLf-f3-KzC"/>
-                                            </connections>
-                                        </button>
                                         <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dnk-wF-xpj">
-                                            <rect key="frame" x="120" y="0.0" width="100" height="100"/>
+                                            <rect key="frame" x="110" y="0.0" width="90" height="90"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="100" id="IAe-TJ-EbV"/>
-                                                <constraint firstAttribute="width" constant="100" id="hkN-8x-yaV"/>
+                                                <constraint firstAttribute="height" constant="90" id="IAe-TJ-EbV"/>
+                                                <constraint firstAttribute="width" constant="90" id="hkN-8x-yaV"/>
                                             </constraints>
                                         </imageView>
-                                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cSH-5Z-LFF" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                            <rect key="frame" x="179" y="0.0" width="41" height="45"/>
-                                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                            <inset key="contentEdgeInsets" minX="15" minY="10" maxX="10" maxY="15"/>
-                                            <state key="normal" title="✖">
-                                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="removeImage:" destination="-1" eventType="touchUpInside" id="HJA-eH-VAJ"/>
-                                            </connections>
-                                        </button>
                                         <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0ND-to-q7R">
-                                            <rect key="frame" x="230" y="0.0" width="100" height="100"/>
+                                            <rect key="frame" x="210" y="0.0" width="90" height="90"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="100" id="sMJ-xg-dVK"/>
-                                                <constraint firstAttribute="width" constant="100" id="t69-oM-0eb"/>
+                                                <constraint firstAttribute="height" constant="90" id="sMJ-xg-dVK"/>
+                                                <constraint firstAttribute="width" constant="90" id="t69-oM-0eb"/>
                                             </constraints>
                                         </imageView>
-                                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ECH-1W-WMn" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                            <rect key="frame" x="289" y="0.0" width="41" height="45"/>
-                                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                            <inset key="contentEdgeInsets" minX="15" minY="10" maxX="10" maxY="15"/>
-                                            <state key="normal" title="✖">
-                                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="removeImage:" destination="-1" eventType="touchUpInside" id="M8B-ax-Ibi"/>
-                                            </connections>
-                                        </button>
                                         <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="K7T-qg-Jtu">
-                                            <rect key="frame" x="340" y="0.0" width="100" height="100"/>
+                                            <rect key="frame" x="310" y="0.0" width="90" height="90"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="100" id="HVr-0t-yue"/>
-                                                <constraint firstAttribute="width" constant="100" id="uCL-vC-7pO"/>
+                                                <constraint firstAttribute="height" constant="90" id="HVr-0t-yue"/>
+                                                <constraint firstAttribute="width" constant="90" id="uCL-vC-7pO"/>
                                             </constraints>
                                         </imageView>
-                                        <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WLu-yY-Sns" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                            <rect key="frame" x="399" y="0.0" width="41" height="45"/>
-                                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                            <inset key="contentEdgeInsets" minX="15" minY="10" maxX="10" maxY="15"/>
-                                            <state key="normal" title="✖">
-                                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="removeImage:" destination="-1" eventType="touchUpInside" id="jz2-OL-3Iy"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="0ND-to-q7R" firstAttribute="top" secondItem="m8N-aa-y1q" secondAttribute="top" id="8t0-9i-gU1"/>
                                         <constraint firstAttribute="trailing" secondItem="K7T-qg-Jtu" secondAttribute="trailing" constant="10" id="9fD-dq-okp"/>
                                         <constraint firstItem="dnk-wF-xpj" firstAttribute="leading" secondItem="lge-wZ-W7r" secondAttribute="trailing" constant="10" id="BL5-mi-bL0"/>
-                                        <constraint firstItem="eSq-hE-Jlx" firstAttribute="top" secondItem="m8N-aa-y1q" secondAttribute="top" id="JkD-u6-xbZ"/>
-                                        <constraint firstItem="K7T-qg-Jtu" firstAttribute="top" secondItem="WLu-yY-Sns" secondAttribute="top" id="Mju-kM-wW5"/>
-                                        <constraint firstItem="dnk-wF-xpj" firstAttribute="trailing" secondItem="cSH-5Z-LFF" secondAttribute="trailing" id="SUJ-uc-wbR"/>
                                         <constraint firstItem="dnk-wF-xpj" firstAttribute="top" secondItem="m8N-aa-y1q" secondAttribute="top" id="TJb-5J-7xo"/>
-                                        <constraint firstItem="0ND-to-q7R" firstAttribute="trailing" secondItem="ECH-1W-WMn" secondAttribute="trailing" id="TKl-2F-Az9"/>
                                         <constraint firstItem="K7T-qg-Jtu" firstAttribute="top" secondItem="m8N-aa-y1q" secondAttribute="top" id="UHr-hk-Dcd"/>
                                         <constraint firstItem="lge-wZ-W7r" firstAttribute="top" secondItem="m8N-aa-y1q" secondAttribute="top" id="UWQ-gq-tui"/>
-                                        <constraint firstItem="ECH-1W-WMn" firstAttribute="top" secondItem="m8N-aa-y1q" secondAttribute="top" id="bBT-zN-746"/>
                                         <constraint firstItem="lge-wZ-W7r" firstAttribute="leading" secondItem="m8N-aa-y1q" secondAttribute="leading" constant="10" id="ccq-Sm-I1D"/>
                                         <constraint firstItem="0ND-to-q7R" firstAttribute="leading" secondItem="dnk-wF-xpj" secondAttribute="trailing" constant="10" id="gGx-Bo-Bgn"/>
-                                        <constraint firstItem="cSH-5Z-LFF" firstAttribute="top" secondItem="m8N-aa-y1q" secondAttribute="top" id="k8Y-Wf-W2b"/>
                                         <constraint firstItem="K7T-qg-Jtu" firstAttribute="leading" secondItem="0ND-to-q7R" secondAttribute="trailing" constant="10" id="kbP-6i-Xt0"/>
-                                        <constraint firstItem="dnk-wF-xpj" firstAttribute="leading" secondItem="eSq-hE-Jlx" secondAttribute="trailing" constant="10" id="kqi-iu-bbN"/>
-                                        <constraint firstItem="K7T-qg-Jtu" firstAttribute="trailing" secondItem="WLu-yY-Sns" secondAttribute="trailing" id="lBj-wb-u0c"/>
                                     </constraints>
                                 </view>
                             </subviews>
@@ -230,27 +168,42 @@
                                 <constraint firstItem="m8N-aa-y1q" firstAttribute="top" secondItem="XI3-zv-gQX" secondAttribute="top" id="6uM-Vg-U9p"/>
                                 <constraint firstItem="m8N-aa-y1q" firstAttribute="width" secondItem="XI3-zv-gQX" secondAttribute="width" priority="250" id="Cin-Iu-qym"/>
                                 <constraint firstItem="m8N-aa-y1q" firstAttribute="leading" secondItem="XI3-zv-gQX" secondAttribute="leading" id="E5r-rA-zah"/>
-                                <constraint firstAttribute="height" constant="110" id="Jny-ey-M1t"/>
+                                <constraint firstAttribute="height" constant="100" id="Jny-ey-M1t"/>
                                 <constraint firstAttribute="trailing" secondItem="m8N-aa-y1q" secondAttribute="trailing" id="wYB-8W-HBD"/>
                             </constraints>
                         </scrollView>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="EOl-gm-5Uw" customClass="ImagePickerCollectionView" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="194" width="600" height="200"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="200" id="KsW-qQ-hiP"/>
+                            </constraints>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="LUU-5D-1kl">
+                                <size key="itemSize" width="80" height="80"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                        </collectionView>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="pAS-wm-Zms" secondAttribute="trailing" constant="10" id="A5I-o1-lhK"/>
+                        <constraint firstAttribute="bottom" secondItem="EOl-gm-5Uw" secondAttribute="bottom" id="Ci0-x0-bRD"/>
                         <constraint firstItem="XI3-zv-gQX" firstAttribute="top" secondItem="cpB-WM-7Qz" secondAttribute="bottom" id="I4N-EN-URh"/>
+                        <constraint firstAttribute="trailing" secondItem="EOl-gm-5Uw" secondAttribute="trailing" id="M05-cN-nVI"/>
                         <constraint firstItem="pAS-wm-Zms" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" constant="10" id="N9c-mZ-Q3i"/>
                         <constraint firstItem="cpB-WM-7Qz" firstAttribute="top" secondItem="pAS-wm-Zms" secondAttribute="bottom" id="OSW-sG-aTj"/>
                         <constraint firstItem="pAS-wm-Zms" firstAttribute="top" secondItem="GiI-4f-pcf" secondAttribute="top" constant="10" id="PW5-Fa-Djp"/>
                         <constraint firstItem="cpB-WM-7Qz" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="Rcs-Ty-EE5"/>
-                        <constraint firstAttribute="bottom" secondItem="XI3-zv-gQX" secondAttribute="bottom" id="SVC-2n-itf"/>
                         <constraint firstAttribute="trailing" secondItem="XI3-zv-gQX" secondAttribute="trailing" id="dCX-2c-3kc"/>
                         <constraint firstAttribute="trailing" secondItem="cpB-WM-7Qz" secondAttribute="trailing" id="eev-EE-je8"/>
+                        <constraint firstItem="EOl-gm-5Uw" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="rej-5c-VJo"/>
+                        <constraint firstItem="EOl-gm-5Uw" firstAttribute="top" secondItem="XI3-zv-gQX" secondAttribute="bottom" id="tYm-BM-dvZ"/>
                         <constraint firstItem="XI3-zv-gQX" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="vYp-8Y-qAu"/>
                     </constraints>
                 </view>
                 <view alpha="0.94999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eKe-LY-kay" customClass="BackgroundShadowView" customModule="Justaway" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="341" width="600" height="54.5"/>
+                    <rect key="frame" x="0.0" y="151" width="600" height="54.5"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lNk-An-B31">
                             <rect key="frame" x="10" y="6" width="20" height="20"/>

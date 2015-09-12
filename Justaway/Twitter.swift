@@ -825,7 +825,9 @@ extension TwitterAPI.Request {
     }
     
     public func send(success: ((JSON) -> Void)?, failure: ((code: Int?, message: String?, error: NSError?) -> Void)?) -> NSURLSessionDataTask {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         return send({ (responseData, response, error) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             let url = self.urlRequest.URL?.absoluteString ?? "-"
             if let error = error {
                 if let failure = failure {
