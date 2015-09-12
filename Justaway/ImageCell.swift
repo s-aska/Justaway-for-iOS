@@ -7,8 +7,42 @@
 //
 
 import UIKit
+import Photos
 
 class ImageCell: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
+    
+    var asset: PHAsset?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.configureView()
+    }
+    
+    func configureView() {
+        imageView.userInteractionEnabled = true
+        imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "preview:"))
+    }
+    
+    func preview(sender: UILongPressGestureRecognizer) {
+        if (sender.state != .Began) {
+            return
+        }
+        if let asset = asset {
+            PHImageManager.defaultManager().requestImageDataForAsset(asset, options: nil, resultHandler: {
+                (imageData: NSData?, dataUTI: String?, orientation: UIImageOrientation, info: [NSObject : AnyObject]?) -> Void in
+                if let imageData = imageData {
+                    if let window = UIApplication.sharedApplication().keyWindow {
+                        let imageView = UIImageView(frame: window.frame)
+                        imageView.contentMode = .ScaleAspectFit
+                        imageView.image = UIImage(data: imageData)
+                        imageView.userInteractionEnabled = true
+                        imageView.addGestureRecognizer(UITapGestureRecognizer(target: imageView, action: "removeFromSuperview"))
+                        window.addSubview(imageView)
+                    }
+                }
+            })
+        }
+    }
 }

@@ -15,6 +15,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditorViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
                 <outlet property="collectionHeightConstraint" destination="KsW-qQ-hiP" id="cGN-ne-fCm"/>
+                <outlet property="collectionMenuView" destination="FWh-jt-qAr" id="6Vk-LU-IAM"/>
                 <outlet property="collectionView" destination="EOl-gm-5Uw" id="e67-0y-2eF"/>
                 <outlet property="containerView" destination="GiI-4f-pcf" id="zU9-2h-jpG"/>
                 <outlet property="containerViewButtomConstraint" destination="hpk-3M-F0T" id="Wb7-U4-L0j"/>
@@ -180,13 +181,36 @@
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="LUU-5D-1kl">
                                 <size key="itemSize" width="80" height="80"/>
                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="50"/>
                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </collectionViewFlowLayout>
                         </collectionView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FWh-jt-qAr" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="344" width="600" height="50"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hhx-Qh-VGf" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="519" y="-0.5" width="81" height="51"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                                    <state key="normal" title="Done">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="hide:" destination="-1" eventType="touchUpInside" id="dTi-OD-fQ4"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="e9g-kP-Kxx"/>
+                                <constraint firstAttribute="trailing" secondItem="hhx-Qh-VGf" secondAttribute="trailing" id="jPS-vn-N7f"/>
+                                <constraint firstItem="hhx-Qh-VGf" firstAttribute="centerY" secondItem="FWh-jt-qAr" secondAttribute="centerY" id="sLo-9R-mS1"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="FWh-jt-qAr" secondAttribute="trailing" id="0n4-G4-zyP"/>
                         <constraint firstAttribute="trailing" secondItem="pAS-wm-Zms" secondAttribute="trailing" constant="10" id="A5I-o1-lhK"/>
                         <constraint firstAttribute="bottom" secondItem="EOl-gm-5Uw" secondAttribute="bottom" id="Ci0-x0-bRD"/>
                         <constraint firstItem="XI3-zv-gQX" firstAttribute="top" secondItem="cpB-WM-7Qz" secondAttribute="bottom" id="I4N-EN-URh"/>
@@ -196,9 +220,11 @@
                         <constraint firstItem="pAS-wm-Zms" firstAttribute="top" secondItem="GiI-4f-pcf" secondAttribute="top" constant="10" id="PW5-Fa-Djp"/>
                         <constraint firstItem="cpB-WM-7Qz" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="Rcs-Ty-EE5"/>
                         <constraint firstAttribute="trailing" secondItem="XI3-zv-gQX" secondAttribute="trailing" id="dCX-2c-3kc"/>
+                        <constraint firstAttribute="bottom" secondItem="FWh-jt-qAr" secondAttribute="bottom" id="dHO-KK-CUX"/>
                         <constraint firstAttribute="trailing" secondItem="cpB-WM-7Qz" secondAttribute="trailing" id="eev-EE-je8"/>
                         <constraint firstItem="EOl-gm-5Uw" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="rej-5c-VJo"/>
                         <constraint firstItem="EOl-gm-5Uw" firstAttribute="top" secondItem="XI3-zv-gQX" secondAttribute="bottom" id="tYm-BM-dvZ"/>
+                        <constraint firstItem="FWh-jt-qAr" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="uWW-An-gAI"/>
                         <constraint firstItem="XI3-zv-gQX" firstAttribute="leading" secondItem="GiI-4f-pcf" secondAttribute="leading" id="vYp-8Y-qAu"/>
                     </constraints>
                 </view>

@@ -32,6 +32,7 @@ class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, U
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell", forIndexPath: indexPath) as! ImageCell
         let row = rows[indexPath.row]
         cell.tag = indexPath.row
+        cell.asset = row
         
         let itemSize = (collectionView.collectionViewLayout as! UICollectionViewFlowLayout).itemSize
         

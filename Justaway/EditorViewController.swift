@@ -29,6 +29,7 @@ class EditorViewController: UIViewController {
     @IBOutlet weak var imageContentView: UIView!
     @IBOutlet weak var collectionView: ImagePickerCollectionView!
     @IBOutlet weak var collectionHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var collectionMenuView: MenuView!
     
     @IBOutlet weak var imageView1: UIImageView!
     @IBOutlet weak var imageView2: UIImageView!
@@ -107,6 +108,16 @@ class EditorViewController: UIViewController {
             PHImageManager.defaultManager().requestImageDataForAsset(asset, options: nil, resultHandler: {
                 (imageData: NSData?, dataUTI: String?, orientation: UIImageOrientation, info: [NSObject : AnyObject]?) -> Void in
                 if let imageData = imageData {
+                    if self.images.count > 0 {
+                        var i = 0
+                        for image in self.images {
+                            if imageData == image {
+                                self.removeImageIndex(i)
+                                return
+                            }
+                            i++
+                        }
+                    }
                     let i = self.images.count
                     if i >= 4 {
                         return
@@ -142,6 +153,7 @@ class EditorViewController: UIViewController {
         collectionView.rows = []
         collectionHeightConstraint.constant = 0
         imageContainerHeightConstraint.constant = 0
+        collectionMenuView.hidden = true
     }
     
     // MARK: - Keyboard Event Notifications
@@ -159,6 +171,7 @@ class EditorViewController: UIViewController {
                 containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
             }
             collectionHeightConstraint.constant = 0
+            collectionMenuView.hidden = true
         } else {
             
             // en: UIKeyboardWillHideNotification occurs when you scroll through the conversion candidates in iOS9
@@ -213,6 +226,10 @@ class EditorViewController: UIViewController {
         if images.count <= index {
             return
         }
+        removeImageIndex(index)
+    }
+    
+    func removeImageIndex(index: Int) {
         images.removeAtIndex(index)
         var i = 0
         for imageView in imageViews {
@@ -244,7 +261,8 @@ class EditorViewController: UIViewController {
     func image() {
         picking = true
         let height = UIApplication.sharedApplication().keyWindow?.frame.height ?? 480
-        collectionHeightConstraint.constant = height - imageContainerHeightConstraintDefault - 50
+        collectionHeightConstraint.constant = height - imageContainerHeightConstraintDefault - 10
+        collectionMenuView.hidden = false
         textView.resignFirstResponder()
         if collectionView.rows.count == 0 {
             Async.background({ () -> Void in
