@@ -46,8 +46,8 @@ class StatusTableViewController: TimelineTableViewController {
         adapter.configureView(tableView)
         
         adapter.didScrollToBottom = {
-            if let maxID = self.lastID {
-                self.loadData(maxID - 1)
+            if let status = self.adapter.rows.last {
+                self.loadData(status.status.statusID.longLongValue - 1)
             }
         }
         
@@ -57,12 +57,6 @@ class StatusTableViewController: TimelineTableViewController {
     }
     
     func configureEvent() {
-        EventBox.onBackgroundThread(self, name: "applicationDidEnterBackground") { (n) -> Void in
-            self.saveCache()
-        }
-        EventBox.onBackgroundThread(self, name: "applicationWillEnterForeground") { (n) -> Void in
-            self.loadDataInSleep()
-        }
         EventBox.onMainThread(self, name: EventStatusBarTouched, handler: { (n) -> Void in
             self.adapter.scrollToTop(self.tableView)
         })
@@ -248,7 +242,7 @@ class StatusTableViewController: TimelineTableViewController {
             let success = { (statuses: [TwitterStatus]) -> Void in
                 
                 // render statuses
-                self.renderData(statuses, mode: .TOP, handler: always)
+                self.renderData(statuses, mode: .HEADER, handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 ErrorAlert.show("Error", message: error.localizedDescription)

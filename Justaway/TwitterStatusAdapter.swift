@@ -15,6 +15,7 @@ class TwitterStatusAdapter: NSObject {
     // MARK: Types
     
     enum RenderMode {
+        case HEADER
         case TOP
         case BOTTOM
         case OVER
@@ -47,6 +48,7 @@ class TwitterStatusAdapter: NSObject {
     var scrolling: Bool = false
     var didScrollToBottom: (Void -> Void)?
     var scrollCallback: ((scrollView: UIScrollView) -> Void)?
+    var renderDataCallback: ((statuses: [TwitterStatus], mode: RenderMode) -> Void)?
     let loadDataQueue = NSOperationQueue().serial()
     let mainQueue = NSOperationQueue.mainQueue().serial()
     
@@ -147,7 +149,7 @@ class TwitterStatusAdapter: NSObject {
         let fontSize = CGFloat(GenericSettings.get().fontSize)
         let limit = mode == .OVER ? 0 : TIMELINE_ROWS_LIMIT
         let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + statuses.count) - limit, 0)
-        let deleteStart = mode == .TOP ? self.rows.count - deleteCount : 0
+        let deleteStart = mode == .TOP || mode == .HEADER ? self.rows.count - deleteCount : 0
         let deleteRange = deleteStart ..< (deleteStart + deleteCount)
         let deleteIndexPaths = deleteRange.map { i in NSIndexPath(forRow: i, inSection: 0) }
         
@@ -157,7 +159,7 @@ class TwitterStatusAdapter: NSObject {
         // println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count)")
         
         if let lastCell = tableView.visibleCells.last {
-            let isTop = tableView.contentOffset.y == 0
+            let isTop = tableView.contentOffset.y == 0 && mode == .TOP
             let offset = lastCell.frame.origin.y - tableView.contentOffset.y
             UIView.setAnimationsEnabled(false)
             tableView.beginUpdates()
@@ -182,9 +184,11 @@ class TwitterStatusAdapter: NSObject {
                     tableView.contentOffset = CGPointZero
                     }, completion: { _ in
                         self.scrollEnd(tableView)
+                        self.renderDataCallback?(statuses: statuses, mode: mode)
                         handler?()
                 })
             } else {
+                self.renderDataCallback?(statuses: statuses, mode: mode)
                 handler?()
             }
             
@@ -198,6 +202,7 @@ class TwitterStatusAdapter: NSObject {
             tableView.setContentOffset(CGPointMake(0, -tableView.contentInset.top), animated: false)
             tableView.reloadData()
             self.renderImages(tableView)
+            self.renderDataCallback?(statuses: statuses, mode: mode)
             handler?()
         }
     }

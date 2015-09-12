@@ -100,6 +100,16 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             
             tabWraperView.addSubview(button)
             tabButtons.append(button)
+            
+            if let statusVc = vc as? StatusTableViewController {
+                let page = i
+                statusVc.adapter.renderDataCallback = { (statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode) in
+                    if statuses.count > 0 && mode == .HEADER {
+                        NSLog("page:\(page) count:\(statuses.count)")
+                        self.tabButtons[page].selected = true
+                    }
+                }
+            }
         }
         
         scrollView.addSubview(contentView)
@@ -196,6 +206,30 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 }
             }
         })
+        
+        EventBox.onBackgroundThread(self, name: "applicationDidEnterBackground") { (n) -> Void in
+            for tableViewController in self.tableViewControllers {
+                switch tableViewController {
+                case let vc as StatusTableViewController:
+                    vc.saveCache()
+                default:
+                    break
+                }
+            }
+        }
+        
+        EventBox.onBackgroundThread(self, name: "applicationWillEnterForeground") { (n) -> Void in
+            for tableViewController in self.tableViewControllers {
+                switch tableViewController {
+                case let vc as StatusTableViewController:
+                    if vc.adapter.rows.count > 0 {
+                        vc.loadDataInSleep()
+                    }
+                default:
+                    break
+                }
+            }
+        }
     }
     
     func toggleStreaming() {

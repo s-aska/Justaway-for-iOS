@@ -244,6 +244,12 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 self.quotedStatusLabel.font = font
             }
         }
+        
+        EventBox.onMainThread(self, name: "applicationWillEnterForeground") { (n) -> Void in
+            if let status = self.status {
+                self.relativeCreatedAtLabel.text = status.createdAt.relativeString
+            }
+        }
     }
     
     // MARK: - UITableViewCell
