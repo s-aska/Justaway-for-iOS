@@ -1,5 +1,6 @@
 import UIKit
 import EventBox
+import MediaPlayer
 
 let TwitterStatusCellImagePreviewHeight :CGFloat = 80
 let TwitterStatusCellImagePreviewWidth :CGFloat = 240
@@ -82,6 +83,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     // MARK: Properties
     var status: TwitterStatus?
     var layout: TwitterStatusCellLayout?
+    var moviePlayer: MPMoviePlayerController?
     
     @IBOutlet weak var sourceView: UIView!
     @IBOutlet weak var sourceViewHeightConstraint: NSLayoutConstraint!
@@ -111,6 +113,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var quotedImageView2: UIImageView!
     @IBOutlet weak var quotedImageView3: UIImageView!
     @IBOutlet weak var quotedImageView4: UIImageView!
+    @IBOutlet weak var quotedImagePlayLabel: MenuLable!
     
     @IBOutlet weak var quotedImageView1HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var quotedImageView1WidthConstraint: NSLayoutConstraint!
@@ -126,6 +129,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var imageView2: UIImageView!
     @IBOutlet weak var imageView3: UIImageView!
     @IBOutlet weak var imageView4: UIImageView!
+    @IBOutlet weak var imagePlayLabel: MenuLable!
     
     @IBOutlet weak var imageView1HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageView1WidthConstraint: NSLayoutConstraint!
@@ -340,6 +344,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         }
         
         if status.media.count > 0 {
+            imagePlayLabel.hidden = status.media.filter({ !$0.videoURL.isEmpty }).count > 0 ? false : true
             imagesContainerView.hidden = true
             imageView1.image = nil
             imageView2.image = nil
@@ -355,6 +360,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
             quotedProtectedLabel.hidden = quotedStatus.user.isProtected ? false : true
             
             if quotedStatus.media.count > 0 {
+                quotedImagePlayLabel.hidden = quotedStatus.media.filter({ !$0.videoURL.isEmpty }).count > 0 ? false : true
                 quotedImagesContainerView.hidden = true
                 quotedImageView1.image = nil
                 quotedImageView2.image = nil
@@ -522,8 +528,32 @@ class TwitterStatusCell: BackgroundTableViewCell {
         let tag = sender.view?.tag ?? 0
         if let status = self.status {
             if let page = tagToPage[status.media.count]?[tag] {
-                ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
+                let media = status.media[page]
+                if !media.videoURL.isEmpty {
+                    if let view = UIApplication.sharedApplication().keyWindow {
+                        let center = NSNotificationCenter.defaultCenter()
+                        center.addObserver(self, selector: "videoFinished:", name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
+                        let moviePlayer = MPMoviePlayerController(contentURL: NSURL(string: media.videoURL)!)
+                        moviePlayer.controlStyle = MPMovieControlStyle.Fullscreen
+                        moviePlayer.repeatMode = MPMovieRepeatMode.None
+                        moviePlayer.view.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+                        view.addSubview(moviePlayer.view)
+                        moviePlayer.play()
+                        self.moviePlayer = moviePlayer
+                    }
+                } else {
+                    ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
+                }
             }
+        }
+    }
+    
+    func videoFinished(notification: NSNotification) {
+        let userInfo = notification.userInfo as! [String: NSNumber]
+        let reason = userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey]
+        if MPMovieFinishReason(rawValue: reason!.integerValue) == MPMovieFinishReason.UserExited {
+            self.moviePlayer?.view.removeFromSuperview()
+            self.moviePlayer = nil
         }
     }
     

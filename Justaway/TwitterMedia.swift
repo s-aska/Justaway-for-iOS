@@ -6,6 +6,7 @@ struct TwitterMedia {
     let displayURL: String
     let expandedURL: String
     let mediaURL: NSURL
+    let videoURL: String
     let height: Int
     let width: Int
     
@@ -16,6 +17,7 @@ struct TwitterMedia {
         self.mediaURL = NSURL(string: json["media_url_https"].string ?? "")!
         self.height = json["sizes"]["large"]["h"].int ?? 0
         self.width = json["sizes"]["large"]["w"].int ?? 0
+        self.videoURL = json["video_info"]["variants"][0]["url"].string ?? ""
     }
     
     init(json: [String: AnyObject]) {
@@ -27,6 +29,7 @@ struct TwitterMedia {
         let large = sizes["large"] as! [String: AnyObject]
         self.height = large["h"] as? Int ?? 0
         self.width = large["w"] as? Int ?? 0
+        self.videoURL = json["video_url"] as? String ?? ""
     }
     
     var mediaThumbURL: NSURL {
@@ -40,6 +43,7 @@ struct TwitterMedia {
         self.mediaURL = NSURL(string: dictionary["mediaURL"] as? String ?? "")!
         self.height = dictionary["height"] as? Int ?? 0
         self.width = dictionary["width"] as? Int ?? 0
+        self.videoURL = dictionary["videoURL"] as? String ?? ""
     }
     
     var dictionaryValue: [String: AnyObject] {
@@ -47,7 +51,8 @@ struct TwitterMedia {
             "shortURL": shortURL,
             "displayURL": displayURL,
             "expandedURL": expandedURL,
-            "mediaURL": mediaURL.absoluteString ?? "",
+            "mediaURL": mediaURL.absoluteString,
+            "videoURL": videoURL,
             "height": height,
             "width": width
         ]
