@@ -209,6 +209,15 @@ class EditorViewController: UIViewController {
         image()
     }
     
+    @IBAction func voice(sender: UIButton) {
+        if textView.text.hasSuffix(" #justaway") {
+            return
+        }
+        let range = textView.selectedRange
+        textView.text = textView.text + " #justaway"
+        textView.selectedRange = range
+    }
+    
     @IBAction func send(sender: UIButton) {
         let text = textView.text
         if text.isEmpty && images.count == 0 {

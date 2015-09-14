@@ -340,8 +340,8 @@
                             <constraint firstAttribute="height" constant="1" id="DVi-NC-Cvn"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bIb-jf-cxi">
-                        <rect key="frame" x="56" y="244" width="259" height="125"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bIb-jf-cxi">
+                        <rect key="frame" x="56" y="246" width="259" height="125"/>
                         <subviews>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N6t-fp-5dC">
                                 <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
