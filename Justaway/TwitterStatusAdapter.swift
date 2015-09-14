@@ -214,7 +214,6 @@ class TwitterStatusAdapter: NSObject {
         for row in self.rows {
             if row.status.statusID == statusID {
                 deleteIndexPaths.append(NSIndexPath(forRow: i, inSection: 0))
-                continue
             } else {
                 newRows.append(row)
             }
