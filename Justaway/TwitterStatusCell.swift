@@ -83,7 +83,6 @@ class TwitterStatusCell: BackgroundTableViewCell {
     // MARK: Properties
     var status: TwitterStatus?
     var layout: TwitterStatusCellLayout?
-    var moviePlayer: MPMoviePlayerController?
     
     @IBOutlet weak var sourceView: UIView!
     @IBOutlet weak var sourceViewHeightConstraint: NSLayoutConstraint!
@@ -531,29 +530,25 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 let media = status.media[page]
                 if !media.videoURL.isEmpty {
                     if let view = UIApplication.sharedApplication().keyWindow {
-                        let center = NSNotificationCenter.defaultCenter()
-                        center.addObserver(self, selector: "videoFinished:", name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
                         let moviePlayer = MPMoviePlayerController(contentURL: NSURL(string: media.videoURL)!)
-                        moviePlayer.controlStyle = MPMovieControlStyle.Fullscreen
-                        moviePlayer.repeatMode = MPMovieRepeatMode.None
+                        moviePlayer.controlStyle = MPMovieControlStyle.None
+                        moviePlayer.repeatMode = MPMovieRepeatMode.One
                         moviePlayer.view.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+                        moviePlayer.backgroundView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+                        moviePlayer.view.backgroundColor = UIColor.clearColor()
+                        for subView in moviePlayer.view.subviews {
+                            subView.backgroundColor = UIColor.clearColor()
+                        }
+                        let screenView = UIView(frame: view.bounds)
+                        screenView.addGestureRecognizer(UITapGestureRecognizer(target: moviePlayer.view, action: "removeFromSuperview"))
+                        moviePlayer.view.addSubview(screenView)
                         view.addSubview(moviePlayer.view)
                         moviePlayer.play()
-                        self.moviePlayer = moviePlayer
                     }
                 } else {
                     ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
                 }
             }
-        }
-    }
-    
-    func videoFinished(notification: NSNotification) {
-        let userInfo = notification.userInfo as! [String: NSNumber]
-        let reason = userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey]
-        if MPMovieFinishReason(rawValue: reason!.integerValue) == MPMovieFinishReason.UserExited {
-            self.moviePlayer?.view.removeFromSuperview()
-            self.moviePlayer = nil
         }
     }
     
