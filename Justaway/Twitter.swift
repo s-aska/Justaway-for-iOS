@@ -688,8 +688,10 @@ extension Twitter {
                     let status = TwitterStatus(responce)
                     EventBox.post(Event.CreateStatus.rawValue, sender: status)
                     if AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
-                        Static.favorites[status.statusID] = true
-                        EventBox.post(Event.CreateFavorites.rawValue, sender: status.statusID)
+                        if (Static.favorites[status.statusID] ?? false) != true {
+                            Static.favorites[status.statusID] = true
+                            EventBox.post(Event.CreateFavorites.rawValue, sender: status.statusID)
+                        }
                     }
                 } else if event == "unfavorite" {
                     let status = TwitterStatus(responce)
