@@ -7,17 +7,16 @@
 //
 
 import Foundation
-import Accounts
 import OAuthSwift
 import Accounts
 import Social
 
-public protocol TwitterAPICredential {
+public protocol TwitterAPIClient {
     func request(method: String, url: NSURL, parameters: Dictionary<String, String>) -> TwitterAPI.Request
-    var type: TwitterAPI.CredentialType { get }
+    var credential: TwitterAPI.Credential { get }
 }
 
-extension TwitterAPICredential {
+extension TwitterAPIClient {
     func streaming(url: NSURL, parameters: Dictionary<String, String> = [:]) -> TwitterAPI.StreamingRequest {
         return TwitterAPI.StreamingRequest(self.request("GET", url: url, parameters: parameters).urlRequest)
     }
@@ -38,31 +37,22 @@ extension TwitterAPICredential {
 }
 
 extension TwitterAPI {
-    public class CredentialOAuth: TwitterAPICredential {
-        let consumerKey: String
-        let consumerSecret: String
-        let accessToken: String
-        let accessTokenSecret: String
+    public class ClientOAuth: TwitterAPIClient {
+        let oAuthCredential: OAuthSwiftCredential
         
         init (consumerKey: String, consumerSecret: String, accessToken: String, accessTokenSecret: String) {
-            self.consumerKey = consumerKey
-            self.consumerSecret = consumerSecret
-            self.accessToken = accessToken
-            self.accessTokenSecret = accessTokenSecret
+            let credential = OAuthSwiftCredential(consumer_key: consumerKey, consumer_secret: consumerSecret)
+            credential.oauth_token = accessToken
+            credential.oauth_token_secret = accessTokenSecret
+            self.oAuthCredential = credential
         }
         
-        public var type: TwitterAPI.CredentialType {
-            return .OAuth
+        public var credential: TwitterAPI.Credential {
+            return .OAuth(client: oAuthCredential)
         }
         
         public func request(method: String, url: NSURL, parameters: Dictionary<String, String>) -> TwitterAPI.Request {
-            let client = OAuthSwiftClient(
-                consumerKey: self.consumerKey,
-                consumerSecret: self.consumerSecret,
-                accessToken: self.accessToken,
-                accessTokenSecret: self.accessTokenSecret)
-            
-            let authorization = OAuthSwiftClient.authorizationHeaderForMethod(method, url: url, parameters: parameters, credential: client.credential)
+            let authorization = OAuthSwiftClient.authorizationHeaderForMethod(method, url: url, parameters: parameters, credential: oAuthCredential)
             let headers = ["Authorization": authorization]
             
             let request: NSURLRequest
@@ -79,15 +69,15 @@ extension TwitterAPI {
 }
 
 extension TwitterAPI {
-    public class CredentialAccount: TwitterAPICredential {
+    public class ClientAccount: TwitterAPIClient {
         let account: ACAccount
         
         init (account: ACAccount) {
             self.account = account
         }
         
-        public var type: TwitterAPI.CredentialType {
-            return .Account
+        public var credential: TwitterAPI.Credential {
+            return .Account(account: account)
         }
         
         public func request(method: String, url: NSURL, parameters: Dictionary<String, String>) -> TwitterAPI.Request {

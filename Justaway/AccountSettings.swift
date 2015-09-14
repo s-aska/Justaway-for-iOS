@@ -13,14 +13,14 @@ class Account {
         static let profileImageURL = "profile_image_url_https"
     }
     
-    let credential: TwitterAPICredential
+    let client: TwitterAPIClient
     let userID: String
     let screenName: String
     let name: String
     let profileImageURL: NSURL
     
-    init(credential: TwitterAPICredential, userID: String, screenName: String, name: String, profileImageURL: NSURL) {
-        self.credential = credential
+    init(client: TwitterAPIClient, userID: String, screenName: String, name: String, profileImageURL: NSURL) {
+        self.client = client
         self.userID = userID
         self.screenName = screenName
         self.name = name
@@ -38,9 +38,9 @@ class Account {
         }
         if dictionary[Constants.identifier] != nil {
             let account = ACAccountStore().accountWithIdentifier(dictionary[Constants.identifier])
-            self.credential = TwitterAPI.credential(account: account)
+            self.client = TwitterAPI.client(account: account)
         } else {
-            self.credential = TwitterAPI.credential(
+            self.client = TwitterAPI.client(
                 consumerKey: TwitterConsumerKey,
                 consumerSecret: TwitterConsumerSecret,
                 accessToken: dictionary[Constants.key]!,
@@ -53,21 +53,19 @@ class Account {
     }
     
     var dictionaryValue: [String: String] {
-        switch credential.type {
-        case .Account:
-            let account = credential as! TwitterAPI.CredentialAccount
+        switch client.credential {
+        case .Account(let account):
             return [
-                Constants.identifier      : account.account.identifier!,
+                Constants.identifier      : account.identifier!,
                 Constants.userID          : self.userID,
                 Constants.screenName      : self.screenName,
                 Constants.name            : self.name,
                 Constants.profileImageURL : self.profileImageURL.absoluteString
             ]
-        case .OAuth:
-            let accessToken = credential as! TwitterAPI.CredentialOAuth
+        case .OAuth(let credential):
             return [
-                Constants.key             : accessToken.accessToken,
-                Constants.secret          : accessToken.accessTokenSecret,
+                Constants.key             : credential.oauth_token,
+                Constants.secret          : credential.oauth_token_secret,
                 Constants.userID          : self.userID,
                 Constants.screenName      : self.screenName,
                 Constants.name            : self.name,

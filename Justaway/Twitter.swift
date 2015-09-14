@@ -94,17 +94,17 @@ class Twitter {
         oauthswift.authorizeWithCallbackURL( NSURL(string: "justaway://success")!, success: {
             credential, response in
             
-            let credential: TwitterAPICredential = TwitterAPI.CredentialOAuth(
+            let client: TwitterAPIClient = TwitterAPI.client(
                 consumerKey: TwitterConsumerKey,
                 consumerSecret: TwitterConsumerSecret,
                 accessToken: credential.oauth_token,
                 accessTokenSecret: credential.oauth_token_secret)
             
             let url = NSURL(string: "https://api.twitter.com/1.1/account/verify_credentials.json")!
-            credential.get(url).send() { (json: JSON) -> Void in
+            client.get(url).send() { (json: JSON) -> Void in
                 let user = TwitterUser(json)
                 let account = Account(
-                    credential: credential,
+                    client: client,
                     userID: user.userID,
                     screenName: user.screenName,
                     name: user.name,
@@ -131,7 +131,7 @@ class Twitter {
                     Twitter.refreshAccounts(
                         twitterAccounts.map({ (account: ACAccount) in
                             Account(
-                                credential: TwitterAPI.credential(account: account),
+                                client: TwitterAPI.client(account: account),
                                 userID: account.valueForKeyPath("properties.user_id") as! String,
                                 screenName: account.username,
                                 name: account.username,
@@ -148,7 +148,7 @@ class Twitter {
     class func refreshAccounts(newAccounts: [Account]) {
         var accounts = [Account]()
         var current = 0
-        var credential: TwitterAPICredential?
+        var client: TwitterAPIClient?
         
         if let accountSettings = AccountSettingsStore.get() {
             
@@ -174,14 +174,14 @@ class Twitter {
             }
             
             // Update credential from current account
-            credential = accounts[current].credential
+            client = accounts[current].client
         } else if newAccounts.count > 0 {
             
             // Merge accounts and newAccounts
             accounts = newAccounts
             
             // Update credential from newAccounts
-            credential = accounts[0].credential
+            client = accounts[0].client
         } else {
             return
         }
@@ -201,7 +201,7 @@ class Twitter {
             accounts = accounts.map({ (account: Account) in
                 if let user = userDirectory[account.userID] {
                     return Account(
-                        credential: account.credential,
+                        client: account.client,
                         userID: user.userID,
                         screenName: user.screenName,
                         name: user.name,
@@ -219,11 +219,11 @@ class Twitter {
         
         let parameters = ["user_id": userIDs]
         let url = NSURL(string: "https://api.twitter.com/1.1/users/lookup.json")!
-        credential?.get(url, parameters: parameters).send(success)
+        client?.get(url, parameters: parameters).send(success)
     }
     
-    class func credential() -> TwitterAPICredential? {
-        return AccountSettingsStore.get()?.account().credential
+    class func client() -> TwitterAPIClient? {
+        return AccountSettingsStore.get()?.account().client
     }
     
     class func getHomeTimeline(maxID maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
@@ -237,7 +237,7 @@ class Twitter {
             parameters["count"] = "200"
         }
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")!
-        credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
+        client()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
             let statuses = array.map({ TwitterStatus($0) })
             success(statuses)
             if maxID == nil {
@@ -252,7 +252,7 @@ class Twitter {
     class func getStatuses(statusIDs: [String], success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         let parameters = ["id": statusIDs.joinWithSeparator(",")]
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/lookup.json")!
-        credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
+        client()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
             success(array.map({ TwitterStatus($0) }))
         }
     }
@@ -268,7 +268,7 @@ class Twitter {
             parameters["count"] = "200"
         }
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/user_timeline.json")!
-        credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
+        client()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
             success(array.map({ TwitterStatus($0) }))
         }
     }
@@ -284,7 +284,7 @@ class Twitter {
             parameters["count"] = "200"
         }
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/mentions_timeline.json")!
-        credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
+        client()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
             
             let statuses = array.map({ TwitterStatus($0) })
             
@@ -310,7 +310,7 @@ class Twitter {
             parameters["count"] = "200"
         }
         let url = NSURL(string: "https://api.twitter.com/1.1/favorites/list.json")!
-        credential()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
+        client()?.get(url, parameters: parameters).send { (array: [JSON]) -> Void in
             success(array.map({ TwitterStatus($0) }))
         }
     }
@@ -321,7 +321,7 @@ class Twitter {
         }
         let parameters = ["source_id": account.account().userID, "target_id": targetID]
         let url = NSURL(string: "https://api.twitter.com/1.1/friendships/show.json")!
-        credential()?.get(url, parameters: parameters).send { (json: JSON) -> Void in
+        client()?.get(url, parameters: parameters).send { (json: JSON) -> Void in
             if let source: JSON = json["relationship"]["source"] {
                 let relationship = TwitterRelationship(source)
                 success(relationship)
@@ -332,7 +332,7 @@ class Twitter {
     class func getFollowingUsers(userID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
         let parameters = ["user_id": userID, "count": "200"]
         let url = NSURL(string: "https://api.twitter.com/1.1/friends/list.json")!
-        credential()?.get(url, parameters: parameters).send { (json: JSON) -> Void in
+        client()?.get(url, parameters: parameters).send { (json: JSON) -> Void in
             if let users = json["users"].array {
                 success(users.map({ TwitterUserFull($0) }))
             }
@@ -342,7 +342,7 @@ class Twitter {
     class func getFollowerUsers(userID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
         let parameters = ["user_id": userID, "count": "200"]
         let url = NSURL(string: "https://api.twitter.com/1.1/followers/list.json")!
-        credential()?.get(url, parameters: parameters).send { (json: JSON) -> Void in
+        client()?.get(url, parameters: parameters).send { (json: JSON) -> Void in
             if let users = json["users"].array {
                 success(users.map({ TwitterUserFull($0) }))
             }
@@ -352,7 +352,7 @@ class Twitter {
     class func getListsMemberOf(userID: String, success: ([TwitterList]) -> Void, failure: (NSError) -> Void) {
         let parameters = ["user_id": userID, "count": "200"]
         let url = NSURL(string: "https://api.twitter.com/1.1/lists/memberships.json")!
-        credential()?.get(url, parameters: parameters).send { (json: JSON) -> Void in
+        client()?.get(url, parameters: parameters).send { (json: JSON) -> Void in
             if let lists = json["lists"].array {
                 success(lists.map({ TwitterList($0) }))
             }
@@ -365,7 +365,7 @@ class Twitter {
         }
         let image = images.removeAtIndex(0)
         Async.background { () -> Void in
-            credential()?.postMedia(image).send { (json: JSON) -> Void in
+            client()?.postMedia(image).send { (json: JSON) -> Void in
                 if let media_id = json["media_id_string"].string {
                     media_ids.append(media_id)
                 }
@@ -384,7 +384,7 @@ class Twitter {
             parameters["media_ids"] = media_ids.joinWithSeparator(",")
         }
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/update.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             
         })
     }
@@ -445,7 +445,7 @@ extension Twitter {
             EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
             let parameters = ["id": statusID]
             let url = NSURL(string: "https://api.twitter.com/1.1/favorites/create.json")!
-            credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+            client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
                 
                 }, failure: { (code, message, error) -> Void in
                     if code == 139 {
@@ -471,7 +471,7 @@ extension Twitter {
             EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
             let parameters = ["id": statusID]
             let url = NSURL(string: "https://api.twitter.com/1.1/favorites/destroy.json")!
-            credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+            client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
                 
                 }, failure: { (code, message, error) -> Void in
                     if code == 34 {
@@ -502,7 +502,7 @@ extension Twitter {
             Static.retweets[statusID] = "0"
             EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
             let url = NSURL(string: "https://api.twitter.com/1.1/statuses/retweet/\(statusID).json")!
-            credential()?.post(url).send({ (json: JSON) -> Void in
+            client()?.post(url).send({ (json: JSON) -> Void in
                 Async.customQueue(Static.retweetsQueue) {
                     if let id = json["id_str"].string {
                         Static.retweets[statusID] = id
@@ -532,7 +532,7 @@ extension Twitter {
             Static.retweets.removeValueForKey(statusID)
             EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
             let url = NSURL(string: "https://api.twitter.com/1.1/statuses/destroy/\(retweetedStatusID).json")!
-            credential()?.post(url, parameters: [:]).send({ (json: JSON) -> Void in
+            client()?.post(url, parameters: [:]).send({ (json: JSON) -> Void in
             }, failure: { (code, message, error) -> Void in
                     if code == 34 {
                         ErrorAlert.show("Undo Retweet failure", message: "missing retweets.")
@@ -549,7 +549,7 @@ extension Twitter {
     
     class func destroyStatus(account: Account, statusID: String) {
         let url = NSURL(string: "https://api.twitter.com/1.1/statuses/destroy/\(statusID).json")!
-        account.credential.post(url).send({ (json: JSON) -> Void in
+        account.client.post(url).send({ (json: JSON) -> Void in
         }, failure: { (code, message, error) -> Void in
             ErrorAlert.show("Undo Tweet failure code:\(code)", message: message ?? error?.localizedDescription)
         })
@@ -558,7 +558,7 @@ extension Twitter {
     class func follow(userID: String) {
         let parameters = ["user_id": userID]
         let url = NSURL(string: "https://api.twitter.com/1.1/friendships/create.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Follow success")
         })
     }
@@ -566,7 +566,7 @@ extension Twitter {
     class func unfollow(userID: String) {
         let parameters = ["user_id": userID]
         let url = NSURL(string: "https://api.twitter.com/1.1/friendships/destroy.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Unfollow success")
         })
     }
@@ -574,7 +574,7 @@ extension Twitter {
     class func turnOnNotification(userID: String) {
         let parameters = ["user_id": userID, "device": "true"]
         let url = NSURL(string: "https://api.twitter.com/1.1/friendships/update.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Turn on notification success")
         })
     }
@@ -582,7 +582,7 @@ extension Twitter {
     class func turnOffNotification(userID: String) {
         let parameters = ["user_id": userID, "device": "false"]
         let url = NSURL(string: "https://api.twitter.com/1.1/friendships/update.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Turn off notification success")
         })
     }
@@ -590,7 +590,7 @@ extension Twitter {
     class func turnOnRetweets(userID: String) {
         let parameters = ["user_id": userID, "retweets": "true"]
         let url = NSURL(string: "https://api.twitter.com/1.1/friendships/update.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Turn on retweets success")
         })
     }
@@ -598,7 +598,7 @@ extension Twitter {
     class func turnOffRetweets(userID: String) {
         let parameters = ["user_id": userID, "retweets": "false"]
         let url = NSURL(string: "https://api.twitter.com/1.1/friendships/update.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Turn off retweets success")
         })
     }
@@ -606,7 +606,7 @@ extension Twitter {
     class func mute(userID: String) { //
         let parameters = ["user_id": userID]
         let url = NSURL(string: "https://api.twitter.com/1.1/mutes/users/create.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Mute success")
         })
     }
@@ -614,7 +614,7 @@ extension Twitter {
     class func unmute(userID: String) {
         let parameters = ["user_id": userID]
         let url = NSURL(string: "https://api.twitter.com/1.1/mutes/users/destroy.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Unmute success")
         })
     }
@@ -622,7 +622,7 @@ extension Twitter {
     class func block(userID: String) {
         let parameters = ["user_id": userID]
         let url = NSURL(string: "https://api.twitter.com/1.1/mutes/blocks/create.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Block success")
         })
     }
@@ -630,7 +630,7 @@ extension Twitter {
     class func unblock(userID: String) {
         let parameters = ["user_id": userID]
         let url = NSURL(string: "https://api.twitter.com/1.1/mutes/blocks/destroy.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Unblock success")
         })
     }
@@ -638,7 +638,7 @@ extension Twitter {
     class func reportSpam(userID: String) {
         let parameters = ["user_id": userID]
         let url = NSURL(string: "https://api.twitter.com/1.1/users/report_spam.json")!
-        credential()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
+        client()?.post(url, parameters: parameters).send({ (json: JSON) -> Void in
             ErrorAlert.show("Report success")
         })
     }
@@ -765,7 +765,7 @@ extension Twitter {
         }
         
         if let account = AccountSettingsStore.get()?.account() {
-            Static.streamingRequest = account.credential
+            Static.streamingRequest = account.client
                 .streaming(NSURL(string: "https://userstream.twitter.com/1.1/user.json")!)
                 .progress(success)
                 .completion(completion)
