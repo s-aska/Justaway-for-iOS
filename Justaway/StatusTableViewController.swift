@@ -215,6 +215,10 @@ class StatusTableViewController: TimelineTableViewController {
         success(statuses: [TwitterStatus]())
     }
     
+    func sinceID() -> String? {
+        return self.adapter.rows.first?.status.statusID
+    }
+    
     func loadDataInSleep() {
         if AccountSettingsStore.get() == nil {
             return
@@ -248,7 +252,7 @@ class StatusTableViewController: TimelineTableViewController {
                 ErrorAlert.show("Error", message: error.localizedDescription)
                 always()
             }
-            if let sinceID = self.adapter.rows.first?.status.statusID {
+            if let sinceID = self.sinceID() {
                 NSLog("loadDataInSleep load sinceID:\(sinceID)")
                 self.loadData(sinceID: sinceID, success: success, failure: failure)
             } else {
