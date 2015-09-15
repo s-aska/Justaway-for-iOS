@@ -83,6 +83,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     // MARK: Properties
     var status: TwitterStatus?
     var layout: TwitterStatusCellLayout?
+    var moviePlayer: MPMoviePlayerController?
     
     @IBOutlet weak var sourceView: UIView!
     @IBOutlet weak var sourceViewHeightConstraint: NSLayoutConstraint!
@@ -544,6 +545,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                         moviePlayer.view.addSubview(screenView)
                         view.addSubview(moviePlayer.view)
                         moviePlayer.play()
+                        self.moviePlayer = moviePlayer
                     }
                 } else {
                     ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
