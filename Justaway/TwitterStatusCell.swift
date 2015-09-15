@@ -530,28 +530,41 @@ class TwitterStatusCell: BackgroundTableViewCell {
             if let page = tagToPage[status.media.count]?[tag] {
                 let media = status.media[page]
                 if !media.videoURL.isEmpty {
-                    if let view = UIApplication.sharedApplication().keyWindow {
-                        let moviePlayer = MPMoviePlayerController(contentURL: NSURL(string: media.videoURL)!)
-                        moviePlayer.controlStyle = MPMovieControlStyle.None
-                        moviePlayer.repeatMode = MPMovieRepeatMode.One
-                        moviePlayer.view.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
-                        moviePlayer.backgroundView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-                        moviePlayer.view.backgroundColor = UIColor.clearColor()
-                        for subView in moviePlayer.view.subviews {
-                            subView.backgroundColor = UIColor.clearColor()
-                        }
-                        let screenView = UIView(frame: view.bounds)
-                        screenView.addGestureRecognizer(UITapGestureRecognizer(target: moviePlayer.view, action: "removeFromSuperview"))
-                        moviePlayer.view.addSubview(screenView)
-                        view.addSubview(moviePlayer.view)
-                        moviePlayer.play()
-                        self.moviePlayer = moviePlayer
+                    guard let videoURL = NSURL(string: media.videoURL) else {
+                        return
                     }
+                    self.showVideo(videoURL)
                 } else {
                     ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
                 }
             }
         }
+    }
+    
+    func showVideo(videoURL: NSURL) {
+        guard let view = UIApplication.sharedApplication().keyWindow else {
+            return
+        }
+        let moviePlayer = MPMoviePlayerController(contentURL: videoURL)
+        moviePlayer.controlStyle = MPMovieControlStyle.None
+        moviePlayer.repeatMode = MPMovieRepeatMode.One
+        moviePlayer.view.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        moviePlayer.backgroundView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        moviePlayer.view.backgroundColor = UIColor.clearColor()
+        for subView in moviePlayer.view.subviews {
+            subView.backgroundColor = UIColor.clearColor()
+        }
+        let screenView = UIView(frame: view.bounds)
+        screenView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hideVideo"))
+        moviePlayer.view.addSubview(screenView)
+        view.addSubview(moviePlayer.view)
+        moviePlayer.play()
+        self.moviePlayer = moviePlayer
+    }
+    
+    func hideVideo() {
+        self.moviePlayer?.stop()
+        self.moviePlayer?.view.removeFromSuperview()
     }
     
     func showQuotedImage(sender: UIGestureRecognizer) {
