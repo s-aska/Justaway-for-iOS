@@ -212,7 +212,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="進" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xKy-tB-v8R" customClass="MenuLable" customModule="Justaway" customModuleProvider="target">
-                                        <rect key="frame" x="104" y="41" width="24" height="24.5"/>
+                                        <rect key="frame" x="105.5" y="41" width="21" height="24.5"/>
                                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="24"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -372,7 +372,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="進" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CqV-PV-KXI" customClass="MenuLable" customModule="Justaway" customModuleProvider="target">
-                                <rect key="frame" x="108" y="42" width="42" height="42"/>
+                                <rect key="frame" x="111" y="42" width="36" height="42"/>
                                 <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="42"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
