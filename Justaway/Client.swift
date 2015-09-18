@@ -15,11 +15,7 @@ public protocol TwitterAPIClient {
     
     func request(method: String, url: NSURL, parameters: Dictionary<String, String>) -> NSURLRequest
     
-    var credential: TwitterAPI.Credential { get }
-    
     var serialize: String { get }
-    
-    static var serializeIdentifier: String { get }
 }
 
 public extension TwitterAPIClient {
@@ -47,11 +43,11 @@ extension TwitterAPI {
     
     public class ClientOAuth: TwitterAPIClient {
         
-        public static var serializeIdentifier = "OAuth"
+        static var serializeIdentifier = "OAuth"
         
-        private let consumerKey: String
-        private let consumerSecret: String
-        private let oAuthCredential: OAuthSwiftCredential
+        public let consumerKey: String
+        public let consumerSecret: String
+        public let oAuthCredential: OAuthSwiftCredential
         
         init(consumerKey: String, consumerSecret: String, accessToken: String, accessTokenSecret: String) {
             self.consumerKey = consumerKey
@@ -69,10 +65,6 @@ extension TwitterAPI {
         
         public var serialize: String {
             return [ClientOAuth.serializeIdentifier, consumerKey, consumerSecret, oAuthCredential.oauth_token, oAuthCredential.oauth_token_secret].joinWithSeparator("\t")
-        }
-        
-        public var credential: Credential {
-            return .OAuth(client: oAuthCredential)
         }
         
         public func request(method: String, url: NSURL, parameters: Dictionary<String, String>) -> NSURLRequest {
@@ -96,9 +88,9 @@ extension TwitterAPI {
     
     public class ClientAccount: TwitterAPIClient {
         
-        public static var serializeIdentifier = "Account"
+        static var serializeIdentifier = "Account"
         
-        let account: ACAccount
+        public let account: ACAccount
         
         init(account: ACAccount) {
             self.account = account
@@ -111,10 +103,6 @@ extension TwitterAPI {
         
         public var serialize: String {
             return [ClientAccount.serializeIdentifier, account.identifier!].joinWithSeparator("\t")
-        }
-        
-        public var credential: Credential {
-            return .Account(account: account)
         }
         
         public func request(method: String, url: NSURL, parameters: Dictionary<String, String>) -> NSURLRequest {
