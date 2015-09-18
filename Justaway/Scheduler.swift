@@ -11,11 +11,9 @@ import Foundation
 class Scheduler {
     struct Schedule {
         let timer: NSTimer
-        let registerTime: NSTimeInterval
         
         init(timer: NSTimer) {
             self.timer = timer
-            self.registerTime = NSDate().timeIntervalSince1970
         }
     }
     
