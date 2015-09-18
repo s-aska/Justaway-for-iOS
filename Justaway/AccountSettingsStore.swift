@@ -16,7 +16,7 @@ class AccountSettingsStore {
     // MARK: - Types
     
     struct Constants {
-        static let keychainKey = "AccountService"
+        static let keychainKey = "AccountService/v2"
     }
     
     class func get() -> AccountSettings? {
@@ -39,7 +39,7 @@ class AccountSettingsStore {
     }
     
     class func load() -> AccountSettings? {
-        if let data = KeyClip.load("AccountService") as NSDictionary? {
+        if let data: NSDictionary = KeyClip.load(Constants.keychainKey) {
             AccountSettingsCache.sharedInstance.settings = AccountSettings(data)
         } else {
             return nil

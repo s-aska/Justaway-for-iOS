@@ -42,8 +42,8 @@
 		386B6C4D1B81F31B0066EB80 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E0619D98A7300139654 /* AccountSettings.swift */; };
 		386B6C501B81F3230066EB80 /* TwitterAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C9714C1B7DF7C7008E05CE /* TwitterAPI.swift */; };
 		386B6C511B81F3230066EB80 /* StreamingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEA925E1B7F595A005F30A9 /* StreamingRequest.swift */; };
-		386B6C5D1B8203020066EB80 /* Credential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B6C5C1B8203020066EB80 /* Credential.swift */; };
-		386B6C5E1B8206E40066EB80 /* Credential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B6C5C1B8203020066EB80 /* Credential.swift */; };
+		386B6C5D1B8203020066EB80 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B6C5C1B8203020066EB80 /* Client.swift */; };
+		386B6C5E1B8206E40066EB80 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B6C5C1B8203020066EB80 /* Client.swift */; };
 		3894C24C19E557120038AEF8 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3894C24B19E557120038AEF8 /* TimelineViewController.swift */; };
 		3894C24E19E557BF0038AEF8 /* TimelineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */; };
 		3894C25019E55C770038AEF8 /* ViewTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3894C24F19E55C770038AEF8 /* ViewTools.swift */; };
@@ -64,8 +64,8 @@
 		38D6DDF81A5AC317001C94F7 /* EventBox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38DA2D4D1B9876E50090CBDD /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */; };
 		38DA2D4E1B9876E50090CBDD /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		38DA2D551B9A19A50090CBDD /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D541B9A19A50090CBDD /* Request.swift */; settings = {ASSET_TAGS = (); }; };
-		38DA2D561B9A22590090CBDD /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D541B9A19A50090CBDD /* Request.swift */; settings = {ASSET_TAGS = (); }; };
+		38DA2D551B9A19A50090CBDD /* RESTRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D541B9A19A50090CBDD /* RESTRequest.swift */; settings = {ASSET_TAGS = (); }; };
+		38DA2D561B9A22590090CBDD /* RESTRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DA2D541B9A19A50090CBDD /* RESTRequest.swift */; settings = {ASSET_TAGS = (); }; };
 		38DFD8001B86F03C0073C8CD /* MutableDataScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */; };
 		38DFD8011B86F03C0073C8CD /* MutableDataScanner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38E0528E1BA4692600B67EB2 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38E0528D1BA4692600B67EB2 /* ImageCell.xib */; settings = {ASSET_TAGS = (); }; };
@@ -228,7 +228,7 @@
 		3868B94A19EFCCE2001221BF /* TwitterURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterURL.swift; sourceTree = "<group>"; };
 		3868B94C19EFCCEC001221BF /* TwitterStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterStatus.swift; sourceTree = "<group>"; };
 		3868B95319EFCD5D001221BF /* TwitterMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterMedia.swift; sourceTree = "<group>"; };
-		386B6C5C1B8203020066EB80 /* Credential.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credential.swift; sourceTree = "<group>"; };
+		386B6C5C1B8203020066EB80 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		3894C24B19E557120038AEF8 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineViewController.xib; sourceTree = "<group>"; };
 		3894C24F19E55C770038AEF8 /* ViewTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewTools.swift; sourceTree = "<group>"; };
@@ -245,7 +245,7 @@
 		38C9714C1B7DF7C7008E05CE /* TwitterAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterAPI.swift; sourceTree = "<group>"; };
 		38D6DDF61A5AC317001C94F7 /* EventBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventBox.framework; path = Carthage/Build/iOS/EventBox.framework; sourceTree = "<group>"; };
 		38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
-		38DA2D541B9A19A50090CBDD /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		38DA2D541B9A19A50090CBDD /* RESTRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RESTRequest.swift; sourceTree = "<group>"; };
 		38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MutableDataScanner.framework; path = Carthage/Build/iOS/MutableDataScanner.framework; sourceTree = "<group>"; };
 		38E0528D1BA4692600B67EB2 /* ImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
 		38E0528F1BA4697800B67EB2 /* ImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
@@ -414,8 +414,8 @@
 			isa = PBXGroup;
 			children = (
 				38C9714C1B7DF7C7008E05CE /* TwitterAPI.swift */,
-				386B6C5C1B8203020066EB80 /* Credential.swift */,
-				38DA2D541B9A19A50090CBDD /* Request.swift */,
+				386B6C5C1B8203020066EB80 /* Client.swift */,
+				38DA2D541B9A19A50090CBDD /* RESTRequest.swift */,
 				6AEA925E1B7F595A005F30A9 /* StreamingRequest.swift */,
 				6AEA92651B7F5981005F30A9 /* API */,
 				381E6E7F19DE9DAB00139654 /* Twitter.swift */,
@@ -913,7 +913,7 @@
 				3805DE9B1A5FFCD400FBD015 /* Scheduler.swift in Sources */,
 				38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */,
 				6A0449541B24952000758061 /* FollowerUserViewController.swift in Sources */,
-				38DA2D551B9A19A50090CBDD /* Request.swift in Sources */,
+				38DA2D551B9A19A50090CBDD /* RESTRequest.swift in Sources */,
 				6AB55B4D19C8ADBE00DC6442 /* FontSizeViewController.swift in Sources */,
 				6AB55B5119C8B2B200DC6442 /* ThemeViewController.swift in Sources */,
 				38E052921BA46B9200B67EB2 /* ImagePickerCollectionView.swift in Sources */,
@@ -942,7 +942,7 @@
 				6AEA925F1B7F595A005F30A9 /* StreamingRequest.swift in Sources */,
 				6A0449441B1F4F0400758061 /* ProfileViewController.swift in Sources */,
 				6AB55B4319C5843000DC6442 /* SettingsViewController.swift in Sources */,
-				386B6C5D1B8203020066EB80 /* Credential.swift in Sources */,
+				386B6C5D1B8203020066EB80 /* Client.swift in Sources */,
 				3805DEAA1A67F52400FBD015 /* ThemeSolarizedLight.swift in Sources */,
 				6A0449521B2489B400758061 /* FollowingUserViewController.swift in Sources */,
 				6A04494A1B241FEF00758061 /* UserTimelineViewController.swift in Sources */,
@@ -964,7 +964,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3868B95519EFCF15001221BF /* TwitterMedia.swift in Sources */,
-				386B6C5E1B8206E40066EB80 /* Credential.swift in Sources */,
+				386B6C5E1B8206E40066EB80 /* Client.swift in Sources */,
 				38A694F619E4E82A00DD6072 /* Secret.swift in Sources */,
 				6A4B9D4219BB514900D50D78 /* JustawayTests.swift in Sources */,
 				6AB8CDEB1A29BB3B00D22268 /* TwitterTests.swift in Sources */,
@@ -980,7 +980,7 @@
 				3868B95019EFCCF4001221BF /* TwitterUser.swift in Sources */,
 				38E052941BA4848200B67EB2 /* ImageCell.swift in Sources */,
 				6A83EDAA1B69422E000F3C43 /* Async.swift in Sources */,
-				38DA2D561B9A22590090CBDD /* Request.swift in Sources */,
+				38DA2D561B9A22590090CBDD /* RESTRequest.swift in Sources */,
 				386B6C511B81F3230066EB80 /* StreamingRequest.swift in Sources */,
 				3868B95119EFCCF4001221BF /* TwitterURL.swift in Sources */,
 				386B6C501B81F3230066EB80 /* TwitterAPI.swift in Sources */,

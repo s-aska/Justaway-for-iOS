@@ -4,9 +4,7 @@ import Accounts
 class Account {
     
     struct Constants {
-        static let identifier = "identifier"
-        static let key = "key"
-        static let secret = "secret"
+        static let client = "client"
         static let userID = "user_id"
         static let screenName = "screen_name"
         static let name = "name"
@@ -36,15 +34,11 @@ class Account {
         } else {
             self.profileImageURL = NSURL()
         }
-        if dictionary[Constants.identifier] != nil {
-            let account = ACAccountStore().accountWithIdentifier(dictionary[Constants.identifier])
-            self.client = TwitterAPI.client(account: account)
+        
+        if let serializedString = dictionary[Constants.client] {
+            self.client = TwitterAPI.client(serializedString: serializedString)
         } else {
-            self.client = TwitterAPI.client(
-                consumerKey: TwitterConsumerKey,
-                consumerSecret: TwitterConsumerSecret,
-                accessToken: dictionary[Constants.key]!,
-                accessTokenSecret: dictionary[Constants.secret]!)
+            fatalError("missing client serializedString")
         }
     }
     
@@ -53,25 +47,13 @@ class Account {
     }
     
     var dictionaryValue: [String: String] {
-        switch client.credential {
-        case .Account(let account):
-            return [
-                Constants.identifier      : account.identifier!,
-                Constants.userID          : self.userID,
-                Constants.screenName      : self.screenName,
-                Constants.name            : self.name,
-                Constants.profileImageURL : self.profileImageURL.absoluteString
-            ]
-        case .OAuth(let credential):
-            return [
-                Constants.key             : credential.oauth_token,
-                Constants.secret          : credential.oauth_token_secret,
-                Constants.userID          : self.userID,
-                Constants.screenName      : self.screenName,
-                Constants.name            : self.name,
-                Constants.profileImageURL : self.profileImageURL.absoluteString
-            ]
-        }
+        return [
+            Constants.client          : client.serialize,
+            Constants.userID          : userID,
+            Constants.screenName      : screenName,
+            Constants.name            : name,
+            Constants.profileImageURL : profileImageURL.absoluteString
+        ]
     }
 }
 

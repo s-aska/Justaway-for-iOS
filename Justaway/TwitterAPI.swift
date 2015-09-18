@@ -28,4 +28,15 @@ public class TwitterAPI {
     public class func client(account account: ACAccount) -> TwitterAPIClient {
         return TwitterAPI.ClientAccount(account: account)
     }
+    
+    public class func client(serializedString string: String) -> TwitterAPIClient {
+        switch string {
+        case let string where string.hasPrefix(TwitterAPI.ClientOAuth.serializeIdentifier):
+            return TwitterAPI.ClientOAuth(serializedString: string)
+        case let string where string.hasPrefix(TwitterAPI.ClientAccount.serializeIdentifier):
+            return TwitterAPI.ClientAccount(serializedString: string)
+        default:
+            fatalError("invalid serializedString:\(string)")
+        }
+    }
 }

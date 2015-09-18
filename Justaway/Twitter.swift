@@ -31,7 +31,7 @@ class Twitter {
     struct Static {
         static var enableStreaming = false
         static var connectionStatus: ConnectionStatus = .DISCONNECTED
-        static var streamingRequest: TwitterAPI.StreamingRequest?
+        static var streamingRequest: StreamingRequest?
         static var favorites = [String: Bool]()
         static var retweets = [String: String]()
         static var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
@@ -811,7 +811,7 @@ extension Twitter {
     }
 }
 
-extension TwitterAPI.Request {
+extension RESTRequest {
     
     public func send(success: ((JSON) -> Void)) -> NSURLSessionDataTask {
         return send(success, failure: nil)
@@ -830,7 +830,7 @@ extension TwitterAPI.Request {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         return send({ (responseData, response, error) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            let url = self.urlRequest.URL?.absoluteString ?? "-"
+            let url = self.request.URL?.absoluteString ?? "-"
             if let error = error {
                 if let failure = failure {
                     failure(code: nil, message: nil, error: error)
