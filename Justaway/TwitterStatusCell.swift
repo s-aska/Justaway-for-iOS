@@ -1,6 +1,6 @@
 import UIKit
 import EventBox
-import MediaPlayer
+import AVFoundation
 
 let TwitterStatusCellImagePreviewHeight :CGFloat = 80
 let TwitterStatusCellImagePreviewWidth :CGFloat = 240
@@ -83,7 +83,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     // MARK: Properties
     var status: TwitterStatus?
     var layout: TwitterStatusCellLayout?
-    var moviePlayer: MPMoviePlayerController?
+    let playerView = AVPlayerView()
     
     @IBOutlet weak var sourceView: UIView!
     @IBOutlet weak var sourceViewHeightConstraint: NSLayoutConstraint!
@@ -188,6 +188,9 @@ class TwitterStatusCell: BackgroundTableViewCell {
         }
         
         iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "openProfile:"))
+        
+        playerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hideVideo"))
+        playerView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     }
     
     func configureEvent() {
@@ -254,6 +257,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 self.relativeCreatedAtLabel.text = status.createdAt.relativeString
             }
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "endVideo", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
     }
     
     // MARK: - UITableViewCell
@@ -545,26 +550,21 @@ class TwitterStatusCell: BackgroundTableViewCell {
         guard let view = UIApplication.sharedApplication().keyWindow else {
             return
         }
-        let moviePlayer = MPMoviePlayerController(contentURL: videoURL)
-        moviePlayer.controlStyle = MPMovieControlStyle.None
-        moviePlayer.repeatMode = MPMovieRepeatMode.One
-        moviePlayer.view.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
-        moviePlayer.backgroundView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        moviePlayer.view.backgroundColor = UIColor.clearColor()
-        for subView in moviePlayer.view.subviews {
-            subView.backgroundColor = UIColor.clearColor()
-        }
-        let screenView = UIView(frame: view.bounds)
-        screenView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hideVideo"))
-        moviePlayer.view.addSubview(screenView)
-        view.addSubview(moviePlayer.view)
-        moviePlayer.play()
-        self.moviePlayer = moviePlayer
+        playerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        playerView.player = AVPlayer(URL: videoURL)
+        playerView.player?.actionAtItemEnd = AVPlayerActionAtItemEnd.None
+        playerView.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+        view.addSubview(playerView)
+        playerView.player?.play()
     }
     
     func hideVideo() {
-        self.moviePlayer?.stop()
-        self.moviePlayer?.view.removeFromSuperview()
+        playerView.player?.pause()
+        playerView.removeFromSuperview()
+    }
+    
+    func endVideo() {
+        playerView.player?.currentItem?.seekToTime(kCMTimeZero)
     }
     
     func showQuotedImage(sender: UIGestureRecognizer) {
