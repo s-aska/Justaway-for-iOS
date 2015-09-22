@@ -1,6 +1,5 @@
 github "s-aska/EventBox"
 github "s-aska/KeyClip"
-github "s-aska/MutableDataScanner"
+github "s-aska/TwitterAPI"
 github "s-aska/Toucan"
-github "rpowelll/OAuthSwift" "swift2"
-github "SwiftyJSON/SwiftyJSON" "xcode7"
+github "SwiftyJSON/SwiftyJSON"

@@ -2,6 +2,7 @@ import UIKit
 import Accounts
 import Social
 import EventBox
+import TwitterAPI
 
 class AccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     

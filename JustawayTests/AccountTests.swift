@@ -1,5 +1,6 @@
 import UIKit
 import XCTest
+import TwitterAPI
 
 class AccountTests: XCTestCase {
     
