@@ -5,7 +5,7 @@
 ## Setup
 
 ```bash
-carthage update
+carthage update --platform iOS
 ```
 
 ## Icon
