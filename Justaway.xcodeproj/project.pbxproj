@@ -60,6 +60,8 @@
 		38C44C931B78E7D500C22A52 /* GeneralSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38C44C921B78E7D500C22A52 /* GeneralSettingsViewController.xib */; };
 		38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; };
 		38D6DDF81A5AC317001C94F7 /* EventBox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		38D8A0321BB43741007FA614 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D8A0311BB43741007FA614 /* Alamofire.framework */; };
+		38D8A0331BB43741007FA614 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38D8A0311BB43741007FA614 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38DA2D4D1B9876E50090CBDD /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */; };
 		38DA2D4E1B9876E50090CBDD /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38DFD8001B86F03C0073C8CD /* MutableDataScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */; };
@@ -185,6 +187,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				3805DE3E1A5D8AC000FBD015 /* Toucan.framework in Embed Frameworks */,
+				38D8A0331BB43741007FA614 /* Alamofire.framework in Embed Frameworks */,
 				38DA2D4E1B9876E50090CBDD /* SwiftyJSON.framework in Embed Frameworks */,
 				38D6DDF81A5AC317001C94F7 /* EventBox.framework in Embed Frameworks */,
 				6ADB647B1A5348D800602B2B /* KeyClip.framework in Embed Frameworks */,
@@ -240,6 +243,7 @@
 		38C44C8B1B78E7BF00C22A52 /* GeneralSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingsViewController.swift; sourceTree = "<group>"; };
 		38C44C921B78E7D500C22A52 /* GeneralSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralSettingsViewController.xib; sourceTree = "<group>"; };
 		38D6DDF61A5AC317001C94F7 /* EventBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventBox.framework; path = Carthage/Build/iOS/EventBox.framework; sourceTree = "<group>"; };
+		38D8A0311BB43741007FA614 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MutableDataScanner.framework; path = Carthage/Build/iOS/MutableDataScanner.framework; sourceTree = "<group>"; };
 		38E0528D1BA4692600B67EB2 /* ImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
@@ -317,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3805DE3D1A5D8AC000FBD015 /* Toucan.framework in Frameworks */,
+				38D8A0321BB43741007FA614 /* Alamofire.framework in Frameworks */,
 				38DA2D4D1B9876E50090CBDD /* SwiftyJSON.framework in Frameworks */,
 				38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */,
 				6ADB647A1A5348D800602B2B /* KeyClip.framework in Frameworks */,
@@ -684,6 +689,7 @@
 		6AB8CDEE1A29C13700D22268 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				38D8A0311BB43741007FA614 /* Alamofire.framework */,
 				3848FFEB1BB1327900AC04FC /* TwitterAPI.framework */,
 				38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */,
 				38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */,
