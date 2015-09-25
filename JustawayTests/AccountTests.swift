@@ -18,7 +18,7 @@ class AccountTests: XCTestCase {
         let normalURL = "https://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_normal.png"
         let biggerURL = "https://pbs.twimg.com/profile_images/435048335674580992/k2F3sHO2_bigger.png"
         
-        let client = TwitterAPI.client(consumerKey: "", consumerSecret: "", accessToken: "", accessTokenSecret: "")
+        let client = OAuthClient(consumerKey: "", consumerSecret: "", accessToken: "", accessTokenSecret: "")
         let account = Account(client: client, userID: "1", screenName: "su_aska", name: "Shinichiro Aska", profileImageURL: NSURL(string: normalURL)!)
         
         XCTAssertEqual(account.screenName, "su_aska")

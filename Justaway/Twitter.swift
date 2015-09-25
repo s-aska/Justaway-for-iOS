@@ -95,7 +95,7 @@ class Twitter {
         oauthswift.authorizeWithCallbackURL( NSURL(string: "justaway://success")!, success: {
             credential, response in
             
-            let client: TwitterAPIClient = TwitterAPI.client(
+            let client = OAuthClient(
                 consumerKey: TwitterConsumerKey,
                 consumerSecret: TwitterConsumerSecret,
                 accessToken: credential.oauth_token,
@@ -132,7 +132,7 @@ class Twitter {
                     Twitter.refreshAccounts(
                         twitterAccounts.map({ (account: ACAccount) in
                             Account(
-                                client: TwitterAPI.client(account: account),
+                                client: AccountClient(account: account),
                                 userID: account.valueForKeyPath("properties.user_id") as! String,
                                 screenName: account.username,
                                 name: account.username,
@@ -149,7 +149,7 @@ class Twitter {
     class func refreshAccounts(newAccounts: [Account]) {
         var accounts = [Account]()
         var current = 0
-        var client: TwitterAPIClient?
+        var client: Client?
         
         if let accountSettings = AccountSettingsStore.get() {
             
@@ -224,7 +224,7 @@ class Twitter {
             .responseJSONArray(success)
     }
     
-    class func client() -> TwitterAPIClient? {
+    class func client() -> Client? {
         return AccountSettingsStore.get()?.account().client
     }
     
@@ -394,11 +394,10 @@ class Twitter {
         if media_ids.count > 0 {
             parameters["media_ids"] = media_ids.joinWithSeparator(",")
         }
-        client()?
-            .post("https://api.twitter.com/1.1/statuses/update.json", parameters: parameters)
-            .responseJSON({ (json: JSON) -> Void in
-            
-            })
+        guard let client = client() else {
+            return
+        }
+        client.post("https://api.twitter.com/1.1/statuses/update.json", parameters: parameters)
     }
 }
 
@@ -839,7 +838,7 @@ extension Twitter {
     }
 }
 
-extension Request {
+extension TwitterAPI.Request {
     
     public func responseJSON(success: ((JSON) -> Void)) {
         return responseJSONWithError(success, failure: nil)
@@ -870,7 +869,7 @@ extension Request {
                 if let errors = json["errors"].array {
                     let code = errors[0]["code"].int ?? 0
                     let message = errors[0]["message"].string ?? "Unknown"
-                    let HTTPResponse = response as? NSHTTPURLResponse
+                    let HTTPResponse = response
                     let HTTPStatusCode = HTTPResponse?.statusCode ?? 0
                     let error = NSError(domain: NSURLErrorDomain, code: HTTPStatusCode, userInfo: nil)
                     if let failure = failure {

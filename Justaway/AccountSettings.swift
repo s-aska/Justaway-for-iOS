@@ -12,13 +12,13 @@ class Account {
         static let profileImageURL = "profile_image_url_https"
     }
     
-    let client: TwitterAPIClient
+    let client: Client
     let userID: String
     let screenName: String
     let name: String
     let profileImageURL: NSURL
     
-    init(client: TwitterAPIClient, userID: String, screenName: String, name: String, profileImageURL: NSURL) {
+    init(client: Client, userID: String, screenName: String, name: String, profileImageURL: NSURL) {
         self.client = client
         self.userID = userID
         self.screenName = screenName
@@ -37,7 +37,7 @@ class Account {
         }
         
         if let serializedString = dictionary[Constants.client] {
-            self.client = TwitterAPI.client(serializedString: serializedString)
+            self.client = ClientDeserializer.deserialize(serializedString)
         } else {
             fatalError("missing client serializedString")
         }
