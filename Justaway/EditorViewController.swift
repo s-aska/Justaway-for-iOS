@@ -105,7 +105,11 @@ class EditorViewController: UIViewController {
         }
         
         collectionView.callback = { (asset: PHAsset) in
-            PHImageManager.defaultManager().requestImageDataForAsset(asset, options: nil, resultHandler: {
+            let options = PHImageRequestOptions()
+            options.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
+            options.synchronous = false
+            options.networkAccessAllowed = true
+            PHImageManager.defaultManager().requestImageDataForAsset(asset, options: options, resultHandler: {
                 (imageData: NSData?, dataUTI: String?, orientation: UIImageOrientation, info: [NSObject : AnyObject]?) -> Void in
                 if let imageData = imageData {
                     if self.images.count > 0 {
