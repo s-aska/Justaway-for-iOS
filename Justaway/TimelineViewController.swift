@@ -185,11 +185,12 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 self.streamingButton.enabled = true
                 self.streamingButton.selected = false
             case .DISCONNECTED:
-                self.streamingStatusLabel.text = "disconnected"
                 if Twitter.enableStreaming {
+                    self.streamingStatusLabel.text = "disconnected"
                     self.streamingButton.enabled = false
                     self.streamingButton.selected = false
                 } else {
+                    self.streamingStatusLabel.text = "streaming off"
                     self.streamingButton.enabled = true
                     self.streamingButton.selected = false
                 }
