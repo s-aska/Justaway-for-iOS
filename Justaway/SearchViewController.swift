@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class SearchViewController: UIViewController {
     
@@ -23,11 +24,13 @@ class SearchViewController: UIViewController {
     
     // MARK: Properties
     
+    let refreshControl = UIRefreshControl()
     let adapter = TwitterStatusAdapter()
-    var lastID: Int64?
+    var nextResults: String?
     var keyword: String?
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var keywordLabel: MenuLable!
     
     override var nibName: String {
         return "SearchViewController"
@@ -47,13 +50,8 @@ class SearchViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
-        if let keyword = keyword {
-            Twitter.getSearchTweets(keyword, maxID: nil, sinceID: nil, success: { (statuses) -> Void in
-                self.adapter.renderData(self.tableView, statuses: statuses, mode: .BOTTOM, handler: nil)
-            }, failure: { (error) -> Void in
-                //
-            })
-        }
+        loadData()
+        keywordLabel.text = keyword
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -64,7 +62,69 @@ class SearchViewController: UIViewController {
     // MARK: - Configuration
     
     func configureView() {
+        // TODO
+        // refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
+        
         adapter.configureView(tableView)
+        adapter.didScrollToBottom = {
+            if let nextResults = self.nextResults {
+                if let queryItems = NSURLComponents(string: nextResults)?.queryItems {
+                    for item in queryItems {
+                        if item.name == "max_id" {
+                            self.loadData(item.value)
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func loadData(maxID: String? = nil) {
+        guard let keyword = keyword else {
+            return
+        }
+        let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
+            let always: (()-> Void) = {
+                op.finish()
+                self.adapter.footerIndicatorView?.stopAnimating()
+                self.refreshControl.endRefreshing()
+            }
+            let success = { (statuses: [TwitterStatus], search_metadata: [String: JSON]) -> Void in
+                
+                self.nextResults = search_metadata["next_results"]?.string
+                self.renderData(statuses, mode: (maxID != nil ? .BOTTOM : .OVER), handler: always)
+            }
+            let failure = { (error: NSError) -> Void in
+                ErrorAlert.show("Error", message: error.localizedDescription)
+                always()
+            }
+            if !self.refreshControl.refreshing {
+                Async.main {
+                    self.adapter.footerIndicatorView?.startAnimating()
+                    return
+                }
+            }
+            // self.loadData(maxID?.stringValue, success: success, failure: failure)
+            Twitter.getSearchTweets(keyword, maxID: maxID, sinceID: nil, success: success, failure: failure)
+        })
+        self.adapter.loadDataQueue.addOperation(op)
+    }
+    
+    func renderData(statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
+        let op = AsyncBlockOperation { (op) -> Void in
+            self.adapter.renderData(self.tableView, statuses: statuses, mode: mode, handler: { () -> Void in
+                if self.adapter.isTop {
+                    self.adapter.scrollEnd(self.tableView)
+                }
+                op.finish()
+            })
+            
+            if let h = handler {
+                h()
+            }
+        }
+        self.adapter.mainQueue.addOperation(op)
     }
     
     func configureEvent() {

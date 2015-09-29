@@ -305,7 +305,7 @@ class Twitter {
             }
     }
     
-    class func getSearchTweets(keyword: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+    class func getSearchTweets(keyword: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus], [String: JSON]) -> Void, failure: (NSError) -> Void) {
         var parameters: [String: String] = ["count": "200", "q": keyword]
         if let maxID = maxID {
             parameters["max_id"] = maxID
@@ -316,8 +316,9 @@ class Twitter {
         client()?
             .get("https://api.twitter.com/1.1/search/tweets.json", parameters: parameters)
             .responseJSON { (json: JSON) -> Void in
-                if let statuses = json["statuses"].array {
-                    success(statuses.map({ TwitterStatus($0) }))
+                if let statuses = json["statuses"].array,
+                    let search_metadata = json["search_metadata"].dictionary {
+                    success(statuses.map({ TwitterStatus($0) }), search_metadata)
                 }
             }
     }
