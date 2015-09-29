@@ -9,6 +9,9 @@
             <string>AvenirNext-Regular</string>
             <string>AvenirNext-Regular</string>
         </mutableArray>
+        <mutableArray key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </mutableArray>
         <mutableArray key="fontello.ttf">
             <string>fontello</string>
             <string>fontello</string>
@@ -170,15 +173,15 @@
                                     <constraint firstItem="ieT-sB-st1" firstAttribute="leading" secondItem="Ywi-VR-oqG" secondAttribute="leading" id="uxE-L5-K1G"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="257" translatesAutoresizingMaskIntoConstraints="NO" id="1p1-hd-hQv" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
+                            <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" text="Status" translatesAutoresizingMaskIntoConstraints="NO" id="3Ja-ae-JKY" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
                                 <rect key="frame" x="10" y="30" width="232" height="14"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="14" id="EdG-2R-teu"/>
+                                    <constraint firstAttribute="height" constant="14" id="A1l-4R-MKE"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o8h-2b-XS2">
                                 <rect key="frame" x="10" y="54" width="232" height="105"/>
                                 <subviews>
@@ -234,13 +237,13 @@
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="o8h-2b-XS2" secondAttribute="trailing" constant="10" id="4vT-S1-rDT"/>
-                            <constraint firstAttribute="trailing" secondItem="1p1-hd-hQv" secondAttribute="trailing" constant="10" id="63s-dj-rpL"/>
+                            <constraint firstAttribute="trailing" secondItem="3Ja-ae-JKY" secondAttribute="trailing" constant="10" id="7aY-7L-ZCX"/>
                             <constraint firstAttribute="trailing" secondItem="Ywi-VR-oqG" secondAttribute="trailing" constant="10" id="9CB-gy-er7"/>
-                            <constraint firstItem="o8h-2b-XS2" firstAttribute="top" secondItem="1p1-hd-hQv" secondAttribute="bottom" constant="10" id="Wos-9h-lgp"/>
-                            <constraint firstItem="1p1-hd-hQv" firstAttribute="leading" secondItem="ZmL-Y4-qJs" secondAttribute="leading" constant="10" id="Zx2-Hv-Zlj"/>
+                            <constraint firstItem="3Ja-ae-JKY" firstAttribute="top" secondItem="Ywi-VR-oqG" secondAttribute="bottom" constant="3" id="GBN-TK-cSk"/>
                             <constraint firstAttribute="bottom" secondItem="o8h-2b-XS2" secondAttribute="bottom" constant="10" id="dko-dC-BK4"/>
-                            <constraint firstAttribute="bottom" secondItem="1p1-hd-hQv" secondAttribute="bottom" priority="750" constant="10" id="qGP-5D-efY"/>
-                            <constraint firstItem="1p1-hd-hQv" firstAttribute="top" secondItem="Ywi-VR-oqG" secondAttribute="bottom" constant="3" id="qmy-ik-xTL"/>
+                            <constraint firstItem="3Ja-ae-JKY" firstAttribute="leading" secondItem="ZmL-Y4-qJs" secondAttribute="leading" constant="10" id="f6s-pb-M6L"/>
+                            <constraint firstAttribute="bottom" secondItem="3Ja-ae-JKY" secondAttribute="bottom" priority="750" constant="10" id="j6P-2m-37h"/>
+                            <constraint firstItem="o8h-2b-XS2" firstAttribute="top" secondItem="3Ja-ae-JKY" secondAttribute="bottom" constant="10" id="nfw-h0-QQO"/>
                             <constraint firstItem="o8h-2b-XS2" firstAttribute="leading" secondItem="ZmL-Y4-qJs" secondAttribute="leading" constant="10" id="sUI-SW-f4Z"/>
                             <constraint firstItem="Ywi-VR-oqG" firstAttribute="leading" secondItem="ZmL-Y4-qJs" secondAttribute="leading" constant="8" id="w6g-0y-tf9"/>
                             <constraint firstItem="Ywi-VR-oqG" firstAttribute="top" secondItem="ZmL-Y4-qJs" secondAttribute="top" constant="10" id="yZE-9a-4eP"/>
@@ -472,8 +475,8 @@
                 <outlet property="quotedProtectedLabel" destination="1f6-fo-Uls" id="Wen-Ih-V82"/>
                 <outlet property="quotedScreenNameLabel" destination="QHV-SB-OPV" id="3Kh-N5-nEb"/>
                 <outlet property="quotedStatusContainerView" destination="ZmL-Y4-qJs" id="4b2-MS-rkf"/>
-                <outlet property="quotedStatusLabel" destination="1p1-hd-hQv" id="1BS-WJ-OwL"/>
-                <outlet property="quotedStatusLabelHeightConstraint" destination="EdG-2R-teu" id="4RZ-uy-kd7"/>
+                <outlet property="quotedStatusLabel" destination="3Ja-ae-JKY" id="vnf-Zo-j16"/>
+                <outlet property="quotedStatusLabelHeightConstraint" destination="A1l-4R-MKE" id="HDr-ki-qH8"/>
                 <outlet property="relativeCreatedAtLabel" destination="umq-Pc-zJg" id="Wrr-3D-DrW"/>
                 <outlet property="replyButton" destination="iUW-IA-CLC" id="GtU-YQ-OV8"/>
                 <outlet property="retweetButton" destination="gv3-p4-SV9" id="WNC-Mv-ZHM"/>

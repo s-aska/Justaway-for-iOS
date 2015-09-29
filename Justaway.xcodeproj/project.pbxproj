@@ -193,6 +193,8 @@
 		6A83EDA81B69400B000F3C43 /* ThemeSolarizedDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEAB1A67F63300FBD015 /* ThemeSolarizedDark.swift */; };
 		6A83EDA91B694210000F3C43 /* BaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADB648B1A5DD65800602B2B /* BaseButton.swift */; };
 		6A83EDAA1B69422E000F3C43 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DE861A5DAA1600FBD015 /* Async.swift */; };
+		6A923A7F1BBAECC900F74AC9 /* TwitterAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3848FFEB1BB1327900AC04FC /* TwitterAPI.framework */; settings = {ASSET_TAGS = (); }; };
+		6A923A811BBAECCD00F74AC9 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */; settings = {ASSET_TAGS = (); }; };
 		6AB55B3E19C562CF00DC6442 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */; };
 		6AB55B4019C563F600DC6442 /* EditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB55B3F19C563F600DC6442 /* EditorViewController.xib */; };
 		6AB55B4319C5843000DC6442 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB55B4219C5843000DC6442 /* SettingsViewController.swift */; };
@@ -408,6 +410,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A923A811BBAECCD00F74AC9 /* OAuthSwift.framework in Frameworks */,
+				6A923A7F1BBAECC900F74AC9 /* TwitterAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

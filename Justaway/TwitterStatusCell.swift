@@ -356,7 +356,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
             
             quotedNameLabel.text = quotedStatus.user.name
             quotedScreenNameLabel.text = "@" + quotedStatus.user.screenName
-            quotedStatusLabel.text = quotedStatus.text
+            quotedStatusLabel.setStatus(quotedStatus)
             quotedProtectedLabel.hidden = quotedStatus.user.isProtected ? false : true
             
             if quotedStatus.media.count > 0 {
@@ -566,7 +566,14 @@ class TwitterStatusCell: BackgroundTableViewCell {
         let tag = sender.view?.tag ?? 0
         if let status = self.status?.quotedStatus {
             if let page = tagToPage[status.media.count]?[tag] {
-                ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
+                let media = status.media[page]
+                if !media.videoURL.isEmpty {
+                    if let videoURL = NSURL(string: media.videoURL) {
+                        self.showVideo(videoURL)
+                    }
+                } else {
+                    ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
+                }
             }
         }
     }
