@@ -177,8 +177,7 @@ class StatusLable: UITextView {
                 ImageViewController.show([media.mediaURL], initialPage: 0)
             }
         case .Hashtag(let hashtag):
-            // TODO
-            NSLog("touch media")
+            SearchViewController.show("#" + hashtag.text)
         case .User(let user):
             ProfileViewController.show(user)
         }

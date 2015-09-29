@@ -305,6 +305,23 @@ class Twitter {
             }
     }
     
+    class func getSearchTweets(keyword: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        var parameters: [String: String] = ["count": "200", "q": keyword]
+        if let maxID = maxID {
+            parameters["max_id"] = maxID
+        }
+        if let sinceID = sinceID {
+            parameters["since_id"] = sinceID
+        }
+        client()?
+            .get("https://api.twitter.com/1.1/search/tweets.json", parameters: parameters)
+            .responseJSON { (json: JSON) -> Void in
+                if let statuses = json["statuses"].array {
+                    success(statuses.map({ TwitterStatus($0) }))
+                }
+            }
+    }
+    
     class func getFavorites(userID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         var parameters = ["user_id": userID]
         if let maxID = maxID {

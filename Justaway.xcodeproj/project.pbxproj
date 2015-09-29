@@ -98,6 +98,9 @@
 		384DE97D1BBACA310011AF6E /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DE9A1A5FFCD400FBD015 /* Scheduler.swift */; settings = {ASSET_TAGS = (); }; };
 		384DE97E1BBACA310011AF6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3839245E1B14A1020025176D /* Constants.swift */; settings = {ASSET_TAGS = (); }; };
 		384DE97F1BBACA540011AF6E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38206C631B0C3A5600480542 /* Reachability.swift */; settings = {ASSET_TAGS = (); }; };
+		384DE9811BBAD62E0011AF6E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384DE9801BBAD62E0011AF6E /* SearchViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		384DE9831BBAD64D0011AF6E /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 384DE9821BBAD64D0011AF6E /* SearchViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		384DE9841BBAD9E60011AF6E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384DE9801BBAD62E0011AF6E /* SearchViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		3868B94519EFCCC7001221BF /* TwitterDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3868B94419EFCCC7001221BF /* TwitterDate.swift */; };
 		3868B94719EFCCCF001221BF /* TwitterVia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3868B94619EFCCCF001221BF /* TwitterVia.swift */; };
 		3868B94919EFCCD8001221BF /* TwitterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3868B94819EFCCD8001221BF /* TwitterUser.swift */; };
@@ -290,6 +293,8 @@
 		3839245E1B14A1020025176D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3848FFEB1BB1327900AC04FC /* TwitterAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterAPI.framework; path = Carthage/Build/iOS/TwitterAPI.framework; sourceTree = "<group>"; };
 		3848FFEE1BB1363F00AC04FC /* AVPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerView.swift; sourceTree = "<group>"; };
+		384DE9801BBAD62E0011AF6E /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		384DE9821BBAD64D0011AF6E /* SearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
 		3868B94419EFCCC7001221BF /* TwitterDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterDate.swift; sourceTree = "<group>"; };
 		3868B94619EFCCCF001221BF /* TwitterVia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterVia.swift; sourceTree = "<group>"; };
 		3868B94819EFCCD8001221BF /* TwitterUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterUser.swift; sourceTree = "<group>"; };
@@ -706,6 +711,8 @@
 				6A0449451B1F4F2400758061 /* ProfileViewController.xib */,
 				6AB839D21B669D2F00B772C8 /* TalkViewController.swift */,
 				6AB839D41B669D5500B772C8 /* TalkViewController.xib */,
+				384DE9801BBAD62E0011AF6E /* SearchViewController.swift */,
+				384DE9821BBAD64D0011AF6E /* SearchViewController.xib */,
 				38B057D81B72702A00295C23 /* PocketCoverViewController.swift */,
 				38B057DF1B72704300295C23 /* PocketCoverViewController.xib */,
 				3894C24A19E556070038AEF8 /* Table */,
@@ -904,6 +911,7 @@
 				6A0AE9E51B5177FD00FBF937 /* Default-568h@2x.png in Resources */,
 				6A35A1CD1A6C196700A8E46D /* ImageViewController.xib in Resources */,
 				381E6E8319E2A56A00139654 /* TwitterStatusCell.xib in Resources */,
+				384DE9831BBAD64D0011AF6E /* SearchViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1002,6 +1010,7 @@
 				6A04494E1B24812E00758061 /* TwitterUserCell.swift in Sources */,
 				38B057D91B72702A00295C23 /* PocketCoverViewController.swift in Sources */,
 				38A032161B7233810020D109 /* TwitterStatusAdapter.swift in Sources */,
+				384DE9811BBAD62E0011AF6E /* SearchViewController.swift in Sources */,
 				3805DE991A5F20CB00FBD015 /* ThemeDark.swift in Sources */,
 				6A56F5C81B19EB6C0058D6DD /* AddAccountAlert.swift in Sources */,
 				38F9B57C1B46CD9800F429E7 /* TwitterList.swift in Sources */,
@@ -1043,6 +1052,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				384DE9401BBAC9600011AF6E /* UserAlert.swift in Sources */,
+				384DE9841BBAD9E60011AF6E /* SearchViewController.swift in Sources */,
 				3868B95519EFCF15001221BF /* TwitterMedia.swift in Sources */,
 				384DE97F1BBACA540011AF6E /* Reachability.swift in Sources */,
 				384DE9451BBAC9600011AF6E /* AddAccountAlert.swift in Sources */,

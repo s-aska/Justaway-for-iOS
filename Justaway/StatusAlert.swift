@@ -124,6 +124,18 @@ class StatusAlert {
                     }
                 }
                 
+                // Hashtag
+                
+                for hashtag in status.hashtags {
+                    actionSheet.addAction(UIAlertAction(
+                        title: "#" + hashtag.text,
+                        style: .Default,
+                        handler: { action in
+                            SearchViewController.show("#" + hashtag.text)
+                            return
+                    }))
+                }
+                
                 // User
                 var users = [status.user] + status.mentions
                 if let actionedBy = status.actionedBy {
