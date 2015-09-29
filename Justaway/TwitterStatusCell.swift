@@ -322,12 +322,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         nameLabel.text = status.user.name
         screenNameLabel.text = "@" + status.user.screenName
         protectedLabel.hidden = status.user.isProtected ? false : true
-        statusLabel.text = status.text
-        statusLabel.highlightWords = status.urls.map { (url: TwitterURL) -> String in url.displayURL }
-        statusLabel.highlightWords += status.media.map { (media: TwitterMedia) -> String in media.displayURL  }
-        statusLabel.highlightWords += status.hashtags.map { (hashtag: TwitterHashtag) -> String in "#" + hashtag.text }
-        statusLabel.highlightWords += status.mentions.map { (mention: TwitterUser) -> String in "@" + mention.screenName }
-        statusLabel.setAttributes()
+        statusLabel.setStatus(status)
         retweetCountLabel.text = status.retweetCount > 0 ? numberFormatter.stringFromNumber(status.retweetCount) : ""
         favoriteCountLabel.text = status.favoriteCount > 0 ? numberFormatter.stringFromNumber(status.favoriteCount) : ""
         relativeCreatedAtLabel.text = status.createdAt.relativeString

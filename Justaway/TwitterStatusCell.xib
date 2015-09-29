@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -125,15 +124,15 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="257" translatesAutoresizingMaskIntoConstraints="NO" id="KVr-ac-HTT" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
+                    <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" text="Status" translatesAutoresizingMaskIntoConstraints="NO" id="4ai-5n-MRY" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="58" y="43" width="257" height="14"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="14" id="ROJ-g6-GRa"/>
+                            <constraint firstAttribute="height" constant="14" id="cFm-QU-juJ"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZmL-Y4-qJs" customClass="QuotedStatusContainerView" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="58" y="67" width="252" height="169"/>
                         <subviews>
@@ -397,33 +396,33 @@
                     <constraint firstItem="d8g-lI-qp9" firstAttribute="top" secondItem="HoK-3O-aH8" secondAttribute="bottom" constant="8" id="018-i0-rDV"/>
                     <constraint firstItem="umq-Pc-zJg" firstAttribute="top" secondItem="HoK-3O-aH8" secondAttribute="bottom" constant="5" id="3ah-NQ-wYx"/>
                     <constraint firstItem="HoK-3O-aH8" firstAttribute="leading" secondItem="EVK-7k-lkK" secondAttribute="leading" id="50M-sD-2PO"/>
-                    <constraint firstItem="KVr-ac-HTT" firstAttribute="top" secondItem="y1M-cQ-9LC" secondAttribute="bottom" constant="3" id="8TH-hC-tB1"/>
+                    <constraint firstItem="4ai-5n-MRY" firstAttribute="leading" secondItem="d8g-lI-qp9" secondAttribute="trailing" constant="9" id="Bzk-K4-83l"/>
                     <constraint firstItem="bIb-jf-cxi" firstAttribute="top" secondItem="ZmL-Y4-qJs" secondAttribute="bottom" constant="10" id="Ck9-QR-W1l"/>
                     <constraint firstItem="bIb-jf-cxi" firstAttribute="leading" secondItem="d8g-lI-qp9" secondAttribute="trailing" constant="7" id="DIE-4a-vxU"/>
                     <constraint firstItem="y1M-cQ-9LC" firstAttribute="leading" secondItem="d8g-lI-qp9" secondAttribute="trailing" constant="7" id="FYM-G0-Vm8"/>
                     <constraint firstItem="ZmL-Y4-qJs" firstAttribute="leading" secondItem="EVK-7k-lkK" secondAttribute="leading" constant="58" id="FoR-Wv-732"/>
                     <constraint firstItem="Hkc-nJ-RXe" firstAttribute="leading" secondItem="d8g-lI-qp9" secondAttribute="trailing" id="JAP-Uf-g86"/>
+                    <constraint firstItem="4ai-5n-MRY" firstAttribute="top" secondItem="y1M-cQ-9LC" secondAttribute="bottom" constant="3" id="JeH-aB-vYP"/>
                     <constraint firstAttribute="trailing" secondItem="Hkc-nJ-RXe" secondAttribute="trailing" constant="5" id="LAI-Z5-LSb"/>
-                    <constraint firstItem="Hkc-nJ-RXe" firstAttribute="top" secondItem="KVr-ac-HTT" secondAttribute="bottom" priority="250" constant="5" id="N6u-UD-lnm"/>
-                    <constraint firstAttribute="trailing" secondItem="KVr-ac-HTT" secondAttribute="trailing" constant="5" id="O0u-eF-urm"/>
                     <constraint firstAttribute="trailing" secondItem="HoK-3O-aH8" secondAttribute="trailing" id="OS1-0A-a93"/>
                     <constraint firstAttribute="bottom" secondItem="qHQ-ey-O8Q" secondAttribute="bottom" id="RNG-0M-zge"/>
                     <constraint firstItem="qHQ-ey-O8Q" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" id="Rd5-3k-36A"/>
                     <constraint firstAttribute="trailing" secondItem="umq-Pc-zJg" secondAttribute="trailing" constant="5" id="Rxu-gr-wp6"/>
-                    <constraint firstItem="ZmL-Y4-qJs" firstAttribute="top" secondItem="KVr-ac-HTT" secondAttribute="bottom" constant="10" id="TmN-Ni-qzI"/>
                     <constraint firstItem="Hkc-nJ-RXe" firstAttribute="top" secondItem="bIb-jf-cxi" secondAttribute="bottom" priority="250" constant="8" id="ZhQ-7G-t7W"/>
-                    <constraint firstItem="bIb-jf-cxi" firstAttribute="top" secondItem="KVr-ac-HTT" secondAttribute="bottom" priority="750" constant="10" id="dP6-jd-iW5"/>
+                    <constraint firstItem="ZmL-Y4-qJs" firstAttribute="top" secondItem="4ai-5n-MRY" secondAttribute="bottom" constant="10" id="amu-1h-2Cw"/>
                     <constraint firstItem="Hkc-nJ-RXe" firstAttribute="top" secondItem="ZmL-Y4-qJs" secondAttribute="bottom" priority="750" constant="8" id="dSK-Wu-8e2"/>
                     <constraint firstItem="umq-Pc-zJg" firstAttribute="leading" secondItem="y1M-cQ-9LC" secondAttribute="trailing" id="g7Y-BN-kKr"/>
+                    <constraint firstItem="Hkc-nJ-RXe" firstAttribute="top" secondItem="4ai-5n-MRY" secondAttribute="bottom" priority="250" constant="5" id="kCx-fX-7tE"/>
+                    <constraint firstAttribute="trailing" secondItem="4ai-5n-MRY" secondAttribute="trailing" constant="5" id="mHs-Q5-Bal"/>
                     <constraint firstItem="y1M-cQ-9LC" firstAttribute="top" secondItem="HoK-3O-aH8" secondAttribute="bottom" constant="7" id="mbX-l7-hUg"/>
                     <constraint firstItem="HoK-3O-aH8" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" id="qZ1-Nj-KQS"/>
                     <constraint firstAttribute="trailing" secondItem="ZmL-Y4-qJs" secondAttribute="trailing" constant="10" id="qxQ-ur-bwQ"/>
                     <constraint firstAttribute="bottom" secondItem="Hkc-nJ-RXe" secondAttribute="bottom" constant="5" id="u6d-Nv-jS3"/>
-                    <constraint firstItem="KVr-ac-HTT" firstAttribute="leading" secondItem="d8g-lI-qp9" secondAttribute="trailing" constant="9" id="w9j-m3-2pQ"/>
                     <constraint firstAttribute="trailing" secondItem="qHQ-ey-O8Q" secondAttribute="trailing" id="wae-pb-N26"/>
                     <constraint firstItem="qHQ-ey-O8Q" firstAttribute="leading" secondItem="EVK-7k-lkK" secondAttribute="leading" id="xSe-Tl-WOR"/>
                     <constraint firstItem="d8g-lI-qp9" firstAttribute="leading" secondItem="EVK-7k-lkK" secondAttribute="leading" constant="7" id="xnS-ff-A1S"/>
                     <constraint firstAttribute="trailing" secondItem="bIb-jf-cxi" secondAttribute="trailing" constant="5" id="ykw-J3-phd"/>
+                    <constraint firstItem="bIb-jf-cxi" firstAttribute="top" secondItem="4ai-5n-MRY" secondAttribute="bottom" priority="750" constant="10" id="ylR-YV-l2f"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
@@ -435,7 +434,7 @@
                 <outlet property="absoluteCreatedAtLabel" destination="SR5-WN-luB" id="GCU-h0-ljM"/>
                 <outlet property="buttonsImageTopConstraint" destination="ZhQ-7G-t7W" id="Q3o-U0-E8V"/>
                 <outlet property="buttonsQuotedTopConstraint" destination="dSK-Wu-8e2" id="o3D-6i-5xy"/>
-                <outlet property="buttonsStatusTopConstraint" destination="N6u-UD-lnm" id="7eX-VE-2hb"/>
+                <outlet property="buttonsStatusTopConstraint" destination="kCx-fX-7tE" id="gPL-H7-bEo"/>
                 <outlet property="favoriteButton" destination="OBS-6K-La7" id="bgr-rd-Or3"/>
                 <outlet property="favoriteCountLabel" destination="ydf-ds-1yM" id="vmz-6D-XB0"/>
                 <outlet property="iconImageView" destination="d8g-lI-qp9" id="Wg9-C7-sU1"/>
@@ -486,11 +485,11 @@
                 <outlet property="sourceTextLabel" destination="sgi-Ns-Kth" id="qEI-qh-yQa"/>
                 <outlet property="sourceView" destination="HoK-3O-aH8" id="27w-X7-ekK"/>
                 <outlet property="sourceViewHeightConstraint" destination="0pE-L9-kpJ" id="exT-xT-zKY"/>
-                <outlet property="statusLabel" destination="KVr-ac-HTT" id="2o5-q3-LGf"/>
-                <outlet property="textHeightConstraint" destination="ROJ-g6-GRa" id="asv-KJ-iJy"/>
+                <outlet property="statusLabel" destination="4ai-5n-MRY" id="Mqg-20-4IL"/>
+                <outlet property="textHeightConstraint" destination="cFm-QU-juJ" id="flN-mo-PD2"/>
                 <outlet property="viaLabel" destination="U1p-l9-QUq" id="M8z-bd-GKr"/>
             </connections>
-            <point key="canvasLocation" x="102" y="119.5"/>
+            <point key="canvasLocation" x="102" y="119"/>
         </tableViewCell>
     </objects>
 </document>

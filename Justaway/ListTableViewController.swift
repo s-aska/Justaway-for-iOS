@@ -117,7 +117,7 @@ class ListTableViewController: TimelineTableViewController {
             cell.textHeightConstraint.constant = row.textHeight
         }
         
-        if row.fontSize != cell.descriptionLabel.font.pointSize {
+        if row.fontSize != cell.descriptionLabel.font?.pointSize ?? 0 {
             cell.descriptionLabel.font = UIFont.systemFontOfSize(row.fontSize)
         }
         

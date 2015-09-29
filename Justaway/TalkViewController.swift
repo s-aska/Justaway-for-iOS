@@ -48,10 +48,8 @@ class TalkViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
-        let fontSize = CGFloat(GenericSettings.get().fontSize)
         if let status = rootStatus {
-            adapter.rows.append(adapter.createRow(status, fontSize: fontSize, tableView: tableView))
-            tableView.reloadData()
+            adapter.renderData(tableView, statuses: [status], mode: .BOTTOM, handler: nil)
             if let inReplyToStatusID = status.inReplyToStatusID {
                 loadStatus(inReplyToStatusID)
             }

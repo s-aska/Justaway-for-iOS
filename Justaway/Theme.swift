@@ -151,6 +151,8 @@ class ThemeController {
             case let v as BackgroundTableView:
                 v.indicatorStyle = theme.scrollViewIndicatorStyle()
                 v.backgroundColor = theme.mainBackgroundColor()
+            case let v as StatusLable:
+                v.setAttributes()
             case let v as UITextView:
                 v.textColor = theme.bodyTextColor()
                 v.backgroundColor = theme.mainBackgroundColor()
@@ -185,9 +187,6 @@ class ThemeController {
                 v.textColor = theme.relativeDateTextColor()
             case let v as AbsoluteDateLable:
                 v.textColor = theme.absoluteDateTextColor()
-            case let v as StatusLable:
-                v.textColor = theme.bodyTextColor()
-                v.setAttributes()
             case let v as ReplyButton:
                 v.setTitleColor(theme.buttonNormal(), forState: .Normal)
                 v.setTitleColor(theme.buttonNormal(), forState: .Selected)

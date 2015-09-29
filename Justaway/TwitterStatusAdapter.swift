@@ -266,11 +266,11 @@ extension TwitterStatusAdapter: UITableViewDataSource {
             cell.quotedStatusLabelHeightConstraint.constant = row.quotedTextHeight
         }
         
-        if row.fontSize != cell.statusLabel.font.pointSize {
+        if row.fontSize != cell.statusLabel.font?.pointSize ?? 0 {
             cell.statusLabel.font = UIFont.systemFontOfSize(row.fontSize)
         }
         
-        if row.fontSize != cell.quotedStatusLabel.font.pointSize {
+        if row.fontSize != cell.quotedStatusLabel.font?.pointSize ?? 0 {
             cell.quotedStatusLabel.font = UIFont.systemFontOfSize(row.fontSize)
         }
         
