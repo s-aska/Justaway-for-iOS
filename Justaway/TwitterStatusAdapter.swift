@@ -313,7 +313,7 @@ extension TwitterStatusAdapter: UITableViewDelegate {
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if footerView == nil {
-            footerView = UIView(frame: CGRectMake(0, 0, tableView.frame.size.width, TIMELINE_FOOTER_HEIGHT))
+            footerView = TransparentView(frame: CGRectMake(0, 0, tableView.frame.size.width, TIMELINE_FOOTER_HEIGHT))
             footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
             footerView?.addSubview(footerIndicatorView!)
             footerIndicatorView?.hidesWhenStopped = true
