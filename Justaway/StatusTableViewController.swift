@@ -232,6 +232,7 @@ class StatusTableViewController: TimelineTableViewController {
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (()-> Void) = {
                 op.finish()
+                self.refreshControl?.endRefreshing()
             }
             let success = { (statuses: [TwitterStatus]) -> Void in
                 

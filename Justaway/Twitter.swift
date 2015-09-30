@@ -238,27 +238,33 @@ class Twitter {
             parameters["since_id"] = sinceID
             parameters["count"] = "200"
         }
-        client()?
-            .get("https://api.twitter.com/1.1/statuses/home_timeline.json", parameters: parameters)
-            .responseJSONArray { (array: [JSON]) -> Void in
-                let statuses = array.map({ TwitterStatus($0) })
-                success(statuses)
-                if maxID == nil {
-                    let dictionary = ["statuses": statuses.map({ $0.dictionaryValue })]
-                    if KeyClip.save("homeTimeline", dictionary: dictionary) {
-                        NSLog("homeTimeline cache success.")
-                    }
+        let success = { (array: [JSON]) -> Void in
+            let statuses = array.map({ TwitterStatus($0) })
+            success(statuses)
+            if maxID == nil {
+                let dictionary = ["statuses": statuses.map({ $0.dictionaryValue })]
+                if KeyClip.save("homeTimeline", dictionary: dictionary) {
+                    NSLog("homeTimeline cache success.")
                 }
             }
+        }
+        client()?
+            .get("https://api.twitter.com/1.1/statuses/home_timeline.json", parameters: parameters)
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
     }
     
     class func getStatuses(statusIDs: [String], success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         let parameters = ["id": statusIDs.joinWithSeparator(",")]
+        let success = { (array: [JSON]) -> Void in
+            success(array.map({ TwitterStatus($0) }))
+        }
         client()?
             .get("https://api.twitter.com/1.1/statuses/lookup.json", parameters: parameters)
-            .responseJSONArray { (array: [JSON]) -> Void in
-                success(array.map({ TwitterStatus($0) }))
-            }
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
     }
     
     class func getUserTimeline(userID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
@@ -271,11 +277,14 @@ class Twitter {
             parameters["since_id"] = sinceID
             parameters["count"] = "200"
         }
+        let success = { (array: [JSON]) -> Void in
+            success(array.map({ TwitterStatus($0) }))
+        }
         client()?
             .get("https://api.twitter.com/1.1/statuses/user_timeline.json", parameters: parameters)
-            .responseJSONArray { (array: [JSON]) -> Void in
-                success(array.map({ TwitterStatus($0) }))
-            }
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
     }
     
     class func getMentionTimeline(maxID maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
@@ -288,21 +297,24 @@ class Twitter {
             parameters["since_id"] = sinceID
             parameters["count"] = "200"
         }
-        client()?
-            .get("https://api.twitter.com/1.1/statuses/mentions_timeline.json", parameters: parameters)
-            .responseJSONArray { (array: [JSON]) -> Void in
-                
-                let statuses = array.map({ TwitterStatus($0) })
-                
-                success(statuses)
-                
-                if maxID == nil {
-                    let dictionary = ["statuses": statuses.map({ $0.dictionaryValue })]
-                    if KeyClip.save("mentionTimeline", dictionary: dictionary) {
-                        NSLog("mentionTimeline cache success.")
-                    }
+        let success = { (array: [JSON]) -> Void in
+            
+            let statuses = array.map({ TwitterStatus($0) })
+            
+            success(statuses)
+            
+            if maxID == nil {
+                let dictionary = ["statuses": statuses.map({ $0.dictionaryValue })]
+                if KeyClip.save("mentionTimeline", dictionary: dictionary) {
+                    NSLog("mentionTimeline cache success.")
                 }
             }
+        }
+        client()?
+            .get("https://api.twitter.com/1.1/statuses/mentions_timeline.json", parameters: parameters)
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
     }
     
     class func getSearchTweets(keyword: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus], [String: JSON]) -> Void, failure: (NSError) -> Void) {
@@ -313,14 +325,17 @@ class Twitter {
         if let sinceID = sinceID {
             parameters["since_id"] = sinceID
         }
+        let success = { (json: JSON) -> Void in
+            if let statuses = json["statuses"].array,
+                let search_metadata = json["search_metadata"].dictionary {
+                    success(statuses.map({ TwitterStatus($0) }), search_metadata)
+            }
+        }
         client()?
             .get("https://api.twitter.com/1.1/search/tweets.json", parameters: parameters)
-            .responseJSON { (json: JSON) -> Void in
-                if let statuses = json["statuses"].array,
-                    let search_metadata = json["search_metadata"].dictionary {
-                    success(statuses.map({ TwitterStatus($0) }), search_metadata)
-                }
-            }
+            .responseJSON(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
     }
     
     class func getFavorites(userID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
@@ -333,10 +348,13 @@ class Twitter {
             parameters["since_id"] = sinceID
             parameters["count"] = "200"
         }
+        let success = { (array: [JSON]) -> Void in
+            success(array.map({ TwitterStatus($0) }))
+        }
         client()?.get("https://api.twitter.com/1.1/favorites/list.json", parameters: parameters)
-            .responseJSONArray { (array: [JSON]) -> Void in
-                success(array.map({ TwitterStatus($0) }))
-            }
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
     }
     
     class func getFriendships(targetID: String, success: (TwitterRelationship) -> Void) {
@@ -344,46 +362,56 @@ class Twitter {
             return
         }
         let parameters = ["source_id": account.account().userID, "target_id": targetID]
-        client()?.get("https://api.twitter.com/1.1/friendships/show.json", parameters: parameters)
-            .responseJSON { (json: JSON) -> Void in
-                if let source: JSON = json["relationship"]["source"] {
-                    let relationship = TwitterRelationship(source)
-                    success(relationship)
-                }
+        let success = { (json: JSON) -> Void in
+            if let source: JSON = json["relationship"]["source"] {
+                let relationship = TwitterRelationship(source)
+                success(relationship)
             }
+        }
+        client()?.get("https://api.twitter.com/1.1/friendships/show.json", parameters: parameters)
+            .responseJSON(success)
     }
     
     class func getFollowingUsers(userID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
         let parameters = ["user_id": userID, "count": "200"]
+        let success = { (json: JSON) -> Void in
+            if let users = json["users"].array {
+                success(users.map({ TwitterUserFull($0) }))
+            }
+        }
         client()?
             .get("https://api.twitter.com/1.1/friends/list.json", parameters: parameters)
-            .responseJSON { (json: JSON) -> Void in
-                if let users = json["users"].array {
-                    success(users.map({ TwitterUserFull($0) }))
-                }
-            }
+            .responseJSON(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
     }
     
     class func getFollowerUsers(userID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
         let parameters = ["user_id": userID, "count": "200"]
+        let success = { (json: JSON) -> Void in
+            if let users = json["users"].array {
+                success(users.map({ TwitterUserFull($0) }))
+            }
+        }
         client()?
             .get("https://api.twitter.com/1.1/followers/list.json", parameters: parameters)
-            .responseJSON { (json: JSON) -> Void in
-                if let users = json["users"].array {
-                    success(users.map({ TwitterUserFull($0) }))
-                }
-            }
+            .responseJSON(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
     }
     
     class func getListsMemberOf(userID: String, success: ([TwitterList]) -> Void, failure: (NSError) -> Void) {
         let parameters = ["user_id": userID, "count": "200"]
+        let success = { (json: JSON) -> Void in
+            if let lists = json["lists"].array {
+                success(lists.map({ TwitterList($0) }))
+            }
+        }
         client()?
             .get("https://api.twitter.com/1.1/lists/memberships.json", parameters: parameters)
-            .responseJSON { (json: JSON) -> Void in
-                if let lists = json["lists"].array {
-                    success(lists.map({ TwitterList($0) }))
-                }
-            }
+            .responseJSON(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
     }
     
     class func statusUpdate(status: String, inReplyToStatusID: String?, var images: [NSData], var media_ids: [String]) {
@@ -485,7 +513,7 @@ extension Twitter {
                                 Static.favorites.removeValueForKey(statusID)
                                 EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
                             }
-                            ErrorAlert.show("Favorite failure", message: message ?? error?.localizedDescription)
+                            ErrorAlert.show("Favorite failure", message: message ?? error.localizedDescription)
                         }
                 })
         }
@@ -512,7 +540,7 @@ extension Twitter {
                             Static.favorites[statusID] = true
                             EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
                         }
-                        ErrorAlert.show("Unfavorite failure", message: message ?? error?.localizedDescription)
+                        ErrorAlert.show("Unfavorite failure", message: message ?? error.localizedDescription)
                     }
             })
         }
@@ -549,7 +577,7 @@ extension Twitter {
                             Static.retweets.removeValueForKey(statusID)
                             EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
                         }
-                        ErrorAlert.show("Retweet failure", message: message ?? error?.localizedDescription)
+                        ErrorAlert.show("Retweet failure", message: message ?? error.localizedDescription)
                     }
                 })
         }
@@ -574,7 +602,7 @@ extension Twitter {
                                 Static.retweets[statusID] = retweetedStatusID
                                 EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
                             }
-                            ErrorAlert.show("Undo Retweet failure", message: message ?? error?.localizedDescription)
+                            ErrorAlert.show("Undo Retweet failure", message: message ?? error.localizedDescription)
                         }
                 })
         }
@@ -586,7 +614,7 @@ extension Twitter {
             .post("https://api.twitter.com/1.1/statuses/destroy/\(statusID).json")
             .responseJSONWithError({ (json: JSON) -> Void in
             }, failure: { (code, message, error) -> Void in
-                ErrorAlert.show("Undo Tweet failure code:\(code)", message: message ?? error?.localizedDescription)
+                ErrorAlert.show("Undo Tweet failure code:\(code)", message: message ?? error.localizedDescription)
             })
     }
     
@@ -862,6 +890,10 @@ extension TwitterAPI.Request {
         return responseJSONWithError(success, failure: nil)
     }
     
+    public func responseJSON(success: ((JSON) -> Void), failure: ((code: Int?, message: String?, error: NSError) -> Void)?) {
+        return responseJSONWithError(success, failure: failure)
+    }
+    
     public func responseJSONArray(success: (([JSON]) -> Void)) {
         let s = { (json: JSON) in
             if let array = json.array {
@@ -871,7 +903,16 @@ extension TwitterAPI.Request {
         responseJSONWithError(s, failure: nil)
     }
     
-    public func responseJSONWithError(success: ((JSON) -> Void)?, failure: ((code: Int?, message: String?, error: NSError?) -> Void)?) {
+    public func responseJSONArray(success: (([JSON]) -> Void), failure: ((code: Int?, message: String?, error: NSError) -> Void)?) {
+        let s = { (json: JSON) in
+            if let array = json.array {
+                success(array)
+            }
+        }
+        responseJSONWithError(s, failure: failure)
+    }
+    
+    public func responseJSONWithError(success: ((JSON) -> Void)?, failure: ((code: Int?, message: String?, error: NSError) -> Void)?) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         let url = self.originalRequest.URL?.absoluteString ?? "-"
         response { (responseData, response, error) -> Void in
