@@ -122,7 +122,7 @@ class TwitterStatus {
             self.urls = [TwitterURL]()
         }
         
-        if let mentions = dictionary["mentions"] as? [[String: String]] {
+        if let mentions = dictionary["mentions"] as? [[String: AnyObject]] {
             self.mentions = mentions.map({ TwitterUser($0) })
         } else {
             self.mentions = [TwitterUser]()
