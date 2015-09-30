@@ -17,7 +17,18 @@ struct TwitterMedia {
         self.mediaURL = NSURL(string: json["media_url_https"].string ?? "")!
         self.height = json["sizes"]["large"]["h"].int ?? 0
         self.width = json["sizes"]["large"]["w"].int ?? 0
-        self.videoURL = json["video_info"]["variants"][0]["url"].string ?? ""
+        self.videoURL = {
+            if let variants = json["video_info"]["variants"].array {
+                for variant in variants {
+                    if let url = variant["url"].string {
+                        if url.hasSuffix("mp4") {
+                            return url
+                        }
+                    }
+                }
+            }
+            return ""
+        }()
     }
     
     init(json: [String: AnyObject]) {
