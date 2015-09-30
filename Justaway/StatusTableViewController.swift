@@ -11,7 +11,6 @@ class StatusTableViewController: TimelineTableViewController {
     let adapter = TwitterStatusAdapter()
     var lastID: Int64?
     var cacheLoaded = false
-    var lastUpdated: NSTimeInterval = 0
     
     // MARK: - View Life Cycle
     
@@ -52,7 +51,7 @@ class StatusTableViewController: TimelineTableViewController {
         }
         
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: Selector("loadDataToTop"), forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshControl
     }
     
@@ -124,7 +123,6 @@ class StatusTableViewController: TimelineTableViewController {
                 op.finish()
                 self.adapter.footerIndicatorView?.stopAnimating()
                 self.refreshControl?.endRefreshing()
-                self.loadDataInSleep()
             }
             let success = { (statuses: [TwitterStatus]) -> Void in
                 for status in statuses {
@@ -219,25 +217,17 @@ class StatusTableViewController: TimelineTableViewController {
         return self.adapter.rows.first?.status.statusID
     }
     
-    func loadDataInSleep() {
+    func loadDataToTop() {
         if AccountSettingsStore.get() == nil {
             return
         }
         
         if self.adapter.loadDataQueue.operationCount > 0 {
-            NSLog("loadDataInSleep busy")
+            NSLog("loadDataToTop busy")
             return
         }
         
-        let elapsed = NSDate().timeIntervalSince1970 - lastUpdated
-        if elapsed < 30 {
-            NSLog("loadDataInSleep short")
-            return
-        }
-        
-        lastUpdated = NSDate().timeIntervalSince1970
-        
-        NSLog("loadDataInSleep addOperation: suspended:\(self.adapter.loadDataQueue.suspended)")
+        NSLog("loadDataToTop addOperation: suspended:\(self.adapter.loadDataQueue.suspended)")
         
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (()-> Void) = {
@@ -253,7 +243,7 @@ class StatusTableViewController: TimelineTableViewController {
                 always()
             }
             if let sinceID = self.sinceID() {
-                NSLog("loadDataInSleep load sinceID:\(sinceID)")
+                NSLog("loadDataToTop load sinceID:\(sinceID)")
                 self.loadData(sinceID: sinceID, success: success, failure: failure)
             } else {
                 op.finish()

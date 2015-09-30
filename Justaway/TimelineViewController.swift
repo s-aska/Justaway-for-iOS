@@ -219,19 +219,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 }
             }
         }
-        
-        EventBox.onBackgroundThread(self, name: "applicationWillEnterForeground") { (n) -> Void in
-            for tableViewController in self.tableViewControllers {
-                switch tableViewController {
-                case let vc as StatusTableViewController:
-                    if vc.adapter.rows.count > 0 {
-                        vc.loadDataInSleep()
-                    }
-                default:
-                    break
-                }
-            }
-        }
     }
     
     func toggleStreaming() {

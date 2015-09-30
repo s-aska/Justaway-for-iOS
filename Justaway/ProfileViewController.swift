@@ -330,7 +330,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     func openURL(sender: AnyObject) {
         if let expandedURL = userFull?.expandedURL {
-            UIApplication.sharedApplication().openURL(expandedURL)
+            Safari.openURL(expandedURL)
         }
     }
     

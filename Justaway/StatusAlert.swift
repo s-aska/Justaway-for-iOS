@@ -118,7 +118,7 @@ class StatusAlert {
                             title: url.displayURL,
                             style: .Default,
                             handler: { action in
-                                UIApplication.sharedApplication().openURL(expandedURL)
+                                Safari.openURL(expandedURL)
                                 return
                         }))
                     }
@@ -162,7 +162,7 @@ class StatusAlert {
                         title: "via " + status.via.name,
                         style: .Default,
                         handler: { action in
-                            UIApplication.sharedApplication().openURL(viaURL)
+                            Safari.openURL(viaURL)
                             return
                     }))
                 }

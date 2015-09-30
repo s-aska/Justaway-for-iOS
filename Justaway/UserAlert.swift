@@ -159,7 +159,7 @@ class UserAlert {
                     title: url.displayURL,
                     style: .Default,
                     handler: { action in
-                        UIApplication.sharedApplication().openURL(openURL)
+                        Safari.openURL(openURL)
                 }))
             }
         }

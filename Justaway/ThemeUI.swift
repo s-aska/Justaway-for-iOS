@@ -167,7 +167,7 @@ class StatusLable: UITextView {
     func touchesLink(link: Link) {
         switch link.entity {
         case .URL(let url):
-            UIApplication.sharedApplication().openURL(NSURL(string: url.expandedURL)!)
+            Safari.openURL(NSURL(string: url.expandedURL)!)
         case .Media(let media):
             if !media.videoURL.isEmpty {
                 if let videoURL = NSURL(string: media.videoURL) {
