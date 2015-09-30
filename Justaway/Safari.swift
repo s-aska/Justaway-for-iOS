@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import OAuthSwift
 
 class Safari {
     
@@ -19,15 +20,32 @@ class Safari {
         }
     }
     
-    class func openURL(url: NSURL) {
+    class func openURL(url: NSURL) -> SFSafariViewController? {
         guard let rootVc = UIApplication.sharedApplication().keyWindow?.rootViewController else {
-            return
+            return nil
         }
         let vc = SFSafariViewController(URL: url)
         vc.delegate = delegate
         rootVc.presentViewController(vc, animated: true, completion: nil)
+        return vc
     }
 }
+
+class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
+    
+    static var oAuthViewController: SFSafariViewController?
+    
+    func handle(url: NSURL) {
+        SafariOAuthURLHandler.oAuthViewController = Safari.openURL(url)
+    }
+    
+    class func callback(url: NSURL) {
+        OAuth1Swift.handleOpenURL(url)
+        SafariOAuthURLHandler.oAuthViewController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+// OAuthSwiftURLHandlerType
 
 class SafariDelegate: NSObject, SFSafariViewControllerDelegate {
     

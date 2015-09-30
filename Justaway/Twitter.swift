@@ -92,6 +92,7 @@ class Twitter {
             authorizeUrl:    "https://api.twitter.com/oauth/authorize",
             accessTokenUrl:  "https://api.twitter.com/oauth/access_token"
         )
+        oauthswift.authorize_url_handler = SafariOAuthURLHandler()
         oauthswift.authorizeWithCallbackURL( NSURL(string: "justaway://success")!, success: {
             credential, response in
             
