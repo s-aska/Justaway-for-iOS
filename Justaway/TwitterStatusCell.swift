@@ -302,9 +302,6 @@ class TwitterStatusCell: BackgroundTableViewCell {
     }
     
     func setText(status: TwitterStatus) {
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.numberStyle = .DecimalStyle
-        
         Twitter.isFavorite(status.statusID) { isFavorite in
             if self.favoriteButton.selected != isFavorite {
                 Async.main { self.favoriteButton.selected = isFavorite }
@@ -323,8 +320,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
         screenNameLabel.text = "@" + status.user.screenName
         protectedLabel.hidden = status.user.isProtected ? false : true
         statusLabel.setStatus(status)
-        retweetCountLabel.text = status.retweetCount > 0 ? numberFormatter.stringFromNumber(status.retweetCount) : ""
-        favoriteCountLabel.text = status.favoriteCount > 0 ? numberFormatter.stringFromNumber(status.favoriteCount) : ""
+        retweetCountLabel.text = status.retweetCount > 0 ? String(status.retweetCount) : ""
+        favoriteCountLabel.text = status.favoriteCount > 0 ? String(status.favoriteCount) : ""
         relativeCreatedAtLabel.text = status.createdAt.relativeString
         absoluteCreatedAtLabel.text = status.createdAt.absoluteString
         viaLabel.text = status.via.name
