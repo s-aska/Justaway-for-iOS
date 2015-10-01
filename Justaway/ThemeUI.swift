@@ -135,6 +135,9 @@ class StatusLable: UITextView {
         backgroundColor = ThemeController.currentTheme.mainBackgroundColor()
         let attributedText = NSMutableAttributedString(string: text)
         attributedText.addAttribute(NSForegroundColorAttributeName, value: ThemeController.currentTheme.bodyTextColor(), range: NSMakeRange(0, text.utf16.count))
+        if let font = font {
+            attributedText.addAttribute(NSFontAttributeName, value: font, range: NSMakeRange(0, text.utf16.count))
+        }
         for link in links {
             attributedText.addAttribute(NSForegroundColorAttributeName, value: ThemeController.currentTheme.menuSelectedTextColor(), range: link.range)
         }
