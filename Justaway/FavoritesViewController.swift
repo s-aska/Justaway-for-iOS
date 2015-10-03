@@ -18,7 +18,8 @@ class FavoritesTableViewController: StatusTableViewController {
         if self.adapter.rows.count > 0 {
             if let userID = self.userID {
                 let key = "favorites:\(userID)"
-                let dictionary = ["statuses": ( self.adapter.rows.count > 100 ? Array(self.adapter.rows[0 ..< 100]) : self.adapter.rows ).map({ $0.status.dictionaryValue })]
+                let statuses = self.adapter.statuses
+                let dictionary = ["statuses": ( statuses.count > 100 ? Array(statuses[0 ..< 100]) : statuses ).map({ $0.dictionaryValue })]
                 KeyClip.save(key, dictionary: dictionary)
                 NSLog("favorites:\(userID) saveCache.")
             }

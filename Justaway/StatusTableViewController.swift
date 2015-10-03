@@ -45,8 +45,8 @@ class StatusTableViewController: TimelineTableViewController {
         adapter.configureView(tableView)
         
         adapter.didScrollToBottom = {
-            if let status = self.adapter.rows.last {
-                self.loadData(status.status.statusID.longLongValue - 1)
+            if let status = self.adapter.statuses.last {
+                self.loadData(status.statusID.longLongValue - 1)
             }
         }
         
@@ -61,7 +61,13 @@ class StatusTableViewController: TimelineTableViewController {
         })
         EventBox.onBackgroundThread(self, name: EventFontSizeApplied) { (n) -> Void in
             if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
-                let newNows = self.adapter.rows.map({ self.adapter.createRow($0.status, fontSize: CGFloat(fontSize.floatValue), tableView: self.tableView) })
+                let newNows = self.adapter.rows.map({ (row) -> TwitterStatusAdapter.Row in
+                    if let status = row.status {
+                        return self.adapter.createRow(status, fontSize: CGFloat(fontSize.floatValue), tableView: self.tableView)
+                    } else {
+                        return row
+                    }
+                })
                 
                 let op = AsyncBlockOperation { (op) -> Void in
                     if var firstCell = self.tableView.visibleCells.first {
@@ -214,7 +220,7 @@ class StatusTableViewController: TimelineTableViewController {
     }
     
     func sinceID() -> String? {
-        return self.adapter.rows.first?.status.statusID
+        return self.adapter.statuses.first?.statusID
     }
     
     func loadDataToTop() {

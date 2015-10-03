@@ -13,7 +13,8 @@ class NotificationsViewController: StatusTableViewController {
     
     override func saveCache() {
         if self.adapter.rows.count > 0 {
-            let dictionary = ["statuses": ( self.adapter.rows.count > 100 ? Array(self.adapter.rows[0 ..< 100]) : self.adapter.rows ).map({ $0.status.dictionaryValue })]
+            let statuses = self.adapter.statuses
+            let dictionary = ["statuses": ( statuses.count > 100 ? Array(statuses[0 ..< 100]) : statuses ).map({ $0.dictionaryValue })]
             KeyClip.save("notifications", dictionary: dictionary)
             NSLog("notifications saveCache.")
         }
@@ -40,9 +41,9 @@ class NotificationsViewController: StatusTableViewController {
     }
     
     override func sinceID() -> String? {
-        for row in self.adapter.rows {
-            if row.status.type == .Normal {
-                return row.status.statusID
+        for status in self.adapter.statuses {
+            if status.type == .Normal {
+                return status.statusID
             }
         }
         return nil

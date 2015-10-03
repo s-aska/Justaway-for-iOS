@@ -22,7 +22,7 @@ class TwitterStatusAdapter: NSObject {
     }
     
     struct Row {
-        let status: TwitterStatus
+        let status: TwitterStatus?
         let fontSize: CGFloat
         let height: CGFloat
         let textHeight: CGFloat
@@ -34,6 +34,14 @@ class TwitterStatusAdapter: NSObject {
             self.height = height
             self.textHeight = textHeight
             self.quotedTextHeight = quotedTextHeight
+        }
+        
+        init() {
+            self.status = nil
+            self.fontSize = 0
+            self.height = 30
+            self.textHeight = 0
+            self.quotedTextHeight = 0
         }
     }
     
@@ -52,6 +60,10 @@ class TwitterStatusAdapter: NSObject {
     let loadDataQueue = NSOperationQueue().serial()
     let mainQueue = NSOperationQueue.mainQueue().serial()
     
+    var statuses: [TwitterStatus] {
+        return rows.filter({ $0.status != nil }).map({ $0.status! })
+    }
+    
     // MARK: Configuration
     
     func configureView(tableView: UITableView) {
@@ -65,6 +77,8 @@ class TwitterStatusAdapter: NSObject {
             tableView.registerNib(nib, forCellReuseIdentifier: layout.rawValue)
             self.layoutHeightCell[layout] = tableView.dequeueReusableCellWithIdentifier(layout.rawValue) as? TwitterStatusCell
         }
+        
+        tableView.registerNib(UINib(nibName: "ShowMoreTweetsCell", bundle: nil), forCellReuseIdentifier: "ShowMoreTweetsCell")
     }
     
     // MARK: Private Methods
@@ -196,6 +210,7 @@ class TwitterStatusAdapter: NSObject {
             if deleteIndexPaths.count > 0 {
                 self.rows.removeRange(deleteRange)
             }
+            self.rows.append(Row())
             for status in statuses {
                 self.rows.append(self.createRow(status, fontSize: fontSize, tableView: tableView))
             }
@@ -212,7 +227,10 @@ class TwitterStatusAdapter: NSObject {
         var i = 0
         var newRows = [Row]()
         for row in self.rows {
-            if row.status.statusID == statusID {
+            guard let status = row.status else {
+                continue
+            }
+            if status.statusID == statusID {
                 deleteIndexPaths.append(NSIndexPath(forRow: i, inSection: 0))
             } else {
                 newRows.append(row)
@@ -236,9 +254,11 @@ class TwitterStatusAdapter: NSObject {
     }
     
     func renderImages(tableView: UITableView) {
-        for cell in tableView.visibleCells as! [TwitterStatusCell] {
-            if let status = cell.status {
-                cell.setImage(status)
+        for cell in tableView.visibleCells {
+            if let statusCell = cell as? TwitterStatusCell {
+                if let status = statusCell.status {
+                    statusCell.setImage(status)
+                }
             }
         }
     }
@@ -254,7 +274,10 @@ extension TwitterStatusAdapter: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let row = rows[indexPath.row]
-        let status = row.status
+        guard let status = row.status else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("ShowMoreTweetsCell", forIndexPath: indexPath)
+            return cell
+        }
         let layout = TwitterStatusCellLayout.fromStatus(status)
         let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as! TwitterStatusCell
         
@@ -301,9 +324,20 @@ extension TwitterStatusAdapter: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+            return
+        }
         let row = rows[indexPath.row]
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-            StatusAlert.show(cell, status: row.status)
+        if let status = row.status {
+            StatusAlert.show(cell, status: status)
+        } else {
+            // TODO
+            CATransaction.begin()
+            tableView.beginUpdates()
+            self.rows.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.endUpdates()
+            CATransaction.commit()
         }
     }
     

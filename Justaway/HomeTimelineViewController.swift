@@ -13,7 +13,8 @@ class HomeTimelineTableViewController: StatusTableViewController {
     
     override func saveCache() {
         if self.adapter.rows.count > 0 {
-            let dictionary = ["statuses": ( self.adapter.rows.count > 100 ? Array(self.adapter.rows[0 ..< 100]) : self.adapter.rows ).map({ $0.status.dictionaryValue })]
+            let statuses = self.adapter.statuses
+            let dictionary = ["statuses": ( statuses.count > 100 ? Array(statuses[0 ..< 100]) : statuses ).map({ $0.dictionaryValue })]
             KeyClip.save("homeTimeline", dictionary: dictionary)
             NSLog("homeTimeline saveCache.")
         }
@@ -24,6 +25,9 @@ class HomeTimelineTableViewController: StatusTableViewController {
             if let cache = KeyClip.load("homeTimeline") as NSDictionary? {
                 if let statuses = cache["statuses"] as? [[String: AnyObject]] {
                     success(statuses: statuses.map({ TwitterStatus($0) }))
+                    // self.renderData(<#T##statuses: [TwitterStatus]##[TwitterStatus]#>, mode: <#T##TwitterStatusAdapter.RenderMode#>, handler: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+                    // self.adapter.rows = [TwitterStatusAdapter.Row()] + self.adapter.rows
+                    // self.tableView.reloadData()
                     return
                 }
             }
