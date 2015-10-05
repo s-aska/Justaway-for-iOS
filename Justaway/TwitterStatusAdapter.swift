@@ -149,7 +149,7 @@ class TwitterStatusAdapter: NSObject {
         let y = scrollView.contentOffset.y + scrollView.bounds.size.height - scrollView.contentInset.bottom
         let h = scrollView.contentSize.height
         let f = h - y
-        if f < TIMELINE_FOOTER_HEIGHT {
+        if f < TIMELINE_FOOTER_HEIGHT && h > scrollView.bounds.size.height {
             didScrollToBottom?()
         }
         if isTop {
@@ -162,9 +162,22 @@ class TwitterStatusAdapter: NSObject {
         scrollView.setContentOffset(CGPointZero, animated: true)
     }
     
-    func renderData(tableView: UITableView, statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
+    func renderData(tableView: UITableView, var statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
         let fontSize = CGFloat(GenericSettings.get().fontSize)
         let limit = mode == .OVER ? 0 : TIMELINE_ROWS_LIMIT
+        
+        var addShowMore = false
+        if mode == .HEADER {
+            if let sinceID = sinceID() {
+                let has = statuses.filter({ $0.uniqueID == sinceID }).count > 0
+                if has {
+                    statuses.removeAtIndex(statuses.count - 1)
+                } else {
+                    addShowMore = true
+                }
+            }
+        }
+        
         let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + statuses.count) - limit, 0)
         let deleteStart = mode == .TOP || mode == .HEADER ? self.rows.count - deleteCount : 0
         let deleteRange = deleteStart ..< (deleteStart + deleteCount)
@@ -173,6 +186,10 @@ class TwitterStatusAdapter: NSObject {
         let insertStart = mode == .BOTTOM ? self.rows.count - deleteCount : 0
         let insertIndexPaths = (insertStart ..< (insertStart + statuses.count)).map { i in NSIndexPath(forRow: i, inSection: 0) }
         
+        if deleteIndexPaths.count == 0 && statuses.count == 0 {
+            handler?()
+            return
+        }
         // println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count)")
         
         if let lastCell = tableView.visibleCells.last {
@@ -191,7 +208,13 @@ class TwitterStatusAdapter: NSObject {
                     self.rows.insert(row, atIndex: insertIndexPath.row)
                     i++
                 }
-                tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
+                if addShowMore {
+                    let showMoreIndexPath = NSIndexPath(forRow: insertStart + statuses.count, inSection: 0)
+                    self.rows.insert(Row(), atIndex: showMoreIndexPath.row)
+                    tableView.insertRowsAtIndexPaths(insertIndexPaths + [showMoreIndexPath], withRowAnimation: .None)
+                } else {
+                    tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
+                }
             }
             tableView.endUpdates()
             tableView.setContentOffset(CGPointMake(0, lastCell.frame.origin.y - offset), animated: false)
@@ -213,7 +236,6 @@ class TwitterStatusAdapter: NSObject {
             if deleteIndexPaths.count > 0 {
                 self.rows.removeRange(deleteRange)
             }
-            self.rows.append(Row())
             for status in statuses {
                 self.rows.append(self.createRow(status, fontSize: fontSize, tableView: tableView))
             }
@@ -233,34 +255,29 @@ class TwitterStatusAdapter: NSObject {
             }
             for i in 1 ... indexPath.row {
                 if let status = self.rows[indexPath.row - i].status {
-                    return String((status.statusID as NSString).longLongValue - 1)
-                }
-            }
-            return nil
-        }()
-        let bottomStatusID: String? = {
-            for i in indexPath.row ... (rows.count - 1) {
-                if let status = self.rows[i].status {
-                    return status.statusID
+                    return String((status.uniqueID as NSString).longLongValue - 1)
                 }
             }
             return nil
         }()
         
-        let sinceID: String? = bottomStatusID == nil ? nil : String((bottomStatusID! as NSString).longLongValue - 1)
+        let sinceID: String? = {
+            for i in indexPath.row ... (rows.count - 1) {
+                if let status = self.rows[i].status {
+                    return String((status.uniqueID as NSString).longLongValue - 1)
+                }
+            }
+            return nil
+        }()
         
         delegate?.loadData(sinceID: sinceID, maxID: maxID, success: { (statuses) -> Void in
             
-            if let lastStatuses = statuses.last {
-                print("lastStatuses:\(lastStatuses.statusID)")
-            }
-            
             let findLast: Bool = {
-                guard let bottomStatusID = bottomStatusID else {
+                guard let lastStatusID = statuses.last?.uniqueID else {
                     return true
                 }
-                for status in statuses {
-                    if status.statusID == bottomStatusID {
+                for status in self.statuses {
+                    if status.uniqueID == lastStatusID {
                         return true
                     }
                 }
@@ -277,7 +294,7 @@ class TwitterStatusAdapter: NSObject {
             let insertStart = indexPath.row
             let insertIndexPaths = (insertStart ..< (insertStart + statuses.count - ( findLast ? 1 : 0 ))).map { i in NSIndexPath(forRow: i, inSection: 0) }
             
-            print("showMoreTweets sinceID:\(sinceID) maxID:\(maxID) findLast:\(findLast) insertIndexPaths:\(insertIndexPaths.count) deleteIndexPaths:\(deleteIndexPaths.count) oldRows:\(self.rows.count)")
+            // print("showMoreTweets sinceID:\(sinceID) maxID:\(maxID) findLast:\(findLast) insertIndexPaths:\(insertIndexPaths.count) deleteIndexPaths:\(deleteIndexPaths.count) oldRows:\(self.rows.count)")
             
             tableView.beginUpdates()
             if deleteIndexPaths.count > 0 {
@@ -296,6 +313,7 @@ class TwitterStatusAdapter: NSObject {
             tableView.endUpdates()
             handler()
         }, failure: { (error) -> Void in
+            NSLog("\(error.description)")
             handler()
         })
     }
@@ -339,6 +357,15 @@ class TwitterStatusAdapter: NSObject {
                 }
             }
         }
+    }
+    
+    func sinceID() -> String? {
+        for status in statuses {
+            if status.type == .Normal {
+                return status.uniqueID
+            }
+        }
+        return nil
     }
 }
 

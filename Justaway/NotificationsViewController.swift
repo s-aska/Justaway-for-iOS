@@ -40,15 +40,6 @@ class NotificationsViewController: StatusTableViewController {
         Twitter.getMentionTimeline(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
     }
     
-    override func sinceID() -> String? {
-        for status in self.adapter.statuses {
-            if status.type == .Normal {
-                return status.statusID
-            }
-        }
-        return nil
-    }
-    
     override func accept(status: TwitterStatus) -> Bool {
         
         if let event = status.event {

@@ -219,12 +219,13 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         success(statuses: [TwitterStatus]())
     }
     
-    func sinceID() -> String? {
-        return self.adapter.statuses.first?.statusID
-    }
-    
     func loadDataToTop() {
         if AccountSettingsStore.get() == nil {
+            return
+        }
+        
+        if self.adapter.rows.count == 0 {
+            refresh()
             return
         }
         
@@ -249,9 +250,9 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                 ErrorAlert.show("Error", message: error.localizedDescription)
                 always()
             }
-            if let sinceID = self.sinceID() {
+            if let sinceID = self.adapter.sinceID() {
                 NSLog("loadDataToTop load sinceID:\(sinceID)")
-                self.loadData(sinceID: sinceID, maxID: nil, success: success, failure: failure)
+                self.loadData(sinceID: (sinceID.longLongValue - 1).stringValue, maxID: nil, success: success, failure: failure)
             } else {
                 op.finish()
             }
