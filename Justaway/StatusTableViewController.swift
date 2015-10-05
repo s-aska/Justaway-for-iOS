@@ -6,7 +6,7 @@ import Pinwheel
 let TIMELINE_ROWS_LIMIT = 1000
 let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
 
-class StatusTableViewController: TimelineTableViewController {
+class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapterDelegate {
     
     let adapter = TwitterStatusAdapter()
     var lastID: Int64?
@@ -42,7 +42,7 @@ class StatusTableViewController: TimelineTableViewController {
     func configureView() {
         self.tableView.backgroundColor = UIColor.clearColor()
         
-        adapter.configureView(tableView)
+        adapter.configureView(self, tableView: tableView)
         
         adapter.didScrollToBottom = {
             if let status = self.adapter.statuses.last {
@@ -215,7 +215,7 @@ class StatusTableViewController: TimelineTableViewController {
         assertionFailure("not implements.")
     }
     
-    func loadData(sinceID sinceID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         success(statuses: [TwitterStatus]())
     }
     
@@ -251,7 +251,7 @@ class StatusTableViewController: TimelineTableViewController {
             }
             if let sinceID = self.sinceID() {
                 NSLog("loadDataToTop load sinceID:\(sinceID)")
-                self.loadData(sinceID: sinceID, success: success, failure: failure)
+                self.loadData(sinceID: sinceID, maxID: nil, success: success, failure: failure)
             } else {
                 op.finish()
             }

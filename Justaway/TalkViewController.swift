@@ -64,7 +64,7 @@ class TalkViewController: UIViewController {
     // MARK: - Configuration
     
     func configureView() {
-        adapter.configureView(tableView)
+        adapter.configureView(nil, tableView: tableView)
     }
     
     func configureEvent() {

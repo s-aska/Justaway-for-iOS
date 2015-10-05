@@ -28,9 +28,9 @@ class UserTimelineTableViewController: StatusTableViewController {
         }
     }
     
-    override func loadData(sinceID sinceID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         if let userID = userID {
-            Twitter.getUserTimeline(userID, sinceID: sinceID, success: success, failure: failure)
+            Twitter.getUserTimeline(userID, sinceID: sinceID, maxID: maxID, success: success, failure: failure)
         }
     }
     

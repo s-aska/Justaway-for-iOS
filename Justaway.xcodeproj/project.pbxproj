@@ -133,6 +133,8 @@
 		38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; };
 		38D6DDF81A5AC317001C94F7 /* EventBox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38D6DDF61A5AC317001C94F7 /* EventBox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38D9E9DC1BBF834B001B5966 /* ShowMoreTweetsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38D9E9DB1BBF834B001B5966 /* ShowMoreTweetsCell.xib */; settings = {ASSET_TAGS = (); }; };
+		38D9E9DF1BC2B4FF001B5966 /* ShowMoreTweetsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D9E9DE1BC2B4FF001B5966 /* ShowMoreTweetsCell.swift */; settings = {ASSET_TAGS = (); }; };
+		38D9E9E11BC2B7C2001B5966 /* ShowMoreTweetsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D9E9DE1BC2B4FF001B5966 /* ShowMoreTweetsCell.swift */; settings = {ASSET_TAGS = (); }; };
 		38DA2D4D1B9876E50090CBDD /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */; };
 		38DA2D4E1B9876E50090CBDD /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38DFD8001B86F03C0073C8CD /* MutableDataScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */; };
@@ -319,6 +321,7 @@
 		38C44C921B78E7D500C22A52 /* GeneralSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralSettingsViewController.xib; sourceTree = "<group>"; };
 		38D6DDF61A5AC317001C94F7 /* EventBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventBox.framework; path = Carthage/Build/iOS/EventBox.framework; sourceTree = "<group>"; };
 		38D9E9DB1BBF834B001B5966 /* ShowMoreTweetsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowMoreTweetsCell.xib; sourceTree = "<group>"; };
+		38D9E9DE1BC2B4FF001B5966 /* ShowMoreTweetsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMoreTweetsCell.swift; sourceTree = "<group>"; };
 		38DA2D4C1B9876E50090CBDD /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		38DFD7FF1B86F03C0073C8CD /* MutableDataScanner.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MutableDataScanner.framework; path = Carthage/Build/iOS/MutableDataScanner.framework; sourceTree = "<group>"; };
 		38E0528D1BA4692600B67EB2 /* ImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
@@ -482,6 +485,7 @@
 				6A04494F1B24817C00758061 /* TwitterUserCell.xib */,
 				38F9B5751B46C6D000F429E7 /* TwitterListCell.swift */,
 				38F9B5771B46C6E800F429E7 /* TwitterListCell.xib */,
+				38D9E9DE1BC2B4FF001B5966 /* ShowMoreTweetsCell.swift */,
 				38D9E9DB1BBF834B001B5966 /* ShowMoreTweetsCell.xib */,
 			);
 			name = Table;
@@ -1032,6 +1036,7 @@
 				6ADB648C1A5DD65800602B2B /* BaseButton.swift in Sources */,
 				3805DE971A5F1C6A00FBD015 /* ThemeColor.swift in Sources */,
 				6ADB64901A5DE75A00602B2B /* Theme.swift in Sources */,
+				38D9E9DF1BC2B4FF001B5966 /* ShowMoreTweetsCell.swift in Sources */,
 				38F9B57A1B46CCB500F429E7 /* ListTableViewController.swift in Sources */,
 				6A35A1C51A6C193400A8E46D /* ImageViewController.swift in Sources */,
 				6A35A1D11A73B1C700A8E46D /* StatusAlert.swift in Sources */,
@@ -1099,6 +1104,7 @@
 				6A83EDA01B693FFE000F3C43 /* TwitterStatus.swift in Sources */,
 				384DE96E1BBAC9DE0011AF6E /* AutoExpandTextView.swift in Sources */,
 				6AB55B5B19D0CCD000DC6442 /* AccountSettingsStore.swift in Sources */,
+				38D9E9E11BC2B7C2001B5966 /* ShowMoreTweetsCell.swift in Sources */,
 				6A83EDA31B69400B000F3C43 /* ThemeUI.swift in Sources */,
 				384DE9481BBAC9740011AF6E /* TwitterUserCell.swift in Sources */,
 				384DE96C1BBAC9B30011AF6E /* TwitterList.swift in Sources */,

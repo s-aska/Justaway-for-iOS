@@ -65,7 +65,7 @@ class SearchViewController: UIViewController {
         // TODO
         // refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
         
-        adapter.configureView(tableView)
+        adapter.configureView(nil, tableView: tableView)
         adapter.didScrollToBottom = {
             if let nextResults = self.nextResults {
                 if let queryItems = NSURLComponents(string: nextResults)?.queryItems {

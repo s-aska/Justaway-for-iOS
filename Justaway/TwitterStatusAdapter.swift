@@ -59,6 +59,7 @@ class TwitterStatusAdapter: NSObject {
     var renderDataCallback: ((statuses: [TwitterStatus], mode: RenderMode) -> Void)?
     let loadDataQueue = NSOperationQueue().serial()
     let mainQueue = NSOperationQueue.mainQueue().serial()
+    var delegate: TwitterStatusAdapterDelegate?
     
     var statuses: [TwitterStatus] {
         return rows.filter({ $0.status != nil }).map({ $0.status! })
@@ -66,7 +67,9 @@ class TwitterStatusAdapter: NSObject {
     
     // MARK: Configuration
     
-    func configureView(tableView: UITableView) {
+    func configureView(delegate: TwitterStatusAdapterDelegate?, tableView: UITableView) {
+        self.delegate = delegate
+        
         tableView.separatorInset = UIEdgeInsetsZero
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         tableView.delegate = self
@@ -222,6 +225,81 @@ class TwitterStatusAdapter: NSObject {
         }
     }
     
+    func showMoreTweets(tableView: UITableView, indexPath: NSIndexPath, handler: () -> Void) {
+        
+        let maxID: String? = {
+            if indexPath.row < 1 {
+                return nil
+            }
+            for i in 1 ... indexPath.row {
+                if let status = self.rows[indexPath.row - i].status {
+                    return String((status.statusID as NSString).longLongValue - 1)
+                }
+            }
+            return nil
+        }()
+        let bottomStatusID: String? = {
+            for i in indexPath.row ... (rows.count - 1) {
+                if let status = self.rows[i].status {
+                    return status.statusID
+                }
+            }
+            return nil
+        }()
+        
+        let sinceID: String? = bottomStatusID == nil ? nil : String((bottomStatusID! as NSString).longLongValue - 1)
+        
+        delegate?.loadData(sinceID: sinceID, maxID: maxID, success: { (statuses) -> Void in
+            
+            if let lastStatuses = statuses.last {
+                print("lastStatuses:\(lastStatuses.statusID)")
+            }
+            
+            let findLast: Bool = {
+                guard let bottomStatusID = bottomStatusID else {
+                    return true
+                }
+                for status in statuses {
+                    if status.statusID == bottomStatusID {
+                        return true
+                    }
+                }
+                return false
+            }()
+            
+            let fontSize = CGFloat(GenericSettings.get().fontSize)
+            
+            let deleteCount = findLast ? 1 : 0
+            let deleteStart = indexPath.row
+            let deleteRange = deleteStart ..< (deleteStart + deleteCount)
+            let deleteIndexPaths = findLast ? [indexPath] : [NSIndexPath]()
+            
+            let insertStart = indexPath.row
+            let insertIndexPaths = (insertStart ..< (insertStart + statuses.count - ( findLast ? 1 : 0 ))).map { i in NSIndexPath(forRow: i, inSection: 0) }
+            
+            print("showMoreTweets sinceID:\(sinceID) maxID:\(maxID) findLast:\(findLast) insertIndexPaths:\(insertIndexPaths.count) deleteIndexPaths:\(deleteIndexPaths.count) oldRows:\(self.rows.count)")
+            
+            tableView.beginUpdates()
+            if deleteIndexPaths.count > 0 {
+                tableView.deleteRowsAtIndexPaths(deleteIndexPaths, withRowAnimation: .None)
+                self.rows.removeRange(deleteRange)
+            }
+            if insertIndexPaths.count > 0 {
+                var i = 0
+                for insertIndexPath in insertIndexPaths {
+                    let row = self.createRow(statuses[i], fontSize: fontSize, tableView: tableView)
+                    self.rows.insert(row, atIndex: insertIndexPath.row)
+                    i++
+                }
+                tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
+            }
+            tableView.endUpdates()
+            handler()
+        }, failure: { (error) -> Void in
+            handler()
+        })
+    }
+    
     func eraseData(tableView: UITableView, statusID: String, handler: (() -> Void)?) {
         var deleteIndexPaths = [NSIndexPath]()
         var i = 0
@@ -275,7 +353,9 @@ extension TwitterStatusAdapter: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let row = rows[indexPath.row]
         guard let status = row.status else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("ShowMoreTweetsCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCellWithIdentifier("ShowMoreTweetsCell", forIndexPath: indexPath) as! ShowMoreTweetsCell
+            cell.showMoreLabel.hidden = false
+            cell.indicator.hidden = true
             return cell
         }
         let layout = TwitterStatusCellLayout.fromStatus(status)
@@ -330,14 +410,26 @@ extension TwitterStatusAdapter: UITableViewDelegate {
         let row = rows[indexPath.row]
         if let status = row.status {
             StatusAlert.show(cell, status: status)
-        } else {
-            // TODO
-            CATransaction.begin()
-            tableView.beginUpdates()
-            self.rows.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            tableView.endUpdates()
-            CATransaction.commit()
+        } else if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ShowMoreTweetsCell {
+            
+            Async.main {
+                cell.showMoreLabel.hidden = true
+                cell.indicator.hidden = false
+                cell.indicator.startAnimating()
+            }
+            
+            let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
+                let always: (()-> Void) = {
+                    op.finish()
+                    Async.main {
+                        cell.showMoreLabel.hidden = false
+                        cell.indicator.hidden = true
+                        cell.indicator.stopAnimating()
+                    }
+                }
+                self.showMoreTweets(tableView, indexPath: indexPath, handler: always)
+            })
+            self.loadDataQueue.addOperation(op)
         }
     }
     
@@ -386,4 +478,8 @@ extension TwitterStatusAdapter {
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         scrollEnd(scrollView) // end of setContentOffset
     }
+}
+
+protocol TwitterStatusAdapterDelegate {
+    func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void))
 }

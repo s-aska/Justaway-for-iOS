@@ -36,8 +36,8 @@ class NotificationsViewController: StatusTableViewController {
         Twitter.getMentionTimeline(maxID: maxID, success: success, failure: failure)
     }
     
-    override func loadData(sinceID sinceID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-        Twitter.getMentionTimeline(sinceID: sinceID, success: success, failure: failure)
+    override func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+        Twitter.getMentionTimeline(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
     }
     
     override func sinceID() -> String? {

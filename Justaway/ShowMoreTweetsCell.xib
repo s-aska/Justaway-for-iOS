@@ -6,27 +6,48 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="gA3-XX-yyl" customClass="BackgroundTableViewCell" customModule="Justaway" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="gA3-XX-yyl" customClass="ShowMoreTweetsCell" customModule="Justaway" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gA3-XX-yyl" id="W09-h3-xYu">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="29.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N00-ZP-4yA" customClass="CellSeparator" customModule="Justaway" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="eex-Ly-iS3"/>
+                            <constraint firstAttribute="height" constant="1" id="oMv-Mi-Wsd"/>
+                        </constraints>
+                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show more Tweets" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bhu-fq-TfU" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="29.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="aRX-RC-JQ3">
+                        <rect key="frame" x="150" y="5" width="20" height="20"/>
+                    </activityIndicatorView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Bhu-fq-TfU" firstAttribute="top" secondItem="W09-h3-xYu" secondAttribute="top" id="7By-Ds-LRi"/>
                     <constraint firstAttribute="trailing" secondItem="Bhu-fq-TfU" secondAttribute="trailing" id="BUj-4E-t4Z"/>
+                    <constraint firstItem="Bhu-fq-TfU" firstAttribute="centerX" secondItem="W09-h3-xYu" secondAttribute="centerX" id="D5C-Vb-70E"/>
+                    <constraint firstItem="N00-ZP-4yA" firstAttribute="leading" secondItem="W09-h3-xYu" secondAttribute="leading" id="Fde-sU-GEO"/>
                     <constraint firstAttribute="bottom" secondItem="Bhu-fq-TfU" secondAttribute="bottom" id="L7W-IC-hkG"/>
+                    <constraint firstAttribute="trailing" secondItem="N00-ZP-4yA" secondAttribute="trailing" id="M4l-SA-d0z"/>
+                    <constraint firstItem="aRX-RC-JQ3" firstAttribute="centerX" secondItem="W09-h3-xYu" secondAttribute="centerX" id="Za4-w2-Wwt"/>
+                    <constraint firstItem="N00-ZP-4yA" firstAttribute="top" secondItem="W09-h3-xYu" secondAttribute="top" id="d6q-TG-xxY"/>
+                    <constraint firstItem="aRX-RC-JQ3" firstAttribute="centerY" secondItem="W09-h3-xYu" secondAttribute="centerY" id="puk-Kc-fD8"/>
                     <constraint firstItem="Bhu-fq-TfU" firstAttribute="leading" secondItem="W09-h3-xYu" secondAttribute="leading" id="yF2-cU-qtC"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="indicator" destination="aRX-RC-JQ3" id="cRK-iS-MtK"/>
+                <outlet property="showMoreLabel" destination="Bhu-fq-TfU" id="piZ-66-Te8"/>
+            </connections>
             <point key="canvasLocation" x="495" y="228"/>
         </tableViewCell>
     </objects>

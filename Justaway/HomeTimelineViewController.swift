@@ -25,9 +25,6 @@ class HomeTimelineTableViewController: StatusTableViewController {
             if let cache = KeyClip.load("homeTimeline") as NSDictionary? {
                 if let statuses = cache["statuses"] as? [[String: AnyObject]] {
                     success(statuses: statuses.map({ TwitterStatus($0) }))
-                    // self.renderData(<#T##statuses: [TwitterStatus]##[TwitterStatus]#>, mode: <#T##TwitterStatusAdapter.RenderMode#>, handler: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
-                    // self.adapter.rows = [TwitterStatusAdapter.Row()] + self.adapter.rows
-                    // self.tableView.reloadData()
                     return
                 }
             }
@@ -39,8 +36,8 @@ class HomeTimelineTableViewController: StatusTableViewController {
         Twitter.getHomeTimeline(maxID: maxID, success: success, failure: failure)
     }
     
-    override func loadData(sinceID sinceID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-        Twitter.getHomeTimeline(sinceID: sinceID, success: success, failure: failure)
+    override func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+        Twitter.getHomeTimeline(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
     }
     
     override func accept(status: TwitterStatus) -> Bool {
