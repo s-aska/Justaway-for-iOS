@@ -15,6 +15,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var tabCurrentMaskLeftConstraint: NSLayoutConstraint!
     
     var settingsViewController: SettingsViewController!
+    var sideMenuViewController: SideMenuViewController!
     var tableViewControllers = [TimelineTableViewController]()
     var tabButtons = [MenuButton]()
     var setupView = false
@@ -62,6 +63,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     
     func configureView() {
         settingsViewController = SettingsViewController()
+        sideMenuViewController = SideMenuViewController()
+        
         ViewTools.addSubviewWithEqual(self.view, view: settingsViewController.view)
         
         if let account = AccountSettingsStore.get() {
@@ -247,6 +250,12 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - UIScrollViewDelegate
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        if scrollView.contentOffset.x < -10 {
+            if let account = AccountSettingsStore.get()?.account() {
+                sideMenuViewController.show(TwitterUser(account))
+            }
+        }
+        
         let page = Int((scrollView.contentOffset.x + (scrollWrapperView.frame.size.width / 2)) / scrollWrapperView.frame.size.width)
         if currentPage != page {
             currentPage = page
@@ -277,7 +286,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     
     func openProfile(sender: UIView) {
         if let account = AccountSettingsStore.get()?.account() {
-            ProfileViewController.show(TwitterUser(account))
+            // ProfileViewController.show(TwitterUser(account))
+            sideMenuViewController.show(TwitterUser(account))
         }
     }
     

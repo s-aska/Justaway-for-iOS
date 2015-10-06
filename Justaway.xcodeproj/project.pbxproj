@@ -185,6 +185,9 @@
 		6A5357D91A7429A600291E95 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5357D81A7429A600291E95 /* NotificationsViewController.swift */; };
 		6A56F5C81B19EB6C0058D6DD /* AddAccountAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A56F5C71B19EB6C0058D6DD /* AddAccountAlert.swift */; };
 		6A56F5CA1B19ECDC0058D6DD /* MessageAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A56F5C91B19ECDC0058D6DD /* MessageAlert.swift */; };
+		6A81CF1E1BC406E500EBE567 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		6A81CF211BC406F400EBE567 /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		6A81CF221BC4127A00EBE567 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		6A83EDA01B693FFE000F3C43 /* TwitterStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3868B94C19EFCCEC001221BF /* TwitterStatus.swift */; };
 		6A83EDA11B69400B000F3C43 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADB648F1A5DE75A00602B2B /* Theme.swift */; };
 		6A83EDA21B69400B000F3C43 /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DE961A5F1C6A00FBD015 /* ThemeColor.swift */; };
@@ -371,6 +374,8 @@
 		6A5357D81A7429A600291E95 /* NotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		6A56F5C71B19EB6C0058D6DD /* AddAccountAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAccountAlert.swift; sourceTree = "<group>"; };
 		6A56F5C91B19ECDC0058D6DD /* MessageAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAlert.swift; sourceTree = "<group>"; };
+		6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
+		6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuViewController.xib; sourceTree = "<group>"; };
 		6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
 		6AB55B3F19C563F600DC6442 /* EditorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditorViewController.xib; sourceTree = "<group>"; };
 		6AB55B4219C5843000DC6442 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -717,6 +722,8 @@
 				6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */,
 				3894C24B19E557120038AEF8 /* TimelineViewController.swift */,
 				3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */,
+				6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */,
+				6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */,
 				6A0449431B1F4F0400758061 /* ProfileViewController.swift */,
 				6A0449451B1F4F2400758061 /* ProfileViewController.xib */,
 				6AB839D21B669D2F00B772C8 /* TalkViewController.swift */,
@@ -905,6 +912,7 @@
 				6AB55B4019C563F600DC6442 /* EditorViewController.xib in Resources */,
 				6A0449461B1F4F2400758061 /* ProfileViewController.xib in Resources */,
 				38B4475D19C062460055F074 /* fontello.ttf in Resources */,
+				6A81CF211BC406F400EBE567 /* SideMenuViewController.xib in Resources */,
 				6AB55B5319C8B2D500DC6442 /* ThemeViewController.xib in Resources */,
 				6AB839D51B669D5500B772C8 /* TalkViewController.xib in Resources */,
 				38C44C931B78E7D500C22A52 /* GeneralSettingsViewController.xib in Resources */,
@@ -979,6 +987,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A81CF1E1BC406E500EBE567 /* SideMenuViewController.swift in Sources */,
 				3899C6AD1A5C441800F8AE87 /* NSOperationQueue-Serial.swift in Sources */,
 				38F4EAEC19F14E4700CBD23F /* RoundedFilter.swift in Sources */,
 				6A5357D31A74027000291E95 /* Event.swift in Sources */,
@@ -1112,6 +1121,7 @@
 				384DE9641BBAC9990011AF6E /* UserTableViewController.swift in Sources */,
 				386B6C4D1B81F31B0066EB80 /* AccountSettings.swift in Sources */,
 				384DE9711BBAC9F80011AF6E /* ImageLoaderClient.swift in Sources */,
+				6A81CF221BC4127A00EBE567 /* SideMenuViewController.swift in Sources */,
 				384DE98A1BBC29070011AF6E /* Safari.swift in Sources */,
 				384DE94A1BBAC97A0011AF6E /* ViewController.swift in Sources */,
 				384DE93C1BBAC9350011AF6E /* StatusAlert.swift in Sources */,

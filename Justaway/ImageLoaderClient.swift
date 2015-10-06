@@ -15,6 +15,12 @@ class ImageLoaderClient {
             .queuePriority(NSOperationQueuePriority.Low)
             .build()
         
+        static let sideMenuUserIconOptions = Pinwheel.DisplayOptions.Builder()
+            .addFilter(RoundedFilter(30, w: 60, h: 60), hook: .BeforeMemory)
+            .displayer(Pinwheel.FadeInDisplayer())
+            .queuePriority(NSOperationQueuePriority.Low)
+            .build()
+        
         static let userIconOptions = Pinwheel.DisplayOptions.Builder()
             .addFilter(RoundedFilter(6, w: 42, h: 42), hook: .BeforeMemory)
             .displayer(Pinwheel.FadeInDisplayer())
@@ -70,5 +76,9 @@ class ImageLoaderClient {
     
     class func displayActionedUserIcon(url: NSURL, imageView: UIImageView) {
         Pinwheel.displayImage(url, imageView: imageView, options: Static.actionedUserIconOptions)
+    }
+    
+    class func displaySideMenuUserIcon(url: NSURL, imageView: UIImageView) {
+        Pinwheel.displayImage(url, imageView: imageView, options: Static.sideMenuUserIconOptions)
     }
 }
