@@ -323,10 +323,8 @@ class TwitterStatusAdapter: NSObject {
         var i = 0
         var newRows = [Row]()
         for row in self.rows {
-            guard let status = row.status else {
-                continue
-            }
-            if status.statusID == statusID {
+            let rowStatusId = row.status?.statusID ?? ""
+            if rowStatusId == statusID {
                 deleteIndexPaths.append(NSIndexPath(forRow: i, inSection: 0))
             } else {
                 newRows.append(row)
