@@ -99,6 +99,14 @@ class StatusLable: UITextView {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: "touchesText:"))
     }
     
+    // Disable text selection
+    override func addGestureRecognizer(gestureRecognizer: UIGestureRecognizer) {
+        if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
+            gestureRecognizer.enabled = false
+        }
+        super.addGestureRecognizer(gestureRecognizer)
+    }
+    
     func setStatus(status: TwitterStatus) {
         self.status = status
         self.text = status.text
