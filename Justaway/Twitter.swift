@@ -614,6 +614,7 @@ extension Twitter {
             .client
             .post("https://api.twitter.com/1.1/statuses/destroy/\(statusID).json")
             .responseJSONWithError({ (json: JSON) -> Void in
+                EventBox.post(Event.DestroyStatus.rawValue, sender: statusID)
             }, failure: { (code, message, error) -> Void in
                 ErrorAlert.show("Undo Tweet failure code:\(code)", message: message ?? error.localizedDescription)
             })
