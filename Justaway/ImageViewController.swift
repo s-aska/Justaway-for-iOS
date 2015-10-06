@@ -51,10 +51,20 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Configuration
     
     func configureView() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: "hide:")
-        tapGesture.numberOfTapsRequired = 1
         scrollView.delegate = self
-        scrollView.addGestureRecognizer(tapGesture)
+        
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: "swipeUp")
+        swipeUp.numberOfTouchesRequired = 1
+        swipeUp.direction = .Up
+        scrollView.panGestureRecognizer.requireGestureRecognizerToFail(swipeUp)
+        scrollView.addGestureRecognizer(swipeUp)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: "swipeDown")
+        swipeDown.numberOfTouchesRequired = 1
+        swipeDown.direction = .Down
+        scrollView.panGestureRecognizer.requireGestureRecognizerToFail(swipeDown)
+        scrollView.addGestureRecognizer(swipeDown)
+        
         scrollView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         pageControl.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     }
@@ -139,12 +149,30 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func hide(sender: AnyObject) {
+    func hide() {
         imageViews.removeAll(keepCapacity: true)
         for view in scrollView.subviews as [UIView] {
             view.removeFromSuperview()
         }
         self.view.removeFromSuperview()
+    }
+    
+    func swipeUp() {
+        let imageView = imageViews[pageControl.currentPage]
+        UIView.animateWithDuration(0.3, animations: { _ in
+            imageView.frame = CGRectMake(imageView.frame.origin.x, -imageView.frame.size.height, imageView.frame.size.width, imageView.frame.size.height)
+            }, completion: { _ in
+                self.hide()
+        })
+    }
+    
+    func swipeDown() {
+        let imageView = imageViews[pageControl.currentPage]
+        UIView.animateWithDuration(0.3, animations: { _ in
+            imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.size.height, imageView.frame.size.width, imageView.frame.size.height)
+        }, completion: { _ in
+            self.hide()
+        })
     }
     
     func menu(sender: UILongPressGestureRecognizer) {

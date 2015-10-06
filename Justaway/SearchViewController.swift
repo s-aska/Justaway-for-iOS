@@ -65,6 +65,13 @@ class SearchViewController: UIViewController {
         // TODO
         // refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
         
+        
+        let swipe = UISwipeGestureRecognizer(target: self, action: "hide")
+        swipe.numberOfTouchesRequired = 1
+        swipe.direction = .Right
+        // scrollView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
+        view.addGestureRecognizer(swipe)
+        
         adapter.configureView(nil, tableView: tableView)
         adapter.didScrollToBottom = {
             if let nextResults = self.nextResults {

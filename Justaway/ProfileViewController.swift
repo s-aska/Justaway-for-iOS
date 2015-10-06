@@ -76,6 +76,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     var user: TwitterUser?
     var userFull: TwitterUserFull?
     var relationship: TwitterRelationship?
+    var closed = false
     
     var tabMenus = [TabMenu]()
     var tabViews = [TimelineTableViewController]()
@@ -205,6 +206,11 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.x
+        NSLog("offset \(offset)")
+        if offset < -10 {
+            hide()
+            return
+        }
         headerViewLeftConstraint.constant = -offset
         let page = Int((offset + (view.frame.size.width / 2)) / view.frame.size.width)
         highlightUpdate(page)
@@ -347,6 +353,10 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func hide() {
+        if closed {
+            return
+        }
+        closed = true
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
             self.view.frame = CGRectMake(
                 self.view.frame.size.width,
