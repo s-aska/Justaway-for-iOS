@@ -15,6 +15,7 @@ class EditorViewController: UIViewController {
     @IBOutlet weak var replyToNameLabel: DisplayNameLable!
     @IBOutlet weak var replyToScreenNameLabel: ScreenNameLable!
     @IBOutlet weak var replyToStatusLabel: StatusLable!
+    @IBOutlet weak var replyToStatusLabelHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var countLabel: MenuLable!
     
@@ -323,6 +324,10 @@ class EditorViewController: UIViewController {
                 Static.instance.replyToNameLabel.text = inReplyToStatus.user.name
                 Static.instance.replyToScreenNameLabel.text = "@" + inReplyToStatus.user.screenName
                 Static.instance.replyToStatusLabel.text = inReplyToStatus.text
+                Static.instance.replyToStatusLabelHeightConstraint.constant =
+                    measure(inReplyToStatus.text,
+                        fontSize: Static.instance.replyToStatusLabel.font?.pointSize ?? 12,
+                        wdith: Static.instance.replyToStatusLabel.frame.size.width)
                 Static.instance.replyToContainerView.hidden = false
                 ImageLoaderClient.displayUserIcon(inReplyToStatus.user.profileImageURL, imageView: Static.instance.replyToIconImageView)
             } else {
@@ -343,4 +348,11 @@ class EditorViewController: UIViewController {
         Static.instance.hide()
     }
     
+    class func measure(text: NSString, fontSize: CGFloat, wdith: CGFloat) -> CGFloat {
+        return ceil(text.boundingRectWithSize(
+            CGSizeMake(wdith, 0),
+            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+            attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
+            context: nil).size.height)
+    }
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 class RetweetAlert {
-    class func show(sender: UIView, statusID: String) {
+    class func show(sender: UIView, status: TwitterStatus) {
         let actionSheet = UIAlertController()
         actionSheet.addAction(UIAlertAction(
             title: "Cancel",
@@ -17,14 +17,14 @@ class RetweetAlert {
             handler: { action in
                 actionSheet.dismissViewControllerAnimated(true, completion: nil)
         }))
-        Twitter.isRetweet(statusID) { (retweetedStatusID) -> Void in
+        Twitter.isRetweet(status.statusID) { (retweetedStatusID) -> Void in
             if let retweetedStatusID = retweetedStatusID {
                 if retweetedStatusID != "0" {
                     actionSheet.addAction(UIAlertAction(
                         title: "Undo Retweet",
                         style: .Destructive,
                         handler: { action in
-                            Twitter.destroyRetweet(statusID, retweetedStatusID: retweetedStatusID)
+                            Twitter.destroyRetweet(status.statusID, retweetedStatusID: retweetedStatusID)
                     }))
                 }
             } else {
@@ -32,14 +32,14 @@ class RetweetAlert {
                     title: "Retweet",
                     style: .Default,
                     handler: { action in
-                        Twitter.createRetweet(statusID)
+                        Twitter.createRetweet(status.statusID)
                 }))
             }
             actionSheet.addAction(UIAlertAction(
                 title: "Quote",
                 style: .Default,
                 handler: { action in
-                    
+                    Twitter.quoteURL(status)
             }))
         }
         

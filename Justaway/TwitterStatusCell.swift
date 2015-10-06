@@ -583,8 +583,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
     
     @IBAction func retweet(sender: BaseButton) {
         if sender.lock() {
-            if let statusID = self.status?.statusID {
-                RetweetAlert.show(sender, statusID: statusID)
+            if let status = self.status {
+                RetweetAlert.show(sender, status: status)
             }
         }
     }

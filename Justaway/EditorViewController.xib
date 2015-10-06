@@ -32,7 +32,8 @@
                 <outlet property="replyToIconImageView" destination="lNk-An-B31" id="wWb-6X-t0B"/>
                 <outlet property="replyToNameLabel" destination="SIn-Bp-8NL" id="8E0-cY-XEF"/>
                 <outlet property="replyToScreenNameLabel" destination="Wd3-qa-Z4m" id="yRy-CR-ISR"/>
-                <outlet property="replyToStatusLabel" destination="YZx-Mt-RUx" id="FCq-2T-lnx"/>
+                <outlet property="replyToStatusLabel" destination="WBz-mA-U87" id="coE-h7-DVr"/>
+                <outlet property="replyToStatusLabelHeightConstraint" destination="35t-Zq-4fa" id="ObP-If-Uyv"/>
                 <outlet property="textView" destination="pAS-wm-Zms" id="SmZ-cI-pnh"/>
                 <outlet property="textViewHeightConstraint" destination="36B-3S-QRz" id="04U-qg-a2q"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ljW-bN-VJk"/>
@@ -279,12 +280,15 @@
                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="SIn-Bp-8NL" secondAttribute="trailing" id="zqF-zZ-6zN"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="257" translatesAutoresizingMaskIntoConstraints="NO" id="YZx-Mt-RUx" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Label" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WBz-mA-U87" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="10" y="30" width="580" height="14.5"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="14" id="35t-Zq-4fa"/>
+                            </constraints>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5NA-kE-3L2" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="559" y="0.0" width="41" height="45"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
@@ -300,17 +304,17 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="WBz-mA-U87" secondAttribute="trailing" constant="10" id="0MX-CZ-ftY"/>
                         <constraint firstItem="Ibm-Xa-avJ" firstAttribute="leading" secondItem="lNk-An-B31" secondAttribute="trailing" constant="10" id="C7R-V0-7hK"/>
                         <constraint firstItem="lNk-An-B31" firstAttribute="leading" secondItem="eKe-LY-kay" secondAttribute="leading" constant="10" id="Dou-y2-kWf"/>
-                        <constraint firstItem="YZx-Mt-RUx" firstAttribute="leading" secondItem="eKe-LY-kay" secondAttribute="leading" constant="10" id="GiH-NO-2vg"/>
+                        <constraint firstItem="WBz-mA-U87" firstAttribute="top" secondItem="Ibm-Xa-avJ" secondAttribute="bottom" constant="3" id="IcX-UI-mm5"/>
                         <constraint firstItem="Ibm-Xa-avJ" firstAttribute="top" secondItem="eKe-LY-kay" secondAttribute="top" constant="10" id="NNu-7Y-PqJ"/>
                         <constraint firstItem="lNk-An-B31" firstAttribute="top" secondItem="eKe-LY-kay" secondAttribute="top" constant="6" id="THJ-GF-tQv"/>
-                        <constraint firstItem="YZx-Mt-RUx" firstAttribute="top" secondItem="Ibm-Xa-avJ" secondAttribute="bottom" constant="3" id="Ty6-3X-kMy"/>
+                        <constraint firstAttribute="bottom" secondItem="WBz-mA-U87" secondAttribute="bottom" constant="10" id="XxY-Z6-yRz"/>
                         <constraint firstItem="5NA-kE-3L2" firstAttribute="leading" secondItem="Ibm-Xa-avJ" secondAttribute="trailing" id="YAE-NN-ALK"/>
-                        <constraint firstAttribute="trailing" secondItem="YZx-Mt-RUx" secondAttribute="trailing" constant="10" id="ZYN-gw-cfy"/>
-                        <constraint firstAttribute="bottom" secondItem="YZx-Mt-RUx" secondAttribute="bottom" priority="750" constant="10" id="ZYy-sz-KHe"/>
                         <constraint firstAttribute="trailing" secondItem="5NA-kE-3L2" secondAttribute="trailing" id="ngy-BU-1JW"/>
                         <constraint firstItem="5NA-kE-3L2" firstAttribute="top" secondItem="eKe-LY-kay" secondAttribute="top" id="pMu-Bt-AaJ"/>
+                        <constraint firstItem="WBz-mA-U87" firstAttribute="leading" secondItem="eKe-LY-kay" secondAttribute="leading" constant="10" id="qVB-UB-0bX"/>
                     </constraints>
                 </view>
             </subviews>
