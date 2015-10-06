@@ -65,6 +65,11 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         scrollView.panGestureRecognizer.requireGestureRecognizerToFail(swipeDown)
         scrollView.addGestureRecognizer(swipeDown)
         
+        let tap = UITapGestureRecognizer(target: self, action: "hide")
+        tap.numberOfTouchesRequired = 1
+        scrollView.panGestureRecognizer.requireGestureRecognizerToFail(tap)
+        scrollView.addGestureRecognizer(tap)
+        
         scrollView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         pageControl.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     }

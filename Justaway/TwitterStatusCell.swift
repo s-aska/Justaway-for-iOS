@@ -84,6 +84,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     var status: TwitterStatus?
     var layout: TwitterStatusCellLayout?
     let playerView = AVPlayerView()
+    let playerWrapperView = UIView()
     
     @IBOutlet weak var sourceView: UIView!
     @IBOutlet weak var sourceViewHeightConstraint: NSLayoutConstraint!
@@ -189,8 +190,20 @@ class TwitterStatusCell: BackgroundTableViewCell {
         
         iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "openProfile:"))
         
-        playerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hideVideo"))
-        playerView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        playerWrapperView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hideVideo"))
+        playerWrapperView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: "videoSwipeUp")
+        swipeUp.numberOfTouchesRequired = 1
+        swipeUp.direction = .Up
+        playerWrapperView.addGestureRecognizer(swipeUp)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: "videoSwipeDown")
+        swipeDown.numberOfTouchesRequired = 1
+        swipeDown.direction = .Down
+        playerWrapperView.addGestureRecognizer(swipeDown)
+        
+        playerWrapperView.addSubview(playerView)
     }
     
     func configureEvent() {
@@ -542,21 +555,38 @@ class TwitterStatusCell: BackgroundTableViewCell {
         guard let view = UIApplication.sharedApplication().keyWindow else {
             return
         }
-        playerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        playerWrapperView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        playerView.frame = playerWrapperView.frame
         playerView.player = AVPlayer(URL: videoURL)
         playerView.player?.actionAtItemEnd = AVPlayerActionAtItemEnd.None
         playerView.setVideoFillMode(AVLayerVideoGravityResizeAspect)
-        view.addSubview(playerView)
+        view.addSubview(playerWrapperView)
         playerView.player?.play()
     }
     
     func hideVideo() {
         playerView.player?.pause()
-        playerView.removeFromSuperview()
+        playerWrapperView.removeFromSuperview()
     }
     
     func endVideo() {
         playerView.player?.currentItem?.seekToTime(kCMTimeZero)
+    }
+    
+    func videoSwipeUp() {
+        UIView.animateWithDuration(0.3, animations: { _ in
+            self.playerView.frame = CGRectMake(self.playerView.frame.origin.x, -self.playerView.frame.size.height, self.playerView.frame.size.width, self.playerView.frame.size.height)
+            }, completion: { _ in
+                self.hideVideo()
+        })
+    }
+    
+    func videoSwipeDown() {
+        UIView.animateWithDuration(0.3, animations: { _ in
+            self.playerView.frame = CGRectMake(self.playerView.frame.origin.x, self.playerView.frame.size.height, self.playerView.frame.size.width, self.playerView.frame.size.height)
+        }, completion: { _ in
+            self.hideVideo()
+        })
     }
     
     func showQuotedImage(sender: UIGestureRecognizer) {
