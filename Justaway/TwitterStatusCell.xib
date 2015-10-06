@@ -127,7 +127,7 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" text="Status" translatesAutoresizingMaskIntoConstraints="NO" id="4ai-5n-MRY" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
+                    <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" text="Status" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ai-5n-MRY" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="58" y="43" width="257" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="cFm-QU-juJ"/>
@@ -173,7 +173,7 @@
                                     <constraint firstItem="ieT-sB-st1" firstAttribute="leading" secondItem="Ywi-VR-oqG" secondAttribute="leading" id="uxE-L5-K1G"/>
                                 </constraints>
                             </view>
-                            <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" text="Status" translatesAutoresizingMaskIntoConstraints="NO" id="3Ja-ae-JKY" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
+                            <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" text="Status" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ja-ae-JKY" customClass="StatusLable" customModule="Justaway" customModuleProvider="target">
                                 <rect key="frame" x="10" y="30" width="232" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="A1l-4R-MKE"/>
