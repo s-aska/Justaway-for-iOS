@@ -335,13 +335,6 @@
                             <constraint firstAttribute="trailing" secondItem="U1p-l9-QUq" secondAttribute="trailing" id="rQ2-Yp-dIf"/>
                         </constraints>
                     </view>
-                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHQ-ey-O8Q" customClass="CellSeparator" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="1" id="DVi-NC-Cvn"/>
-                        </constraints>
-                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bIb-jf-cxi">
                         <rect key="frame" x="56" y="246" width="259" height="125"/>
                         <subviews>
@@ -408,8 +401,6 @@
                     <constraint firstItem="4ai-5n-MRY" firstAttribute="top" secondItem="y1M-cQ-9LC" secondAttribute="bottom" constant="3" id="JeH-aB-vYP"/>
                     <constraint firstAttribute="trailing" secondItem="Hkc-nJ-RXe" secondAttribute="trailing" constant="5" id="LAI-Z5-LSb"/>
                     <constraint firstAttribute="trailing" secondItem="HoK-3O-aH8" secondAttribute="trailing" id="OS1-0A-a93"/>
-                    <constraint firstAttribute="bottom" secondItem="qHQ-ey-O8Q" secondAttribute="bottom" id="RNG-0M-zge"/>
-                    <constraint firstItem="qHQ-ey-O8Q" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" id="Rd5-3k-36A"/>
                     <constraint firstAttribute="trailing" secondItem="umq-Pc-zJg" secondAttribute="trailing" constant="5" id="Rxu-gr-wp6"/>
                     <constraint firstItem="Hkc-nJ-RXe" firstAttribute="top" secondItem="bIb-jf-cxi" secondAttribute="bottom" priority="250" constant="8" id="ZhQ-7G-t7W"/>
                     <constraint firstItem="ZmL-Y4-qJs" firstAttribute="top" secondItem="4ai-5n-MRY" secondAttribute="bottom" constant="10" id="amu-1h-2Cw"/>
@@ -421,23 +412,16 @@
                     <constraint firstItem="HoK-3O-aH8" firstAttribute="top" secondItem="EVK-7k-lkK" secondAttribute="top" id="qZ1-Nj-KQS"/>
                     <constraint firstAttribute="trailing" secondItem="ZmL-Y4-qJs" secondAttribute="trailing" constant="10" id="qxQ-ur-bwQ"/>
                     <constraint firstAttribute="bottom" secondItem="Hkc-nJ-RXe" secondAttribute="bottom" constant="5" id="u6d-Nv-jS3"/>
-                    <constraint firstAttribute="trailing" secondItem="qHQ-ey-O8Q" secondAttribute="trailing" id="wae-pb-N26"/>
-                    <constraint firstItem="qHQ-ey-O8Q" firstAttribute="leading" secondItem="EVK-7k-lkK" secondAttribute="leading" id="xSe-Tl-WOR"/>
                     <constraint firstItem="d8g-lI-qp9" firstAttribute="leading" secondItem="EVK-7k-lkK" secondAttribute="leading" constant="7" id="xnS-ff-A1S"/>
                     <constraint firstAttribute="trailing" secondItem="bIb-jf-cxi" secondAttribute="trailing" constant="5" id="ykw-J3-phd"/>
                     <constraint firstItem="bIb-jf-cxi" firstAttribute="top" secondItem="4ai-5n-MRY" secondAttribute="bottom" priority="750" constant="10" id="ylR-YV-l2f"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="RNG-0M-zge"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="absoluteCreatedAtLabel" destination="SR5-WN-luB" id="GCU-h0-ljM"/>
-                <outlet property="buttonsImageTopConstraint" destination="ZhQ-7G-t7W" id="Q3o-U0-E8V"/>
-                <outlet property="buttonsQuotedTopConstraint" destination="dSK-Wu-8e2" id="o3D-6i-5xy"/>
-                <outlet property="buttonsStatusTopConstraint" destination="kCx-fX-7tE" id="gPL-H7-bEo"/>
+                <outlet property="buttonsImageTopConstraint" destination="ZhQ-7G-t7W" id="Rqc-g2-pNQ"/>
+                <outlet property="buttonsQuotedTopConstraint" destination="dSK-Wu-8e2" id="Tat-Gx-gV1"/>
+                <outlet property="buttonsStatusTopConstraint" destination="kCx-fX-7tE" id="MuR-bp-hv5"/>
                 <outlet property="favoriteButton" destination="OBS-6K-La7" id="bgr-rd-Or3"/>
                 <outlet property="favoriteCountLabel" destination="ydf-ds-1yM" id="vmz-6D-XB0"/>
                 <outlet property="iconImageView" destination="d8g-lI-qp9" id="Wg9-C7-sU1"/>

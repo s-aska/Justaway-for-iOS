@@ -35,18 +35,6 @@ class BackgroundTableView: UITableView {}
 class BackgroundTableViewCell: UITableViewCell {}
 class BackgroundScrollView: UIScrollView {}
 class CurrentTabMaskView: UIView {}
-class CellSeparator: UIView {
-    let borderLayer = CALayer()
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-//        let borderWidth: CGFloat = (1.0 / UIScreen.mainScreen().scale) / 1
-//        borderLayer.frame = CGRectMake(0, bounds.size.height - borderWidth, bounds.size.width, borderWidth);
-//        borderLayer.backgroundColor = ThemeController.currentTheme.cellSeparatorColor().CGColor
-//        layer.addSublayer(borderLayer)
-        backgroundColor = ThemeController.currentTheme.cellSeparatorColor()
-    }
-}
 class QuotedStatusContainerView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -76,6 +76,7 @@ class ThemeController {
         UIApplication.sharedApplication().statusBarStyle = theme.statusBarStyle()
         UITextView.appearance().textColor = theme.bodyTextColor()
         UITextView.appearance().backgroundColor = theme.mainBackgroundColor()
+        UITableView.appearance().separatorColor = theme.cellSeparatorColor()
         
         // for CustomView
         TextLable.appearance().textColor = theme.bodyTextColor()
@@ -151,6 +152,11 @@ class ThemeController {
             case let v as BackgroundTableView:
                 v.indicatorStyle = theme.scrollViewIndicatorStyle()
                 v.backgroundColor = theme.mainBackgroundColor()
+                v.separatorColor = theme.cellSeparatorColor()
+            case let v as UITableView:
+                v.indicatorStyle = theme.scrollViewIndicatorStyle()
+                v.backgroundColor = theme.mainBackgroundColor()
+                v.separatorColor = theme.cellSeparatorColor()
             case let v as StatusLable:
                 v.setAttributes()
             case let v as UITextView:
@@ -200,8 +206,6 @@ class ThemeController {
                 v.setTitleColor(theme.bodyTextColor(), forState: .Normal)
                 v.setTitleColor(theme.streamingConnected(), forState: .Selected)
                 v.setTitleColor(theme.streamingError(), forState: .Disabled)
-            case let v as CellSeparator:
-                v.borderLayer.backgroundColor = theme.cellSeparatorColor().CGColor
             case let v as QuotedStatusContainerView:
                 v.layer.borderColor = theme.cellSeparatorColor().CGColor
             case let v as UIActivityIndicatorView:

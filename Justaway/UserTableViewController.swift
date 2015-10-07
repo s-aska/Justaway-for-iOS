@@ -84,8 +84,7 @@ class UserTableViewController: TimelineTableViewController {
     
     func configureView() {
         self.tableView.separatorInset = UIEdgeInsetsZero
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.tableView.backgroundColor = UIColor.clearColor()
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
         
         let nib = UINib(nibName: "TwitterUserCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)

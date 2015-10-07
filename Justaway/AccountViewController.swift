@@ -50,7 +50,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func configureView() {
         tableView.separatorInset = UIEdgeInsetsZero
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
         tableView.delegate = self
         tableView.dataSource = self
         tableView.registerNib(UINib(nibName: "AccountCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)

@@ -71,7 +71,8 @@ class TwitterStatusAdapter: NSObject {
         self.delegate = delegate
         
         tableView.separatorInset = UIEdgeInsetsZero
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        tableView.separatorColor = ThemeController.currentTheme.cellSeparatorColor()
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -119,7 +120,7 @@ class TwitterStatusAdapter: NSObject {
     private func measureQuoted(status: TwitterStatus, fontSize: CGFloat) -> CGFloat {
         if let quotedStatus = status.quotedStatus {
             return ceil(quotedStatus.text.boundingRectWithSize(
-                CGSizeMake((self.layoutHeightCell[.Normal]?.quotedStatusLabel.frame.size.width)!, 0),
+                CGSizeMake((self.layoutHeightCell[.NormalWithQuote]?.quotedStatusLabel.frame.size.width)!, 0),
                 options: NSStringDrawingOptions.UsesLineFragmentOrigin,
                 attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
                 context: nil).size.height)
@@ -390,16 +391,20 @@ extension TwitterStatusAdapter: UITableViewDataSource {
             cell.textHeightConstraint.constant = row.textHeight
         }
         
-        if cell.quotedStatusLabelHeightConstraint.constant != row.quotedTextHeight {
-            cell.quotedStatusLabelHeightConstraint.constant = row.quotedTextHeight
+        if let quotedStatusLabelHeightConstraint = cell.quotedStatusLabelHeightConstraint {
+            if quotedStatusLabelHeightConstraint.constant != row.quotedTextHeight {
+                quotedStatusLabelHeightConstraint.constant = row.quotedTextHeight
+            }
         }
         
         if row.fontSize != cell.statusLabel.font?.pointSize ?? 0 {
             cell.statusLabel.font = UIFont.systemFontOfSize(row.fontSize)
         }
         
-        if row.fontSize != cell.quotedStatusLabel.font?.pointSize ?? 0 {
-            cell.quotedStatusLabel.font = UIFont.systemFontOfSize(row.fontSize)
+        if let quotedStatusLabel = cell.quotedStatusLabel {
+            if row.fontSize != quotedStatusLabel.font?.pointSize ?? 0 {
+                quotedStatusLabel.font = UIFont.systemFontOfSize(row.fontSize)
+            }
         }
         
         if let s = cell.status {

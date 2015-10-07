@@ -141,9 +141,9 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var imageView4HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageView4WidthConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var buttonsStatusTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var buttonsQuotedTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var buttonsImageTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonsStatusTopConstraint: NSLayoutConstraint?
+    @IBOutlet weak var buttonsQuotedTopConstraint: NSLayoutConstraint?
+    @IBOutlet weak var buttonsImageTopConstraint: NSLayoutConstraint?
     
     @IBOutlet weak var replyButton: UIButton!
     @IBOutlet weak var retweetButton: UIButton!
@@ -297,17 +297,17 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 quotedImagesContainerView.removeFromSuperview()
             }
             if layout.hasImage {
-                buttonsImageTopConstraint.priority = UILayoutPriorityDefaultHigh
-                buttonsQuotedTopConstraint.priority = UILayoutPriorityDefaultLow
-                buttonsStatusTopConstraint.priority = UILayoutPriorityDefaultLow
+                buttonsImageTopConstraint?.priority = UILayoutPriorityDefaultHigh
+                buttonsQuotedTopConstraint?.priority = UILayoutPriorityDefaultLow
+                buttonsStatusTopConstraint?.priority = UILayoutPriorityDefaultLow
             } else if layout.hasQuote {
-                buttonsImageTopConstraint.priority = UILayoutPriorityDefaultLow
-                buttonsQuotedTopConstraint.priority = UILayoutPriorityDefaultHigh
-                buttonsStatusTopConstraint.priority = UILayoutPriorityDefaultLow
+                buttonsImageTopConstraint?.priority = UILayoutPriorityDefaultLow
+                buttonsQuotedTopConstraint?.priority = UILayoutPriorityDefaultHigh
+                buttonsStatusTopConstraint?.priority = UILayoutPriorityDefaultLow
             } else {
-                buttonsImageTopConstraint.priority = UILayoutPriorityDefaultLow
-                buttonsQuotedTopConstraint.priority = UILayoutPriorityDefaultLow
-                buttonsStatusTopConstraint.priority = UILayoutPriorityDefaultHigh
+                buttonsImageTopConstraint?.priority = UILayoutPriorityDefaultLow
+                buttonsQuotedTopConstraint?.priority = UILayoutPriorityDefaultLow
+                buttonsStatusTopConstraint?.priority = UILayoutPriorityDefaultHigh
             }
             setNeedsLayout()
             layoutIfNeeded()
