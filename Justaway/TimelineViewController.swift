@@ -195,29 +195,25 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         EventBox.onMainThread(self, name: Twitter.Event.StreamingStatusChanged.rawValue) { _ in
             switch Twitter.connectionStatus {
             case .CONNECTED:
-                self.sideMenuViewController.streamingButton?.setTitle("Streaming connected", forState: UIControlState.Normal)
+                self.sideMenuViewController.streamingButton?.setTitle("Streaming / connected", forState: UIControlState.Normal)
                 self.streamingButton.enabled = true
                 self.streamingButton.selected = true
             case .CONNECTING:
-                self.sideMenuViewController.streamingButton?.setTitle("Streaming connecting...", forState: UIControlState.Normal)
-//                self.streamingStatusLabel.text = "connecting..."
+                self.sideMenuViewController.streamingButton?.setTitle("Streaming / connecting...", forState: UIControlState.Normal)
                 self.streamingButton.enabled = true
                 self.streamingButton.selected = false
             case .DISCONNECTED:
                 if Twitter.enableStreaming {
-                    self.sideMenuViewController.streamingButton?.setTitle("Streaming disconnected", forState: UIControlState.Normal)
-//                    self.streamingStatusLabel.text = "disconnected"
+                    self.sideMenuViewController.streamingButton?.setTitle("Streaming / disconnected", forState: UIControlState.Normal)
                     self.streamingButton.enabled = false
                     self.streamingButton.selected = false
                 } else {
-                    self.sideMenuViewController.streamingButton?.setTitle("Streaming off", forState: UIControlState.Normal)
-//                    self.streamingStatusLabel.text = "streaming off"
+                    self.sideMenuViewController.streamingButton?.setTitle("Streaming / off", forState: UIControlState.Normal)
                     self.streamingButton.enabled = true
                     self.streamingButton.selected = false
                 }
             case .DISCONNECTING:
-                self.sideMenuViewController.streamingButton?.setTitle("Streaming disconnecting...", forState: UIControlState.Normal)
-//                self.streamingStatusLabel.text = "disconnecting..."
+                self.sideMenuViewController.streamingButton?.setTitle("Streaming / disconnecting...", forState: UIControlState.Normal)
                 self.streamingButton.enabled = true
                 self.streamingButton.selected = false
             }
