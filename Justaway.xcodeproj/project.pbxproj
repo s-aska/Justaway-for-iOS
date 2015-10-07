@@ -186,6 +186,7 @@
 		6A5357D91A7429A600291E95 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5357D81A7429A600291E95 /* NotificationsViewController.swift */; };
 		6A56F5C81B19EB6C0058D6DD /* AddAccountAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A56F5C71B19EB6C0058D6DD /* AddAccountAlert.swift */; };
 		6A56F5CA1B19ECDC0058D6DD /* MessageAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A56F5C91B19ECDC0058D6DD /* MessageAlert.swift */; };
+		6A7255741BC59EFF00A41020 /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		6A81CF1E1BC406E500EBE567 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		6A81CF211BC406F400EBE567 /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		6A81CF221BC4127A00EBE567 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -949,6 +950,7 @@
 				384DE95A1BBAC9840011AF6E /* TwitterListCell.xib in Resources */,
 				384DE9791BBACA140011AF6E /* AccountViewController.xib in Resources */,
 				384DE9541BBAC9810011AF6E /* TalkViewController.xib in Resources */,
+				6A7255741BC59EFF00A41020 /* SideMenuViewController.xib in Resources */,
 				384DE94E1BBAC9810011AF6E /* ImageViewController.xib in Resources */,
 				384DE97B1BBACA140011AF6E /* GeneralSettingsViewController.xib in Resources */,
 				384DE9521BBAC9810011AF6E /* ProfileViewController.xib in Resources */,

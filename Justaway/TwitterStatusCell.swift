@@ -106,7 +106,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var quotedNameLabel: DisplayNameLable!
     @IBOutlet weak var quotedScreenNameLabel: ScreenNameLable!
     @IBOutlet weak var quotedProtectedLabel: UILabel!
-    @IBOutlet weak var quotedStatusLabel: StatusLable!
+    @IBOutlet weak var quotedStatusLabel: StatusLable?
     @IBOutlet weak var quotedStatusLabelHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var quotedImagesContainerView: UIView!
@@ -261,7 +261,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
             if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
                 let font = UIFont.systemFontOfSize(CGFloat(fontSize.floatValue))
                 self.statusLabel.font = font
-                self.quotedStatusLabel.font = font
+                self.quotedStatusLabel?.font = font
             }
         }
         
@@ -366,7 +366,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
             
             quotedNameLabel.text = quotedStatus.user.name
             quotedScreenNameLabel.text = "@" + quotedStatus.user.screenName
-            quotedStatusLabel.setStatus(quotedStatus)
+            quotedStatusLabel?.setStatus(quotedStatus)
             quotedProtectedLabel.hidden = quotedStatus.user.isProtected ? false : true
             
             if quotedStatus.media.count > 0 {

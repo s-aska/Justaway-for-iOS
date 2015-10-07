@@ -32,7 +32,7 @@ class ImageLoaderClient {
             .build()
         
         static let titleIconOptions = Pinwheel.DisplayOptions.Builder()
-            .addFilter(RoundedFilter(3, w: 20, h: 20), hook: .BeforeMemory)
+            .addFilter(RoundedFilter(3, w: 30, h: 30), hook: .BeforeMemory)
             .displayer(Pinwheel.FadeInDisplayer())
             .build()
     }

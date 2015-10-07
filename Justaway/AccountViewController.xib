@@ -3,6 +3,11 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="fontello.ttf">
+            <string>fontello</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccountViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
@@ -25,16 +30,16 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M3b-2x-uXn" customClass="MenuShadowView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vwk-HG-Wc6" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="-0.5" width="71" height="51"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="THI-X7-56L" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="2" width="53" height="47"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="17"/>
                             <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
-                            <state key="normal" title="Add">
+                            <state key="normal" title="左">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="left:" destination="-1" eventType="touchUpInside" id="Ay3-62-DkY"/>
+                                <action selector="close:" destination="-1" eventType="touchUpInside" id="EIA-rP-BVl"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ARA-5i-TJg" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
@@ -49,13 +54,27 @@
                                 <action selector="right:" destination="-1" eventType="touchUpInside" id="2J2-EE-3C7"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vwk-HG-Wc6" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="53" y="0.0" width="71" height="51"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                            <state key="normal" title="Add">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="left:" destination="-1" eventType="touchUpInside" id="Ay3-62-DkY"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="1RF-xn-tNL"/>
                         <constraint firstAttribute="trailing" secondItem="ARA-5i-TJg" secondAttribute="trailing" id="J66-lY-KlA"/>
                         <constraint firstAttribute="centerY" secondItem="Vwk-HG-Wc6" secondAttribute="centerY" id="LWC-1j-xkE"/>
-                        <constraint firstItem="Vwk-HG-Wc6" firstAttribute="leading" secondItem="M3b-2x-uXn" secondAttribute="leading" id="soN-mb-paq"/>
+                        <constraint firstItem="THI-X7-56L" firstAttribute="centerY" secondItem="M3b-2x-uXn" secondAttribute="centerY" id="dCf-oZ-WCh"/>
+                        <constraint firstItem="Vwk-HG-Wc6" firstAttribute="leading" secondItem="THI-X7-56L" secondAttribute="trailing" id="dU0-x6-Wtw"/>
+                        <constraint firstItem="THI-X7-56L" firstAttribute="leading" secondItem="M3b-2x-uXn" secondAttribute="leading" id="py8-PB-CdL"/>
                         <constraint firstAttribute="centerY" secondItem="ARA-5i-TJg" secondAttribute="centerY" id="wdd-pJ-Dd2"/>
                     </constraints>
                 </view>

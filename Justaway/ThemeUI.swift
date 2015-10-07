@@ -21,6 +21,24 @@ class MenuShadowView: MenuView {
         self.layer.shadowRadius = 1.0
     }
 }
+class SideMenuShadowView: MenuShadowView {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.layer.shadowColor = UIColor.blackColor().CGColor
+        self.layer.shadowOffset = CGSizeMake(2.0, 0)
+        self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
+        self.layer.shadowRadius = 1.0
+    }
+}
+class NavigationShadowView: MenuView {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.layer.shadowColor = UIColor.blackColor().CGColor
+        self.layer.shadowOffset = CGSizeMake(0, 2.0)
+        self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
+        self.layer.shadowRadius = 1.0
+    }
+}
 class BackgroundView: UIView {}
 class BackgroundShadowView: BackgroundView {
     override func awakeFromNib() {
@@ -133,7 +151,7 @@ class StatusLable: UITextView {
         let attributedText = NSMutableAttributedString(string: text)
         attributedText.addAttribute(NSForegroundColorAttributeName, value: ThemeController.currentTheme.bodyTextColor(), range: NSMakeRange(0, text.utf16.count))
         if let font = font {
-            attributedText.addAttribute(NSFontAttributeName, value: font, range: NSMakeRange(0, text.utf16.count))
+            attributedText.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(font.pointSize), range: NSMakeRange(0, text.utf16.count))
         }
         for link in links {
             attributedText.addAttribute(NSForegroundColorAttributeName, value: ThemeController.currentTheme.menuSelectedTextColor(), range: link.range)

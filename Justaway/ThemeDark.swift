@@ -13,6 +13,7 @@ class ThemeDark: Theme {
     func name() -> String { return "Dark" }
     
     func statusBarStyle() -> UIStatusBarStyle { return .LightContent }
+    func statusBarBackgroundColor() -> UIColor { return UIColor(red: 0.90, green: 0.90, blue: 0.90, alpha: 0.9) }
     func activityIndicatorStyle() -> UIActivityIndicatorViewStyle { return .White }
     func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle { return .White }
     

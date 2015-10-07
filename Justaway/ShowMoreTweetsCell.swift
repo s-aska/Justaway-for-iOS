@@ -15,6 +15,9 @@ class ShowMoreTweetsCell: BackgroundTableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        separatorInset = UIEdgeInsetsZero
+        layoutMargins = UIEdgeInsetsZero
+        preservesSuperviewLayoutMargins = false
         indicator.activityIndicatorViewStyle = ThemeController.currentTheme.activityIndicatorStyle()
     }
 }

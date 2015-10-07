@@ -120,7 +120,7 @@ class TwitterStatusAdapter: NSObject {
     private func measureQuoted(status: TwitterStatus, fontSize: CGFloat) -> CGFloat {
         if let quotedStatus = status.quotedStatus {
             return ceil(quotedStatus.text.boundingRectWithSize(
-                CGSizeMake((self.layoutHeightCell[.NormalWithQuote]?.quotedStatusLabel.frame.size.width)!, 0),
+                CGSizeMake((self.layoutHeightCell[.NormalWithQuote]?.quotedStatusLabel!.frame.size.width)!, 0),
                 options: NSStringDrawingOptions.UsesLineFragmentOrigin,
                 attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
                 context: nil).size.height)
@@ -146,7 +146,7 @@ class TwitterStatusAdapter: NSObject {
         if let tableView = scrollView as? UITableView {
             renderImages(tableView)
         }
-        isTop = scrollView.contentOffset.y == 0 ? true : false
+        isTop = scrollView.contentOffset.y <= scrollView.contentInset.top ? true : false
         let y = scrollView.contentOffset.y + scrollView.bounds.size.height - scrollView.contentInset.bottom
         let h = scrollView.contentSize.height
         let f = h - y
@@ -160,7 +160,7 @@ class TwitterStatusAdapter: NSObject {
     
     func scrollToTop(scrollView: UIScrollView) {
         Pinwheel.suspend = true
-        scrollView.setContentOffset(CGPointZero, animated: true)
+        scrollView.setContentOffset(CGPointMake(0, -scrollView.contentInset.top), animated: true)
     }
     
     func renderData(tableView: UITableView, var statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
@@ -194,7 +194,7 @@ class TwitterStatusAdapter: NSObject {
         // println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count)")
         
         if let lastCell = tableView.visibleCells.last {
-            let isTop = tableView.contentOffset.y == 0 && mode == .TOP
+            let isTop = tableView.contentOffset.y <= tableView.contentInset.top && mode == .TOP
             let offset = lastCell.frame.origin.y - tableView.contentOffset.y
             UIView.setAnimationsEnabled(false)
             tableView.beginUpdates()
@@ -222,7 +222,7 @@ class TwitterStatusAdapter: NSObject {
             UIView.setAnimationsEnabled(true)
             if isTop {
                 UIView.animateWithDuration(0.3, animations: { _ in
-                    tableView.contentOffset = CGPointZero
+                    tableView.contentOffset = CGPointMake(0, -tableView.contentInset.top)
                     }, completion: { _ in
                         self.scrollEnd(tableView)
                         self.renderDataCallback?(statuses: statuses, mode: mode)

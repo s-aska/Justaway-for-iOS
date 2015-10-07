@@ -18,6 +18,11 @@ class SideMenuViewController: UIViewController {
     @IBOutlet weak var screenNameLabel: UILabel!
     @IBOutlet weak var sideViewLeftConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var disableSleepSwitch: UISwitch!
+    @IBOutlet weak var streamingButton: MenuButton?
+    
+    var settingsViewController: SettingsViewController?
+    
     var user: TwitterUser?
     
     override var nibName: String {
@@ -64,6 +69,7 @@ class SideMenuViewController: UIViewController {
         displayNameLabel.text = user.name
         screenNameLabel.text = "@" + user.screenName
         ImageLoaderClient.displaySideMenuUserIcon(user.profileImageURL, imageView: iconImageView)
+        disableSleepSwitch.on = GenericSettings.get().disableSleep
         
         Async.main(after: 0.1) { () -> Void in
             self.view.hidden = false
@@ -85,4 +91,44 @@ class SideMenuViewController: UIViewController {
         })
     }
     
+    @IBAction func accountSettings(sender: UIButton) {
+        AccountViewController.show()
+        hide()
+    }
+    
+    @IBAction func openProfile(sender: UIButton) {
+        ProfileViewController.show(user!)
+        hide()
+    }
+    
+    @IBAction func disableSleep(sender: UISwitch) {
+        GenericSettings.update(sender.on)
+        UIApplication.sharedApplication().idleTimerDisabled = sender.on
+    }
+    
+    @IBAction func disableSleepButton(sender: UIButton) {
+        disableSleepSwitch.on = disableSleepSwitch.on ? false : true
+        GenericSettings.update(disableSleepSwitch.on)
+        UIApplication.sharedApplication().idleTimerDisabled = disableSleepSwitch.on
+    }
+    
+    @IBAction func streaming(sender: UIButton) {
+        hide()
+        StreamingAlert.show(sender)
+    }
+    
+    @IBAction func displaySettings(sender: UIButton) {
+        settingsViewController?.show()
+        settingsViewController?.showThemeSettingsView(sender)
+        hide()
+    }
+    
+    @IBAction func licenses(sender: UIButton) {
+        // FIXME
+    }
+    
+    @IBAction func sendFeedback(sender: UIButton) {
+        EditorViewController.show(" #justaway", range: NSMakeRange(0, 0), inReplyToStatus: nil)
+        hide()
+    }
 }

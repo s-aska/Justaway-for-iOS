@@ -15,10 +15,8 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var containerViewBottomConstraint: NSLayoutConstraint!
     
     var currentSettingsView: UIView!
-    var generalSettingsViewController: GeneralSettingsViewController!
     var fontSizeViewController: FontSizeViewController!
     var themeViewController: ThemeViewController!
-    var accountViewController: AccountViewController!
     
     override var nibName: String {
         return "SettingsViewController"
@@ -52,10 +50,6 @@ class SettingsViewController: UIViewController {
         
         containerViewBottomConstraint.constant = -menuHeight
         
-        generalSettingsViewController = GeneralSettingsViewController()
-        generalSettingsViewController.view.hidden = true
-        ViewTools.addSubviewWithEqual(view, view: generalSettingsViewController.view, top: nil, right: 0.0, bottom: menuHeight, left: 0.0)
-        
         fontSizeViewController = FontSizeViewController()
         fontSizeViewController.view.hidden = true
         ViewTools.addSubviewWithEqual(view, view: fontSizeViewController.view, top: nil, right: 0.0, bottom: menuHeight, left: 0.0)
@@ -63,10 +57,6 @@ class SettingsViewController: UIViewController {
         themeViewController = ThemeViewController()
         themeViewController.view.hidden = true
         ViewTools.addSubviewWithEqual(view, view: themeViewController.view, top: nil, right: 0.0, bottom: menuHeight, left: 0.0)
-        
-        accountViewController = AccountViewController()
-        accountViewController.view.hidden = true
-        ViewTools.addSubviewWithEqual(view, view: accountViewController.view, top: 0.0, right: 0.0, bottom: menuHeight, left: 0.0)
     }
     
     // MARK: - Actions
@@ -75,20 +65,12 @@ class SettingsViewController: UIViewController {
         hide()
     }
     
-    @IBAction func generalSettingsViewController(sender: UIButton) {
-        showSettingsView(generalSettingsViewController.view)
-    }
-    
     @IBAction func showFontSizeSettingsView(sender: UIButton) {
         showSettingsView(fontSizeViewController.view)
     }
     
     @IBAction func showThemeSettingsView(sender: UIButton) {
         showSettingsView(themeViewController.view)
-    }
-    
-    @IBAction func showAccountViewController(sender: UIButton) {
-        showSettingsView(accountViewController.view)
     }
     
     func showSettingsView(view: UIView) {

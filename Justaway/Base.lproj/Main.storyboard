@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1I1-JO-Sau">
-                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </view>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ujo-jJ-LAP">
                                 <rect key="frame" x="166" y="275" width="268" height="51"/>
@@ -33,7 +34,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="Ujo-jJ-LAP" secondAttribute="centerY" id="2ng-yj-mOA"/>
-                            <constraint firstItem="1I1-JO-Sau" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="FaO-42-KHw"/>
+                            <constraint firstItem="1I1-JO-Sau" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="Pcd-12-RDs"/>
                             <constraint firstAttribute="centerX" secondItem="Ujo-jJ-LAP" secondAttribute="centerX" id="VRJ-N9-1fQ"/>
                             <constraint firstAttribute="trailing" secondItem="1I1-JO-Sau" secondAttribute="trailing" id="YVr-5T-Nzv"/>
                             <constraint firstAttribute="bottom" secondItem="1I1-JO-Sau" secondAttribute="bottom" id="ghL-Ml-FdC"/>

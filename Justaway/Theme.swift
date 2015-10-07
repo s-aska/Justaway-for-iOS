@@ -89,6 +89,8 @@ class ThemeController {
         ImagePickerCollectionView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         BackgroundView.appearance().backgroundColor = theme.mainBackgroundColor()
         CurrentTabMaskView.appearance().backgroundColor = theme.menuTextColor()
+        NavigationShadowView.appearance().backgroundColor = theme.menuBackgroundColor().colorWithAlphaComponent(0.9)
+        NavigationShadowView.appearance().layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         MenuView.appearance().backgroundColor = theme.menuBackgroundColor()
         MenuShadowView.appearance().layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         MenuButton.appearance().setTitleColor(theme.menuTextColor(), forState: .Normal)
@@ -173,6 +175,9 @@ class ThemeController {
                 v.backgroundColor = theme.menuTextColor()
             case let v as MenuShadowView:
                 v.backgroundColor = theme.menuBackgroundColor()
+                v.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
+            case let v as NavigationShadowView:
+                v.backgroundColor = theme.menuBackgroundColor().colorWithAlphaComponent(0.9)
                 v.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
             case let v as MenuView:
                 v.backgroundColor = theme.menuBackgroundColor()

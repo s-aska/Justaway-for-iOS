@@ -8,8 +8,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var scrollWrapperView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var iconImageView: UIImageView!
-    @IBOutlet weak var streamingStatusLabel: UILabel!
-    @IBOutlet weak var streamingView: UIView!
+//    @IBOutlet weak var streamingStatusLabel: UILabel!
+//    @IBOutlet weak var streamingView: UIView!
     @IBOutlet weak var streamingButton: StreamingButton!
     @IBOutlet weak var tabWraperView: UIView!
     @IBOutlet weak var tabCurrentMaskLeftConstraint: NSLayoutConstraint!
@@ -66,6 +66,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         settingsViewController = SettingsViewController()
         sideMenuViewController = SideMenuViewController()
         
+        sideMenuViewController.settingsViewController = settingsViewController
+        
         ViewTools.addSubviewWithEqual(self.view, view: settingsViewController.view)
         
         if let account = AccountSettingsStore.get() {
@@ -85,6 +87,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         
         for i in 0 ... 2 {
             let vc: TimelineTableViewController = i == 0 ? HomeTimelineTableViewController() : i == 1 ? NotificationsViewController() : FavoritesTableViewController()
+            vc.tableView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
             vc.view.frame = CGRectMake(0, 0, size.width, size.height)
             let view = UIView(frame: CGRectMake(size.width * CGFloat(i), 0, size.width, size.height))
             view.addSubview(vc.view)
@@ -93,6 +96,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             
             if let favoritesTableViewController = vc as? FavoritesTableViewController {
                 favoritesTableViewController.userID = userID
+            }
+            
+            if let statusTableViewController = vc as? StatusTableViewController {
+                statusTableViewController.adapter.scrollEnd(vc.tableView)
             }
             
             let button = MenuButton(type: UIButtonType.System)
@@ -133,10 +140,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         iconGesture.numberOfTapsRequired = 1
         iconImageView.addGestureRecognizer(iconGesture)
         
-        streamingView.userInteractionEnabled = true
-        let gesture = UITapGestureRecognizer(target: self, action: "streamingSwitch:")
-        gesture.numberOfTapsRequired = 1
-        streamingView.addGestureRecognizer(gesture)
+//        streamingView.userInteractionEnabled = true
+//        let gesture = UITapGestureRecognizer(target: self, action: "streamingSwitch:")
+//        gesture.numberOfTapsRequired = 1
+//        streamingView.addGestureRecognizer(gesture)
     }
     
     func configureEvent() {
@@ -188,25 +195,29 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         EventBox.onMainThread(self, name: Twitter.Event.StreamingStatusChanged.rawValue) { _ in
             switch Twitter.connectionStatus {
             case .CONNECTED:
-                self.streamingStatusLabel.text = "connected"
+                self.sideMenuViewController.streamingButton?.setTitle("Streaming connected", forState: UIControlState.Normal)
                 self.streamingButton.enabled = true
                 self.streamingButton.selected = true
             case .CONNECTING:
-                self.streamingStatusLabel.text = "connecting..."
+                self.sideMenuViewController.streamingButton?.setTitle("Streaming connecting...", forState: UIControlState.Normal)
+//                self.streamingStatusLabel.text = "connecting..."
                 self.streamingButton.enabled = true
                 self.streamingButton.selected = false
             case .DISCONNECTED:
                 if Twitter.enableStreaming {
-                    self.streamingStatusLabel.text = "disconnected"
+                    self.sideMenuViewController.streamingButton?.setTitle("Streaming disconnected", forState: UIControlState.Normal)
+//                    self.streamingStatusLabel.text = "disconnected"
                     self.streamingButton.enabled = false
                     self.streamingButton.selected = false
                 } else {
-                    self.streamingStatusLabel.text = "streaming off"
+                    self.sideMenuViewController.streamingButton?.setTitle("Streaming off", forState: UIControlState.Normal)
+//                    self.streamingStatusLabel.text = "streaming off"
                     self.streamingButton.enabled = true
                     self.streamingButton.selected = false
                 }
             case .DISCONNECTING:
-                self.streamingStatusLabel.text = "disconnecting..."
+                self.sideMenuViewController.streamingButton?.setTitle("Streaming disconnecting...", forState: UIControlState.Normal)
+//                self.streamingStatusLabel.text = "disconnecting..."
                 self.streamingButton.enabled = true
                 self.streamingButton.selected = false
             }
@@ -301,10 +312,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func streamingSwitch(sender: UIView) {
-        StreamingAlert.show(sender)
-    }
-    
     func tabButton(sender: UITapGestureRecognizer) {
         if let page = sender.view?.tag {
             if currentPage == page {
@@ -321,6 +328,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 })
             }
         }
+    }
+    
+    @IBAction func streamingSwitch(sender: UIButton) {
+        StreamingAlert.show(sender)
     }
     
     @IBAction func showEditor(sender: UIButton) {

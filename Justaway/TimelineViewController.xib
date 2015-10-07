@@ -7,7 +7,6 @@
         <mutableArray key="fontello.ttf">
             <string>fontello</string>
             <string>fontello</string>
-            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -17,8 +16,6 @@
                 <outlet property="scrollView" destination="QzD-8n-VHR" id="uQa-aB-Crg"/>
                 <outlet property="scrollWrapperView" destination="YQA-1l-jex" id="Qcu-44-ZzZ"/>
                 <outlet property="streamingButton" destination="Hgv-8Y-sHi" id="sT9-FX-Plk"/>
-                <outlet property="streamingStatusLabel" destination="i4e-3u-LDz" id="AzD-uC-8w0"/>
-                <outlet property="streamingView" destination="zsL-HL-Z8V" id="g3Z-kd-dON"/>
                 <outlet property="tabCurrentMaskLeftConstraint" destination="whI-qc-OmR" id="lhK-Wl-2aN"/>
                 <outlet property="tabWraperView" destination="KCl-rs-HPg" id="iiq-OE-Wsx"/>
                 <outlet property="view" destination="iN0-l3-epB" id="diP-QV-l6C"/>
@@ -30,10 +27,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQA-1l-jex">
-                    <rect key="frame" x="0.0" y="25" width="600" height="525"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
                     <subviews>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QzD-8n-VHR" customClass="BackgroundScrollView" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="525"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
                         </scrollView>
                     </subviews>
                     <constraints>
@@ -46,18 +43,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rWY-A3-4yL" customClass="MenuShadowView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Wb-6D-iQt" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="481" y="0.0" width="59" height="50"/>
-                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
-                            <state key="normal" title="✡">
-                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="showSettings:" destination="-1" eventType="touchUpInside" id="nkD-q9-hkf"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jEn-1F-PMd" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="540" y="0.0" width="60" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
@@ -71,10 +56,10 @@
                             </connections>
                         </button>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iuO-p3-lF5">
-                            <rect key="frame" x="0.0" y="0.0" width="481" height="50"/>
+                            <rect key="frame" x="0.0" y="0.0" width="540" height="50"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KCl-rs-HPg">
-                                    <rect key="frame" x="0.0" y="0.0" width="481" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="540" height="50"/>
                                     <subviews>
                                         <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mmk-es-vLE" customClass="CurrentTabMaskView" customModule="Justaway" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="58" height="50"/>
@@ -104,97 +89,68 @@
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="8Wb-6D-iQt" firstAttribute="leading" secondItem="iuO-p3-lF5" secondAttribute="trailing" id="Cy8-0Z-kCe"/>
-                        <constraint firstItem="jEn-1F-PMd" firstAttribute="leading" secondItem="8Wb-6D-iQt" secondAttribute="trailing" id="TVv-ac-3mM"/>
                         <constraint firstItem="iuO-p3-lF5" firstAttribute="top" secondItem="rWY-A3-4yL" secondAttribute="top" id="UOc-gr-aRE"/>
                         <constraint firstAttribute="centerY" secondItem="jEn-1F-PMd" secondAttribute="centerY" id="WU2-H7-AXv"/>
                         <constraint firstAttribute="bottom" secondItem="iuO-p3-lF5" secondAttribute="bottom" id="bcC-PS-Uoa"/>
                         <constraint firstItem="iuO-p3-lF5" firstAttribute="leading" secondItem="rWY-A3-4yL" secondAttribute="leading" id="e1O-Ne-e0p"/>
-                        <constraint firstAttribute="centerY" secondItem="8Wb-6D-iQt" secondAttribute="centerY" id="lVV-F5-OiX"/>
+                        <constraint firstItem="jEn-1F-PMd" firstAttribute="leading" secondItem="iuO-p3-lF5" secondAttribute="trailing" id="k27-z8-U76"/>
                         <constraint firstAttribute="trailing" secondItem="jEn-1F-PMd" secondAttribute="trailing" id="n6y-Pf-MlQ"/>
                         <constraint firstAttribute="height" constant="50" id="nmZ-Xw-cE3"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YBJ-Kd-WdX" customClass="BackgroundView" customModule="Justaway" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="25"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="25" id="dlS-Qs-FnK"/>
-                    </constraints>
-                </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eI8-Uh-DCZ">
-                    <rect key="frame" x="7" y="0.0" width="20" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="GTR-Qz-wng"/>
-                        <constraint firstAttribute="width" constant="20" id="nB9-NZ-y6W"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="thv-ey-s15"/>
-                        <constraint firstAttribute="height" constant="20" id="znd-3r-eFZ"/>
-                    </constraints>
-                </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X0p-bW-fE8" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
-                    <rect key="frame" x="32" y="0.0" width="38.5" height="17"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wty-Yr-sEa">
-                    <rect key="frame" x="263" y="-4" width="74" height="27"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <state key="normal" title="pocket cover">
-                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="showPocketCover:" destination="-1" eventType="touchUpInside" id="u42-Rt-JlH"/>
-                    </connections>
-                </button>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zsL-HL-Z8V">
-                    <rect key="frame" x="490" y="0.0" width="110" height="40"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YBJ-Kd-WdX" customClass="NavigationShadowView" customModule="Justaway" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
                     <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eI8-Uh-DCZ">
+                            <rect key="frame" x="8" y="22" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="nB9-NZ-y6W"/>
+                                <constraint firstAttribute="height" constant="30" id="znd-3r-eFZ"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X0p-bW-fE8" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="276" y="29" width="48.5" height="21.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hgv-8Y-sHi" customClass="StreamingButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="6.5" y="-1" width="30" height="25"/>
-                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="12"/>
+                            <rect key="frame" x="549" y="12" width="51" height="52"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="22"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                             <state key="normal" title="雷">
                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="streamingSwitch:" destination="-1" eventType="touchUpInside" id="ldh-ZW-ejT"/>
+                            </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="streaming off" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i4e-3u-LDz" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="29.5" y="3" width="75.5" height="14.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                     </subviews>
+                    <color key="backgroundColor" white="1" alpha="0.90000000000000002" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="i4e-3u-LDz" firstAttribute="top" secondItem="zsL-HL-Z8V" secondAttribute="top" constant="3" id="Cvh-dd-uDf"/>
-                        <constraint firstAttribute="width" constant="110" id="WsF-YJ-4F8"/>
-                        <constraint firstAttribute="trailing" secondItem="i4e-3u-LDz" secondAttribute="trailing" constant="5" id="bnX-aB-heS"/>
-                        <constraint firstItem="Hgv-8Y-sHi" firstAttribute="top" secondItem="zsL-HL-Z8V" secondAttribute="top" constant="-1" id="hTL-4r-2Ac"/>
-                        <constraint firstItem="i4e-3u-LDz" firstAttribute="leading" secondItem="Hgv-8Y-sHi" secondAttribute="trailing" constant="-7" id="kN8-7c-I2v"/>
-                        <constraint firstAttribute="height" constant="40" id="kNz-iZ-hxS"/>
+                        <constraint firstItem="X0p-bW-fE8" firstAttribute="centerX" secondItem="YBJ-Kd-WdX" secondAttribute="centerX" id="7em-sC-HZo"/>
+                        <constraint firstAttribute="trailing" secondItem="Hgv-8Y-sHi" secondAttribute="trailing" id="BtJ-Dn-rbJ"/>
+                        <constraint firstItem="eI8-Uh-DCZ" firstAttribute="leading" secondItem="YBJ-Kd-WdX" secondAttribute="leading" constant="8" id="bS3-BS-PM9"/>
+                        <constraint firstAttribute="height" constant="60" id="dlS-Qs-FnK"/>
+                        <constraint firstItem="eI8-Uh-DCZ" firstAttribute="top" secondItem="YBJ-Kd-WdX" secondAttribute="top" constant="22" id="hki-eR-kS6"/>
+                        <constraint firstItem="Hgv-8Y-sHi" firstAttribute="top" secondItem="YBJ-Kd-WdX" secondAttribute="top" constant="12" id="tj7-UM-Znu"/>
+                        <constraint firstItem="X0p-bW-fE8" firstAttribute="centerY" secondItem="YBJ-Kd-WdX" secondAttribute="centerY" constant="10" id="vDk-V3-Z96"/>
                     </constraints>
                 </view>
             </subviews>
             <constraints>
-                <constraint firstItem="eI8-Uh-DCZ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="8TP-TF-B2f"/>
-                <constraint firstItem="X0p-bW-fE8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="9np-gJ-i13"/>
                 <constraint firstItem="YQA-1l-jex" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CIY-IZ-7A9"/>
                 <constraint firstAttribute="trailing" secondItem="rWY-A3-4yL" secondAttribute="trailing" id="Csh-2v-XSw"/>
                 <constraint firstItem="rWY-A3-4yL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Dse-Nr-pj0"/>
                 <constraint firstItem="YBJ-Kd-WdX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="GYv-WM-02G"/>
                 <constraint firstItem="YBJ-Kd-WdX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="H6o-wN-CCs"/>
-                <constraint firstItem="Wty-Yr-sEa" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="HPB-MA-uRh"/>
-                <constraint firstItem="YQA-1l-jex" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="25" id="HTj-dX-PrM"/>
+                <constraint firstItem="YQA-1l-jex" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="HTj-dX-PrM"/>
                 <constraint firstItem="rWY-A3-4yL" firstAttribute="top" secondItem="YQA-1l-jex" secondAttribute="bottom" id="L5Y-T6-0Dv"/>
-                <constraint firstItem="Wty-Yr-sEa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="-4" id="QcO-ys-NF3"/>
                 <constraint firstAttribute="bottom" secondItem="rWY-A3-4yL" secondAttribute="bottom" id="Rl2-co-V9R"/>
-                <constraint firstItem="X0p-bW-fE8" firstAttribute="leading" secondItem="eI8-Uh-DCZ" secondAttribute="trailing" constant="5" id="RnE-KM-t8m"/>
                 <constraint firstAttribute="trailing" secondItem="YBJ-Kd-WdX" secondAttribute="trailing" id="Y4q-tr-NPQ"/>
-                <constraint firstItem="zsL-HL-Z8V" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="b9n-bJ-3gg"/>
-                <constraint firstAttribute="trailing" secondItem="zsL-HL-Z8V" secondAttribute="trailing" id="bHS-VD-RiI"/>
                 <constraint firstAttribute="trailing" secondItem="YQA-1l-jex" secondAttribute="trailing" id="cl5-qc-HBy"/>
-                <constraint firstItem="eI8-Uh-DCZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="7" id="gcR-LL-7aJ"/>
             </constraints>
             <point key="canvasLocation" x="412" y="336"/>
         </view>

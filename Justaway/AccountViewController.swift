@@ -12,6 +12,15 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         static let tableViewCellIdentifier = "Cell"
     }
     
+    struct Constants {
+        static let duration: Double = 0.2
+        static let delay: NSTimeInterval = 0
+    }
+    
+    struct Static {
+        static let instance = AccountViewController()
+    }
+    
     // MARK: Properties
     
     @IBOutlet weak var tableView: UITableView!
@@ -57,6 +66,11 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         tableView.addSubview(refreshControl)
         
         refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
+        
+        let swipe = UISwipeGestureRecognizer(target: self, action: "hide")
+        swipe.numberOfTouchesRequired = 1
+        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        tableView.addGestureRecognizer(swipe)
         
         settings = AccountSettingsStore.get()
     }
@@ -120,6 +134,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             self.tableView.reloadData()
             AccountSettingsStore.save(self.settings!)
             EventBox.post(EventAccountChanged)
+            hide()
         }
     }
     
@@ -145,6 +160,10 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // MARK: - Actions
     
+    @IBAction func close(sender: AnyObject) {
+        hide()
+    }
+    
     @IBAction func left(sender: UIButton) {
         if (tableView.editing == true) {
             cancel()
@@ -159,6 +178,18 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         } else {
             edit()
         }
+    }
+    
+    func hide() {
+        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseOut, animations: {
+            self.view.frame = CGRectMake(
+                self.view.frame.size.width,
+                self.view.frame.origin.y,
+                self.view.frame.size.width,
+                self.view.frame.size.height)
+            }, completion: { finished in
+                self.view.removeFromSuperview()
+        })
     }
     
     func initEditing() {
@@ -192,5 +223,22 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func refresh() {
         Twitter.refreshAccounts([])
+    }
+    
+    class func show() {
+        if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
+            Static.instance.view.hidden = true
+            vc.view.addSubview(Static.instance.view)
+            Static.instance.view.frame = CGRectMake(vc.view.frame.width, 20, vc.view.frame.width, vc.view.frame.height - 20)
+            Static.instance.view.hidden = false
+            
+            UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
+                Static.instance.view.frame = CGRectMake(0,
+                    20,
+                    vc.view.frame.size.width,
+                    vc.view.frame.size.height - 20)
+                }) { (finished) -> Void in
+            }
+        }
     }
 }
