@@ -18,6 +18,7 @@
 		3805DEA81A67F34900FBD015 /* ThemeMonokai.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEA71A67F34900FBD015 /* ThemeMonokai.swift */; };
 		3805DEAA1A67F52400FBD015 /* ThemeSolarizedLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEA91A67F52400FBD015 /* ThemeSolarizedLight.swift */; };
 		3805DEAC1A67F63300FBD015 /* ThemeSolarizedDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEAB1A67F63300FBD015 /* ThemeSolarizedDark.swift */; };
+		38105F8A1BC554C000CEF2A7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38105F891BC554C000CEF2A7 /* LaunchScreen.xib */; settings = {ASSET_TAGS = (); }; };
 		3815C68A1B7C97DF0014B0A2 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */; };
 		3815C68B1B7C97DF0014B0A2 /* OAuthSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		381E6E0719D98A7300139654 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E0619D98A7300139654 /* AccountSettings.swift */; };
@@ -289,6 +290,7 @@
 		3805DEA71A67F34900FBD015 /* ThemeMonokai.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeMonokai.swift; sourceTree = "<group>"; };
 		3805DEA91A67F52400FBD015 /* ThemeSolarizedLight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeSolarizedLight.swift; sourceTree = "<group>"; };
 		3805DEAB1A67F63300FBD015 /* ThemeSolarizedDark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeSolarizedDark.swift; sourceTree = "<group>"; };
+		38105F891BC554C000CEF2A7 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
 		381E6E0619D98A7300139654 /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
 		381E6E7D19DE4FB000139654 /* Secret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
@@ -736,6 +738,7 @@
 				6AB55B4219C5843000DC6442 /* SettingsViewController.swift */,
 				6AB55B4419C584B300DC6442 /* SettingsViewController.xib */,
 				6AB55B4B19C8AC2A00DC6442 /* Settings */,
+				38105F891BC554C000CEF2A7 /* LaunchScreen.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -911,6 +914,7 @@
 				6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */,
 				6AB55B4019C563F600DC6442 /* EditorViewController.xib in Resources */,
 				6A0449461B1F4F2400758061 /* ProfileViewController.xib in Resources */,
+				38105F8A1BC554C000CEF2A7 /* LaunchScreen.xib in Resources */,
 				38B4475D19C062460055F074 /* fontello.ttf in Resources */,
 				6A81CF211BC406F400EBE567 /* SideMenuViewController.xib in Resources */,
 				6AB55B5319C8B2D500DC6442 /* ThemeViewController.xib in Resources */,

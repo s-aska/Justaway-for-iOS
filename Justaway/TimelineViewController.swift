@@ -14,6 +14,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var tabWraperView: UIView!
     @IBOutlet weak var tabCurrentMaskLeftConstraint: NSLayoutConstraint!
     
+    var swipeGestureRecognizer: UISwipeGestureRecognizer?
     var settingsViewController: SettingsViewController!
     var sideMenuViewController: SideMenuViewController!
     var tableViewControllers = [TimelineTableViewController]()
@@ -71,6 +72,13 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             userID = account.account().userID
             ImageLoaderClient.displayTitleIcon(account.account().profileImageURL, imageView: iconImageView)
         }
+        
+        let swipe = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
+        swipe.numberOfTouchesRequired = 1
+        swipe.direction = .Right
+        scrollView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
+        scrollView.addGestureRecognizer(swipe)
+        swipeGestureRecognizer = swipe
         
         let size = scrollWrapperView.frame.size
         let contentView = UIView(frame: CGRectMake(0, 0, size.width * 3, size.height))
@@ -250,12 +258,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - UIScrollViewDelegate
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        if scrollView.contentOffset.x < -10 {
-            if let account = AccountSettingsStore.get()?.account() {
-                sideMenuViewController.show(TwitterUser(account))
-            }
-        }
-        
         let page = Int((scrollView.contentOffset.x + (scrollWrapperView.frame.size.width / 2)) / scrollWrapperView.frame.size.width)
         if currentPage != page {
             currentPage = page
@@ -266,7 +268,15 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Actions
     
+    func showSideMenu() {
+        if let account = AccountSettingsStore.get()?.account() {
+            sideMenuViewController.show(TwitterUser(account))
+        }
+    }
+    
     func highlightUpdate(page: Int) {
+        
+        swipeGestureRecognizer?.enabled = page == 0
         
         tabCurrentMaskLeftConstraint.constant = CGFloat(page * 58)
         

@@ -40,6 +40,12 @@ class SideMenuViewController: UIViewController {
         view.frame = CGRectMake(0, 0, rootView.frame.size.width, rootView.frame.size.height)
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hide"))
+        
+        let swipe = UISwipeGestureRecognizer(target: self, action: "hide")
+        swipe.numberOfTouchesRequired = 1
+        swipe.direction = .Left
+        view.addGestureRecognizer(swipe)
+        
         sideViewLeftConstraint.constant = -300
     }
     
@@ -59,7 +65,7 @@ class SideMenuViewController: UIViewController {
         screenNameLabel.text = "@" + user.screenName
         ImageLoaderClient.displaySideMenuUserIcon(user.profileImageURL, imageView: iconImageView)
         
-        Async.main { () -> Void in
+        Async.main(after: 0.1) { () -> Void in
             self.view.hidden = false
             self.sideViewLeftConstraint.constant = 0
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in

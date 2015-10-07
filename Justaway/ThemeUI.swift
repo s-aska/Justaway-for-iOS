@@ -40,10 +40,11 @@ class CellSeparator: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        let borderWidth: CGFloat = (1.0 / UIScreen.mainScreen().scale) / 1
-        borderLayer.frame = CGRectMake(0, bounds.size.height - borderWidth, bounds.size.width, borderWidth);
-        borderLayer.backgroundColor = ThemeController.currentTheme.cellSeparatorColor().CGColor
-        layer.addSublayer(borderLayer)
+//        let borderWidth: CGFloat = (1.0 / UIScreen.mainScreen().scale) / 1
+//        borderLayer.frame = CGRectMake(0, bounds.size.height - borderWidth, bounds.size.width, borderWidth);
+//        borderLayer.backgroundColor = ThemeController.currentTheme.cellSeparatorColor().CGColor
+//        layer.addSublayer(borderLayer)
+        backgroundColor = ThemeController.currentTheme.cellSeparatorColor()
     }
 }
 class QuotedStatusContainerView: UIView {
