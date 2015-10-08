@@ -71,7 +71,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                 
                 let op = AsyncBlockOperation { (op) -> Void in
                     if var firstCell = self.tableView.visibleCells.first {
-                        var offset = self.tableView.contentOffset.y - firstCell.frame.origin.y
+                        var offset = self.tableView.contentOffset.y - firstCell.frame.origin.y + self.tableView.contentInset.top
                         var firstPath: NSIndexPath
                         
                         // セルが半分以上隠れているている場合、2番目の表示セルを基準にする
@@ -79,7 +79,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                             if indexPathsForVisibleRows.count > 1 && offset > (firstCell.frame.size.height / 2) {
                                 firstPath = indexPathsForVisibleRows[1]
                                 firstCell = self.tableView.cellForRowAtIndexPath(firstPath)!
-                                offset = self.tableView.contentOffset.y - firstCell.frame.origin.y
+                                offset = self.tableView.contentOffset.y - firstCell.frame.origin.y + self.tableView.contentInset.top
                             } else {
                                 firstPath = indexPathsForVisibleRows.first!
                             }

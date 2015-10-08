@@ -23,6 +23,8 @@ protocol Theme {
     func bodyTextColor() -> UIColor
     func cellSeparatorColor() -> UIColor
     
+    func sideMenuBackgroundColor() -> UIColor
+    
     func displayNameTextColor() -> UIColor
     func screenNameTextColor() -> UIColor
     func relativeDateTextColor() -> UIColor
@@ -89,13 +91,16 @@ class ThemeController {
         ImagePickerCollectionView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         BackgroundView.appearance().backgroundColor = theme.mainBackgroundColor()
         CurrentTabMaskView.appearance().backgroundColor = theme.menuTextColor()
-        NavigationShadowView.appearance().backgroundColor = theme.menuBackgroundColor().colorWithAlphaComponent(0.9)
+        NavigationShadowView.appearance().backgroundColor = theme.menuBackgroundColor().colorWithAlphaComponent(0.8)
         NavigationShadowView.appearance().layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         MenuView.appearance().backgroundColor = theme.menuBackgroundColor()
         MenuShadowView.appearance().layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         MenuButton.appearance().setTitleColor(theme.menuTextColor(), forState: .Normal)
         MenuButton.appearance().setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)
         MenuLable.appearance().textColor = theme.menuTextColor()
+        SideMenuShadowView.appearance().backgroundColor =  theme.sideMenuBackgroundColor()
+        SideMenuSeparator.appearance().backgroundColor = theme.menuTextColor()
+        UISwitch.appearance().tintColor = theme.menuTextColor()
         
         // for TwitterStatus
         DisplayNameLable.appearance().textColor = theme.displayNameTextColor()
@@ -114,7 +119,7 @@ class ThemeController {
         StreamingButton.appearance().setTitleColor(theme.bodyTextColor(), forState: .Normal)
         StreamingButton.appearance().setTitleColor(theme.streamingConnected(), forState: .Selected)
         StreamingButton.appearance().setTitleColor(theme.streamingError(), forState: .Disabled)
-
+        
         if refresh {
             CATransaction.begin()
             CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
@@ -173,11 +178,17 @@ class ThemeController {
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as CurrentTabMaskView:
                 v.backgroundColor = theme.menuTextColor()
+            case let v as SideMenuSeparator:
+                v.backgroundColor = theme.menuTextColor()
+            case let v as SideMenuShadowView:
+                v.backgroundColor = theme.sideMenuBackgroundColor()
+            case let v as UISwitch:
+                v.tintColor = theme.menuTextColor()
             case let v as MenuShadowView:
                 v.backgroundColor = theme.menuBackgroundColor()
                 v.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
             case let v as NavigationShadowView:
-                v.backgroundColor = theme.menuBackgroundColor().colorWithAlphaComponent(0.9)
+                v.backgroundColor = theme.menuBackgroundColor().colorWithAlphaComponent(0.8)
                 v.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
             case let v as MenuView:
                 v.backgroundColor = theme.menuBackgroundColor()

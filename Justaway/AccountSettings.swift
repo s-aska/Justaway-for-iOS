@@ -10,6 +10,7 @@ class Account {
         static let screenName = "screen_name"
         static let name = "name"
         static let profileImageURL = "profile_image_url_https"
+        static let profileBannerURL = "profile_banner_url"
     }
     
     let client: Client
@@ -17,13 +18,15 @@ class Account {
     let screenName: String
     let name: String
     let profileImageURL: NSURL
+    let profileBannerURL: NSURL
     
-    init(client: Client, userID: String, screenName: String, name: String, profileImageURL: NSURL) {
+    init(client: Client, userID: String, screenName: String, name: String, profileImageURL: NSURL, profileBannerURL: NSURL) {
         self.client = client
         self.userID = userID
         self.screenName = screenName
         self.name = name
         self.profileImageURL = profileImageURL
+        self.profileBannerURL = profileBannerURL
     }
     
     init(_ dictionary: [String: String]) {
@@ -34,6 +37,11 @@ class Account {
             self.profileImageURL = NSURL(string: profileImageURL) ?? NSURL()
         } else {
             self.profileImageURL = NSURL()
+        }
+        if let profileBannerURL = dictionary[Constants.profileBannerURL] {
+            self.profileBannerURL = NSURL(string: profileBannerURL) ?? NSURL()
+        } else {
+            self.profileBannerURL = NSURL()
         }
         
         if let serializedString = dictionary[Constants.client] {
@@ -49,11 +57,12 @@ class Account {
     
     var dictionaryValue: [String: String] {
         return [
-            Constants.client          : client.serialize,
-            Constants.userID          : userID,
-            Constants.screenName      : screenName,
-            Constants.name            : name,
-            Constants.profileImageURL : profileImageURL.absoluteString
+            Constants.client           : client.serialize,
+            Constants.userID           : userID,
+            Constants.screenName       : screenName,
+            Constants.name             : name,
+            Constants.profileImageURL  : profileImageURL.absoluteString,
+            Constants.profileBannerURL : profileBannerURL.absoluteString
         ]
     }
 }

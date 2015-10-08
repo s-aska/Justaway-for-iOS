@@ -57,7 +57,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U79-rE-xdA">
-                            <rect key="frame" x="0.0" y="150" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="145" width="280" height="40"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dk0-Za-Aqj" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                                     <rect key="frame" x="60" y="4" width="220" height="32"/>
@@ -95,7 +95,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W1d-Lj-ffX">
-                            <rect key="frame" x="0.0" y="190" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="185" width="280" height="40"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RwL-NW-ECk" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                                     <rect key="frame" x="60" y="4" width="220" height="32"/>
@@ -132,21 +132,21 @@
                                 <constraint firstItem="RwL-NW-ECk" firstAttribute="centerY" secondItem="W1d-Lj-ffX" secondAttribute="centerY" id="mzX-sg-4Ai"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KHH-wF-a5d" customClass="BackgroundView" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="240" width="280" height="1"/>
-                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KHH-wF-a5d" customClass="SideMenuSeparator" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="233" width="280" height="1"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="Atr-Va-kr3"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CTe-Zv-03h" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="341" width="280" height="50"/>
+                            <rect key="frame" x="0.0" y="319" width="280" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="WXy-EG-SiS"/>
+                                <constraint firstAttribute="height" constant="40" id="WXy-EG-SiS"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Display settings">
+                            <state key="normal" title="Settings">
                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -154,9 +154,9 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eI4-Df-IIM" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="391" width="280" height="50"/>
+                            <rect key="frame" x="0.0" y="359" width="280" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="5Wg-tM-1NW"/>
+                                <constraint firstAttribute="height" constant="40" id="5Wg-tM-1NW"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -168,9 +168,9 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WaY-Eb-afl" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="241" width="280" height="50"/>
+                            <rect key="frame" x="0.0" y="239" width="280" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="NPZ-pD-wdX"/>
+                                <constraint firstAttribute="height" constant="40" id="NPZ-pD-wdX"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -182,19 +182,19 @@
                             </connections>
                         </button>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hzv-4e-t9D">
-                            <rect key="frame" x="221" y="250" width="51" height="31"/>
+                            <rect key="frame" x="221" y="243" width="51" height="31"/>
                             <connections>
                                 <action selector="disableSleep:" destination="-1" eventType="valueChanged" id="fb3-Ra-7W7"/>
                             </connections>
                         </switch>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fge-rv-lhz" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="291" width="280" height="50"/>
+                            <rect key="frame" x="0.0" y="279" width="280" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="ZjF-I5-pHX"/>
+                                <constraint firstAttribute="height" constant="40" id="ZjF-I5-pHX"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Streaming off">
+                            <state key="normal" title="Streaming / off">
                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -202,9 +202,9 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFH-1Z-3tU" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="441" width="280" height="50"/>
+                            <rect key="frame" x="0.0" y="399" width="280" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="at8-62-Xos"/>
+                                <constraint firstAttribute="height" constant="40" id="at8-62-Xos"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -228,7 +228,7 @@
                         <constraint firstItem="fge-rv-lhz" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="GhE-LL-Ls0"/>
                         <constraint firstItem="W1d-Lj-ffX" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="IFM-U4-bnz"/>
                         <constraint firstItem="EUA-0m-R57" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" constant="10" id="Kd8-5P-0oq"/>
-                        <constraint firstItem="U79-rE-xdA" firstAttribute="top" secondItem="KyR-Q6-ecg" secondAttribute="bottom" constant="10" id="Lpv-GW-R8k"/>
+                        <constraint firstItem="U79-rE-xdA" firstAttribute="top" secondItem="KyR-Q6-ecg" secondAttribute="bottom" constant="5" id="Lpv-GW-R8k"/>
                         <constraint firstItem="YrP-Vb-6RE" firstAttribute="bottom" secondItem="KyR-Q6-ecg" secondAttribute="bottom" constant="-10" id="Pha-b7-txI"/>
                         <constraint firstItem="KyR-Q6-ecg" firstAttribute="top" secondItem="xmC-0b-3jO" secondAttribute="top" id="QwY-yP-GUR"/>
                         <constraint firstItem="eI4-Df-IIM" firstAttribute="top" secondItem="CTe-Zv-03h" secondAttribute="bottom" id="Th3-JF-XB7"/>
@@ -244,9 +244,9 @@
                         <constraint firstAttribute="trailing" secondItem="WaY-Eb-afl" secondAttribute="trailing" id="hT6-Zg-MkT"/>
                         <constraint firstItem="fge-rv-lhz" firstAttribute="top" secondItem="WaY-Eb-afl" secondAttribute="bottom" id="ofp-tM-TqH"/>
                         <constraint firstAttribute="trailing" secondItem="pFH-1Z-3tU" secondAttribute="trailing" id="opX-Xq-dLf"/>
-                        <constraint firstItem="WaY-Eb-afl" firstAttribute="top" secondItem="KHH-wF-a5d" secondAttribute="bottom" id="phI-dx-Vcq"/>
+                        <constraint firstItem="WaY-Eb-afl" firstAttribute="top" secondItem="KHH-wF-a5d" secondAttribute="bottom" constant="5" id="phI-dx-Vcq"/>
                         <constraint firstAttribute="trailing" secondItem="W1d-Lj-ffX" secondAttribute="trailing" id="tEH-Mv-HQ2"/>
-                        <constraint firstItem="KHH-wF-a5d" firstAttribute="top" secondItem="W1d-Lj-ffX" secondAttribute="bottom" constant="10" id="tSK-GQ-06f"/>
+                        <constraint firstItem="KHH-wF-a5d" firstAttribute="top" secondItem="W1d-Lj-ffX" secondAttribute="bottom" constant="8" id="tSK-GQ-06f"/>
                         <constraint firstItem="CTe-Zv-03h" firstAttribute="top" secondItem="fge-rv-lhz" secondAttribute="bottom" id="vd5-zV-5pD"/>
                         <constraint firstItem="KyR-Q6-ecg" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="w06-Ik-bMG"/>
                         <constraint firstItem="W1d-Lj-ffX" firstAttribute="top" secondItem="U79-rE-xdA" secondAttribute="bottom" id="wCJ-Jh-BLI"/>

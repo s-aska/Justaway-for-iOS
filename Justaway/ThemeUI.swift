@@ -30,6 +30,7 @@ class SideMenuShadowView: MenuShadowView {
         self.layer.shadowRadius = 1.0
     }
 }
+class SideMenuSeparator: UIView {}
 class NavigationShadowView: MenuView {
     override func awakeFromNib() {
         super.awakeFromNib()

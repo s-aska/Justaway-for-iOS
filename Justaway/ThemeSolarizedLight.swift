@@ -22,6 +22,8 @@ class ThemeSolarizedLight: Theme {
     func bodyTextColor() -> UIColor { return ThemeColor.Solarized.baes01 }
     func cellSeparatorColor() -> UIColor { return ThemeColor.Solarized.baes01 }
     
+    func sideMenuBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes3 }
+    
     func displayNameTextColor() -> UIColor { return ThemeColor.Solarized.yellow }
     func screenNameTextColor() -> UIColor { return ThemeColor.Solarized.red }
     func relativeDateTextColor() -> UIColor { return ThemeColor.Solarized.magenta }

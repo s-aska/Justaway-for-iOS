@@ -12,6 +12,8 @@ class SideMenuViewController: UIViewController {
     
     // MARK: Properties
     
+    var overlayWindow: UIWindow?
+    
     @IBOutlet weak var bannerImageView: UIImageView!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var displayNameLabel: UILabel!
@@ -23,7 +25,7 @@ class SideMenuViewController: UIViewController {
     
     var settingsViewController: SettingsViewController?
     
-    var user: TwitterUser?
+    var account: Account?
     
     override var nibName: String {
         return "SideMenuViewController"
@@ -39,10 +41,13 @@ class SideMenuViewController: UIViewController {
     // MARK: - Configuration
     
     func configureView() {
-        guard let rootView = UIApplication.sharedApplication().keyWindow else {
-            return
-        }
-        view.frame = CGRectMake(0, 0, rootView.frame.size.width, rootView.frame.size.height)
+        overlayWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+        overlayWindow?.rootViewController = self
+        overlayWindow?.backgroundColor = UIColor.clearColor()
+        overlayWindow?.rootViewController?.view.backgroundColor = UIColor.clearColor()
+        overlayWindow?.windowLevel = UIWindowLevelStatusBar
+        
+        view.frame = UIScreen.mainScreen().bounds
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hide"))
         
@@ -52,24 +57,33 @@ class SideMenuViewController: UIViewController {
         view.addGestureRecognizer(swipe)
         
         sideViewLeftConstraint.constant = -300
+        
+        bannerImageView.clipsToBounds = true
+        bannerImageView.contentMode = .ScaleAspectFill
+        
+        let gradient = CAGradientLayer()
+        gradient.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0).CGColor, UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).CGColor]
+        gradient.frame = bannerImageView.frame
+        bannerImageView.layer.insertSublayer(gradient, atIndex: 0)
     }
     
     // MARK: -
     
-    func show(user: TwitterUser) {
-        self.user = user
+    func show(account: Account) {
+        self.account = account
         
-        guard let rootView = UIApplication.sharedApplication().keyWindow else {
-            return
-        }
         view.hidden = true
         view.alpha = 1
-        rootView.addSubview(view)
+        overlayWindow?.hidden = false
         
-        displayNameLabel.text = user.name
-        screenNameLabel.text = "@" + user.screenName
-        ImageLoaderClient.displaySideMenuUserIcon(user.profileImageURL, imageView: iconImageView)
+        displayNameLabel.text = account.name
+        screenNameLabel.text = "@" + account.screenName
+        ImageLoaderClient.displaySideMenuUserIcon(account.profileImageURL, imageView: iconImageView)
         disableSleepSwitch.on = GenericSettings.get().disableSleep
+        
+        if !account.profileBannerURL.absoluteString.isEmpty {
+            ImageLoaderClient.displayImage(account.profileBannerURL, imageView: bannerImageView)
+        }
         
         Async.main(after: 0.1) { () -> Void in
             self.view.hidden = false
@@ -87,7 +101,7 @@ class SideMenuViewController: UIViewController {
             self.view.alpha = 0
             self.view.layoutIfNeeded()
             }, completion: { _ in
-                self.view.removeFromSuperview()
+                self.overlayWindow?.hidden = true
         })
     }
     
@@ -97,7 +111,7 @@ class SideMenuViewController: UIViewController {
     }
     
     @IBAction func openProfile(sender: UIButton) {
-        ProfileViewController.show(user!)
+        ProfileViewController.show(TwitterUser(account!))
         hide()
     }
     

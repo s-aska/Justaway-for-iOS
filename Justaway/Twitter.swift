@@ -104,13 +104,14 @@ class Twitter {
             
             client.get("https://api.twitter.com/1.1/account/verify_credentials.json")
                 .responseJSON { (json: JSON) -> Void in
-                    let user = TwitterUser(json)
+                    let user = TwitterUserFull(json)
                     let account = Account(
                         client: client,
                         userID: user.userID,
                         screenName: user.screenName,
                         name: user.name,
-                        profileImageURL: user.profileImageURL)
+                        profileImageURL: user.profileImageURL,
+                        profileBannerURL: user.profileBannerURL)
                     Twitter.refreshAccounts([account])
                 }
         }, failure: failure)
@@ -137,7 +138,8 @@ class Twitter {
                                 userID: account.valueForKeyPath("properties.user_id") as! String,
                                 screenName: account.username,
                                 name: account.username,
-                                profileImageURL: NSURL(string: "")!)
+                                profileImageURL: NSURL(string: "")!,
+                                profileBannerURL: NSURL(string: "")!)
                         })
                     )
                 }
@@ -193,9 +195,9 @@ class Twitter {
         let success :(([JSON]) -> Void) = { (rows) in
             
             // Convert JSONValue
-            var userDirectory = [String: TwitterUser]()
+            var userDirectory = [String: TwitterUserFull]()
             for row in rows {
-                let user = TwitterUser(row)
+                let user = TwitterUserFull(row)
                 userDirectory[user.userID] = user
             }
             
@@ -207,7 +209,8 @@ class Twitter {
                         userID: user.userID,
                         screenName: user.screenName,
                         name: user.name,
-                        profileImageURL: user.profileImageURL)
+                        profileImageURL: user.profileImageURL,
+                        profileBannerURL: user.profileBannerURL)
                 } else {
                     return account
                 }

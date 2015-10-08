@@ -277,7 +277,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     
     func showSideMenu() {
         if let account = AccountSettingsStore.get()?.account() {
-            sideMenuViewController.show(TwitterUser(account))
+            sideMenuViewController.show(account)
         }
     }
     
@@ -303,8 +303,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     
     func openProfile(sender: UIView) {
         if let account = AccountSettingsStore.get()?.account() {
-            // ProfileViewController.show(TwitterUser(account))
-            sideMenuViewController.show(TwitterUser(account))
+            sideMenuViewController.show(account)
         }
     }
     
