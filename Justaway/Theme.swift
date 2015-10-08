@@ -24,6 +24,7 @@ protocol Theme {
     func cellSeparatorColor() -> UIColor
     
     func sideMenuBackgroundColor() -> UIColor
+    func switchTintColor() -> UIColor
     
     func displayNameTextColor() -> UIColor
     func screenNameTextColor() -> UIColor
@@ -100,7 +101,7 @@ class ThemeController {
         MenuLable.appearance().textColor = theme.menuTextColor()
         SideMenuShadowView.appearance().backgroundColor =  theme.sideMenuBackgroundColor()
         SideMenuSeparator.appearance().backgroundColor = theme.menuTextColor()
-        UISwitch.appearance().tintColor = theme.menuTextColor()
+        UISwitch.appearance().tintColor = theme.switchTintColor()
         
         // for TwitterStatus
         DisplayNameLable.appearance().textColor = theme.displayNameTextColor()
@@ -183,7 +184,7 @@ class ThemeController {
             case let v as SideMenuShadowView:
                 v.backgroundColor = theme.sideMenuBackgroundColor()
             case let v as UISwitch:
-                v.tintColor = theme.menuTextColor()
+                v.tintColor = theme.switchTintColor()
             case let v as MenuShadowView:
                 v.backgroundColor = theme.menuBackgroundColor()
                 v.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()

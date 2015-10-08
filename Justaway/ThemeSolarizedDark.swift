@@ -23,6 +23,7 @@ class ThemeSolarizedDark: Theme {
     func cellSeparatorColor() -> UIColor { return ThemeColor.Solarized.baes1 }
     
     func sideMenuBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes03 }
+    func switchTintColor() -> UIColor { return ThemeColor.Solarized.baes1 }
     
     func displayNameTextColor() -> UIColor { return ThemeColor.Solarized.yellow }
     func screenNameTextColor() -> UIColor { return ThemeColor.Solarized.red }

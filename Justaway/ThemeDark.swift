@@ -24,6 +24,7 @@ class ThemeDark: Theme {
     func cellSeparatorColor() -> UIColor { return UIColor.lightGrayColor() }
     
     func sideMenuBackgroundColor() -> UIColor { return UIColor.darkGrayColor() }
+    func switchTintColor() -> UIColor { return UIColor.whiteColor() }
     
     func displayNameTextColor() -> UIColor { return UIColor.whiteColor() }
     func screenNameTextColor() -> UIColor { return UIColor.lightGrayColor() }

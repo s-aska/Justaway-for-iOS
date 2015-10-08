@@ -140,6 +140,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         iconGesture.numberOfTapsRequired = 1
         iconImageView.addGestureRecognizer(iconGesture)
         
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: "showSettings:")
+        swipeUp.numberOfTouchesRequired = 1
+        swipeUp.direction = UISwipeGestureRecognizerDirection.Up
+        tabWraperView.addGestureRecognizer(swipeUp)
 //        streamingView.userInteractionEnabled = true
 //        let gesture = UITapGestureRecognizer(target: self, action: "streamingSwitch:")
 //        gesture.numberOfTapsRequired = 1
