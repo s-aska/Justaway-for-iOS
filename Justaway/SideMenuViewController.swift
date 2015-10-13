@@ -138,7 +138,8 @@ class SideMenuViewController: UIViewController {
     }
     
     @IBAction func licenses(sender: UIButton) {
-        // FIXME
+        Safari.openURL("http://justaway.info/iOS/licenses.html")
+        hide()
     }
     
     @IBAction func sendFeedback(sender: UIButton) {

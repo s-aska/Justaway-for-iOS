@@ -216,6 +216,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             AccountSettingsStore.save(settings)
         } else {
             AccountSettingsStore.clear()
+            EventBox.post(TwitterAuthorizeNotification)
         }
         tableView.reloadData()
         initEditing()

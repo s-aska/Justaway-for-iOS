@@ -3,6 +3,8 @@ import Pinwheel
 import KeyClip
 import EventBox
 import OAuthSwift
+import Accounts
+import TwitterAPI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -65,6 +67,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         application.idleTimerDisabled = GenericSettings.get().disableSleep
+        
+        if AccountSettingsStore.get() == nil {
+            let accountStore = ACAccountStore()
+            let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+            
+            // Prompt the user for permission to their twitter account stored in the phone's settings
+            accountStore.requestAccessToAccountsWithType(accountType, options: nil) {
+                granted, error in
+                
+                if granted {
+                    let twitterAccounts = accountStore.accountsWithAccountType(accountType) as! [ACAccount]
+                    
+                    if twitterAccounts.count == 0 {
+                        EventBox.post(TwitterAuthorizeNotification)
+                    } else {
+                        Twitter.refreshAccounts(
+                            twitterAccounts.map({ (account: ACAccount) in
+                                Account(
+                                    client: AccountClient(account: account),
+                                    userID: account.valueForKeyPath("properties.user_id") as! String,
+                                    screenName: account.username,
+                                    name: account.username,
+                                    profileImageURL: NSURL(string: "")!,
+                                    profileBannerURL: NSURL(string: "")!)
+                            })
+                        )
+                    }
+                } else {
+                    EventBox.post(TwitterAuthorizeNotification)
+                }
+            }
+        }
     }
     
     func applicationWillTerminate(application: UIApplication) {

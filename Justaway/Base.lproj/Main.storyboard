@@ -19,23 +19,57 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1I1-JO-Sau">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="07Y-rc-PN1">
+                                        <rect key="frame" x="140" y="200" width="320" height="200"/>
+                                        <subviews>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9N-4r-cBd">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="150" id="wD1-Si-6mo"/>
+                                                </constraints>
+                                                <string key="text">Twitter requires you to authorize Justaway for iOS to use your account.
+
+a) Go to iOS Settings -&gt; Twitter and enable access to Justaway -&gt; relaunch.
+
+b) You will be Taken to the Twitter's authorization page.</string>
+                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ez-O4-zMs">
+                                                <rect key="frame" x="0.0" y="150" width="320" height="50"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                                                <state key="normal" title="Sign in with Twitter"/>
+                                                <connections>
+                                                    <action selector="signInButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="z6f-Gi-0c6"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="J9N-4r-cBd" secondAttribute="trailing" id="413-b4-J0g"/>
+                                            <constraint firstAttribute="width" constant="320" id="Hss-Vi-bmu"/>
+                                            <constraint firstItem="2ez-O4-zMs" firstAttribute="leading" secondItem="07Y-rc-PN1" secondAttribute="leading" id="JTK-DV-9bC"/>
+                                            <constraint firstItem="2ez-O4-zMs" firstAttribute="centerX" secondItem="07Y-rc-PN1" secondAttribute="centerX" id="eIn-L2-ChM"/>
+                                            <constraint firstAttribute="bottom" secondItem="2ez-O4-zMs" secondAttribute="bottom" id="evB-NZ-rDt"/>
+                                            <constraint firstItem="J9N-4r-cBd" firstAttribute="leading" secondItem="07Y-rc-PN1" secondAttribute="leading" id="f2C-X7-zLP"/>
+                                            <constraint firstAttribute="height" constant="200" id="gBI-9M-rUN"/>
+                                            <constraint firstAttribute="trailing" secondItem="2ez-O4-zMs" secondAttribute="trailing" id="t7x-71-2Iy"/>
+                                            <constraint firstItem="J9N-4r-cBd" firstAttribute="top" secondItem="07Y-rc-PN1" secondAttribute="top" id="uEh-Ox-c1a"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="07Y-rc-PN1" firstAttribute="centerX" secondItem="1I1-JO-Sau" secondAttribute="centerX" id="69L-NK-ChA"/>
+                                    <constraint firstItem="07Y-rc-PN1" firstAttribute="centerY" secondItem="1I1-JO-Sau" secondAttribute="centerY" id="tHc-cs-KW2"/>
+                                </constraints>
                             </view>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ujo-jJ-LAP">
-                                <rect key="frame" x="166" y="275" width="268" height="51"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <state key="normal" title="Sign in with Twitter">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="signInButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tAl-1S-dJE"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="Ujo-jJ-LAP" secondAttribute="centerY" id="2ng-yj-mOA"/>
                             <constraint firstItem="1I1-JO-Sau" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="Pcd-12-RDs"/>
-                            <constraint firstAttribute="centerX" secondItem="Ujo-jJ-LAP" secondAttribute="centerX" id="VRJ-N9-1fQ"/>
                             <constraint firstAttribute="trailing" secondItem="1I1-JO-Sau" secondAttribute="trailing" id="YVr-5T-Nzv"/>
                             <constraint firstAttribute="bottom" secondItem="1I1-JO-Sau" secondAttribute="bottom" id="ghL-Ml-FdC"/>
                             <constraint firstItem="1I1-JO-Sau" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="lpR-9N-wQ4"/>
@@ -43,7 +77,8 @@
                     </view>
                     <connections>
                         <outlet property="containerView" destination="1I1-JO-Sau" id="J7z-VB-gAN"/>
-                        <outlet property="signInButton" destination="Ujo-jJ-LAP" id="PJX-C0-MfZ"/>
+                        <outlet property="signInButton" destination="2ez-O4-zMs" id="SSx-54-VIJ"/>
+                        <outlet property="signInView" destination="07Y-rc-PN1" id="NH9-NZ-VT6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

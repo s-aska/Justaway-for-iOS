@@ -2,13 +2,15 @@ import UIKit
 import Accounts
 import Social
 import EventBox
+import TwitterAPI
 
 class ViewController: UIViewController {
     
     // MARK: Properties
     
-    @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var signInView: UIView!
+    @IBOutlet weak var signInButton: UIButton!
     
     var timelineViewController: TimelineViewController!
     
@@ -26,6 +28,7 @@ class ViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
+        toggleView()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -38,16 +41,18 @@ class ViewController: UIViewController {
     func configureView() {
         timelineViewController = TimelineViewController()
         ViewTools.addSubviewWithEqual(containerView, view: timelineViewController.view)
-        toggleView()
+        
     }
     
     func toggleView() {
         if let _ = AccountSettingsStore.get() {
             timelineViewController.view.hidden = false
+            signInView.hidden = true
             signInButton.hidden = true
             signInButton.enabled = false
         } else {
             timelineViewController.view.hidden = true
+            signInView.hidden = false
             signInButton.hidden = false
             signInButton.enabled = true
         }
@@ -62,7 +67,7 @@ class ViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func signInButtonClick(sender: UIButton) {
-        AddAccountAlert.show(sender)
+        Twitter.addOAuthAccount()
     }
     
 }

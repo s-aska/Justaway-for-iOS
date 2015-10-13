@@ -468,6 +468,7 @@
 			children = (
 				38AB8BC219F1678B0065D869 /* ImageLoader */,
 				3868B94319EFCCB8001221BF /* Twitter */,
+				381E6E7F19DE9DAB00139654 /* Twitter.swift */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -503,7 +504,6 @@
 			isa = PBXGroup;
 			children = (
 				6AEA92651B7F5981005F30A9 /* API */,
-				381E6E7F19DE9DAB00139654 /* Twitter.swift */,
 				38F1B0A819EFEB7900A3608E /* Entities */,
 			);
 			name = Twitter;
