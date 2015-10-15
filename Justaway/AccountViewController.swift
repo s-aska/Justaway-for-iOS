@@ -48,6 +48,10 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
+        
+        settings = AccountSettingsStore.get()
+        tableView.reloadData()
+        initEditing()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -71,8 +75,6 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         swipe.numberOfTouchesRequired = 1
         swipe.direction = UISwipeGestureRecognizerDirection.Right
         tableView.addGestureRecognizer(swipe)
-        
-        settings = AccountSettingsStore.get()
     }
     
     func configureEvent() {
@@ -83,6 +85,10 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
             }
             self.refreshControl.endRefreshing()
             self.cancel()
+            
+            if (self.settings?.accounts.count ?? 0) == 0 {
+                self.hide()
+            }
         }
     }
     

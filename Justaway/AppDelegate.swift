@@ -68,9 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         application.idleTimerDisabled = GenericSettings.get().disableSleep
         
-        if AccountSettingsStore.get() == nil {
-            Twitter.addACAccount()
-        }
+        AccountSettingsStore.setup()
     }
     
     func applicationWillTerminate(application: UIApplication) {

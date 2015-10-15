@@ -130,6 +130,7 @@ class Twitter {
                 
                 if twitterAccounts.count == 0 {
                     // MessageAlert.show("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
+                    EventBox.post(TwitterAuthorizeNotification)
                 } else {
                     Twitter.refreshAccounts(
                         twitterAccounts.map({ (account: ACAccount) in
@@ -145,6 +146,7 @@ class Twitter {
                 }
             } else {
                 // MessageAlert.show("Error", message: error.localizedDescription)
+                EventBox.post(TwitterAuthorizeNotification)
             }
         }
     }

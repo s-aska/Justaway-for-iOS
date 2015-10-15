@@ -8,6 +8,7 @@ class ViewController: UIViewController {
     
     // MARK: Properties
     
+    @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var signInView: UIView!
     @IBOutlet weak var signInButton: UIButton!
@@ -28,7 +29,10 @@ class ViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
-        toggleView()
+        if AccountSettingsStore.get() != nil {
+            logoImageView.hidden = true
+            showView()
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -43,21 +47,26 @@ class ViewController: UIViewController {
     }
     
     func toggleView() {
-        if let _ = AccountSettingsStore.get() {
-            if timelineViewController == nil {
-                timelineViewController = TimelineViewController()
-                ViewTools.addSubviewWithEqual(containerView, view: timelineViewController!.view)
-            }
-            timelineViewController?.view.hidden = false
-            signInView.hidden = true
-            signInButton.hidden = true
-            signInButton.enabled = false
+        logoImageView.hidden = true
+        if AccountSettingsStore.get() != nil {
+            showView()
         } else {
             timelineViewController?.view.hidden = true
             signInView.hidden = false
             signInButton.hidden = false
             signInButton.enabled = true
         }
+    }
+    
+    func showView() {
+        if timelineViewController == nil {
+            timelineViewController = TimelineViewController()
+            ViewTools.addSubviewWithEqual(containerView, view: timelineViewController!.view)
+        }
+        timelineViewController?.view.hidden = false
+        signInView.hidden = true
+        signInButton.hidden = true
+        signInButton.enabled = false
     }
     
     func configureEvent() {

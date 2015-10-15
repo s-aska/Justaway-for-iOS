@@ -116,6 +116,15 @@ class AccountSettings {
         return find(userID) == nil ? false : true
     }
     
+    func hasAccountClient() -> Bool {
+        for account in accounts {
+            if let _ = account.client as? AccountClient {
+                return true
+            }
+        }
+        return false
+    }
+    
     var dictionaryValue: NSDictionary {
         return [
             Constants.current  : current,
