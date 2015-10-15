@@ -129,7 +129,7 @@ class Twitter {
                 let twitterAccounts = accountStore.accountsWithAccountType(accountType) as! [ACAccount]
                 
                 if twitterAccounts.count == 0 {
-                    MessageAlert.show("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
+                    // MessageAlert.show("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
                 } else {
                     Twitter.refreshAccounts(
                         twitterAccounts.map({ (account: ACAccount) in
@@ -144,7 +144,7 @@ class Twitter {
                     )
                 }
             } else {
-                MessageAlert.show("Error", message: error.localizedDescription)
+                // MessageAlert.show("Error", message: error.localizedDescription)
             }
         }
     }
@@ -229,7 +229,11 @@ class Twitter {
     }
     
     class func client() -> Client? {
-        return AccountSettingsStore.get()?.account().client
+        let client = AccountSettingsStore.get()?.account().client
+        if let c = client as? AccountClient {
+            NSLog("debugDescription:\(c.debugDescription)")
+        }
+        return client
     }
     
     class func getHomeTimeline(maxID maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {

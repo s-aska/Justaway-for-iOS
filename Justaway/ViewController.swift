@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var signInView: UIView!
     @IBOutlet weak var signInButton: UIButton!
     
-    var timelineViewController: TimelineViewController!
+    var timelineViewController: TimelineViewController?
     
     // MARK: - View Life Cycle
     
@@ -39,19 +39,21 @@ class ViewController: UIViewController {
     // MARK: - Configuration
     
     func configureView() {
-        timelineViewController = TimelineViewController()
-        ViewTools.addSubviewWithEqual(containerView, view: timelineViewController.view)
         
     }
     
     func toggleView() {
         if let _ = AccountSettingsStore.get() {
-            timelineViewController.view.hidden = false
+            if timelineViewController == nil {
+                timelineViewController = TimelineViewController()
+                ViewTools.addSubviewWithEqual(containerView, view: timelineViewController!.view)
+            }
+            timelineViewController?.view.hidden = false
             signInView.hidden = true
             signInButton.hidden = true
             signInButton.enabled = false
         } else {
-            timelineViewController.view.hidden = true
+            timelineViewController?.view.hidden = true
             signInView.hidden = false
             signInButton.hidden = false
             signInButton.enabled = true

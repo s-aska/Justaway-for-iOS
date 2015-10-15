@@ -50,12 +50,6 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQH-K7-BqR" customClass="CellSeparator" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="1" id="HkY-Oo-wM2"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="zOT-22-GGk" firstAttribute="leading" secondItem="GsG-13-GgA" secondAttribute="trailing" constant="8" id="5ZO-vb-3LK"/>
@@ -64,17 +58,14 @@
                     <constraint firstItem="NKz-7Q-2fm" firstAttribute="top" secondItem="GsG-13-GgA" secondAttribute="bottom" constant="8" id="asu-ye-tKX"/>
                     <constraint firstAttribute="trailing" secondItem="Cz2-ZY-wWs" secondAttribute="trailing" constant="8" id="bpR-j8-oZo"/>
                     <constraint firstItem="GsG-13-GgA" firstAttribute="leading" secondItem="Gcd-32-VLB" secondAttribute="leading" constant="8" id="ckc-LH-2Fn"/>
-                    <constraint firstAttribute="trailing" secondItem="bQH-K7-BqR" secondAttribute="trailing" id="d2u-hE-5FM"/>
                     <constraint firstItem="oe4-MB-UUe" firstAttribute="top" secondItem="Gcd-32-VLB" secondAttribute="top" constant="8" id="ezI-RU-CNJ"/>
                     <constraint firstItem="zOT-22-GGk" firstAttribute="top" secondItem="Gcd-32-VLB" secondAttribute="top" constant="10" id="fHk-Sw-xKh"/>
                     <constraint firstItem="oe4-MB-UUe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zOT-22-GGk" secondAttribute="trailing" constant="8" id="ggW-yj-Wjy"/>
-                    <constraint firstItem="bQH-K7-BqR" firstAttribute="leading" secondItem="Gcd-32-VLB" secondAttribute="leading" id="ljH-Re-BoP"/>
                     <constraint firstItem="oe4-MB-UUe" firstAttribute="leading" secondItem="NKz-7Q-2fm" secondAttribute="trailing" constant="8" id="mXq-eC-SBP"/>
                     <constraint firstItem="Cz2-ZY-wWs" firstAttribute="leading" secondItem="Gcd-32-VLB" secondAttribute="leading" constant="8" id="mxC-lm-cfe"/>
                     <constraint firstAttribute="trailing" secondItem="oe4-MB-UUe" secondAttribute="trailing" constant="8" id="rcz-nZ-YxB"/>
                     <constraint firstItem="GsG-13-GgA" firstAttribute="top" secondItem="Gcd-32-VLB" secondAttribute="top" constant="8" id="sTZ-82-eAz"/>
                     <constraint firstItem="NKz-7Q-2fm" firstAttribute="leading" secondItem="Gcd-32-VLB" secondAttribute="leading" constant="8" id="yM8-gc-nFq"/>
-                    <constraint firstItem="bQH-K7-BqR" firstAttribute="top" secondItem="Gcd-32-VLB" secondAttribute="top" id="z4D-FY-vgZ"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

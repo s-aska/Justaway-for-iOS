@@ -79,24 +79,13 @@
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dUB-jv-bjb" customClass="CellSeparator" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="1" id="9qN-qU-p5k"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="dUB-jv-bjb" firstAttribute="leading" secondItem="nhv-sj-9jX" secondAttribute="leading" id="62k-br-7rJ"/>
                     <constraint firstAttribute="bottom" secondItem="Ado-k7-QXb" secondAttribute="bottom" priority="250" constant="16" id="722-4C-g5Q"/>
                     <constraint firstItem="JKV-Wa-aqI" firstAttribute="leading" secondItem="nhv-sj-9jX" secondAttribute="leading" constant="7" id="88y-Ig-mlz"/>
-                    <constraint firstAttribute="trailing" secondItem="dUB-jv-bjb" secondAttribute="trailing" id="9rd-85-eyE"/>
                     <constraint firstItem="K88-q8-EL6" firstAttribute="top" secondItem="nhv-sj-9jX" secondAttribute="top" constant="5" id="HTn-oX-yU3"/>
-                    <constraint firstItem="dUB-jv-bjb" firstAttribute="top" secondItem="nhv-sj-9jX" secondAttribute="top" id="IBL-xZ-Xku"/>
                     <constraint firstItem="Ado-k7-QXb" firstAttribute="top" secondItem="RZl-zF-2nd" secondAttribute="bottom" constant="3" id="IJT-WV-a8j"/>
                     <constraint firstItem="RZl-zF-2nd" firstAttribute="leading" secondItem="JKV-Wa-aqI" secondAttribute="trailing" constant="7" id="JhV-k5-2jZ"/>
-                    <constraint firstAttribute="bottom" secondItem="dUB-jv-bjb" secondAttribute="bottom" id="KRu-ci-ddK"/>
                     <constraint firstItem="Ado-k7-QXb" firstAttribute="leading" secondItem="JKV-Wa-aqI" secondAttribute="trailing" constant="9" id="bUn-KB-JIb"/>
                     <constraint firstItem="K88-q8-EL6" firstAttribute="leading" secondItem="RZl-zF-2nd" secondAttribute="trailing" id="dPq-jG-KeC"/>
                     <constraint firstAttribute="trailing" secondItem="Ado-k7-QXb" secondAttribute="trailing" constant="5" id="jTU-gf-Goj"/>
@@ -104,11 +93,6 @@
                     <constraint firstAttribute="trailing" secondItem="K88-q8-EL6" secondAttribute="trailing" constant="5" id="mH4-CA-s39"/>
                     <constraint firstItem="RZl-zF-2nd" firstAttribute="top" secondItem="nhv-sj-9jX" secondAttribute="top" constant="7" id="utr-gM-6bG"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="KRu-ci-ddK"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="descriptionLabel" destination="Ado-k7-QXb" id="dO0-Lk-qkJ"/>

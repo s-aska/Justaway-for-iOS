@@ -44,14 +44,15 @@ class AccountSettingsStore {
     class func load() -> AccountSettings? {
         if let data: NSDictionary = KeyClip.load(Constants.keychainKey) {
             let settings = AccountSettings(data)
-            AccountSettingsCache.sharedInstance.settings = settings
+            // AccountSettingsCache.sharedInstance.settings = settings
             for account in settings.accounts {
                 if let _ = account.client as? AccountClient {
                     refreshACAccounts(settings)
                     NSLog("found ACAccount")
-                    break
+                    return nil
                 }
             }
+            AccountSettingsCache.sharedInstance.settings = settings
         } else {
             return nil
         }
@@ -71,9 +72,15 @@ class AccountSettingsStore {
             for account in settings.accounts {
                 switch account.client {
                 case let client as AccountClient:
-                    if let _ = acAccountMap.removeValueForKey(client.identifier) {
+                    if let acAccount = acAccountMap.removeValueForKey(client.identifier) {
                         NSLog("exists \(client.identifier)")
-                        activeAccounts.append(account)
+                        activeAccounts.append(Account(
+                            client: AccountClient(account: acAccount),
+                            userID: account.userID,
+                            screenName: account.screenName,
+                            name: account.name,
+                            profileImageURL: account.profileImageURL,
+                            profileBannerURL: account.profileBannerURL))
                     } else {
                         NSLog("missing \(client.identifier)")
                         updated = true
@@ -105,6 +112,9 @@ class AccountSettingsStore {
                 } else {
                     AccountSettingsStore.clear()
                 }
+                EventBox.post(TwitterAuthorizeNotification)
+            } else {
+                AccountSettingsCache.sharedInstance.settings = AccountSettings(current: settings.current, accounts: activeAccounts)
                 EventBox.post(TwitterAuthorizeNotification)
             }
         }
