@@ -116,6 +116,7 @@
 		3868B95419EFCD5D001221BF /* TwitterMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3868B95319EFCD5D001221BF /* TwitterMedia.swift */; };
 		3868B95519EFCF15001221BF /* TwitterMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3868B95319EFCD5D001221BF /* TwitterMedia.swift */; };
 		386B6C4D1B81F31B0066EB80 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E0619D98A7300139654 /* AccountSettings.swift */; };
+		3883306B1BD4ECC600F35793 /* MainMenuSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3883306A1BD4ECC600F35793 /* MainMenuSettings.swift */; settings = {ASSET_TAGS = (); }; };
 		3894C24C19E557120038AEF8 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3894C24B19E557120038AEF8 /* TimelineViewController.swift */; };
 		3894C24E19E557BF0038AEF8 /* TimelineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */; };
 		3894C25019E55C770038AEF8 /* ViewTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3894C24F19E55C770038AEF8 /* ViewTools.swift */; };
@@ -312,6 +313,7 @@
 		3868B94A19EFCCE2001221BF /* TwitterURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterURL.swift; sourceTree = "<group>"; };
 		3868B94C19EFCCEC001221BF /* TwitterStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterStatus.swift; sourceTree = "<group>"; };
 		3868B95319EFCD5D001221BF /* TwitterMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterMedia.swift; sourceTree = "<group>"; };
+		3883306A1BD4ECC600F35793 /* MainMenuSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuSettings.swift; sourceTree = "<group>"; };
 		3894C24B19E557120038AEF8 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineViewController.xib; sourceTree = "<group>"; };
 		3894C24F19E55C770038AEF8 /* ViewTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewTools.swift; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 				381E6E0619D98A7300139654 /* AccountSettings.swift */,
 				6AB55B5919D0B7B700DC6442 /* AccountSettingsStore.swift */,
 				38E7367E1B78DA1800F49336 /* GenericSettings.swift */,
+				3883306A1BD4ECC600F35793 /* MainMenuSettings.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -1005,6 +1008,7 @@
 				6AB55B4919C5984800DC6442 /* TransparentView.swift in Sources */,
 				3868B94B19EFCCE2001221BF /* TwitterURL.swift in Sources */,
 				6A04494C1B247E0000758061 /* UserTableViewController.swift in Sources */,
+				3883306B1BD4ECC600F35793 /* MainMenuSettings.swift in Sources */,
 				38AB8BCD19F167D30065D869 /* ImageLoaderClient.swift in Sources */,
 				3805DE871A5DAA1600FBD015 /* Async.swift in Sources */,
 				6A0449481B2315E700758061 /* TwitterRelationship.swift in Sources */,
