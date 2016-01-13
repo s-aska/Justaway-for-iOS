@@ -1,6 +1,7 @@
 import UIKit
 import EventBox
 import Photos
+import Async
 
 class EditorViewController: UIViewController {
     
@@ -279,7 +280,7 @@ class EditorViewController: UIViewController {
         collectionMenuView.hidden = false
         textView.resignFirstResponder()
         if collectionView.rows.count == 0 {
-            Async.background({ () -> Void in
+            Async.background(block: { () -> Void in
                 let options = PHFetchOptions()
                 options.sortDescriptors = [
                     NSSortDescriptor(key: "creationDate", ascending: false)
@@ -288,7 +289,7 @@ class EditorViewController: UIViewController {
                 assets.enumerateObjectsUsingBlock { (asset, index, stop) -> Void in
                     self.collectionView.rows.append(asset as! PHAsset)
                 }
-                Async.main({ () -> Void in
+                Async.main(block: { () -> Void in
                     self.collectionView.reloadData()
                 })
             })

@@ -5,6 +5,7 @@ import KeyClip
 import TwitterAPI
 import OAuthSwift
 import SwiftyJSON
+import Async
 
 let TwitterAuthorizeNotification = "TwitterAuthorizeNotification"
 
@@ -94,7 +95,7 @@ class Twitter {
         )
         oauthswift.authorize_url_handler = SafariOAuthURLHandler()
         oauthswift.authorizeWithCallbackURL( NSURL(string: "justaway://success")!, success: {
-            credential, response in
+            credential, response, parameters in
             
             let client = OAuthClient(
                 consumerKey: TwitterConsumerKey,

@@ -9,6 +9,7 @@
 import UIKit
 import SafariServices
 import OAuthSwift
+import Async
 
 class Safari {
     
@@ -40,7 +41,7 @@ class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
     }
     
     class func callback(url: NSURL) {
-        OAuth1Swift.handleOpenURL(url)
+        OAuthSwift.handleOpenURL(url)
         SafariOAuthURLHandler.oAuthViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 }

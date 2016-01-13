@@ -8,6 +8,7 @@
 
 import Foundation
 import KeyClip
+import Async
 
 class NotificationsViewController: StatusTableViewController {
     
