@@ -568,6 +568,12 @@ class TwitterStatusCell: BackgroundTableViewCell {
     func hideVideo() {
         playerView.player?.pause()
         playerWrapperView.removeFromSuperview()
+        do {
+            try AVAudioSession.sharedInstance().setActive(false, withOptions:
+                AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation)
+        } catch {
+            print("AVAudioSession setActive failure.")
+        }
     }
     
     func endVideo() {
