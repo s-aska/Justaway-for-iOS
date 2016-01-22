@@ -56,7 +56,7 @@ class AccountSettingsStore {
                 EventBox.post(TwitterAuthorizeNotification)
             }
         } else {
-            Twitter.addACAccount()
+            Twitter.addACAccount(true)
         }
     }
     

@@ -118,7 +118,7 @@ class Twitter {
         }, failure: failure)
     }
     
-    class func addACAccount() {
+    class func addACAccount(silent: Bool) {
         let accountStore = ACAccountStore()
         let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
         
@@ -130,7 +130,9 @@ class Twitter {
                 let twitterAccounts = accountStore.accountsWithAccountType(accountType) as! [ACAccount]
                 
                 if twitterAccounts.count == 0 {
-                    // MessageAlert.show("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
+                    if !silent {
+                        MessageAlert.show("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
+                    }
                     EventBox.post(TwitterAuthorizeNotification)
                 } else {
                     Twitter.refreshAccounts(
@@ -146,7 +148,9 @@ class Twitter {
                     )
                 }
             } else {
-                // MessageAlert.show("Error", message: error.localizedDescription)
+                if !silent {
+                    MessageAlert.show("Error", message: "Twitter requires you to authorize Justaway for iOS to use your account.")
+                }
                 EventBox.post(TwitterAuthorizeNotification)
             }
         }

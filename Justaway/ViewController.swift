@@ -78,8 +78,15 @@ class ViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func signInButtonClick(sender: UIButton) {
-        Twitter.addOAuthAccount()
+        Twitter.addACAccount(false)
     }
     
+    @IBAction func terms(sender: UIButton) {
+        Safari.openURL("http://justaway.info/iOS/terms.html")
+    }
+    
+    @IBAction func privacy(sender: UIButton) {
+        Safari.openURL("http://justaway.info/iOS/privacy.html")
+    }
 }
 

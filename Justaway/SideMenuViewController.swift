@@ -143,6 +143,16 @@ class SideMenuViewController: UIViewController {
         hide()
     }
     
+    @IBAction func terms(sender: UIButton) {
+        Safari.openURL("http://justaway.info/iOS/terms.html")
+        hide()
+    }
+    
+    @IBAction func privacy(sender: UIButton) {
+        Safari.openURL("http://justaway.info/iOS/privacy.html")
+        hide()
+    }
+    
     @IBAction func sendFeedback(sender: UIButton) {
         EditorViewController.show(" #justaway", range: NSMakeRange(0, 0), inReplyToStatus: nil)
         hide()
