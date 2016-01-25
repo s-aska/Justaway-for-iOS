@@ -182,7 +182,7 @@ class EditorViewController: UIViewController {
             
             // en: UIKeyboardWillHideNotification occurs when you scroll through the conversion candidates in iOS9
             // ja: iOS9 では変換候補をスクロールする際 UIKeyboardWillHideNotification が発生する
-            if !textView.text.isEmpty {
+            if !textView.text.isEmpty && !picking {
                 return
             }
             containerViewButtomConstraint.constant = 0
