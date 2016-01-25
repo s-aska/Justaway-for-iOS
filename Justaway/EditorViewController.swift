@@ -9,6 +9,11 @@ class EditorViewController: UIViewController {
         static let instance = EditorViewController()
     }
     
+    struct UploadImage {
+        let data: NSData
+        let asset: PHAsset
+    }
+    
     // MARK: Properties
     
     @IBOutlet weak var replyToContainerView: BackgroundView!
@@ -38,7 +43,7 @@ class EditorViewController: UIViewController {
     @IBOutlet weak var imageView3: UIImageView!
     @IBOutlet weak var imageView4: UIImageView!
     
-    var images: [NSData] = []
+    var images: [UploadImage] = []
     var imageViews: [UIImageView] = []
     var picking = false
     let imageContainerHeightConstraintDefault: CGFloat = 100
@@ -117,7 +122,7 @@ class EditorViewController: UIViewController {
                     if self.images.count > 0 {
                         var i = 0
                         for image in self.images {
-                            if imageData == image {
+                            if imageData == image.data {
                                 self.removeImageIndex(i)
                                 return
                             }
@@ -128,8 +133,10 @@ class EditorViewController: UIViewController {
                     if i >= 4 {
                         return
                     }
-                    self.images.append(imageData)
+                    self.images.append(UploadImage(data: imageData, asset: asset))
                     self.imageViews[i].image = UIImage(data: imageData)
+                    self.collectionView.highlightRows = self.images.map({ $0.asset })
+                    self.collectionView.reloadHighlight()
                     if self.imageContainerHeightConstraint.constant == 0 {
                         self.imageContainerHeightConstraint.constant = self.imageContainerHeightConstraintDefault
                         UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -229,7 +236,7 @@ class EditorViewController: UIViewController {
         if text.isEmpty && images.count == 0 {
             hide()
         } else {
-            Twitter.statusUpdate(text, inReplyToStatusID: self.inReplyToStatusId, images: self.images, media_ids: [])
+            Twitter.statusUpdate(text, inReplyToStatusID: self.inReplyToStatusId, images: self.images.map({ $0.data }), media_ids: [])
             hide()
         }
     }
@@ -249,7 +256,7 @@ class EditorViewController: UIViewController {
         var i = 0
         for imageView in imageViews {
             if images.count > i {
-                imageView.image = UIImage(data: images[i])
+                imageView.image = UIImage(data: images[i].data)
             } else {
                 imageView.image = nil
             }
@@ -261,6 +268,8 @@ class EditorViewController: UIViewController {
                 self.view.layoutIfNeeded()
             })
         }
+        self.collectionView.highlightRows = self.images.map({ $0.asset })
+        self.collectionView.reloadHighlight()
     }
     
     @IBAction func replyCancel(sender: UIButton) {
