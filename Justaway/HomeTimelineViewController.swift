@@ -30,6 +30,10 @@ class HomeTimelineTableViewController: StatusTableViewController {
                 }
             }
             success(statuses: [TwitterStatus]())
+            
+            Async.background(after: 0.3, block: { () -> Void in
+                self.loadData(nil)
+            })
         }
     }
     
