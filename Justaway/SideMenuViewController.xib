@@ -187,8 +187,15 @@
                                 <action selector="displaySettings:" destination="-1" eventType="touchUpInside" id="UCj-0e-Irq"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uRk-rt-4TJ" customClass="SideMenuSeparator" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="364" width="280" height="1"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="p1J-uL-XgD"/>
+                            </constraints>
+                        </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFH-1Z-3tU" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="359" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="370" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="at8-62-Xos"/>
                             </constraints>
@@ -202,7 +209,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eI4-Df-IIM" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="399" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="410" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="5Wg-tM-1NW"/>
                             </constraints>
@@ -216,7 +223,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lf1-ka-J2X" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="439" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="450" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="I4L-5u-lg9"/>
                             </constraints>
@@ -230,7 +237,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4f3-tI-Hwo" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="479" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="490" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="1ZW-mq-gOT"/>
                             </constraints>
@@ -247,7 +254,6 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="4f3-tI-Hwo" secondAttribute="trailing" id="4G8-f0-oth"/>
-                        <constraint firstItem="pFH-1Z-3tU" firstAttribute="top" secondItem="CTe-Zv-03h" secondAttribute="bottom" id="4qf-7u-5NH"/>
                         <constraint firstAttribute="trailing" secondItem="Lf1-ka-J2X" secondAttribute="trailing" id="5Dl-Ih-qpb"/>
                         <constraint firstItem="Lf1-ka-J2X" firstAttribute="top" secondItem="eI4-Df-IIM" secondAttribute="bottom" id="8NJ-Yr-8kP"/>
                         <constraint firstItem="CTe-Zv-03h" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="8kA-sL-fDL"/>
@@ -255,6 +261,7 @@
                         <constraint firstAttribute="trailing" secondItem="KyR-Q6-ecg" secondAttribute="trailing" id="B5Q-HJ-JHJ"/>
                         <constraint firstAttribute="trailing" secondItem="fge-rv-lhz" secondAttribute="trailing" id="Bch-nQ-mRP"/>
                         <constraint firstItem="RcW-eC-rkL" firstAttribute="top" secondItem="xmC-0b-3jO" secondAttribute="top" constant="20" id="CnY-D0-lAk"/>
+                        <constraint firstAttribute="trailing" secondItem="uRk-rt-4TJ" secondAttribute="trailing" id="DGZ-wQ-QVZ"/>
                         <constraint firstItem="RcW-eC-rkL" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" constant="10" id="GeP-I3-6p2"/>
                         <constraint firstItem="fge-rv-lhz" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="GhE-LL-Ls0"/>
                         <constraint firstItem="W1d-Lj-ffX" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="IFM-U4-bnz"/>
@@ -274,10 +281,13 @@
                         <constraint firstAttribute="width" constant="280" id="gW7-Xu-Tpo"/>
                         <constraint firstAttribute="trailing" secondItem="U79-rE-xdA" secondAttribute="trailing" id="gX9-CP-kHd"/>
                         <constraint firstAttribute="trailing" secondItem="WaY-Eb-afl" secondAttribute="trailing" id="hT6-Zg-MkT"/>
+                        <constraint firstItem="uRk-rt-4TJ" firstAttribute="top" secondItem="CTe-Zv-03h" secondAttribute="bottom" constant="5" id="ieW-tu-4ax"/>
+                        <constraint firstItem="uRk-rt-4TJ" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="nWF-3Z-0nH"/>
                         <constraint firstItem="fge-rv-lhz" firstAttribute="top" secondItem="WaY-Eb-afl" secondAttribute="bottom" id="ofp-tM-TqH"/>
                         <constraint firstItem="Lf1-ka-J2X" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="onh-YJ-LP4"/>
                         <constraint firstAttribute="trailing" secondItem="pFH-1Z-3tU" secondAttribute="trailing" id="opX-Xq-dLf"/>
                         <constraint firstItem="WaY-Eb-afl" firstAttribute="top" secondItem="KHH-wF-a5d" secondAttribute="bottom" constant="5" id="phI-dx-Vcq"/>
+                        <constraint firstItem="pFH-1Z-3tU" firstAttribute="top" secondItem="uRk-rt-4TJ" secondAttribute="bottom" constant="5" id="scE-f7-Qbu"/>
                         <constraint firstAttribute="trailing" secondItem="W1d-Lj-ffX" secondAttribute="trailing" id="tEH-Mv-HQ2"/>
                         <constraint firstItem="KHH-wF-a5d" firstAttribute="top" secondItem="W1d-Lj-ffX" secondAttribute="bottom" constant="8" id="tSK-GQ-06f"/>
                         <constraint firstItem="4f3-tI-Hwo" firstAttribute="top" secondItem="Lf1-ka-J2X" secondAttribute="bottom" id="vPS-Qq-YyJ"/>
