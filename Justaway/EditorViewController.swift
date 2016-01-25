@@ -164,6 +164,7 @@ class EditorViewController: UIViewController {
             imageView.image = nil
         }
         collectionView.rows = []
+        collectionView.highlightRows = []
         collectionHeightConstraint.constant = 0
         imageContainerHeightConstraint.constant = 0
         collectionMenuView.hidden = true
