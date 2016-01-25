@@ -43,7 +43,7 @@ class ViewController: UIViewController {
     // MARK: - Configuration
     
     func configureView() {
-        let longPress = UILongPressGestureRecognizer(target: self, action: "signInMenu")
+        let longPress = UILongPressGestureRecognizer(target: self, action: "signInMenu:")
         longPress.minimumPressDuration = 2.0;
         signInButton.addGestureRecognizer(longPress)
     }
@@ -79,8 +79,10 @@ class ViewController: UIViewController {
     
     // MARK: - Actions
     
-    func signInMenu() {
-        AddAccountAlert.show(signInButton)
+    func signInMenu(sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Ended {
+            AddAccountAlert.show(signInButton)
+        }
     }
     
     @IBAction func signInButtonClick(sender: UIButton) {
