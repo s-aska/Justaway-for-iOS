@@ -28,11 +28,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="07Y-rc-PN1">
-                                        <rect key="frame" x="140" y="170" width="320" height="260"/>
+                                        <rect key="frame" x="140" y="140" width="320" height="320"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gmx-Z9-5hK">
-                                                <rect key="frame" x="0.0" y="140" width="320" height="35"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gmx-Z9-5hK" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="171" width="320" height="40"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                                 <state key="normal" title="Terms of Service">
                                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -41,9 +41,9 @@
                                                     <action selector="terms:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hkj-Jn-5H1"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vrk-35-BDo">
-                                                <rect key="frame" x="0.0" y="175" width="320" height="35"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vrk-35-BDo" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="211" width="320" height="40"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                                 <state key="normal" title="Privacy Policy">
                                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -52,9 +52,9 @@
                                                     <action selector="privacy:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lOv-Mr-ee2"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ez-O4-zMs">
-                                                <rect key="frame" x="0.0" y="210" width="320" height="50"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ez-O4-zMs" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="251" width="320" height="69"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                                                 <state key="normal" title="Sign in with Twitter"/>
                                                 <connections>
@@ -76,7 +76,6 @@
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="vrk-35-BDo" firstAttribute="top" secondItem="Gmx-Z9-5hK" secondAttribute="bottom" id="0IG-Ba-46y"/>
                                             <constraint firstAttribute="trailing" secondItem="J9N-4r-cBd" secondAttribute="trailing" id="413-b4-J0g"/>
@@ -90,7 +89,7 @@
                                             <constraint firstItem="2ez-O4-zMs" firstAttribute="centerX" secondItem="07Y-rc-PN1" secondAttribute="centerX" id="eIn-L2-ChM"/>
                                             <constraint firstAttribute="bottom" secondItem="2ez-O4-zMs" secondAttribute="bottom" id="evB-NZ-rDt"/>
                                             <constraint firstItem="J9N-4r-cBd" firstAttribute="leading" secondItem="07Y-rc-PN1" secondAttribute="leading" id="f2C-X7-zLP"/>
-                                            <constraint firstAttribute="height" constant="260" id="gBI-9M-rUN"/>
+                                            <constraint firstAttribute="height" constant="320" id="gBI-9M-rUN"/>
                                             <constraint firstAttribute="trailing" secondItem="2ez-O4-zMs" secondAttribute="trailing" id="t7x-71-2Iy"/>
                                             <constraint firstItem="J9N-4r-cBd" firstAttribute="top" secondItem="07Y-rc-PN1" secondAttribute="top" id="uEh-Ox-c1a"/>
                                         </constraints>
