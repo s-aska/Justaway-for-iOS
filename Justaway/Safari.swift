@@ -32,6 +32,8 @@ class Safari {
     }
 }
 
+// MARK: - SafariOAuthURLHandler
+
 class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
 
     static var oAuthViewController: SFSafariViewController?
@@ -46,7 +48,7 @@ class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
     }
 }
 
-// OAuthSwiftURLHandlerType
+// MARK: SFSafariViewControllerDelegate
 
 class SafariDelegate: NSObject, SFSafariViewControllerDelegate {
 

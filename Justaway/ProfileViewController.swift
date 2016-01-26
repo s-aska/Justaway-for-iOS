@@ -14,15 +14,6 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: Types
 
-    struct Static {
-        static var instances = [ProfileViewController]()
-    }
-
-    struct Constants {
-        static let duration: Double = 0.2
-        static let delay: NSTimeInterval = 0
-    }
-
     struct TabMenu {
         let count: UILabel
         let label: UILabel
@@ -360,41 +351,14 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             return
         }
         closed = true
-        UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
-            self.view.frame = CGRect.init(
-                x: self.view.frame.size.width,
-                y: self.view.frame.origin.y,
-                width: self.view.frame.size.width,
-                height: self.view.frame.size.height)
-            }, completion: { finished in
-                self.view.hidden = true
-                self.view.removeFromSuperview()
-                Static.instances.removeAtIndex(Static.instances.endIndex.predecessor()) // purge instance
-        })
+        ViewTools.slideOut(self)
     }
 
     // MARK: - Class Methods
 
     class func show(user: TwitterUser) {
-
-        EditorViewController.hide() // TODO: think seriously about
-
-        if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
-            let instance = ProfileViewController()
-            instance.user = user
-            instance.view.hidden = true
-            vc.view.addSubview(instance.view)
-            instance.view.frame = CGRect.init(x: vc.view.frame.width, y: 0, width: vc.view.frame.width, height: vc.view.frame.height)
-            instance.view.hidden = false
-
-            UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
-                instance.view.frame = CGRect.init(x: 0,
-                    y: vc.view.frame.origin.y,
-                    width: vc.view.frame.size.width,
-                    height: vc.view.frame.size.height)
-                }) { (finished) -> Void in
-            }
-            Static.instances.append(instance) // keep instance
-        }
+        let instance = ProfileViewController()
+        instance.user = user
+        ViewTools.slideIn(instance)
     }
 }

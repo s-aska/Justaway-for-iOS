@@ -11,17 +11,6 @@ import Pinwheel
 
 class TalkViewController: UIViewController {
 
-    // MARK: Types
-
-    struct Static {
-        static var instances = [TalkViewController]()
-    }
-
-    struct Constants {
-        static let duration: Double = 0.2
-        static let delay: NSTimeInterval = 0
-    }
-
     // MARK: Properties
 
     let adapter = TwitterStatusAdapter()
@@ -95,41 +84,14 @@ class TalkViewController: UIViewController {
     }
 
     func hide() {
-        UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
-            self.view.frame = CGRect.init(
-                x: self.view.frame.size.width,
-                y: self.view.frame.origin.y,
-                width: self.view.frame.size.width,
-                height: self.view.frame.size.height)
-            }, completion: { finished in
-                self.view.hidden = true
-                self.view.removeFromSuperview()
-                Static.instances.removeAtIndex(Static.instances.endIndex.predecessor()) // purge instance
-        })
+        ViewTools.slideOut(self)
     }
 
     // MARK: - Class Methods
 
     class func show(status: TwitterStatus) {
-
-        EditorViewController.hide() // TODO: think seriously about
-
-        if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
-            let instance = TalkViewController()
-            instance.rootStatus = status
-            instance.view.hidden = true
-            vc.view.addSubview(instance.view)
-            instance.view.frame = CGRect.init(x: vc.view.frame.width, y: 0, width: vc.view.frame.width, height: vc.view.frame.height)
-            instance.view.hidden = false
-
-            UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
-                instance.view.frame = CGRect.init(x: 0,
-                    y: vc.view.frame.origin.y,
-                    width: vc.view.frame.size.width,
-                    height: vc.view.frame.size.height)
-                }) { (finished) -> Void in
-            }
-            Static.instances.append(instance) // keep instance
-        }
+        let instance = TalkViewController()
+        instance.rootStatus = status
+        ViewTools.slideIn(instance)
     }
 }
