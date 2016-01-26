@@ -166,8 +166,6 @@
 		6A0449521B2489B400758061 /* FollowingUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0449511B2489B400758061 /* FollowingUserViewController.swift */; };
 		6A0449541B24952000758061 /* FollowerUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0449531B24952000758061 /* FollowerUserViewController.swift */; };
 		6A0449561B249CE100758061 /* UserAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0449551B249CE100758061 /* UserAlert.swift */; };
-		6A0A1D321A40B7D30035A03C /* Pinwheel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */; };
-		6A0A1D331A40B7D30035A03C /* Pinwheel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6A0AE9E51B5177FD00FBF937 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A0AE9E41B5177FD00FBF937 /* Default-568h@2x.png */; };
 		6A11CF9C1C57CB59007C1F36 /* Reachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A11CF9B1C57CB59007C1F36 /* Reachability.framework */; };
 		6A11CF9D1C57CB59007C1F36 /* Reachability.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A11CF9B1C57CB59007C1F36 /* Reachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -190,6 +188,8 @@
 		6A56F5C81B19EB6C0058D6DD /* AddAccountAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A56F5C71B19EB6C0058D6DD /* AddAccountAlert.swift */; };
 		6A56F5CA1B19ECDC0058D6DD /* MessageAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A56F5C91B19ECDC0058D6DD /* MessageAlert.swift */; };
 		6A7255741BC59EFF00A41020 /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */; };
+		6A7A534E1C57CF72005F3E6B /* Pinwheel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */; };
+		6A7A534F1C57CF72005F3E6B /* Pinwheel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6A81CF1E1BC406E500EBE567 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */; };
 		6A81CF211BC406F400EBE567 /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */; };
 		6A81CF221BC4127A00EBE567 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */; };
@@ -231,27 +231,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		6A0A1D2E1A40B7310035A03C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 38E82B421A40747C00EFDC81;
-			remoteInfo = Pinwheel;
-		};
-		6A0A1D301A40B7310035A03C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 38E82B4D1A40747C00EFDC81;
-			remoteInfo = PinwheelTests;
-		};
-		6A0A1D341A40B7D30035A03C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 38E82B411A40747C00EFDC81;
-			remoteInfo = Pinwheel;
-		};
 		6A4B9D3C19BB514900D50D78 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6A4B9D2119BB514900D50D78 /* Project object */;
@@ -272,7 +251,7 @@
 				38DA2D4E1B9876E50090CBDD /* SwiftyJSON.framework in Embed Frameworks */,
 				38D6DDF81A5AC317001C94F7 /* EventBox.framework in Embed Frameworks */,
 				6ADB647B1A5348D800602B2B /* KeyClip.framework in Embed Frameworks */,
-				6A0A1D331A40B7D30035A03C /* Pinwheel.framework in Embed Frameworks */,
+				6A7A534F1C57CF72005F3E6B /* Pinwheel.framework in Embed Frameworks */,
 				3848FFED1BB1327900AC04FC /* TwitterAPI.framework in Embed Frameworks */,
 				38DFD8011B86F03C0073C8CD /* MutableDataScanner.framework in Embed Frameworks */,
 				6A11CF9D1C57CB59007C1F36 /* Reachability.framework in Embed Frameworks */,
@@ -357,7 +336,6 @@
 		6A0449511B2489B400758061 /* FollowingUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingUserViewController.swift; sourceTree = "<group>"; };
 		6A0449531B24952000758061 /* FollowerUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowerUserViewController.swift; sourceTree = "<group>"; };
 		6A0449551B249CE100758061 /* UserAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAlert.swift; sourceTree = "<group>"; };
-		6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pinwheel.xcodeproj; path = Pinwheel/Pinwheel.xcodeproj; sourceTree = "<group>"; };
 		6A0AE9E41B5177FD00FBF937 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		6A11CF9B1C57CB59007C1F36 /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reachability.framework; path = Carthage/Build/iOS/Reachability.framework; sourceTree = "<group>"; };
 		6A3469BA1A699D21004AD091 /* RetweetAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetweetAlert.swift; sourceTree = "<group>"; };
@@ -382,6 +360,7 @@
 		6A5357D81A7429A600291E95 /* NotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		6A56F5C71B19EB6C0058D6DD /* AddAccountAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAccountAlert.swift; sourceTree = "<group>"; };
 		6A56F5C91B19ECDC0058D6DD /* MessageAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAlert.swift; sourceTree = "<group>"; };
+		6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pinwheel.framework; path = Carthage/Build/iOS/Pinwheel.framework; sourceTree = "<group>"; };
 		6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuViewController.xib; sourceTree = "<group>"; };
 		6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
@@ -415,7 +394,7 @@
 				38DA2D4D1B9876E50090CBDD /* SwiftyJSON.framework in Frameworks */,
 				38D6DDF71A5AC317001C94F7 /* EventBox.framework in Frameworks */,
 				6ADB647A1A5348D800602B2B /* KeyClip.framework in Frameworks */,
-				6A0A1D321A40B7D30035A03C /* Pinwheel.framework in Frameworks */,
+				6A7A534E1C57CF72005F3E6B /* Pinwheel.framework in Frameworks */,
 				3848FFEC1BB1327900AC04FC /* TwitterAPI.framework in Frameworks */,
 				38DFD8001B86F03C0073C8CD /* MutableDataScanner.framework in Frameworks */,
 				6A11CF9C1C57CB59007C1F36 /* Reachability.framework in Frameworks */,
@@ -579,15 +558,6 @@
 			name = Operation;
 			sourceTree = "<group>";
 		};
-		6A0A1D2A1A40B7300035A03C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */,
-				6A0A1D311A40B7310035A03C /* PinwheelTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		6A0B236719DC49A3004819BB /* OS */ = {
 			isa = PBXGroup;
 			children = (
@@ -618,7 +588,6 @@
 				6A4B9D3E19BB514900D50D78 /* JustawayTests */,
 				6AB8CDEE1A29C13700D22268 /* Frameworks */,
 				6A4B9D2A19BB514900D50D78 /* Products */,
-				6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -783,6 +752,7 @@
 		6AB8CDEE1A29C13700D22268 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */,
 				6A11CF9B1C57CB59007C1F36 /* Reachability.framework */,
 				387AA04A1C465A2C00D3FCAB /* Async.framework */,
 				3848FFEB1BB1327900AC04FC /* TwitterAPI.framework */,
@@ -820,7 +790,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				6A0A1D351A40B7D30035A03C /* PBXTargetDependency */,
 			);
 			name = Justaway;
 			productName = Justaway;
@@ -877,12 +846,6 @@
 			mainGroup = 6A4B9D2019BB514900D50D78;
 			productRefGroup = 6A4B9D2A19BB514900D50D78 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 6A0A1D2A1A40B7300035A03C /* Products */;
-					ProjectRef = 6A0A1D291A40B7300035A03C /* Pinwheel.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				6A4B9D2819BB514900D50D78 /* Justaway */,
@@ -890,23 +853,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		6A0A1D2F1A40B7310035A03C /* Pinwheel.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Pinwheel.framework;
-			remoteRef = 6A0A1D2E1A40B7310035A03C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6A0A1D311A40B7310035A03C /* PinwheelTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = PinwheelTests.xctest;
-			remoteRef = 6A0A1D301A40B7310035A03C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6A4B9D2719BB514900D50D78 /* Resources */ = {
@@ -996,6 +942,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/TwitterAPI.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Async.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Reachability.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Pinwheel.framework",
 			);
 			outputPaths = (
 			);
@@ -1179,11 +1126,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		6A0A1D351A40B7D30035A03C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Pinwheel;
-			targetProxy = 6A0A1D341A40B7D30035A03C /* PBXContainerItemProxy */;
-		};
 		6A4B9D3D19BB514900D50D78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6A4B9D2819BB514900D50D78 /* Justaway */;
