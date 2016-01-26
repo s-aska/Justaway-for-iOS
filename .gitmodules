@@ -1,6 +1,3 @@
 [submodule "Pinwheel"]
 	path = Pinwheel
 	url = git@github.com:s-aska/Pinwheel.git
-[submodule "Reachability"]
-	path = Reachability
-	url = git@github.com:ashleymills/Reachability.swift.git

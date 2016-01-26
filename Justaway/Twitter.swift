@@ -6,6 +6,7 @@ import TwitterAPI
 import OAuthSwift
 import SwiftyJSON
 import Async
+import Reachability
 
 let twitterAuthorizeNotification = "TwitterAuthorizeNotification"
 
@@ -49,20 +50,30 @@ class Twitter {
     // MARK: - Class Methods
 
     class func setup() {
-        if let reachability = Reachability.reachabilityForInternetConnection() {
-            reachability.whenReachable = { reachability in
-                NSLog("whenReachable")
-//                Async.main(after: 2) {
-//                    Twitter.startStreamingIfEnable()
-//                }
-//                return
-            }
+        let reachability: Reachability
+        do {
+            reachability = try Reachability.reachabilityForInternetConnection()
+        } catch {
+            print("Unable to create Reachability")
+            return
+        }
 
-            reachability.whenUnreachable = { reachability in
-                NSLog("whenUnreachable")
-            }
+        reachability.whenReachable = { reachability in
+            NSLog("whenReachable")
+//            Async.main(after: 2) {
+//                Twitter.startStreamingIfEnable()
+//            }
+//            return
+        }
 
-            reachability.startNotifier()
+        reachability.whenUnreachable = { reachability in
+            NSLog("whenUnreachable")
+        }
+
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
         }
 
         let enableStreaming: String = KeyClip.load("settings.enableStreaming") ?? "0"
