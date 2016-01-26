@@ -9,7 +9,7 @@
 import UIKit
 
 struct ThemeColor {
-    
+
     struct Holo {
         static let blueBright  = UIColor(red: 0.00, green: 0.87, blue: 1.00, alpha: 1)
         static let blueLight   = UIColor(red: 0.20, green: 0.71, blue: 0.90, alpha: 1)
@@ -21,7 +21,7 @@ struct ThemeColor {
         static let redLight    = UIColor(red: 1.00, green: 0.27, blue: 0.27, alpha: 1)
         static let redDark     = UIColor(red: 1.00, green: 0.00, blue: 0.00, alpha: 1)
     }
-    
+
     struct Solarized {
         static let baes03  = UIColor(red: 0.00, green: 0.17, blue: 0.21, alpha: 1)
         static let baes02  = UIColor(red: 0.03, green: 0.21, blue: 0.26, alpha: 1)
@@ -40,7 +40,7 @@ struct ThemeColor {
         static let cyan    = UIColor(red: 0.16, green: 0.63, blue: 0.60, alpha: 1)
         static let green   = UIColor(red: 0.52, green: 0.60, blue: 0.00, alpha: 1)
     }
-    
+
     struct Monokai {
         static let black  = UIColor(red: 0.15, green: 0.16, blue: 0.13, alpha: 1.0)
         static let red    = UIColor(red: 0.98, green: 0.15, blue: 0.45, alpha: 1.0)

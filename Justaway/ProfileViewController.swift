@@ -11,33 +11,33 @@ import Pinwheel
 import SwiftyJSON
 
 class ProfileViewController: UIViewController, UIScrollViewDelegate {
-    
+
     // MARK: Types
-    
+
     struct Static {
         static var instances = [ProfileViewController]()
     }
-    
+
     struct Constants {
         static let duration: Double = 0.2
         static let delay: NSTimeInterval = 0
     }
-    
+
     struct TabMenu {
         let count: UILabel
         let label: UILabel
-        
+
         init(count: UILabel, label: UILabel) {
             self.count = count
             self.label = label
         }
     }
-    
+
     // MARK: Properties
-    
+
     @IBOutlet weak var scrollWapperView: UIView!
     @IBOutlet weak var scrollView: BackgroundScrollView!
-    
+
     @IBOutlet weak var headerViewLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var headerViewTopContraint: NSLayoutConstraint!
     @IBOutlet weak var headerViewWidthConstraint: NSLayoutConstraint!
@@ -51,8 +51,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var sinceLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var siteLabel: UILabel!
-    
-    @IBOutlet weak var CurrentTabMaskLeftConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var currentTabMaskLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var statusCountLabel: MenuLable!
     @IBOutlet weak var statusLabel: MenuLable!
     @IBOutlet weak var statusView: UIView!
@@ -68,16 +68,16 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var favoritesCountLabel: MenuLable!
     @IBOutlet weak var favoritesLabel: MenuLable!
     @IBOutlet weak var favoritesView: UIView!
-    
+
     @IBOutlet weak var bottomContainerTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomDisplayNameLabel: UILabel!
     @IBOutlet weak var bottomScreenNameLabel: UILabel!
-    
+
     var user: TwitterUser?
     var userFull: TwitterUserFull?
     var relationship: TwitterRelationship?
     var closed = false
-    
+
     var tabMenus = [TabMenu]()
     var tabViews = [TimelineTableViewController]()
     var tabLoaded = [Int: Bool]()
@@ -93,35 +93,35 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         formatter.dateFormat = "yyyy.MM.dd"
         return formatter
     }()
-    
+
     override var nibName: String {
         return "ProfileViewController"
     }
-    
+
     // MARK: - View Life Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
         setText()
     }
-    
+
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         // EventBox.off(self)
     }
-    
+
     // MARK: - Configuration
-    
+
     func configureView() {
         tabMenus = [
             TabMenu(count: statusCountLabel, label: statusLabel),
@@ -130,52 +130,56 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             TabMenu(count: listedCountLabel, label: listedLabel),
             TabMenu(count: favoritesCountLabel, label: favoritesLabel)
         ]
-        
+
         tabViews = [userTimelineTableViewController, followingTableViewController, followerTableViewController, listMemberOfViewController, favoritesTableViewController]
-        
+
         highlightUpdate(0)
-        
+
         statusView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
         followingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
         followerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
         listedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
         favoritesView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
-        
+
         scrollView.delegate = self
-        
+
         coverImageView.clipsToBounds = true
         coverImageView.contentMode = .ScaleAspectFill
-        
+
         let gradient = CAGradientLayer()
         gradient.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0).CGColor, UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).CGColor]
         gradient.frame = coverImageView.frame
         coverImageView.layer.insertSublayer(gradient, atIndex: 0)
-        
+
         iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showIcon:"))
         coverImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showCover:"))
         siteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "openURL:"))
-        
+
         // setup tabview
         if let windowSize = UIApplication.sharedApplication().keyWindow?.rootViewController?.view.frame.size {
-            view.frame = CGRectMake(0, 0, windowSize.width, windowSize.height)
+            view.frame = CGRect.init(x: 0, y: 0, width: windowSize.width, height: windowSize.height)
             view.layoutIfNeeded()
             headerViewWidthConstraint.constant = windowSize.width
         }
         let size = scrollWapperView.frame.size
-        let contentView = UIView(frame: CGRectMake(0, 0, size.width * CGFloat(tabViews.count), size.height))
+        let contentView = UIView(frame: CGRect.init(x: 0, y: 0, width: size.width * CGFloat(tabViews.count), height: size.height))
         var i = 0
         for vc in tabViews {
-            vc.view.frame = CGRectMake(0, 0, size.width, size.height)
-            let view = UIView(frame: CGRectMake(size.width * CGFloat(i), 0, size.width, size.height))
+            vc.view.frame = CGRect.init(x: 0, y: 0, width: size.width, height: size.height)
+            let view = UIView(frame: CGRect.init(x: size.width * CGFloat(i), y: 0, width: size.width, height: size.height))
             view.addSubview(vc.view)
             contentView.addSubview(view)
             i++
         }
-        
+
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
         scrollView.pagingEnabled = true
-        
+
+        configureUserTimelineTableView()
+    }
+
+    func configureUserTimelineTableView() {
         userTimelineTableViewController.adapter.scrollCallback = { (scrollView: UIScrollView) -> Void in
             let offset = scrollView.contentOffset.y
             let margin = 159 + offset
@@ -193,17 +197,16 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
                 self.bottomContainerTopConstraint.constant = 100
             }
         }
-        
         userTimelineTableViewController.tableView.contentInset = UIEdgeInsetsMake(159, 0, 0, 0)
         userTimelineTableViewController.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(159, 0, 0, 0)
         userTimelineTableViewController.adapter.scrollEnd(userTimelineTableViewController.tableView)
     }
-    
+
     func configureEvent() {
     }
-    
+
     // MARK: - UITableViewDataSource
-    
+
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.x
         NSLog("offset \(offset)")
@@ -216,20 +219,20 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         highlightUpdate(page)
         loadData(page)
     }
-    
+
     func highlightUpdate(page: Int) {
-        CurrentTabMaskLeftConstraint.constant = CGFloat(CGFloat(page) * self.view.frame.size.width / 5)
+        currentTabMaskLeftConstraint.constant = CGFloat(CGFloat(page) * self.view.frame.size.width / 5)
     }
-    
+
     func loadData(page: Int) {
         if !(tabLoaded[page] ?? false) {
             tabLoaded[page] = true
             tabViews[page].refresh()
         }
     }
-    
+
     // MARK: - Actions
-    
+
     func setText() {
         if let user = self.user {
             displayNameLabel.text = user.name
@@ -256,21 +259,21 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             }
             // followedByLabel.alpha = 0
             ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: iconImageView)
-            
+
             headerViewTopContraint.constant = 0
             bottomContainerTopConstraint.constant = 100
-            
+
             userTimelineTableViewController.userID = user.userID
             userTimelineTableViewController.loadData(nil)
-            
+
             tabLoaded = [0: true]
-            
+
             followingTableViewController.userID = user.userID
             followerTableViewController.userID = user.userID
             listMemberOfViewController.userID = user.userID
             favoritesTableViewController.userID = user.userID
-            
-            let success :(([JSON]) -> Void) = { (rows) in
+
+            let success: (([JSON]) -> Void) = { (rows) in
                 if let row = rows.first {
                     let user = TwitterUserFull(row)
                     self.userFull = user
@@ -289,12 +292,12 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
                     ImageLoaderClient.displayImage(user.profileBannerURL, imageView: self.coverImageView)
                 }
             }
-            
+
             let parameters = ["user_id": user.userID]
             Twitter.client()?
                 .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
                 .responseJSONArray(success)
-            
+
             Twitter.getFriendships(user.userID, success: { (relationship) -> Void in
                 self.relationship = relationship
                 if !relationship.followedBy {
@@ -303,29 +306,29 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             })
         }
     }
-    
+
     func showCover(sender: AnyObject) {
         if let imageURL = userFull?.profileBannerURL {
             ImageViewController.show([imageURL], initialPage: 0)
         }
     }
-    
+
     func showIcon(sender: AnyObject) {
         if let imageURL = user?.profileOriginalImageURL {
             ImageViewController.show([imageURL], initialPage: 0)
         }
     }
-    
+
     func showPage(sender: UITapGestureRecognizer) {
         if let page = sender.view?.tag {
             let offset = self.view.frame.size.width * CGFloat(page)
             if offset == self.scrollView.contentOffset.x {
-                 tabViews[page].tableView.setContentOffset(CGPointZero, animated: true)
+                 tabViews[page].tableView.setContentOffset(CGPoint.zero, animated: true)
             } else {
                 headerViewLeftConstraint.constant = -offset
                 loadData(page)
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    self.scrollView.contentOffset = CGPointMake(offset, 0)
+                    self.scrollView.contentOffset = CGPoint.init(x: offset, y: 0)
                     self.view.layoutIfNeeded()
                     }, completion: { (flag) -> Void in
                         self.highlightUpdate(page)
@@ -333,13 +336,13 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             }
         }
     }
-    
+
     func openURL(sender: AnyObject) {
         if let expandedURL = userFull?.expandedURL {
             Safari.openURL(expandedURL)
         }
     }
-    
+
     @IBAction func menu(sender: UIButton) {
         if let userFull = userFull {
             if let relationship = relationship {
@@ -347,52 +350,51 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             }
         }
     }
-    
+
     @IBAction func hide(sender: UIButton) {
         hide()
     }
-    
+
     func hide() {
         if closed {
             return
         }
         closed = true
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
-            self.view.frame = CGRectMake(
-                self.view.frame.size.width,
-                self.view.frame.origin.y,
-                self.view.frame.size.width,
-                self.view.frame.size.height)
+            self.view.frame = CGRect.init(
+                x: self.view.frame.size.width,
+                y: self.view.frame.origin.y,
+                width: self.view.frame.size.width,
+                height: self.view.frame.size.height)
             }, completion: { finished in
                 self.view.hidden = true
                 self.view.removeFromSuperview()
                 Static.instances.removeAtIndex(Static.instances.endIndex.predecessor()) // purge instance
         })
     }
-    
+
     // MARK: - Class Methods
-    
+
     class func show(user: TwitterUser) {
-        
+
         EditorViewController.hide() // TODO: think seriously about
-        
+
         if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
             let instance = ProfileViewController()
             instance.user = user
             instance.view.hidden = true
             vc.view.addSubview(instance.view)
-            instance.view.frame = CGRectMake(vc.view.frame.width, 0, vc.view.frame.width, vc.view.frame.height)
+            instance.view.frame = CGRect.init(x: vc.view.frame.width, y: 0, width: vc.view.frame.width, height: vc.view.frame.height)
             instance.view.hidden = false
-            
+
             UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
-                instance.view.frame = CGRectMake(0,
-                    vc.view.frame.origin.y,
-                    vc.view.frame.size.width,
-                    vc.view.frame.size.height)
+                instance.view.frame = CGRect.init(x: 0,
+                    y: vc.view.frame.origin.y,
+                    width: vc.view.frame.size.width,
+                    height: vc.view.frame.size.height)
                 }) { (finished) -> Void in
             }
             Static.instances.append(instance) // keep instance
         }
     }
 }
-

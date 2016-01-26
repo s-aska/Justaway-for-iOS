@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="AvenirNext.ttc">
@@ -31,11 +31,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
-                <outlet property="CurrentTabMaskLeftConstraint" destination="J0s-dc-1Aj" id="Txo-fK-2CJ"/>
                 <outlet property="bottomContainerTopConstraint" destination="XAh-7y-PhO" id="Ut3-wB-a1u"/>
                 <outlet property="bottomDisplayNameLabel" destination="032-7M-HZY" id="IrS-QC-3gX"/>
                 <outlet property="bottomScreenNameLabel" destination="TEc-Gn-36O" id="6Gx-kA-9fn"/>
                 <outlet property="coverImageView" destination="dHx-Xc-uKA" id="r8c-cw-JDL"/>
+                <outlet property="currentTabMaskLeftConstraint" destination="J0s-dc-1Aj" id="2Xq-Jp-mjT"/>
                 <outlet property="descriptionLabel" destination="QOS-ql-XdL" id="VWJ-VV-faU"/>
                 <outlet property="displayNameLabel" destination="N5S-PF-Xf1" id="63i-Rz-xPd"/>
                 <outlet property="favoritesCountLabel" destination="Cn5-1a-qlv" id="eHR-0r-T9y"/>

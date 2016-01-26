@@ -11,17 +11,17 @@ import Foundation
 class Scheduler {
     struct Schedule {
         let timer: NSTimer
-        
+
         init(timer: NSTimer) {
             self.timer = timer
         }
     }
-    
+
     struct Static {
         private static var schedules = [String: Schedule]()
         private static let serial = dispatch_queue_create("pw.aska.Scheduler", DISPATCH_QUEUE_SERIAL)
     }
-    
+
     class func regsiter(interval interval: NSTimeInterval, target: AnyObject, selector: Selector) {
         let key = "\(ObjectIdentifier(target).uintValue):\(selector)"
         dispatch_sync(Static.serial) {

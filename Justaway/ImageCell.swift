@@ -10,23 +10,23 @@ import UIKit
 import Photos
 
 class ImageCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var imageView: UIImageView!
-    
+
     var asset: PHAsset?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.configureView()
     }
-    
+
     func configureView() {
         imageView.userInteractionEnabled = true
         imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "preview:"))
     }
-    
+
     func preview(sender: UILongPressGestureRecognizer) {
-        if (sender.state != .Began) {
+        if sender.state != .Began {
             return
         }
         if let asset = asset {

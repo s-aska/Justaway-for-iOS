@@ -16,30 +16,30 @@ class MainMenu {
         static let userID = "user_id"
         static let arguments = "arguments"
     }
-    
+
     enum Type: String {
         case HomeTimline
         case UserTimline
         case Notifications
         case Favorites
     }
-    
+
     let type: Type
     let userID: String
     let arguments: NSDictionary
-    
+
     init(type: Type, userID: String, arguments: NSDictionary) {
         self.type = type
         self.userID = userID
         self.arguments = arguments
     }
-    
+
     init(_ dictionary: [String: AnyObject]) {
         self.type = Type(rawValue: (dictionary[Constants.type] as? String) ?? "")!
         self.userID = (dictionary[Constants.userID] as? String) ?? ""
         self.arguments = (dictionary[Constants.arguments] as? NSDictionary) ?? NSDictionary()
     }
-    
+
     var dictionaryValue: [String: AnyObject] {
         return [
             Constants.type      : type.rawValue,
@@ -50,26 +50,26 @@ class MainMenu {
 }
 
 class MainMenuSettings {
-    
+
     struct Constants {
         static let menus = "menus"
         static let keychainKey = "MainMenuSettings"
     }
-    
+
     struct Static {
         static var instance: MainMenuSettings?
     }
-    
+
     let menus: [MainMenu]
-    
+
     init() {
         self.menus = [MainMenu]()
     }
-    
+
     init(menus: [MainMenu]) {
         self.menus = menus
     }
-    
+
     init(_ dictionary: NSDictionary) {
         if let menus = dictionary[Constants.menus] as? [[String: AnyObject]] {
             self.menus = menus.map({ MainMenu($0) })
@@ -77,20 +77,20 @@ class MainMenuSettings {
             self.menus = [MainMenu]()
         }
     }
-    
+
     var dictionaryValue: NSDictionary {
         return [
             Constants.menus : self.menus
         ]
     }
-    
+
     class func configure() {
     }
-    
+
     class func get() -> MainMenuSettings {
         return Static.instance ?? load()
     }
-    
+
     class func load() -> MainMenuSettings {
         if let data = KeyClip.load(Constants.keychainKey) as NSDictionary? {
             let mainMenuSettings = MainMenuSettings(data)
@@ -112,7 +112,7 @@ class MainMenuSettings {
             }
         }
     }
-    
+
     class func save(mainMenuSettings: MainMenuSettings) -> Bool {
         Static.instance = mainMenuSettings
         return KeyClip.save(Constants.keychainKey, dictionary: mainMenuSettings.dictionaryValue)

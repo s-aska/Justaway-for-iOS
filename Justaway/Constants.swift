@@ -9,11 +9,11 @@
 import Foundation
 
 // Device
-let EventStatusBarTouched = "EventStatusBarTouched"
+let eventStatusBarTouched = "EventStatusBarTouched"
 
 // Account Settings
-let EventAccountChanged = "EventAccountChanged"
+let eventAccountChanged = "EventAccountChanged"
 
 // FontSize Settings
-let EventFontSizePreview = "EventFontSizePreview"
-let EventFontSizeApplied = "EventFontSizeApplied"
+let eventFontSizePreview = "EventFontSizePreview"
+let eventFontSizeApplied = "EventFontSizeApplied"

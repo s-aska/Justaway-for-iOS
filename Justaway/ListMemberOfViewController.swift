@@ -10,7 +10,7 @@ import UIKit
 import EventBox
 
 class ListMemberOfViewController: ListTableViewController {
-    override func loadData(id: String?, success: ((lists: [TwitterList]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(maxID: String?, success: ((lists: [TwitterList]) -> Void), failure: ((error: NSError) -> Void)) {
         if let userID = userID {
              Twitter.getListsMemberOf(userID, success: success, failure: failure)
         }

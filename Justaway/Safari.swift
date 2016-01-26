@@ -12,15 +12,15 @@ import OAuthSwift
 import Async
 
 class Safari {
-    
+
     static let delegate = SafariDelegate()
-    
+
     class func openURL(string: String) {
         if let url = NSURL(string: string) {
             openURL(url)
         }
     }
-    
+
     class func openURL(url: NSURL) -> SFSafariViewController? {
         guard let rootVc = UIApplication.sharedApplication().keyWindow?.rootViewController else {
             return nil
@@ -33,13 +33,13 @@ class Safari {
 }
 
 class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
-    
+
     static var oAuthViewController: SFSafariViewController?
-    
+
     func handle(url: NSURL) {
         SafariOAuthURLHandler.oAuthViewController = Safari.openURL(url)
     }
-    
+
     class func callback(url: NSURL) {
         OAuthSwift.handleOpenURL(url)
         SafariOAuthURLHandler.oAuthViewController?.dismissViewControllerAnimated(true, completion: nil)
@@ -49,10 +49,10 @@ class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
 // OAuthSwiftURLHandlerType
 
 class SafariDelegate: NSObject, SFSafariViewControllerDelegate {
-    
+
     func safariViewControllerDidFinish(controller: SFSafariViewController) {
         controller.dismissViewControllerAnimated(true, completion: nil)
-        
+
         // bug?
         Async.main(after: 0.05) { () -> Void in
             ThemeController.apply()

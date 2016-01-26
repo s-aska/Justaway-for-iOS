@@ -15,17 +15,17 @@ class AccountSettingsCache {
 }
 
 class AccountSettingsStore {
-    
+
     // MARK: - Types
-    
+
     struct Constants {
         static let keychainKey = "AccountService/v2"
     }
-    
+
     class func get() -> AccountSettings? {
         return AccountSettingsCache.sharedInstance.settings
     }
-    
+
     class func setup() {
         if let settings = AccountSettingsCache.sharedInstance.settings {
             if settings.hasAccountClient() {
@@ -35,18 +35,18 @@ class AccountSettingsStore {
             load()
         }
     }
-    
+
     // MARK: - Public Methods
-    
+
     class func save(settings: AccountSettings) -> Bool {
         assert(settings.accounts.count > 0, "settings.accounts.count is zero")
         assert(settings.accounts.count > settings.current, "current out of range")
-        
+
         AccountSettingsCache.sharedInstance.settings = settings
-        
+
         return KeyClip.save(Constants.keychainKey, dictionary: settings.dictionaryValue)
     }
-    
+
     class func load() {
         if let data: NSDictionary = KeyClip.load(Constants.keychainKey) {
             let settings = AccountSettings(data)
@@ -54,20 +54,20 @@ class AccountSettingsStore {
                 reloadACAccounts(settings)
             } else {
                 AccountSettingsCache.sharedInstance.settings = settings
-                EventBox.post(TwitterAuthorizeNotification)
+                EventBox.post(twitterAuthorizeNotification)
             }
         } else {
             Twitter.addACAccount(true)
         }
     }
-    
+
     class func reloadACAccounts(settings: AccountSettings) {
         var activeAccounts = [Account]()
         let callback = { (acAccounts: [ACAccount]) in
             NSLog("refreshACAccounts retrieve count:\(acAccounts.count)")
             var acAccountMap = [String: ACAccount]()
             for acAccount in acAccounts {
-                acAccountMap[acAccount.valueForKeyPath("properties.user_id") as! String] = acAccount
+                acAccountMap[acAccount.valueForKeyPath("properties.user_id") as? String ?? ""] = acAccount
             }
             for account in settings.accounts {
                 switch account.client {
@@ -90,22 +90,6 @@ class AccountSettingsStore {
                     activeAccounts.append(account)
                 }
             }
-//            if acAccountMap.values.count > 0 {
-//                for account in acAccountMap.values {
-//                    let userID = account.valueForKeyPath("properties.user_id") as! String
-//                    NSLog("refreshACAccounts insert \(userID) \(account.identifier!)")
-//                    activeAccounts.append(
-//                        Account(
-//                            client: AccountClient(account: account),
-//                            userID: userID,
-//                            screenName: account.username,
-//                            name: account.username,
-//                            profileImageURL: NSURL(string: "")!,
-//                            profileBannerURL: NSURL(string: "")!))
-//                }
-//                Twitter.refreshAccounts(activeAccounts)
-//            } else {
-//            }
             if activeAccounts.count > 0 {
                 NSLog("refreshACAccounts update complete")
                 let current = min(settings.current, activeAccounts.count)
@@ -114,33 +98,33 @@ class AccountSettingsStore {
                 NSLog("refreshACAccounts all deleted")
                 AccountSettingsStore.clear()
             }
-            EventBox.post(TwitterAuthorizeNotification)
+            EventBox.post(twitterAuthorizeNotification)
         }
         let accountStore = ACAccountStore()
         let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
         accountStore.requestAccessToAccountsWithType(accountType, options: nil) {
             granted, error in
-            
+
             if granted {
-                let twitterAccounts = accountStore.accountsWithAccountType(accountType) as! [ACAccount]
+                let twitterAccounts = accountStore.accountsWithAccountType(accountType) as? [ACAccount] ?? []
                 callback(twitterAccounts)
             } else {
                 callback([])
             }
         }
     }
-    
+
     class func clear() {
         AccountSettingsCache.sharedInstance.settings = nil
-        
+
         KeyClip.delete(Constants.keychainKey)
     }
-    
+
     class func isCurrent(userID: String) -> Bool {
         if let account = get()?.account() {
             return account.userID == userID
         }
         return false
     }
-    
+
 }

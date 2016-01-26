@@ -3,9 +3,9 @@ import EventBox
 import AVFoundation
 import Async
 
-let TwitterStatusCellImagePreviewHeight :CGFloat = 80
-let TwitterStatusCellImagePreviewWidth :CGFloat = 240
-let TwitterStatusCellImagePreviewPadding :CGFloat = 5
+// let TwitterStatusCellImagePreviewHeight: CGFloat = 80
+// let TwitterStatusCellImagePreviewWidth: CGFloat = 240
+// let TwitterStatusCellImagePreviewPadding: CGFloat = 5
 
 enum TwitterStatusCellLayout: String {
     case Normal = "Normal"
@@ -20,7 +20,7 @@ enum TwitterStatusCellLayout: String {
     case ActionedWithQuoteImage = "ActionedWithQuoteImage"
     case NormalWithImageWithQuoteImage = "NormalWithImageWithQuoteImage"
     case ActionedWithImageWithQuoteImage = "ActionedWithImageWithQuoteImage"
-    
+
     static func fromStatus(status: TwitterStatus) -> TwitterStatusCellLayout {
         if let quotedStatus = status.quotedStatus {
             if quotedStatus.media.count > 0 {
@@ -44,7 +44,7 @@ enum TwitterStatusCellLayout: String {
             }
         }
     }
-    
+
     static var allValues: [TwitterStatusCellLayout] {
         return [
             Normal,
@@ -61,19 +61,19 @@ enum TwitterStatusCellLayout: String {
             ActionedWithImageWithQuoteImage
         ]
     }
-    
+
     var hasAction: Bool {
         return self.rawValue.rangeOfString("Actioned") != nil
     }
-    
+
     var hasQuote: Bool {
         return self.rawValue.rangeOfString("WithQuote") != nil
     }
-    
+
     var hasQuoteImage: Bool {
         return self.rawValue.rangeOfString("WithQuoteImage") != nil
     }
-    
+
     var hasImage: Bool {
         return self.rawValue.rangeOfString("WithImage") != nil
     }
@@ -86,37 +86,37 @@ class TwitterStatusCell: BackgroundTableViewCell {
     var layout: TwitterStatusCellLayout?
     let playerView = AVPlayerView()
     let playerWrapperView = UIView()
-    
+
     @IBOutlet weak var sourceView: UIView!
     @IBOutlet weak var sourceViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var sourceFavoriteButton: FavoritesButton!
     @IBOutlet weak var sourceRetweetButton: RetweetButton!
     @IBOutlet weak var sourceTextLabel: TextLable!
     @IBOutlet weak var sourceScreenNameLabel: TextLable!
-    
+
     @IBOutlet weak var iconImageView: UIImageView!
-    
+
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var screenNameLabel: UILabel!
     @IBOutlet weak var protectedLabel: UILabel!
     @IBOutlet weak var relativeCreatedAtLabel: UILabel!
-    
+
     @IBOutlet weak var statusLabel: StatusLable!
-    
+
     @IBOutlet weak var quotedStatusContainerView: QuotedStatusContainerView!
     @IBOutlet weak var quotedNameLabel: DisplayNameLable!
     @IBOutlet weak var quotedScreenNameLabel: ScreenNameLable!
     @IBOutlet weak var quotedProtectedLabel: UILabel!
     @IBOutlet weak var quotedStatusLabel: StatusLable?
     @IBOutlet weak var quotedStatusLabelHeightConstraint: NSLayoutConstraint!
-    
+
     @IBOutlet weak var quotedImagesContainerView: UIView!
     @IBOutlet weak var quotedImageView1: UIImageView!
     @IBOutlet weak var quotedImageView2: UIImageView!
     @IBOutlet weak var quotedImageView3: UIImageView!
     @IBOutlet weak var quotedImageView4: UIImageView!
     @IBOutlet weak var quotedImagePlayLabel: MenuLable!
-    
+
     @IBOutlet weak var quotedImageView1HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var quotedImageView1WidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var quotedImageView2HeightConstraint: NSLayoutConstraint!
@@ -125,14 +125,14 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var quotedImageView3WidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var quotedImageView4HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var quotedImageView4WidthConstraint: NSLayoutConstraint!
-    
+
     @IBOutlet weak var imagesContainerView: UIView!
     @IBOutlet weak var imageView1: UIImageView!
     @IBOutlet weak var imageView2: UIImageView!
     @IBOutlet weak var imageView3: UIImageView!
     @IBOutlet weak var imageView4: UIImageView!
     @IBOutlet weak var imagePlayLabel: MenuLable!
-    
+
     @IBOutlet weak var imageView1HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageView1WidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageView2HeightConstraint: NSLayoutConstraint!
@@ -141,75 +141,100 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var imageView3WidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageView4HeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageView4WidthConstraint: NSLayoutConstraint!
-    
+
     @IBOutlet weak var buttonsStatusTopConstraint: NSLayoutConstraint?
     @IBOutlet weak var buttonsQuotedTopConstraint: NSLayoutConstraint?
     @IBOutlet weak var buttonsImageTopConstraint: NSLayoutConstraint?
-    
+
     @IBOutlet weak var replyButton: UIButton!
     @IBOutlet weak var retweetButton: UIButton!
     @IBOutlet weak var favoriteButton: UIButton!
-    
+
     @IBOutlet weak var retweetCountLabel: UILabel!
     @IBOutlet weak var favoriteCountLabel: UILabel!
     @IBOutlet weak var viaLabel: UILabel!
     @IBOutlet weak var absoluteCreatedAtLabel: UILabel!
-    
+
     @IBOutlet weak var textHeightConstraint: NSLayoutConstraint!
-    
+
     // MARK: - View Life Cycle
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         configureView()
         configureEvent()
     }
-    
+
     deinit {
         EventBox.off(self)
     }
-    
+
     // MARK: - Configuration
-    
+
     func configureView() {
         selectionStyle = .None
         separatorInset = UIEdgeInsetsZero
         layoutMargins = UIEdgeInsetsZero
         preservesSuperviewLayoutMargins = false
-        
+
         for imageView in [imageView1, imageView2, imageView3, imageView4] {
             imageView.clipsToBounds = true
             imageView.contentMode = .ScaleAspectFill
             imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
         }
-        
+
         for imageView in [quotedImageView1, quotedImageView2, quotedImageView3, quotedImageView4] {
             imageView.clipsToBounds = true
             imageView.contentMode = .ScaleAspectFill
             imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showQuotedImage:"))
         }
-        
+
         iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "openProfile:"))
-        
+
         playerWrapperView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hideVideo"))
         playerWrapperView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        
+
         let swipeUp = UISwipeGestureRecognizer(target: self, action: "videoSwipeUp")
         swipeUp.numberOfTouchesRequired = 1
         swipeUp.direction = .Up
         playerWrapperView.addGestureRecognizer(swipeUp)
-        
+
         let swipeDown = UISwipeGestureRecognizer(target: self, action: "videoSwipeDown")
         swipeDown.numberOfTouchesRequired = 1
         swipeDown.direction = .Down
         playerWrapperView.addGestureRecognizer(swipeDown)
-        
+
         playerWrapperView.addSubview(playerView)
     }
-    
+
     func configureEvent() {
+
+        configureFavoritesEvent()
+
+        configureRetweetEvent()
+
+        EventBox.onMainThread(self, name: eventFontSizePreview) { (n) -> Void in
+            if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
+                let font = UIFont.systemFontOfSize(CGFloat(fontSize.floatValue))
+                self.statusLabel.font = font
+                self.quotedStatusLabel?.font = font
+            }
+        }
+
+        EventBox.onMainThread(self, name: "applicationWillEnterForeground") { (n) -> Void in
+            if let status = self.status {
+                self.relativeCreatedAtLabel.text = status.createdAt.relativeString
+            }
+        }
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "endVideo", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+    }
+
+    func configureFavoritesEvent() {
         EventBox.onMainThread(self, name: Twitter.Event.CreateFavorites.rawValue) { (n) -> Void in
-            let statusID = n.object as! String
+            guard let statusID = n.object as? String else {
+                return
+            }
             if self.status?.statusID == statusID {
                 self.favoriteButton.selected = true
                 self.favoriteButton.transform = CGAffineTransformMakeScale(1, 1)
@@ -225,16 +250,22 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseIn, animations: zoomIn, completion: zoomInCompletion)
             }
         }
-        
+
         EventBox.onMainThread(self, name: Twitter.Event.DestroyFavorites.rawValue) { (n) -> Void in
-            let statusID = n.object as! String
+            guard let statusID = n.object as? String else {
+                return
+            }
             if self.status?.statusID == statusID {
                 self.favoriteButton.selected = false
             }
         }
-        
+    }
+
+    func configureRetweetEvent() {
         EventBox.onMainThread(self, name: Twitter.Event.CreateRetweet.rawValue) { (n) -> Void in
-            let statusID = n.object as! String
+            guard let statusID = n.object as? String else {
+                return
+            }
             if self.status?.statusID == statusID {
                 self.retweetButton.selected = true
                 self.retweetButton.transform = CGAffineTransformMakeScale(1, 1)
@@ -250,37 +281,23 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseIn, animations: zoomIn, completion: zoomInCompletion)
             }
         }
-        
+
         EventBox.onMainThread(self, name: Twitter.Event.DestroyRetweet.rawValue) { (n) -> Void in
-            let statusID = n.object as! String
+            guard let statusID = n.object as? String else {
+                return
+            }
             if self.status?.statusID == statusID {
                 self.retweetButton.selected = false
             }
         }
-        
-        EventBox.onMainThread(self, name: EventFontSizePreview) { (n) -> Void in
-            if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
-                let font = UIFont.systemFontOfSize(CGFloat(fontSize.floatValue))
-                self.statusLabel.font = font
-                self.quotedStatusLabel?.font = font
-            }
-        }
-        
-        EventBox.onMainThread(self, name: "applicationWillEnterForeground") { (n) -> Void in
-            if let status = self.status {
-                self.relativeCreatedAtLabel.text = status.createdAt.relativeString
-            }
-        }
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "endVideo", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
     }
-    
+
     // MARK: - UITableViewCell
-    
-    
-    
+
+
+
     // MARK: - Public Mehtods
-    
+
     func setLayout(layout: TwitterStatusCellLayout) {
         if self.layout == nil || self.layout != layout {
             self.layout = layout
@@ -314,21 +331,22 @@ class TwitterStatusCell: BackgroundTableViewCell {
             layoutIfNeeded()
         }
     }
-    
+
+    // swiftlint:disable:next function_body_length
     func setText(status: TwitterStatus) {
         Twitter.isFavorite(status.statusID) { isFavorite in
             if self.favoriteButton.selected != isFavorite {
                 Async.main { self.favoriteButton.selected = isFavorite }
             }
         }
-        
+
         Twitter.isRetweet(status.statusID) { retweetedStatusID in
             let isRetweet = retweetedStatusID != nil ? true : false
             if self.retweetButton.selected != isRetweet {
                 Async.main { self.retweetButton.selected = isRetweet }
             }
         }
-        
+
         iconImageView.image = nil
         nameLabel.text = status.user.name
         screenNameLabel.text = "@" + status.user.screenName
@@ -339,7 +357,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         relativeCreatedAtLabel.text = status.createdAt.relativeString
         absoluteCreatedAtLabel.text = status.createdAt.absoluteString
         viaLabel.text = status.via.name
-        
+
         if let actionedBy = status.actionedBy {
             sourceTextLabel.text = actionedBy.name
             sourceScreenNameLabel.text = "@" + actionedBy.screenName
@@ -353,7 +371,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 sourceRetweetButton.selected = AccountSettingsStore.get()?.isMe(status.user.userID) ?? false
             }
         }
-        
+
         if status.media.count > 0 {
             imagePlayLabel.hidden = status.media.filter({ !$0.videoURL.isEmpty }).count > 0 ? false : true
             imagesContainerView.hidden = true
@@ -362,14 +380,14 @@ class TwitterStatusCell: BackgroundTableViewCell {
             imageView3.image = nil
             imageView4.image = nil
         }
-        
+
         if let quotedStatus = status.quotedStatus {
-            
+
             quotedNameLabel.text = quotedStatus.user.name
             quotedScreenNameLabel.text = "@" + quotedStatus.user.screenName
             quotedStatusLabel?.setStatus(quotedStatus)
             quotedProtectedLabel.hidden = quotedStatus.user.isProtected ? false : true
-            
+
             if quotedStatus.media.count > 0 {
                 quotedImagePlayLabel.hidden = quotedStatus.media.filter({ !$0.videoURL.isEmpty }).count > 0 ? false : true
                 quotedImagesContainerView.hidden = true
@@ -380,16 +398,17 @@ class TwitterStatusCell: BackgroundTableViewCell {
             }
         }
     }
-    
+
+    // swiftlint:disable:next function_body_length
     func setImage(status: TwitterStatus) {
-        
+
         if iconImageView.image == nil {
             ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: iconImageView)
         }
-        
+
         if status.media.count > 0 && imagesContainerView.hidden == true {
             imagesContainerView.hidden = false
-            
+
             let fullHeight = imagesContainerView.frame.height
             let fullWidth = imagesContainerView.frame.width
             let harfHeight = (fullHeight - 5) / 2
@@ -449,11 +468,16 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 break
             }
         }
-        
+
+        setQuotedImage(status)
+    }
+
+    // swiftlint:disable:next function_body_length
+    func setQuotedImage(status: TwitterStatus) {
         if let quotedStatus = status.quotedStatus {
             if quotedStatus.media.count > 0 && quotedImagesContainerView.hidden == true {
                 quotedImagesContainerView.hidden = false
-                
+
                 let fullHeight = quotedImagesContainerView.frame.height
                 let fullWidth = quotedImagesContainerView.frame.width
                 let harfHeight = (fullHeight - 5) / 2
@@ -515,15 +539,15 @@ class TwitterStatusCell: BackgroundTableViewCell {
             }
         }
     }
-    
+
     // MARK: - Actions
-    
+
     func openProfile(sender: UIGestureRecognizer) {
         if let user = status?.user {
             ProfileViewController.show(user)
         }
     }
-    
+
     // 1 ... left top (tag:0, page:0)
     // 2 ... left top (tag:0, page:0) => right top (tag:1, page:1)
     // 3 ... left top (tag:0, page:0) => right top (tag:1, page:1) => right bottom (tag:2, page:2)
@@ -534,7 +558,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         3: [0:0, 1:1, 2:2],
         4: [0:0, 1:1, 3:2, 2:3],
     ]
-    
+
     func showImage(sender: UIGestureRecognizer) {
         let tag = sender.view?.tag ?? 0
         if let status = self.status {
@@ -551,7 +575,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
             }
         }
     }
-    
+
     func showVideo(videoURL: NSURL) {
         guard let view = UIApplication.sharedApplication().keyWindow else {
             return
@@ -564,7 +588,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         view.addSubview(playerWrapperView)
         playerView.player?.play()
     }
-    
+
     func hideVideo() {
         playerView.player?.pause()
         playerWrapperView.removeFromSuperview()
@@ -575,27 +599,27 @@ class TwitterStatusCell: BackgroundTableViewCell {
             print("AVAudioSession setActive failure.")
         }
     }
-    
+
     func endVideo() {
         playerView.player?.currentItem?.seekToTime(kCMTimeZero)
     }
-    
+
     func videoSwipeUp() {
         UIView.animateWithDuration(0.3, animations: { _ in
-            self.playerView.frame = CGRectMake(self.playerView.frame.origin.x, -self.playerView.frame.size.height, self.playerView.frame.size.width, self.playerView.frame.size.height)
+            self.playerView.frame = CGRect.init(x: self.playerView.frame.origin.x, y: -self.playerView.frame.size.height, width: self.playerView.frame.size.width, height: self.playerView.frame.size.height)
             }, completion: { _ in
                 self.hideVideo()
         })
     }
-    
+
     func videoSwipeDown() {
         UIView.animateWithDuration(0.3, animations: { _ in
-            self.playerView.frame = CGRectMake(self.playerView.frame.origin.x, self.playerView.frame.size.height, self.playerView.frame.size.width, self.playerView.frame.size.height)
+            self.playerView.frame = CGRect.init(x: self.playerView.frame.origin.x, y: self.playerView.frame.size.height, width: self.playerView.frame.size.width, height: self.playerView.frame.size.height)
         }, completion: { _ in
             self.hideVideo()
         })
     }
-    
+
     func showQuotedImage(sender: UIGestureRecognizer) {
         let tag = sender.view?.tag ?? 0
         if let status = self.status?.quotedStatus {
@@ -611,13 +635,13 @@ class TwitterStatusCell: BackgroundTableViewCell {
             }
         }
     }
-    
+
     @IBAction func reply(sender: UIButton) {
         if let status = self.status {
             Twitter.reply(status)
         }
     }
-    
+
     @IBAction func retweet(sender: BaseButton) {
         if sender.lock() {
             if let status = self.status {
@@ -625,7 +649,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
             }
         }
     }
-    
+
     @IBAction func favorite(sender: BaseButton) {
         if sender.lock() {
             if let statusID = self.status?.statusID {

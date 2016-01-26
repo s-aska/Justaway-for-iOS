@@ -18,11 +18,11 @@ class AddAccountAlert {
             Twitter.addOAuthAccount()
         }))
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        
+
         // iPad
         actionSheet.popoverPresentationController?.sourceView = sender
         actionSheet.popoverPresentationController?.sourceRect = sender.bounds
-        
+
         AlertController.showViewController(actionSheet)
     }
 }

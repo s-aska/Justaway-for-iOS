@@ -42,11 +42,11 @@ class RetweetAlert {
                     Twitter.quoteURL(status)
             }))
         }
-        
+
         // iPad
         actionSheet.popoverPresentationController?.sourceView = sender
         actionSheet.popoverPresentationController?.sourceRect = sender.bounds
-        
+
         AlertController.showViewController(actionSheet)
     }
 }

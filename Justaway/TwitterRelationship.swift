@@ -19,7 +19,7 @@ struct TwitterRelationship {
     let wantRetweets: Bool
     let allReplies: Bool
     let notificationsEnabled: Bool
-    
+
     init(_ json: JSON) {
         self.canDM = json["can_dm"].boolValue
         self.blocking = json["blocking"].boolValue

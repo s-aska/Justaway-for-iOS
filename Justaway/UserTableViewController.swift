@@ -11,30 +11,30 @@ import EventBox
 import Async
 
 class UserTableViewController: TimelineTableViewController {
-    
+
     // MARK: Types
-    
+
     struct TableViewConstants {
         static let tableViewCellIdentifier = "Cell"
     }
-    
+
     // MARK: Properties
-    
+
     var footerView: UIView?
     var footerIndicatorView: UIActivityIndicatorView?
-    
+
     var userID: String?
-    
+
     var rows = [Row]()
     var layoutHeightCell: TwitterUserCell?
     var layoutHeight: CGFloat?
-    
+
     struct Row {
         let user: TwitterUserFull
         let fontSize: CGFloat
         let height: CGFloat
         let textHeight: CGFloat
-        
+
         init(user: TwitterUserFull, fontSize: CGFloat, height: CGFloat, textHeight: CGFloat) {
             self.user = user
             self.fontSize = fontSize
@@ -42,16 +42,16 @@ class UserTableViewController: TimelineTableViewController {
             self.textHeight = textHeight
         }
     }
-    
+
     // MARK: UITableViewDelegate
-    
+
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return TIMELINE_FOOTER_HEIGHT
+        return timelineHooterHeight
     }
-    
+
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if footerView == nil {
-            footerView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, TIMELINE_FOOTER_HEIGHT))
+            footerView = UIView(frame: CGRect.init(x: 0, y: 0, width: view.frame.size.width, height: timelineHooterHeight))
             footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
             footerView?.addSubview(footerIndicatorView!)
             footerIndicatorView?.hidesWhenStopped = true
@@ -59,91 +59,92 @@ class UserTableViewController: TimelineTableViewController {
         }
         return footerView
     }
-    
+
     // MARK: - View Life Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
     }
-    
+
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
-    
+
     // MARK: - Configuration
-    
+
     func configureView() {
         self.tableView.separatorInset = UIEdgeInsetsZero
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
-        
+
         let nib = UINib(nibName: "TwitterUserCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         self.layoutHeightCell = self.tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier) as? TwitterUserCell
-        
+
 //        let refreshControl = UIRefreshControl()
 //        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
 //        self.refreshControl = refreshControl
     }
-    
+
     func configureEvent() {
-        EventBox.onMainThread(self, name: EventStatusBarTouched, handler: { (n) -> Void in
-            self.tableView.setContentOffset(CGPointZero, animated: true)
+        EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { (n) -> Void in
+            self.tableView.setContentOffset(CGPoint.zero, animated: true)
         })
     }
-    
+
     // MARK: - UITableViewDataSource
-    
+
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return rows.count ?? 0
     }
-    
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let row = rows[indexPath.row]
         let user = row.user
+        // swiftlint:disable:next force_cast
         let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! TwitterUserCell
-        
+
         if cell.textHeightConstraint.constant != row.textHeight {
             cell.textHeightConstraint.constant = row.textHeight
         }
-        
+
         if row.fontSize != cell.descriptionLabel.font?.pointSize ?? 0 {
             cell.descriptionLabel.font = UIFont.systemFontOfSize(row.fontSize)
         }
-        
+
         cell.displayNameLabel.text = user.name
         cell.screenNameLabel.text = user.screenName
         cell.protectedLabel.hidden = !user.isProtected
         cell.descriptionLabel.text = user.description
-        
+
         cell.iconImageView.image = nil
         ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: cell.iconImageView)
-        
+
         return cell
     }
-    
+
     // MARK: UITableViewDelegate
-    
+
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let row = rows[indexPath.row]
         return row.height
     }
-    
+
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let row = rows[indexPath.row]
         ProfileViewController.show(TwitterUser(row.user))
     }
-    
+
     func createRow(user: TwitterUserFull, fontSize: CGFloat) -> Row {
         if let height = layoutHeight {
             let textHeight = measure(user.description, fontSize: fontSize)
@@ -160,43 +161,43 @@ class UserTableViewController: TimelineTableViewController {
         }
         fatalError("cellForHeight is missing.")
     }
-    
+
     func measure(text: NSString, fontSize: CGFloat) -> CGFloat {
         return ceil(text.boundingRectWithSize(
-            CGSizeMake((self.layoutHeightCell?.descriptionLabel.frame.size.width)!, 0),
+            CGSize.init(width: (self.layoutHeightCell?.descriptionLabel.frame.size.width)!, height: 0),
             options: NSStringDrawingOptions.UsesLineFragmentOrigin,
             attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
             context: nil).size.height)
     }
-    
+
     override func refresh() {
         loadData(nil)
     }
-    
+
     func loadData(maxID: Int64?) {
         let fontSize = CGFloat(GenericSettings.get().fontSize)
-        
+
         let s = { (users: [TwitterUserFull]) -> Void in
             self.rows = users.map({ self.createRow($0, fontSize: fontSize) })
             self.tableView.reloadData()
             self.footerIndicatorView?.stopAnimating()
         }
-        
+
         let f = { (error: NSError) -> Void in
             self.footerIndicatorView?.stopAnimating()
         }
-        
+
         if !(self.refreshControl?.refreshing ?? false) {
             Async.main {
                 self.footerIndicatorView?.startAnimating()
                 return
             }
         }
-        
+
         loadData(maxID?.stringValue, success: s, failure: f)
     }
-    
-    func loadData(id: String?, success: ((users: [TwitterUserFull]) -> Void), failure: ((error: NSError) -> Void)) {
+
+    func loadData(maxID: String?, success: ((users: [TwitterUserFull]) -> Void), failure: ((error: NSError) -> Void)) {
         assertionFailure("not implements.")
     }
 }

@@ -7,7 +7,7 @@ struct TwitterUser {
     let name: String
     let profileImageURL: NSURL
     let isProtected: Bool
-    
+
     init(_ json: JSON) {
         self.userID = json["id_str"].string ?? ""
         self.screenName = json["screen_name"].string ?? ""
@@ -19,7 +19,7 @@ struct TwitterUser {
             self.profileImageURL = NSURL(string: json["profile_image_url_https"].string ?? "")!
         }
     }
-    
+
     init(json: [String: AnyObject]) {
         self.userID = json["id_str"] as? String ?? ""
         self.screenName = json["screen_name"] as? String ?? ""
@@ -31,7 +31,7 @@ struct TwitterUser {
             self.profileImageURL = NSURL(string: json["profile_image_url_https"] as? String ?? "")!
         }
     }
-    
+
     init(_ userFull: TwitterUserFull) {
         self.userID = userFull.userID
         self.screenName = userFull.screenName
@@ -39,7 +39,7 @@ struct TwitterUser {
         self.profileImageURL = userFull.profileImageURL
         self.isProtected = userFull.isProtected
     }
-    
+
     init(_ account: Account) {
         self.userID = account.userID
         self.screenName = account.screenName
@@ -47,7 +47,7 @@ struct TwitterUser {
         self.profileImageURL = account.profileImageURL
         self.isProtected = false
     }
-    
+
     init(_ dictionary: [String: AnyObject]) {
         self.userID = dictionary["userID"] as? String ?? ""
         self.screenName = dictionary["screenName"] as? String ?? ""
@@ -55,7 +55,7 @@ struct TwitterUser {
         self.profileImageURL = NSURL(string: dictionary["profileImageURL"] as? String ?? "")!
         self.isProtected = dictionary["isProtected"] as? Bool ?? false
     }
-    
+
     var dictionaryValue: [String: AnyObject] {
         return [
             "userID": userID,
@@ -65,7 +65,7 @@ struct TwitterUser {
             "profileImageURL": profileImageURL.absoluteString ?? ""
         ]
     }
-    
+
     var profileOriginalImageURL: NSURL? {
         return NSURL(string: profileImageURL.absoluteString.stringByReplacingOccurrencesOfString("_bigger", withString: "", options: [], range: nil))
     }
@@ -91,7 +91,7 @@ struct TwitterUserFull {
     let friendsCount: Int
     let listedCount: Int
     let statusesCount: Int
-    
+
     init(_ json: JSON) {
         self.userID = json["id_str"].string ?? ""
         self.screenName = json["screen_name"].string ?? ""
@@ -125,7 +125,7 @@ struct TwitterUserFull {
         self.friendsCount = json["friends_count"].int ?? 0
         self.listedCount = json["listed_count"].int ?? 0
         self.statusesCount = json["statuses_count"].int ?? 0
-        
+
         for url in self.urls {
             if url.shortURL == displayURL {
                 displayURL = url.displayURL

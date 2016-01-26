@@ -9,10 +9,10 @@
 import UIKit
 
 class ShowMoreTweetsCell: BackgroundTableViewCell {
-    
+
     @IBOutlet weak var showMoreLabel: TextLable!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         separatorInset = UIEdgeInsetsZero

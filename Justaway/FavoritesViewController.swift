@@ -12,9 +12,9 @@ import EventBox
 import Async
 
 class FavoritesTableViewController: StatusTableViewController {
-    
+
     var userID: String?
-    
+
     override func saveCache() {
         if self.adapter.rows.count > 0 {
             if let userID = self.userID {
@@ -26,7 +26,7 @@ class FavoritesTableViewController: StatusTableViewController {
             }
         }
     }
-    
+
     override func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         if let userID = self.userID {
             let key = "favorites:\(userID)"
@@ -43,7 +43,7 @@ class FavoritesTableViewController: StatusTableViewController {
             success(statuses: [])
         }
     }
-    
+
     override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         if let userID = self.userID {
             Twitter.getFavorites(userID, maxID: maxID, success: success, failure: failure)
@@ -51,7 +51,7 @@ class FavoritesTableViewController: StatusTableViewController {
             success(statuses: [])
         }
     }
-    
+
     override func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         if let userID = self.userID {
             Twitter.getFavorites(userID, sinceID: sinceID, maxID: maxID, success: success, failure: failure)
@@ -59,7 +59,7 @@ class FavoritesTableViewController: StatusTableViewController {
             success(statuses: [])
         }
     }
-    
+
     override func accept(status: TwitterStatus) -> Bool {
         if let userID = self.userID {
             if let actionedByUserID = status.actionedBy?.userID {
@@ -70,12 +70,13 @@ class FavoritesTableViewController: StatusTableViewController {
         }
         return false
     }
-    
+
     override func configureEvent() {
         super.configureEvent()
         EventBox.onMainThread(self, name: Twitter.Event.DestroyFavorites.rawValue, sender: nil) { n in
-            let statusID = n.object as! String
-            self.eraseData(statusID, handler: {})
+            if let statusID = n.object as? String {
+                self.eraseData(statusID, handler: {})
+            }
         }
     }
 }

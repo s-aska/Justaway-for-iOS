@@ -5,27 +5,27 @@ import EventBox
 import TwitterAPI
 
 class ViewController: UIViewController {
-    
+
     // MARK: Properties
-    
+
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var signInView: UIView!
     @IBOutlet weak var signInButton: UIButton!
-    
+
     var timelineViewController: TimelineViewController?
-    
+
     // MARK: - View Life Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
@@ -34,20 +34,20 @@ class ViewController: UIViewController {
             showView()
         }
     }
-    
+
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
-    
+
     // MARK: - Configuration
-    
+
     func configureView() {
         let longPress = UILongPressGestureRecognizer(target: self, action: "signInMenu:")
-        longPress.minimumPressDuration = 2.0;
+        longPress.minimumPressDuration = 2.0
         signInButton.addGestureRecognizer(longPress)
     }
-    
+
     func toggleView() {
         logoImageView.hidden = true
         if AccountSettingsStore.get() != nil {
@@ -59,7 +59,7 @@ class ViewController: UIViewController {
             signInButton.enabled = true
         }
     }
-    
+
     func showView() {
         if timelineViewController == nil {
             timelineViewController = TimelineViewController()
@@ -70,31 +70,30 @@ class ViewController: UIViewController {
         signInButton.hidden = true
         signInButton.enabled = false
     }
-    
+
     func configureEvent() {
-        EventBox.onMainThread(self, name: TwitterAuthorizeNotification, handler: { _ in
+        EventBox.onMainThread(self, name: twitterAuthorizeNotification, handler: { _ in
             self.toggleView()
         })
     }
-    
+
     // MARK: - Actions
-    
+
     func signInMenu(sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.Ended {
             AddAccountAlert.show(signInButton)
         }
     }
-    
+
     @IBAction func signInButtonClick(sender: UIButton) {
         Twitter.addACAccount(false)
     }
-    
+
     @IBAction func terms(sender: UIButton) {
         Safari.openURL("http://justaway.info/iOS/terms.html")
     }
-    
+
     @IBAction func privacy(sender: UIButton) {
         Safari.openURL("http://justaway.info/iOS/privacy.html")
     }
 }
-

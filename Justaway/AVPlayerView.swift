@@ -10,24 +10,29 @@ import UIKit
 import AVFoundation
 
 class AVPlayerView: UIView {
-    
+
     var player: AVPlayer? {
         get {
-            let layer: AVPlayerLayer = self.layer as! AVPlayerLayer
-            return layer.player
+            if let layer = self.layer as? AVPlayerLayer {
+                return layer.player
+            } else {
+                return nil
+            }
         }
         set(newValue) {
-            let layer: AVPlayerLayer = self.layer as! AVPlayerLayer
-            layer.player = newValue
+            if let layer = self.layer as? AVPlayerLayer {
+                layer.player = newValue
+            }
         }
     }
-    
+
     override class func layerClass() -> AnyClass {
         return AVPlayerLayer.self
     }
-    
+
     func setVideoFillMode(mode: String) {
-        let layer: AVPlayerLayer = self.layer as! AVPlayerLayer
-        layer.videoGravity = mode
+        if let layer = self.layer as? AVPlayerLayer {
+            layer.videoGravity = mode
+        }
     }
 }

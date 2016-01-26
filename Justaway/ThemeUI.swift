@@ -16,7 +16,7 @@ class MenuShadowView: MenuView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.layer.shadowColor = UIColor.blackColor().CGColor
-        self.layer.shadowOffset = CGSizeMake(0, -2.0)
+        self.layer.shadowOffset = CGSize(width: 0, height: -2.0)
         self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         self.layer.shadowRadius = 1.0
     }
@@ -25,7 +25,7 @@ class SideMenuShadowView: MenuShadowView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.layer.shadowColor = UIColor.blackColor().CGColor
-        self.layer.shadowOffset = CGSizeMake(2.0, 0)
+        self.layer.shadowOffset = CGSize(width: 2.0, height: 0)
         self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         self.layer.shadowRadius = 1.0
     }
@@ -35,7 +35,7 @@ class NavigationShadowView: MenuView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.layer.shadowColor = UIColor.blackColor().CGColor
-        self.layer.shadowOffset = CGSizeMake(0, 2.0)
+        self.layer.shadowOffset = CGSize(width: 0, height: 2.0)
         self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         self.layer.shadowRadius = 1.0
     }
@@ -45,7 +45,7 @@ class BackgroundShadowView: BackgroundView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.layer.shadowColor = UIColor.blackColor().CGColor
-        self.layer.shadowOffset = CGSizeMake(0, -2.0)
+        self.layer.shadowOffset = CGSize(width: 0, height: -2.0)
         self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         self.layer.shadowRadius = 1.0
     }
@@ -83,7 +83,7 @@ class StatusLable: UITextView {
     var status: TwitterStatus?
     var links = [Link]()
     let playerView = AVPlayerView()
-    
+
     struct Link {
         let entity: Entity
         let range: NSRange
@@ -92,21 +92,21 @@ class StatusLable: UITextView {
             self.range = range
         }
     }
-    
+
     enum Entity {
         case URL(TwitterURL)
         case Media(TwitterMedia)
         case Hashtag(TwitterHashtag)
         case User(TwitterUser)
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         textContainer.lineFragmentPadding = 0
         textContainerInset = UIEdgeInsetsZero
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: "touchesText:"))
     }
-    
+
     // Disable text selection
     override func addGestureRecognizer(gestureRecognizer: UIGestureRecognizer) {
         if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
@@ -114,7 +114,7 @@ class StatusLable: UITextView {
         }
         super.addGestureRecognizer(gestureRecognizer)
     }
-    
+
     func setStatus(status: TwitterStatus) {
         self.status = status
         self.text = status.text
@@ -146,26 +146,27 @@ class StatusLable: UITextView {
         links = newlinks
         setAttributes()
     }
-    
+
     func setAttributes() {
         backgroundColor = ThemeController.currentTheme.mainBackgroundColor()
         let attributedText = NSMutableAttributedString(string: text)
-        attributedText.addAttribute(NSForegroundColorAttributeName, value: ThemeController.currentTheme.bodyTextColor(), range: NSMakeRange(0, text.utf16.count))
+        attributedText.addAttribute(NSForegroundColorAttributeName, value: ThemeController.currentTheme.bodyTextColor(), range: NSRange.init(location: 0, length: text.utf16.count))
         if let font = font {
-            attributedText.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(font.pointSize), range: NSMakeRange(0, text.utf16.count))
+            attributedText.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(font.pointSize), range: NSRange.init(location: 0, length: text.utf16.count))
         }
         for link in links {
             attributedText.addAttribute(NSForegroundColorAttributeName, value: ThemeController.currentTheme.menuSelectedTextColor(), range: link.range)
         }
         self.attributedText = attributedText
     }
-    
+
     private func findString(string: String) -> [NSTextCheckingResult] {
         let pattern = NSRegularExpression.escapedPatternForString(string)
+        // swiftlint:disable:next force_try
         let regexp = try! NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions(rawValue: 0))
-        return regexp.matchesInString(text, options: NSMatchingOptions(rawValue: 0), range: NSMakeRange(0, text.utf16.count))
+        return regexp.matchesInString(text, options: NSMatchingOptions(rawValue: 0), range: NSRange.init(location: 0, length: text.utf16.count))
     }
-    
+
     func touchesText(gestureRecognizer: UITapGestureRecognizer) {
         let location = gestureRecognizer.locationInView(self)
         guard let position = closestPositionToPoint(location) else {
@@ -182,7 +183,7 @@ class StatusLable: UITextView {
             StatusAlert.show(self, status: status)
         }
     }
-    
+
     func touchesLink(link: Link) {
         switch link.entity {
         case .URL(let url):
@@ -201,7 +202,7 @@ class StatusLable: UITextView {
             ProfileViewController.show(user)
         }
     }
-    
+
     func showVideo(videoURL: NSURL) {
         guard let view = UIApplication.sharedApplication().keyWindow else {
             return

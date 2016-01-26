@@ -9,9 +9,9 @@
 import UIKit
 
 class TimelineTableViewController: UITableViewController {
-    
+
     var setup = false
-    
+
     func refresh() {
         assertionFailure("not implements.")
     }

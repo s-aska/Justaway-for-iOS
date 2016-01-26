@@ -10,14 +10,14 @@ import UIKit
 import Async
 
 class BaseButton: UIButton {
-    
+
     var locked = false
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         setup()
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -26,11 +26,11 @@ class BaseButton: UIButton {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     func setup() {
         self.exclusiveTouch = true
     }
-    
+
     func lock(interval: NSTimeInterval = 1) -> Bool {
         if !locked {
             locked = true

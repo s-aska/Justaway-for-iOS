@@ -9,7 +9,7 @@
 import UIKit
 
 class TwitterListCell: BackgroundTableViewCell {
-    
+
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var listNameLabel: DisplayNameLable!
     @IBOutlet weak var userNameLabel: ScreenNameLable!
@@ -17,16 +17,16 @@ class TwitterListCell: BackgroundTableViewCell {
     @IBOutlet weak var descriptionLabel: StatusLable!
     @IBOutlet weak var memberCountLabel: UILabel!
     @IBOutlet weak var textHeightConstraint: NSLayoutConstraint!
-    
+
     // MARK: - View Life Cycle
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         configureView()
     }
-    
+
     // MARK: - Configuration
-    
+
     func configureView() {
         selectionStyle = .None
         separatorInset = UIEdgeInsetsZero

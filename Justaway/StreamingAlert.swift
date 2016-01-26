@@ -34,11 +34,11 @@ class StreamingAlert {
                     Twitter.stopStreamingAndDisable()
             }))
         }
-        
+
         // iPad
         actionSheet.popoverPresentationController?.sourceView = sender
         actionSheet.popoverPresentationController?.sourceRect = sender.bounds
-        
+
         AlertController.showViewController(actionSheet)
     }
 }

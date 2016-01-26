@@ -11,7 +11,7 @@ import KeyClip
 import Async
 
 class HomeTimelineTableViewController: StatusTableViewController {
-    
+
     override func saveCache() {
         if self.adapter.rows.count > 0 {
             let statuses = self.adapter.statuses
@@ -20,7 +20,7 @@ class HomeTimelineTableViewController: StatusTableViewController {
             NSLog("homeTimeline saveCache.")
         }
     }
-    
+
     override func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         Async.background {
             if let cache = KeyClip.load("homeTimeline") as NSDictionary? {
@@ -30,21 +30,21 @@ class HomeTimelineTableViewController: StatusTableViewController {
                 }
             }
             success(statuses: [TwitterStatus]())
-            
+
             Async.background(after: 0.3, block: { () -> Void in
                 self.loadData(nil)
             })
         }
     }
-    
+
     override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         Twitter.getHomeTimeline(maxID: maxID, success: success, failure: failure)
     }
-    
+
     override func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         Twitter.getHomeTimeline(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
     }
-    
+
     override func accept(status: TwitterStatus) -> Bool {
         if status.event != nil {
             return false
