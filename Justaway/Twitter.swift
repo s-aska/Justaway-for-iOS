@@ -5,6 +5,7 @@ import KeyClip
 import TwitterAPI
 import OAuthSwift
 import SwiftyJSON
+import Async
 
 let TwitterAuthorizeNotification = "TwitterAuthorizeNotification"
 
@@ -94,7 +95,7 @@ class Twitter {
         )
         oauthswift.authorize_url_handler = SafariOAuthURLHandler()
         oauthswift.authorizeWithCallbackURL( NSURL(string: "justaway://success")!, success: {
-            credential, response in
+            credential, response, parameters in
             
             let client = OAuthClient(
                 consumerKey: TwitterConsumerKey,
@@ -117,7 +118,7 @@ class Twitter {
         }, failure: failure)
     }
     
-    class func addACAccount() {
+    class func addACAccount(silent: Bool) {
         let accountStore = ACAccountStore()
         let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
         
@@ -129,7 +130,9 @@ class Twitter {
                 let twitterAccounts = accountStore.accountsWithAccountType(accountType) as! [ACAccount]
                 
                 if twitterAccounts.count == 0 {
-                    // MessageAlert.show("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
+                    if !silent {
+                        MessageAlert.show("Error", message: "There are no Twitter accounts configured. You can add or create a Twitter account in Settings.")
+                    }
                     EventBox.post(TwitterAuthorizeNotification)
                 } else {
                     Twitter.refreshAccounts(
@@ -145,7 +148,9 @@ class Twitter {
                     )
                 }
             } else {
-                // MessageAlert.show("Error", message: error.localizedDescription)
+                if !silent {
+                    MessageAlert.show("Error", message: "Twitter requires you to authorize Justaway for iOS to use your account.")
+                }
                 EventBox.post(TwitterAuthorizeNotification)
             }
         }

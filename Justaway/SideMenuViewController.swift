@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Async
 
 class SideMenuViewController: UIViewController {
     
@@ -65,6 +66,25 @@ class SideMenuViewController: UIViewController {
         gradient.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0).CGColor, UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).CGColor]
         gradient.frame = bannerImageView.frame
         bannerImageView.layer.insertSublayer(gradient, atIndex: 0)
+        
+        updateStreamingButtonTitle()
+    }
+    
+    func updateStreamingButtonTitle() {
+        switch Twitter.connectionStatus {
+        case .CONNECTED:
+            self.streamingButton?.setTitle("Streaming / connected", forState: UIControlState.Normal)
+        case .CONNECTING:
+            self.streamingButton?.setTitle("Streaming / connecting...", forState: UIControlState.Normal)
+        case .DISCONNECTED:
+            if Twitter.enableStreaming {
+                self.streamingButton?.setTitle("Streaming / disconnected", forState: UIControlState.Normal)
+            } else {
+                self.streamingButton?.setTitle("Streaming / off", forState: UIControlState.Normal)
+            }
+        case .DISCONNECTING:
+            self.streamingButton?.setTitle("Streaming / disconnecting...", forState: UIControlState.Normal)
+        }
     }
     
     // MARK: -
@@ -139,6 +159,16 @@ class SideMenuViewController: UIViewController {
     
     @IBAction func licenses(sender: UIButton) {
         Safari.openURL("http://justaway.info/iOS/licenses.html")
+        hide()
+    }
+    
+    @IBAction func terms(sender: UIButton) {
+        Safari.openURL("http://justaway.info/iOS/terms.html")
+        hide()
+    }
+    
+    @IBAction func privacy(sender: UIButton) {
+        Safari.openURL("http://justaway.info/iOS/privacy.html")
         hide()
     }
     

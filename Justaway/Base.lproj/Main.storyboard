@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -17,45 +17,79 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="fcU-XK-dK9">
+                                <rect key="frame" x="150" y="150" width="300" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="9FK-v9-6bd"/>
+                                    <constraint firstAttribute="height" constant="300" id="NLz-K6-xus"/>
+                                </constraints>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1I1-JO-Sau">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="07Y-rc-PN1">
-                                        <rect key="frame" x="140" y="200" width="320" height="200"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="07Y-rc-PN1">
+                                        <rect key="frame" x="140" y="140" width="320" height="320"/>
                                         <subviews>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9N-4r-cBd">
-                                                <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="150" id="wD1-Si-6mo"/>
-                                                </constraints>
-                                                <string key="text">Twitter requires you to authorize Justaway for iOS to use your account.
-
-a) Go to iOS Settings -&gt; Twitter and enable access to Justaway -&gt; relaunch.
-
-b) You will be Taken to the Twitter's authorization page.</string>
-                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                            </textView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ez-O4-zMs">
-                                                <rect key="frame" x="0.0" y="150" width="320" height="50"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gmx-Z9-5hK" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="171" width="320" height="40"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
+                                                <state key="normal" title="Terms of Service">
+                                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="terms:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hkj-Jn-5H1"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vrk-35-BDo" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="211" width="320" height="40"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
+                                                <state key="normal" title="Privacy Policy">
+                                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="privacy:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lOv-Mr-ee2"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ez-O4-zMs" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="251" width="320" height="69"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                                                 <state key="normal" title="Sign in with Twitter"/>
                                                 <connections>
                                                     <action selector="signInButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="z6f-Gi-0c6"/>
                                                 </connections>
                                             </button>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9N-4r-cBd">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="125"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="125" id="wD1-Si-6mo"/>
+                                                </constraints>
+                                                <string key="text">Twitter requires you to authorize Justaway for iOS to use your account.
+
+1. Go to iOS Settings &gt; Twitter
+
+2. Enable access to Justaway</string>
+                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstItem="vrk-35-BDo" firstAttribute="top" secondItem="Gmx-Z9-5hK" secondAttribute="bottom" id="0IG-Ba-46y"/>
                                             <constraint firstAttribute="trailing" secondItem="J9N-4r-cBd" secondAttribute="trailing" id="413-b4-J0g"/>
+                                            <constraint firstItem="vrk-35-BDo" firstAttribute="leading" secondItem="07Y-rc-PN1" secondAttribute="leading" id="77k-WJ-3B5"/>
+                                            <constraint firstAttribute="trailing" secondItem="Gmx-Z9-5hK" secondAttribute="trailing" id="E7a-gM-4Va"/>
                                             <constraint firstAttribute="width" constant="320" id="Hss-Vi-bmu"/>
+                                            <constraint firstAttribute="trailing" secondItem="vrk-35-BDo" secondAttribute="trailing" id="IAU-jT-eVd"/>
                                             <constraint firstItem="2ez-O4-zMs" firstAttribute="leading" secondItem="07Y-rc-PN1" secondAttribute="leading" id="JTK-DV-9bC"/>
+                                            <constraint firstItem="Gmx-Z9-5hK" firstAttribute="leading" secondItem="07Y-rc-PN1" secondAttribute="leading" id="Vx4-kU-zoR"/>
+                                            <constraint firstItem="2ez-O4-zMs" firstAttribute="top" secondItem="vrk-35-BDo" secondAttribute="bottom" id="W1Y-CK-cN6"/>
                                             <constraint firstItem="2ez-O4-zMs" firstAttribute="centerX" secondItem="07Y-rc-PN1" secondAttribute="centerX" id="eIn-L2-ChM"/>
                                             <constraint firstAttribute="bottom" secondItem="2ez-O4-zMs" secondAttribute="bottom" id="evB-NZ-rDt"/>
                                             <constraint firstItem="J9N-4r-cBd" firstAttribute="leading" secondItem="07Y-rc-PN1" secondAttribute="leading" id="f2C-X7-zLP"/>
-                                            <constraint firstAttribute="height" constant="200" id="gBI-9M-rUN"/>
+                                            <constraint firstAttribute="height" constant="320" id="gBI-9M-rUN"/>
                                             <constraint firstAttribute="trailing" secondItem="2ez-O4-zMs" secondAttribute="trailing" id="t7x-71-2Iy"/>
                                             <constraint firstItem="J9N-4r-cBd" firstAttribute="top" secondItem="07Y-rc-PN1" secondAttribute="top" id="uEh-Ox-c1a"/>
                                         </constraints>
@@ -66,13 +100,6 @@ b) You will be Taken to the Twitter's authorization page.</string>
                                     <constraint firstItem="07Y-rc-PN1" firstAttribute="centerY" secondItem="1I1-JO-Sau" secondAttribute="centerY" id="tHc-cs-KW2"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="fcU-XK-dK9">
-                                <rect key="frame" x="150" y="150" width="300" height="300"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="9FK-v9-6bd"/>
-                                    <constraint firstAttribute="height" constant="300" id="NLz-K6-xus"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>

@@ -53,10 +53,11 @@ class AccountSettingsStore {
             if settings.hasAccountClient() {
                 reloadACAccounts(settings)
             } else {
+                AccountSettingsCache.sharedInstance.settings = settings
                 EventBox.post(TwitterAuthorizeNotification)
             }
         } else {
-            Twitter.addACAccount()
+            Twitter.addACAccount(true)
         }
     }
     

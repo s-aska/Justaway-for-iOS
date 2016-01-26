@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import Async
 
 class SearchViewController: UIViewController {
     

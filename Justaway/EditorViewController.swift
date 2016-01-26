@@ -1,11 +1,17 @@
 import UIKit
 import EventBox
 import Photos
+import Async
 
 class EditorViewController: UIViewController {
     
     struct Static {
         static let instance = EditorViewController()
+    }
+    
+    struct UploadImage {
+        let data: NSData
+        let asset: PHAsset
     }
     
     // MARK: Properties
@@ -37,7 +43,7 @@ class EditorViewController: UIViewController {
     @IBOutlet weak var imageView3: UIImageView!
     @IBOutlet weak var imageView4: UIImageView!
     
-    var images: [NSData] = []
+    var images: [UploadImage] = []
     var imageViews: [UIImageView] = []
     var picking = false
     let imageContainerHeightConstraintDefault: CGFloat = 100
@@ -116,7 +122,7 @@ class EditorViewController: UIViewController {
                     if self.images.count > 0 {
                         var i = 0
                         for image in self.images {
-                            if imageData == image {
+                            if imageData == image.data {
                                 self.removeImageIndex(i)
                                 return
                             }
@@ -127,8 +133,10 @@ class EditorViewController: UIViewController {
                     if i >= 4 {
                         return
                     }
-                    self.images.append(imageData)
+                    self.images.append(UploadImage(data: imageData, asset: asset))
                     self.imageViews[i].image = UIImage(data: imageData)
+                    self.collectionView.highlightRows = self.images.map({ $0.asset })
+                    self.collectionView.reloadHighlight()
                     if self.imageContainerHeightConstraint.constant == 0 {
                         self.imageContainerHeightConstraint.constant = self.imageContainerHeightConstraintDefault
                         UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -156,6 +164,7 @@ class EditorViewController: UIViewController {
             imageView.image = nil
         }
         collectionView.rows = []
+        collectionView.highlightRows = []
         collectionHeightConstraint.constant = 0
         imageContainerHeightConstraint.constant = 0
         collectionMenuView.hidden = true
@@ -181,7 +190,7 @@ class EditorViewController: UIViewController {
             
             // en: UIKeyboardWillHideNotification occurs when you scroll through the conversion candidates in iOS9
             // ja: iOS9 では変換候補をスクロールする際 UIKeyboardWillHideNotification が発生する
-            if !textView.text.isEmpty {
+            if !textView.text.isEmpty && !picking {
                 return
             }
             containerViewButtomConstraint.constant = 0
@@ -228,7 +237,7 @@ class EditorViewController: UIViewController {
         if text.isEmpty && images.count == 0 {
             hide()
         } else {
-            Twitter.statusUpdate(text, inReplyToStatusID: self.inReplyToStatusId, images: self.images, media_ids: [])
+            Twitter.statusUpdate(text, inReplyToStatusID: self.inReplyToStatusId, images: self.images.map({ $0.data }), media_ids: [])
             hide()
         }
     }
@@ -248,7 +257,7 @@ class EditorViewController: UIViewController {
         var i = 0
         for imageView in imageViews {
             if images.count > i {
-                imageView.image = UIImage(data: images[i])
+                imageView.image = UIImage(data: images[i].data)
             } else {
                 imageView.image = nil
             }
@@ -260,6 +269,8 @@ class EditorViewController: UIViewController {
                 self.view.layoutIfNeeded()
             })
         }
+        self.collectionView.highlightRows = self.images.map({ $0.asset })
+        self.collectionView.reloadHighlight()
     }
     
     @IBAction func replyCancel(sender: UIButton) {
@@ -279,7 +290,7 @@ class EditorViewController: UIViewController {
         collectionMenuView.hidden = false
         textView.resignFirstResponder()
         if collectionView.rows.count == 0 {
-            Async.background({ () -> Void in
+            Async.background(block: { () -> Void in
                 let options = PHFetchOptions()
                 options.sortDescriptors = [
                     NSSortDescriptor(key: "creationDate", ascending: false)
@@ -288,7 +299,7 @@ class EditorViewController: UIViewController {
                 assets.enumerateObjectsUsingBlock { (asset, index, stop) -> Void in
                     self.collectionView.rows.append(asset as! PHAsset)
                 }
-                Async.main({ () -> Void in
+                Async.main(block: { () -> Void in
                     self.collectionView.reloadData()
                 })
             })

@@ -13,6 +13,7 @@ class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, U
     
     let manager = PHImageManager.defaultManager()
     var rows = [PHAsset]()
+    var highlightRows = [PHAsset]()
     var callback: (PHAsset -> Void)?
     
     override func awakeFromNib() {
@@ -41,7 +42,7 @@ class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, U
             contentMode: .AspectFill,
             options: nil) { (image, info) -> Void in
                 if cell.tag == indexPath.row {
-                    cell.imageView.alpha = 1
+                    cell.imageView.alpha = self.isHighlight(row) ? 0.3 : 1
                     cell.imageView.contentMode = .ScaleAspectFill
                     cell.imageView.image = image
                 }
@@ -57,5 +58,22 @@ class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, U
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let row = rows[indexPath.row]
         callback?(row)
+    }
+    
+    func isHighlight(asset: PHAsset) -> Bool {
+        for highlightRow in highlightRows {
+            if highlightRow == asset {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func reloadHighlight() {
+        for cell in visibleCells() as! [ImageCell] {
+            if let asset = cell.asset {
+                cell.imageView.alpha = self.isHighlight(asset) ? 0.3 : 1
+            }
+        }
     }
 }

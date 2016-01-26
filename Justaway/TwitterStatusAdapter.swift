@@ -9,6 +9,7 @@
 import UIKit
 import Pinwheel
 import EventBox
+import Async
 
 class TwitterStatusAdapter: NSObject {
     

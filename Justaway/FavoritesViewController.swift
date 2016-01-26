@@ -9,6 +9,7 @@
 import Foundation
 import KeyClip
 import EventBox
+import Async
 
 class FavoritesTableViewController: StatusTableViewController {
     

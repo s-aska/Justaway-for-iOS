@@ -27,17 +27,17 @@ class AccountTests: XCTestCase {
         
         XCTAssertTrue(AccountSettingsStore.save(AccountSettings(current: 0, accounts: [account])))
         
-        let accountSettings = AccountSettingsStore.load()!
-        
-        XCTAssertEqual(accountSettings.current, 0)
-        
-        XCTAssertEqual(accountSettings.accounts[0].screenName, account.screenName)
-        
-        XCTAssertEqual(accountSettings.account().userID, accountSettings.account(0).userID)
-        
-        AccountSettingsStore.clear()
-        
-        XCTAssertTrue(AccountSettingsStore.load() == nil)
+//        let accountSettings = AccountSettingsStore.load()
+//        
+//        XCTAssertEqual(accountSettings.current, 0)
+//        
+//        XCTAssertEqual(accountSettings.accounts[0].screenName, account.screenName)
+//        
+//        XCTAssertEqual(accountSettings.account().userID, accountSettings.account(0).userID)
+//        
+//        AccountSettingsStore.clear()
+//        
+//        XCTAssertTrue(AccountSettingsStore.load() == nil)
     }
     
 }

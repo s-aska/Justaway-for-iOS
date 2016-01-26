@@ -1,6 +1,7 @@
 import UIKit
 import EventBox
 import AVFoundation
+import Async
 
 let TwitterStatusCellImagePreviewHeight :CGFloat = 80
 let TwitterStatusCellImagePreviewWidth :CGFloat = 240

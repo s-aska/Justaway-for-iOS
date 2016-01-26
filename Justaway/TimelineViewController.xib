@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="fontello.ttf">
@@ -43,6 +43,15 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rWY-A3-4yL" customClass="MenuShadowView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                     <subviews>
+                        <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="PJe-Oy-hvL">
+                            <rect key="frame" x="0.0" y="0.0" width="540" height="50"/>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ceh-Zy-Old">
+                                <size key="itemSize" width="50" height="50"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                        </collectionView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jEn-1F-PMd" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="540" y="0.0" width="60" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
@@ -89,6 +98,8 @@
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="PJe-Oy-hvL" secondAttribute="bottom" id="KA9-YO-IkC"/>
+                        <constraint firstItem="jEn-1F-PMd" firstAttribute="leading" secondItem="PJe-Oy-hvL" secondAttribute="trailing" id="M2w-m9-9pE"/>
                         <constraint firstItem="iuO-p3-lF5" firstAttribute="top" secondItem="rWY-A3-4yL" secondAttribute="top" id="UOc-gr-aRE"/>
                         <constraint firstAttribute="centerY" secondItem="jEn-1F-PMd" secondAttribute="centerY" id="WU2-H7-AXv"/>
                         <constraint firstAttribute="bottom" secondItem="iuO-p3-lF5" secondAttribute="bottom" id="bcC-PS-Uoa"/>
@@ -96,6 +107,8 @@
                         <constraint firstItem="jEn-1F-PMd" firstAttribute="leading" secondItem="iuO-p3-lF5" secondAttribute="trailing" id="k27-z8-U76"/>
                         <constraint firstAttribute="trailing" secondItem="jEn-1F-PMd" secondAttribute="trailing" id="n6y-Pf-MlQ"/>
                         <constraint firstAttribute="height" constant="50" id="nmZ-Xw-cE3"/>
+                        <constraint firstItem="PJe-Oy-hvL" firstAttribute="leading" secondItem="rWY-A3-4yL" secondAttribute="leading" id="sAu-98-BJH"/>
+                        <constraint firstItem="PJe-Oy-hvL" firstAttribute="top" secondItem="rWY-A3-4yL" secondAttribute="top" id="z89-I1-JuS"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YBJ-Kd-WdX" customClass="NavigationShadowView" customModule="Justaway" customModuleProvider="target">

@@ -43,7 +43,9 @@ class ViewController: UIViewController {
     // MARK: - Configuration
     
     func configureView() {
-        
+        let longPress = UILongPressGestureRecognizer(target: self, action: "signInMenu:")
+        longPress.minimumPressDuration = 2.0;
+        signInButton.addGestureRecognizer(longPress)
     }
     
     func toggleView() {
@@ -77,9 +79,22 @@ class ViewController: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction func signInButtonClick(sender: UIButton) {
-        Twitter.addOAuthAccount()
+    func signInMenu(sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Ended {
+            AddAccountAlert.show(signInButton)
+        }
     }
     
+    @IBAction func signInButtonClick(sender: UIButton) {
+        Twitter.addACAccount(false)
+    }
+    
+    @IBAction func terms(sender: UIButton) {
+        Safari.openURL("http://justaway.info/iOS/terms.html")
+    }
+    
+    @IBAction func privacy(sender: UIButton) {
+        Safari.openURL("http://justaway.info/iOS/privacy.html")
+    }
 }
 

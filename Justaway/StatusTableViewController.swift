@@ -2,6 +2,7 @@ import UIKit
 import EventBox
 import KeyClip
 import Pinwheel
+import Async
 
 let TIMELINE_ROWS_LIMIT = 1000
 let TIMELINE_FOOTER_HEIGHT: CGFloat = 40
