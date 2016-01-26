@@ -80,7 +80,7 @@ class ViewController: UIViewController {
     // MARK: - Actions
 
     func signInMenu(sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.Ended {
+        if sender.state == .Began {
             AddAccountAlert.show(signInButton)
         }
     }
