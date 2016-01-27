@@ -148,7 +148,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         Static.instance.imageURLs = imageURLs
         Static.instance.initialPage = initialPage
 
-        if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
+        if let vc = ViewTools.frontViewController() {
             Static.instance.view.frame = CGRect.init(x: 0, y: 0, width: vc.view.frame.width, height: vc.view.frame.height)
             vc.view.addSubview(Static.instance.view)
         }

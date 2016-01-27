@@ -233,7 +233,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     class func show() {
-        if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
+        if let vc = ViewTools.frontViewController() {
             Static.instance.view.hidden = true
             vc.view.addSubview(Static.instance.view)
             Static.instance.view.frame = CGRect.init(x: vc.view.frame.width, y: 20, width: vc.view.frame.width, height: vc.view.frame.height - 20)

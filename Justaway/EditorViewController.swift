@@ -339,7 +339,7 @@ class EditorViewController: UIViewController {
     }
 
     class func show(text: String? = nil, range: NSRange? = nil, inReplyToStatus: TwitterStatus? = nil) {
-        if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
+        if let vc = ViewTools.frontViewController() {
             Static.instance.view.frame = CGRect.init(x: 0, y: 0, width: vc.view.frame.width, height: vc.view.frame.height)
             Static.instance.resetPickerController()
             Static.instance.textView.text = text ?? ""

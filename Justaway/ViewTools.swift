@@ -52,9 +52,19 @@ class ViewTools {
         containerView.addConstraints(constraints)
     }
 
+    class func frontViewController() -> UIViewController? {
+        if var vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
+            while let presentedViewController = vc.presentedViewController {
+                vc = presentedViewController
+            }
+            return vc
+        }
+        return nil
+    }
+
     class func slideIn(viewController: UIViewController) {
         let key = NSStringFromClass(viewController.dynamicType)
-        guard let rootViewController = UIApplication.sharedApplication().keyWindow?.rootViewController else {
+        guard let rootViewController = frontViewController() else {
             return
         }
 

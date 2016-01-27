@@ -82,6 +82,15 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addGestureRecognizer(swipe)
         swipeGestureRecognizer = swipe
 
+        configureTimelineView()
+
+        iconImageView.userInteractionEnabled = true
+        let iconGesture = UITapGestureRecognizer(target: self, action: "openProfile:")
+        iconGesture.numberOfTapsRequired = 1
+        iconImageView.addGestureRecognizer(iconGesture)
+    }
+
+    func configureTimelineView() {
         let size = scrollWrapperView.frame.size
         let contentView = UIView(frame: CGRect.init(x: 0, y: 0, width: size.width * 3, height: size.height))
 
@@ -134,20 +143,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         scrollView.contentSize = contentView.frame.size
         scrollView.pagingEnabled = true
         scrollView.delegate = self
-
-        iconImageView.userInteractionEnabled = true
-        let iconGesture = UITapGestureRecognizer(target: self, action: "openProfile:")
-        iconGesture.numberOfTapsRequired = 1
-        iconImageView.addGestureRecognizer(iconGesture)
-
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: "showSettings:")
-        swipeUp.numberOfTouchesRequired = 1
-        swipeUp.direction = UISwipeGestureRecognizerDirection.Up
-        tabWraperView.addGestureRecognizer(swipeUp)
-//        streamingView.userInteractionEnabled = true
-//        let gesture = UITapGestureRecognizer(target: self, action: "streamingSwitch:")
-//        gesture.numberOfTapsRequired = 1
-//        streamingView.addGestureRecognizer(gesture)
     }
 
     func configureEvent() {
@@ -160,7 +155,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             self.settingsViewController.hide()
         })
 
-        configureTwitterEvent()
+        configureCreateStatusEvent()
+
+        configureDestroyStatusEvent()
 
         configureStreamingEvent()
 
@@ -184,7 +181,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         }
     }
 
-    func configureTwitterEvent() {
+    func configureCreateStatusEvent() {
         EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
             guard let status = n.object as? TwitterStatus else {
                 return
@@ -208,7 +205,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 page++
             }
         }
+    }
 
+    func configureDestroyStatusEvent() {
         EventBox.onMainThread(self, name: Twitter.Event.DestroyStatus.rawValue, sender: nil) { n in
             guard let statusID = n.object as? String else {
                 return

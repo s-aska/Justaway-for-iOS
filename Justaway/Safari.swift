@@ -22,12 +22,12 @@ class Safari {
     }
 
     class func openURL(url: NSURL) -> SFSafariViewController? {
-        guard let rootVc = UIApplication.sharedApplication().keyWindow?.rootViewController else {
+        guard let frontVc = ViewTools.frontViewController() else {
             return nil
         }
         let vc = SFSafariViewController(URL: url)
         vc.delegate = delegate
-        rootVc.presentViewController(vc, animated: true, completion: nil)
+        frontVc.presentViewController(vc, animated: true, completion: nil)
         return vc
     }
 }

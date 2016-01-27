@@ -225,77 +225,87 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Actions
 
     func setText() {
-        if let user = self.user {
-            displayNameLabel.text = user.name
-            screenNameLabel.text = "@" + user.screenName
-            bottomDisplayNameLabel.text = user.name
-            bottomScreenNameLabel.text = user.screenName
-            statusCountLabel.text = "-"
-            followingCountLabel.text = "-"
-            followerCountLabel.text = "-"
-            listedCountLabel.text = "-"
-            favoritesCountLabel.text = "-"
-            descriptionLabel.text = ""
-            locationLabel.text = ""
-            siteLabel.text = ""
-            sinceLabel.text = ""
-            iconImageView.image = nil
-            coverImageView.image = nil
-            if AccountSettingsStore.isCurrent(user.userID) {
-                followedByLabel.removeFromSuperview()
-            } else {
-                if !user.isProtected {
-                    protectedLabel.removeFromSuperview()
-                }
-            }
-            // followedByLabel.alpha = 0
-            ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: iconImageView)
-
-            headerViewTopContraint.constant = 0
-            bottomContainerTopConstraint.constant = 100
-
-            userTimelineTableViewController.userID = user.userID
-            userTimelineTableViewController.loadData(nil)
-
-            tabLoaded = [0: true]
-
-            followingTableViewController.userID = user.userID
-            followerTableViewController.userID = user.userID
-            listMemberOfViewController.userID = user.userID
-            favoritesTableViewController.userID = user.userID
-
-            let success: (([JSON]) -> Void) = { (rows) in
-                if let row = rows.first {
-                    let user = TwitterUserFull(row)
-                    self.userFull = user
-                    if !user.isProtected {
-                        self.protectedLabel?.removeFromSuperview()
-                    }
-                    self.statusCountLabel.text = user.statusesCount.description
-                    self.followingCountLabel.text = user.friendsCount.description
-                    self.followerCountLabel.text = user.followersCount.description
-                    self.listedCountLabel.text = user.listedCount.description
-                    self.favoritesCountLabel.text = user.favouritesCount.description
-                    self.descriptionLabel.text = user.description
-                    self.locationLabel.text = user.location
-                    self.siteLabel.text = user.displayURL
-                    self.sinceLabel.text = self.sinceDateFormatter.stringFromDate(user.createdAt.date)
-                    ImageLoaderClient.displayImage(user.profileBannerURL, imageView: self.coverImageView)
-                }
-            }
-
-            let parameters = ["user_id": user.userID]
-            Twitter.client()?
-                .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
-                .responseJSONArray(success)
-
-            Twitter.getFriendships(user.userID, success: { (relationship) -> Void in
-                self.relationship = relationship
-                if !relationship.followedBy {
-                    self.followedByLabel?.removeFromSuperview()
-                }
-            })
+        guard let user = self.user else {
+            return
         }
+
+        displayNameLabel.text = user.name
+        screenNameLabel.text = "@" + user.screenName
+        bottomDisplayNameLabel.text = user.name
+        bottomScreenNameLabel.text = user.screenName
+        statusCountLabel.text = "-"
+        followingCountLabel.text = "-"
+        followerCountLabel.text = "-"
+        listedCountLabel.text = "-"
+        favoritesCountLabel.text = "-"
+        descriptionLabel.text = ""
+        locationLabel.text = ""
+        siteLabel.text = ""
+        sinceLabel.text = ""
+        iconImageView.image = nil
+        coverImageView.image = nil
+        if AccountSettingsStore.isCurrent(user.userID) {
+            followedByLabel.removeFromSuperview()
+        } else {
+            if !user.isProtected {
+                protectedLabel.removeFromSuperview()
+            }
+        }
+        // followedByLabel.alpha = 0
+        ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: iconImageView)
+
+        headerViewTopContraint.constant = 0
+        bottomContainerTopConstraint.constant = 100
+
+        userTimelineTableViewController.userID = user.userID
+        userTimelineTableViewController.loadData(nil)
+
+        tabLoaded = [0: true]
+
+        followingTableViewController.userID = user.userID
+        followerTableViewController.userID = user.userID
+        listMemberOfViewController.userID = user.userID
+        favoritesTableViewController.userID = user.userID
+
+        setTextByAPI()
+    }
+
+    func setTextByAPI() {
+        guard let user = self.user else {
+            return
+        }
+
+        let success: (([JSON]) -> Void) = { (rows) in
+            if let row = rows.first {
+                let user = TwitterUserFull(row)
+                self.userFull = user
+                if !user.isProtected {
+                    self.protectedLabel?.removeFromSuperview()
+                }
+                self.statusCountLabel.text = user.statusesCount.description
+                self.followingCountLabel.text = user.friendsCount.description
+                self.followerCountLabel.text = user.followersCount.description
+                self.listedCountLabel.text = user.listedCount.description
+                self.favoritesCountLabel.text = user.favouritesCount.description
+                self.descriptionLabel.text = user.description
+                self.locationLabel.text = user.location
+                self.siteLabel.text = user.displayURL
+                self.sinceLabel.text = self.sinceDateFormatter.stringFromDate(user.createdAt.date)
+                ImageLoaderClient.displayImage(user.profileBannerURL, imageView: self.coverImageView)
+            }
+        }
+
+        let parameters = ["user_id": user.userID]
+        Twitter.client()?
+            .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
+            .responseJSONArray(success)
+
+        Twitter.getFriendships(user.userID, success: { (relationship) -> Void in
+            self.relationship = relationship
+            if !relationship.followedBy {
+                self.followedByLabel?.removeFromSuperview()
+            }
+        })
     }
 
     func showCover(sender: AnyObject) {
