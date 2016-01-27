@@ -90,14 +90,14 @@ class AsyncBlockOperation: AsyncOperation {
 }
 
 class MainBlockOperation: AsyncOperation {
-    
+
     let executionBlock: (op: MainBlockOperation) -> Void
-    
+
     init(_ executionBlock: (op: MainBlockOperation) -> Void) {
         self.executionBlock = executionBlock
         super.init()
     }
-    
+
     override func start() {
         super.start()
         state = .Executing
@@ -105,14 +105,14 @@ class MainBlockOperation: AsyncOperation {
             self.executionBlock(op: self)
         }
     }
-    
+
     override func cancel() {
         super.cancel()
         state = .Finished
     }
-    
+
     func finish() {
         state = .Finished
     }
-    
+
 }
