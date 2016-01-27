@@ -59,7 +59,7 @@ class TwitterStatusAdapter: NSObject {
     var scrollCallback: ((scrollView: UIScrollView) -> Void)?
     var renderDataCallback: ((statuses: [TwitterStatus], mode: RenderMode) -> Void)?
     let loadDataQueue = NSOperationQueue().serial()
-    let mainQueue = NSOperationQueue.mainQueue().serial()
+    let mainQueue = NSOperationQueue().serial()
     var delegate: TwitterStatusAdapterDelegate?
 
     var statuses: [TwitterStatus] {

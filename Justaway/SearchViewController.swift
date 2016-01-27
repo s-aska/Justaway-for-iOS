@@ -109,7 +109,7 @@ class SearchViewController: UIViewController {
     }
 
     func renderData(statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
-        let operation = AsyncBlockOperation { (operation) -> Void in
+        let operation = MainBlockOperation { (operation) -> Void in
             self.adapter.renderData(self.tableView, statuses: statuses, mode: mode, handler: { () -> Void in
                 if self.adapter.isTop {
                     self.adapter.scrollEnd(self.tableView)

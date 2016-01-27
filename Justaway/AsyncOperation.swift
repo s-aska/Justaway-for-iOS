@@ -3,6 +3,7 @@
 // https://developer.apple.com/library/ios/documentation/General/Conceptual/ConcurrencyProgrammingGuide/Introduction/Introduction.html
 
 import Foundation
+import Async
 
 class AsyncOperation: NSOperation {
 
@@ -86,4 +87,32 @@ class AsyncBlockOperation: AsyncOperation {
         state = .Finished
     }
 
+}
+
+class MainBlockOperation: AsyncOperation {
+    
+    let executionBlock: (op: MainBlockOperation) -> Void
+    
+    init(_ executionBlock: (op: MainBlockOperation) -> Void) {
+        self.executionBlock = executionBlock
+        super.init()
+    }
+    
+    override func start() {
+        super.start()
+        state = .Executing
+        Async.main {
+            self.executionBlock(op: self)
+        }
+    }
+    
+    override func cancel() {
+        super.cancel()
+        state = .Finished
+    }
+    
+    func finish() {
+        state = .Finished
+    }
+    
 }
