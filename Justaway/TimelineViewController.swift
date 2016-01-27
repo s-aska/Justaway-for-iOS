@@ -194,8 +194,18 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                         vc.renderData([status], mode: .TOP, handler: {})
                         let actionedByUserID = status.actionedBy?.userID ?? ""
                         let actionedByMe = AccountSettingsStore.get()?.isMe(actionedByUserID) ?? false
-                        if !actionedByMe && ( self.currentPage != page || !vc.adapter.isTop ) {
-                            self.tabButtons[page].selected = true
+                        if !actionedByMe {
+                            if self.currentPage != page {
+                                self.tabButtons[page].selected = true
+                            } else {
+                                let operation = MainBlockOperation { (operation) -> Void in
+                                    if !vc.adapter.isTop {
+                                        self.tabButtons[page].selected = true
+                                    }
+                                    operation.finish()
+                                }
+                                vc.adapter.mainQueue.addOperation(operation)
+                            }
                         }
                         vc.saveCacheSchedule()
                     }
