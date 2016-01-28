@@ -9,12 +9,13 @@
 import UIKit
 import Photos
 
-class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate {
+class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     let manager = PHImageManager.defaultManager()
     var rows = [PHAsset]()
     var highlightRows = [PHAsset]()
     var callback: (PHAsset -> Void)?
+    var cellSize = CGSize(width: 80, height: 80)
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,6 +27,8 @@ class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, U
         self.registerNib(nib, forCellWithReuseIdentifier: "ImageCell")
         self.delegate = self
         self.dataSource = self
+        let width = (UIScreen.mainScreen().bounds.size.width / 4)
+        self.cellSize = CGSize(width: width, height: width)
     }
 
 
@@ -64,6 +67,10 @@ class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, U
         callback?(row)
     }
 
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return cellSize
+    }
+    
     func isHighlight(asset: PHAsset) -> Bool {
         for highlightRow in highlightRows {
             if highlightRow == asset {
