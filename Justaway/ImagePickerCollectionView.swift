@@ -70,7 +70,7 @@ class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, U
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return cellSize
     }
-    
+
     func isHighlight(asset: PHAsset) -> Bool {
         for highlightRow in highlightRows {
             if highlightRow == asset {
