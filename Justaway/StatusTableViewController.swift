@@ -268,7 +268,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
     func renderData(statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
         let operation = MainBlockOperation { (operation) -> Void in
             self.adapter.renderData(self.tableView, statuses: statuses, mode: mode, handler: { () -> Void in
-                if self.adapter.isTop {
+                if self.adapter.scrolling {
                     self.adapter.scrollEnd(self.tableView)
                 }
                 operation.finish()

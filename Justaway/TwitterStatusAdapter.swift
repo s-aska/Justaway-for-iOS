@@ -133,6 +133,9 @@ class TwitterStatusAdapter: NSObject {
     // MARK: Public Methods
 
     func scrollBegin() {
+        if !scrolling {
+            // NSLog("scrollBegin")
+        }
         isTop = false
         scrolling = true
         loadDataQueue.suspended = true
@@ -140,6 +143,9 @@ class TwitterStatusAdapter: NSObject {
     }
 
     func scrollEnd(scrollView: UIScrollView) {
+        if scrolling {
+            // NSLog("scrollEnd isTop:\(scrollView.contentOffset.y + scrollView.contentInset.top <= 0)")
+        }
         scrolling = false
         loadDataQueue.suspended = false
         mainQueue.suspended = false
@@ -147,7 +153,7 @@ class TwitterStatusAdapter: NSObject {
         if let tableView = scrollView as? UITableView {
             renderImages(tableView)
         }
-        isTop = scrollView.contentOffset.y <= scrollView.contentInset.top ? true : false
+        isTop = scrollView.contentOffset.y + scrollView.contentInset.top <= 0 ? true : false
         let y = scrollView.contentOffset.y + scrollView.bounds.size.height - scrollView.contentInset.bottom
         let h = scrollView.contentSize.height
         let f = h - y
@@ -195,7 +201,8 @@ class TwitterStatusAdapter: NSObject {
         // println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count)")
 
         if let lastCell = tableView.visibleCells.last {
-            let isTop = tableView.contentOffset.y <= tableView.contentInset.top && mode == .TOP
+            // NSLog("y:\(tableView.contentOffset.y) top:\(tableView.contentInset.top)")
+            let isTop = tableView.contentOffset.y + tableView.contentInset.top <= 0 && mode == .TOP
             let offset = lastCell.frame.origin.y - tableView.contentOffset.y
             UIView.setAnimationsEnabled(false)
             tableView.beginUpdates()
