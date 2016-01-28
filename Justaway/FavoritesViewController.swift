@@ -38,6 +38,10 @@ class FavoritesTableViewController: StatusTableViewController {
                     }
                 }
                 success(statuses: [TwitterStatus]())
+
+                Async.background(after: 0.5, block: { () -> Void in
+                    self.loadData(nil)
+                })
             }
         } else {
             success(statuses: [])
