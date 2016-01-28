@@ -198,9 +198,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                             if self.currentPage != page {
                                 self.tabButtons[page].selected = true
                             } else {
+                                let buttonIndex = page
                                 let operation = MainBlockOperation { (operation) -> Void in
                                     if !vc.adapter.isTop {
-                                        self.tabButtons[page].selected = true
+                                        self.tabButtons[buttonIndex].selected = true
                                     }
                                     operation.finish()
                                 }
