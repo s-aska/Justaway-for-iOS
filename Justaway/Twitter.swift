@@ -168,80 +168,30 @@ class Twitter {
     }
 
     class func refreshAccounts(newAccounts: [Account]) {
-        var accounts = [Account]()
-        var current = 0
-        var client: Client?
+        let accountSettings: AccountSettings
 
-        if let accountSettings = AccountSettingsStore.get() {
-
-            // Merge accounts and newAccounts
-            var newAccountMap = [String: Account]()
-            for newAccount in newAccounts {
-                newAccountMap[newAccount.userID] = newAccount
-            }
-
-            accounts = accountSettings.accounts.map({ newAccountMap.removeValueForKey($0.userID) ?? $0 })
-
-            for newAccount in newAccountMap.values {
-                accounts.insert(newAccount, atIndex: 0)
-            }
-
-            // Update current index
-            let currentUserID = accountSettings.account().userID
-            for i in 0 ... accounts.count {
-                if accounts[i].userID == currentUserID {
-                    current = i
-                    break
-                }
-            }
-
-            // Update credential from current account
-            client = accounts[current].client
+        if let storeAccountSettings = AccountSettingsStore.get() {
+            accountSettings = storeAccountSettings.merge(newAccounts)
         } else if newAccounts.count > 0 {
-
-            // Merge accounts and newAccounts
-            accounts = newAccounts
-
-            // Update credential from newAccounts
-            client = accounts[0].client
+            accountSettings = AccountSettings(current: 0, accounts: newAccounts)
         } else {
             return
         }
 
-        let userIDs = accounts.map({ $0.userID }).joinWithSeparator(",")
+        let userIDs = accountSettings.accounts.map({ $0.userID }).joinWithSeparator(",")
 
         let success: (([JSON]) -> Void) = { (rows) in
 
-            // Convert JSONValue
-            var userDirectory = [String: TwitterUserFull]()
-            for row in rows {
-                let user = TwitterUserFull(row)
-                userDirectory[user.userID] = user
-            }
-
-            // Update accounts information
-            accounts = accounts.map({ (account: Account) in
-                if let user = userDirectory[account.userID] {
-                    return Account(
-                        client: account.client,
-                        userID: user.userID,
-                        screenName: user.screenName,
-                        name: user.name,
-                        profileImageURL: user.profileImageURL,
-                        profileBannerURL: user.profileBannerURL)
-                } else {
-                    return account
-                }
-            })
+            let users = rows.map { TwitterUserFull($0) }
 
             // Save Device
-            AccountSettingsStore.save(AccountSettings(current: current, accounts: accounts))
+            AccountSettingsStore.save(accountSettings.update(users))
 
             EventBox.post(twitterAuthorizeNotification)
         }
 
         let parameters = ["user_id": userIDs]
-        client?
+        accountSettings.account().client
             .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
             .responseJSONArray(success)
     }

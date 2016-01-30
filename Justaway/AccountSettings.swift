@@ -51,6 +51,24 @@ class Account {
         }
     }
 
+    init(account: Account, user: TwitterUserFull) {
+        self.client = account.client
+        self.userID = user.userID
+        self.screenName = user.screenName
+        self.name = user.name
+        self.profileImageURL = user.profileImageURL
+        self.profileBannerURL = user.profileBannerURL
+    }
+
+    init(account: Account, acAccount: ACAccount) {
+        self.client = AccountClient(account: acAccount)
+        self.userID = account.userID
+        self.screenName = account.screenName
+        self.name = account.name
+        self.profileImageURL = account.profileImageURL
+        self.profileBannerURL = account.profileBannerURL
+    }
+
     var profileImageBiggerURL: NSURL {
         return NSURL(string: profileImageURL.absoluteString.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: [], range: nil))!
     }
@@ -101,6 +119,34 @@ class AccountSettings {
 
     func account(index: Int) -> Account {
         return accounts[index]
+    }
+
+    func merge(newAccounts: [Account]) -> AccountSettings {
+        var newAccountDictionary = [String: Account]()
+        for newAccount in newAccounts {
+            newAccountDictionary[newAccount.userID] = newAccount
+        }
+
+        // keep sequence
+        var mergeAccounts = accounts.map({ newAccountDictionary.removeValueForKey($0.userID) ?? $0 })
+        for newAccount in newAccountDictionary.values {
+            mergeAccounts.insert(newAccount, atIndex: 0)
+        }
+
+        let currentUserID = account().userID
+        let current = mergeAccounts.indexOf { $0.userID == currentUserID } ?? 0
+        return AccountSettings(current: current, accounts: mergeAccounts)
+    }
+
+    func update(users: [TwitterUserFull]) -> AccountSettings {
+        let updateAccounts = accounts.map { (account: Account) -> Account in
+            if let user = users.filter({ $0.userID == account.userID }).first {
+                return Account(account: account, user: user)
+            } else {
+                return account
+            }
+        }
+        return AccountSettings(current: current, accounts: updateAccounts)
     }
 
     func find(userID: String) -> Account? {

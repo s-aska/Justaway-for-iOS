@@ -74,13 +74,7 @@ class AccountSettingsStore {
                 case let client as AccountClient:
                     if let acAccount = acAccountMap.removeValueForKey(account.userID) {
                         NSLog("refreshACAccounts update \(account.userID) \(client.identifier) => \(acAccount.identifier!)")
-                        activeAccounts.append(Account(
-                            client: AccountClient(account: acAccount),
-                            userID: account.userID,
-                            screenName: account.screenName,
-                            name: account.name,
-                            profileImageURL: account.profileImageURL,
-                            profileBannerURL: account.profileBannerURL))
+                        activeAccounts.append(Account(account: account, acAccount: acAccount))
                     } else {
                         NSLog("refreshACAccounts delete \(account.userID) \(client.identifier)")
                     }

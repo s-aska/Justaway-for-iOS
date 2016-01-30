@@ -233,17 +233,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         screenNameLabel.text = "@" + user.screenName
         bottomDisplayNameLabel.text = user.name
         bottomScreenNameLabel.text = user.screenName
-        statusCountLabel.text = "-"
-        followingCountLabel.text = "-"
-        followerCountLabel.text = "-"
-        listedCountLabel.text = "-"
-        favoritesCountLabel.text = "-"
-        descriptionLabel.text = ""
-        locationLabel.text = ""
-        siteLabel.text = ""
-        sinceLabel.text = ""
         iconImageView.image = nil
-        coverImageView.image = nil
         if AccountSettingsStore.isCurrent(user.userID) {
             followedByLabel.removeFromSuperview()
         } else {
@@ -274,6 +264,17 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         guard let user = self.user else {
             return
         }
+
+        statusCountLabel.text = "-"
+        followingCountLabel.text = "-"
+        followerCountLabel.text = "-"
+        listedCountLabel.text = "-"
+        favoritesCountLabel.text = "-"
+        descriptionLabel.text = ""
+        locationLabel.text = ""
+        siteLabel.text = ""
+        sinceLabel.text = ""
+        coverImageView.image = nil
 
         let success: (([JSON]) -> Void) = { (rows) in
             if let row = rows.first {
