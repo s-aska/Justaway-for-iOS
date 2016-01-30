@@ -271,7 +271,7 @@ class TwitterStatusAdapter: NSObject {
         }()
 
         let sinceID: String? = {
-            for i in indexPath.row ... (rows.count - 1) {
+            for i in indexPath.row ..< rows.count {
                 if let status = self.rows[i].status {
                     return String((status.uniqueID as NSString).longLongValue - 1)
                 }
