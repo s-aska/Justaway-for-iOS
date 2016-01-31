@@ -31,3 +31,4 @@ Carthage
 build
 *.ipa
 *.app.dSYM.zip
+Justaway.app.dSYM
