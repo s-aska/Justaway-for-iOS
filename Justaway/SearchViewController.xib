@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="fontello.ttf">
+            <string>fontello</string>
             <string>fontello</string>
         </mutableArray>
     </customFonts>
@@ -24,6 +25,24 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppG-QO-NsZ" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                     <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search condition" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UZT-Tn-jlW" customClass="MenuLable" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="235.5" y="14.5" width="129" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rYq-0I-jFi" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="540" y="0.0" width="60" height="50"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                            <state key="normal" title="書">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="post:" destination="-1" eventType="touchUpInside" id="xVK-k8-KOe"/>
+                            </connections>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qg5-ns-2T7" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="55" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
@@ -35,20 +54,17 @@
                                 <action selector="left:" destination="-1" eventType="touchUpInside" id="a8Z-0C-l9X"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search condition" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UZT-Tn-jlW" customClass="MenuLable" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="235.5" y="14.5" width="129" height="20.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="rYq-0I-jFi" secondAttribute="trailing" id="0nW-sr-gPH"/>
                         <constraint firstAttribute="height" constant="50" id="6rr-Rd-dsG"/>
                         <constraint firstItem="Qg5-ns-2T7" firstAttribute="leading" secondItem="ppG-QO-NsZ" secondAttribute="leading" id="A1n-w1-mUj"/>
                         <constraint firstItem="Qg5-ns-2T7" firstAttribute="top" secondItem="ppG-QO-NsZ" secondAttribute="top" id="I3w-kg-ogd"/>
                         <constraint firstAttribute="bottom" secondItem="Qg5-ns-2T7" secondAttribute="bottom" id="JxA-ZJ-Dzi"/>
                         <constraint firstItem="UZT-Tn-jlW" firstAttribute="centerX" secondItem="ppG-QO-NsZ" secondAttribute="centerX" id="N7R-MC-VVR"/>
+                        <constraint firstItem="rYq-0I-jFi" firstAttribute="top" secondItem="ppG-QO-NsZ" secondAttribute="top" id="QPJ-RD-Ern"/>
+                        <constraint firstAttribute="bottom" secondItem="rYq-0I-jFi" secondAttribute="bottom" id="Uba-2k-HgF"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="YG5-Ib-Kty"/>
                         <constraint firstItem="UZT-Tn-jlW" firstAttribute="centerY" secondItem="ppG-QO-NsZ" secondAttribute="centerY" id="p4U-ZT-LjY"/>
                     </constraints>

@@ -294,7 +294,7 @@ class Twitter {
     }
 
     class func getSearchTweets(keyword: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus], [String: JSON]) -> Void, failure: (NSError) -> Void) {
-        var parameters: [String: String] = ["count": "200", "q": keyword]
+        var parameters: [String: String] = ["count": "200", "q": keyword + " exclude:retweets"]
         if let maxID = maxID {
             parameters["max_id"] = maxID
         }
@@ -721,61 +721,6 @@ extension Twitter {
     }
 
     class func startStreaming() {
-        let progress = {
-            (responce: JSON) -> Void in
-
-            if responce["friends"] != nil {
-                NSLog("friends is not null")
-                if Static.connectionStatus != .CONNECTED {
-                    Static.connectionStatus = .CONNECTED
-                    EventBox.post(Event.StreamingStatusChanged.rawValue)
-                    NSLog("connectionStatus: CONNECTED")
-                    // UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                }
-            } else if let event = responce["event"].string {
-                receiveEvent(responce, event: event)
-            } else if let statusID = responce["delete"]["status"]["id_str"].string {
-                receiveDestroyStatus(statusID)
-            } else if responce["delete"]["direct_message"] != nil {
-                receiveDestroyMessage(responce)
-            } else if responce["direct_message"] != nil {
-
-            } else if responce["text"] != nil {
-                receiveStatus(responce)
-            } else if responce["disconnect"] != nil {
-                receiveDisconnect(responce)
-            } else {
-                NSLog("unknown streaming data: \(responce.debugDescription)")
-            }
-        }
-        let success = {
-            (data: NSData) -> Void in
-            progress(JSON(data: data))
-        }
-//        let stallWarningHandler = {
-//            (code: String?, message: String?, percentFull: Int?) -> Void in
-//
-//            print("code:\(code) message:\(message) percentFull:\(percentFull)")
-//        }
-//        let failure = {
-//            (error: NSError) -> Void in
-//
-//            Static.connectionStatus = .DISCONNECTED
-//            EventBox.post(Event.StreamingStatusChanged.rawValue)
-//            NSLog("connectionStatus: DISCONNECTED")
-//
-//            print(error)
-//        }
-        let completion = { (responseData: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-            Static.connectionStatus = .DISCONNECTED
-            EventBox.post(Event.StreamingStatusChanged.rawValue)
-            NSLog("connectionStatus: DISCONNECTED")
-            NSLog("completion")
-            if let response = response as? NSHTTPURLResponse {
-                NSLog("[connectionDidFinishLoading] code:\(response.statusCode) data:\(NSString(data: responseData!, encoding: NSUTF8StringEncoding))")
-            }
-        }
-
         if Static.backgroundTaskIdentifier == UIBackgroundTaskInvalid {
             NSLog("backgroundTaskIdentifier: beginBackgroundTask")
             Static.backgroundTaskIdentifier = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler() {
@@ -789,12 +734,50 @@ extension Twitter {
             }
         }
 
-        if let account = AccountSettingsStore.get()?.account() {
-            Static.streamingRequest = account.client
-                .streaming("https://userstream.twitter.com/1.1/user.json")
-                .progress(success)
-                .completion(completion)
-                .start()
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
+        Static.streamingRequest = account.client
+            .streaming("https://userstream.twitter.com/1.1/user.json")
+            .progress(Twitter.streamingProgressHandler)
+            .completion(Twitter.streamingCompletionHandler)
+            .start()
+    }
+
+    class func streamingProgressHandler(data: NSData) {
+        let responce = JSON(data: data)
+        if responce["friends"] != nil {
+            NSLog("friends is not null")
+            if Static.connectionStatus != .CONNECTED {
+                Static.connectionStatus = .CONNECTED
+                EventBox.post(Event.StreamingStatusChanged.rawValue)
+                NSLog("connectionStatus: CONNECTED")
+                // UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            }
+        } else if let event = responce["event"].string {
+            receiveEvent(responce, event: event)
+        } else if let statusID = responce["delete"]["status"]["id_str"].string {
+            receiveDestroyStatus(statusID)
+        } else if responce["delete"]["direct_message"] != nil {
+            receiveDestroyMessage(responce)
+        } else if responce["direct_message"] != nil {
+
+        } else if responce["text"] != nil {
+            receiveStatus(responce)
+        } else if responce["disconnect"] != nil {
+            receiveDisconnect(responce)
+        } else {
+            NSLog("unknown streaming data: \(responce.debugDescription)")
+        }
+    }
+
+    class func streamingCompletionHandler(responseData: NSData?, response: NSURLResponse?, error: NSError?) {
+        Static.connectionStatus = .DISCONNECTED
+        EventBox.post(Event.StreamingStatusChanged.rawValue)
+        NSLog("connectionStatus: DISCONNECTED")
+        NSLog("completion")
+        if let response = response as? NSHTTPURLResponse {
+            NSLog("[connectionDidFinishLoading] code:\(response.statusCode) data:\(NSString(data: responseData!, encoding: NSUTF8StringEncoding))")
         }
     }
 
