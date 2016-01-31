@@ -3,3 +3,7 @@ included:
 disabled_rules:
 - line_length
 - type_body_length
+variable_name:
+  excluded:
+    - id
+    - URL
