@@ -98,7 +98,7 @@ class SideMenuViewController: UIViewController {
 
         displayNameLabel.text = account.name
         screenNameLabel.text = "@" + account.screenName
-        ImageLoaderClient.displaySideMenuUserIcon(account.profileImageURL, imageView: iconImageView)
+        ImageLoaderClient.displaySideMenuUserIcon(account.profileImageBiggerURL, imageView: iconImageView)
         disableSleepSwitch.on = GenericSettings.get().disableSleep
 
         if !account.profileBannerURL.absoluteString.isEmpty {
