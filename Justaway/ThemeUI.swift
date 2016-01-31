@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import EventBox
 
 // MARK: - ContainerView
 
@@ -64,7 +65,43 @@ class QuotedStatusContainerView: UIView {
 
 // MARK: - Buttons
 
-class StreamingButton: UIButton {}
+class StreamingButton: UIButton {
+    var connectedColor = UIColor.greenColor()
+    var normalColor = UIColor.grayColor()
+    var errorColor = UIColor.redColor()
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        normalColor = ThemeController.currentTheme.bodyTextColor()
+        connectedColor = ThemeController.currentTheme.streamingConnected()
+        errorColor = ThemeController.currentTheme.streamingError()
+        EventBox.onMainThread(self, name: Twitter.Event.StreamingStatusChanged.rawValue) { _ in
+            self.setTitleColor()
+        }
+        setTitleColor()
+    }
+
+    func setTitleColor() {
+        switch Twitter.connectionStatus {
+        case .CONNECTED:
+            setTitleColor(connectedColor, forState: .Normal)
+        case .CONNECTING:
+            setTitleColor(normalColor, forState: .Normal)
+        case .DISCONNECTED:
+            if Twitter.enableStreaming {
+                setTitleColor(errorColor, forState: .Normal)
+            } else {
+                setTitleColor(normalColor, forState: .Normal)
+            }
+        case .DISCONNECTING:
+            setTitleColor(normalColor, forState: .Normal)
+        }
+    }
+
+    deinit {
+        EventBox.off(self)
+    }
+}
 class MenuButton: BaseButton {}
 class FavoritesButton: BaseButton {}
 class ReplyButton: BaseButton {}

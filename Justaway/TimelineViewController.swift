@@ -238,25 +238,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
     func configureStreamingEvent() {
         EventBox.onMainThread(self, name: Twitter.Event.StreamingStatusChanged.rawValue) { _ in
-            switch Twitter.connectionStatus {
-            case .CONNECTED:
-                self.streamingButton.enabled = true
-                self.streamingButton.selected = true
-            case .CONNECTING:
-                self.streamingButton.enabled = true
-                self.streamingButton.selected = false
-            case .DISCONNECTED:
-                if Twitter.enableStreaming {
-                    self.streamingButton.enabled = false
-                    self.streamingButton.selected = false
-                } else {
-                    self.streamingButton.enabled = true
-                    self.streamingButton.selected = false
-                }
-            case .DISCONNECTING:
-                self.streamingButton.enabled = true
-                self.streamingButton.selected = false
-            }
             self.sideMenuViewController.updateStreamingButtonTitle()
         }
     }

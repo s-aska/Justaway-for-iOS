@@ -778,6 +778,13 @@ extension Twitter {
         NSLog("completion")
         if let response = response as? NSHTTPURLResponse {
             NSLog("[connectionDidFinishLoading] code:\(response.statusCode) data:\(NSString(data: responseData!, encoding: NSUTF8StringEncoding))")
+            if response.statusCode == 420 {
+                // Rate Limited
+                // The client has connected too frequently. For example, an endpoint returns this status if:
+                // - A client makes too many login attempts in a short period of time.
+                // - Too many copies of an application attempt to authenticate with the same credentials.
+                ErrorAlert.show("Streaming API Rate Limited", message: "The client has connected too frequently.")
+            }
         }
     }
 
