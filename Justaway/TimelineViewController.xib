@@ -7,12 +7,12 @@
         <mutableArray key="fontello.ttf">
             <string>fontello</string>
             <string>fontello</string>
+            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TimelineViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
-                <outlet property="iconImageView" destination="eI8-Uh-DCZ" id="RKU-Sn-Att"/>
                 <outlet property="scrollView" destination="QzD-8n-VHR" id="uQa-aB-Crg"/>
                 <outlet property="scrollWrapperView" destination="YQA-1l-jex" id="Qcu-44-ZzZ"/>
                 <outlet property="streamingButton" destination="Hgv-8Y-sHi" id="sT9-FX-Plk"/>
@@ -114,13 +114,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YBJ-Kd-WdX" customClass="NavigationShadowView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eI8-Uh-DCZ">
-                            <rect key="frame" x="8" y="22" width="30" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="30" id="nB9-NZ-y6W"/>
-                                <constraint firstAttribute="height" constant="30" id="znd-3r-eFZ"/>
-                            </constraints>
-                        </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X0p-bW-fE8" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="276" y="29" width="48.5" height="21.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -140,14 +133,27 @@
                                 <action selector="streamingSwitch:" destination="-1" eventType="touchUpInside" id="ldh-ZW-ejT"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MtI-tO-1Qx" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="12" width="59" height="52"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="22"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                            <state key="normal" title="三">
+                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="openSidemenu:" destination="-1" eventType="touchUpInside" id="C9g-I3-dZj"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="0.90000000000000002" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="X0p-bW-fE8" firstAttribute="centerX" secondItem="YBJ-Kd-WdX" secondAttribute="centerX" id="7em-sC-HZo"/>
                         <constraint firstAttribute="trailing" secondItem="Hgv-8Y-sHi" secondAttribute="trailing" id="BtJ-Dn-rbJ"/>
-                        <constraint firstItem="eI8-Uh-DCZ" firstAttribute="leading" secondItem="YBJ-Kd-WdX" secondAttribute="leading" constant="8" id="bS3-BS-PM9"/>
+                        <constraint firstItem="MtI-tO-1Qx" firstAttribute="leading" secondItem="YBJ-Kd-WdX" secondAttribute="leading" id="ceQ-O9-JII"/>
                         <constraint firstAttribute="height" constant="60" id="dlS-Qs-FnK"/>
-                        <constraint firstItem="eI8-Uh-DCZ" firstAttribute="top" secondItem="YBJ-Kd-WdX" secondAttribute="top" constant="22" id="hki-eR-kS6"/>
+                        <constraint firstItem="MtI-tO-1Qx" firstAttribute="top" secondItem="YBJ-Kd-WdX" secondAttribute="top" constant="12" id="ngp-qr-qG7"/>
                         <constraint firstItem="Hgv-8Y-sHi" firstAttribute="top" secondItem="YBJ-Kd-WdX" secondAttribute="top" constant="12" id="tj7-UM-Znu"/>
                         <constraint firstItem="X0p-bW-fE8" firstAttribute="centerY" secondItem="YBJ-Kd-WdX" secondAttribute="centerY" constant="10" id="vDk-V3-Z96"/>
                     </constraints>

@@ -7,9 +7,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet weak var scrollWrapperView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var iconImageView: UIImageView!
-//    @IBOutlet weak var streamingStatusLabel: UILabel!
-//    @IBOutlet weak var streamingView: UIView!
+
     @IBOutlet weak var streamingButton: StreamingButton!
     @IBOutlet weak var tabWraperView: UIView!
     @IBOutlet weak var tabCurrentMaskLeftConstraint: NSLayoutConstraint!
@@ -72,7 +70,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
         if let account = AccountSettingsStore.get() {
             userID = account.account().userID
-            ImageLoaderClient.displayTitleIcon(account.account().profileImageURL, imageView: iconImageView)
         }
 
         let swipe = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
@@ -83,11 +80,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         swipeGestureRecognizer = swipe
 
         configureTimelineView()
-
-        iconImageView.userInteractionEnabled = true
-        let iconGesture = UITapGestureRecognizer(target: self, action: "openProfile:")
-        iconGesture.numberOfTapsRequired = 1
-        iconImageView.addGestureRecognizer(iconGesture)
     }
 
     func configureTimelineView() {
@@ -248,7 +240,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
     func reset() {
         if let account = AccountSettingsStore.get() {
-            ImageLoaderClient.displayTitleIcon(account.account().profileImageURL, imageView: self.iconImageView)
 
             // other account
             if userID != account.account().userID {
@@ -304,12 +295,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         tableViewControllers[currentPage].refresh()
     }
 
-    func openProfile(sender: UIView) {
-        if let account = AccountSettingsStore.get()?.account() {
-            sideMenuViewController.show(account)
-        }
-    }
-
     func tabButton(sender: UITapGestureRecognizer) {
         if let page = sender.view?.tag {
             if currentPage == page {
@@ -325,6 +310,12 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                     self.highlightUpdate(page)
                 })
             }
+        }
+    }
+
+    @IBAction func openSidemenu(sender: AnyObject) {
+        if let account = AccountSettingsStore.get()?.account() {
+            sideMenuViewController.show(account)
         }
     }
 
