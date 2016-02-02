@@ -70,7 +70,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                     }
                 })
 
-                let op = AsyncBlockOperation { (op) -> Void in
+                let op = MainBlockOperation { (op) -> Void in
                     if var firstCell = self.tableView.visibleCells.first {
                         var offset = self.tableView.contentOffset.y - firstCell.frame.origin.y + self.tableView.contentInset.top
                         var firstPath: NSIndexPath
