@@ -806,7 +806,12 @@ extension Twitter {
                 EventBox.post(Event.DestroyFavorites.rawValue, sender: status.statusID)
             }
         } else if event == "quoted_tweet" || event == "favorited_retweet" || event == "retweeted_retweet" {
-            EventBox.post(Event.CreateStatus.rawValue, sender: TwitterStatus(responce))
+            let status = TwitterStatus(responce)
+            if event == "favorited_retweet" && AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
+                NSLog("duplicate?")
+            } else {
+                EventBox.post(Event.CreateStatus.rawValue, sender: status)
+            }
         } else if event == "access_revoked" {
             revoked()
         }
