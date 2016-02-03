@@ -11,6 +11,7 @@ class Account {
         static let name = "name"
         static let profileImageURL = "profile_image_url_https"
         static let profileBannerURL = "profile_banner_url"
+        static let tabs = "tabs"
     }
 
     let client: Client
@@ -19,6 +20,7 @@ class Account {
     let name: String
     let profileImageURL: NSURL
     let profileBannerURL: NSURL
+    let tabs: [Tab]
 
     init(client: Client, userID: String, screenName: String, name: String, profileImageURL: NSURL, profileBannerURL: NSURL) {
         self.client = client
@@ -27,24 +29,38 @@ class Account {
         self.name = name
         self.profileImageURL = profileImageURL
         self.profileBannerURL = profileBannerURL
+        self.tabs = [
+            Tab(type: .HomeTimline, userID: userID, arguments: [:]),
+            Tab(type: .Notifications, userID: userID, arguments: [:]),
+            Tab(type: .Favorites, userID: userID, arguments: [:])
+        ]
     }
 
-    init(_ dictionary: [String: String]) {
-        self.userID = dictionary[Constants.userID] ?? "-"
-        self.screenName = dictionary[Constants.screenName] ?? "-"
-        self.name = dictionary[Constants.name] ?? "-"
-        if let profileImageURL = dictionary[Constants.profileImageURL] {
+    init(_ dictionary: NSDictionary) {
+        self.userID = dictionary[Constants.userID] as? String ?? "-"
+        self.screenName = dictionary[Constants.screenName] as? String ?? "-"
+        self.name = dictionary[Constants.name] as? String ?? "-"
+        if let profileImageURL = dictionary[Constants.profileImageURL] as? String {
             self.profileImageURL = NSURL(string: profileImageURL) ?? NSURL()
         } else {
             self.profileImageURL = NSURL()
         }
-        if let profileBannerURL = dictionary[Constants.profileBannerURL] {
+        if let profileBannerURL = dictionary[Constants.profileBannerURL] as? String {
             self.profileBannerURL = NSURL(string: profileBannerURL) ?? NSURL()
         } else {
             self.profileBannerURL = NSURL()
         }
+        if let tabs = dictionary[Constants.tabs] as? [NSDictionary] {
+            self.tabs = tabs.map({ Tab($0) })
+        } else {
+            self.tabs = [
+                Tab(type: .HomeTimline, userID: userID, arguments: [:]),
+                Tab(type: .Notifications, userID: userID, arguments: [:]),
+                Tab(type: .Favorites, userID: userID, arguments: [:])
+            ]
+        }
 
-        if let serializedString = dictionary[Constants.client] {
+        if let serializedString = dictionary[Constants.client] as? String {
             self.client = ClientDeserializer.deserialize(serializedString)
         } else {
             fatalError("missing client serializedString")
@@ -58,6 +74,7 @@ class Account {
         self.name = user.name
         self.profileImageURL = user.profileImageURL
         self.profileBannerURL = user.profileBannerURL
+        self.tabs = account.tabs
     }
 
     init(account: Account, acAccount: ACAccount) {
@@ -67,20 +84,22 @@ class Account {
         self.name = account.name
         self.profileImageURL = account.profileImageURL
         self.profileBannerURL = account.profileBannerURL
+        self.tabs = account.tabs
     }
 
     var profileImageBiggerURL: NSURL {
         return NSURL(string: profileImageURL.absoluteString.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: [], range: nil))!
     }
 
-    var dictionaryValue: [String: String] {
+    var dictionaryValue: NSDictionary {
         return [
             Constants.client           : client.serialize,
             Constants.userID           : userID,
             Constants.screenName       : screenName,
             Constants.name             : name,
             Constants.profileImageURL  : profileImageURL.absoluteString,
-            Constants.profileBannerURL : profileBannerURL.absoluteString
+            Constants.profileBannerURL : profileBannerURL.absoluteString,
+            Constants.tabs             : tabs.map({ $0.dictionaryValue })
         ]
     }
 }
@@ -108,7 +127,7 @@ class AccountSettings {
 
     init(_ dictionary: NSDictionary) {
         self.current = dictionary[Constants.current] as? Int ?? 0
-        self.accounts = (dictionary[Constants.accounts] as? [Dictionary] ?? []).map({ Account($0) })
+        self.accounts = (dictionary[Constants.accounts] as? [NSDictionary] ?? []).map({ Account($0) })
     }
 
     // MARK: - Public Methods

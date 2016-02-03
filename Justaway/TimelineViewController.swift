@@ -83,11 +83,32 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     }
 
     func configureTimelineView() {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
+
         let size = scrollWrapperView.frame.size
         let contentView = UIView(frame: CGRect.init(x: 0, y: 0, width: size.width * 3, height: size.height))
 
-        for i in 0 ... 2 {
-            let vc: TimelineTableViewController = i == 0 ? HomeTimelineTableViewController() : i == 1 ? NotificationsViewController() : FavoritesTableViewController()
+        for (i, tab) in account.tabs.enumerate() {
+            let vc: TimelineTableViewController
+            let icon: String
+            switch tab.type {
+            case .HomeTimline:
+                vc = HomeTimelineTableViewController()
+                icon = "家"
+            case .UserTimline:
+                let uvc = UserTimelineTableViewController()
+                uvc.userID = account.userID
+                vc = uvc
+                icon = "人"
+            case .Notifications:
+                vc = NotificationsViewController()
+                icon = "鐘"
+            case .Favorites:
+                vc = FavoritesTableViewController()
+                icon = "★"
+            }
             vc.tableView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
             vc.view.frame = CGRect.init(x: 0, y: 0, width: size.width, height: size.height)
             let view = UIView(frame: CGRect.init(x: size.width * CGFloat(i), y: 0, width: size.width, height: size.height))
@@ -110,7 +131,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             button.frame = CGRect.init(x: 58 * CGFloat(i), y: 0, width: 58, height: 50)
             button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
             button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
-            button.setTitle(i == 0 ? "家" : i == 1 ? "鐘" : "★", forState: UIControlState.Normal)
+            button.setTitle(icon, forState: UIControlState.Normal)
             button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tabButton:"))
 
             let longPress = UILongPressGestureRecognizer(target: self, action: "refresh:")
