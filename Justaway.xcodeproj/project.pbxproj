@@ -25,6 +25,7 @@
 		381E6E8019DE9DAB00139654 /* Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7F19DE9DAB00139654 /* Twitter.swift */; };
 		381E6E8319E2A56A00139654 /* TwitterStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 381E6E8219E2A56A00139654 /* TwitterStatusCell.xib */; };
 		381E6E8519E2A69200139654 /* TwitterStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E8419E2A69200139654 /* TwitterStatusCell.swift */; };
+		38230A1B1C68959800F64648 /* TabSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AFD4C2E1C650EAE009DD340 /* TabSettingsCell.swift */; };
 		382340CE19D043C000554D8C /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382340CD19D043C000554D8C /* AccountTests.swift */; };
 		3839245F1B14A1020025176D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3839245E1B14A1020025176D /* Constants.swift */; };
 		3848FFEC1BB1327900AC04FC /* TwitterAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3848FFEB1BB1327900AC04FC /* TwitterAPI.framework */; };
@@ -1075,6 +1076,7 @@
 				384DE96B1BBAC9B30011AF6E /* TwitterRelationship.swift in Sources */,
 				38A694F619E4E82A00DD6072 /* Secret.swift in Sources */,
 				384DE9551BBAC9810011AF6E /* PocketCoverViewController.swift in Sources */,
+				38230A1B1C68959800F64648 /* TabSettingsCell.swift in Sources */,
 				6A4B9D4219BB514900D50D78 /* JustawayTests.swift in Sources */,
 				384DE96D1BBAC9C30011AF6E /* TwitterStatusAdapter.swift in Sources */,
 				6AB8CDEB1A29BB3B00D22268 /* TwitterTests.swift in Sources */,
