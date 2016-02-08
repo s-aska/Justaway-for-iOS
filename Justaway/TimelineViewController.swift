@@ -335,9 +335,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     }
 
     @IBAction func openSidemenu(sender: AnyObject) {
-        if let account = AccountSettingsStore.get()?.account() {
-            sideMenuViewController.show(account)
-        }
+//        if let account = AccountSettingsStore.get()?.account() {
+//            sideMenuViewController.show(account)
+//        }
+        TabSettingsViewController.show()
     }
 
     @IBAction func streamingSwitch(sender: UIButton) {

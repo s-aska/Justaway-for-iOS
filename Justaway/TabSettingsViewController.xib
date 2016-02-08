@@ -9,7 +9,14 @@
         </mutableArray>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TabSettingsViewController" customModule="Justaway" customModuleProvider="target">
+            <connections>
+                <outlet property="leftButton" destination="ftx-HH-Mb0" id="gI7-P0-7M2"/>
+                <outlet property="rightButton" destination="VOs-Qf-Umd" id="jgZ-do-XKJ"/>
+                <outlet property="tableView" destination="sKK-zu-zaf" id="TgO-xF-BS7"/>
+                <outlet property="view" destination="iN0-l3-epB" id="7IY-rh-OUo"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -31,6 +38,9 @@
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="close:" destination="-1" eventType="touchUpInside" id="HpZ-eY-a0z"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VOs-Qf-Umd" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="530" y="-1" width="70" height="51"/>
@@ -40,6 +50,9 @@
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="right:" destination="-1" eventType="touchUpInside" id="VtC-5z-bCW"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftx-HH-Mb0" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="53" y="0.0" width="71" height="51"/>
@@ -49,6 +62,9 @@
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="left:" destination="-1" eventType="touchUpInside" id="pXJ-gU-pgm"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>

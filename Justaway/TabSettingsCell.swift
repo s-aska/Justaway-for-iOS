@@ -1,29 +1,29 @@
 //
-//  AccountCell.swift
+//  TabSettingsCell.swift
 //  Justaway
 //
-//  Created by Shinichiro Aska on 5/24/15.
-//  Copyright (c) 2015 Shinichiro Aska. All rights reserved.
+//  Created by Shinichiro Aska on 2/6/16.
+//  Copyright © 2016 Shinichiro Aska. All rights reserved.
 //
 
 import UIKit
 
-class AccountCell: BackgroundTableViewCell {
-
+class TabSettingsCell: BackgroundTableViewCell {
+    
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var displayNameLabel: DisplayNameLable!
     @IBOutlet weak var screenNameLabel: ScreenNameLable!
     @IBOutlet weak var clientNameLabel: ClientNameLable!
-
+    
     // MARK: - View Life Cycle
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         configureView()
     }
-
+    
     // MARK: - Configuration
-
+    
     func configureView() {
         selectionStyle = .None
         separatorInset = UIEdgeInsetsZero
