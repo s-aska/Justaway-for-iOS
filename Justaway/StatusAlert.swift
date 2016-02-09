@@ -65,7 +65,7 @@ class StatusAlert {
     private class func addFavRTAction(actionSheet: UIAlertController, status: TwitterStatus, statusID: String, retweetedStatusID: String?, isFavorite: Bool) {
         if !isFavorite && retweetedStatusID == nil {
             actionSheet.addAction(UIAlertAction(
-                title: "Fav & RT",
+                title: "Like & RT",
                 style: .Default,
                 handler: { action in
                     Twitter.createFavorite(statusID)
@@ -75,14 +75,14 @@ class StatusAlert {
 
         if isFavorite {
             actionSheet.addAction(UIAlertAction(
-                title: "Unfavorite",
+                title: "Unlike",
                 style: .Destructive,
                 handler: { action in
                     Twitter.destroyFavorite(statusID)
             }))
         } else {
             actionSheet.addAction(UIAlertAction(
-                title: "Favorite",
+                title: "Like",
                 style: .Default,
                 handler: { action in
                     Twitter.createFavorite(statusID)

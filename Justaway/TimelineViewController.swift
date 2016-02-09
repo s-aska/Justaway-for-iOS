@@ -107,7 +107,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 icon = "鐘"
             case .Favorites:
                 vc = FavoritesTableViewController()
-                icon = "★"
+                icon = "好"
             }
             vc.tableView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
             vc.view.frame = CGRect.init(x: 0, y: 0, width: size.width, height: size.height)
@@ -335,10 +335,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     }
 
     @IBAction func openSidemenu(sender: AnyObject) {
-//        if let account = AccountSettingsStore.get()?.account() {
-//            sideMenuViewController.show(account)
-//        }
-        TabSettingsViewController.show()
+        if let account = AccountSettingsStore.get()?.account() {
+            sideMenuViewController.show(account)
+        }
     }
 
     @IBAction func streamingSwitch(sender: UIButton) {

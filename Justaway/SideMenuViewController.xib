@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="fontello.ttf">
-            <string>fontello</string>
             <string>fontello</string>
         </mutableArray>
     </customFonts>
@@ -62,7 +61,7 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dk0-Za-Aqj" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                                     <rect key="frame" x="60" y="5" width="220" height="29"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" title="Account settings">
+                                    <state key="normal" title="Account Settings">
                                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
@@ -94,59 +93,21 @@
                                 <constraint firstItem="jym-N6-752" firstAttribute="top" secondItem="U79-rE-xdA" secondAttribute="top" id="lqo-bU-Bgy"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W1d-Lj-ffX">
-                            <rect key="frame" x="0.0" y="185" width="280" height="40"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7O-Pu-jxZ" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="60" height="40"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="60" id="QL0-dW-syd"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                    <state key="normal" title="人">
-                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="openProfile:" destination="-1" eventType="touchUpInside" id="KAc-b4-Nhc"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RwL-NW-ECk" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                    <rect key="frame" x="60" y="5" width="220" height="29"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <state key="normal" title="Open Profile">
-                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="openProfile:" destination="-1" eventType="touchUpInside" id="BjW-b6-1AN"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstItem="RwL-NW-ECk" firstAttribute="leading" secondItem="F7O-Pu-jxZ" secondAttribute="trailing" id="JC6-xQ-cfi"/>
-                                <constraint firstAttribute="height" constant="40" id="KEn-1Q-eii"/>
-                                <constraint firstItem="F7O-Pu-jxZ" firstAttribute="top" secondItem="W1d-Lj-ffX" secondAttribute="top" id="N4u-u7-bMv"/>
-                                <constraint firstAttribute="trailing" secondItem="RwL-NW-ECk" secondAttribute="trailing" id="PUy-zm-LIv"/>
-                                <constraint firstAttribute="bottom" secondItem="F7O-Pu-jxZ" secondAttribute="bottom" id="PrU-TZ-5QK"/>
-                                <constraint firstItem="F7O-Pu-jxZ" firstAttribute="leading" secondItem="W1d-Lj-ffX" secondAttribute="leading" id="kbR-qz-rKc"/>
-                                <constraint firstItem="RwL-NW-ECk" firstAttribute="centerY" secondItem="W1d-Lj-ffX" secondAttribute="centerY" id="mzX-sg-4Ai"/>
-                            </constraints>
-                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KHH-wF-a5d" customClass="SideMenuSeparator" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="233" width="280" height="1"/>
+                            <rect key="frame" x="0.0" y="193" width="280" height="1"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="Atr-Va-kr3"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WaY-Eb-afl" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="244" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="204" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="NPZ-pD-wdX"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Disable sleep">
+                            <state key="normal" title="Disable Sleep">
                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -154,13 +115,13 @@
                             </connections>
                         </button>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hzv-4e-t9D">
-                            <rect key="frame" x="221" y="248" width="51" height="31"/>
+                            <rect key="frame" x="221" y="208" width="51" height="31"/>
                             <connections>
                                 <action selector="disableSleep:" destination="-1" eventType="valueChanged" id="fb3-Ra-7W7"/>
                             </connections>
                         </switch>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fge-rv-lhz" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="284" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="244" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="ZjF-I5-pHX"/>
                             </constraints>
@@ -174,28 +135,28 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CTe-Zv-03h" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="324" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="284" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="WXy-EG-SiS"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Settings">
+                            <state key="normal" title="Tab Settings">
                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="displaySettings:" destination="-1" eventType="touchUpInside" id="UCj-0e-Irq"/>
+                                <action selector="tabSettingsView:" destination="-1" eventType="touchUpInside" id="URL-Xc-37x"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uRk-rt-4TJ" customClass="SideMenuSeparator" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="374" width="280" height="1"/>
+                            <rect key="frame" x="0.0" y="376" width="280" height="1"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="p1J-uL-XgD"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFH-1Z-3tU" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="385" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="387" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="at8-62-Xos"/>
                             </constraints>
@@ -209,7 +170,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eI4-Df-IIM" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="425" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="427" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="5Wg-tM-1NW"/>
                             </constraints>
@@ -223,7 +184,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lf1-ka-J2X" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="465" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="467" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="I4L-5u-lg9"/>
                             </constraints>
@@ -237,7 +198,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4f3-tI-Hwo" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="505" width="280" height="40"/>
+                            <rect key="frame" x="0.0" y="507" width="280" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="1ZW-mq-gOT"/>
                             </constraints>
@@ -248,6 +209,20 @@
                             </state>
                             <connections>
                                 <action selector="privacy:" destination="-1" eventType="touchUpInside" id="uEU-1Z-9D3"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dfy-QD-dsW" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="326" width="280" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="2IN-wC-Ah7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Display Settings">
+                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="displaySettings:" destination="-1" eventType="touchUpInside" id="2Tu-5i-Kjx"/>
                             </connections>
                         </button>
                     </subviews>
@@ -264,23 +239,26 @@
                         <constraint firstItem="RcW-eC-rkL" firstAttribute="top" secondItem="xmC-0b-3jO" secondAttribute="top" constant="20" id="CnY-D0-lAk"/>
                         <constraint firstItem="RcW-eC-rkL" firstAttribute="centerX" secondItem="xmC-0b-3jO" secondAttribute="centerX" id="Cw0-Rg-37G"/>
                         <constraint firstAttribute="trailing" secondItem="uRk-rt-4TJ" secondAttribute="trailing" id="DGZ-wQ-QVZ"/>
+                        <constraint firstItem="uRk-rt-4TJ" firstAttribute="top" secondItem="Dfy-QD-dsW" secondAttribute="bottom" constant="10" id="EFH-0P-gQF"/>
+                        <constraint firstAttribute="trailing" secondItem="Dfy-QD-dsW" secondAttribute="trailing" id="FEg-2y-FVW"/>
                         <constraint firstItem="fge-rv-lhz" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="GhE-LL-Ls0"/>
-                        <constraint firstItem="W1d-Lj-ffX" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="IFM-U4-bnz"/>
                         <constraint firstItem="U79-rE-xdA" firstAttribute="top" secondItem="KyR-Q6-ecg" secondAttribute="bottom" constant="5" id="Lpv-GW-R8k"/>
                         <constraint firstItem="eI4-Df-IIM" firstAttribute="top" secondItem="pFH-1Z-3tU" secondAttribute="bottom" id="MAd-bH-Nmo"/>
                         <constraint firstItem="YrP-Vb-6RE" firstAttribute="bottom" secondItem="KyR-Q6-ecg" secondAttribute="bottom" constant="-10" id="Pha-b7-txI"/>
                         <constraint firstItem="4f3-tI-Hwo" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="QXk-IV-L9t"/>
                         <constraint firstItem="KyR-Q6-ecg" firstAttribute="top" secondItem="xmC-0b-3jO" secondAttribute="top" id="QwY-yP-GUR"/>
                         <constraint firstItem="U79-rE-xdA" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="Uzf-aI-ABO"/>
+                        <constraint firstItem="Dfy-QD-dsW" firstAttribute="top" secondItem="CTe-Zv-03h" secondAttribute="bottom" constant="2" id="W90-Xh-SdW"/>
                         <constraint firstItem="pFH-1Z-3tU" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="XPV-by-r9W"/>
                         <constraint firstAttribute="trailing" secondItem="CTe-Zv-03h" secondAttribute="trailing" id="XiL-3w-ihu"/>
                         <constraint firstAttribute="trailing" secondItem="hzv-4e-t9D" secondAttribute="trailing" constant="10" id="Xs5-XK-U0c"/>
                         <constraint firstAttribute="trailing" secondItem="eI4-Df-IIM" secondAttribute="trailing" id="alF-wr-D7y"/>
+                        <constraint firstItem="KHH-wF-a5d" firstAttribute="top" secondItem="U79-rE-xdA" secondAttribute="bottom" constant="8" id="d8p-Eb-EfI"/>
+                        <constraint firstItem="Dfy-QD-dsW" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="eMD-Ox-b0H"/>
                         <constraint firstItem="KHH-wF-a5d" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="eXH-lf-O0d"/>
                         <constraint firstAttribute="width" constant="280" id="gW7-Xu-Tpo"/>
                         <constraint firstAttribute="trailing" secondItem="U79-rE-xdA" secondAttribute="trailing" id="gX9-CP-kHd"/>
                         <constraint firstAttribute="trailing" secondItem="WaY-Eb-afl" secondAttribute="trailing" id="hT6-Zg-MkT"/>
-                        <constraint firstItem="uRk-rt-4TJ" firstAttribute="top" secondItem="CTe-Zv-03h" secondAttribute="bottom" constant="10" id="ieW-tu-4ax"/>
                         <constraint firstItem="YrP-Vb-6RE" firstAttribute="centerX" secondItem="xmC-0b-3jO" secondAttribute="centerX" id="nLG-YA-EZh"/>
                         <constraint firstItem="uRk-rt-4TJ" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="nWF-3Z-0nH"/>
                         <constraint firstItem="fge-rv-lhz" firstAttribute="top" secondItem="WaY-Eb-afl" secondAttribute="bottom" id="ofp-tM-TqH"/>
@@ -288,12 +266,9 @@
                         <constraint firstAttribute="trailing" secondItem="pFH-1Z-3tU" secondAttribute="trailing" id="opX-Xq-dLf"/>
                         <constraint firstItem="WaY-Eb-afl" firstAttribute="top" secondItem="KHH-wF-a5d" secondAttribute="bottom" constant="10" id="phI-dx-Vcq"/>
                         <constraint firstItem="pFH-1Z-3tU" firstAttribute="top" secondItem="uRk-rt-4TJ" secondAttribute="bottom" constant="10" id="scE-f7-Qbu"/>
-                        <constraint firstAttribute="trailing" secondItem="W1d-Lj-ffX" secondAttribute="trailing" id="tEH-Mv-HQ2"/>
-                        <constraint firstItem="KHH-wF-a5d" firstAttribute="top" secondItem="W1d-Lj-ffX" secondAttribute="bottom" constant="8" id="tSK-GQ-06f"/>
                         <constraint firstItem="4f3-tI-Hwo" firstAttribute="top" secondItem="Lf1-ka-J2X" secondAttribute="bottom" id="vPS-Qq-YyJ"/>
                         <constraint firstItem="CTe-Zv-03h" firstAttribute="top" secondItem="fge-rv-lhz" secondAttribute="bottom" id="vd5-zV-5pD"/>
                         <constraint firstItem="KyR-Q6-ecg" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="w06-Ik-bMG"/>
-                        <constraint firstItem="W1d-Lj-ffX" firstAttribute="top" secondItem="U79-rE-xdA" secondAttribute="bottom" id="wCJ-Jh-BLI"/>
                         <constraint firstAttribute="trailing" secondItem="KHH-wF-a5d" secondAttribute="trailing" id="xsf-zE-HEX"/>
                         <constraint firstItem="hzv-4e-t9D" firstAttribute="centerY" secondItem="WaY-Eb-afl" secondAttribute="centerY" id="yEm-KJ-mpl"/>
                         <constraint firstItem="YrP-Vb-6RE" firstAttribute="top" secondItem="EUA-0m-R57" secondAttribute="bottom" constant="10" id="zY0-G9-yHh"/>

@@ -471,7 +471,7 @@ extension Twitter {
     class func createFavorite(statusID: String) {
         Async.customQueue(Static.favoritesQueue) {
             if Static.favorites[statusID] == true {
-                ErrorAlert.show("Favorite failure", message: "already favorite.")
+                ErrorAlert.show("Like failure", message: "already like.")
                 return
             }
             Static.favorites[statusID] = true
@@ -483,13 +483,13 @@ extension Twitter {
 
                     }, failure: { (code, message, error) -> Void in
                         if code == 139 {
-                            ErrorAlert.show("Favorite failure", message: "already favorite.")
+                            ErrorAlert.show("Like failure", message: "already like.")
                         } else {
                             Async.customQueue(Static.favoritesQueue) {
                                 Static.favorites.removeValueForKey(statusID)
                                 EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
                             }
-                            ErrorAlert.show("Favorite failure", message: message ?? error.localizedDescription)
+                            ErrorAlert.show("Like failure", message: message ?? error.localizedDescription)
                         }
                 })
         }
@@ -498,7 +498,7 @@ extension Twitter {
     class func destroyFavorite(statusID: String) {
         Async.customQueue(Static.favoritesQueue) {
             if Static.favorites[statusID] == nil {
-                ErrorAlert.show("Unfavorite failure", message: "missing favorite.")
+                ErrorAlert.show("Unlike failure", message: "missing like.")
                 return
             }
             Static.favorites.removeValueForKey(statusID)
@@ -510,13 +510,13 @@ extension Twitter {
 
                 }, failure: { (code, message, error) -> Void in
                     if code == 34 {
-                        ErrorAlert.show("Unfavorite failure", message: "missing favorite.")
+                        ErrorAlert.show("Unlike failure", message: "missing like.")
                     } else {
                         Async.customQueue(Static.favoritesQueue) {
                             Static.favorites[statusID] = true
                             EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
                         }
-                        ErrorAlert.show("Unfavorite failure", message: message ?? error.localizedDescription)
+                        ErrorAlert.show("Unlike failure", message: message ?? error.localizedDescription)
                     }
             })
         }

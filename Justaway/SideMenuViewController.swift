@@ -151,6 +151,11 @@ class SideMenuViewController: UIViewController {
         StreamingAlert.show(sender)
     }
 
+    @IBAction func tabSettingsView(sender: UIButton) {
+        TabSettingsViewController.show()
+        hide()
+    }
+
     @IBAction func displaySettings(sender: UIButton) {
         settingsViewController?.show()
         settingsViewController?.showThemeSettingsView(sender)
