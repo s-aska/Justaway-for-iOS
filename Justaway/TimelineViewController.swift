@@ -82,9 +82,37 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         configureTimelineView()
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     func configureTimelineView() {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
+        }
+
+        currentPage = min(currentPage, account.tabs.count - 1)
+
+        var vcCache = [String: TimelineTableViewController]()
+        for tableViewController in tableViewControllers {
+            switch tableViewController {
+            case let vc as HomeTimelineTableViewController:
+                vcCache["HomeTimelineTableViewController"] = vc
+            case let vc as UserTimelineTableViewController:
+                if let userID = vc.userID {
+                    vcCache["UserTimelineTableViewController-" + userID] = vc
+                }
+            case let vc as NotificationsViewController:
+                vcCache["NotificationsViewController"] = vc
+            case let vc as FavoritesTableViewController:
+                vcCache["FavoritesTableViewController"] = vc
+            default:
+                break
+            }
+        }
+        tableViewControllers.removeAll()
+
+        for view in tabWraperView.subviews {
+            if view.tag >= 0 {
+                view.removeFromSuperview()
+            }
         }
 
         let size = scrollWrapperView.frame.size
@@ -95,18 +123,18 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             let icon: String
             switch tab.type {
             case .HomeTimline:
-                vc = HomeTimelineTableViewController()
+                vc = vcCache["HomeTimelineTableViewController"] ?? HomeTimelineTableViewController()
                 icon = "家"
             case .UserTimline:
-                let uvc = UserTimelineTableViewController()
+                let uvc = vcCache["UserTimelineTableViewController-" + account.userID] as? UserTimelineTableViewController ?? UserTimelineTableViewController()
                 uvc.userID = account.userID
                 vc = uvc
                 icon = "人"
             case .Notifications:
-                vc = NotificationsViewController()
+                vc = vcCache["NotificationsViewController"] ?? NotificationsViewController()
                 icon = "鐘"
             case .Favorites:
-                vc = FavoritesTableViewController()
+                vc = vcCache["FavoritesTableViewController"] ?? FavoritesTableViewController()
                 icon = "好"
             }
             vc.tableView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
@@ -124,20 +152,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 statusTableViewController.adapter.scrollEnd(vc.tableView)
             }
 
-            let button = MenuButton(type: UIButtonType.System)
-            button.tag = i
-            button.tintColor = UIColor.clearColor()
-            button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
-            button.frame = CGRect.init(x: 58 * CGFloat(i), y: 0, width: 58, height: 50)
-            button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-            button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
-            button.setTitle(icon, forState: UIControlState.Normal)
-            button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tabButton:"))
-
-            let longPress = UILongPressGestureRecognizer(target: self, action: "refresh:")
-            longPress.minimumPressDuration = 2.0
-            button.addGestureRecognizer(longPress)
-
+            let button = createMenuButton(i, icon: icon)
             tabWraperView.addSubview(button)
             tabButtons.append(button)
 
@@ -152,13 +167,39 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             }
         }
 
+        for view in scrollView.subviews {
+            view.removeFromSuperview()
+        }
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
         scrollView.pagingEnabled = true
         scrollView.delegate = self
+        scrollView.contentOffset = CGPoint.init(x: scrollView.frame.size.width * CGFloat(currentPage), y: 0)
+
+        highlightUpdate(currentPage)
+    }
+
+    func createMenuButton(index: Int, icon: String) -> MenuButton {
+        let button = MenuButton(type: UIButtonType.System)
+        button.tag = index
+        button.tintColor = UIColor.clearColor()
+        button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
+        button.frame = CGRect.init(x: 58 * CGFloat(index), y: 0, width: 58, height: 50)
+        button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+        button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
+        button.setTitle(icon, forState: UIControlState.Normal)
+        button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tabButton:"))
+        let longPress = UILongPressGestureRecognizer(target: self, action: "refresh:")
+        longPress.minimumPressDuration = 2.0
+        button.addGestureRecognizer(longPress)
+        return button
     }
 
     func configureEvent() {
+        EventBox.onMainThread(self, name: eventTabChanged, handler: { _ in
+            self.configureTimelineView()
+        })
+
         EventBox.onMainThread(self, name: twitterAuthorizeNotification, handler: { _ in
             self.reset()
         })

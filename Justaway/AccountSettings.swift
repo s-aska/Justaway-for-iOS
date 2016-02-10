@@ -87,6 +87,20 @@ class Account {
         self.tabs = account.tabs
     }
 
+    init(account: Account, tabs: [Tab]) {
+        self.client = account.client
+        self.userID = account.userID
+        self.screenName = account.screenName
+        self.name = account.name
+        self.profileImageURL = account.profileImageURL
+        self.profileBannerURL = account.profileBannerURL
+        self.tabs = tabs.count > 0 ? tabs : [
+            Tab(type: .HomeTimline, userID: userID, arguments: [:]),
+            Tab(type: .Notifications, userID: userID, arguments: [:]),
+            Tab(type: .Favorites, userID: userID, arguments: [:])
+        ]
+    }
+
     var profileImageBiggerURL: NSURL {
         return NSURL(string: profileImageURL.absoluteString.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: [], range: nil))!
     }

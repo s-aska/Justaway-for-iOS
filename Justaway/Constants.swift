@@ -13,6 +13,7 @@ let eventStatusBarTouched = "EventStatusBarTouched"
 
 // Account Settings
 let eventAccountChanged = "EventAccountChanged"
+let eventTabChanged = "EventTabChanged"
 
 // FontSize Settings
 let eventFontSizePreview = "EventFontSizePreview"

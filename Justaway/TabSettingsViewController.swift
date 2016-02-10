@@ -78,18 +78,18 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func configureEvent() {
-        EventBox.onMainThread(self, name: twitterAuthorizeNotification) {
-            [weak self] (notification: NSNotification!) in
-            guard let `self` = self else {
-                return
-            }
-            self.refreshControl.endRefreshing()
-            self.cancel()
-
-            if self.account == nil {
-                self.hide()
-            }
-        }
+//        EventBox.onMainThread(self, name: twitterAuthorizeNotification) {
+//            [weak self] (notification: NSNotification!) in
+//            guard let `self` = self else {
+//                return
+//            }
+//            self.refreshControl.endRefreshing()
+//            self.cancel()
+//
+//            if self.account == nil {
+//                self.hide()
+//            }
+//        }
     }
 
     // MARK: - UITableViewDataSource
@@ -99,7 +99,8 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! TabSettingsCell // swiftlint:disable:this force_cast
+        // swiftlint:disable:next force_cast
+        let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! TabSettingsCell
         if let tab = self.account?.tabs[indexPath.row] {
             switch tab.type {
             case .HomeTimline:
@@ -124,18 +125,15 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-//        if let settings = self.settings {
-//            if destinationIndexPath.row < settings.accounts.count {
-//                var accounts = settings.accounts
-//                accounts.insert(accounts.removeAtIndex(sourceIndexPath.row), atIndex: destinationIndexPath.row)
-//                let current =
-//                settings.current == sourceIndexPath.row ? destinationIndexPath.row :
-//                    settings.current == destinationIndexPath.row ? sourceIndexPath.row :
-//                    settings.current
-//                NSLog("moveRowAtIndexPath current:%i", current)
-//                self.settings = AccountSettings(current: current, accounts: accounts)
-//            }
-//        }
+        guard let account = account else {
+            return
+        }
+        if destinationIndexPath.row >= account.tabs.count {
+            return
+        }
+        var tabs = account.tabs
+        tabs.insert(tabs.removeAtIndex(sourceIndexPath.row), atIndex: destinationIndexPath.row)
+        self.account = Account(account: account, tabs: tabs)
     }
 
     // MARK: UITableViewDelegate
@@ -155,23 +153,20 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-//        if editingStyle == .Delete {
-//            if let settings = self.settings {
-//                var accounts = settings.accounts
-//                let current =
-//                indexPath.row == settings.current ? 0 :
-//                    indexPath.row < settings.current ? settings.current - 1 :
-//                    settings.current
-//                accounts.removeAtIndex(indexPath.row)
-//                NSLog("commitEditingStyle current:%i", current)
-//                if accounts.count > 0 {
-//                    self.settings = AccountSettings(current: current, accounts: accounts)
-//                } else {
-//                    self.settings = nil
-//                }
-//                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-//            }
-//        }
+        if editingStyle != .Delete {
+            return
+        }
+        guard let account = account else {
+            return
+        }
+        var tabs = account.tabs
+        tabs.removeAtIndex(indexPath.row)
+        self.account = Account(account: account, tabs: tabs)
+        if tabs.count > 0 {
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        } else {
+            tableView.reloadData()
+        }
     }
 
     // MARK: - Actions
@@ -228,12 +223,13 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func done() {
-//        if let settings = self.settings {
-//            AccountSettingsStore.save(settings)
-//        } else {
-//            AccountSettingsStore.clear()
-//            EventBox.post(twitterAuthorizeNotification)
-//        }
+        if let account = account {
+            if let settings = AccountSettingsStore.get() {
+                let accounts = settings.accounts.map({ $0.userID == account.userID ? account : $0 })
+                AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
+                EventBox.post(eventTabChanged)
+            }
+        }
         tableView.reloadData()
         initEditing()
     }
