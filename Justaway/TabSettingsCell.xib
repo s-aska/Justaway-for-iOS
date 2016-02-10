@@ -20,7 +20,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="家" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Af6-gJ-aIi" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="18" y="13" width="15.5" height="17"/>
+                        <rect key="frame" x="18" y="11.5" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="0Hn-tZ-Xvc"/>
+                            <constraint firstAttribute="height" constant="20" id="RCT-vw-4d8"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
