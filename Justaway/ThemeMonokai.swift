@@ -39,7 +39,7 @@ class ThemeMonokai: Theme {
 
     func buttonNormal() -> UIColor { return UIColor.lightGrayColor() }
     func retweetButtonSelected() -> UIColor { return ThemeColor.Monokai.green }
-    func favoritesButtonSelected() -> UIColor { return ThemeColor.Monokai.orange }
+    func favoritesButtonSelected() -> UIColor { return ThemeColor.Monokai.red }
     func streamingConnected() -> UIColor { return ThemeColor.Monokai.green }
     func streamingError() -> UIColor { return ThemeColor.Monokai.red }
 

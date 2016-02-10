@@ -40,7 +40,7 @@ class ThemeDark: Theme {
 
     func buttonNormal() -> UIColor { return UIColor.lightGrayColor() }
     func retweetButtonSelected() -> UIColor { return ThemeColor.Holo.greenLight }
-    func favoritesButtonSelected() -> UIColor { return ThemeColor.Holo.orangeLight }
+    func favoritesButtonSelected() -> UIColor { return ThemeColor.Holo.redLight }
     func streamingConnected() -> UIColor { return ThemeColor.Holo.greenLight }
     func streamingError() -> UIColor { return ThemeColor.Holo.redLight }
 
