@@ -9,8 +9,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
 
     @IBOutlet weak var streamingButton: StreamingButton!
-    @IBOutlet weak var tabWraperView: UIView!
+    @IBOutlet weak var tabScrollView: UIScrollView!
+    @IBOutlet weak var tabWrapperView: UIView!
     @IBOutlet weak var tabCurrentMaskLeftConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tabWrapperWidthConstraint: NSLayoutConstraint!
 
     var swipeGestureRecognizer: UISwipeGestureRecognizer?
     var settingsViewController: SettingsViewController!
@@ -109,14 +111,15 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         }
         tableViewControllers.removeAll()
 
-        for view in tabWraperView.subviews {
+        for view in tabWrapperView.subviews {
             if view.tag >= 0 {
                 view.removeFromSuperview()
             }
         }
 
         let size = scrollWrapperView.frame.size
-        let contentView = UIView(frame: CGRect.init(x: 0, y: 0, width: size.width * 3, height: size.height))
+        let contentView = UIView(frame: CGRect.init(x: 0, y: 0, width: size.width * CGFloat(account.tabs.count), height: size.height))
+        tabWrapperWidthConstraint.constant = 58 * CGFloat(account.tabs.count)
 
         for (i, tab) in account.tabs.enumerate() {
             let vc: TimelineTableViewController
@@ -126,8 +129,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 vc = vcCache["HomeTimelineTableViewController"] ?? HomeTimelineTableViewController()
                 icon = "家"
             case .UserTimline:
-                let uvc = vcCache["UserTimelineTableViewController-" + account.userID] as? UserTimelineTableViewController ?? UserTimelineTableViewController()
-                uvc.userID = account.userID
+                let uvc = vcCache["UserTimelineTableViewController-" + tab.userID] as? UserTimelineTableViewController ?? UserTimelineTableViewController()
+                uvc.userID = tab.userID
                 vc = uvc
                 icon = "人"
             case .Notifications:
@@ -153,7 +156,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             }
 
             let button = createMenuButton(i, icon: icon)
-            tabWraperView.addSubview(button)
+            tabWrapperView.addSubview(button)
             tabButtons.append(button)
 
             if let statusVc = vc as? StatusTableViewController {
@@ -166,6 +169,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 }
             }
         }
+
+        tabScrollView.contentSize = tabWrapperView.frame.size
 
         for view in scrollView.subviews {
             view.removeFromSuperview()

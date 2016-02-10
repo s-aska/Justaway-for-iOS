@@ -17,7 +17,9 @@
                 <outlet property="scrollWrapperView" destination="YQA-1l-jex" id="Qcu-44-ZzZ"/>
                 <outlet property="streamingButton" destination="Hgv-8Y-sHi" id="sT9-FX-Plk"/>
                 <outlet property="tabCurrentMaskLeftConstraint" destination="whI-qc-OmR" id="lhK-Wl-2aN"/>
-                <outlet property="tabWraperView" destination="KCl-rs-HPg" id="iiq-OE-Wsx"/>
+                <outlet property="tabScrollView" destination="iuO-p3-lF5" id="TYo-45-rMY"/>
+                <outlet property="tabWrapperView" destination="KCl-rs-HPg" id="Zso-oE-9Oi"/>
+                <outlet property="tabWrapperWidthConstraint" destination="7Pc-Zv-uqs" id="HoH-8U-Lkf"/>
                 <outlet property="view" destination="iN0-l3-epB" id="diP-QV-l6C"/>
             </connections>
         </placeholder>
@@ -54,6 +56,9 @@
                         </collectionView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jEn-1F-PMd" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="540" y="0.0" width="60" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="ikN-3l-aEs"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                             <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                             <state key="normal" title="書">
@@ -68,31 +73,30 @@
                             <rect key="frame" x="0.0" y="0.0" width="540" height="50"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KCl-rs-HPg">
-                                    <rect key="frame" x="0.0" y="0.0" width="540" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                     <subviews>
                                         <view alpha="0.20000000000000001" tag="-1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mmk-es-vLE" customClass="CurrentTabMaskView" customModule="Justaway" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="58" height="50"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="58" id="gLt-S1-vRv"/>
-                                                <constraint firstAttribute="height" constant="50" id="qCM-gT-DB0"/>
                                             </constraints>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
+                                        <constraint firstAttribute="width" constant="600" id="7Pc-Zv-uqs"/>
+                                        <constraint firstAttribute="bottom" secondItem="mmk-es-vLE" secondAttribute="bottom" id="gO6-x3-HU4"/>
                                         <constraint firstItem="mmk-es-vLE" firstAttribute="top" secondItem="KCl-rs-HPg" secondAttribute="top" id="oez-6o-rbR"/>
                                         <constraint firstItem="mmk-es-vLE" firstAttribute="leading" secondItem="KCl-rs-HPg" secondAttribute="leading" id="whI-qc-OmR"/>
                                     </constraints>
                                 </view>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="KCl-rs-HPg" firstAttribute="height" secondItem="iuO-p3-lF5" secondAttribute="height" id="0TT-WM-5dX"/>
-                                <constraint firstItem="KCl-rs-HPg" firstAttribute="leading" secondItem="iuO-p3-lF5" secondAttribute="leading" id="0yk-kv-jHW"/>
-                                <constraint firstItem="KCl-rs-HPg" firstAttribute="width" secondItem="iuO-p3-lF5" secondAttribute="width" priority="250" id="9GI-cb-dil"/>
                                 <constraint firstAttribute="bottom" secondItem="KCl-rs-HPg" secondAttribute="bottom" id="HQq-py-v3w"/>
+                                <constraint firstItem="KCl-rs-HPg" firstAttribute="leading" secondItem="iuO-p3-lF5" secondAttribute="leading" id="ZjA-E0-0AA"/>
                                 <constraint firstItem="KCl-rs-HPg" firstAttribute="top" secondItem="iuO-p3-lF5" secondAttribute="top" id="iNP-xV-eLp"/>
-                                <constraint firstAttribute="trailing" secondItem="KCl-rs-HPg" secondAttribute="trailing" id="mOC-LS-CRG"/>
+                                <constraint firstAttribute="trailing" secondItem="KCl-rs-HPg" secondAttribute="trailing" id="wxX-RJ-ZfT"/>
                             </constraints>
                         </scrollView>
                     </subviews>
@@ -100,14 +104,16 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="PJe-Oy-hvL" secondAttribute="bottom" id="KA9-YO-IkC"/>
                         <constraint firstItem="jEn-1F-PMd" firstAttribute="leading" secondItem="PJe-Oy-hvL" secondAttribute="trailing" id="M2w-m9-9pE"/>
-                        <constraint firstItem="iuO-p3-lF5" firstAttribute="top" secondItem="rWY-A3-4yL" secondAttribute="top" id="UOc-gr-aRE"/>
+                        <constraint firstItem="jEn-1F-PMd" firstAttribute="leading" secondItem="iuO-p3-lF5" secondAttribute="trailing" id="MTS-Xc-1mo"/>
+                        <constraint firstItem="KCl-rs-HPg" firstAttribute="width" secondItem="rWY-A3-4yL" secondAttribute="width" priority="250" id="PQO-Hq-oYj"/>
                         <constraint firstAttribute="centerY" secondItem="jEn-1F-PMd" secondAttribute="centerY" id="WU2-H7-AXv"/>
-                        <constraint firstAttribute="bottom" secondItem="iuO-p3-lF5" secondAttribute="bottom" id="bcC-PS-Uoa"/>
-                        <constraint firstItem="iuO-p3-lF5" firstAttribute="leading" secondItem="rWY-A3-4yL" secondAttribute="leading" id="e1O-Ne-e0p"/>
-                        <constraint firstItem="jEn-1F-PMd" firstAttribute="leading" secondItem="iuO-p3-lF5" secondAttribute="trailing" id="k27-z8-U76"/>
+                        <constraint firstAttribute="bottom" secondItem="iuO-p3-lF5" secondAttribute="bottom" id="ZUA-Ww-CYV"/>
+                        <constraint firstItem="iuO-p3-lF5" firstAttribute="leading" secondItem="rWY-A3-4yL" secondAttribute="leading" id="bAQ-fI-d8n"/>
+                        <constraint firstItem="KCl-rs-HPg" firstAttribute="height" secondItem="rWY-A3-4yL" secondAttribute="height" id="g4V-YO-kYp"/>
                         <constraint firstAttribute="trailing" secondItem="jEn-1F-PMd" secondAttribute="trailing" id="n6y-Pf-MlQ"/>
                         <constraint firstAttribute="height" constant="50" id="nmZ-Xw-cE3"/>
                         <constraint firstItem="PJe-Oy-hvL" firstAttribute="leading" secondItem="rWY-A3-4yL" secondAttribute="leading" id="sAu-98-BJH"/>
+                        <constraint firstItem="iuO-p3-lF5" firstAttribute="top" secondItem="rWY-A3-4yL" secondAttribute="top" id="vZe-BQ-OmL"/>
                         <constraint firstItem="PJe-Oy-hvL" firstAttribute="top" secondItem="rWY-A3-4yL" secondAttribute="top" id="z89-I1-JuS"/>
                     </constraints>
                 </view>

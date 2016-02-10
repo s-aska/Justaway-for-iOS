@@ -26,6 +26,7 @@ class UserAlert {
             // EditProfile
 
         } else {
+            addTabAction(actionSheet, user: user)
             addReplyAction(actionSheet, user: user)
             addMessageAction(actionSheet, user: user, relationship: relationship)
             addFollowAction(actionSheet, user: user, relationship: relationship)
@@ -42,6 +43,20 @@ class UserAlert {
         actionSheet.popoverPresentationController?.sourceRect = sender.bounds
 
         AlertController.showViewController(actionSheet)
+    }
+
+    private class func addTabAction(actionSheet: UIAlertController, user: TwitterUserFull) {
+        actionSheet.addAction(UIAlertAction(
+            title: "Add to tab",
+            style: .Default,
+            handler: { action in
+                if let settings = AccountSettingsStore.get() {
+                    let account = Account(account: settings.account(), tabs: settings.account().tabs + [Tab.init(type: .UserTimline, userID: user.userID, arguments: [:])])
+                    let accounts = settings.accounts.map({ $0.userID == account.userID ? account : $0 })
+                    AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
+                    EventBox.post(eventTabChanged)
+                }
+        }))
     }
 
     private class func addReplyAction(actionSheet: UIAlertController, user: TwitterUserFull) {

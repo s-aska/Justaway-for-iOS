@@ -78,18 +78,26 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func configureEvent() {
-//        EventBox.onMainThread(self, name: twitterAuthorizeNotification) {
-//            [weak self] (notification: NSNotification!) in
-//            guard let `self` = self else {
-//                return
-//            }
-//            self.refreshControl.endRefreshing()
-//            self.cancel()
-//
-//            if self.account == nil {
-//                self.hide()
-//            }
-//        }
+        EventBox.onMainThread(self, name: "addTab") {
+            [weak self] (notification: NSNotification!) in
+            guard let `self` = self else {
+                return
+            }
+            guard let tab = notification.object as? Tab else {
+                return
+            }
+            guard let account = self.account else {
+                return
+            }
+            let newAccount = Account(account: account, tabs: account.tabs + [tab])
+            self.account = newAccount
+            self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: newAccount.tabs.count - 1, inSection: 0)], withRowAnimation: .Automatic)
+            if let settings = AccountSettingsStore.get() {
+                let accounts = settings.accounts.map({ $0.userID == newAccount.userID ? newAccount : $0 })
+                AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
+                EventBox.post(eventTabChanged)
+            }
+        }
     }
 
     // MARK: - UITableViewDataSource
@@ -179,7 +187,9 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
         if tableView.editing {
             cancel()
         } else {
-            AddAccountAlert.show(sender)
+            if let account = account {
+                AddTabAlert.show(sender, tabs: account.tabs)
+            }
         }
     }
 
