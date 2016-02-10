@@ -115,7 +115,7 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
                 cell.nameLabel.text = "Home"
                 cell.iconLabel.text = "家"
             case .UserTimline:
-                cell.nameLabel.text = "User"
+                cell.nameLabel.text = tab.user.name + " / @" + tab.user.screenName
                 cell.iconLabel.text = "人"
             case .Notifications:
                 cell.nameLabel.text = "Notifications"
@@ -123,6 +123,9 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
             case .Favorites:
                 cell.nameLabel.text = "Likes"
                 cell.iconLabel.text = "好"
+            case .Searches:
+                cell.nameLabel.text = tab.keyword
+                cell.iconLabel.text = "探"
             }
         }
         return cell

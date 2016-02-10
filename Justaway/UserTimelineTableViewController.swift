@@ -1,5 +1,5 @@
 //
-//  UserTimelineViewController.swift
+//  UserTimelineTableViewController.swift
 //  Justaway
 //
 //  Created by Shinichiro Aska on 6/7/15.

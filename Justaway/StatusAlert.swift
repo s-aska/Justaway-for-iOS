@@ -154,6 +154,18 @@ class StatusAlert {
                     SearchViewController.show("#" + hashtag.text)
                     return
             }))
+            actionSheet.addAction(UIAlertAction(
+                title: "Add to tab #" + hashtag.text,
+                style: .Default,
+                handler: { action in
+                    if let settings = AccountSettingsStore.get() {
+                        let tabs = settings.account().tabs + [Tab.init(userID: settings.account().userID, keyword: "#" + hashtag.text)]
+                        let account = Account(account: settings.account(), tabs: tabs)
+                        let accounts = settings.accounts.map({ $0.userID == account.userID ? account : $0 })
+                        AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
+                        EventBox.post(eventTabChanged)
+                    }
+            }))
         }
     }
 

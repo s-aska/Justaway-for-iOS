@@ -1,5 +1,5 @@
 //
-//  HomeTimelineViewController.swift
+//  SearchStatusTableViewController.swift
 //  Justaway
 //
 //  Created by Shinichiro Aska on 1/25/15.

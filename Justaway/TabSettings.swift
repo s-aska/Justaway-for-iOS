@@ -22,6 +22,7 @@ class Tab {
         case UserTimline
         case Notifications
         case Favorites
+        case Searches
     }
 
     let type: Type
@@ -38,6 +39,26 @@ class Tab {
         self.type = Type(rawValue: (dictionary[Constants.type] as? String) ?? "")!
         self.userID = (dictionary[Constants.userID] as? String) ?? ""
         self.arguments = (dictionary[Constants.arguments] as? NSDictionary) ?? NSDictionary()
+    }
+
+    init(userID: String, keyword: String) {
+        self.type = .Searches
+        self.userID = userID
+        self.arguments = ["keyword": keyword]
+    }
+
+    init(userID: String, user: TwitterUser) {
+        self.type = .UserTimline
+        self.userID = userID
+        self.arguments = ["user": user.dictionaryValue]
+    }
+
+    var keyword: String {
+        return self.arguments["keyword"] as? String ?? "-"
+    }
+
+    var user: TwitterUser {
+        return TwitterUser(self.arguments["user"] as? [String: AnyObject] ?? [:])
     }
 
     var dictionaryValue: NSDictionary {

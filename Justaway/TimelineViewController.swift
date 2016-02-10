@@ -101,6 +101,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 if let userID = vc.userID {
                     vcCache["UserTimelineTableViewController-" + userID] = vc
                 }
+            case let vc as SearchesTableViewController:
+                if let keyword = vc.keyword {
+                    vcCache["SearchesTableViewController-" + keyword] = vc
+                }
             case let vc as NotificationsViewController:
                 vcCache["NotificationsViewController"] = vc
             case let vc as FavoritesTableViewController:
@@ -129,8 +133,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 vc = vcCache["HomeTimelineTableViewController"] ?? HomeTimelineTableViewController()
                 icon = "家"
             case .UserTimline:
-                let uvc = vcCache["UserTimelineTableViewController-" + tab.userID] as? UserTimelineTableViewController ?? UserTimelineTableViewController()
-                uvc.userID = tab.userID
+                let uvc = vcCache["UserTimelineTableViewController-" + tab.user.userID] as? UserTimelineTableViewController ?? UserTimelineTableViewController()
+                uvc.userID = tab.user.userID
                 vc = uvc
                 icon = "人"
             case .Notifications:
@@ -139,6 +143,12 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             case .Favorites:
                 vc = vcCache["FavoritesTableViewController"] ?? FavoritesTableViewController()
                 icon = "好"
+            case .Searches:
+                let keyword = tab.keyword
+                let svc = vcCache["SearchesTableViewController-" + keyword] as? SearchesTableViewController ?? SearchesTableViewController()
+                svc.keyword = keyword
+                vc = svc
+                icon = "探"
             }
             vc.tableView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
             vc.view.frame = CGRect.init(x: 0, y: 0, width: size.width, height: size.height)
@@ -221,6 +231,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         configureStreamingEvent()
 
         EventBox.onMainThread(self, name: "timelineScrollToTop", handler: { _ in
+            if self.tableViewControllers.count <= self.currentPage {
+                return
+            }
             if let vc = self.tableViewControllers[self.currentPage] as? StatusTableViewController {
                 if vc.adapter.isTop {
                     self.tabButtons[self.currentPage].selected = false

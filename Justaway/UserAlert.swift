@@ -51,7 +51,9 @@ class UserAlert {
             style: .Default,
             handler: { action in
                 if let settings = AccountSettingsStore.get() {
-                    let account = Account(account: settings.account(), tabs: settings.account().tabs + [Tab.init(type: .UserTimline, userID: user.userID, arguments: [:])])
+                    let tab = Tab.init(userID: settings.account().userID, user: TwitterUser(user))
+                    let tabs = settings.account().tabs + [tab]
+                    let account = Account(account: settings.account(), tabs: tabs)
                     let accounts = settings.accounts.map({ $0.userID == account.userID ? account : $0 })
                     AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
                     EventBox.post(eventTabChanged)
