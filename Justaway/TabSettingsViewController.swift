@@ -28,7 +28,7 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var rightButton: UIButton!
     let refreshControl = UIRefreshControl()
 
-    // var settings: AccountSettings?
+    var account: Account?
 
     override var nibName: String {
         return "TabSettingsViewController"
@@ -49,7 +49,7 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
         super.viewWillAppear(animated)
         configureEvent()
 
-        // settings = AccountSettingsStore.get()
+        account = AccountSettingsStore.get()?.account()
         tableView.reloadData()
         initEditing()
     }
@@ -86,27 +86,36 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
             self.refreshControl.endRefreshing()
             self.cancel()
 
-//            if (self.settings?.accounts.count ?? 0) == 0 {
-//                self.hide()
-//            }
+            if self.account == nil {
+                self.hide()
+            }
         }
     }
 
     // MARK: - UITableViewDataSource
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-//        return settings?.accounts.count ?? 0
+        return account?.tabs.count ?? 0
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! TabSettingsCell // swiftlint:disable:this force_cast
-//        if let account = self.settings?.accounts[indexPath.row] {
-//            cell.displayNameLabel.text = account.name
-//            cell.screenNameLabel.text = account.screenName
-//            cell.clientNameLabel.text = account.client as? OAuthClient != nil ? "Justaway" : "iOS"
-//            ImageLoaderClient.displayUserIcon(account.profileImageBiggerURL, imageView: cell.iconImageView)
-//        }
+        if let tab = self.account?.tabs[indexPath.row] {
+            switch tab.type {
+            case .HomeTimline:
+                cell.nameLabel.text = "Home"
+                cell.iconLabel.text = "家"
+            case .UserTimline:
+                cell.nameLabel.text = "User"
+                cell.iconLabel.text = "人"
+            case .Notifications:
+                cell.nameLabel.text = "Notifications"
+                cell.iconLabel.text = "鐘"
+            case .Favorites:
+                cell.nameLabel.text = "Likes"
+                cell.iconLabel.text = "好"
+            }
+        }
         return cell
     }
 
@@ -203,11 +212,11 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.setEditing(false, animated: false)
         leftButton.setTitle("Add", forState: UIControlState.Normal)
         rightButton.setTitle("Edit", forState: UIControlState.Normal)
-//        rightButton.hidden = self.settings == nil
+        rightButton.hidden = account == nil
     }
 
     func cancel() {
-//        settings = AccountSettingsStore.get()
+        account = AccountSettingsStore.get()?.account()
         tableView.reloadData()
         initEditing()
     }

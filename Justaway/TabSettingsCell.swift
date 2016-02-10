@@ -10,10 +10,8 @@ import UIKit
 
 class TabSettingsCell: BackgroundTableViewCell {
 
-    @IBOutlet weak var iconImageView: UIImageView!
-    @IBOutlet weak var displayNameLabel: DisplayNameLable!
-    @IBOutlet weak var screenNameLabel: ScreenNameLable!
-    @IBOutlet weak var clientNameLabel: ClientNameLable!
+    @IBOutlet weak var iconLabel: TextLable!
+    @IBOutlet weak var nameLabel: TextLable!
 
     // MARK: - View Life Cycle
 
