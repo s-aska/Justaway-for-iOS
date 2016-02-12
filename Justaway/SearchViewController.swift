@@ -81,6 +81,9 @@ class SearchViewController: UIViewController {
         guard let keyword = keyword else {
             return
         }
+        if keyword.isEmpty {
+            return
+        }
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (Void -> Void) = {
                 op.finish()
@@ -102,7 +105,6 @@ class SearchViewController: UIViewController {
                     return
                 }
             }
-            // self.loadData(maxID?.stringValue, success: success, failure: failure)
             Twitter.getSearchTweets(keyword, maxID: maxID, sinceID: nil, success: success, failure: failure)
         })
         self.adapter.loadDataQueue.addOperation(op)
@@ -143,7 +145,6 @@ class SearchViewController: UIViewController {
             }
             if let sinceID = self.adapter.sinceID() {
                 NSLog("loadDataToTop load sinceID:\(sinceID)")
-                // self.loadData(sinceID: (sinceID.longLongValue - 1).stringValue, maxID: nil, success: success, failure: failure)
                 Twitter.getSearchTweets(keyword, maxID: nil, sinceID: (sinceID.longLongValue - 1).stringValue, success: success, failure: failure)
             } else {
                 op.finish()
