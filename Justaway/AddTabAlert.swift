@@ -32,6 +32,7 @@ class AddTabAlert {
         }))
         actionSheet.addAction(UIAlertAction(title: "Saved Searches...", style: .Default, handler: { action in
             // Twitter.addOAuthAccount()
+            SavedSearchesViewController.show()
         }))
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
 

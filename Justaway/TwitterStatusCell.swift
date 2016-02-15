@@ -75,6 +75,7 @@ enum TwitterStatusCellLayout: String {
     }
 }
 
+// swiftlint:disable:next type_body_length
 class TwitterStatusCell: BackgroundTableViewCell {
 
     // MARK: Properties

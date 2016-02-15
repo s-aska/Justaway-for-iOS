@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SavedSearchesViewController" customModule="Justaway" customModuleProvider="target">
+            <connections>
+                <outlet property="leftButton" destination="jbw-x5-Qy5" id="1Z4-vY-Rnw"/>
+                <outlet property="rightButton" destination="brg-rR-SZm" id="RLZ-bQ-yt5"/>
+                <outlet property="tableView" destination="o5b-Iy-csx" id="Fw3-dH-87O"/>
+                <outlet property="view" destination="iN0-l3-epB" id="zWV-kU-N4a"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Ds-DC-r5e" customClass="MenuShadowView" customModule="Justaway" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="550" width="600" height="50"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="brg-rR-SZm" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="519" y="-1" width="81" height="51"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                            <state key="normal" title="Done">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="right:" destination="-1" eventType="touchUpInside" id="zXh-ni-chq"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jbw-x5-Qy5" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="-1" width="93" height="51"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="left:" destination="-1" eventType="touchUpInside" id="pvb-aH-SpV"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="jbw-x5-Qy5" secondAttribute="centerY" id="0qk-e6-XNm"/>
+                        <constraint firstAttribute="centerY" secondItem="brg-rR-SZm" secondAttribute="centerY" id="Drf-59-2FJ"/>
+                        <constraint firstAttribute="trailing" secondItem="brg-rR-SZm" secondAttribute="trailing" id="GIL-NH-8AD"/>
+                        <constraint firstItem="jbw-x5-Qy5" firstAttribute="leading" secondItem="5Ds-DC-r5e" secondAttribute="leading" id="YHc-fq-Bq2"/>
+                        <constraint firstAttribute="trailing" secondItem="brg-rR-SZm" secondAttribute="trailing" id="bW6-nc-saT"/>
+                        <constraint firstAttribute="height" constant="50" id="dqN-KE-kAk"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="o5b-Iy-csx">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="5Ds-DC-r5e" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0dM-zr-Ddr"/>
+                <constraint firstAttribute="trailing" secondItem="5Ds-DC-r5e" secondAttribute="trailing" id="8Tl-t9-Jtq"/>
+                <constraint firstItem="o5b-Iy-csx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="OBn-3R-R2n"/>
+                <constraint firstAttribute="trailing" secondItem="o5b-Iy-csx" secondAttribute="trailing" id="OcL-wt-gOB"/>
+                <constraint firstItem="5Ds-DC-r5e" firstAttribute="top" secondItem="o5b-Iy-csx" secondAttribute="bottom" id="Xns-tl-fBY"/>
+                <constraint firstAttribute="bottom" secondItem="5Ds-DC-r5e" secondAttribute="bottom" id="mnB-3B-aZo"/>
+                <constraint firstItem="o5b-Iy-csx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xIT-fj-a0N"/>
+            </constraints>
+        </view>
+    </objects>
+</document>
