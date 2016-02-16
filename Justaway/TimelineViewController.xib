@@ -20,6 +20,7 @@
                 <outlet property="tabScrollView" destination="iuO-p3-lF5" id="TYo-45-rMY"/>
                 <outlet property="tabWrapperView" destination="KCl-rs-HPg" id="Zso-oE-9Oi"/>
                 <outlet property="tabWrapperWidthConstraint" destination="7Pc-Zv-uqs" id="HoH-8U-Lkf"/>
+                <outlet property="titleLabelView" destination="X0p-bW-fE8" id="Zar-Kw-Ydq"/>
                 <outlet property="view" destination="iN0-l3-epB" id="diP-QV-l6C"/>
             </connections>
         </placeholder>
@@ -54,7 +55,7 @@
                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </collectionViewFlowLayout>
                         </collectionView>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jEn-1F-PMd" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jEn-1F-PMd" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="540" y="0.0" width="60" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="ikN-3l-aEs"/>
@@ -126,7 +127,7 @@
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hgv-8Y-sHi" customClass="StreamingButton" customModule="Justaway" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hgv-8Y-sHi" customClass="StreamingButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="549" y="12" width="51" height="52"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="22"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -139,7 +140,7 @@
                                 <action selector="streamingSwitch:" destination="-1" eventType="touchUpInside" id="ldh-ZW-ejT"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MtI-tO-1Qx" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MtI-tO-1Qx" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="12" width="59" height="52"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="22"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

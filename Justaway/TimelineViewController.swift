@@ -5,6 +5,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: Properties
 
+    @IBOutlet weak var titleLabelView: TextLable!
     @IBOutlet weak var scrollWrapperView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
 
@@ -19,6 +20,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     var sideMenuViewController: SideMenuViewController!
     var tableViewControllers = [TimelineTableViewController]()
     var tabButtons = [MenuButton]()
+    var titles = [String]()
     var setupView = false
     var userID = ""
     var currentPage = 0
@@ -132,33 +134,40 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         for (i, tab) in account.tabs.enumerate() {
             let vc: TimelineTableViewController
             let icon: String
+            let title: String
             switch tab.type {
             case .HomeTimline:
                 vc = vcCache["HomeTimelineTableViewController"] ?? HomeTimelineTableViewController()
                 icon = "家"
+                title = "Home"
             case .UserTimline:
                 let uvc = vcCache["UserTimelineTableViewController-" + tab.user.userID] as? UserTimelineTableViewController ?? UserTimelineTableViewController()
                 uvc.userID = tab.user.userID
                 vc = uvc
                 icon = "人"
+                title = tab.user.name + " / @" + tab.user.screenName
             case .Notifications:
                 vc = vcCache["NotificationsViewController"] ?? NotificationsViewController()
                 icon = "鐘"
+                title = "Notifications"
             case .Favorites:
                 vc = vcCache["FavoritesTableViewController"] ?? FavoritesTableViewController()
                 icon = "好"
+                title = "Favorites"
             case .Searches:
                 let keyword = tab.keyword
                 let svc = vcCache["SearchesTableViewController-" + keyword] as? SearchesTableViewController ?? SearchesTableViewController()
                 svc.keyword = keyword
                 vc = svc
                 icon = "探"
+                title = keyword
             case .Lists:
                 let list = tab.list
                 let svc = vcCache["ListsTimelineTableViewController-" + list.id] as? ListsTimelineTableViewController ?? ListsTimelineTableViewController()
                 svc.list = list
                 vc = svc
                 icon = "欄"
+                title = list.name
             }
             vc.tableView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
             vc.view.frame = CGRect.init(x: 0, y: 0, width: size.width, height: size.height)
@@ -178,6 +187,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             let button = createMenuButton(i, icon: icon)
             tabWrapperView.addSubview(button)
             tabButtons.append(button)
+            titles.append(title)
 
             if let statusVc = vc as? StatusTableViewController {
                 let page = i
@@ -376,6 +386,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 tabButtons[currentPage].selected = false
             }
         }
+
+        titleLabelView.text = titles[currentPage]
     }
 
     func refresh(sender: UILongPressGestureRecognizer) {
