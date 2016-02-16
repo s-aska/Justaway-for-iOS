@@ -98,6 +98,35 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
                 EventBox.post(eventTabChanged)
             }
         }
+        EventBox.onMainThread(self, name: "setSavedSearchTab") {
+            [weak self] (notification: NSNotification!) in
+            guard let `self` = self else {
+                return
+            }
+            guard var addTabs = notification.object as? [Tab] else {
+                return
+            }
+            guard let account = self.account else {
+                return
+            }
+            var keepTabs = [Tab]()
+            for tab in account.tabs {
+                if tab.type != .Searches {
+                    keepTabs.append(tab)
+                } else if let index = addTabs.indexOf({ $0.keyword == tab.keyword }) {
+                    keepTabs.append(tab)
+                    addTabs.removeAtIndex(index)
+                }
+            }
+            let newAccount = Account(account: account, tabs: keepTabs + addTabs)
+            self.account = newAccount
+            self.tableView.reloadData()
+            if let settings = AccountSettingsStore.get() {
+                let accounts = settings.accounts.map({ $0.userID == newAccount.userID ? newAccount : $0 })
+                AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
+                EventBox.post(eventTabChanged)
+            }
+        }
     }
 
     // MARK: - UITableViewDataSource

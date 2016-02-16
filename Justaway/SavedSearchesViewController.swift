@@ -21,6 +21,16 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         static let instance = SavedSearchesViewController()
     }
 
+    struct Word {
+        let text: String
+        var selected: Bool
+
+        init(text: String, selected: Bool) {
+            self.text = text
+            self.selected = selected
+        }
+    }
+
     // MARK: Properties
 
     @IBOutlet weak var tableView: UITableView!
@@ -29,7 +39,7 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
     let refreshControl = UIRefreshControl()
 
     // var account: Account?
-    var words = ["Hoge", "foo", "bar"]
+    var words = [Word]()
 
     override var nibName: String {
         return "SavedSearchesViewController"
@@ -50,9 +60,9 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         super.viewWillAppear(animated)
         configureEvent()
 
-//        account = AccountSettingsStore.get()?.account()
-//        tableView.reloadData()
-//        initEditing()
+        if words.count == 0 {
+            loadAPI()
+        }
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -67,38 +77,22 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
         tableView.delegate = self
         tableView.dataSource = self
-        // tableView.registerNib(UINib(nibName: "TabSettingsCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         tableView.addSubview(refreshControl)
+
+        // apply theme
+        for cell in tableView.visibleCells {
+            cell.textLabel?.textColor = ThemeController.currentTheme.bodyTextColor()
+        }
 
         refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
 
-//        let swipe = UISwipeGestureRecognizer(target: self, action: "hide")
-//        swipe.numberOfTouchesRequired = 1
-//        swipe.direction = UISwipeGestureRecognizerDirection.Right
-//        tableView.addGestureRecognizer(swipe)
+        let swipe = UISwipeGestureRecognizer(target: self, action: "hide")
+        swipe.numberOfTouchesRequired = 1
+        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        tableView.addGestureRecognizer(swipe)
     }
 
     func configureEvent() {
-//        EventBox.onMainThread(self, name: "addTab") {
-//            [weak self] (notification: NSNotification!) in
-//            guard let `self` = self else {
-//                return
-//            }
-//            guard let tab = notification.object as? Tab else {
-//                return
-//            }
-//            guard let account = self.account else {
-//                return
-//            }
-//            let newAccount = Account(account: account, tabs: account.tabs + [tab])
-//            self.account = newAccount
-//            self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: newAccount.tabs.count - 1, inSection: 0)], withRowAnimation: .Automatic)
-//            if let settings = AccountSettingsStore.get() {
-//                let accounts = settings.accounts.map({ $0.userID == newAccount.userID ? newAccount : $0 })
-//                AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
-//                EventBox.post(eventTabChanged)
-//            }
-//        }
     }
 
     // MARK: - UITableViewDataSource
@@ -110,8 +104,14 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         let word = words[indexPath.row]
-        cell.textLabel?.text = word
         cell.selectionStyle = .None
+        cell.separatorInset = UIEdgeInsetsZero
+        cell.layoutMargins = UIEdgeInsetsZero
+        cell.preservesSuperviewLayoutMargins = false
+        cell.textLabel?.text = word.text
+        cell.accessoryType = word.selected ? .Checkmark : .None
+        cell.backgroundColor = UIColor.clearColor()
+        cell.textLabel?.textColor = ThemeController.currentTheme.bodyTextColor()
         return cell
     }
 
@@ -119,23 +119,7 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         return true
     }
 
-//    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-//        guard let account = account else {
-//            return
-//        }
-//        if destinationIndexPath.row >= account.tabs.count {
-//            return
-//        }
-//        var tabs = account.tabs
-//        tabs.insert(tabs.removeAtIndex(sourceIndexPath.row), atIndex: destinationIndexPath.row)
-//        self.account = Account(account: account, tabs: tabs)
-//    }
-
     // MARK: UITableViewDelegate
-
-//    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-//        return UITableViewCellEditingStyle.Insert
-//    }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 60
@@ -145,41 +129,29 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
             return
         }
-        cell.accessoryType = .Checkmark
-        //        if let settings = self.settings {
-        //            self.settings = AccountSettings(current: indexPath.row, accounts: settings.accounts)
-        //            self.tableView.reloadData()
-        //            AccountSettingsStore.save(self.settings!)
-        //            EventBox.post(eventAccountChanged)
-        //            hide()
-        //        }
+        words[indexPath.row].selected = !words[indexPath.row].selected
+        cell.accessoryType = words[indexPath.row].selected ? .Checkmark : .None
     }
-
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
-            return
-        }
-        cell.accessoryType = .None
-    }
-
-//    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-//        if editingStyle != .Delete {
-//            return
-//        }
-//        guard let account = account else {
-//            return
-//        }
-//        var tabs = account.tabs
-//        tabs.removeAtIndex(indexPath.row)
-//        self.account = Account(account: account, tabs: tabs)
-//        if tabs.count > 0 {
-//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-//        } else {
-//            tableView.reloadData()
-//        }
-//    }
 
     // MARK: - Actions
+
+    func loadAPI() {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
+        let success = { (array: [String]) -> Void in
+            self.refreshControl.endRefreshing()
+            self.words = array.map({ (text: String) -> Word in
+                return Word(text: text, selected: account.tabs.indexOf({ $0.type == .Searches && $0.keyword == text }) != nil)
+            })
+            self.tableView.reloadData()
+        }
+        let failure = { (error: NSError) -> Void in
+            self.refreshControl.endRefreshing()
+            ErrorAlert.show("failure", message: error.localizedDescription)
+        }
+        Twitter.getSavedSearches(success, failure: failure)
+    }
 
     @IBAction func close(sender: AnyObject) {
         hide()
@@ -205,40 +177,18 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         })
     }
 
-//    func initEditing() {
-//        tableView.setEditing(false, animated: false)
-//        leftButton.setTitle("Add", forState: UIControlState.Normal)
-//        rightButton.setTitle("Edit", forState: UIControlState.Normal)
-//        rightButton.hidden = account == nil
-//    }
-
     func cancel() {
-//        account = AccountSettingsStore.get()?.account()
-        tableView.reloadData()
-//        initEditing()
         hide()
     }
 
-    func edit() {
-        tableView.setEditing(true, animated: true)
-        leftButton.setTitle("Cancel", forState: UIControlState.Normal)
-        rightButton.setTitle("Done", forState: UIControlState.Normal)
-    }
-
     func done() {
-//        if let account = account {
-//            if let settings = AccountSettingsStore.get() {
-//                let accounts = settings.accounts.map({ $0.userID == account.userID ? account : $0 })
-//                AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
-//                EventBox.post(eventTabChanged)
-//            }
-//        }
-        tableView.reloadData()
-//        initEditing()
+        let tabs = words.filter({ $0.selected }).map({ Tab.init(userID: "", keyword: $0.text) })
+        EventBox.post("setSavedSearchTab", sender: tabs)
+        hide()
     }
 
     func refresh() {
-        //        Twitter.refreshAccounts([])
+        loadAPI()
     }
 
     class func show() {

@@ -390,6 +390,17 @@ class Twitter {
             })
     }
 
+    class func getSavedSearches(success: ([String]) -> Void, failure: (NSError) -> Void) {
+        let success = { (array: [JSON]) -> Void in
+            success(array.map({ $0["query"].string ?? "" }))
+        }
+        client()?
+            .get("https://api.twitter.com/1.1/saved_searches/list.json", parameters: [:])
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
+    }
+
     class func statusUpdate(status: String, inReplyToStatusID: String?, var images: [NSData], var mediaIds: [String]) {
         if images.count == 0 {
             return statusUpdate(status, inReplyToStatusID: inReplyToStatusID, mediaIds: mediaIds)
