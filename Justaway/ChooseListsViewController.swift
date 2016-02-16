@@ -1,10 +1,18 @@
+//
+//  ChooseListsViewController.swift
+//  Justaway
+//
+//  Created by Shinichiro Aska on 2/17/16.
+//  Copyright © 2016 Shinichiro Aska. All rights reserved.
+//
+
 import UIKit
 import Accounts
 import Social
 import EventBox
 import TwitterAPI
 
-class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ChooseListsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     // MARK: Types
 
@@ -18,15 +26,15 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     struct Static {
-        static let instance = SavedSearchesViewController()
+        static let instance = ChooseListsViewController()
     }
 
-    struct Word {
-        let text: String
+    struct Item {
+        let list: TwitterList
         var selected: Bool
 
-        init(text: String, selected: Bool) {
-            self.text = text
+        init(list: TwitterList, selected: Bool) {
+            self.list = list
             self.selected = selected
         }
     }
@@ -38,11 +46,10 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var rightButton: UIButton!
     let refreshControl = UIRefreshControl()
 
-    // var account: Account?
-    var words = [Word]()
+    var items = [Item]()
 
     override var nibName: String {
-        return "SavedSearchesViewController"
+        return "ChooseListsViewController"
     }
 
     // MARK: - View Life Cycle
@@ -60,7 +67,7 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         super.viewWillAppear(animated)
         configureEvent()
 
-        if words.count == 0 {
+        if items.count == 0 {
             loadAPI()
         }
     }
@@ -98,18 +105,18 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
     // MARK: - UITableViewDataSource
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return words.count ?? 0
+        return items.count ?? 0
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: TableViewConstants.tableViewCellIdentifier)
-        let word = words[indexPath.row]
+        let item = items[indexPath.row]
         cell.selectionStyle = .None
         cell.separatorInset = UIEdgeInsetsZero
         cell.layoutMargins = UIEdgeInsetsZero
         cell.preservesSuperviewLayoutMargins = false
-        cell.textLabel?.text = word.text
-        cell.accessoryType = word.selected ? .Checkmark : .None
+        cell.textLabel?.text = item.list.name
+        cell.accessoryType = item.selected ? .Checkmark : .None
         cell.backgroundColor = UIColor.clearColor()
         cell.textLabel?.textColor = ThemeController.currentTheme.bodyTextColor()
         return cell
@@ -129,8 +136,8 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
             return
         }
-        words[indexPath.row].selected = !words[indexPath.row].selected
-        cell.accessoryType = words[indexPath.row].selected ? .Checkmark : .None
+        items[indexPath.row].selected = !items[indexPath.row].selected
+        cell.accessoryType = items[indexPath.row].selected ? .Checkmark : .None
     }
 
     // MARK: - Actions
@@ -139,10 +146,10 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
-        let success = { (array: [String]) -> Void in
+        let success = { (array: [TwitterList]) -> Void in
             self.refreshControl.endRefreshing()
-            self.words = array.map({ (text: String) -> Word in
-                return Word(text: text, selected: account.tabs.indexOf({ $0.type == .Searches && $0.keyword == text }) != nil)
+            self.items = array.map({ (list: TwitterList) -> Item in
+                return Item(list: list, selected: account.tabs.indexOf({ $0.type == .Lists && $0.list.id == list.id }) != nil)
             })
             self.tableView.reloadData()
         }
@@ -150,7 +157,7 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
             self.refreshControl.endRefreshing()
             ErrorAlert.show("failure", message: error.localizedDescription)
         }
-        Twitter.getSavedSearches(success, failure: failure)
+        Twitter.getLists(success, failure: failure)
     }
 
     @IBAction func close(sender: AnyObject) {
@@ -185,8 +192,8 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
-        let tabs = words.filter({ $0.selected }).map({ Tab.init(userID: account.userID, keyword: $0.text) })
-        EventBox.post("setSavedSearchTab", sender: tabs)
+        let tabs = items.filter({ $0.selected }).map({ Tab.init(userID: account.userID, list: $0.list) })
+        EventBox.post("setListsTab", sender: tabs)
         hide()
     }
 

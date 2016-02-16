@@ -23,6 +23,7 @@ class Tab {
         case Notifications
         case Favorites
         case Searches
+        case Lists
     }
 
     let type: Type
@@ -53,12 +54,22 @@ class Tab {
         self.arguments = ["user": user.dictionaryValue]
     }
 
+    init(userID: String, list: TwitterList) {
+        self.type = .Lists
+        self.userID = userID
+        self.arguments = ["list": list.dictionaryValue]
+    }
+
     var keyword: String {
         return self.arguments["keyword"] as? String ?? "-"
     }
 
     var user: TwitterUser {
         return TwitterUser(self.arguments["user"] as? [String: AnyObject] ?? [:])
+    }
+
+    var list: TwitterList {
+        return TwitterList(self.arguments["list"] as? [String: AnyObject] ?? [:])
     }
 
     var dictionaryValue: NSDictionary {

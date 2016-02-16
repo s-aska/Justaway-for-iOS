@@ -314,6 +314,25 @@ class Twitter {
             })
     }
 
+    class func getListsStatuses(listID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        var parameters = ["list_id": listID]
+        if let maxID = maxID {
+            parameters["max_id"] = maxID
+            parameters["count"] = "200"
+        }
+        if let sinceID = sinceID {
+            parameters["since_id"] = sinceID
+            parameters["count"] = "200"
+        }
+        let success = { (array: [JSON]) -> Void in
+            success(array.map({ TwitterStatus($0) }))
+        }
+        client()?.get("https://api.twitter.com/1.1/lists/statuses.json", parameters: parameters)
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
+    }
+
     class func getFavorites(userID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         var parameters = ["user_id": userID]
         if let maxID = maxID {
@@ -396,6 +415,17 @@ class Twitter {
         }
         client()?
             .get("https://api.twitter.com/1.1/saved_searches/list.json", parameters: [:])
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
+    }
+
+    class func getLists(success: ([TwitterList]) -> Void, failure: (NSError) -> Void) {
+        let success = { (array: [JSON]) -> Void in
+            success(array.map({ TwitterList($0) }))
+        }
+        client()?
+            .get("https://api.twitter.com/1.1/lists/list.json", parameters: [:])
             .responseJSONArray(success, failure: { (code, message, error) -> Void in
                 failure(error)
             })

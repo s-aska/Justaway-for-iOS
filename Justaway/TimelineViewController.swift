@@ -109,6 +109,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 vcCache["NotificationsViewController"] = vc
             case let vc as FavoritesTableViewController:
                 vcCache["FavoritesTableViewController"] = vc
+            case let vc as ListsTimelineTableViewController:
+                if let list = vc.list {
+                    vcCache["UserTimelineTableViewController-" + list.id] = vc
+                }
             default:
                 break
             }
@@ -149,6 +153,12 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 svc.keyword = keyword
                 vc = svc
                 icon = "探"
+            case .Lists:
+                let list = tab.list
+                let svc = vcCache["ListsTimelineTableViewController-" + list.id] as? ListsTimelineTableViewController ?? ListsTimelineTableViewController()
+                svc.list = list
+                vc = svc
+                icon = "欄"
             }
             vc.tableView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
             vc.view.frame = CGRect.init(x: 0, y: 0, width: size.width, height: size.height)

@@ -31,4 +31,30 @@ struct TwitterList {
         self.createdAt = TwitterDate(json["created_at"].string ?? "")
         self.user = TwitterUser(json["user"])
     }
+
+    init(_ dictionary: [String: AnyObject]) {
+        self.id = dictionary["id"] as? String ?? ""
+        self.name = dictionary["name"] as? String ?? ""
+        self.description = dictionary["description"] as? String ?? ""
+        self.subscriberCount = dictionary["subscriberCount"] as? Int ?? 0
+        self.memberCount = dictionary["memberCount"] as? Int ?? 0
+        self.mode = dictionary["mode"] as? String ?? ""
+        self.following = dictionary["following"] as? Bool ?? false
+        self.user = TwitterUser(dictionary["id"] as? [String: AnyObject] ?? [:])
+        self.createdAt = TwitterDate(NSDate(timeIntervalSince1970: (dictionary["createdAt"] as? NSNumber ?? 0).doubleValue))
+    }
+
+    var dictionaryValue: [String: AnyObject] {
+        return [
+            "id": id,
+            "name": name,
+            "description": description,
+            "subscriberCount": subscriberCount,
+            "memberCount": memberCount,
+            "mode": mode,
+            "following": following,
+            "user": user.dictionaryValue,
+            "createdAt": Int(createdAt.date.timeIntervalSince1970)
+        ]
+    }
 }

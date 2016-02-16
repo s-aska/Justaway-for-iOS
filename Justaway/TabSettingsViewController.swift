@@ -127,6 +127,35 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
                 EventBox.post(eventTabChanged)
             }
         }
+        EventBox.onMainThread(self, name: "setListsTab") {
+            [weak self] (notification: NSNotification!) in
+            guard let `self` = self else {
+                return
+            }
+            guard var addTabs = notification.object as? [Tab] else {
+                return
+            }
+            guard let account = self.account else {
+                return
+            }
+            var keepTabs = [Tab]()
+            for tab in account.tabs {
+                if tab.type != .Lists {
+                    keepTabs.append(tab)
+                } else if let index = addTabs.indexOf({ $0.list.id == tab.list.id }) {
+                    keepTabs.append(tab)
+                    addTabs.removeAtIndex(index)
+                }
+            }
+            let newAccount = Account(account: account, tabs: keepTabs + addTabs)
+            self.account = newAccount
+            self.tableView.reloadData()
+            if let settings = AccountSettingsStore.get() {
+                let accounts = settings.accounts.map({ $0.userID == newAccount.userID ? newAccount : $0 })
+                AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
+                EventBox.post(eventTabChanged)
+            }
+        }
     }
 
     // MARK: - UITableViewDataSource
@@ -155,6 +184,9 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
             case .Searches:
                 cell.nameLabel.text = tab.keyword
                 cell.iconLabel.text = "探"
+            case .Lists:
+                cell.nameLabel.text = tab.list.name
+                cell.iconLabel.text = "欄"
             }
         }
         return cell
