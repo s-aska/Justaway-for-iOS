@@ -127,6 +127,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             }
         }
 
+        var newTabButtons = [MenuButton]()
+        var newTitles = [String]()
+
         let size = scrollWrapperView.frame.size
         let contentView = UIView(frame: CGRect.init(x: 0, y: 0, width: size.width * CGFloat(account.tabs.count), height: size.height))
         tabWrapperWidthConstraint.constant = 58 * CGFloat(account.tabs.count)
@@ -186,8 +189,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
             let button = createMenuButton(i, icon: icon)
             tabWrapperView.addSubview(button)
-            tabButtons.append(button)
-            titles.append(title)
+            newTabButtons.append(button)
+            newTitles.append(title)
 
             if let statusVc = vc as? StatusTableViewController {
                 let page = i
@@ -200,6 +203,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             }
         }
 
+        tabButtons = newTabButtons
+        titles = newTitles
         tabScrollView.contentSize = tabWrapperView.frame.size
 
         for view in scrollView.subviews {
