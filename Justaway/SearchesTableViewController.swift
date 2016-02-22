@@ -14,8 +14,9 @@ import Async
 
 class SearchesTableViewController: TimelineTableViewController {
 
-    let adapter = TwitterStatusAdapter()
+    // let adapter = TwitterStatusAdapter()
     var nextResults: String?
+    var lastID: Int64?
     var keyword: String?
     var cacheLoaded = false
 
@@ -63,11 +64,15 @@ class SearchesTableViewController: TimelineTableViewController {
                 if let queryItems = NSURLComponents(string: nextResults)?.queryItems {
                     for item in queryItems {
                         if item.name == "max_id" {
+                            NSLog("nextResults maxID:\(item.value)")
                             self.loadData(item.value)
                             break
                         }
                     }
                 }
+            } else if let lastID = self.lastID {
+                NSLog("lastID maxID:\(lastID.stringValue)")
+                self.loadData((lastID - 1).stringValue)
             }
         }
 
@@ -175,43 +180,68 @@ class SearchesTableViewController: TimelineTableViewController {
     // MARK: Public Methods
 
     func loadCache() {
-//        if self.adapter.loadDataQueue.operationCount > 0 {
-//            return
-//        }
-//        let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
-//            let always: (Void-> Void) = {
-//                op.finish()
-//                self.adapter.footerIndicatorView?.stopAnimating()
-//                self.refreshControl?.endRefreshing()
-//            }
-//            let success = { (statuses: [TwitterStatus]) -> Void in
-//                for status in statuses {
-//                    let uniqueID = status.uniqueID.longLongValue
-//                    if self.lastID == nil || uniqueID < self.lastID! {
-//                        self.lastID = uniqueID
-//                    }
-//                }
-//                self.renderData(statuses, mode: .OVER, handler: always)
-//            }
-//            let failure = { (error: NSError) -> Void in
-//                ErrorAlert.show("Error", message: error.localizedDescription)
-//                always()
-//            }
-//            dispatch_sync(dispatch_get_main_queue(), {
-//                self.adapter.footerIndicatorView?.startAnimating()
-//                return
-//            })
-//            self.loadCache(success, failure: failure)
-//        })
-//        self.adapter.loadDataQueue.addOperation(op)
+        if self.adapter.loadDataQueue.operationCount > 0 {
+            return
+        }
+        let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
+            let always: (Void-> Void) = {
+                op.finish()
+                self.adapter.footerIndicatorView?.stopAnimating()
+                self.refreshControl?.endRefreshing()
+            }
+            let success = { (statuses: [TwitterStatus]) -> Void in
+                for status in statuses {
+                    let uniqueID = status.uniqueID.longLongValue
+                    if self.lastID == nil || uniqueID < self.lastID! {
+                        self.lastID = uniqueID
+                    }
+                }
+                self.renderData(statuses, mode: .OVER, handler: always)
+            }
+            let failure = { (error: NSError) -> Void in
+                ErrorAlert.show("Error", message: error.localizedDescription)
+                always()
+            }
+            dispatch_sync(dispatch_get_main_queue(), {
+                self.adapter.footerIndicatorView?.startAnimating()
+                return
+            })
+            self.loadCache(success, failure: failure)
+        })
+        self.adapter.loadDataQueue.addOperation(op)
     }
 
     func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-//        assertionFailure("not implements.")
+        if let keyword = self.keyword {
+            let key = "searches:\(keyword)"
+            Async.background {
+                if let cache = KeyClip.load(key) as NSDictionary? {
+                    if let statuses = cache["statuses"] as? [[String: AnyObject]] {
+                        success(statuses: statuses.map({ TwitterStatus($0) }))
+                        return
+                    }
+                }
+                success(statuses: [TwitterStatus]())
+
+                Async.background(after: 0.5, block: { () -> Void in
+                    self.loadData(nil)
+                })
+            }
+        } else {
+            success(statuses: [])
+        }
     }
 
-    func saveCache() {
-//        assertionFailure("not implements.")
+    override func saveCache() {
+        if self.adapter.rows.count > 0 {
+            if let keyword = self.keyword {
+                let key = "searches:\(keyword)"
+                let statuses = self.adapter.statuses
+                let dictionary = ["statuses": ( statuses.count > 100 ? Array(statuses[0 ..< 100]) : statuses ).map({ $0.dictionaryValue })]
+                KeyClip.save(key, dictionary: dictionary)
+                NSLog("searches:\(keyword) saveCache.")
+            }
+        }
     }
 
     func saveCacheSchedule() {
@@ -249,6 +279,7 @@ class SearchesTableViewController: TimelineTableViewController {
             }
             Twitter.getSearchTweets(keyword, maxID: maxID, sinceID: nil, success: success, failure: failure)
         })
+        NSLog("keyword:\(keyword) maxID:\(maxID) loadData.")
         self.adapter.loadDataQueue.addOperation(op)
     }
 

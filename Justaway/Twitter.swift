@@ -307,6 +307,7 @@ class Twitter {
                     success(statuses.map({ TwitterStatus($0) }), search_metadata)
             }
         }
+        NSLog("parameters:\(parameters)")
         client()?
             .get("https://api.twitter.com/1.1/search/tweets.json", parameters: parameters)
             .responseJSON(success, failure: { (code, message, error) -> Void in

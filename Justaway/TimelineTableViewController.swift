@@ -10,9 +10,14 @@ import UIKit
 
 class TimelineTableViewController: UITableViewController {
 
+    let adapter = TwitterStatusAdapter()
     var setup = false
 
     func refresh() {
+        assertionFailure("not implements.")
+    }
+
+    func saveCache() {
         assertionFailure("not implements.")
     }
 }

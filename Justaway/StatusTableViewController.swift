@@ -9,7 +9,6 @@ let timelineHooterHeight: CGFloat = 40
 
 class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapterDelegate {
 
-    let adapter = TwitterStatusAdapter()
     var lastID: Int64?
     var cacheLoaded = false
 
@@ -141,7 +140,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                 self.renderData(statuses, mode: .OVER, handler: always)
             }
             let failure = { (error: NSError) -> Void in
-                ErrorAlert.show("Error", message: error.localizedDescription)
+                ErrorAlert.show("loadCache Error", message: error.localizedDescription)
                 always()
             }
             dispatch_sync(dispatch_get_main_queue(), {
@@ -154,10 +153,6 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
     }
 
     func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-        assertionFailure("not implements.")
-    }
-
-    func saveCache() {
         assertionFailure("not implements.")
     }
 
@@ -198,7 +193,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                 self.renderData(statuses, mode: (maxID != nil ? .BOTTOM : .OVER), handler: always)
             }
             let failure = { (error: NSError) -> Void in
-                ErrorAlert.show("Error", message: error.localizedDescription)
+                ErrorAlert.show("loadData Error", message: error.localizedDescription)
                 always()
             }
             if !(self.refreshControl?.refreshing ?? false) {
@@ -248,11 +243,12 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                 self.renderData(statuses, mode: .HEADER, handler: always)
             }
             let failure = { (error: NSError) -> Void in
-                ErrorAlert.show("Error", message: error.localizedDescription)
+                ErrorAlert.show("loadDataToTop Error", message: error.localizedDescription)
                 always()
             }
             if let sinceID = self.adapter.sinceID() {
                 NSLog("loadDataToTop load sinceID:\(sinceID)")
+                // "Show more tweets" are and need the same id
                 self.loadData(sinceID: (sinceID.longLongValue - 1).stringValue, maxID: nil, success: success, failure: failure)
             } else {
                 op.finish()

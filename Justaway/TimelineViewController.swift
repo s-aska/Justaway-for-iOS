@@ -183,22 +183,18 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 favoritesTableViewController.userID = userID
             }
 
-            if let statusTableViewController = vc as? StatusTableViewController {
-                statusTableViewController.adapter.scrollEnd(vc.tableView)
-            }
+            vc.adapter.scrollEnd(vc.tableView)
 
             let button = createMenuButton(i, icon: icon)
             tabWrapperView.addSubview(button)
             newTabButtons.append(button)
             newTitles.append(title)
 
-            if let statusVc = vc as? StatusTableViewController {
-                let page = i
-                statusVc.adapter.renderDataCallback = { (statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode) in
-                    if statuses.count > 0 && mode == .HEADER {
-                        NSLog("page:\(page) count:\(statuses.count)")
-                        self.tabButtons[page].selected = true
-                    }
+            let page = i
+            vc.adapter.renderDataCallback = { (statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode) in
+                if statuses.count > 0 && mode == .HEADER {
+                    NSLog("page:\(page) count:\(statuses.count)")
+                    self.tabButtons[page].selected = true
                 }
             }
         }
@@ -259,21 +255,15 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             if self.tableViewControllers.count <= self.currentPage {
                 return
             }
-            if let vc = self.tableViewControllers[self.currentPage] as? StatusTableViewController {
-                if vc.adapter.isTop {
-                    self.tabButtons[self.currentPage].selected = false
-                }
+            let vc = self.tableViewControllers[self.currentPage]
+            if vc.adapter.isTop {
+                self.tabButtons[self.currentPage].selected = false
             }
         })
 
         EventBox.onBackgroundThread(self, name: "applicationDidEnterBackground") { (n) -> Void in
             for tableViewController in self.tableViewControllers {
-                switch tableViewController {
-                case let vc as StatusTableViewController:
-                    vc.saveCache()
-                default:
-                    break
-                }
+                tableViewController.saveCache()
             }
         }
     }
@@ -349,6 +339,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             // other account
             if userID != account.account().userID {
                 userID = account.account().userID
+                configureTimelineView()
                 for tableViewController in self.tableViewControllers {
                     switch tableViewController {
                     case let vc as StatusTableViewController:
@@ -386,10 +377,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
         tabCurrentMaskLeftConstraint.constant = CGFloat(page * 58)
 
-        if let vc = tableViewControllers[currentPage] as? StatusTableViewController {
-            if vc.adapter.isTop {
-                tabButtons[currentPage].selected = false
-            }
+        let vc = tableViewControllers[currentPage]
+        if vc.adapter.isTop {
+            tabButtons[currentPage].selected = false
         }
 
         titleLabelView.text = titles[currentPage]
@@ -405,9 +395,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     func tabButton(sender: UITapGestureRecognizer) {
         if let page = sender.view?.tag {
             if currentPage == page {
-                if let vc = tableViewControllers[page] as? StatusTableViewController {
-                    vc.adapter.scrollToTop(vc.tableView)
-                }
+                let vc = tableViewControllers[page]
+                vc.adapter.scrollToTop(vc.tableView)
                 tabButtons[page].selected = false
             } else {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
