@@ -225,8 +225,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
         button.setTitle(icon, forState: UIControlState.Normal)
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tabButton:"))
-        let longPress = UILongPressGestureRecognizer(target: self, action: "refresh:")
-        longPress.minimumPressDuration = 2.0
+        let longPress = UILongPressGestureRecognizer(target: self, action: "tabMenu:")
+        longPress.minimumPressDuration = 0.5
         button.addGestureRecognizer(longPress)
         return button
     }
@@ -385,11 +385,63 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         titleLabelView.text = titles[currentPage]
     }
 
-    func refresh(sender: UILongPressGestureRecognizer) {
+    func tabMenu(sender: UILongPressGestureRecognizer) {
         if sender.state != .Began {
             return
         }
-        tableViewControllers[currentPage].refresh()
+        guard let view = sender.view else {
+            return
+        }
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
+        let index = view.tag
+        if index >= account.tabs.count {
+            return
+        }
+
+        let actionSheet =  UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Refresh", style: .Default, handler: { action in
+            self.tableViewControllers[index].refresh()
+        }))
+
+        let tab = account.tabs[index]
+        if tab.type == .Searches {
+            actionSheet.addAction(UIAlertAction(title: "Tweet with " + tab.keyword, style: .Default, handler: { action in
+                EditorViewController.show(" " + tab.keyword, range: NSRange(location: 0, length: 0), inReplyToStatus: nil)
+            }))
+        } else if tab.type == .UserTimline {
+            actionSheet.addAction(UIAlertAction(title: "Reply to @" + tab.user.screenName, style: .Default, handler: { action in
+                let prefix = "@\(tab.user.screenName) "
+                let range = NSRange.init(location: prefix.characters.count, length: 0)
+                EditorViewController.show(prefix, range: range, inReplyToStatus: nil)
+            }))
+        }
+
+        actionSheet.addAction(UIAlertAction(title: "Tab Settings", style: .Default, handler: { action in
+            TabSettingsViewController.show()
+        }))
+
+        if account.tabs.count > 1 {
+            actionSheet.addAction(UIAlertAction(title: "Remove tab", style: .Destructive, handler: { action in
+                var tabs = account.tabs
+                tabs.removeAtIndex(index)
+                let newAccount = Account(account: account, tabs: tabs)
+                if let settings = AccountSettingsStore.get() {
+                    let accounts = settings.accounts.map({ $0.userID == newAccount.userID ? newAccount : $0 })
+                    AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
+                    EventBox.post(eventTabChanged)
+                }
+            }))
+        }
+
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+
+        // iPad
+        actionSheet.popoverPresentationController?.sourceView = view
+        actionSheet.popoverPresentationController?.sourceRect = view.bounds
+
+        AlertController.showViewController(actionSheet)
     }
 
     func tabButton(sender: UITapGestureRecognizer) {

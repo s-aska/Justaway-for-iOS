@@ -237,6 +237,9 @@ class TwitterStatusAdapter: NSObject {
                         handler?()
                 })
             } else {
+                if mode == .OVER {
+                    tableView.contentOffset = CGPoint.init(x: 0, y: -tableView.contentInset.top)
+                }
                 self.renderDataCallback?(statuses: statuses, mode: mode)
                 handler?()
             }
