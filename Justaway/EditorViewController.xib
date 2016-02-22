@@ -9,7 +9,6 @@
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
-            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -95,18 +94,6 @@
                                         <action selector="send:" destination="-1" eventType="touchUpInside" id="e3h-hl-4bj"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x60-Tw-djt" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                    <rect key="frame" x="122" y="0.0" width="60" height="50"/>
-                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
-                                    <state key="normal" title="声">
-                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="voice:" destination="-1" eventType="touchUpInside" id="2l5-Yw-Mrv"/>
-                                    </connections>
-                                </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="140" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VpL-cL-hHt" customClass="MenuLable" customModule="Justaway" customModuleProvider="target">
                                     <rect key="frame" x="525" y="17" width="24" height="17"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -120,12 +107,10 @@
                                 <constraint firstItem="VpL-cL-hHt" firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="0Ui-k7-Mi1"/>
                                 <constraint firstAttribute="height" constant="50" id="QA0-KP-aqU"/>
                                 <constraint firstItem="NN0-dj-HHc" firstAttribute="leading" secondItem="cpB-WM-7Qz" secondAttribute="leading" id="RPs-BP-itF"/>
-                                <constraint firstItem="x60-Tw-djt" firstAttribute="leading" secondItem="AcO-tg-NdG" secondAttribute="trailing" id="bUi-tX-C7l"/>
                                 <constraint firstItem="AcO-tg-NdG" firstAttribute="leading" secondItem="NN0-dj-HHc" secondAttribute="trailing" id="cZu-qX-yjw"/>
                                 <constraint firstAttribute="centerY" secondItem="AcO-tg-NdG" secondAttribute="centerY" id="fS4-To-Vfx"/>
                                 <constraint firstAttribute="trailing" secondItem="mbk-4F-WpO" secondAttribute="trailing" id="ht5-bz-Fwc"/>
                                 <constraint firstItem="mbk-4F-WpO" firstAttribute="leading" secondItem="VpL-cL-hHt" secondAttribute="leading" constant="16" id="wxk-Cr-Nxf"/>
-                                <constraint firstItem="x60-Tw-djt" firstAttribute="centerY" secondItem="cpB-WM-7Qz" secondAttribute="centerY" id="x2A-V2-wSq"/>
                                 <constraint firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="y1y-gb-4En"/>
                             </constraints>
                         </view>

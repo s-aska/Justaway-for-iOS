@@ -154,7 +154,7 @@
                                 <action selector="openSidemenu:" destination="-1" eventType="touchUpInside" id="C9g-I3-dZj"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ad-US-PSe" customClass="StreamingButton" customModule="Justaway" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ad-US-PSe" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="498" y="12" width="51" height="52"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="22"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
