@@ -21,7 +21,10 @@ class SearchViewController: UIViewController {
     var keyword: String?
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var keywordLabel: MenuLable!
+    @IBOutlet weak var keywordTextField: UITextField!
+    @IBOutlet weak var cover: UIView!
+    // @IBOutlet weak var keywordLabel: MenuLable!
+
 
     override var nibName: String {
         return "SearchViewController"
@@ -41,8 +44,12 @@ class SearchViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
-        loadData()
-        keywordLabel.text = keyword
+        keywordTextField.text = keyword
+        if keyword?.isEmpty ?? true {
+            keywordTextField.becomeFirstResponder()
+        } else {
+            loadData()
+        }
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -75,6 +82,9 @@ class SearchViewController: UIViewController {
                 }
             }
         }
+
+        let touchCover = UITapGestureRecognizer(target: keywordTextField, action: "resignFirstResponder")
+        cover.addGestureRecognizer(touchCover)
     }
 
     func loadData(maxID: String? = nil) {
@@ -173,6 +183,13 @@ class SearchViewController: UIViewController {
         EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { (n) -> Void in
             self.adapter.scrollToTop(self.tableView)
         })
+        EventBox.onMainThread(self, name: UIKeyboardWillShowNotification) { n in
+            self.keyboardWillChangeFrame(n, showsKeyboard: true)
+        }
+
+        EventBox.onMainThread(self, name: UIKeyboardWillHideNotification) { n in
+            self.keyboardWillChangeFrame(n, showsKeyboard: false)
+        }
         configureCreateStatusEvent()
         configureDestroyStatusEvent()
     }
@@ -206,6 +223,35 @@ class SearchViewController: UIViewController {
     }
 
     // MARK: - Actions
+
+    func keyboardWillChangeFrame(notification: NSNotification, showsKeyboard: Bool) {
+        cover.hidden = !showsKeyboard
+    }
+
+    @IBAction func menu(sender: UIView) {
+        if keywordTextField.isFirstResponder() {
+            keywordTextField.resignFirstResponder()
+            return
+        }
+        guard let keyword = keywordTextField.text else {
+            return
+        }
+        SearchAlert.show(sender, keyword: keyword)
+    }
+
+    @IBAction func search(sender: AnyObject) {
+        guard let keyword = keywordTextField.text else {
+            NSLog("no data")
+            return
+        }
+        if keyword.isEmpty {
+            NSLog("empty")
+            return
+        }
+        NSLog("search")
+        self.keyword = keyword
+        loadData(nil)
+    }
 
     @IBAction func left(sender: UIButton) {
         hide()

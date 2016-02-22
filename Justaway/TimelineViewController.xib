@@ -8,6 +8,7 @@
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
+            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -153,6 +154,19 @@
                                 <action selector="openSidemenu:" destination="-1" eventType="touchUpInside" id="C9g-I3-dZj"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ad-US-PSe" customClass="StreamingButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="498" y="12" width="51" height="52"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="22"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="10" maxY="15"/>
+                            <state key="normal" title="探">
+                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="search:" destination="-1" eventType="touchUpInside" id="PAm-pH-ioS"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="0.90000000000000002" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -162,7 +176,9 @@
                         <constraint firstAttribute="height" constant="60" id="dlS-Qs-FnK"/>
                         <constraint firstItem="MtI-tO-1Qx" firstAttribute="top" secondItem="YBJ-Kd-WdX" secondAttribute="top" constant="12" id="ngp-qr-qG7"/>
                         <constraint firstItem="Hgv-8Y-sHi" firstAttribute="top" secondItem="YBJ-Kd-WdX" secondAttribute="top" constant="12" id="tj7-UM-Znu"/>
+                        <constraint firstItem="0Ad-US-PSe" firstAttribute="top" secondItem="YBJ-Kd-WdX" secondAttribute="top" constant="12" id="tlN-iV-aIV"/>
                         <constraint firstItem="X0p-bW-fE8" firstAttribute="centerY" secondItem="YBJ-Kd-WdX" secondAttribute="centerY" constant="10" id="vDk-V3-Z96"/>
+                        <constraint firstItem="Hgv-8Y-sHi" firstAttribute="leading" secondItem="0Ad-US-PSe" secondAttribute="trailing" id="xkU-FW-U40"/>
                     </constraints>
                 </view>
             </subviews>

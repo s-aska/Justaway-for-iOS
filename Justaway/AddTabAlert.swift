@@ -11,7 +11,7 @@ import EventBox
 
 class AddTabAlert {
     class func show(sender: UIView, tabs: [Tab]) {
-        let actionSheet =  UIAlertController(title: "Add Tab", message: "Choose via", preferredStyle: .ActionSheet)
+        let actionSheet =  UIAlertController(title: "Add Tab", message: nil, preferredStyle: .ActionSheet)
         if tabs.indexOf({ $0.type == .HomeTimline }) == nil {
             actionSheet.addAction(UIAlertAction(title: "Home", style: .Default, handler: { action in
                 EventBox.post("addTab", sender: Tab.init(type: .HomeTimline, userID: "", arguments: [:]))

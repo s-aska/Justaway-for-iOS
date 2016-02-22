@@ -409,6 +409,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         }
     }
 
+    @IBAction func search(sender: AnyObject) {
+        SearchViewController.show("")
+    }
+
     @IBAction func openSidemenu(sender: AnyObject) {
         if let account = AccountSettingsStore.get()?.account() {
             sideMenuViewController.show(account)

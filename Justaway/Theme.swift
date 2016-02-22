@@ -80,6 +80,9 @@ class ThemeController {
         UIApplication.sharedApplication().statusBarStyle = theme.statusBarStyle()
         UITextView.appearance().textColor = theme.bodyTextColor()
         UITextView.appearance().backgroundColor = theme.mainBackgroundColor()
+        UITextField.appearance().textColor = theme.bodyTextColor()
+        UITextField.appearance().backgroundColor = theme.mainBackgroundColor()
+        UITextField.appearance().layer.borderColor = theme.cellSeparatorColor().CGColor
         UITableView.appearance().separatorColor = theme.cellSeparatorColor()
 
         // for CustomView
@@ -170,6 +173,10 @@ class ThemeController {
             case let v as UITextView:
                 v.textColor = theme.bodyTextColor()
                 v.backgroundColor = theme.mainBackgroundColor()
+            case let v as UITextField:
+                v.textColor = theme.bodyTextColor()
+                v.backgroundColor = theme.mainBackgroundColor()
+                v.layer.borderColor = theme.cellSeparatorColor().CGColor
             case let v as BackgroundTableViewCell:
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as BackgroundView:

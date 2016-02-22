@@ -194,6 +194,8 @@
 		6A5357D91A7429A600291E95 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5357D81A7429A600291E95 /* NotificationsViewController.swift */; };
 		6A56F5C81B19EB6C0058D6DD /* AddAccountAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A56F5C71B19EB6C0058D6DD /* AddAccountAlert.swift */; };
 		6A56F5CA1B19ECDC0058D6DD /* MessageAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A56F5C91B19ECDC0058D6DD /* MessageAlert.swift */; };
+		6A5EAF161C7B139B004283F2 /* SearchAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5EAF151C7B139B004283F2 /* SearchAlert.swift */; };
+		6A5EAF171C7B13AB004283F2 /* SearchAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5EAF151C7B139B004283F2 /* SearchAlert.swift */; };
 		6A7255741BC59EFF00A41020 /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */; };
 		6A7A534E1C57CF72005F3E6B /* Pinwheel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */; };
 		6A7A534F1C57CF72005F3E6B /* Pinwheel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -383,6 +385,7 @@
 		6A5357D81A7429A600291E95 /* NotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		6A56F5C71B19EB6C0058D6DD /* AddAccountAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAccountAlert.swift; sourceTree = "<group>"; };
 		6A56F5C91B19ECDC0058D6DD /* MessageAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAlert.swift; sourceTree = "<group>"; };
+		6A5EAF151C7B139B004283F2 /* SearchAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAlert.swift; sourceTree = "<group>"; };
 		6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pinwheel.framework; path = Carthage/Build/iOS/Pinwheel.framework; sourceTree = "<group>"; };
 		6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuViewController.xib; sourceTree = "<group>"; };
@@ -611,6 +614,7 @@
 				6A56F5C91B19ECDC0058D6DD /* MessageAlert.swift */,
 				6A56F5C71B19EB6C0058D6DD /* AddAccountAlert.swift */,
 				6ABECB481C624DD500423CB7 /* AddTabAlert.swift */,
+				6A5EAF151C7B139B004283F2 /* SearchAlert.swift */,
 			);
 			name = Alert;
 			sourceTree = "<group>";
@@ -1042,6 +1046,7 @@
 				6AB839D31B669D2F00B772C8 /* TalkViewController.swift in Sources */,
 				3868B94519EFCCC7001221BF /* TwitterDate.swift in Sources */,
 				38A1A9A719F786EC0085EE12 /* TwitterHashtag.swift in Sources */,
+				6A5EAF161C7B139B004283F2 /* SearchAlert.swift in Sources */,
 				38C44C8C1B78E7BF00C22A52 /* GeneralSettingsViewController.swift in Sources */,
 				3894C24C19E557120038AEF8 /* TimelineViewController.swift in Sources */,
 				3805DE921A5F181900FBD015 /* ThemeUI.swift in Sources */,
@@ -1181,6 +1186,7 @@
 				384DE9611BBAC9960011AF6E /* UserTimelineTableViewController.swift in Sources */,
 				384DE9461BBAC96F0011AF6E /* TwitterStatusCell.swift in Sources */,
 				6A83EDA61B69400B000F3C43 /* ThemeMonokai.swift in Sources */,
+				6A5EAF171C7B13AB004283F2 /* SearchAlert.swift in Sources */,
 				384DE9491BBAC9770011AF6E /* TwitterListCell.swift in Sources */,
 				384DE9511BBAC9810011AF6E /* ProfileViewController.swift in Sources */,
 				38E052931BA4845300B67EB2 /* ImagePickerCollectionView.swift in Sources */,
