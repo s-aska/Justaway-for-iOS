@@ -24,10 +24,12 @@ class TwitterStatus {
     let type: TwitterStatusType
     let quotedStatus: TwitterStatus?
     let event: String?
+    let connectionID: String
 
-    init(_ json: JSON) {
+    init(_ json: JSON, connectionID: String = "") {
         let targetJson = json["target_object"] != nil ? json["target_object"] : json
         let statusJson = targetJson["retweeted_status"] != nil ? targetJson["retweeted_status"] : targetJson
+        self.connectionID = connectionID
         self.event = json["event"].string
         self.user = TwitterUser(statusJson["user"])
         self.statusID = statusJson["id_str"].string ?? ""
@@ -109,6 +111,7 @@ class TwitterStatus {
 
     init(_ dictionary: [String: AnyObject]) {
         self.type = .Normal
+        self.connectionID = ""
         self.user = TwitterUser(dictionary["user"] as? [String: AnyObject] ?? [:])
         self.statusID = dictionary["statusID"] as? String ?? ""
         self.text = dictionary["text"] as? String ?? ""

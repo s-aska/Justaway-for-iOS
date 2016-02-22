@@ -34,6 +34,7 @@ class Twitter {
     struct Static {
         static var enableStreaming = false
         static var connectionStatus: ConnectionStatus = .DISCONNECTED
+        static var connectionID: String = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970.description
         static var streamingRequest: StreamingRequest?
         static var favorites = [String: Bool]()
         static var retweets = [String: String]()
@@ -45,7 +46,6 @@ class Twitter {
 
     class var connectionStatus: ConnectionStatus { return Static.connectionStatus }
     class var enableStreaming: Bool { return Static.enableStreaming }
-
 
     // MARK: - Class Methods
 
@@ -792,6 +792,7 @@ extension Twitter {
             NSLog("friends is not null")
             if Static.connectionStatus != .CONNECTED {
                 Static.connectionStatus = .CONNECTED
+                Static.connectionID = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970.description
                 EventBox.post(Event.StreamingStatusChanged.rawValue)
                 NSLog("connectionStatus: CONNECTED")
                 // UIApplication.sharedApplication().networkActivityIndicatorVisible = false
@@ -833,7 +834,7 @@ extension Twitter {
     class func receiveEvent(responce: JSON, event: String) {
         NSLog("event:\(event)")
         if event == "favorite" {
-            let status = TwitterStatus(responce)
+            let status = TwitterStatus(responce, connectionID: Static.connectionID)
             EventBox.post(Event.CreateStatus.rawValue, sender: status)
             if AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
                 if (Static.favorites[status.statusID] ?? false) != true {
@@ -842,13 +843,13 @@ extension Twitter {
                 }
             }
         } else if event == "unfavorite" {
-            let status = TwitterStatus(responce)
+            let status = TwitterStatus(responce, connectionID: Static.connectionID)
             if AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
                 Static.favorites.removeValueForKey(status.statusID)
                 EventBox.post(Event.DestroyFavorites.rawValue, sender: status.statusID)
             }
         } else if event == "quoted_tweet" || event == "favorited_retweet" || event == "retweeted_retweet" {
-            let status = TwitterStatus(responce)
+            let status = TwitterStatus(responce, connectionID: Static.connectionID)
             if event == "favorited_retweet" && AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
                 NSLog("duplicate?")
             } else {
@@ -860,7 +861,7 @@ extension Twitter {
     }
 
     class func receiveStatus(responce: JSON) {
-        let status = TwitterStatus(responce)
+        let status = TwitterStatus(responce, connectionID: Static.connectionID)
         EventBox.post(Event.CreateStatus.rawValue, sender: status)
     }
 

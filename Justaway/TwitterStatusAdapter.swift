@@ -184,6 +184,12 @@ class TwitterStatusAdapter: NSObject {
                     addShowMore = true
                 }
             }
+        } else if mode == .TOP {
+            if let topRowStatus = rows.first?.status, firstReceivedStatus = statuses.first {
+                if !firstReceivedStatus.connectionID.isEmpty && firstReceivedStatus.connectionID != topRowStatus.connectionID {
+                    addShowMore = true
+                }
+            }
         }
 
         let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + statuses.count) - limit, 0)
@@ -283,6 +289,11 @@ class TwitterStatusAdapter: NSObject {
         }()
 
         delegate?.loadData(sinceID: sinceID, maxID: maxID, success: { (statuses) -> Void in
+
+            if statuses.count == 0 {
+                handler()
+                return
+            }
 
             let findLast: Bool = {
                 guard let lastStatusID = statuses.last?.uniqueID else {

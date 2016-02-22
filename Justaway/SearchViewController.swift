@@ -44,10 +44,13 @@ class SearchViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
+        cover.hidden = true
         keywordTextField.text = keyword
         if keyword?.isEmpty ?? true {
             keywordTextField.becomeFirstResponder()
+            keywordTextField.rightViewMode = .Never
         } else {
+            keywordTextField.rightViewMode = .Always
             loadData()
         }
     }
@@ -96,7 +99,7 @@ class SearchViewController: UIViewController {
         button.addTarget(self, action: "clear", forControlEvents: .TouchUpInside)
         keywordTextField.addTarget(self, action: "change", forControlEvents: .EditingChanged)
         keywordTextField.rightView = button
-        keywordTextField.rightViewMode = .Never
+        keywordTextField.rightViewMode = .Always
     }
 
     func loadData(maxID: String? = nil) {
@@ -286,7 +289,7 @@ class SearchViewController: UIViewController {
         if keywordTextField.text?.isEmpty ?? true {
             keywordTextField.rightViewMode = .Never
         } else {
-            keywordTextField.rightViewMode = .WhileEditing
+            keywordTextField.rightViewMode = .Always
         }
     }
 
