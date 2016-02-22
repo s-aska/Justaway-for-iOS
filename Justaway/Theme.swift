@@ -83,6 +83,7 @@ class ThemeController {
         UITextField.appearance().textColor = theme.bodyTextColor()
         UITextField.appearance().backgroundColor = theme.mainBackgroundColor()
         UITextField.appearance().layer.borderColor = theme.cellSeparatorColor().CGColor
+        UITextField.appearance().tintColor = theme.bodyTextColor()
         UITableView.appearance().separatorColor = theme.cellSeparatorColor()
 
         // for CustomView
@@ -175,6 +176,7 @@ class ThemeController {
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as UITextField:
                 v.textColor = theme.bodyTextColor()
+                v.tintColor = theme.bodyTextColor()
                 v.backgroundColor = theme.mainBackgroundColor()
                 v.layer.borderColor = theme.cellSeparatorColor().CGColor
             case let v as BackgroundTableViewCell:

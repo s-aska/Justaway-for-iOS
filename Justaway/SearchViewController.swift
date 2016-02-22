@@ -85,6 +85,18 @@ class SearchViewController: UIViewController {
 
         let touchCover = UITapGestureRecognizer(target: keywordTextField, action: "resignFirstResponder")
         cover.addGestureRecognizer(touchCover)
+
+        let button = MenuButton()
+        button.tintColor = UIColor.clearColor()
+        button.titleLabel?.font = UIFont(name: "fontello", size: 16.0)
+        button.frame = CGRect.init(x: 0, y: 0, width: 32, height: 32)
+        button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
+        button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
+        button.setTitle("✖", forState: UIControlState.Normal)
+        button.addTarget(self, action: "clear", forControlEvents: .TouchUpInside)
+        keywordTextField.addTarget(self, action: "change", forControlEvents: .EditingChanged)
+        keywordTextField.rightView = button
+        keywordTextField.rightViewMode = .Never
     }
 
     func loadData(maxID: String? = nil) {
@@ -226,6 +238,7 @@ class SearchViewController: UIViewController {
 
     func keyboardWillChangeFrame(notification: NSNotification, showsKeyboard: Bool) {
         cover.hidden = !showsKeyboard
+        change()
     }
 
     @IBAction func menu(sender: UIView) {
@@ -262,6 +275,19 @@ class SearchViewController: UIViewController {
             return
         }
         EditorViewController.show(" " + keyword, range: NSRange(location: 0, length: 0), inReplyToStatus: nil)
+    }
+
+    func clear() {
+        keywordTextField.text = ""
+        keywordTextField.rightViewMode = .Never
+    }
+
+    func change() {
+        if keywordTextField.text?.isEmpty ?? true {
+            keywordTextField.rightViewMode = .Never
+        } else {
+            keywordTextField.rightViewMode = .WhileEditing
+        }
     }
 
     func hide() {
