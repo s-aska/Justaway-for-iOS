@@ -19,12 +19,7 @@ DerivedData
 *.hmap
 *.xccheckout
 
-# CocoaPods
-Pods
-Justaway.xcworkspace
-
-# Secret
-Justaway/JFISecret.m
+# Carthage
 Carthage
 
 # shenzhen
@@ -32,3 +27,6 @@ build
 *.ipa
 *.app.dSYM.zip
 Justaway.app.dSYM
+
+# Acknowledgements
+Licenses.plist
