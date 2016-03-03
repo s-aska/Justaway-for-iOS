@@ -121,6 +121,7 @@
 		3894C24C19E557120038AEF8 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3894C24B19E557120038AEF8 /* TimelineViewController.swift */; };
 		3894C24E19E557BF0038AEF8 /* TimelineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */; };
 		3894C25019E55C770038AEF8 /* ViewTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3894C24F19E55C770038AEF8 /* ViewTools.swift */; };
+		38958B321C886637000BD859 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 38958B311C886637000BD859 /* Settings.bundle */; };
 		3899C6AD1A5C441800F8AE87 /* NSOperationQueue-Serial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3899C6AC1A5C441800F8AE87 /* NSOperationQueue-Serial.swift */; };
 		38A032161B7233810020D109 /* TwitterStatusAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A032151B7233810020D109 /* TwitterStatusAdapter.swift */; };
 		38A1A9A719F786EC0085EE12 /* TwitterHashtag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A1A9A619F786EC0085EE12 /* TwitterHashtag.swift */; };
@@ -320,6 +321,7 @@
 		3894C24B19E557120038AEF8 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		3894C24D19E557BF0038AEF8 /* TimelineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineViewController.xib; sourceTree = "<group>"; };
 		3894C24F19E55C770038AEF8 /* ViewTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewTools.swift; sourceTree = "<group>"; };
+		38958B311C886637000BD859 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		3899C6AC1A5C441800F8AE87 /* NSOperationQueue-Serial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue-Serial.swift"; sourceTree = "<group>"; };
 		38A032151B7233810020D109 /* TwitterStatusAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterStatusAdapter.swift; sourceTree = "<group>"; };
 		38A1A9A619F786EC0085EE12 /* TwitterHashtag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterHashtag.swift; sourceTree = "<group>"; };
@@ -666,6 +668,7 @@
 				38B4475C19C062460055F074 /* fontello.ttf */,
 				6A4B9D2D19BB514900D50D78 /* Info.plist */,
 				6A0AE9E41B5177FD00FBF937 /* Default-568h@2x.png */,
+				38958B311C886637000BD859 /* Settings.bundle */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -840,6 +843,7 @@
 				38AB8BD219F6A1DF0065D869 /* Embed Frameworks */,
 				6A3F4F701B18B79F009F80C4 /* ShellScript */,
 				380B1CE71C571EBB00787B36 /* ShellScript */,
+				38958B331C88699A000BD859 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -924,6 +928,7 @@
 				38D11E811C6F1A530036AFB5 /* SavedSearchesViewController.xib in Resources */,
 				6AB55B5319C8B2D500DC6442 /* ThemeViewController.xib in Resources */,
 				6AFD4C2D1C650E9C009DD340 /* TabSettingsCell.xib in Resources */,
+				38958B321C886637000BD859 /* Settings.bundle in Resources */,
 				6ABECB4D1C624FF200423CB7 /* TabSettingsViewController.xib in Resources */,
 				6AB839D51B669D5500B772C8 /* TalkViewController.xib in Resources */,
 				38C44C931B78E7D500C22A52 /* GeneralSettingsViewController.xib in Resources */,
@@ -985,6 +990,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+		38958B331C88699A000BD859 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "APP_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" $PRODUCT_SETTINGS_PATH)\n/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:1:DefaultValue ${APP_VERSION}\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Settings.bundle/Root.plist\"\n\nBUILD_NUMBER=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" $PRODUCT_SETTINGS_PATH)\n/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:2:DefaultValue ${BUILD_NUMBER}\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Settings.bundle/Root.plist\"\n";
 		};
 		6A3F4F701B18B79F009F80C4 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
