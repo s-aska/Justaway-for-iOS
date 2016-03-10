@@ -193,7 +193,12 @@ class Twitter {
         let parameters = ["user_id": userIDs]
         accountSettings.account().client
             .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
-            .responseJSONArray(success)
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+
+                AccountSettingsStore.save(accountSettings)
+
+                EventBox.post(twitterAuthorizeNotification)
+            })
     }
 
     class func client() -> Client? {
