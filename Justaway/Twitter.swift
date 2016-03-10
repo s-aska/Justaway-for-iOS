@@ -21,6 +21,12 @@ class Twitter {
         case DISCONNECTED
     }
 
+    enum StreamingMode: String {
+        case Manual = "Manual"
+        case AutoOnWiFi = "AutoOnWiFi"
+        case AutoAlways = "AutoAlways"
+    }
+
     enum Event: String {
         case CreateStatus = "CreateStatus"
         case CreateFavorites = "CreateFavorites"
@@ -32,54 +38,79 @@ class Twitter {
     }
 
     struct Static {
-        static var enableStreaming = false
+        static var reachability: Reachability? // keep memory
+        static var streamingMode = StreamingMode.Manual
+        static var onWiFi = false
         static var connectionStatus: ConnectionStatus = .DISCONNECTED
         static var connectionID: String = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970.description
         static var streamingRequest: StreamingRequest?
         static var favorites = [String: Bool]()
         static var retweets = [String: String]()
         static var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
-        private static let connectionQueue = dispatch_queue_create("pw.aska.justaway.twitter.connection", DISPATCH_QUEUE_SERIAL)
         private static let favoritesQueue = dispatch_queue_create("pw.aska.justaway.twitter.favorites", DISPATCH_QUEUE_SERIAL)
         private static let retweetsQueue = dispatch_queue_create("pw.aska.justaway.twitter.retweets", DISPATCH_QUEUE_SERIAL)
     }
 
     class var connectionStatus: ConnectionStatus { return Static.connectionStatus }
-    class var enableStreaming: Bool { return Static.enableStreaming }
+    class var streamingMode: StreamingMode { return Static.streamingMode }
+
+    class var enableStreaming: Bool {
+        switch Static.streamingMode {
+        case .Manual:
+            return false
+        case .AutoAlways:
+            return true
+        case .AutoOnWiFi:
+            return Static.onWiFi
+        }
+    }
 
     // MARK: - Class Methods
 
     class func setup() {
-        let reachability: Reachability
         do {
-            reachability = try Reachability.reachabilityForInternetConnection()
+            Static.reachability = try Reachability.reachabilityForInternetConnection()
         } catch {
             print("Unable to create Reachability")
             return
         }
 
-        reachability.whenReachable = { reachability in
+        Static.reachability?.whenReachable = { reachability in
             NSLog("whenReachable")
-//            Async.main(after: 2) {
-//                Twitter.startStreamingIfEnable()
-//            }
-//            return
+            Async.main {
+                if reachability.isReachableViaWiFi() {
+                    NSLog("Reachable via WiFi")
+                    Static.onWiFi = true
+                } else {
+                    NSLog("Reachable via Cellular")
+                    Static.onWiFi = false
+                }
+            }
+            Async.main(after: 2) {
+                Twitter.startStreamingIfEnable()
+            }
+            return
         }
 
-        reachability.whenUnreachable = { reachability in
-            NSLog("whenUnreachable")
+        Static.reachability?.whenUnreachable = { reachability in
+            Async.main {
+                NSLog("whenUnreachable")
+                Static.onWiFi = false
+            }
         }
 
         do {
-            try reachability.startNotifier()
+            try Static.reachability?.startNotifier()
         } catch {
             print("Unable to start notifier")
         }
 
-        let enableStreaming: String = KeyClip.load("settings.enableStreaming") ?? "0"
-        if enableStreaming == "1" {
-//            Static.enableStreaming = true
-//            Twitter.startStreamingIfDisconnected()
+        if let streamingModeString: String = KeyClip.load("settings.streamingMode") {
+            if let streamingMode = StreamingMode(rawValue: streamingModeString) {
+                Static.streamingMode = streamingMode
+            } else {
+                KeyClip.delete("settings.streamingMode")
+            }
         }
     }
 
@@ -738,190 +769,6 @@ extension Twitter {
             .responseJSON({ (json: JSON) -> Void in
                 ErrorAlert.show("Report success")
             })
-    }
-}
-
-// MARK: - Streaming
-
-extension Twitter {
-    class func startStreamingIfEnable() {
-        if Static.enableStreaming {
-            startStreamingIfDisconnected()
-        }
-    }
-
-    class func startStreamingAndEnable() {
-        Static.enableStreaming = true
-        startStreamingIfDisconnected()
-        KeyClip.save("settings.enableStreaming", string: "1")
-    }
-
-    class func startStreamingIfDisconnected() {
-        Async.customQueue(Static.connectionQueue) {
-            if Static.connectionStatus == .DISCONNECTED {
-                Static.connectionStatus = .CONNECTING
-                EventBox.post(Event.StreamingStatusChanged.rawValue)
-                NSLog("connectionStatus: CONNECTING")
-                Twitter.startStreaming()
-            }
-        }
-    }
-
-    class func startStreaming() {
-        if Static.backgroundTaskIdentifier == UIBackgroundTaskInvalid {
-            NSLog("backgroundTaskIdentifier: beginBackgroundTask")
-            Static.backgroundTaskIdentifier = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler() {
-                NSLog("backgroundTaskIdentifier: Expiration")
-                if Static.backgroundTaskIdentifier != UIBackgroundTaskInvalid {
-                    NSLog("backgroundTaskIdentifier: endBackgroundTask")
-                    self.stopStreamingIFConnected()
-                    UIApplication.sharedApplication().endBackgroundTask(Static.backgroundTaskIdentifier)
-                    Static.backgroundTaskIdentifier = UIBackgroundTaskInvalid
-                }
-            }
-        }
-
-        guard let account = AccountSettingsStore.get()?.account() else {
-            return
-        }
-        Static.streamingRequest = account.client
-            .streaming("https://userstream.twitter.com/1.1/user.json")
-            .progress(Twitter.streamingProgressHandler)
-            .completion(Twitter.streamingCompletionHandler)
-            .start()
-    }
-
-    class func streamingProgressHandler(data: NSData) {
-        let responce = JSON(data: data)
-        if responce["friends"] != nil {
-            NSLog("friends is not null")
-            if Static.connectionStatus != .CONNECTED {
-                Static.connectionStatus = .CONNECTED
-                Static.connectionID = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970.description
-                EventBox.post(Event.StreamingStatusChanged.rawValue)
-                NSLog("connectionStatus: CONNECTED")
-                // UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            }
-        } else if let event = responce["event"].string {
-            receiveEvent(responce, event: event)
-        } else if let statusID = responce["delete"]["status"]["id_str"].string {
-            receiveDestroyStatus(statusID)
-        } else if responce["delete"]["direct_message"] != nil {
-            receiveDestroyMessage(responce)
-        } else if responce["direct_message"] != nil {
-
-        } else if responce["text"] != nil {
-            receiveStatus(responce)
-        } else if responce["disconnect"] != nil {
-            receiveDisconnect(responce)
-        } else {
-            NSLog("unknown streaming data: \(responce.debugDescription)")
-        }
-    }
-
-    class func streamingCompletionHandler(responseData: NSData?, response: NSURLResponse?, error: NSError?) {
-        Static.connectionStatus = .DISCONNECTED
-        EventBox.post(Event.StreamingStatusChanged.rawValue)
-        NSLog("connectionStatus: DISCONNECTED")
-        NSLog("completion")
-        if let response = response as? NSHTTPURLResponse {
-            NSLog("[connectionDidFinishLoading] code:\(response.statusCode) data:\(NSString(data: responseData!, encoding: NSUTF8StringEncoding))")
-            if response.statusCode == 420 {
-                // Rate Limited
-                // The client has connected too frequently. For example, an endpoint returns this status if:
-                // - A client makes too many login attempts in a short period of time.
-                // - Too many copies of an application attempt to authenticate with the same credentials.
-                ErrorAlert.show("Streaming API Rate Limited", message: "The client has connected too frequently.")
-            }
-        }
-    }
-
-    class func receiveEvent(responce: JSON, event: String) {
-        NSLog("event:\(event)")
-        if event == "favorite" {
-            let status = TwitterStatus(responce, connectionID: Static.connectionID)
-            EventBox.post(Event.CreateStatus.rawValue, sender: status)
-            if AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
-                if (Static.favorites[status.statusID] ?? false) != true {
-                    Static.favorites[status.statusID] = true
-                    EventBox.post(Event.CreateFavorites.rawValue, sender: status.statusID)
-                }
-            }
-        } else if event == "unfavorite" {
-            let status = TwitterStatus(responce, connectionID: Static.connectionID)
-            if AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
-                Static.favorites.removeValueForKey(status.statusID)
-                EventBox.post(Event.DestroyFavorites.rawValue, sender: status.statusID)
-            }
-        } else if event == "quoted_tweet" || event == "favorited_retweet" || event == "retweeted_retweet" {
-            let status = TwitterStatus(responce, connectionID: Static.connectionID)
-            if event == "favorited_retweet" && AccountSettingsStore.isCurrent(status.actionedBy?.userID ?? "") {
-                NSLog("duplicate?")
-            } else {
-                EventBox.post(Event.CreateStatus.rawValue, sender: status)
-            }
-        } else if event == "access_revoked" {
-            revoked()
-        }
-    }
-
-    class func receiveStatus(responce: JSON) {
-        let status = TwitterStatus(responce, connectionID: Static.connectionID)
-        EventBox.post(Event.CreateStatus.rawValue, sender: status)
-    }
-
-    class func receiveDestroyStatus(statusID: String) {
-        EventBox.post(Event.DestroyStatus.rawValue, sender: statusID)
-    }
-
-    class func receiveDestroyMessage(responce: JSON) {
-    }
-
-    class func receiveDisconnect(responce: JSON) {
-        Static.enableStreaming = false
-        Static.connectionStatus = .DISCONNECTED
-        EventBox.post(Event.StreamingStatusChanged.rawValue)
-        let code = responce["disconnect"]["code"].int ?? 0
-        let reason = responce["disconnect"]["reason"].string ?? "Unknown"
-        ErrorAlert.show("Streaming disconnect", message: "\(reason) (\(code))")
-        if code == 6 {
-            revoked()
-        }
-    }
-
-    class func stopStreamingAndDisable() {
-        Static.enableStreaming = false
-        stopStreamingIFConnected()
-        KeyClip.save("settings.enableStreaming", string: "0")
-    }
-
-    class func stopStreamingIFConnected() {
-        Async.customQueue(Static.connectionQueue) {
-            if Static.connectionStatus == .CONNECTED {
-                Static.connectionStatus = .DISCONNECTED
-                EventBox.post(Event.StreamingStatusChanged.rawValue)
-                NSLog("connectionStatus: DISCONNECTED")
-                Twitter.stopStreaming()
-            }
-        }
-    }
-
-    class func stopStreaming() {
-        Static.streamingRequest?.stop()
-    }
-
-    class func revoked() {
-        if let settings = AccountSettingsStore.get() {
-            let currentUserID = settings.account().userID
-            let newAccounts = settings.accounts.filter({ $0.userID != currentUserID })
-            if newAccounts.count > 0 {
-                let newSettings = AccountSettings(current: 0, accounts: newAccounts)
-                AccountSettingsStore.save(newSettings)
-            } else {
-                AccountSettingsStore.clear()
-            }
-            EventBox.post(twitterAuthorizeNotification)
-        }
     }
 }
 
