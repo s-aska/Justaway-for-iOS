@@ -9,6 +9,7 @@
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
+            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -71,9 +72,9 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcO-tg-NdG" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                    <rect key="frame" x="60" y="0.0" width="62" height="50"/>
+                                    <rect key="frame" x="60" y="0.0" width="60" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                                    <inset key="contentEdgeInsets" minX="19" minY="15" maxX="19" maxY="15"/>
                                     <state key="normal" title="画">
                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -100,17 +101,32 @@
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wCW-rF-wl1" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="120" y="0.0" width="59" height="50"/>
+                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                                    <inset key="contentEdgeInsets" minX="22" minY="15" maxX="22" maxY="15"/>
+                                    <state key="normal" title="音">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="music:" destination="-1" eventType="touchUpInside" id="8W6-wK-pW4"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="centerY" secondItem="NN0-dj-HHc" secondAttribute="centerY" id="0RW-J6-0qG"/>
                                 <constraint firstItem="VpL-cL-hHt" firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="0Ui-k7-Mi1"/>
+                                <constraint firstItem="wCW-rF-wl1" firstAttribute="leading" secondItem="AcO-tg-NdG" secondAttribute="trailing" id="IVP-yO-QQ9"/>
                                 <constraint firstAttribute="height" constant="50" id="QA0-KP-aqU"/>
+                                <constraint firstAttribute="bottom" secondItem="wCW-rF-wl1" secondAttribute="bottom" id="RLx-at-tXZ"/>
                                 <constraint firstItem="NN0-dj-HHc" firstAttribute="leading" secondItem="cpB-WM-7Qz" secondAttribute="leading" id="RPs-BP-itF"/>
                                 <constraint firstItem="AcO-tg-NdG" firstAttribute="leading" secondItem="NN0-dj-HHc" secondAttribute="trailing" id="cZu-qX-yjw"/>
                                 <constraint firstAttribute="centerY" secondItem="AcO-tg-NdG" secondAttribute="centerY" id="fS4-To-Vfx"/>
                                 <constraint firstAttribute="trailing" secondItem="mbk-4F-WpO" secondAttribute="trailing" id="ht5-bz-Fwc"/>
                                 <constraint firstItem="mbk-4F-WpO" firstAttribute="leading" secondItem="VpL-cL-hHt" secondAttribute="leading" constant="16" id="wxk-Cr-Nxf"/>
+                                <constraint firstItem="wCW-rF-wl1" firstAttribute="top" secondItem="cpB-WM-7Qz" secondAttribute="top" id="xp2-O1-07d"/>
                                 <constraint firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="y1y-gb-4En"/>
                             </constraints>
                         </view>
