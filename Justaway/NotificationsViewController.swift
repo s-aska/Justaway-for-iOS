@@ -48,6 +48,17 @@ class NotificationsViewController: StatusTableViewController {
     override func accept(status: TwitterStatus) -> Bool {
 
         if let event = status.event {
+            if let accountSettings = AccountSettingsStore.get() {
+                if let actionedBy = status.actionedBy {
+                    if accountSettings.isMe(actionedBy.userID) {
+                        return false
+                    }
+                } else {
+                    if accountSettings.isMe(status.user.userID) {
+                        return false
+                    }
+                }
+            }
             if event == "quoted_tweet" || event == "favorited_retweet" || event == "retweeted_retweet" {
                 return true
             }
