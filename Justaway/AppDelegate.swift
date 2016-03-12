@@ -5,6 +5,7 @@ import EventBox
 import OAuthSwift
 import Accounts
 import TwitterAPI
+import Async
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -62,9 +63,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         NSLog("applicationDidBecomeActive")
 
-//        Async.background(after: 1) { () -> Void in
-//            Twitter.startStreamingIfEnable()
-//        }
+        Async.background(after: 1) { () -> Void in
+            Twitter.startStreamingIfEnable()
+        }
 
         application.idleTimerDisabled = GenericSettings.get().disableSleep
 

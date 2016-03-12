@@ -2,6 +2,7 @@ import UIKit
 import EventBox
 import Photos
 import Async
+import MediaPlayer
 
 class EditorViewController: UIViewController {
 
@@ -232,6 +233,40 @@ class EditorViewController: UIViewController {
 
     @IBAction func image(sender: UIButton) {
         image()
+    }
+
+    @IBAction func music(sender: UIButton) {
+        guard let item = MPMusicPlayerController.systemMusicPlayer().nowPlayingItem else {
+            ErrorAlert.show("Missing music", message: "Sorry, support the apple music only")
+            return
+        }
+        var text = ""
+        if let title = item.title {
+            text += title
+        }
+        if let artist = item.artist {
+            text += " - " + artist
+        }
+        if !text.isEmpty {
+            textView.text = "#NowPlaying " + text
+            textView.selectedRange = NSRange.init(location: 0, length: 0)
+        }
+        if let artwork = item.valueForProperty(MPMediaItemPropertyArtwork) as? MPMediaItemArtwork {
+            if let image = artwork.imageWithSize(artwork.bounds.size), imageData = UIImagePNGRepresentation(image) {
+                let i = self.images.count
+                if i >= 4 {
+                    return
+                }
+                self.images.append(UploadImage(data: imageData, asset: PHAsset()))
+                self.imageViews[i].image = image
+                if self.imageContainerHeightConstraint.constant == 0 {
+                    self.imageContainerHeightConstraint.constant = self.imageContainerHeightConstraintDefault
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        self.view.layoutIfNeeded()
+                    })
+                }
+            }
+        }
     }
 
     @IBAction func send(sender: UIButton) {

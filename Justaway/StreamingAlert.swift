@@ -1,11 +1,3 @@
-//
-//  StreamingAlert.swift
-//  Justaway
-//
-//  Created by Shinichiro Aska on 1/17/15.
-//  Copyright (c) 2015 Shinichiro Aska. All rights reserved.
-//
-
 import UIKit
 
 class StreamingAlert {
@@ -17,21 +9,38 @@ class StreamingAlert {
             handler: { action in
                 actionSheet.dismissViewControllerAnimated(true, completion: nil)
         }))
+        actionSheet.message = "Streaming Menu"
+        actionSheet.addAction(UIAlertAction(
+            title: "Set to Auto Connect" + (Twitter.streamingMode == .AutoAlways ? " *" : ""),
+            style: .Default,
+            handler: { action in
+                Twitter.changeMode(.AutoAlways)
+        }))
+        actionSheet.addAction(UIAlertAction(
+            title: "Set to Auto Connect on Wi-Fi" + (Twitter.streamingMode == .AutoOnWiFi ? " *" : ""),
+            style: .Default,
+            handler: { action in
+                Twitter.changeMode(.AutoOnWiFi)
+        }))
+        actionSheet.addAction(UIAlertAction(
+            title: "Set to Manual Connect" + (Twitter.streamingMode == .Manual ? " *" : ""),
+            style: .Default,
+            handler: { action in
+                Twitter.changeMode(.Manual)
+        }))
         if Twitter.connectionStatus == Twitter.ConnectionStatus.DISCONNECTED {
-            actionSheet.message = "Connect to the streaming"
             actionSheet.addAction(UIAlertAction(
-                title: "Connect",
+                title: "Connect once",
                 style: .Default,
                 handler: { action in
-                    Twitter.startStreamingAndEnable()
+                    Twitter.startStreamingIfDisconnected()
             }))
         } else if Twitter.connectionStatus == Twitter.ConnectionStatus.CONNECTED {
-            actionSheet.message = "Disconnect to the streaming"
             actionSheet.addAction(UIAlertAction(
                 title: "Disconnect",
                 style: .Destructive,
                 handler: { action in
-                    Twitter.stopStreamingAndDisable()
+                    Twitter.stopStreamingIFConnected()
             }))
         }
 

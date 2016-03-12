@@ -203,6 +203,12 @@
       "css": "edit-alt",
       "code": 26360,
       "src": "elusive"
+    },
+    {
+      "uid": "fda731b5a4026685e1a9c7e64228e2b2",
+      "css": "note-beamed",
+      "code": 38899,
+      "src": "entypo"
     }
   ]
 }

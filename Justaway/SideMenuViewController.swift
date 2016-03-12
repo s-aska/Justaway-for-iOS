@@ -8,6 +8,7 @@
 
 import UIKit
 import Async
+import EventBox
 
 class SideMenuViewController: UIViewController {
 
@@ -39,6 +40,16 @@ class SideMenuViewController: UIViewController {
         configureView()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        configureEvent()
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        EventBox.off(self)
+    }
+
     // MARK: - Configuration
 
     func configureView() {
@@ -68,23 +79,46 @@ class SideMenuViewController: UIViewController {
         bannerImageView.layer.insertSublayer(gradient, atIndex: 0)
 
         updateStreamingButtonTitle()
+
+        // EventBox.post("changeStreamingMode")
+    }
+
+    func streamingModeLabel() -> String {
+        switch Twitter.streamingMode {
+        case .Manual:
+            return "Manual"
+        case .AutoOnWiFi:
+            return "Auto (Wi-Fi)"
+        case .AutoAlways:
+            return "Auto"
+        }
+    }
+
+    func streamingStatusLabel() -> String {
+        switch Twitter.connectionStatus {
+        case .CONNECTED:
+            return "connected"
+        case .CONNECTING:
+            return "connecting..."
+        case .DISCONNECTED:
+            if Twitter.enableStreaming {
+                return "disconnected"
+            } else {
+                return "off"
+            }
+        case .DISCONNECTING:
+            return "disconnecting..."
+        }
+    }
+
+    func configureEvent() {
+        EventBox.onMainThread(self, name: "changeStreamingMode") { n in
+            self.updateStreamingButtonTitle()
+        }
     }
 
     func updateStreamingButtonTitle() {
-        switch Twitter.connectionStatus {
-        case .CONNECTED:
-            self.streamingButton?.setTitle("Streaming / connected", forState: UIControlState.Normal)
-        case .CONNECTING:
-            self.streamingButton?.setTitle("Streaming / connecting...", forState: UIControlState.Normal)
-        case .DISCONNECTED:
-            if Twitter.enableStreaming {
-                self.streamingButton?.setTitle("Streaming / disconnected", forState: UIControlState.Normal)
-            } else {
-                self.streamingButton?.setTitle("Streaming / off", forState: UIControlState.Normal)
-            }
-        case .DISCONNECTING:
-            self.streamingButton?.setTitle("Streaming / disconnecting...", forState: UIControlState.Normal)
-        }
+        self.streamingButton?.setTitle("Streaming: \(self.streamingModeLabel()) / \(self.streamingStatusLabel())", forState: UIControlState.Normal)
     }
 
     // MARK: -
