@@ -140,7 +140,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                 self.renderData(statuses, mode: .OVER, handler: always)
             }
             let failure = { (error: NSError) -> Void in
-                ErrorAlert.show("loadCache Error", message: error.localizedDescription)
+                ErrorAlert.show(error)
                 always()
             }
             dispatch_sync(dispatch_get_main_queue(), {
@@ -193,7 +193,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                 self.renderData(statuses, mode: (maxID != nil ? .BOTTOM : .OVER), handler: always)
             }
             let failure = { (error: NSError) -> Void in
-                ErrorAlert.show("loadData Error", message: error.localizedDescription)
+                ErrorAlert.show(error)
                 always()
             }
             if !(self.refreshControl?.refreshing ?? false) {
@@ -243,7 +243,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                 self.renderData(statuses, mode: .HEADER, handler: always)
             }
             let failure = { (error: NSError) -> Void in
-                ErrorAlert.show("loadDataToTop Error", message: error.localizedDescription)
+                ErrorAlert.show(error)
                 always()
             }
             if let sinceID = self.adapter.sinceID() {

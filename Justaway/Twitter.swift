@@ -803,6 +803,7 @@ extension TwitterAPI.Request {
     public func responseJSONWithError(success: ((JSON) -> Void)?, failure: ((code: Int?, message: String?, error: NSError) -> Void)?) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         let url = self.originalRequest.URL?.absoluteString ?? "-"
+        let account = AccountSettingsStore.get()?.accounts.filter({ $0.client.serialize == self.originalClient.serialize }).first
         response { (responseData, response, error) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             if let error = error {
@@ -813,16 +814,44 @@ extension TwitterAPI.Request {
                 }
             } else if let data = responseData {
                 let json = JSON(data: data)
-                if let errors = json["errors"].array {
+                if json.error != nil {
+                    let HTTPResponse = response
+                    let HTTPStatusCode = HTTPResponse?.statusCode ?? 0
+                    let error = NSError.init(domain: NSURLErrorDomain, code: HTTPStatusCode, userInfo: [
+                        NSLocalizedDescriptionKey: "Twitter API Error\nURL:\(url)\nHTTP StatusCode:\(HTTPStatusCode)",
+                        NSLocalizedRecoverySuggestionErrorKey: "-"
+                    ])
+                    if let failure = failure {
+                        failure(code: nil, message: nil, error: error)
+                    } else {
+                        ErrorAlert.show("Twitter API Error", message: error.localizedDescription)
+                    }
+                } else if let errors = json["errors"].array {
                     let code = errors[0]["code"].int ?? 0
                     let message = errors[0]["message"].string ?? "Unknown"
                     let HTTPResponse = response
                     let HTTPStatusCode = HTTPResponse?.statusCode ?? 0
-                    let error = NSError(domain: NSURLErrorDomain, code: HTTPStatusCode, userInfo: nil)
+                    var localizedDescription = "Twitter API Error\nErrorMessage:\(message)\nErrorCode:\(code)\nURL:\(url)\nHTTP StatusCode:\(HTTPStatusCode)"
+                    var recoverySuggestion = "-"
+                    if HTTPStatusCode == 401 && code == 89 {
+                        localizedDescription = "Was revoked access"
+                        if let account = account {
+                            localizedDescription += " @\(account.screenName)"
+                        }
+                        if (account?.client as? OAuthClient) != nil {
+                            recoverySuggestion = "1. Open the menu (upper left).\n2. Open the Accounts.\n3. Tap the [Add]\n4. Choose via Justaway for iOS\n5. Authorize app."
+                        } else {
+                            recoverySuggestion = "1. Tap the Home button.\n2. Open the [Settings].\n3. Open the [Twitter].\n4. Delete all account.\n5. Add all account.\n6. Open the Justaway."
+                        }
+                    }
+                    let error = NSError.init(domain: NSURLErrorDomain, code: HTTPStatusCode, userInfo: [
+                        NSLocalizedDescriptionKey: localizedDescription,
+                        NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion
+                    ])
                     if let failure = failure {
                         failure(code: code, message: message, error: error)
                     } else {
-                        ErrorAlert.show("Twitter API Error", message: "\(message)(\(code)) url:\(url) code:\(HTTPStatusCode)")
+                        ErrorAlert.show("Twitter API Error", message: error.localizedDescription)
                     }
                 } else {
                     success?(json)
