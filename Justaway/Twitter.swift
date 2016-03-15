@@ -709,55 +709,79 @@ extension Twitter {
     }
 
     class func turnOnRetweets(userID: String) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
         let parameters = ["user_id": userID, "retweets": "true"]
-        client()?
+        account.client
             .post("https://api.twitter.com/1.1/friendships/update.json", parameters: parameters)
             .responseJSON({ (json: JSON) -> Void in
+                Relationship.turnOnRetweets(account, targetUserID: userID)
                 ErrorAlert.show("Turn on retweets success")
             })
     }
 
     class func turnOffRetweets(userID: String) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
         let parameters = ["user_id": userID, "retweets": "false"]
-        client()?
+        account.client
             .post("https://api.twitter.com/1.1/friendships/update.json", parameters: parameters)
             .responseJSON({ (json: JSON) -> Void in
+                Relationship.turnOffRetweets(account, targetUserID: userID)
                 ErrorAlert.show("Turn off retweets success")
             })
     }
 
     class func mute(userID: String) { //
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
         let parameters = ["user_id": userID]
-        client()?
+        account.client
             .post("https://api.twitter.com/1.1/mutes/users/create.json", parameters: parameters)
             .responseJSON({ (json: JSON) -> Void in
+                Relationship.mute(account, targetUserID: userID)
                 ErrorAlert.show("Mute success")
             })
     }
 
     class func unmute(userID: String) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
         let parameters = ["user_id": userID]
-        client()?
+        account.client
             .post("https://api.twitter.com/1.1/mutes/users/destroy.json", parameters: parameters)
             .responseJSON({ (json: JSON) -> Void in
+                Relationship.unmute(account, targetUserID: userID)
                 ErrorAlert.show("Unmute success")
             })
     }
 
     class func block(userID: String) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
         let parameters = ["user_id": userID]
-        client()?
-            .post("https://api.twitter.com/1.1/mutes/blocks/create.json", parameters: parameters)
+        account.client
+            .post("https://api.twitter.com/1.1/blocks/create.json", parameters: parameters)
             .responseJSON({ (json: JSON) -> Void in
+                Relationship.block(account, targetUserID: userID)
                 ErrorAlert.show("Block success")
             })
     }
 
     class func unblock(userID: String) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
         let parameters = ["user_id": userID]
-        client()?
-            .post("https://api.twitter.com/1.1/mutes/blocks/destroy.json", parameters: parameters)
+        account.client
+            .post("https://api.twitter.com/1.1/blocks/destroy.json", parameters: parameters)
             .responseJSON({ (json: JSON) -> Void in
+                Relationship.unblock(account, targetUserID: userID)
                 ErrorAlert.show("Unblock success")
             })
     }

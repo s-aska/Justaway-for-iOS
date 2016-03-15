@@ -92,6 +92,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             return
         }
 
+        Relationship.setup(account)
+
         currentPage = min(currentPage, account.tabs.count - 1)
 
         var vcCache = [String: TimelineTableViewController]()

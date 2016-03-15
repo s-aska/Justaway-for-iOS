@@ -14,6 +14,7 @@ extension Twitter {
 
     struct StreaminStatic {
         private static let connectionQueue = dispatch_queue_create("pw.aska.justaway.twitter.connection", DISPATCH_QUEUE_SERIAL)
+        private static var account: Account?
     }
 
     class func changeMode(mode: StreamingMode) {
@@ -59,6 +60,7 @@ extension Twitter {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
+        StreaminStatic.account = account
         Static.streamingRequest = account.client
             .streaming("https://userstream.twitter.com/1.1/user.json")
             .progress(Twitter.streamingProgressHandler)
@@ -135,14 +137,39 @@ extension Twitter {
             } else {
                 EventBox.post(Event.CreateStatus.rawValue, sender: status)
             }
+        } else if event == "block" {
+            if let account = StreaminStatic.account, targetUserID = responce["target"]["id_str"].string {
+                Relationship.block(account, targetUserID: targetUserID)
+            }
+        } else if event == "unblock" {
+            if let account = StreaminStatic.account, targetUserID = responce["target"]["id_str"].string {
+                Relationship.unblock(account, targetUserID: targetUserID)
+            }
+        } else if event == "mute" {
+            if let account = StreaminStatic.account, targetUserID = responce["target"]["id_str"].string {
+                Relationship.mute(account, targetUserID: targetUserID)
+            }
+        } else if event == "unmute" {
+            if let account = StreaminStatic.account, targetUserID = responce["target"]["id_str"].string {
+                Relationship.unmute(account, targetUserID: targetUserID)
+            }
         } else if event == "access_revoked" {
             revoked()
         }
     }
 
     class func receiveStatus(responce: JSON) {
+        let sourceUserID = StreaminStatic.account?.userID ?? ""
         let status = TwitterStatus(responce, connectionID: Static.connectionID)
-        EventBox.post(Event.CreateStatus.rawValue, sender: status)
+        let quotedUserID = status.quotedStatus?.user.userID
+        let retweetUserID = status.actionedBy != nil && status.type != .Favorite ? status.actionedBy?.userID : nil
+        Relationship.check(sourceUserID, targetUserID: status.user.userID, retweetUserID: retweetUserID, quotedUserID: quotedUserID) { (blocking, muting, want_retweets) -> Void in
+            if blocking || muting || want_retweets {
+                NSLog("skip blocking:\(blocking) muting:\(muting) want_retweets:\(want_retweets) text:\(status.text)")
+                return
+            }
+            EventBox.post(Event.CreateStatus.rawValue, sender: status)
+        }
     }
 
     class func receiveDestroyStatus(statusID: String) {
