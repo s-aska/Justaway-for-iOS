@@ -105,7 +105,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             imageView.userInteractionEnabled = true
             imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "menu:"))
 
-            let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
+            let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
             indicatorView.hidesWhenStopped = true
             indicatorView.center = imageView.center
 
