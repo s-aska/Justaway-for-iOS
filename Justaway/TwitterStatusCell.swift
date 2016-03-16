@@ -151,6 +151,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var favoriteCountLabel: UILabel!
     @IBOutlet weak var viaLabel: UILabel!
     @IBOutlet weak var absoluteCreatedAtLabel: UILabel!
+    @IBOutlet weak var talkButton: UIButton!
 
     @IBOutlet weak var textHeightConstraint: NSLayoutConstraint!
 
@@ -354,6 +355,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         relativeCreatedAtLabel.text = status.createdAt.relativeString
         absoluteCreatedAtLabel.text = status.createdAt.absoluteString
         viaLabel.text = status.via.name
+        talkButton.hidden = status.inReplyToStatusID == nil
 
         if let actionedBy = status.actionedBy {
             sourceTextLabel.text = actionedBy.name
@@ -652,6 +654,12 @@ class TwitterStatusCell: BackgroundTableViewCell {
             if let statusID = self.status?.statusID {
                 Twitter.toggleFavorite(statusID)
             }
+        }
+    }
+
+    @IBAction func talk(sender: UIButton) {
+        if let status = status {
+            TalkViewController.show(status)
         }
     }
 }

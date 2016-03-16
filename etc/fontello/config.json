@@ -209,6 +209,12 @@
       "css": "note-beamed",
       "code": 38899,
       "src": "entypo"
+    },
+    {
+      "uid": "85528017f1e6053b2253785c31047f44",
+      "css": "comment",
+      "code": 35441,
+      "src": "fontawesome"
     }
   ]
 }
