@@ -118,6 +118,7 @@ class AbsoluteDateLable: UILabel {}
 class ClientNameLable: UILabel {}
 class StatusLable: UITextView {
     var status: TwitterStatus?
+    var message: TwitterMessage?
     var links = [Link]()
     let playerView = AVPlayerView()
 
@@ -184,6 +185,38 @@ class StatusLable: UITextView {
         setAttributes()
     }
 
+    func setMessage(message: TwitterMessage) {
+        self.message = message
+        self.text = message.text
+        var newlinks = [Link]()
+        for url in message.urls {
+            for result in findString(url.displayURL) {
+                let link = Link(entity: Entity.URL(url), range: result.range)
+                newlinks.append(link)
+            }
+        }
+        for media in message.media {
+            for result in findString(media.displayURL) {
+                let link = Link(entity: Entity.Media(media), range: result.range)
+                newlinks.append(link)
+            }
+        }
+        for hashtag in message.hashtags {
+            for result in findString("#" + hashtag.text) {
+                let link = Link(entity: Entity.Hashtag(hashtag), range: result.range)
+                newlinks.append(link)
+            }
+        }
+        for mention in message.mentions {
+            for result in findString("@" + mention.screenName) {
+                let link = Link(entity: Entity.User(mention), range: result.range)
+                newlinks.append(link)
+            }
+        }
+        links = newlinks
+        setAttributes()
+    }
+
     func setAttributes() {
         backgroundColor = ThemeController.currentTheme.mainBackgroundColor()
         let attributedText = NSMutableAttributedString(string: text)
@@ -218,6 +251,8 @@ class StatusLable: UITextView {
         }
         if let status = status {
             StatusAlert.show(self, status: status)
+        } else if let message = message {
+            // TODO
         }
     }
 

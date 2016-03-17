@@ -14,10 +14,6 @@ import Async
 
 class DirectMessageTableViewController: TimelineTableViewController {
 
-    // let adapter = TwitterStatusAdapter()
-    var nextResults: String?
-    var lastID: Int64?
-    var keyword: String?
     var cacheLoaded = false
 
     //    override func viewDidLoad() {
@@ -44,7 +40,7 @@ class DirectMessageTableViewController: TimelineTableViewController {
             cacheLoaded = true
             loadCache()
         }
-        adapter.scrollEnd(tableView) // contentInset call scrollViewDidScroll, but call scrollEnd
+        // adapter.scrollEnd(tableView) // contentInset call scrollViewDidScroll, but call scrollEnd
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -57,7 +53,7 @@ class DirectMessageTableViewController: TimelineTableViewController {
     func configureView() {
         self.tableView.backgroundColor = UIColor.clearColor()
 
-        adapter.configureView(nil, tableView: tableView)
+//        adapter.configureView(nil, tableView: tableView)
 
 //        adapter.didScrollToBottom = {
 //            if let nextResults = self.nextResults {
@@ -76,9 +72,9 @@ class DirectMessageTableViewController: TimelineTableViewController {
 //            }
 //        }
 
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: Selector("loadDataToTop"), forControlEvents: UIControlEvents.ValueChanged)
-        self.refreshControl = refreshControl
+//        let refreshControl = UIRefreshControl()
+//        refreshControl.addTarget(self, action: Selector("loadDataToTop"), forControlEvents: UIControlEvents.ValueChanged)
+//        self.refreshControl = refreshControl
     }
 
     func configureEvent() {
@@ -180,6 +176,9 @@ class DirectMessageTableViewController: TimelineTableViewController {
     // MARK: Public Methods
 
     func loadCache() {
+        Twitter.getDirectMessages { (messages: [TwitterMessage]) -> Void in
+            // 
+        }
 //        if self.adapter.loadDataQueue.operationCount > 0 {
 //            return
 //        }

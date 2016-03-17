@@ -16,6 +16,8 @@ enum TwitterStatusCellLayout: String {
     case ActionedWithQuoteImage = "ActionedWithQuoteImage"
     case NormalWithImageWithQuoteImage = "NormalWithImageWithQuoteImage"
     case ActionedWithImageWithQuoteImage = "ActionedWithImageWithQuoteImage"
+    case Message = "Message"
+    case MessageWithImage = "MessageWithImage"
 
     static func fromStatus(status: TwitterStatus) -> TwitterStatusCellLayout {
         if let quotedStatus = status.quotedStatus {
@@ -58,6 +60,17 @@ enum TwitterStatusCellLayout: String {
         ]
     }
 
+    static func fromMessage(message: TwitterMessage) -> TwitterStatusCellLayout {
+        return message.media.count > 0 ? MessageWithImage : Message
+    }
+
+    static var allValuesForMessage: [TwitterStatusCellLayout] {
+        return [
+            Message,
+            MessageWithImage
+        ]
+    }
+
     var hasAction: Bool {
         return self.rawValue.rangeOfString("Actioned") != nil
     }
@@ -69,9 +82,13 @@ enum TwitterStatusCellLayout: String {
     var hasQuoteImage: Bool {
         return self.rawValue.rangeOfString("WithQuoteImage") != nil
     }
-
+    
     var hasImage: Bool {
         return self.rawValue.rangeOfString("WithImage") != nil
+    }
+
+    var isMessage: Bool {
+        return self.rawValue.rangeOfString("Message") != nil
     }
 }
 
@@ -80,6 +97,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     // MARK: Properties
     var status: TwitterStatus?
+    var message: TwitterMessage?
     var layout: TwitterStatusCellLayout?
     let playerView = AVPlayerView()
     let playerWrapperView = UIView()
@@ -325,9 +343,24 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 buttonsQuotedTopConstraint?.priority = UILayoutPriorityDefaultLow
                 buttonsStatusTopConstraint?.priority = UILayoutPriorityDefaultHigh
             }
+            if layout.isMessage {
+                retweetButton.hidden = true
+                favoriteButton.hidden = true
+            }
             setNeedsLayout()
             layoutIfNeeded()
         }
+    }
+
+    func setText(message: TwitterMessage) {
+        statusLabel.setMessage(message)
+    }
+
+    func setImage(message: TwitterMessage) {
+        if iconImageView.image == nil {
+            ImageLoaderClient.displayUserIcon(message.sender.profileImageURL, imageView: iconImageView)
+        }
+        setImage(message.media)
     }
 
     // swiftlint:disable:next function_body_length
@@ -405,18 +438,24 @@ class TwitterStatusCell: BackgroundTableViewCell {
             ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: iconImageView)
         }
 
-        if status.media.count > 0 && imagesContainerView.hidden == true {
-            imagesContainerView.hidden = false
+        setImage(status.media)
 
+        setQuotedImage(status)
+    }
+
+    func setImage(mediaList: [TwitterMedia]) {
+        if mediaList.count > 0 && imagesContainerView.hidden == true {
+            imagesContainerView.hidden = false
+            
             let fullHeight = imagesContainerView.frame.height
             let fullWidth = imagesContainerView.frame.width
             let harfHeight = (fullHeight - 5) / 2
             let halfWidth = (fullWidth - 5) / 2
-            switch status.media.count {
+            switch mediaList.count {
             case 1:
                 imageView1HeightConstraint.constant = fullHeight
                 imageView1WidthConstraint.constant = fullWidth
-                ImageLoaderClient.displayImage(status.media[0].mediaURL, imageView: imageView1)
+                ImageLoaderClient.displayImage(mediaList[0].mediaURL, imageView: imageView1)
                 imageView1.hidden = false
                 imageView2.hidden = true
                 imageView3.hidden = true
@@ -426,8 +465,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 imageView1WidthConstraint.constant = halfWidth
                 imageView2HeightConstraint.constant = fullHeight
                 imageView2WidthConstraint.constant = halfWidth
-                ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
-                ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
+                ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
+                ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
                 imageView1.hidden = false
                 imageView2.hidden = false
                 imageView3.hidden = true
@@ -439,9 +478,9 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 imageView2WidthConstraint.constant = halfWidth
                 imageView3HeightConstraint.constant = harfHeight
                 imageView3WidthConstraint.constant = halfWidth
-                ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
-                ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
-                ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView3)
+                ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
+                ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
+                ImageLoaderClient.displayThumbnailImage(mediaList[2].mediaThumbURL, imageView: imageView3)
                 imageView1.hidden = false
                 imageView2.hidden = false
                 imageView3.hidden = false
@@ -455,10 +494,10 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 imageView3WidthConstraint.constant = halfWidth
                 imageView4HeightConstraint.constant = harfHeight
                 imageView4WidthConstraint.constant = halfWidth
-                ImageLoaderClient.displayThumbnailImage(status.media[0].mediaThumbURL, imageView: imageView1)
-                ImageLoaderClient.displayThumbnailImage(status.media[1].mediaThumbURL, imageView: imageView2)
-                ImageLoaderClient.displayThumbnailImage(status.media[3].mediaThumbURL, imageView: imageView3)
-                ImageLoaderClient.displayThumbnailImage(status.media[2].mediaThumbURL, imageView: imageView4)
+                ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
+                ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
+                ImageLoaderClient.displayThumbnailImage(mediaList[3].mediaThumbURL, imageView: imageView3)
+                ImageLoaderClient.displayThumbnailImage(mediaList[2].mediaThumbURL, imageView: imageView4)
                 imageView1.hidden = false
                 imageView2.hidden = false
                 imageView3.hidden = false
@@ -467,8 +506,6 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 break
             }
         }
-
-        setQuotedImage(status)
     }
 
     // swiftlint:disable:next function_body_length
@@ -544,6 +581,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
     func openProfile(sender: UIGestureRecognizer) {
         if let user = status?.user {
             ProfileViewController.show(user)
+        } else if let user = message?.sender {
+            ProfileViewController.show(user)
         }
     }
 
@@ -560,16 +599,16 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     func showImage(sender: UIGestureRecognizer) {
         let tag = sender.view?.tag ?? 0
-        if let status = self.status {
-            if let page = tagToPage[status.media.count]?[tag] {
-                let media = status.media[page]
+        if let mediaList = self.status?.media ?? self.message?.media {
+            if let page = tagToPage[mediaList.count]?[tag] {
+                let media = mediaList[page]
                 if !media.videoURL.isEmpty {
                     guard let videoURL = NSURL(string: media.videoURL) else {
                         return
                     }
                     self.showVideo(videoURL)
                 } else {
-                    ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
+                    ImageViewController.show(mediaList.map({ $0.mediaURL }), initialPage: page)
                 }
             }
         }
@@ -638,6 +677,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBAction func reply(sender: UIButton) {
         if let status = self.status {
             Twitter.reply(status)
+        } else if let message = self.message {
+            // TODO
         }
     }
 

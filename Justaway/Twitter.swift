@@ -389,6 +389,24 @@ class Twitter {
             })
     }
 
+    class func getDirectMessages(success: ([TwitterMessage]) -> Void) {
+        let parameters = ["count": "200", "full_text": "true"]
+        let successReceived = { (array: [JSON]) -> Void in
+            let reveivedArray = array
+            let successSent = { (array: [JSON]) -> Void in
+                success((reveivedArray + array)
+                    .map({ TwitterMessage($0) })
+                    .sort({
+                        return $0.0.createdAt.date.timeIntervalSince1970 > $0.1.createdAt.date.timeIntervalSince1970
+                    }))
+            }
+            client()?.get("https://api.twitter.com/1.1/direct_messages/sent.json", parameters: parameters)
+                .responseJSONArray(successSent)
+        }
+        client()?.get("https://api.twitter.com/1.1/direct_messages.json", parameters: parameters)
+            .responseJSONArray(successReceived)
+    }
+
     class func getFriendships(targetID: String, success: (TwitterRelationship) -> Void) {
         guard let account = AccountSettingsStore.get() else {
             return
