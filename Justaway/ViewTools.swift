@@ -71,8 +71,8 @@ class ViewTools {
         EditorViewController.hide()
 
         viewController.view.hidden = true
+        viewController.view.frame = CGRectOffset(rootViewController.view.frame, rootViewController.view.frame.width, 0)
         rootViewController.view.addSubview(viewController.view)
-        viewController.view.frame = CGRect.init(x: rootViewController.view.frame.width, y: 0, width: rootViewController.view.frame.width, height: rootViewController.view.frame.height)
         viewController.view.hidden = false
 
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
