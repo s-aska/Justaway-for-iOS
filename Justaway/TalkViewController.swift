@@ -16,6 +16,7 @@ class TalkViewController: UIViewController {
     let adapter = TwitterStatusAdapter()
     var lastID: Int64?
     var rootStatus: TwitterStatus?
+    var loadData = false
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -37,17 +38,25 @@ class TalkViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
-        if let status = rootStatus {
-            adapter.renderData(tableView, statuses: [status], mode: .BOTTOM, handler: nil)
-            if let inReplyToStatusID = status.inReplyToStatusID {
-                loadStatus(inReplyToStatusID)
-            }
-        }
     }
 
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         // EventBox.off(self)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if !loadData {
+            loadData = true
+            adapter.setupLayout(tableView)
+            if let status = rootStatus {
+                adapter.renderData(tableView, statuses: [status], mode: .BOTTOM, handler: nil)
+                if let inReplyToStatusID = status.inReplyToStatusID {
+                    loadStatus(inReplyToStatusID)
+                }
+            }
+        }
     }
 
     // MARK: - Configuration

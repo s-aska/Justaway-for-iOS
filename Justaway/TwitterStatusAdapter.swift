@@ -76,14 +76,17 @@ class TwitterStatusAdapter: NSObject {
         tableView.separatorColor = ThemeController.currentTheme.cellSeparatorColor()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.registerNib(UINib(nibName: "ShowMoreTweetsCell", bundle: nil), forCellReuseIdentifier: "ShowMoreTweetsCell")
 
+        setupLayout(tableView)
+    }
+
+    func setupLayout(tableView: UITableView) {
         let nib = UINib(nibName: "TwitterStatusCell", bundle: nil)
         for layout in TwitterStatusCellLayout.allValues {
             tableView.registerNib(nib, forCellReuseIdentifier: layout.rawValue)
             self.layoutHeightCell[layout] = tableView.dequeueReusableCellWithIdentifier(layout.rawValue) as? TwitterStatusCell
         }
-
-        tableView.registerNib(UINib(nibName: "ShowMoreTweetsCell", bundle: nil), forCellReuseIdentifier: "ShowMoreTweetsCell")
     }
 
     // MARK: Private Methods
