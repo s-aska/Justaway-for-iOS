@@ -237,6 +237,12 @@ class EditorViewController: UIViewController {
 
     @IBAction func music(sender: UIButton) {
         guard let item = MPMusicPlayerController.systemMusicPlayer().nowPlayingItem else {
+            if let url = NSURL.init(string: "googleplaymusic://") {
+                if (UIApplication.sharedApplication().canOpenURL(url)) {
+                    UIApplication.sharedApplication().openURL(url)
+                    return
+                }
+            }
             ErrorAlert.show("Missing music", message: "Sorry, support the apple music only")
             return
         }
