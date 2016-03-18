@@ -1,5 +1,5 @@
 //
-//  DirectMessageTableViewController.swift
+//  MessagesTableViewController.swift
 //  Justaway
 //
 //  Created by Shinichiro Aska on 3/16/16.
@@ -12,7 +12,12 @@ import KeyClip
 import EventBox
 import Async
 
-class DirectMessageTableViewController: TimelineTableViewController {
+class MessagesTableViewController: TimelineTableViewController {
+
+    let messageAdapter = TwitterMessageAdapter()
+    override var adapter: TwitterMessageAdapter {
+        return messageAdapter
+    }
 
     var cacheLoaded = false
 
@@ -53,7 +58,7 @@ class DirectMessageTableViewController: TimelineTableViewController {
     func configureView() {
         self.tableView.backgroundColor = UIColor.clearColor()
 
-//        adapter.configureView(nil, tableView: tableView)
+        adapter.configureView(tableView)
 
 //        adapter.didScrollToBottom = {
 //            if let nextResults = self.nextResults {
@@ -85,8 +90,8 @@ class DirectMessageTableViewController: TimelineTableViewController {
         EventBox.onBackgroundThread(self, name: eventFontSizeApplied) { (n) -> Void in
             if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
                 let newNows = self.adapter.rows.map({ (row) -> TwitterStatusAdapter.Row in
-                    if let status = row.status {
-                        return self.adapter.createRow(status, fontSize: CGFloat(fontSize.floatValue), tableView: self.tableView)
+                    if let message = row.message {
+                        return self.adapter.createRow(message, fontSize: CGFloat(fontSize.floatValue), tableView: self.tableView)
                     } else {
                         return row
                     }
@@ -170,13 +175,16 @@ class DirectMessageTableViewController: TimelineTableViewController {
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        adapter.tableView(tableView, didSelectRowAtIndexPath: indexPath)
+         adapter.tableView(tableView, didSelectRowAtIndexPath: indexPath)
     }
 
     // MARK: Public Methods
 
     func loadCache() {
         Twitter.getDirectMessages { (messages: [TwitterMessage]) -> Void in
+            self.adapter.renderData(self.tableView, messages: messages, mode: .OVER, handler: { () -> Void in
+                //
+            })
             //
         }
 //        if self.adapter.loadDataQueue.operationCount > 0 {

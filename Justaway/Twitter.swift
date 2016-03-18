@@ -407,6 +407,23 @@ class Twitter {
             .responseJSONArray(successReceived)
     }
 
+    class func authorizationURL(url: NSURL) -> NSURL? {
+        if let client = client() as? OAuthClient {
+            let parameters = client.oAuthCredential.authorizationParametersWithSignatureForMethod(.GET, url: url, parameters: [:])
+            var queries = [String]()
+            let customAllowedSet =  NSCharacterSet(charactersInString:"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
+            for (key, value) in parameters {
+                let encodeKey = key.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet) ?? ""
+                let encodeValue = value.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet) ?? ""
+                queries.append("\(encodeKey)=\(encodeValue)")
+            }
+            let newURL = url.absoluteString + "?" + queries.joinWithSeparator("&")
+            NSLog("\(url.absoluteString) => \(newURL)")
+            return NSURL(string: newURL)
+        }
+        return nil
+    }
+
     class func getFriendships(targetID: String, success: (TwitterRelationship) -> Void) {
         guard let account = AccountSettingsStore.get() else {
             return

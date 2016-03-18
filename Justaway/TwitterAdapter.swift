@@ -39,13 +39,13 @@ class TwitterAdapter: NSObject {
             self.quotedTextHeight = quotedTextHeight
         }
 
-        init(message: TwitterMessage, fontSize: CGFloat, height: CGFloat, textHeight: CGFloat, quotedTextHeight: CGFloat) {
+        init(message: TwitterMessage, fontSize: CGFloat, height: CGFloat, textHeight: CGFloat) {
             self.status = nil
             self.message = message
             self.fontSize = fontSize
             self.height = height
             self.textHeight = textHeight
-            self.quotedTextHeight = quotedTextHeight
+            self.quotedTextHeight = 0
         }
 
         init() {

@@ -14,7 +14,9 @@ import Async
 
 class SearchesTableViewController: TimelineTableViewController {
 
-    // let adapter = TwitterStatusAdapter()
+    override var adapter: TwitterStatusAdapter {
+        return defaultAdapter
+    }
     var nextResults: String?
     var lastID: Int64?
     var keyword: String?

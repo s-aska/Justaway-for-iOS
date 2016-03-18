@@ -48,7 +48,7 @@ struct TwitterMessage {
         if let extended_entities = json["extended_entities"]["media"].array {
             self.media = extended_entities.map { TwitterMedia($0) }
         } else if let media = json["entities"]["media"].array {
-            self.media = media.map { TwitterMedia($0) }
+            self.media = media.map { TwitterMedia($0, auth: true) }
         } else {
             self.media = [TwitterMedia]()
         }
@@ -80,7 +80,7 @@ struct TwitterMessage {
         }
 
         if let media = dictionary["media"] as? [[String: AnyObject]] {
-            self.media = media.map({ TwitterMedia($0) })
+            self.media = media.map({ TwitterMedia($0, auth: true) })
         } else {
             self.media = [TwitterMedia]()
         }

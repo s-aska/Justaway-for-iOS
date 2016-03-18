@@ -187,6 +187,9 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
             case .Lists:
                 cell.nameLabel.text = tab.list.name
                 cell.iconLabel.text = "欄"
+            case .Messages:
+                cell.nameLabel.text = "Messages"
+                cell.iconLabel.text = "文"
             }
         }
         return cell

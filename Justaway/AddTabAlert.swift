@@ -8,6 +8,7 @@
 
 import UIKit
 import EventBox
+import TwitterAPI
 
 class AddTabAlert {
     class func show(sender: UIView, tabs: [Tab]) {
@@ -26,6 +27,15 @@ class AddTabAlert {
             actionSheet.addAction(UIAlertAction(title: "Likes", style: .Default, handler: { action in
                 EventBox.post("addTab", sender: Tab.init(type: .Favorites, userID: "", arguments: [:]))
             }))
+        }
+        if tabs.indexOf({ $0.type == .Messages }) == nil {
+            if let account = AccountSettingsStore.get()?.account() {
+                if let _ = account.client as? OAuthClient {
+                    actionSheet.addAction(UIAlertAction(title: "Messages", style: .Default, handler: { action in
+                        EventBox.post("addTab", sender: Tab.init(type: .Messages, userID: "", arguments: [:]))
+                    }))
+                }
+            }
         }
         actionSheet.addAction(UIAlertAction(title: "Lists...", style: .Default, handler: { action in
             ChooseListsViewController.show()

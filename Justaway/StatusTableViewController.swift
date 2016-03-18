@@ -9,6 +9,10 @@ let timelineHooterHeight: CGFloat = 40
 
 class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapterDelegate {
 
+    override var adapter: TwitterStatusAdapter {
+        return defaultAdapter
+    }
+
     var lastID: Int64?
     var cacheLoaded = false
 
