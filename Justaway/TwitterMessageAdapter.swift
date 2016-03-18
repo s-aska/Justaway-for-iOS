@@ -15,8 +15,8 @@ class TwitterMessageAdapter: TwitterAdapter {
 
     // MARK: Properties
 
-    var statuses: [TwitterStatus] {
-        return rows.filter({ $0.status != nil }).map({ $0.status! })
+    var messages: [TwitterMessage] {
+        return rows.filter({ $0.message != nil }).map({ $0.message! })
     }
 
     // MARK: Configuration
@@ -65,6 +65,21 @@ class TwitterMessageAdapter: TwitterAdapter {
     }
 
     // MARK: Public Methods
+
+    func thread(messages: [TwitterMessage]) -> [TwitterMessage] {
+        var thread = [TwitterMessage]()
+        if let account = AccountSettingsStore.get()?.account() {
+            var userMap = [String: Bool]()
+            for message in messages {
+                let userID = account.userID != message.sender.userID ? message.sender.userID : message.recipient.userID
+                if userMap[userID] == nil {
+                    userMap[userID] = true
+                    thread.append(message)
+                }
+            }
+        }
+        return thread
+    }
 
     func renderData(tableView: UITableView, var messages: [TwitterMessage], mode: RenderMode, handler: (() -> Void)?) {
         let fontSize = CGFloat(GenericSettings.get().fontSize)
