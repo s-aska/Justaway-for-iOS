@@ -10,10 +10,8 @@ struct TwitterMedia {
     let videoURL: String
     let height: Int
     let width: Int
-    let auth: Bool
 
-    init(_ json: JSON, auth: Bool = false) {
-        self.auth = auth
+    init(_ json: JSON) {
         self.shortURL = json["url"].string ?? ""
         self.displayURL = json["display_url"].string ?? ""
         self.expandedURL = json["expanded_url"].string ?? ""
@@ -34,8 +32,7 @@ struct TwitterMedia {
         }()
     }
 
-    init(json: [String: AnyObject], auth: Bool = false) {
-        self.auth = auth
+    init(json: [String: AnyObject]) {
         self.shortURL = json["url"] as? String ?? ""
         self.displayURL = json["display_url"] as? String ?? ""
         self.expandedURL = json["expanded_url"] as? String ?? ""
@@ -48,21 +45,10 @@ struct TwitterMedia {
     }
 
     var mediaThumbURL: NSURL {
-        if auth {
-            return Twitter.authorizationURL(NSURL(string: mediaURL.absoluteString + ":thumb")!) ?? NSURL()
-        }
         return NSURL(string: mediaURL.absoluteString + ":thumb")!
     }
 
-    var mediaOriginalURL: NSURL {
-        if auth {
-            return Twitter.authorizationURL(mediaURL) ?? NSURL()
-        }
-        return mediaURL
-    }
-
-    init(_ dictionary: [String: AnyObject], auth: Bool = false) {
-        self.auth = auth
+    init(_ dictionary: [String: AnyObject]) {
         self.shortURL = dictionary["shortURL"] as? String ?? ""
         self.displayURL = dictionary["displayURL"] as? String ?? ""
         self.expandedURL = dictionary["expandedURL"] as? String ?? ""

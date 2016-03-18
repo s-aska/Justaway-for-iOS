@@ -5,12 +5,14 @@ class ImageLoaderClient {
 
     struct Static {
         static let defaultOptions = Pinwheel.DisplayOptions.Builder()
+            .requestBuilder(OAuthRequestBuilder())
             .displayer(Pinwheel.FadeInDisplayer())
             .queuePriority(NSOperationQueuePriority.Low)
             .build()
 
         static let thumbnailOptions = Pinwheel.DisplayOptions.Builder()
             .addFilter(RoundedFilter(0, width: 80, height: 80), hook: .BeforeMemory)
+            .requestBuilder(OAuthRequestBuilder())
             .displayer(Pinwheel.FadeInDisplayer())
             .queuePriority(NSOperationQueuePriority.Low)
             .build()

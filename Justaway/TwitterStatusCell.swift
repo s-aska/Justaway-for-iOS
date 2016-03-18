@@ -474,7 +474,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
             case 1:
                 imageView1HeightConstraint.constant = fullHeight
                 imageView1WidthConstraint.constant = fullWidth
-                ImageLoaderClient.displayImage(mediaList[0].mediaOriginalURL, imageView: imageView1)
+                ImageLoaderClient.displayImage(mediaList[0].mediaURL, imageView: imageView1)
                 imageView1.hidden = false
                 imageView2.hidden = true
                 imageView3.hidden = true
@@ -541,7 +541,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 case 1:
                     quotedImageView1HeightConstraint.constant = fullHeight
                     quotedImageView1WidthConstraint.constant = fullWidth
-                    ImageLoaderClient.displayImage(quotedStatus.media[0].mediaOriginalURL, imageView: quotedImageView1)
+                    ImageLoaderClient.displayImage(quotedStatus.media[0].mediaURL, imageView: quotedImageView1)
                     quotedImageView1.hidden = false
                     quotedImageView2.hidden = true
                     quotedImageView3.hidden = true
@@ -627,7 +627,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                     }
                     self.showVideo(videoURL)
                 } else {
-                    ImageViewController.show(mediaList.map({ $0.mediaOriginalURL }), initialPage: page)
+                    ImageViewController.show(mediaList.map({ $0.mediaURL }), initialPage: page)
                 }
             }
         }
@@ -687,7 +687,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                         self.showVideo(videoURL)
                     }
                 } else {
-                    ImageViewController.show(status.media.map({ $0.mediaOriginalURL }), initialPage: page)
+                    ImageViewController.show(status.media.map({ $0.mediaURL }), initialPage: page)
                 }
             }
         }
