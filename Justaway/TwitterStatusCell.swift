@@ -82,7 +82,7 @@ enum TwitterStatusCellLayout: String {
     var hasQuoteImage: Bool {
         return self.rawValue.rangeOfString("WithQuoteImage") != nil
     }
-    
+
     var hasImage: Bool {
         return self.rawValue.rangeOfString("WithImage") != nil
     }
@@ -446,7 +446,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     func setImage(mediaList: [TwitterMedia]) {
         if mediaList.count > 0 && imagesContainerView.hidden == true {
             imagesContainerView.hidden = false
-            
+
             let fullHeight = imagesContainerView.frame.height
             let fullWidth = imagesContainerView.frame.width
             let harfHeight = (fullHeight - 5) / 2

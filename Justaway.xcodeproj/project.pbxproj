@@ -17,6 +17,8 @@
 		3805DEA81A67F34900FBD015 /* ThemeMonokai.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEA71A67F34900FBD015 /* ThemeMonokai.swift */; };
 		3805DEAA1A67F52400FBD015 /* ThemeSolarizedLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEA91A67F52400FBD015 /* ThemeSolarizedLight.swift */; };
 		3805DEAC1A67F63300FBD015 /* ThemeSolarizedDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEAB1A67F63300FBD015 /* ThemeSolarizedDark.swift */; };
+		380F1DDB1C9C066100195D32 /* TwitterAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380F1DDA1C9C066100195D32 /* TwitterAdapter.swift */; };
+		380F1DDC1C9C069900195D32 /* TwitterAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380F1DDA1C9C066100195D32 /* TwitterAdapter.swift */; };
 		38105F8A1BC554C000CEF2A7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38105F891BC554C000CEF2A7 /* LaunchScreen.xib */; };
 		3815C68A1B7C97DF0014B0A2 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */; };
 		3815C68B1B7C97DF0014B0A2 /* OAuthSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -303,6 +305,7 @@
 		3805DEA71A67F34900FBD015 /* ThemeMonokai.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeMonokai.swift; sourceTree = "<group>"; };
 		3805DEA91A67F52400FBD015 /* ThemeSolarizedLight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeSolarizedLight.swift; sourceTree = "<group>"; };
 		3805DEAB1A67F63300FBD015 /* ThemeSolarizedDark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeSolarizedDark.swift; sourceTree = "<group>"; };
+		380F1DDA1C9C066100195D32 /* TwitterAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterAdapter.swift; sourceTree = "<group>"; };
 		38105F891BC554C000CEF2A7 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
 		381E6E0619D98A7300139654 /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
@@ -561,6 +564,7 @@
 			isa = PBXGroup;
 			children = (
 				38A032151B7233810020D109 /* TwitterStatusAdapter.swift */,
+				380F1DDA1C9C066100195D32 /* TwitterAdapter.swift */,
 			);
 			name = TableView;
 			sourceTree = "<group>";
@@ -1094,6 +1098,7 @@
 				6AB55B5119C8B2B200DC6442 /* ThemeViewController.swift in Sources */,
 				38E052921BA46B9200B67EB2 /* ImagePickerCollectionView.swift in Sources */,
 				6A04494E1B24812E00758061 /* TwitterUserCell.swift in Sources */,
+				380F1DDB1C9C066100195D32 /* TwitterAdapter.swift in Sources */,
 				38B057D91B72702A00295C23 /* PocketCoverViewController.swift in Sources */,
 				38D11E7F1C6F1A3B0036AFB5 /* SavedSearchesViewController.swift in Sources */,
 				38A032161B7233810020D109 /* TwitterStatusAdapter.swift in Sources */,
@@ -1191,6 +1196,7 @@
 				384DE96E1BBAC9DE0011AF6E /* AutoExpandTextView.swift in Sources */,
 				6AB55B5B19D0CCD000DC6442 /* AccountSettingsStore.swift in Sources */,
 				38D9E9E11BC2B7C2001B5966 /* ShowMoreTweetsCell.swift in Sources */,
+				380F1DDC1C9C069900195D32 /* TwitterAdapter.swift in Sources */,
 				6A83EDA31B69400B000F3C43 /* ThemeUI.swift in Sources */,
 				384DE9481BBAC9740011AF6E /* TwitterUserCell.swift in Sources */,
 				384DE96C1BBAC9B30011AF6E /* TwitterList.swift in Sources */,

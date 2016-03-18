@@ -177,7 +177,7 @@ class DirectMessageTableViewController: TimelineTableViewController {
 
     func loadCache() {
         Twitter.getDirectMessages { (messages: [TwitterMessage]) -> Void in
-            // 
+            //
         }
 //        if self.adapter.loadDataQueue.operationCount > 0 {
 //            return
