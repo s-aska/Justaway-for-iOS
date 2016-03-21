@@ -275,6 +275,16 @@ class EditorViewController: UIViewController {
         }
     }
 
+    @IBAction func more(sender: UIButton) {
+        weak var textView = self.textView
+        EditorMoreAlert.show(sender, text: self.textView.text) { (text) -> Void in
+            guard let textView = textView else {
+                return
+            }
+            textView.text = text
+        }
+    }
+
     @IBAction func send(sender: UIButton) {
         let text = textView.text
         if text.isEmpty && images.count == 0 {
