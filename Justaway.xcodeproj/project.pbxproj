@@ -253,6 +253,9 @@
 		6ADB64901A5DE75A00602B2B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADB648F1A5DE75A00602B2B /* Theme.swift */; };
 		6AEA05141CA0463100C419A1 /* EditorMoreAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEA05131CA0463100C419A1 /* EditorMoreAlert.swift */; };
 		6AEA05151CA0475A00C419A1 /* EditorMoreAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEA05131CA0463100C419A1 /* EditorMoreAlert.swift */; };
+		6AEA051D1CA0490200C419A1 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEA051C1CA0490200C419A1 /* ShareViewController.swift */; };
+		6AEA05201CA0490200C419A1 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AEA051E1CA0490200C419A1 /* MainInterface.storyboard */; };
+		6AEA05241CA0490200C419A1 /* JustawayShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 6AEA051A1CA0490200C419A1 /* JustawayShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6AFD4C2D1C650E9C009DD340 /* TabSettingsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AFD4C2C1C650E9C009DD340 /* TabSettingsCell.xib */; };
 		6AFD4C2F1C650EAE009DD340 /* TabSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AFD4C2E1C650EAE009DD340 /* TabSettingsCell.swift */; };
 		6AFD4C301C665340009DD340 /* TabSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABECB4A1C624F7700423CB7 /* TabSettingsViewController.swift */; };
@@ -266,6 +269,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6A4B9D2819BB514900D50D78;
 			remoteInfo = Justaway;
+		};
+		6AEA05221CA0490200C419A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6A4B9D2119BB514900D50D78 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6AEA05191CA0490200C419A1;
+			remoteInfo = JustawayShare;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -288,6 +298,17 @@
 				387AA04C1C465A2C00D3FCAB /* Async.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AEA05281CA0490300C419A1 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				6AEA05241CA0490200C419A1 /* JustawayShare.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -426,6 +447,10 @@
 		6ADB648B1A5DD65800602B2B /* BaseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseButton.swift; sourceTree = "<group>"; };
 		6ADB648F1A5DE75A00602B2B /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		6AEA05131CA0463100C419A1 /* EditorMoreAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorMoreAlert.swift; sourceTree = "<group>"; };
+		6AEA051A1CA0490200C419A1 /* JustawayShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JustawayShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AEA051C1CA0490200C419A1 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		6AEA051F1CA0490200C419A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		6AEA05211CA0490200C419A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6AFD4C2C1C650E9C009DD340 /* TabSettingsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TabSettingsCell.xib; sourceTree = "<group>"; };
 		6AFD4C2E1C650EAE009DD340 /* TabSettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabSettingsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -455,6 +480,13 @@
 				6A923A811BBAECCD00F74AC9 /* OAuthSwift.framework in Frameworks */,
 				6A923A7F1BBAECC900F74AC9 /* TwitterAPI.framework in Frameworks */,
 				387AA04D1C465A9B00D3FCAB /* Async.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AEA05171CA0490200C419A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,6 +670,7 @@
 			children = (
 				6A4B9D2B19BB514900D50D78 /* Justaway */,
 				6A4B9D3E19BB514900D50D78 /* JustawayTests */,
+				6AEA051B1CA0490200C419A1 /* JustawayShare */,
 				6AB8CDEE1A29C13700D22268 /* Frameworks */,
 				6A4B9D2A19BB514900D50D78 /* Products */,
 			);
@@ -648,6 +681,7 @@
 			children = (
 				6A4B9D2919BB514900D50D78 /* Justaway.app */,
 				6A4B9D3B19BB514900D50D78 /* JustawayTests.xctest */,
+				6AEA051A1CA0490200C419A1 /* JustawayShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -835,6 +869,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6AEA051B1CA0490200C419A1 /* JustawayShare */ = {
+			isa = PBXGroup;
+			children = (
+				6AEA051C1CA0490200C419A1 /* ShareViewController.swift */,
+				6AEA051E1CA0490200C419A1 /* MainInterface.storyboard */,
+				6AEA05211CA0490200C419A1 /* Info.plist */,
+			);
+			path = JustawayShare;
+			sourceTree = "<group>";
+		};
 		6AEA92651B7F5981005F30A9 /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -856,10 +900,12 @@
 				6A3F4F701B18B79F009F80C4 /* ShellScript */,
 				380B1CE71C571EBB00787B36 /* ShellScript */,
 				38958B331C88699A000BD859 /* ShellScript */,
+				6AEA05281CA0490300C419A1 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				6AEA05231CA0490200C419A1 /* PBXTargetDependency */,
 			);
 			name = Justaway;
 			productName = Justaway;
@@ -884,6 +930,23 @@
 			productReference = 6A4B9D3B19BB514900D50D78 /* JustawayTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		6AEA05191CA0490200C419A1 /* JustawayShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6AEA05251CA0490300C419A1 /* Build configuration list for PBXNativeTarget "JustawayShare" */;
+			buildPhases = (
+				6AEA05161CA0490200C419A1 /* Sources */,
+				6AEA05171CA0490200C419A1 /* Frameworks */,
+				6AEA05181CA0490200C419A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JustawayShare;
+			productName = JustawayShare;
+			productReference = 6AEA051A1CA0490200C419A1 /* JustawayShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -891,7 +954,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Shinichiro Aska";
 				TargetAttributes = {
@@ -902,6 +965,10 @@
 					6A4B9D3A19BB514900D50D78 = {
 						CreatedOnToolsVersion = 6.0;
 						TestTargetID = 6A4B9D2819BB514900D50D78;
+					};
+					6AEA05191CA0490200C419A1 = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = ERYSSE5R77;
 					};
 				};
 			};
@@ -920,6 +987,7 @@
 			targets = (
 				6A4B9D2819BB514900D50D78 /* Justaway */,
 				6A4B9D3A19BB514900D50D78 /* JustawayTests */,
+				6AEA05191CA0490200C419A1 /* JustawayShare */,
 			);
 		};
 /* End PBXProject section */
@@ -984,6 +1052,14 @@
 				384DE94C1BBAC9810011AF6E /* EditorViewController.xib in Resources */,
 				384DE9751BBACA140011AF6E /* FontSizeViewController.xib in Resources */,
 				384DE9561BBAC9810011AF6E /* PocketCoverViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AEA05181CA0490200C419A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AEA05201CA0490200C419A1 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1235,6 +1311,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6AEA05161CA0490200C419A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AEA051D1CA0490200C419A1 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1242,6 +1326,11 @@
 			isa = PBXTargetDependency;
 			target = 6A4B9D2819BB514900D50D78 /* Justaway */;
 			targetProxy = 6A4B9D3C19BB514900D50D78 /* PBXContainerItemProxy */;
+		};
+		6AEA05231CA0490200C419A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6AEA05191CA0490200C419A1 /* JustawayShare */;
+			targetProxy = 6AEA05221CA0490200C419A1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1252,6 +1341,14 @@
 				6A4B9D3319BB514900D50D78 /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		6AEA051E1CA0490200C419A1 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6AEA051F1CA0490200C419A1 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1345,6 +1442,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -1368,6 +1466,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -1421,6 +1520,39 @@
 			};
 			name = Release;
 		};
+		6AEA05261CA0490300C419A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = JustawayShare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = pw.aska.Justaway.JustawayShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		6AEA05271CA0490300C419A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = JustawayShare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = pw.aska.Justaway.JustawayShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1450,6 +1582,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		6AEA05251CA0490300C419A1 /* Build configuration list for PBXNativeTarget "JustawayShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6AEA05261CA0490300C419A1 /* Debug */,
+				6AEA05271CA0490300C419A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
