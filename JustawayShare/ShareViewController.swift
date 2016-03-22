@@ -92,7 +92,7 @@ class ShareViewController: SLComposeServiceViewController {
         let range = string.rangeOfString("=")
         if range.location != NSNotFound {
             if let query = string.substringFromIndex(range.location + 1).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) {
-                return string.substringToIndex(range.location + 1) + query
+                return string.substringToIndex(range.location + 1) + query + "&hl=en"
             }
         }
         return string as String
@@ -107,7 +107,7 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     func loadGoogleMusicInfo() {
-        if !contentText.hasPrefix("https://play.google.com/music/m/") {
+        if !contentText.hasPrefix("https://play.google.com/music/") {
             return
         }
         guard let musicURL = NSURL(string: encodeGoogleMusicURL(self.contentText)) else {
@@ -124,7 +124,7 @@ class ShareViewController: SLComposeServiceViewController {
                 let matches = self.regexp.matchesInString(s, options: NSMatchingOptions(rawValue: 0), range: NSRange(location: 0, length: s.utf16.count))
                 for match in matches {
                     let type = html.substringWithRange(match.rangeAtIndex(1))
-                    let content = html.substringWithRange(match.rangeAtIndex(2))
+                    var content = html.substringWithRange(match.rangeAtIndex(2))
                     if type == "title" {
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             if content == "Listen on Google Play Music" {
@@ -139,19 +139,21 @@ class ShareViewController: SLComposeServiceViewController {
                         })
                     }
                     if type == "image" && !content.hasSuffix("play_music_headphones_logo.png") {
-                        if let imageURL = NSURL(string: content) {
-                            NSLog("\(content)")
-                            session.dataTaskWithURL(imageURL) { (data, response, error) -> Void in
-                                if let data = data {
-                                    self.albumImageData = data
-                                    let image = UIImage(data: data)
-                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                        self.hasImage = true
-                                        self.previewView.image = image
-                                        self.updateRemaining()
-                                    })
-                                }
-                                }.resume()
+                        if let imageURLComponents = NSURLComponents(string: content) {
+                            imageURLComponents.scheme = "https"
+                            if let imageURL = imageURLComponents.URL {
+                                session.dataTaskWithURL(imageURL) { (data, response, error) -> Void in
+                                    if let data = data {
+                                        self.albumImageData = data
+                                        let image = UIImage(data: data)
+                                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                            self.hasImage = true
+                                            self.previewView.image = image
+                                            self.updateRemaining()
+                                        })
+                                    }
+                                    }.resume()
+                            }
                         }
                     }
                 }
