@@ -141,7 +141,7 @@ class StatusLable: UITextView {
         super.awakeFromNib()
         textContainer.lineFragmentPadding = 0
         textContainerInset = UIEdgeInsetsZero
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: "touchesText:"))
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(StatusLable.touchesText(_:))))
     }
 
     // Disable text selection

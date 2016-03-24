@@ -22,7 +22,7 @@ class ImageCell: UICollectionViewCell {
 
     func configureView() {
         imageView.userInteractionEnabled = true
-        imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "preview:"))
+        imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(ImageCell.preview(_:))))
     }
 
     func preview(sender: UILongPressGestureRecognizer) {
@@ -42,7 +42,7 @@ class ImageCell: UICollectionViewCell {
                         imageView.contentMode = .ScaleAspectFit
                         imageView.image = UIImage(data: imageData)
                         imageView.userInteractionEnabled = true
-                        imageView.addGestureRecognizer(UITapGestureRecognizer(target: imageView, action: "removeFromSuperview"))
+                        imageView.addGestureRecognizer(UITapGestureRecognizer(target: imageView, action: #selector(UIView.removeFromSuperview)))
                         window.addSubview(imageView)
                     }
                 }

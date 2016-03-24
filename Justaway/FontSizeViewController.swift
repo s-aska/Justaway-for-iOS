@@ -23,8 +23,8 @@ class FontSizeViewController: UIViewController {
     // MARK: - Configuration
 
     func configureView() {
-        fontSizeSlider.addTarget(self, action: Selector("fontSizeChanged"), forControlEvents: UIControlEvents.ValueChanged)
-        fontSizeSlider.addTarget(self, action: Selector("fontSizeFixed"), forControlEvents: [UIControlEvents.TouchUpInside, UIControlEvents.TouchUpOutside])
+        fontSizeSlider.addTarget(self, action: #selector(FontSizeViewController.fontSizeChanged), forControlEvents: UIControlEvents.ValueChanged)
+        fontSizeSlider.addTarget(self, action: #selector(FontSizeViewController.fontSizeFixed), forControlEvents: [UIControlEvents.TouchUpInside, UIControlEvents.TouchUpOutside])
 
         actionSheet.addAction(UIAlertAction(
             title: "Cancel",

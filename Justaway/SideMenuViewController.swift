@@ -61,9 +61,9 @@ class SideMenuViewController: UIViewController {
 
         view.frame = UIScreen.mainScreen().bounds
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hide"))
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SideMenuViewController.hide)))
 
-        let swipe = UISwipeGestureRecognizer(target: self, action: "hide")
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(SideMenuViewController.hide))
         swipe.numberOfTouchesRequired = 1
         swipe.direction = .Left
         view.addGestureRecognizer(swipe)

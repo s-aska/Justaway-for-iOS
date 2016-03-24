@@ -91,9 +91,9 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
             cell.textLabel?.textColor = ThemeController.currentTheme.bodyTextColor()
         }
 
-        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(ChooseListsViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
 
-        let swipe = UISwipeGestureRecognizer(target: self, action: "hide")
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(ChooseListsViewController.hide))
         swipe.numberOfTouchesRequired = 1
         swipe.direction = UISwipeGestureRecognizerDirection.Right
         tableView.addGestureRecognizer(swipe)

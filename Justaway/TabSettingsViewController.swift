@@ -69,9 +69,9 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.registerNib(UINib(nibName: "TabSettingsCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         tableView.addSubview(refreshControl)
 
-        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(TabSettingsViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
 
-        let swipe = UISwipeGestureRecognizer(target: self, action: "hide")
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(TabSettingsViewController.hide))
         swipe.numberOfTouchesRequired = 1
         swipe.direction = UISwipeGestureRecognizerDirection.Right
         tableView.addGestureRecognizer(swipe)

@@ -91,7 +91,7 @@ class EditorViewController: UIViewController {
             imageView.clipsToBounds = true
             imageView.contentMode = .ScaleAspectFill
             imageView.userInteractionEnabled = true
-            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "removeImage:"))
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(EditorViewController.removeImage(_:))))
         }
 
         resetPickerController()
@@ -136,7 +136,7 @@ class EditorViewController: UIViewController {
                                 self.removeImageIndex(i)
                                 return
                             }
-                            i++
+                            i += 1
                         }
                     }
                     let i = self.images.count
@@ -314,7 +314,7 @@ class EditorViewController: UIViewController {
             } else {
                 imageView.image = nil
             }
-            i++
+            i += 1
         }
         if images.count == 0 {
             imageContainerHeightConstraint.constant = 0

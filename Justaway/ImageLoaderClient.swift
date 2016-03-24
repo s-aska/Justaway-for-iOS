@@ -4,40 +4,40 @@ import Pinwheel
 class ImageLoaderClient {
 
     struct Static {
-        static let defaultOptions = Pinwheel.DisplayOptions.Builder()
-            .displayer(Pinwheel.FadeInDisplayer())
+        static let defaultOptions = DisplayOptions.Builder()
+            .displayer(FadeInDisplayer())
             .queuePriority(NSOperationQueuePriority.Low)
             .build()
 
-        static let thumbnailOptions = Pinwheel.DisplayOptions.Builder()
+        static let thumbnailOptions = DisplayOptions.Builder()
             .addFilter(RoundedFilter(0, width: 80, height: 80), hook: .BeforeMemory)
-            .displayer(Pinwheel.FadeInDisplayer())
+            .displayer(FadeInDisplayer())
             .queuePriority(NSOperationQueuePriority.Low)
             .build()
 
-        static let sideMenuUserIconOptions = Pinwheel.DisplayOptions.Builder()
+        static let sideMenuUserIconOptions = DisplayOptions.Builder()
             .addFilter(RoundedFilter(30, width: 60, height: 60), hook: .BeforeMemory)
-            .displayer(Pinwheel.FadeInDisplayer())
+            .displayer(FadeInDisplayer())
             .queuePriority(NSOperationQueuePriority.Low)
             .build()
 
-        static let userIconOptions = Pinwheel.DisplayOptions.Builder()
+        static let userIconOptions = DisplayOptions.Builder()
             .addFilter(RoundedFilter(6, width: 42, height: 42), hook: .BeforeMemory)
-            .displayer(Pinwheel.FadeInDisplayer())
+            .displayer(FadeInDisplayer())
             .build()
 
-        static let actionedUserIconOptions = Pinwheel.DisplayOptions.Builder()
+        static let actionedUserIconOptions = DisplayOptions.Builder()
             .addFilter(RoundedFilter(3, width: 20, height: 20), hook: .BeforeMemory)
-            .displayer(Pinwheel.FadeInDisplayer())
+            .displayer(FadeInDisplayer())
             .build()
 
-        static let titleIconOptions = Pinwheel.DisplayOptions.Builder()
+        static let titleIconOptions = DisplayOptions.Builder()
             .addFilter(RoundedFilter(3, width: 30, height: 30), hook: .BeforeMemory)
-            .displayer(Pinwheel.FadeInDisplayer())
+            .displayer(FadeInDisplayer())
             .build()
     }
 
-    class CallbackDisplayer: PinwheelDisplayer {
+    class CallbackDisplayer: Displayer {
 
         let callback: (() -> Void)
 
@@ -45,40 +45,61 @@ class ImageLoaderClient {
             self.callback = callback
         }
 
-        func display(image: UIImage, imageView: UIImageView, loadedFrom: Pinwheel.LoadedFrom) {
+        func display(image: UIImage, imageView: UIImageView, loadedFrom: LoadedFrom) {
             callback()
             imageView.image = image
         }
     }
 
+    class DebugListener: ImageLoadingListener {
+        func onLoadingCancelled(url: NSURL, imageView: UIImageView) {
+            NSLog("onLoadingCancelled: url:\(url.absoluteString)")
+        }
+        func onLoadingComplete(url: NSURL, imageView: UIImageView, image: UIImage, loadedFrom: LoadedFrom) {
+            NSLog("onLoadingComplete: url:\(url.absoluteString)")
+        }
+        func onLoadingFailed(url: NSURL, imageView: UIImageView, reason: FailureReason) {
+            NSLog("onLoadingFailed: url:\(url.absoluteString)")
+        }
+        func onLoadingStarted(url: NSURL, imageView: UIImageView) {
+            NSLog("onLoadingStarted: url:\(url.absoluteString)")
+        }
+    }
+
+    class DebugProgressListener: ImageLoadingProgressListener {
+        func onProgressUpdate(url: NSURL, imageView: UIImageView, current: Int64, total: Int64) {
+            NSLog("onProgressUpdate: url:\(url.absoluteString) \(current)/\(total)")
+        }
+    }
+
     class func displayImage(url: NSURL, imageView: UIImageView) {
-        Pinwheel.displayImage(url, imageView: imageView, options: Static.defaultOptions)
+        ImageLoader.displayImage(url, imageView: imageView, options: Static.defaultOptions, loadingListener: DebugListener(), loadingProgressListener: DebugProgressListener())
     }
 
     class func displayImage(url: NSURL, imageView: UIImageView, callback: (() -> Void)) {
-        let options = Pinwheel.DisplayOptions.Builder()
+        let options = DisplayOptions.Builder()
             .displayer(CallbackDisplayer(callback: callback))
             .build()
-        Pinwheel.displayImage(url, imageView: imageView, options: options)
+        ImageLoader.displayImage(url, imageView: imageView, options: options)
     }
 
     class func displayThumbnailImage(url: NSURL, imageView: UIImageView) {
-        Pinwheel.displayImage(url, imageView: imageView, options: Static.thumbnailOptions)
+        ImageLoader.displayImage(url, imageView: imageView, options: Static.thumbnailOptions)
     }
 
     class func displayUserIcon(url: NSURL, imageView: UIImageView) {
-        Pinwheel.displayImage(url, imageView: imageView, options: Static.userIconOptions)
+        ImageLoader.displayImage(url, imageView: imageView, options: Static.userIconOptions)
     }
 
     class func displayTitleIcon(url: NSURL, imageView: UIImageView) {
-        Pinwheel.displayImage(url, imageView: imageView, options: Static.titleIconOptions)
+        ImageLoader.displayImage(url, imageView: imageView, options: Static.titleIconOptions)
     }
 
     class func displayActionedUserIcon(url: NSURL, imageView: UIImageView) {
-        Pinwheel.displayImage(url, imageView: imageView, options: Static.actionedUserIconOptions)
+        ImageLoader.displayImage(url, imageView: imageView, options: Static.actionedUserIconOptions)
     }
 
     class func displaySideMenuUserIcon(url: NSURL, imageView: UIImageView) {
-        Pinwheel.displayImage(url, imageView: imageView, options: Static.sideMenuUserIconOptions)
+        ImageLoader.displayImage(url, imageView: imageView, options: Static.sideMenuUserIconOptions)
     }
 }

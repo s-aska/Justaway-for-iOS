@@ -152,7 +152,7 @@ class TwitterStatusAdapter: NSObject {
         scrolling = false
         loadDataQueue.suspended = false
         mainQueue.suspended = false
-        Pinwheel.suspend = false
+        ImageLoader.suspend = false
         if let tableView = scrollView as? UITableView {
             renderImages(tableView)
         }
@@ -169,11 +169,12 @@ class TwitterStatusAdapter: NSObject {
     }
 
     func scrollToTop(scrollView: UIScrollView) {
-        Pinwheel.suspend = true
+        ImageLoader.suspend = true
         scrollView.setContentOffset(CGPoint.init(x: 0, y: -scrollView.contentInset.top), animated: true)
     }
 
-    func renderData(tableView: UITableView, var statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
+    func renderData(tableView: UITableView, statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
+        var statuses = statuses
         let fontSize = CGFloat(GenericSettings.get().fontSize)
         let limit = mode == .OVER ? 0 : timelineRowsLimit
 
@@ -224,7 +225,7 @@ class TwitterStatusAdapter: NSObject {
                 for insertIndexPath in insertIndexPaths {
                     let row = self.createRow(statuses[i], fontSize: fontSize, tableView: tableView)
                     self.rows.insert(row, atIndex: insertIndexPath.row)
-                    i++
+                    i += 1
                 }
                 if addShowMore {
                     let showMoreIndexPath = NSIndexPath(forRow: insertStart + statuses.count, inSection: 0)
@@ -332,7 +333,7 @@ class TwitterStatusAdapter: NSObject {
                 for insertIndexPath in insertIndexPaths {
                     let row = self.createRow(statuses[i], fontSize: fontSize, tableView: tableView)
                     self.rows.insert(row, atIndex: insertIndexPath.row)
-                    i++
+                    i += 1
                 }
                 tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
             }
@@ -355,7 +356,7 @@ class TwitterStatusAdapter: NSObject {
             } else {
                 newRows.append(row)
             }
-            i++
+            i += 1
         }
 
         if deleteIndexPaths.count > 0 {
@@ -444,7 +445,7 @@ extension TwitterStatusAdapter: UITableViewDataSource {
         cell.setLayout(layout)
         cell.setText(status)
 
-        if !Pinwheel.suspend {
+        if !ImageLoader.suspend {
             cell.setImage(status)
         }
 

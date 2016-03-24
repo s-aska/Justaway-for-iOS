@@ -84,9 +84,9 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
             cell.textLabel?.textColor = ThemeController.currentTheme.bodyTextColor()
         }
 
-        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(SavedSearchesViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
 
-        let swipe = UISwipeGestureRecognizer(target: self, action: "hide")
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(SavedSearchesViewController.hide))
         swipe.numberOfTouchesRequired = 1
         swipe.direction = UISwipeGestureRecognizerDirection.Right
         tableView.addGestureRecognizer(swipe)

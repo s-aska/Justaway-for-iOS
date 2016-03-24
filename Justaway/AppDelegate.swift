@@ -15,8 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
 
-        Pinwheel.setup(
-            Pinwheel.Configuration.Builder()
+        ImageLoader.setup(
+            Configuration.Builder()
                 .maxConcurrent(5)
                 .defaultTimeoutIntervalForRequest(5)
                 //.debug()
@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Twitter.setup()
 
         #if DEBUG
-            // Pinwheel.DiskCache.sharedInstance().clear()
+            // DiskCache.sharedInstance().clear()
             KeyClip.printError(true)
             NSLog("debug")
         #endif
