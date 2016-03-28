@@ -174,9 +174,9 @@ extension TwitterMessageAdapter {
         let row = rows[indexPath.row]
         if let message = row.message {
             if threadMode {
-                let threadUserID = message.threadUser.userID
-                let threadMessages = allMessage.filter({ $0.threadUser.userID == threadUserID })
-                MessagesViewController.show(message.threadUser, messages: threadMessages)
+                let collocutorID = message.collocutor.userID
+                let threadMessages = allMessage.filter({ $0.collocutor.userID == collocutorID })
+                MessagesViewController.show(message.collocutor, messages: threadMessages)
             }
             // MessageAlert.show(cell, message: message)
         }

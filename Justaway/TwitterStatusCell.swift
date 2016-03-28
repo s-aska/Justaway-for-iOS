@@ -364,7 +364,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
         relativeCreatedAtLabel.text = message.createdAt.relativeString
         absoluteCreatedAtLabel.text = message.createdAt.absoluteString
 
-        let user = threadMode ? message.threadUser : message.sender
+        let user = threadMode ? message.collocutor : message.sender
         nameLabel.text = user.name
         screenNameLabel.text = "@" + user.screenName
         protectedLabel.hidden = user.isProtected ? false : true
@@ -381,7 +381,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     func setImage(message: TwitterMessage) {
         if iconImageView.image == nil {
-            let user = threadMode ? message.threadUser : message.sender
+            let user = threadMode ? message.collocutor : message.sender
             ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: iconImageView)
         }
         setImage(message.media)

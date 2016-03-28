@@ -89,7 +89,7 @@ struct TwitterMessage {
         }
     }
 
-    var threadUser: TwitterUser {
+    var collocutor: TwitterUser {
         return ownerID == sender.userID ? recipient : sender
     }
 
