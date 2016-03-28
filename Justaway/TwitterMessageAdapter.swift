@@ -81,7 +81,8 @@ class TwitterMessageAdapter: TwitterAdapter {
         return thread
     }
 
-    func renderData(tableView: UITableView, var messages: [TwitterMessage], mode: RenderMode, handler: (() -> Void)?) {
+    func renderData(tableView: UITableView, messages: [TwitterMessage], mode: RenderMode, handler: (() -> Void)?) {
+        var messages = messages
         let fontSize = CGFloat(GenericSettings.get().fontSize)
         let limit = mode == .OVER ? 0 : timelineRowsLimit
 
@@ -114,7 +115,7 @@ class TwitterMessageAdapter: TwitterAdapter {
                 for insertIndexPath in insertIndexPaths {
                     let row = self.createRow(messages[i], fontSize: fontSize, tableView: tableView)
                     self.rows.insert(row, atIndex: insertIndexPath.row)
-                    i++
+                    i += 1
                 }
                 tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
             }
