@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import EventBox
+import Async
 
 // MARK: - ContainerView
 
@@ -251,8 +252,14 @@ class StatusLable: UITextView {
         }
         if let status = status {
             StatusAlert.show(self, status: status)
-        } else if let message = message {
-            // TODO
+        } else if let message = message, let account = AccountSettingsStore.get()?.account() {
+            if let messages = Twitter.messages[account.userID] {
+                let threadMessages = messages.filter({ $0.collocutor.userID == message.collocutor.userID })
+                Async.main {
+                    MessagesViewController.show(message.collocutor, messages: threadMessages)
+                }
+
+            }
         }
     }
 

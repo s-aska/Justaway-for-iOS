@@ -46,6 +46,7 @@ class Twitter {
         static var streamingRequest: StreamingRequest?
         static var favorites = [String: Bool]()
         static var retweets = [String: String]()
+        static var messages = [String: [TwitterMessage]]()
         static var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
         private static let favoritesQueue = dispatch_queue_create("pw.aska.justaway.twitter.favorites", DISPATCH_QUEUE_SERIAL)
         private static let retweetsQueue = dispatch_queue_create("pw.aska.justaway.twitter.retweets", DISPATCH_QUEUE_SERIAL)
@@ -53,6 +54,10 @@ class Twitter {
 
     class var connectionStatus: ConnectionStatus { return Static.connectionStatus }
     class var streamingMode: StreamingMode { return Static.streamingMode }
+    class var messages: [String: [TwitterMessage]] {
+        get { return Static.messages }
+        set { Static.messages = newValue }
+    }
 
     class var enableStreaming: Bool {
         switch Static.streamingMode {

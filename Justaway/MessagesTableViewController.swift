@@ -144,9 +144,10 @@ class MessagesTableViewController: TimelineTableViewController {
         let key = "messages:\(account.userID)"
         Async.background {
             if let cache = KeyClip.load(key) as NSDictionary? {
-                if let messages = cache["messages"] as? [[String: AnyObject]] {
-                    self.adapter.allMessage = messages.map({ TwitterMessage($0, ownerID: account.userID) })
-                    let thread = self.adapter.thread(self.adapter.allMessage)
+                if let array = cache["messages"] as? [[String: AnyObject]] {
+                    let messages = array.map({ TwitterMessage($0, ownerID: account.userID) })
+                    Twitter.messages.updateValue(messages, forKey: account.userID)
+                    let thread = self.adapter.thread(messages)
                     Async.main {
                         self.adapter.renderData(self.tableView, messages: thread, mode: .OVER, handler: nil)
                         NSLog("messages: loadCache.")
@@ -184,9 +185,12 @@ class MessagesTableViewController: TimelineTableViewController {
     }
 
     func loadData() {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
         let success = { (messages: [TwitterMessage]) -> Void in
-            self.adapter.allMessage = messages
-            let thread = self.adapter.thread(self.adapter.allMessage)
+            Twitter.messages.updateValue(messages, forKey: account.userID)
+            let thread = self.adapter.thread(messages)
             Async.main {
                 self.adapter.renderData(self.tableView, messages: thread, mode: .OVER, handler: nil)
             }

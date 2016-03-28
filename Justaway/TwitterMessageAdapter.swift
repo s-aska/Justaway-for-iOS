@@ -16,7 +16,6 @@ class TwitterMessageAdapter: TwitterAdapter {
     // MARK: Properties
 
     let threadMode: Bool
-    var allMessage = [TwitterMessage]()
 
     var messages: [TwitterMessage] {
         return rows.filter({ $0.message != nil }).map({ $0.message! })
@@ -171,14 +170,16 @@ class TwitterMessageAdapter: TwitterAdapter {
 
 extension TwitterMessageAdapter {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        NSLog("TwitterMessageAdapter didSelectRowAtIndexPath")
         let row = rows[indexPath.row]
         if let message = row.message {
-            if threadMode {
+            if threadMode, let account = AccountSettingsStore.get()?.account(), let messages = Twitter.messages[account.userID] {
                 let collocutorID = message.collocutor.userID
-                let threadMessages = allMessage.filter({ $0.collocutor.userID == collocutorID })
-                MessagesViewController.show(message.collocutor, messages: threadMessages)
+                let threadMessages = messages.filter({ $0.collocutor.userID == collocutorID })
+                Async.main {
+                    MessagesViewController.show(message.collocutor, messages: threadMessages)
+                }
             }
-            // MessageAlert.show(cell, message: message)
         }
     }
 }

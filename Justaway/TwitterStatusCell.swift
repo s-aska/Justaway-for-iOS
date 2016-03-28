@@ -701,8 +701,6 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBAction func reply(sender: UIButton) {
         if let status = self.status {
             Twitter.reply(status)
-        } else if let message = self.message {
-            // TODO
         }
     }
 
