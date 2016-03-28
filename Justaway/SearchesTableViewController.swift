@@ -139,6 +139,9 @@ class SearchesTableViewController: TimelineTableViewController {
             guard let keyword = self.keyword else {
                 return
             }
+            if status.type != .Normal {
+                return
+            }
             if status.text.containsString(keyword) {
                 self.renderData([status], mode: .TOP, handler: {})
             }
