@@ -126,11 +126,11 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
 
         highlightUpdate(0)
 
-        statusView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
-        followingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
-        followerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
-        listedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
-        favoritesView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPage:"))
+        statusView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.showPage(_:))))
+        followingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.showPage(_:))))
+        followerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.showPage(_:))))
+        listedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.showPage(_:))))
+        favoritesView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.showPage(_:))))
 
         scrollView.delegate = self
 
@@ -142,9 +142,9 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         gradient.frame = coverImageView.frame
         coverImageView.layer.insertSublayer(gradient, atIndex: 0)
 
-        iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showIcon:"))
-        coverImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showCover:"))
-        siteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "openURL:"))
+        iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.showIcon(_:))))
+        coverImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.showCover(_:))))
+        siteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.openURL(_:))))
 
         // setup tabview
         if let windowSize = UIApplication.sharedApplication().keyWindow?.rootViewController?.view.frame.size {
@@ -160,7 +160,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             let view = UIView(frame: CGRect.init(x: size.width * CGFloat(i), y: 0, width: size.width, height: size.height))
             view.addSubview(vc.view)
             contentView.addSubview(view)
-            i++
+            i += 1
         }
 
         scrollView.addSubview(contentView)

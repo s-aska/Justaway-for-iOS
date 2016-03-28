@@ -1,7 +1,7 @@
 github "s-aska/EventBox"
 github "s-aska/KeyClip"
 github "s-aska/TwitterAPI"
-github "s-aska/Pinwheel"
+github "s-aska/Pinwheel" "d8cd4df051f63be78076ee4917ff0bb1581d0654"
 github "gavinbunney/Toucan"
 github "SwiftyJSON/SwiftyJSON"
 github "duemunk/Async"

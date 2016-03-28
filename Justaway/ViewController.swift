@@ -43,7 +43,7 @@ class ViewController: UIViewController {
     // MARK: - Configuration
 
     func configureView() {
-        let longPress = UILongPressGestureRecognizer(target: self, action: "signInMenu:")
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.signInMenu(_:)))
         longPress.minimumPressDuration = 2.0
         signInButton.addGestureRecognizer(longPress)
     }

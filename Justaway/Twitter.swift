@@ -486,15 +486,17 @@ class Twitter {
             })
     }
 
-    class func statusUpdate(status: String, inReplyToStatusID: String?, var images: [NSData], var mediaIds: [String]) {
+    class func statusUpdate(status: String, inReplyToStatusID: String?, images: [NSData], mediaIds: [String]) {
         if images.count == 0 {
             return statusUpdate(status, inReplyToStatusID: inReplyToStatusID, mediaIds: mediaIds)
         }
+        var images = images
         let image = images.removeAtIndex(0)
         Async.background { () -> Void in
             client()?
                 .postMedia(image)
                 .responseJSON { (json: JSON) -> Void in
+                    var mediaIds = mediaIds
                     if let media_id = json["media_id_string"].string {
                         mediaIds.append(media_id)
                     }

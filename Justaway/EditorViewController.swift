@@ -91,7 +91,7 @@ class EditorViewController: UIViewController {
             imageView.clipsToBounds = true
             imageView.contentMode = .ScaleAspectFill
             imageView.userInteractionEnabled = true
-            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "removeImage:"))
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(EditorViewController.removeImage(_:))))
         }
 
         resetPickerController()
@@ -136,7 +136,7 @@ class EditorViewController: UIViewController {
                                 self.removeImageIndex(i)
                                 return
                             }
-                            i++
+                            i += 1
                         }
                     }
                     let i = self.images.count
@@ -238,7 +238,7 @@ class EditorViewController: UIViewController {
     @IBAction func music(sender: UIButton) {
         guard let item = MPMusicPlayerController.systemMusicPlayer().nowPlayingItem else {
             if let url = NSURL.init(string: "googleplaymusic://") {
-                if (UIApplication.sharedApplication().canOpenURL(url)) {
+                if UIApplication.sharedApplication().canOpenURL(url) {
                     UIApplication.sharedApplication().openURL(url)
                     return
                 }
@@ -275,6 +275,16 @@ class EditorViewController: UIViewController {
         }
     }
 
+    @IBAction func more(sender: UIButton) {
+        weak var textView = self.textView
+        EditorMoreAlert.show(sender, text: self.textView.text) { (text) -> Void in
+            guard let textView = textView else {
+                return
+            }
+            textView.text = text
+        }
+    }
+
     @IBAction func send(sender: UIButton) {
         let text = textView.text
         if text.isEmpty && images.count == 0 {
@@ -304,7 +314,7 @@ class EditorViewController: UIViewController {
             } else {
                 imageView.image = nil
             }
-            i++
+            i += 1
         }
         if images.count == 0 {
             imageContainerHeightConstraint.constant = 0

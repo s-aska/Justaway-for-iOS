@@ -101,7 +101,7 @@ class TwitterAdapter: NSObject {
         scrolling = false
         loadDataQueue.suspended = false
         mainQueue.suspended = false
-        Pinwheel.suspend = false
+        ImageLoader.suspend = false
         if let tableView = scrollView as? UITableView {
             renderImages(tableView)
         }
@@ -118,7 +118,7 @@ class TwitterAdapter: NSObject {
     }
 
     func scrollToTop(scrollView: UIScrollView) {
-        Pinwheel.suspend = true
+        ImageLoader.suspend = true
         scrollView.setContentOffset(CGPoint.init(x: 0, y: -scrollView.contentInset.top), animated: true)
     }
 
@@ -132,7 +132,7 @@ class TwitterAdapter: NSObject {
             } else {
                 newRows.append(row)
             }
-            i++
+            i += 1
         }
 
         if deleteIndexPaths.count > 0 {
@@ -221,7 +221,7 @@ extension TwitterAdapter: UITableViewDataSource {
         cell.setLayout(layout)
         cell.setText(status)
 
-        if !Pinwheel.suspend {
+        if !ImageLoader.suspend {
             cell.setImage(status)
         }
         return cell
@@ -250,7 +250,7 @@ extension TwitterAdapter: UITableViewDataSource {
         cell.setLayout(layout)
         cell.setText(message)
 
-        if !Pinwheel.suspend {
+        if !ImageLoader.suspend {
             cell.setImage(message)
         }
         return cell

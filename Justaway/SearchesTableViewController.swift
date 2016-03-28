@@ -79,7 +79,7 @@ class SearchesTableViewController: TimelineTableViewController {
         }
 
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: Selector("loadDataToTop"), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(SearchesTableViewController.loadDataToTop), forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshControl
     }
 
@@ -247,7 +247,7 @@ class SearchesTableViewController: TimelineTableViewController {
     }
 
     func saveCacheSchedule() {
-        Scheduler.regsiter(interval: 30, target: self, selector: Selector("saveCache"))
+        Scheduler.regsiter(interval: 30, target: self, selector: #selector(TimelineTableViewController.saveCache))
     }
 
     override func refresh() {

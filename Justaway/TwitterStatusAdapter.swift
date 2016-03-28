@@ -85,7 +85,8 @@ class TwitterStatusAdapter: TwitterAdapter {
 
     // MARK: Public Methods
 
-    func renderData(tableView: UITableView, var statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
+    func renderData(tableView: UITableView, statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {
+        var statuses = statuses
         let fontSize = CGFloat(GenericSettings.get().fontSize)
         let limit = mode == .OVER ? 0 : timelineRowsLimit
 
@@ -136,7 +137,7 @@ class TwitterStatusAdapter: TwitterAdapter {
                 for insertIndexPath in insertIndexPaths {
                     let row = self.createRow(statuses[i], fontSize: fontSize, tableView: tableView)
                     self.rows.insert(row, atIndex: insertIndexPath.row)
-                    i++
+                    i += 1
                 }
                 if addShowMore {
                     let showMoreIndexPath = NSIndexPath(forRow: insertStart + statuses.count, inSection: 0)
@@ -244,7 +245,7 @@ class TwitterStatusAdapter: TwitterAdapter {
                 for insertIndexPath in insertIndexPaths {
                     let row = self.createRow(statuses[i], fontSize: fontSize, tableView: tableView)
                     self.rows.insert(row, atIndex: insertIndexPath.row)
-                    i++
+                    i += 1
                 }
                 tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
             }

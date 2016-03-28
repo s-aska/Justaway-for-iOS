@@ -10,7 +10,7 @@ import Foundation
 import Pinwheel
 import TwitterAPI
 
-public class OAuthRequestBuilder: PinwheelRequestBuilder {
+public class OAuthRequestBuilder: RequestBuilder {
 
     public init() {
     }

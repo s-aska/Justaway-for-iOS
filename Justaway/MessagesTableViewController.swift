@@ -55,7 +55,7 @@ class MessagesTableViewController: TimelineTableViewController {
         adapter.configureView(tableView)
 
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(TimelineTableViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshControl
     }
 
@@ -173,7 +173,7 @@ class MessagesTableViewController: TimelineTableViewController {
                     return
                 }
             }
-            
+
             Async.background(after: 0.5, block: { () -> Void in
                 self.loadData()
             })

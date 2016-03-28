@@ -196,26 +196,26 @@ class TwitterStatusCell: BackgroundTableViewCell {
         for imageView in [imageView1, imageView2, imageView3, imageView4] {
             imageView.clipsToBounds = true
             imageView.contentMode = .ScaleAspectFill
-            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImage:"))
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(TwitterStatusCell.showImage(_:))))
         }
 
         for imageView in [quotedImageView1, quotedImageView2, quotedImageView3, quotedImageView4] {
             imageView.clipsToBounds = true
             imageView.contentMode = .ScaleAspectFill
-            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showQuotedImage:"))
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(TwitterStatusCell.showQuotedImage(_:))))
         }
 
-        iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "openProfile:"))
+        iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(TwitterStatusCell.openProfile(_:))))
 
-        playerWrapperView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "hideVideo"))
+        playerWrapperView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(TwitterStatusCell.hideVideo)))
         playerWrapperView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
 
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: "videoSwipeUp")
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(TwitterStatusCell.videoSwipeUp))
         swipeUp.numberOfTouchesRequired = 1
         swipeUp.direction = .Up
         playerWrapperView.addGestureRecognizer(swipeUp)
 
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: "videoSwipeDown")
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(TwitterStatusCell.videoSwipeDown))
         swipeDown.numberOfTouchesRequired = 1
         swipeDown.direction = .Down
         playerWrapperView.addGestureRecognizer(swipeDown)
@@ -243,7 +243,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
             }
         }
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "endVideo", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TwitterStatusCell.endVideo), name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
     }
 
     func configureFavoritesEvent() {

@@ -55,7 +55,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         }
 
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: Selector("loadDataToTop"), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(StatusTableViewController.loadDataToTop), forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshControl
     }
 
@@ -161,7 +161,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
     }
 
     func saveCacheSchedule() {
-        Scheduler.regsiter(interval: 30, target: self, selector: Selector("saveCache"))
+        Scheduler.regsiter(interval: 30, target: self, selector: #selector(saveCache))
     }
 
     override func refresh() {

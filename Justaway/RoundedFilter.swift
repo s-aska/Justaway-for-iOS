@@ -1,9 +1,8 @@
-import Foundation
 import UIKit
 import Toucan
 import Pinwheel
 
-class RoundedFilter: PinwheelFilter {
+class RoundedFilter: Filter {
 
     let radius: CGFloat
     let size: CGSize
@@ -22,6 +21,9 @@ class RoundedFilter: PinwheelFilter {
     }
 
     func cacheKey() -> String {
-        return String(format: "?size=%@x%@&radius=%@", size.width.description, size.height.description, radius.description)
+        return String(format: "?size=%@x%@&radius=%@",
+                      size.width.description,
+                      size.height.description,
+                      radius.description)
     }
 }

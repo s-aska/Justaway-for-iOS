@@ -76,7 +76,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             userID = account.account().userID
         }
 
-        let swipe = UISwipeGestureRecognizer(target: self, action: "showSideMenu")
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(TimelineViewController.showSideMenu))
         swipe.numberOfTouchesRequired = 1
         swipe.direction = .Right
         scrollView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
@@ -237,8 +237,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
         button.setTitle(icon, forState: UIControlState.Normal)
-        button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "tabButton:"))
-        let longPress = UILongPressGestureRecognizer(target: self, action: "tabMenu:")
+        button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(TimelineViewController.tabButton(_:))))
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(TimelineViewController.tabMenu(_:)))
         longPress.minimumPressDuration = 0.5
         button.addGestureRecognizer(longPress)
         return button
@@ -313,7 +313,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 default:
                     break
                 }
-                page++
+                page += 1
             }
         }
     }
@@ -331,7 +331,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 default:
                     break
                 }
-                page++
+                page += 1
             }
         }
     }

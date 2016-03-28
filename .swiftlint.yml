@@ -1,5 +1,6 @@
 included:
 - Justaway
+- JustawayShare
 disabled_rules:
 - line_length
 - type_body_length

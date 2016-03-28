@@ -69,9 +69,9 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         tableView.registerNib(UINib(nibName: "AccountCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         tableView.addSubview(refreshControl)
 
-        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh), forControlEvents: UIControlEvents.ValueChanged)
 
-        let swipe = UISwipeGestureRecognizer(target: self, action: "hide")
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(hide))
         swipe.numberOfTouchesRequired = 1
         swipe.direction = UISwipeGestureRecognizerDirection.Right
         tableView.addGestureRecognizer(swipe)

@@ -53,19 +53,19 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     func configureView() {
         scrollView.delegate = self
 
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: "swipeUp")
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(ImageViewController.swipeUp))
         swipeUp.numberOfTouchesRequired = 1
         swipeUp.direction = .Up
         scrollView.panGestureRecognizer.requireGestureRecognizerToFail(swipeUp)
         scrollView.addGestureRecognizer(swipeUp)
 
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: "swipeDown")
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(ImageViewController.swipeDown))
         swipeDown.numberOfTouchesRequired = 1
         swipeDown.direction = .Down
         scrollView.panGestureRecognizer.requireGestureRecognizerToFail(swipeDown)
         scrollView.addGestureRecognizer(swipeDown)
 
-        let tap = UITapGestureRecognizer(target: self, action: "hide")
+        let tap = UITapGestureRecognizer(target: self, action: #selector(ImageViewController.hide))
         tap.numberOfTouchesRequired = 1
         scrollView.panGestureRecognizer.requireGestureRecognizerToFail(tap)
         scrollView.addGestureRecognizer(tap)
@@ -103,7 +103,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             imageView.contentMode = .ScaleAspectFit
             imageView.tag = i
             imageView.userInteractionEnabled = true
-            imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: "menu:"))
+            imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(ImageViewController.menu(_:))))
 
             let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
             indicatorView.hidesWhenStopped = true
@@ -127,7 +127,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
                 indicatorView.stopAnimating()
             }
 
-            i++
+            i += 1
         }
 
         pageControl.hidden = i == 1
@@ -197,7 +197,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             style: .Default,
             handler: { action in
                 if let image = self.imageViews[tag].image {
-                    UIImageWriteToSavedPhotosAlbum(image, self, "image:didFinishSavingWithError:contextInfo:", nil)
+                    UIImageWriteToSavedPhotosAlbum(image, self, #selector(ImageViewController.image(_:didFinishSavingWithError:contextInfo:)), nil)
                 }
         }))
         AlertController.showViewController(actionSheet)

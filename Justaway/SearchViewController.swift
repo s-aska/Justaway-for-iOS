@@ -63,10 +63,10 @@ class SearchViewController: UIViewController {
     // MARK: - Configuration
 
     func configureView() {
-        refreshControl.addTarget(self, action: Selector("loadDataToTop"), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(SearchViewController.loadDataToTop), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
 
-        let swipe = UISwipeGestureRecognizer(target: self, action: "hide")
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(SearchViewController.hide))
         swipe.numberOfTouchesRequired = 1
         swipe.direction = .Right
         tableView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
@@ -86,7 +86,7 @@ class SearchViewController: UIViewController {
             }
         }
 
-        let touchCover = UITapGestureRecognizer(target: keywordTextField, action: "resignFirstResponder")
+        let touchCover = UITapGestureRecognizer(target: keywordTextField, action: #selector(UIResponder.resignFirstResponder))
         cover.addGestureRecognizer(touchCover)
 
         let button = MenuButton()
@@ -96,8 +96,8 @@ class SearchViewController: UIViewController {
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
         button.setTitle("✖", forState: UIControlState.Normal)
-        button.addTarget(self, action: "clear", forControlEvents: .TouchUpInside)
-        keywordTextField.addTarget(self, action: "change", forControlEvents: .EditingChanged)
+        button.addTarget(self, action: #selector(SearchViewController.clear), forControlEvents: .TouchUpInside)
+        keywordTextField.addTarget(self, action: #selector(SearchViewController.change), forControlEvents: .EditingChanged)
         keywordTextField.rightView = button
         keywordTextField.rightViewMode = .Always
     }
