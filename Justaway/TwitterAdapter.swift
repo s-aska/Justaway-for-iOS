@@ -82,6 +82,22 @@ class TwitterAdapter: NSObject {
         tableView.dataSource = self
     }
 
+    // MARK: Initializers
+
+    override init() {
+        super.init()
+        EventBox.on(self, name: UIMenuControllerWillShowMenuNotification, sender: nil, queue: nil) { [weak self] (_) in
+            self?.mainQueue.suspended = true
+        }
+        EventBox.on(self, name: UIMenuControllerDidHideMenuNotification, sender: nil, queue: nil) { [weak self] (_) in
+            self?.mainQueue.suspended = false
+        }
+    }
+
+    deinit {
+        EventBox.off(self)
+    }
+
     // MARK: Public Methods
 
     func scrollBegin() {
