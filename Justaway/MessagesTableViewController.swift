@@ -14,7 +14,7 @@ import Async
 
 class MessagesTableViewController: TimelineTableViewController {
 
-    let messageAdapter = TwitterMessageAdapter()
+    let messageAdapter = TwitterMessageAdapter(threadMode: true)
     override var adapter: TwitterMessageAdapter {
         return messageAdapter
     }
@@ -135,26 +135,6 @@ class MessagesTableViewController: TimelineTableViewController {
 //        }
     }
 
-    // MARK: - UITableViewDataSource
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return adapter.tableView(tableView, numberOfRowsInSection: section)
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return adapter.tableView(tableView, cellForRowAtIndexPath: indexPath)
-    }
-
-    // MARK: UITableViewDelegate
-
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return adapter.tableView(tableView, heightForRowAtIndexPath: indexPath)
-    }
-
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-         adapter.tableView(tableView, didSelectRowAtIndexPath: indexPath)
-    }
-
     // MARK: Public Methods
 
     func loadCache() {
@@ -165,7 +145,8 @@ class MessagesTableViewController: TimelineTableViewController {
         Async.background {
             if let cache = KeyClip.load(key) as NSDictionary? {
                 if let messages = cache["messages"] as? [[String: AnyObject]] {
-                    let thread = self.adapter.thread(messages.map({ TwitterMessage($0) }))
+                    self.adapter.allMessage = messages.map({ TwitterMessage($0, ownerID: account.userID) })
+                    let thread = self.adapter.thread(self.adapter.allMessage)
                     Async.main {
                         self.adapter.renderData(self.tableView, messages: thread, mode: .OVER, handler: nil)
                         NSLog("messages: loadCache.")
@@ -195,7 +176,7 @@ class MessagesTableViewController: TimelineTableViewController {
     }
 
     func saveCacheSchedule() {
-        Scheduler.regsiter(interval: 30, target: self, selector: Selector("saveCache"))
+        Scheduler.regsiter(interval: 30, target: self, selector: #selector(saveCache))
     }
 
     override func refresh() {
@@ -204,7 +185,8 @@ class MessagesTableViewController: TimelineTableViewController {
 
     func loadData() {
         let success = { (messages: [TwitterMessage]) -> Void in
-            let thread = self.adapter.thread(messages)
+            self.adapter.allMessage = messages
+            let thread = self.adapter.thread(self.adapter.allMessage)
             Async.main {
                 self.adapter.renderData(self.tableView, messages: thread, mode: .OVER, handler: nil)
             }

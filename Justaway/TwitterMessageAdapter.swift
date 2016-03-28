@@ -15,6 +15,9 @@ class TwitterMessageAdapter: TwitterAdapter {
 
     // MARK: Properties
 
+    let threadMode: Bool
+    var allMessage = [TwitterMessage]()
+
     var messages: [TwitterMessage] {
         return rows.filter({ $0.message != nil }).map({ $0.message! })
     }
@@ -32,6 +35,12 @@ class TwitterMessageAdapter: TwitterAdapter {
             tableView.registerNib(nib, forCellReuseIdentifier: layout.rawValue)
             self.layoutHeightCell[layout] = tableView.dequeueReusableCellWithIdentifier(layout.rawValue) as? TwitterStatusCell
         }
+    }
+
+    // MARK: Initializers
+
+    init(threadMode: Bool) {
+        self.threadMode = threadMode
     }
 
     // MARK: Private Methods
@@ -162,11 +171,13 @@ class TwitterMessageAdapter: TwitterAdapter {
 
 extension TwitterMessageAdapter {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
-            return
-        }
         let row = rows[indexPath.row]
         if let message = row.message {
+            if threadMode {
+                let threadUserID = message.threadUser.userID
+                let threadMessages = allMessage.filter({ $0.threadUser.userID == threadUserID })
+                MessagesViewController.show(message.threadUser, messages: threadMessages)
+            }
             // MessageAlert.show(cell, message: message)
         }
     }

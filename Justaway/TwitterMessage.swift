@@ -19,8 +19,10 @@ struct TwitterMessage {
     let mentions: [TwitterUser]
     let hashtags: [TwitterHashtag]
     let media: [TwitterMedia]
+    let ownerID: String
 
-    init(_ json: JSON) {
+    init(_ json: JSON, ownerID: String) {
+        self.ownerID = ownerID
         self.id = json["id_str"].string ?? ""
         self.text = json["text"].string ?? ""
         self.createdAt = TwitterDate(json["created_at"].string!)
@@ -54,7 +56,8 @@ struct TwitterMessage {
         }
     }
 
-    init(_ dictionary: [String: AnyObject]) {
+    init(_ dictionary: [String: AnyObject], ownerID: String) {
+        self.ownerID = ownerID
         self.id = dictionary["id"] as? String ?? ""
         self.text = dictionary["text"] as? String ?? ""
         self.createdAt = TwitterDate(NSDate(timeIntervalSince1970: (dictionary["createdAt"] as? NSNumber ?? 0).doubleValue))
@@ -84,6 +87,10 @@ struct TwitterMessage {
         } else {
             self.media = [TwitterMedia]()
         }
+    }
+
+    var threadUser: TwitterUser {
+        return ownerID == sender.userID ? recipient : sender
     }
 
     var dictionaryValue: [String: AnyObject] {

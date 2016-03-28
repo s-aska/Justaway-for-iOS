@@ -1,0 +1,98 @@
+//
+//  MessagesViewController.swift
+//  Justaway
+//
+//  Created by Shinichiro Aska on 3/28/16.
+//  Copyright © 2016 Shinichiro Aska. All rights reserved.
+//
+
+import UIKit
+import Pinwheel
+import EventBox
+
+class MessagesViewController: UIViewController {
+
+    // MARK: Properties
+
+    let adapter = TwitterMessageAdapter(threadMode: false)
+    var loadData = false
+    var messages = [TwitterMessage]()
+    var user: TwitterUser?
+
+    @IBOutlet weak var tableView: UITableView!
+
+    override var nibName: String {
+        return "MessagesViewController"
+    }
+
+    // MARK: - View Life Cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureView()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        configureEvent()
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        EventBox.off(self)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if !loadData {
+            loadData = true
+            adapter.setupLayout(tableView)
+            adapter.renderData(tableView, messages: messages, mode: .OVER, handler: nil)
+        }
+    }
+
+    // MARK: - Configuration
+
+    func configureView() {
+        adapter.configureView(tableView)
+    }
+
+    func configureEvent() {
+        EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { [weak self] (n) -> Void in
+            guard let `self` = self else {
+                return
+            }
+            self.adapter.scrollToTop(self.tableView)
+        })
+    }
+
+    // MARK: -
+
+    // MARK: - Actions
+
+    @IBAction func left(sender: UIButton) {
+        hide()
+    }
+
+    @IBAction func reply(sender: UIButton) {
+        EditorViewController.show(nil, range: nil, inReplyToStatus: nil, messageTo: user)
+    }
+
+    func hide() {
+        ViewTools.slideOut(self)
+    }
+
+    // MARK: - Class Methods
+
+    class func show(user: TwitterUser, messages: [TwitterMessage]) {
+        let instance = MessagesViewController()
+        instance.user = user
+        instance.messages = messages
+        ViewTools.slideIn(instance)
+    }
+}
+

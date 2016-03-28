@@ -146,6 +146,10 @@
 		38B057E01B72704300295C23 /* PocketCoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38B057DF1B72704300295C23 /* PocketCoverViewController.xib */; };
 		38B4475D19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
 		38B4475E19C062460055F074 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B4475C19C062460055F074 /* fontello.ttf */; };
+		38BC24A11CA928EB003D7BBB /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BC24A01CA928EB003D7BBB /* MessagesViewController.swift */; };
+		38BC24A31CA92942003D7BBB /* MessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BC24A21CA92942003D7BBB /* MessagesViewController.xib */; };
+		38BC24A41CA92B73003D7BBB /* MessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BC24A21CA92942003D7BBB /* MessagesViewController.xib */; };
+		38BC24A51CA92B76003D7BBB /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BC24A01CA928EB003D7BBB /* MessagesViewController.swift */; };
 		38C44C8C1B78E7BF00C22A52 /* GeneralSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C44C8B1B78E7BF00C22A52 /* GeneralSettingsViewController.swift */; };
 		38C44C931B78E7D500C22A52 /* GeneralSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38C44C921B78E7D500C22A52 /* GeneralSettingsViewController.xib */; };
 		38D11E7F1C6F1A3B0036AFB5 /* SavedSearchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D11E7E1C6F1A3B0036AFB5 /* SavedSearchesViewController.swift */; };
@@ -380,6 +384,8 @@
 		38B057D81B72702A00295C23 /* PocketCoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketCoverViewController.swift; sourceTree = "<group>"; };
 		38B057DF1B72704300295C23 /* PocketCoverViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PocketCoverViewController.xib; sourceTree = "<group>"; };
 		38B4475C19C062460055F074 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
+		38BC24A01CA928EB003D7BBB /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		38BC24A21CA92942003D7BBB /* MessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesViewController.xib; sourceTree = "<group>"; };
 		38C44C8B1B78E7BF00C22A52 /* GeneralSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingsViewController.swift; sourceTree = "<group>"; };
 		38C44C921B78E7D500C22A52 /* GeneralSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralSettingsViewController.xib; sourceTree = "<group>"; };
 		38D11E7E1C6F1A3B0036AFB5 /* SavedSearchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedSearchesViewController.swift; sourceTree = "<group>"; };
@@ -836,6 +842,8 @@
 				384DE9821BBAD64D0011AF6E /* SearchViewController.xib */,
 				38B057D81B72702A00295C23 /* PocketCoverViewController.swift */,
 				38B057DF1B72704300295C23 /* PocketCoverViewController.xib */,
+				38BC24A01CA928EB003D7BBB /* MessagesViewController.swift */,
+				38BC24A21CA92942003D7BBB /* MessagesViewController.xib */,
 				3894C24A19E556070038AEF8 /* Table */,
 				6AB55B4219C5843000DC6442 /* SettingsViewController.swift */,
 				6AB55B4419C584B300DC6442 /* SettingsViewController.xib */,
@@ -1038,6 +1046,7 @@
 				6A0449461B1F4F2400758061 /* ProfileViewController.xib in Resources */,
 				38105F8A1BC554C000CEF2A7 /* LaunchScreen.xib in Resources */,
 				6A9C18391C7378E200A1FE77 /* ChooseListsViewController.xib in Resources */,
+				38BC24A31CA92942003D7BBB /* MessagesViewController.xib in Resources */,
 				38B4475D19C062460055F074 /* fontello.ttf in Resources */,
 				6A81CF211BC406F400EBE567 /* SideMenuViewController.xib in Resources */,
 				38D11E811C6F1A530036AFB5 /* SavedSearchesViewController.xib in Resources */,
@@ -1074,6 +1083,7 @@
 				384DE9501BBAC9810011AF6E /* TimelineViewController.xib in Resources */,
 				384DE9581BBAC9840011AF6E /* AccountCell.xib in Resources */,
 				384DE95A1BBAC9840011AF6E /* TwitterListCell.xib in Resources */,
+				38BC24A41CA92B73003D7BBB /* MessagesViewController.xib in Resources */,
 				384DE9791BBACA140011AF6E /* AccountViewController.xib in Resources */,
 				384DE9541BBAC9810011AF6E /* TalkViewController.xib in Resources */,
 				6A7255741BC59EFF00A41020 /* SideMenuViewController.xib in Resources */,
@@ -1217,6 +1227,7 @@
 				6AD963E51A69ABBC00136B53 /* AlertController.swift in Sources */,
 				381E6E8019DE9DAB00139654 /* Twitter.swift in Sources */,
 				6A51769A1B487085003D0A86 /* FavoritesViewController.swift in Sources */,
+				38BC24A11CA928EB003D7BBB /* MessagesViewController.swift in Sources */,
 				38F7B8F319E5720F0081C735 /* StatusTableViewController.swift in Sources */,
 				6AB55B5A19D0B7B700DC6442 /* AccountSettingsStore.swift in Sources */,
 				3805DEAC1A67F63300FBD015 /* ThemeSolarizedDark.swift in Sources */,
@@ -1336,6 +1347,7 @@
 				6A9C183D1C73816500A1FE77 /* ListsTimelineViewController.swift in Sources */,
 				384DE9631BBAC9960011AF6E /* FavoritesViewController.swift in Sources */,
 				384DE97D1BBACA310011AF6E /* Scheduler.swift in Sources */,
+				38BC24A51CA92B76003D7BBB /* MessagesViewController.swift in Sources */,
 				6ABECB4E1C625B6200423CB7 /* TabSettings.swift in Sources */,
 				6A83EDA71B69400B000F3C43 /* ThemeSolarizedLight.swift in Sources */,
 				384DE9701BBAC9EB0011AF6E /* AsyncOperation.swift in Sources */,

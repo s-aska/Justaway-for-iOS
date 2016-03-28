@@ -390,20 +390,26 @@ class Twitter {
     }
 
     class func getDirectMessages(success: ([TwitterMessage]) -> Void) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            success([])
+            return
+        }
+
+        let client = account.client
         let parameters = ["count": "200", "full_text": "true"]
         let successReceived = { (array: [JSON]) -> Void in
             let reveivedArray = array
             let successSent = { (array: [JSON]) -> Void in
                 success((reveivedArray + array)
-                    .map({ TwitterMessage($0) })
+                    .map({ TwitterMessage($0, ownerID: account.userID) })
                     .sort({
                         return $0.0.createdAt.date.timeIntervalSince1970 > $0.1.createdAt.date.timeIntervalSince1970
                     }))
             }
-            client()?.get("https://api.twitter.com/1.1/direct_messages/sent.json", parameters: parameters)
+            client.get("https://api.twitter.com/1.1/direct_messages/sent.json", parameters: parameters)
                 .responseJSONArray(successSent)
         }
-        client()?.get("https://api.twitter.com/1.1/direct_messages.json", parameters: parameters)
+        client.get("https://api.twitter.com/1.1/direct_messages.json", parameters: parameters)
             .responseJSONArray(successReceived)
     }
 
@@ -514,10 +520,12 @@ class Twitter {
         if mediaIds.count > 0 {
             parameters["media_ids"] = mediaIds.joinWithSeparator(",")
         }
-        guard let client = client() else {
-            return
-        }
-        client.post("https://api.twitter.com/1.1/statuses/update.json", parameters: parameters)
+        client()?.post("https://api.twitter.com/1.1/statuses/update.json", parameters: parameters).responseJSONWithError(nil, failure: nil)
+    }
+
+    class func postDirectMessage(text: String, userID: String) {
+        let parameters = ["text": text, "user_id": userID]
+        client()?.post("https://api.twitter.com/1.1/direct_messages/new.json", parameters: parameters).responseJSONWithError(nil, failure: nil)
     }
 }
 

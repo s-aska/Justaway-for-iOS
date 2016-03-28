@@ -101,6 +101,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     var layout: TwitterStatusCellLayout?
     let playerView = AVPlayerView()
     let playerWrapperView = UIView()
+    var threadMode = false
 
     @IBOutlet weak var sourceView: UIView!
     @IBOutlet weak var sourceViewHeightConstraint: NSLayoutConstraint!
@@ -350,6 +351,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 favoriteCountLabel.hidden = true
                 talkButton.hidden = true
                 viaLabel.hidden = true
+                replyButton.hidden = true
             }
             setNeedsLayout()
             layoutIfNeeded()
@@ -358,12 +360,14 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     func setText(message: TwitterMessage) {
         iconImageView.image = nil
-        nameLabel.text = message.sender.name
-        screenNameLabel.text = "@" + message.sender.screenName
-        protectedLabel.hidden = message.sender.isProtected ? false : true
         statusLabel.setMessage(message)
         relativeCreatedAtLabel.text = message.createdAt.relativeString
         absoluteCreatedAtLabel.text = message.createdAt.absoluteString
+
+        let user = threadMode ? message.threadUser : message.sender
+        nameLabel.text = user.name
+        screenNameLabel.text = "@" + user.screenName
+        protectedLabel.hidden = user.isProtected ? false : true
 
         if message.media.count > 0 {
             imagePlayLabel.hidden = message.media.filter({ !$0.videoURL.isEmpty }).count > 0 ? false : true
@@ -377,7 +381,8 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     func setImage(message: TwitterMessage) {
         if iconImageView.image == nil {
-            ImageLoaderClient.displayUserIcon(message.sender.profileImageURL, imageView: iconImageView)
+            let user = threadMode ? message.threadUser : message.sender
+            ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: iconImageView)
         }
         setImage(message.media)
     }

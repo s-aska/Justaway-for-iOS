@@ -246,6 +246,10 @@ extension TwitterAdapter: UITableViewDataSource {
             }
         }
 
+        if let adapter = self as? TwitterMessageAdapter where adapter.threadMode {
+            cell.threadMode = true
+        }
+
         cell.message = message
         cell.setLayout(layout)
         cell.setText(message)
@@ -253,6 +257,7 @@ extension TwitterAdapter: UITableViewDataSource {
         if !ImageLoader.suspend {
             cell.setImage(message)
         }
+
         return cell
     }
 }
