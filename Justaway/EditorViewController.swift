@@ -45,6 +45,7 @@ class EditorViewController: UIViewController {
     @IBOutlet weak var imageView3: UIImageView!
     @IBOutlet weak var imageView4: UIImageView!
 
+    let refreshControl = UIRefreshControl()
     var images: [UploadImage] = []
     var imageViews: [UIImageView] = []
     var picking = false
@@ -158,6 +159,30 @@ class EditorViewController: UIViewController {
                 }
             })
         }
+        refreshControl.addTarget(self, action: #selector(loadImages), forControlEvents: UIControlEvents.ValueChanged)
+        collectionView.addSubview(refreshControl)
+        collectionView.alwaysBounceVertical = true
+    }
+
+    func loadImages() {
+        Async.background(block: { () -> Void in
+            let options = PHFetchOptions()
+            options.sortDescriptors = [
+                NSSortDescriptor(key: "creationDate", ascending: false)
+            ]
+            var rows = [PHAsset]()
+            let assets: PHFetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
+            assets.enumerateObjectsUsingBlock { (asset, index, stop) -> Void in
+                if let phasset = asset as? PHAsset {
+                    rows.append(phasset)
+                }
+            }
+            self.collectionView.rows = rows
+            Async.main(block: { () -> Void in
+                self.collectionView.reloadData()
+                self.refreshControl.endRefreshing()
+            })
+        })
     }
 
     func configureEvent() {
@@ -360,21 +385,7 @@ class EditorViewController: UIViewController {
         collectionMenuView.hidden = false
         textView.resignFirstResponder()
         if collectionView.rows.count == 0 {
-            Async.background(block: { () -> Void in
-                let options = PHFetchOptions()
-                options.sortDescriptors = [
-                    NSSortDescriptor(key: "creationDate", ascending: false)
-                ]
-                let assets: PHFetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
-                assets.enumerateObjectsUsingBlock { (asset, index, stop) -> Void in
-                    if let phasset = asset as? PHAsset {
-                        self.collectionView.rows.append(phasset)
-                    }
-                }
-                Async.main(block: { () -> Void in
-                    self.collectionView.reloadData()
-                })
-            })
+            loadImages()
         }
     }
 
