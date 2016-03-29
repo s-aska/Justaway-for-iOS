@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-struct TwitterMessage {
+class TwitterMessage {
     let id: String
     let text: String
     let createdAt: TwitterDate

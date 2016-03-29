@@ -83,10 +83,10 @@ extension Twitter {
             receiveEvent(responce, event: event)
         } else if let statusID = responce["delete"]["status"]["id_str"].string {
             receiveDestroyStatus(statusID)
-        } else if responce["delete"]["direct_message"] != nil {
-            receiveDestroyMessage(responce)
+        } else if let messageID = responce["delete"]["direct_message"]["id_str"].string {
+            receiveDestroyMessage(messageID)
         } else if responce["direct_message"] != nil {
-
+            receiveMessage(responce["direct_message"])
         } else if responce["text"] != nil {
             receiveStatus(responce)
         } else if responce["disconnect"] != nil {
@@ -176,7 +176,28 @@ extension Twitter {
         EventBox.post(Event.DestroyStatus.rawValue, sender: statusID)
     }
 
-    class func receiveDestroyMessage(responce: JSON) {
+    class func receiveMessage(responce: JSON) {
+        if let account = StreaminStatic.account {
+            let message = TwitterMessage(responce, ownerID: account.userID)
+            if let messages = Twitter.messages[account.userID] {
+                if !messages.contains({ $0.id == message.id }) {
+                    Twitter.messages[account.userID]?.insert(message, atIndex: 0)
+                    EventBox.post(Event.CreateMessage.rawValue, sender: message)
+                }
+            } else {
+                Twitter.messages[account.userID] = [message]
+                EventBox.post(Event.CreateMessage.rawValue, sender: message)
+            }
+        }
+    }
+
+    class func receiveDestroyMessage(messageID: String) {
+        if let account = StreaminStatic.account {
+            if let messages = Twitter.messages[account.userID] {
+                Twitter.messages[account.userID] = messages.filter({ $0.id != messageID })
+            }
+        }
+        EventBox.post(Event.DestroyMessage.rawValue, sender: messageID)
     }
 
     class func receiveDisconnect(responce: JSON) {

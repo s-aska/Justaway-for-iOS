@@ -179,6 +179,8 @@ extension TwitterMessageAdapter {
                 Async.main {
                     MessagesViewController.show(message.collocutor, messages: threadMessages)
                 }
+            } else if let account = AccountSettingsStore.get()?.account() {
+                DirectMessageAlert.show(account, message: message)
             }
         }
     }

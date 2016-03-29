@@ -34,6 +34,8 @@ class Twitter {
         case CreateRetweet = "CreateRetweet"
         case DestroyRetweet = "DestroyRetweet"
         case DestroyStatus = "DestroyStatus"
+        case CreateMessage = "CreateMessage"
+        case DestroyMessage = "DestroyMessage"
         case StreamingStatusChanged = "StreamingStatusChanged"
     }
 
@@ -50,13 +52,23 @@ class Twitter {
         static var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
         private static let favoritesQueue = dispatch_queue_create("pw.aska.justaway.twitter.favorites", DISPATCH_QUEUE_SERIAL)
         private static let retweetsQueue = dispatch_queue_create("pw.aska.justaway.twitter.retweets", DISPATCH_QUEUE_SERIAL)
+        private static let messagesSemaphore = dispatch_semaphore_create(1)
     }
 
     class var connectionStatus: ConnectionStatus { return Static.connectionStatus }
     class var streamingMode: StreamingMode { return Static.streamingMode }
     class var messages: [String: [TwitterMessage]] {
-        get { return Static.messages }
-        set { Static.messages = newValue }
+        get {
+            dispatch_semaphore_wait(Static.messagesSemaphore, DISPATCH_TIME_FOREVER)
+            let messages = Static.messages
+            dispatch_semaphore_signal(Static.messagesSemaphore)
+            return messages
+        }
+        set {
+            dispatch_semaphore_wait(Static.messagesSemaphore, DISPATCH_TIME_FOREVER)
+            Static.messages = newValue
+            dispatch_semaphore_signal(Static.messagesSemaphore)
+        }
     }
 
     class var enableStreaming: Bool {
@@ -529,8 +541,19 @@ class Twitter {
     }
 
     class func postDirectMessage(text: String, userID: String) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
         let parameters = ["text": text, "user_id": userID]
-        client()?.post("https://api.twitter.com/1.1/direct_messages/new.json", parameters: parameters).responseJSONWithError(nil, failure: nil)
+        account.client.post("https://api.twitter.com/1.1/direct_messages/new.json", parameters: parameters).responseJSONWithError({ (json) in
+            let message = TwitterMessage(json, ownerID: account.userID)
+            if Twitter.messages[account.userID] != nil {
+                Twitter.messages[account.userID]?.insert(message, atIndex: 0)
+            } else {
+                Twitter.messages[account.userID] = [message]
+            }
+            EventBox.post(Event.CreateMessage.rawValue, sender: message)
+        }, failure: nil)
     }
 }
 
@@ -704,6 +727,18 @@ extension Twitter {
             }, failure: { (code, message, error) -> Void in
                 ErrorAlert.show("Undo Tweet failure code:\(code)", message: message ?? error.localizedDescription)
             })
+    }
+
+    class func destroyMessage(account: Account, messageID: String) {
+        account
+            .client
+            .post("https://api.twitter.com/1.1/direct_messages/destroy.json", parameters: ["id": messageID])
+            .responseJSONWithError({ (json: JSON) -> Void in
+                if let messages = Twitter.messages[account.userID] {
+                    Twitter.messages[account.userID] = messages.filter({ $0.id != messageID })
+                }
+                EventBox.post(Event.DestroyMessage.rawValue, sender: messageID)
+                }, failure: nil)
     }
 
     class func follow(userID: String) {

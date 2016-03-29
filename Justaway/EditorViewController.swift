@@ -23,6 +23,7 @@ class EditorViewController: UIViewController {
     @IBOutlet weak var replyToScreenNameLabel: ScreenNameLable!
     @IBOutlet weak var replyToStatusLabel: StatusLable!
     @IBOutlet weak var replyToStatusLabelHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var replyCancelButton: MenuButton!
 
     @IBOutlet weak var countLabel: MenuLable!
 
@@ -395,6 +396,8 @@ class EditorViewController: UIViewController {
             Static.instance.view.frame = CGRect.init(x: 0, y: 0, width: vc.view.frame.width, height: vc.view.frame.height)
             Static.instance.resetPickerController()
             Static.instance.textView.text = text ?? ""
+            Static.instance.countLabel.hidden = messageTo != nil
+            Static.instance.replyCancelButton.hidden = messageTo != nil
             if let inReplyToStatus = inReplyToStatus {
                 Static.instance.inReplyToStatusId = inReplyToStatus.statusID
                 Static.instance.replyToNameLabel.text = inReplyToStatus.user.name

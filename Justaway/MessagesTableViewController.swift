@@ -108,31 +108,39 @@ class MessagesTableViewController: TimelineTableViewController {
 
 
     func configureCreateMessageEvent() {
-//        EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
-//            guard let status = n.object as? TwitterStatus else {
-//                return
-//            }
-//            guard let keyword = self.keyword else {
-//                return
-//            }
-//            if status.text.containsString(keyword) {
-//                self.renderData([status], mode: .TOP, handler: {})
-//            }
-//        }
+        EventBox.onMainThread(self, name: Twitter.Event.CreateMessage.rawValue) { [weak self] (n) -> Void in
+            guard let `self` = self else {
+                return
+            }
+            guard let account = AccountSettingsStore.get()?.account() else {
+                return
+            }
+            guard let messages = Twitter.messages[account.userID] else {
+                return
+            }
+            let thread = self.adapter.thread(messages)
+            Async.main {
+                self.adapter.renderData(self.tableView, messages: thread, mode: .OVER, handler: nil)
+            }
+        }
     }
 
     func configureDestroyMessageEvent() {
-//        EventBox.onMainThread(self, name: Twitter.Event.DestroyStatus.rawValue, sender: nil) { n in
-//            guard let statusID = n.object as? String else {
-//                return
-//            }
-//            let operation = MainBlockOperation { (operation) -> Void in
-//                self.adapter.eraseData(self.tableView, statusID: statusID, handler: { () -> Void in
-//                    operation.finish()
-//                })
-//            }
-//            self.adapter.mainQueue.addOperation(operation)
-//        }
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyMessage.rawValue) { [weak self] (n) -> Void in
+            guard let `self` = self else {
+                return
+            }
+            guard let account = AccountSettingsStore.get()?.account() else {
+                return
+            }
+            guard let messages = Twitter.messages[account.userID] else {
+                return
+            }
+            let thread = self.adapter.thread(messages)
+            Async.main {
+                self.adapter.renderData(self.tableView, messages: thread, mode: .OVER, handler: nil)
+            }
+        }
     }
 
     // MARK: Public Methods

@@ -17,7 +17,7 @@ class MessagesViewController: UIViewController {
     let adapter = TwitterMessageAdapter(threadMode: false)
     var loadData = false
     var messages = [TwitterMessage]()
-    var user: TwitterUser?
+    var collocutor: TwitterUser?
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -62,12 +62,32 @@ class MessagesViewController: UIViewController {
     }
 
     func configureEvent() {
-        EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { [weak self] (n) -> Void in
+        EventBox.onMainThread(self, name: eventStatusBarTouched) { [weak self] (n) -> Void in
             guard let `self` = self else {
                 return
             }
             self.adapter.scrollToTop(self.tableView)
-        })
+        }
+        EventBox.onMainThread(self, name: Twitter.Event.CreateMessage.rawValue) { [weak self] (n) -> Void in
+            guard let `self` = self else {
+                return
+            }
+            guard let message = n.object as? TwitterMessage else {
+                return
+            }
+            if let collocutorID = self.collocutor?.userID where message.collocutor.userID == collocutorID {
+                self.adapter.renderData(self.tableView, messages: [message], mode: .TOP, handler: nil)
+            }
+        }
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyMessage.rawValue) { [weak self] (n) -> Void in
+            guard let `self` = self else {
+                return
+            }
+            guard let messageID = n.object as? String else {
+                return
+            }
+            self.adapter.eraseData(self.tableView, messageID: messageID, handler: nil)
+        }
     }
 
     // MARK: -
@@ -79,7 +99,7 @@ class MessagesViewController: UIViewController {
     }
 
     @IBAction func reply(sender: UIButton) {
-        EditorViewController.show(nil, range: nil, inReplyToStatus: nil, messageTo: user)
+        EditorViewController.show(nil, range: nil, inReplyToStatus: nil, messageTo: collocutor)
     }
 
     func hide() {
@@ -88,9 +108,9 @@ class MessagesViewController: UIViewController {
 
     // MARK: - Class Methods
 
-    class func show(user: TwitterUser, messages: [TwitterMessage]) {
+    class func show(collocutor: TwitterUser, messages: [TwitterMessage]) {
         let instance = MessagesViewController()
-        instance.user = user
+        instance.collocutor = collocutor
         instance.messages = messages
         ViewTools.slideIn(instance)
     }

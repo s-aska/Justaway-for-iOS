@@ -360,7 +360,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     func setText(message: TwitterMessage) {
         iconImageView.image = nil
-        statusLabel.setMessage(message)
+        statusLabel.setMessage(message, threadMode: threadMode)
         relativeCreatedAtLabel.text = message.createdAt.relativeString
         absoluteCreatedAtLabel.text = message.createdAt.absoluteString
 

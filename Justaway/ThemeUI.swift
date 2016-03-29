@@ -120,6 +120,7 @@ class ClientNameLable: UILabel {}
 class StatusLable: UITextView {
     var status: TwitterStatus?
     var message: TwitterMessage?
+    var threadMode = false
     var links = [Link]()
     let playerView = AVPlayerView()
 
@@ -186,7 +187,8 @@ class StatusLable: UITextView {
         setAttributes()
     }
 
-    func setMessage(message: TwitterMessage) {
+    func setMessage(message: TwitterMessage, threadMode: Bool) {
+        self.threadMode = threadMode
         self.message = message
         self.text = message.text
         var newlinks = [Link]()
@@ -253,12 +255,17 @@ class StatusLable: UITextView {
         if let status = status {
             StatusAlert.show(self, status: status)
         } else if let message = message, let account = AccountSettingsStore.get()?.account() {
-            if let messages = Twitter.messages[account.userID] {
-                let threadMessages = messages.filter({ $0.collocutor.userID == message.collocutor.userID })
-                Async.main {
-                    MessagesViewController.show(message.collocutor, messages: threadMessages)
+            if threadMode {
+                if let messages = Twitter.messages[account.userID] {
+                    let threadMessages = messages.filter({ $0.collocutor.userID == message.collocutor.userID })
+                    Async.main {
+                        MessagesViewController.show(message.collocutor, messages: threadMessages)
+                    }
                 }
-
+            } else {
+                Async.main {
+                    DirectMessageAlert.show(account, message: message)
+                }
             }
         }
     }
