@@ -417,8 +417,17 @@ class Twitter {
         let successReceived = { (array: [JSON]) -> Void in
             let reveivedArray = array
             let successSent = { (array: [JSON]) -> Void in
+                var idMap = [String: Bool]()
                 success((reveivedArray + array)
                     .map({ TwitterMessage($0, ownerID: account.userID) })
+                    .filter({ (message: TwitterMessage) -> Bool in
+                        if idMap[message.id] != nil {
+                            return false
+                        } else {
+                            idMap[message.id] = true
+                            return true
+                        }
+                    })
                     .sort({
                         return $0.0.createdAt.date.timeIntervalSince1970 > $0.1.createdAt.date.timeIntervalSince1970
                     }))

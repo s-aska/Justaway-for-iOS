@@ -93,8 +93,7 @@ class TwitterStatusAdapter: TwitterAdapter {
         var addShowMore = false
         if mode == .HEADER {
             if let sinceID = sinceID() {
-                let has = statuses.filter({ $0.uniqueID == sinceID }).count > 0
-                if has {
+                if statuses.contains({ $0.uniqueID == sinceID }) {
                     statuses.removeAtIndex(statuses.count - 1)
                 } else {
                     addShowMore = true
@@ -106,6 +105,10 @@ class TwitterStatusAdapter: TwitterAdapter {
                     addShowMore = true
                 }
             }
+        }
+
+        statuses = statuses.filter { status -> Bool in
+            return !rows.contains { $0.status?.uniqueID ?? "" == status.uniqueID }
         }
 
         let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + statuses.count) - limit, 0)

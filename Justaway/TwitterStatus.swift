@@ -177,11 +177,15 @@ class TwitterStatus {
     }
 
     var isActioned: Bool {
-        return self.actionedBy != nil
+        return actionedBy != nil
     }
 
     var uniqueID: String {
-        return self.referenceStatusID ?? self.statusID
+        if type == .Normal {
+            return referenceStatusID ?? statusID
+        } else {
+            return (referenceStatusID ?? statusID) + "-" + (actionedBy?.userID ?? "")
+        }
     }
 
     var statusURL: NSURL {
