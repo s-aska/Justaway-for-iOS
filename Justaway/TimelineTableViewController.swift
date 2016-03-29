@@ -10,7 +10,10 @@ import UIKit
 
 class TimelineTableViewController: UITableViewController {
 
-    let adapter = TwitterStatusAdapter()
+    let defaultAdapter = TwitterStatusAdapter()
+    var adapter: TwitterAdapter {
+        return defaultAdapter
+    }
     var setup = false
 
     func refresh() {

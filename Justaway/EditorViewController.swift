@@ -23,6 +23,7 @@ class EditorViewController: UIViewController {
     @IBOutlet weak var replyToScreenNameLabel: ScreenNameLable!
     @IBOutlet weak var replyToStatusLabel: StatusLable!
     @IBOutlet weak var replyToStatusLabelHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var replyCancelButton: MenuButton!
 
     @IBOutlet weak var countLabel: MenuLable!
 
@@ -54,6 +55,7 @@ class EditorViewController: UIViewController {
     }
 
     var inReplyToStatusId: String?
+    var messageTo: TwitterUser?
 
     // MARK: - View Life Cycle
 
@@ -290,7 +292,11 @@ class EditorViewController: UIViewController {
         if text.isEmpty && images.count == 0 {
             hide()
         } else {
-            Twitter.statusUpdate(text, inReplyToStatusID: self.inReplyToStatusId, images: self.images.map({ $0.data }), mediaIds: [])
+            if let messageTo = messageTo {
+                Twitter.postDirectMessage(text, userID: messageTo.userID)
+            } else {
+                Twitter.statusUpdate(text, inReplyToStatusID: self.inReplyToStatusId, images: self.images.map({ $0.data }), mediaIds: [])
+            }
             hide()
         }
     }
@@ -337,6 +343,11 @@ class EditorViewController: UIViewController {
     }
 
     func image() {
+        if messageTo != nil {
+            ErrorAlert.show("Not supported image with DirectMessage")
+            return
+        }
+
         picking = true
         let height = UIApplication.sharedApplication().keyWindow?.frame.height ?? 480
         collectionHeightConstraint.constant = height - imageContainerHeightConstraintDefault - 10
@@ -380,11 +391,13 @@ class EditorViewController: UIViewController {
         }
     }
 
-    class func show(text: String? = nil, range: NSRange? = nil, inReplyToStatus: TwitterStatus? = nil) {
+    class func show(text: String? = nil, range: NSRange? = nil, inReplyToStatus: TwitterStatus? = nil, messageTo: TwitterUser? = nil) {
         if let vc = ViewTools.frontViewController() {
             Static.instance.view.frame = CGRect.init(x: 0, y: 0, width: vc.view.frame.width, height: vc.view.frame.height)
             Static.instance.resetPickerController()
             Static.instance.textView.text = text ?? ""
+            Static.instance.countLabel.hidden = messageTo != nil
+            Static.instance.replyCancelButton.hidden = messageTo != nil
             if let inReplyToStatus = inReplyToStatus {
                 Static.instance.inReplyToStatusId = inReplyToStatus.statusID
                 Static.instance.replyToNameLabel.text = inReplyToStatus.user.name
@@ -396,6 +409,15 @@ class EditorViewController: UIViewController {
                         wdith: Static.instance.replyToStatusLabel.frame.size.width)
                 Static.instance.replyToContainerView.hidden = false
                 ImageLoaderClient.displayUserIcon(inReplyToStatus.user.profileImageURL, imageView: Static.instance.replyToIconImageView)
+            } else if let messageTo = messageTo {
+                Static.instance.messageTo = messageTo
+                Static.instance.inReplyToStatusId = nil
+                Static.instance.replyToNameLabel.text = messageTo.name
+                Static.instance.replyToScreenNameLabel.text = "@" + messageTo.screenName
+                Static.instance.replyToStatusLabel.text = ""
+                Static.instance.replyToStatusLabelHeightConstraint.constant = 0
+                Static.instance.replyToContainerView.hidden = false
+                ImageLoaderClient.displayUserIcon(messageTo.profileImageURL, imageView: Static.instance.replyToIconImageView)
             } else {
                 Static.instance.inReplyToStatusId = nil
                 Static.instance.replyToContainerView.hidden = true

@@ -14,7 +14,9 @@ import Async
 
 class SearchesTableViewController: TimelineTableViewController {
 
-    // let adapter = TwitterStatusAdapter()
+    override var adapter: TwitterStatusAdapter {
+        return defaultAdapter
+    }
     var nextResults: String?
     var lastID: Int64?
     var keyword: String?
@@ -135,6 +137,9 @@ class SearchesTableViewController: TimelineTableViewController {
                 return
             }
             guard let keyword = self.keyword else {
+                return
+            }
+            if status.type != .Normal {
                 return
             }
             if status.text.containsString(keyword) {

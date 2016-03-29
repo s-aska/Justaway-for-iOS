@@ -18,7 +18,6 @@ class StatusAlert {
             title: "Cancel",
             style: .Cancel,
             handler: { action in
-                actionSheet.dismissViewControllerAnimated(true, completion: nil)
         }))
         Twitter.isRetweet(statusID) { (retweetedStatusID) -> Void in
             Twitter.isFavorite(statusID) { (isFavorite) -> Void in

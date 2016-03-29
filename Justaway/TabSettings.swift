@@ -24,6 +24,7 @@ class Tab {
         case Favorites
         case Searches
         case Lists
+        case Messages
     }
 
     let type: Type

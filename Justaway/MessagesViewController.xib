@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="fontello.ttf">
+            <string>fontello</string>
+            <string>fontello</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MessagesViewController" customModule="Justaway" customModuleProvider="target">
+            <connections>
+                <outlet property="tableView" destination="99e-Q8-f15" id="Onb-3q-NQm"/>
+                <outlet property="view" destination="rru-ba-AzZ" id="yCf-6g-ndT"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="rru-ba-AzZ" customClass="BackgroundView" customModule="Justaway" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wXr-3b-2he" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="550" width="600" height="50"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4bC-Wb-oJx" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="55" height="50"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                            <state key="normal" title="左">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="left:" destination="-1" eventType="touchUpInside" id="pDG-Ba-U8z"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0av-Za-3Ug" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="540" y="0.0" width="60" height="50"/>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
+                            <state key="normal" title="書">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="reply:" destination="-1" eventType="touchUpInside" id="Saj-Wz-2eM"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="0av-Za-3Ug" firstAttribute="top" secondItem="wXr-3b-2he" secondAttribute="top" id="7s9-jA-MPQ"/>
+                        <constraint firstAttribute="trailing" secondItem="0av-Za-3Ug" secondAttribute="trailing" id="PDe-BG-M0I"/>
+                        <constraint firstAttribute="bottom" secondItem="0av-Za-3Ug" secondAttribute="bottom" id="Qh0-DD-tes"/>
+                        <constraint firstAttribute="height" constant="50" id="Xrg-6B-zNa"/>
+                        <constraint firstItem="4bC-Wb-oJx" firstAttribute="leading" secondItem="wXr-3b-2he" secondAttribute="leading" id="dYH-RN-SZ4"/>
+                        <constraint firstItem="4bC-Wb-oJx" firstAttribute="top" secondItem="wXr-3b-2he" secondAttribute="top" id="i1y-Jz-chP"/>
+                        <constraint firstAttribute="bottom" secondItem="4bC-Wb-oJx" secondAttribute="bottom" id="oVs-BO-pn8"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="vWs-5s-b5F"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="99e-Q8-f15" customClass="BackgroundTableView" customModule="Justaway" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="25" width="600" height="525"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="wXr-3b-2he" firstAttribute="leading" secondItem="rru-ba-AzZ" secondAttribute="leading" id="26n-BN-1al"/>
+                <constraint firstItem="wXr-3b-2he" firstAttribute="top" secondItem="99e-Q8-f15" secondAttribute="bottom" id="POT-IY-2xA"/>
+                <constraint firstAttribute="bottom" secondItem="wXr-3b-2he" secondAttribute="bottom" id="Wxi-JB-774"/>
+                <constraint firstItem="99e-Q8-f15" firstAttribute="top" secondItem="rru-ba-AzZ" secondAttribute="top" constant="25" id="gLi-Hj-yIj"/>
+                <constraint firstItem="99e-Q8-f15" firstAttribute="leading" secondItem="rru-ba-AzZ" secondAttribute="leading" id="j2t-ll-MvG"/>
+                <constraint firstAttribute="trailing" secondItem="99e-Q8-f15" secondAttribute="trailing" id="jLx-4a-gwe"/>
+                <constraint firstAttribute="trailing" secondItem="wXr-3b-2he" secondAttribute="trailing" id="u7M-7V-AA8"/>
+            </constraints>
+            <point key="canvasLocation" x="443" y="185"/>
+        </view>
+    </objects>
+</document>

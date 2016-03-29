@@ -1,5 +1,6 @@
 import Foundation
 import SwiftyJSON
+import TwitterAPI
 
 struct TwitterMedia {
     let shortURL: String
@@ -44,7 +45,7 @@ struct TwitterMedia {
     }
 
     var mediaThumbURL: NSURL {
-        return NSURL(string: self.mediaURL.absoluteString + ":thumb")!
+        return NSURL(string: mediaURL.absoluteString + ":thumb")!
     }
 
     init(_ dictionary: [String: AnyObject]) {

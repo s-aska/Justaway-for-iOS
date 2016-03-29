@@ -86,7 +86,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         configureTimelineView()
     }
 
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity function_body_length
+    // swiftlint:disable function_body_length
     func configureTimelineView() {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
@@ -117,6 +118,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 if let list = vc.list {
                     vcCache["UserTimelineTableViewController-" + list.id] = vc
                 }
+            case let vc as MessagesTableViewController:
+                vcCache["MessagesTableViewController"] = vc
             default:
                 break
             }
@@ -173,6 +176,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 vc = svc
                 icon = "欄"
                 title = list.name
+            case .Messages:
+                vc = vcCache["MessagesTableViewController"] ?? MessagesTableViewController()
+                icon = "文"
+                title = "Messages"
             }
             vc.tableView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
             vc.view.frame = CGRect.init(x: 0, y: 0, width: size.width, height: size.height)
@@ -192,11 +199,13 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             newTabButtons.append(button)
             newTitles.append(title)
 
-            let page = i
-            vc.adapter.renderDataCallback = { (statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode) in
-                if statuses.count > 0 && mode == .HEADER {
-                    NSLog("page:\(page) count:\(statuses.count)")
-                    self.tabButtons[page].selected = true
+            if let adapter = vc.adapter as? TwitterStatusAdapter {
+                let page = i
+                adapter.renderDataCallback = { (statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode) in
+                    if statuses.count > 0 && mode == .HEADER {
+                        NSLog("page:\(page) count:\(statuses.count)")
+                        self.tabButtons[page].selected = true
+                    }
                 }
             }
         }
@@ -216,6 +225,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
         highlightUpdate(currentPage)
     }
+    // swiftlint:enable cyclomatic_complexity function_body_length
+    // swiftlint:enable function_body_length
 
     func createMenuButton(index: Int, icon: String) -> MenuButton {
         let button = MenuButton(type: UIButtonType.System)
