@@ -11,6 +11,7 @@
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
+            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -119,12 +120,24 @@
                                     <rect key="frame" x="179" y="0.0" width="63" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                                     <inset key="contentEdgeInsets" minX="22" minY="15" maxX="22" maxY="15"/>
-                                    <state key="normal" title="点">
+                                    <state key="normal" title="A">
                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="more:" destination="-1" eventType="touchUpInside" id="bjl-Es-gRY"/>
+                                        <action selector="half:" destination="-1" eventType="touchUpInside" id="tvE-ft-7Ev"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tou-lQ-xRW" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="242" y="0.0" width="64" height="50"/>
+                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                                    <inset key="contentEdgeInsets" minX="22" minY="15" maxX="22" maxY="15"/>
+                                    <state key="normal" title="声">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="feedback:" destination="-1" eventType="touchUpInside" id="D7c-qU-QLO"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -132,10 +145,13 @@
                             <constraints>
                                 <constraint firstAttribute="centerY" secondItem="NN0-dj-HHc" secondAttribute="centerY" id="0RW-J6-0qG"/>
                                 <constraint firstItem="VpL-cL-hHt" firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="0Ui-k7-Mi1"/>
+                                <constraint firstAttribute="bottom" secondItem="Tou-lQ-xRW" secondAttribute="bottom" id="3X1-pT-rrh"/>
+                                <constraint firstItem="Tou-lQ-xRW" firstAttribute="top" secondItem="cpB-WM-7Qz" secondAttribute="top" id="5ek-0t-MZD"/>
                                 <constraint firstItem="wCW-rF-wl1" firstAttribute="leading" secondItem="AcO-tg-NdG" secondAttribute="trailing" id="IVP-yO-QQ9"/>
                                 <constraint firstAttribute="height" constant="50" id="QA0-KP-aqU"/>
                                 <constraint firstAttribute="bottom" secondItem="wCW-rF-wl1" secondAttribute="bottom" id="RLx-at-tXZ"/>
                                 <constraint firstItem="NN0-dj-HHc" firstAttribute="leading" secondItem="cpB-WM-7Qz" secondAttribute="leading" id="RPs-BP-itF"/>
+                                <constraint firstItem="Tou-lQ-xRW" firstAttribute="leading" secondItem="1Oa-ZX-3xO" secondAttribute="trailing" id="Y8L-xn-lcP"/>
                                 <constraint firstItem="1Oa-ZX-3xO" firstAttribute="top" secondItem="cpB-WM-7Qz" secondAttribute="top" id="Zou-ir-DH0"/>
                                 <constraint firstItem="AcO-tg-NdG" firstAttribute="leading" secondItem="NN0-dj-HHc" secondAttribute="trailing" id="cZu-qX-yjw"/>
                                 <constraint firstAttribute="centerY" secondItem="AcO-tg-NdG" secondAttribute="centerY" id="fS4-To-Vfx"/>

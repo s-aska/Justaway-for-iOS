@@ -277,14 +277,20 @@ class EditorViewController: UIViewController {
         }
     }
 
-    @IBAction func more(sender: UIButton) {
-        weak var textView = self.textView
-        EditorMoreAlert.show(sender, text: self.textView.text) { (text) -> Void in
-            guard let textView = textView else {
-                return
-            }
-            textView.text = text
+    @IBAction func half(sender: AnyObject) {
+        let text = NSMutableString(string: textView.text) as CFMutableString
+        CFStringTransform(text, nil, kCFStringTransformFullwidthHalfwidth, false)
+        textView.text = text as String
+    }
+
+    @IBAction func feedback(sender: AnyObject) {
+        if textView.text.hasSuffix("#justaway") {
+            return
         }
+        textView.text = textView.text + " #justaway"
+        textView.selectedRange = NSRange(location: 0, length: 0)
+        textView.callback?()
+
     }
 
     @IBAction func send(sender: UIButton) {

@@ -9,6 +9,7 @@
 import UIKit
 import Pinwheel
 import SwiftyJSON
+import Async
 
 class ProfileViewController: UIViewController, UIScrollViewDelegate {
 
@@ -265,41 +266,33 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             return
         }
 
-        statusCountLabel.text = "-"
-        followingCountLabel.text = "-"
-        followerCountLabel.text = "-"
-        listedCountLabel.text = "-"
-        favoritesCountLabel.text = "-"
-        descriptionLabel.text = ""
-        locationLabel.text = ""
-        siteLabel.text = ""
-        sinceLabel.text = ""
-        coverImageView.image = nil
+        if let userFull = self.userFull {
+            self.setUserFull(userFull)
+        } else {
+            statusCountLabel.text = "-"
+            followingCountLabel.text = "-"
+            followerCountLabel.text = "-"
+            listedCountLabel.text = "-"
+            favoritesCountLabel.text = "-"
+            descriptionLabel.text = ""
+            locationLabel.text = ""
+            siteLabel.text = ""
+            sinceLabel.text = ""
+            coverImageView.image = nil
 
-        let success: (([JSON]) -> Void) = { (rows) in
-            if let row = rows.first {
-                let user = TwitterUserFull(row)
-                self.userFull = user
-                if !user.isProtected {
-                    self.protectedLabel?.removeFromSuperview()
+            let success: (([JSON]) -> Void) = { (rows) in
+                if let row = rows.first {
+                    let user = TwitterUserFull(row)
+                    self.userFull = user
+                    self.setUserFull(user)
                 }
-                self.statusCountLabel.text = user.statusesCount.description
-                self.followingCountLabel.text = user.friendsCount.description
-                self.followerCountLabel.text = user.followersCount.description
-                self.listedCountLabel.text = user.listedCount.description
-                self.favoritesCountLabel.text = user.favouritesCount.description
-                self.descriptionLabel.text = user.description
-                self.locationLabel.text = user.location
-                self.siteLabel.text = user.displayURL
-                self.sinceLabel.text = self.sinceDateFormatter.stringFromDate(user.createdAt.date)
-                ImageLoaderClient.displayImage(user.profileBannerURL, imageView: self.coverImageView)
             }
-        }
 
-        let parameters = ["user_id": user.userID]
-        Twitter.client()?
-            .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
-            .responseJSONArray(success)
+            let parameters = ["user_id": user.userID]
+            Twitter.client()?
+                .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
+                .responseJSONArray(success)
+        }
 
         Twitter.getFriendships(user.userID, success: { (relationship) -> Void in
             self.relationship = relationship
@@ -307,6 +300,22 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
                 self.followedByLabel?.removeFromSuperview()
             }
         })
+    }
+
+    func setUserFull(user: TwitterUserFull) {
+        if !user.isProtected {
+            protectedLabel?.removeFromSuperview()
+        }
+        statusCountLabel.text = user.statusesCount.description
+        followingCountLabel.text = user.friendsCount.description
+        followerCountLabel.text = user.followersCount.description
+        listedCountLabel.text = user.listedCount.description
+        favoritesCountLabel.text = user.favouritesCount.description
+        descriptionLabel.text = user.description
+        locationLabel.text = user.location
+        siteLabel.text = user.displayURL
+        sinceLabel.text = sinceDateFormatter.stringFromDate(user.createdAt.date)
+        ImageLoaderClient.displayImage(user.profileBannerURL, imageView: coverImageView)
     }
 
     func showCover(sender: AnyObject) {
@@ -323,8 +332,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
 
     func showPage(sender: UITapGestureRecognizer) {
         if let page = sender.view?.tag {
-            let offset = self.view.frame.size.width * CGFloat(page)
-            if offset == self.scrollView.contentOffset.x {
+            let offset = view.frame.size.width * CGFloat(page)
+            if offset == scrollView.contentOffset.x {
                  tabViews[page].tableView.setContentOffset(CGPoint.zero, animated: true)
             } else {
                 headerViewLeftConstraint.constant = -offset
@@ -371,5 +380,24 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         let instance = ProfileViewController()
         instance.user = user
         ViewTools.slideIn(instance)
+    }
+
+    class func show(screenName: String) {
+        let parameters = ["screen_name": screenName]
+        let success: (([JSON]) -> Void) = { (rows) in
+            if let row = rows.first {
+                let user = TwitterUser(row)
+                let userFull = TwitterUserFull(row)
+                let instance = ProfileViewController()
+                instance.user = user
+                instance.userFull = userFull
+                Async.main {
+                    ViewTools.slideIn(instance)
+                }
+            }
+        }
+        Twitter.client()?
+            .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
+            .responseJSONArray(success)
     }
 }

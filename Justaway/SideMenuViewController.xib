@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SideMenuViewController" customModule="Justaway" customModuleProvider="target">
@@ -147,62 +147,17 @@
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Send feedback">
+                            <state key="normal" title="About">
                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="sendFeedback:" destination="-1" eventType="touchUpInside" id="Ajg-TB-ldR"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eI4-Df-IIM" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="435" width="280" height="40"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="40" id="5Wg-tM-1NW"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Open source licenses">
-                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="licenses:" destination="-1" eventType="touchUpInside" id="dOI-M7-Id7"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lf1-ka-J2X" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="475" width="280" height="40"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="40" id="I4L-5u-lg9"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Terms of Service">
-                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="terms:" destination="-1" eventType="touchUpInside" id="gFK-A5-b64"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4f3-tI-Hwo" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="515" width="280" height="40"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="40" id="1ZW-mq-gOT"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Privacy Policy">
-                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="privacy:" destination="-1" eventType="touchUpInside" id="uEU-1Z-9D3"/>
+                                <action selector="about:" destination="-1" eventType="touchUpInside" id="rWR-QF-aai"/>
                             </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="4f3-tI-Hwo" secondAttribute="trailing" id="4G8-f0-oth"/>
-                        <constraint firstAttribute="trailing" secondItem="Lf1-ka-J2X" secondAttribute="trailing" id="5Dl-Ih-qpb"/>
                         <constraint firstItem="dk0-Za-Aqj" firstAttribute="top" secondItem="KHH-wF-a5d" secondAttribute="bottom" constant="8" id="6IY-HB-nWS"/>
-                        <constraint firstItem="Lf1-ka-J2X" firstAttribute="top" secondItem="eI4-Df-IIM" secondAttribute="bottom" id="8NJ-Yr-8kP"/>
                         <constraint firstItem="CTe-Zv-03h" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="8kA-sL-fDL"/>
                         <constraint firstItem="WaY-Eb-afl" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="AGl-ag-9Ji"/>
                         <constraint firstItem="dk0-Za-Aqj" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="Aen-lj-oiQ"/>
@@ -216,16 +171,13 @@
                         <constraint firstItem="uRk-rt-4TJ" firstAttribute="top" secondItem="Dfy-QD-dsW" secondAttribute="bottom" constant="10" id="EFH-0P-gQF"/>
                         <constraint firstAttribute="trailing" secondItem="Dfy-QD-dsW" secondAttribute="trailing" id="FEg-2y-FVW"/>
                         <constraint firstItem="fge-rv-lhz" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="GhE-LL-Ls0"/>
-                        <constraint firstItem="eI4-Df-IIM" firstAttribute="top" secondItem="pFH-1Z-3tU" secondAttribute="bottom" id="MAd-bH-Nmo"/>
                         <constraint firstItem="YrP-Vb-6RE" firstAttribute="bottom" secondItem="KyR-Q6-ecg" secondAttribute="bottom" constant="-10" id="Pha-b7-txI"/>
-                        <constraint firstItem="4f3-tI-Hwo" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="QXk-IV-L9t"/>
                         <constraint firstItem="KyR-Q6-ecg" firstAttribute="top" secondItem="xmC-0b-3jO" secondAttribute="top" id="QwY-yP-GUR"/>
                         <constraint firstAttribute="trailing" secondItem="dk0-Za-Aqj" secondAttribute="trailing" id="RmR-c4-uGj"/>
                         <constraint firstItem="Dfy-QD-dsW" firstAttribute="top" secondItem="CTe-Zv-03h" secondAttribute="bottom" constant="2" id="W90-Xh-SdW"/>
                         <constraint firstItem="pFH-1Z-3tU" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="XPV-by-r9W"/>
                         <constraint firstAttribute="trailing" secondItem="CTe-Zv-03h" secondAttribute="trailing" id="XiL-3w-ihu"/>
                         <constraint firstAttribute="trailing" secondItem="hzv-4e-t9D" secondAttribute="trailing" constant="15" id="Xs5-XK-U0c"/>
-                        <constraint firstAttribute="trailing" secondItem="eI4-Df-IIM" secondAttribute="trailing" id="alF-wr-D7y"/>
                         <constraint firstItem="Dfy-QD-dsW" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="eMD-Ox-b0H"/>
                         <constraint firstItem="KHH-wF-a5d" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="eXH-lf-O0d"/>
                         <constraint firstItem="CTe-Zv-03h" firstAttribute="top" secondItem="dk0-Za-Aqj" secondAttribute="bottom" id="fw6-o0-tcC"/>
@@ -234,16 +186,13 @@
                         <constraint firstItem="YrP-Vb-6RE" firstAttribute="centerX" secondItem="xmC-0b-3jO" secondAttribute="centerX" id="nLG-YA-EZh"/>
                         <constraint firstItem="uRk-rt-4TJ" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="nWF-3Z-0nH"/>
                         <constraint firstItem="fge-rv-lhz" firstAttribute="top" secondItem="WaY-Eb-afl" secondAttribute="bottom" id="ofp-tM-TqH"/>
-                        <constraint firstItem="Lf1-ka-J2X" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="onh-YJ-LP4"/>
                         <constraint firstAttribute="trailing" secondItem="pFH-1Z-3tU" secondAttribute="trailing" id="opX-Xq-dLf"/>
                         <constraint firstItem="KHH-wF-a5d" firstAttribute="top" secondItem="fge-rv-lhz" secondAttribute="bottom" constant="13" id="pw5-QO-ts1"/>
                         <constraint firstItem="pFH-1Z-3tU" firstAttribute="top" secondItem="uRk-rt-4TJ" secondAttribute="bottom" constant="10" id="scE-f7-Qbu"/>
-                        <constraint firstItem="4f3-tI-Hwo" firstAttribute="top" secondItem="Lf1-ka-J2X" secondAttribute="bottom" id="vPS-Qq-YyJ"/>
                         <constraint firstItem="KyR-Q6-ecg" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="w06-Ik-bMG"/>
                         <constraint firstAttribute="trailing" secondItem="KHH-wF-a5d" secondAttribute="trailing" id="xsf-zE-HEX"/>
                         <constraint firstItem="hzv-4e-t9D" firstAttribute="centerY" secondItem="WaY-Eb-afl" secondAttribute="centerY" id="yEm-KJ-mpl"/>
                         <constraint firstItem="YrP-Vb-6RE" firstAttribute="top" secondItem="EUA-0m-R57" secondAttribute="bottom" constant="10" id="zY0-G9-yHh"/>
-                        <constraint firstItem="eI4-Df-IIM" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="zwU-of-17w"/>
                     </constraints>
                 </view>
             </subviews>

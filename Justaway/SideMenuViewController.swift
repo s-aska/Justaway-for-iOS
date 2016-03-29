@@ -139,6 +139,8 @@ class SideMenuViewController: UIViewController {
             ImageLoaderClient.displayImage(account.profileBannerURL, imageView: bannerImageView)
         }
 
+        EditorViewController.hide()
+
         Async.main(after: 0.1) { () -> Void in
             self.view.hidden = false
             self.sideViewLeftConstraint.constant = 0
@@ -196,23 +198,8 @@ class SideMenuViewController: UIViewController {
         hide()
     }
 
-    @IBAction func licenses(sender: UIButton) {
-        Safari.openURL("http://justaway.info/iOS/licenses.html")
-        hide()
-    }
-
-    @IBAction func terms(sender: UIButton) {
-        Safari.openURL("http://justaway.info/iOS/terms.html")
-        hide()
-    }
-
-    @IBAction func privacy(sender: UIButton) {
-        Safari.openURL("http://justaway.info/iOS/privacy.html")
-        hide()
-    }
-
-    @IBAction func sendFeedback(sender: UIButton) {
-        EditorViewController.show(" #justaway", range: NSRange(location: 0, length: 0), inReplyToStatus: nil)
+    @IBAction func about(sender: UIButton) {
+        AboutViewController.show()
         hide()
     }
 }
