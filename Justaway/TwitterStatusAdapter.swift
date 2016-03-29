@@ -209,11 +209,6 @@ class TwitterStatusAdapter: TwitterAdapter {
 
         delegate?.loadData(sinceID: sinceID, maxID: maxID, success: { (statuses) -> Void in
 
-            if statuses.count == 0 {
-                handler()
-                return
-            }
-
             let findLast: Bool = {
                 guard let lastStatusID = statuses.last?.uniqueID else {
                     return true
@@ -222,6 +217,9 @@ class TwitterStatusAdapter: TwitterAdapter {
                     if status.uniqueID == lastStatusID {
                         return true
                     }
+                }
+                if statuses.count == 0 {
+                    return true
                 }
                 return false
             }()
@@ -234,7 +232,7 @@ class TwitterStatusAdapter: TwitterAdapter {
             let deleteIndexPaths = findLast ? [indexPath] : [NSIndexPath]()
 
             let insertStart = indexPath.row
-            let insertIndexPaths = (insertStart ..< (insertStart + statuses.count - ( findLast ? 1 : 0 ))).map { i in NSIndexPath(forRow: i, inSection: 0) }
+            let insertIndexPaths = statuses.count == 0 ? [] : (insertStart ..< (insertStart + statuses.count - ( findLast ? 1 : 0 ))).map { i in NSIndexPath(forRow: i, inSection: 0) }
 
             // print("showMoreTweets sinceID:\(sinceID) maxID:\(maxID) findLast:\(findLast) insertIndexPaths:\(insertIndexPaths.count) deleteIndexPaths:\(deleteIndexPaths.count) oldRows:\(self.rows.count)")
 
@@ -255,7 +253,7 @@ class TwitterStatusAdapter: TwitterAdapter {
             tableView.endUpdates()
             handler()
         }, failure: { (error) -> Void in
-            NSLog("\(error.description)")
+            ErrorAlert.show(error)
             handler()
         })
     }
