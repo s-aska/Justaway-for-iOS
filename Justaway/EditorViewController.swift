@@ -44,6 +44,7 @@ class EditorViewController: UIViewController {
     @IBOutlet weak var imageView2: UIImageView!
     @IBOutlet weak var imageView3: UIImageView!
     @IBOutlet weak var imageView4: UIImageView!
+    @IBOutlet weak var halfButton: MenuButton!
 
     let refreshControl = UIRefreshControl()
     var images: [UploadImage] = []
@@ -106,7 +107,9 @@ class EditorViewController: UIViewController {
 
     func configureTextView() {
         // swiftlint:disable:next force_try
-        let regexp = try! NSRegularExpression(pattern: "https?://[0-9a-zA-Z/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+", options: NSRegularExpressionOptions.CaseInsensitive)
+        let regexp = try! NSRegularExpression(pattern: "https?://[0-9a-zA-Z/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+", options: .CaseInsensitive)
+        // swiftlint:disable:next force_try
+        let isKatakana = try! NSRegularExpression(pattern: "[\\u30A0-\\u30FF]", options: .CaseInsensitive)
         textView.callback = {
             var count = self.textView.text.characters.count
             let s = self.textView.text as NSString
@@ -120,6 +123,7 @@ class EditorViewController: UIViewController {
                 count = count + 23
             }
             self.countLabel.text = String(140 - count)
+            self.halfButton.hidden = isKatakana.firstMatchInString(self.textView.text, options: NSMatchingOptions(rawValue: 0), range: NSRange(location: 0, length: self.textView.text.utf16.count)) == nil
         }
     }
 

@@ -4,8 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
+        <mutableArray key="AvenirNext.ttc">
+            <string>AvenirNext-Regular</string>
+        </mutableArray>
         <mutableArray key="fontello.ttf">
-            <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
@@ -23,6 +25,7 @@
                 <outlet property="containerView" destination="GiI-4f-pcf" id="zU9-2h-jpG"/>
                 <outlet property="containerViewButtomConstraint" destination="hpk-3M-F0T" id="Wb7-U4-L0j"/>
                 <outlet property="countLabel" destination="VpL-cL-hHt" id="z8h-ae-V0g"/>
+                <outlet property="halfButton" destination="1Oa-ZX-3xO" id="8kr-zv-EZc"/>
                 <outlet property="imageContainerHeightConstraint" destination="Jny-ey-M1t" id="O4r-20-Sn9"/>
                 <outlet property="imageContainerView" destination="XI3-zv-gQX" id="O03-Uc-jT4"/>
                 <outlet property="imageContentView" destination="m8N-aa-y1q" id="Hm5-50-OQ3"/>
@@ -116,28 +119,28 @@
                                         <action selector="music:" destination="-1" eventType="touchUpInside" id="8W6-wK-pW4"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Oa-ZX-3xO" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                    <rect key="frame" x="179" y="0.0" width="63" height="50"/>
-                                    <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                    <inset key="contentEdgeInsets" minX="22" minY="15" maxX="22" maxY="15"/>
-                                    <state key="normal" title="A">
-                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="half:" destination="-1" eventType="touchUpInside" id="tvE-ft-7Ev"/>
-                                    </connections>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tou-lQ-xRW" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                                    <rect key="frame" x="242" y="0.0" width="64" height="50"/>
+                                    <rect key="frame" x="179" y="0.0" width="60" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                                    <inset key="contentEdgeInsets" minX="22" minY="15" maxX="22" maxY="15"/>
+                                    <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
                                     <state key="normal" title="声">
                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
                                         <action selector="feedback:" destination="-1" eventType="touchUpInside" id="D7c-qU-QLO"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Oa-ZX-3xO" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                    <rect key="frame" x="239" y="0.0" width="52" height="50"/>
+                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                    <inset key="contentEdgeInsets" minX="12" minY="15" maxX="12" maxY="15"/>
+                                    <state key="normal" title="半角">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="half:" destination="-1" eventType="touchUpInside" id="tvE-ft-7Ev"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -151,13 +154,13 @@
                                 <constraint firstAttribute="height" constant="50" id="QA0-KP-aqU"/>
                                 <constraint firstAttribute="bottom" secondItem="wCW-rF-wl1" secondAttribute="bottom" id="RLx-at-tXZ"/>
                                 <constraint firstItem="NN0-dj-HHc" firstAttribute="leading" secondItem="cpB-WM-7Qz" secondAttribute="leading" id="RPs-BP-itF"/>
-                                <constraint firstItem="Tou-lQ-xRW" firstAttribute="leading" secondItem="1Oa-ZX-3xO" secondAttribute="trailing" id="Y8L-xn-lcP"/>
+                                <constraint firstItem="1Oa-ZX-3xO" firstAttribute="leading" secondItem="Tou-lQ-xRW" secondAttribute="trailing" id="YBN-sU-O7D"/>
                                 <constraint firstItem="1Oa-ZX-3xO" firstAttribute="top" secondItem="cpB-WM-7Qz" secondAttribute="top" id="Zou-ir-DH0"/>
                                 <constraint firstItem="AcO-tg-NdG" firstAttribute="leading" secondItem="NN0-dj-HHc" secondAttribute="trailing" id="cZu-qX-yjw"/>
                                 <constraint firstAttribute="centerY" secondItem="AcO-tg-NdG" secondAttribute="centerY" id="fS4-To-Vfx"/>
                                 <constraint firstAttribute="trailing" secondItem="mbk-4F-WpO" secondAttribute="trailing" id="ht5-bz-Fwc"/>
                                 <constraint firstAttribute="bottom" secondItem="1Oa-ZX-3xO" secondAttribute="bottom" id="lwP-Ts-5Ha"/>
-                                <constraint firstItem="1Oa-ZX-3xO" firstAttribute="leading" secondItem="wCW-rF-wl1" secondAttribute="trailing" id="n9R-Xm-DRS"/>
+                                <constraint firstItem="Tou-lQ-xRW" firstAttribute="leading" secondItem="wCW-rF-wl1" secondAttribute="trailing" id="ngN-iV-dmn"/>
                                 <constraint firstItem="mbk-4F-WpO" firstAttribute="leading" secondItem="VpL-cL-hHt" secondAttribute="leading" constant="16" id="wxk-Cr-Nxf"/>
                                 <constraint firstItem="wCW-rF-wl1" firstAttribute="top" secondItem="cpB-WM-7Qz" secondAttribute="top" id="xp2-O1-07d"/>
                                 <constraint firstAttribute="centerY" secondItem="mbk-4F-WpO" secondAttribute="centerY" id="y1y-gb-4En"/>
