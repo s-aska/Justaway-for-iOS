@@ -178,7 +178,9 @@ class MessagesTableViewController: TimelineTableViewController {
             return
         }
         let key = "messages:\(account.userID)"
-        let messages = self.adapter.messages
+        guard let messages = Twitter.messages[account.userID] else {
+            return
+        }
         let dictionary = ["messages": ( messages.count > 100 ? Array(messages[0 ..< 100]) : messages ).map({ $0.dictionaryValue })]
         KeyClip.save(key, dictionary: dictionary)
         NSLog("messages: saveCache.")
