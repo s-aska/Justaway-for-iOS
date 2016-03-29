@@ -386,6 +386,7 @@ class EditorViewController: UIViewController {
     func hide() {
         picking = false
         inReplyToStatusId = nil
+        messageTo = nil
         replyToContainerView.hidden = true
         textView.reset()
         resetPickerController()
@@ -404,6 +405,7 @@ class EditorViewController: UIViewController {
             Static.instance.textView.text = text ?? ""
             Static.instance.countLabel.hidden = messageTo != nil
             Static.instance.replyCancelButton.hidden = messageTo != nil
+            Static.instance.messageTo = messageTo
             if let inReplyToStatus = inReplyToStatus {
                 Static.instance.inReplyToStatusId = inReplyToStatus.statusID
                 Static.instance.replyToNameLabel.text = inReplyToStatus.user.name
@@ -416,7 +418,6 @@ class EditorViewController: UIViewController {
                 Static.instance.replyToContainerView.hidden = false
                 ImageLoaderClient.displayUserIcon(inReplyToStatus.user.profileImageURL, imageView: Static.instance.replyToIconImageView)
             } else if let messageTo = messageTo {
-                Static.instance.messageTo = messageTo
                 Static.instance.inReplyToStatusId = nil
                 Static.instance.replyToNameLabel.text = messageTo.name
                 Static.instance.replyToScreenNameLabel.text = "@" + messageTo.screenName
