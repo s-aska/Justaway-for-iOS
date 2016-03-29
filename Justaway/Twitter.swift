@@ -37,6 +37,8 @@ class Twitter {
         case CreateMessage = "CreateMessage"
         case DestroyMessage = "DestroyMessage"
         case StreamingStatusChanged = "StreamingStatusChanged"
+        case ListMemberAdded = "ListMemberAdded"
+        case ListMemberRemoved = "ListMemberRemoved"
     }
 
     struct Static {
