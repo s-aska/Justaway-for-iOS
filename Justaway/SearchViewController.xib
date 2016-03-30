@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="fontello.ttf">
+            <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
@@ -13,7 +14,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchViewController" customModule="Justaway" customModuleProvider="target">
             <connections>
-                <outlet property="cover" destination="c0r-kV-Kfm" id="wUJ-rM-29y"/>
+                <outlet property="keywordTableView" destination="xXD-AO-gZT" id="YCd-0B-9lp"/>
                 <outlet property="keywordTextField" destination="hDa-pY-VfR" id="Gah-6q-agQ"/>
                 <outlet property="tableView" destination="g8m-x9-if9" id="7tT-7b-WQT"/>
                 <outlet property="view" destination="6Bf-qv-8Cd" id="JKb-Cy-cQ2"/>
@@ -54,23 +55,41 @@
                             </connections>
                         </button>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="hDa-pY-VfR">
-                            <rect key="frame" x="10" y="10" width="530" height="30"/>
+                            <rect key="frame" x="35" y="10" width="505" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" returnKeyType="search"/>
                             <connections>
                                 <action selector="search:" destination="-1" eventType="editingDidEndOnExit" id="9AO-Rd-eMN"/>
                             </connections>
                         </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Fh-ep-jnn" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="35" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="35" id="x5y-mq-sDl"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="16"/>
+                            <inset key="contentEdgeInsets" minX="10" minY="15" maxX="10" maxY="15"/>
+                            <state key="normal" title="左">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="left:" destination="-1" eventType="touchUpInside" id="dSx-fj-nvK"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="0.89722521551724133" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="0Fh-ep-jnn" firstAttribute="leading" secondItem="M7u-kM-p9l" secondAttribute="leading" id="44a-YD-2gA"/>
+                        <constraint firstItem="hDa-pY-VfR" firstAttribute="leading" secondItem="0Fh-ep-jnn" secondAttribute="trailing" id="8Yj-NY-ktq"/>
                         <constraint firstAttribute="bottom" secondItem="dfN-Qx-Gev" secondAttribute="bottom" id="9cY-rS-eaF"/>
+                        <constraint firstItem="0Fh-ep-jnn" firstAttribute="top" secondItem="M7u-kM-p9l" secondAttribute="top" id="Lvd-kN-Y5X"/>
                         <constraint firstAttribute="height" constant="50" id="WXg-vI-Vor"/>
                         <constraint firstAttribute="trailing" secondItem="dfN-Qx-Gev" secondAttribute="trailing" id="WgU-lG-zHU"/>
                         <constraint firstItem="dfN-Qx-Gev" firstAttribute="top" secondItem="M7u-kM-p9l" secondAttribute="top" id="iY9-eq-yIr"/>
                         <constraint firstItem="dfN-Qx-Gev" firstAttribute="leading" secondItem="hDa-pY-VfR" secondAttribute="trailing" id="peO-Jh-CeN"/>
                         <constraint firstItem="hDa-pY-VfR" firstAttribute="centerY" secondItem="M7u-kM-p9l" secondAttribute="centerY" id="rpH-qz-xkE"/>
-                        <constraint firstItem="hDa-pY-VfR" firstAttribute="leading" secondItem="M7u-kM-p9l" secondAttribute="leading" constant="10" id="szf-xe-NZH"/>
+                        <constraint firstAttribute="bottom" secondItem="0Fh-ep-jnn" secondAttribute="bottom" id="y72-WQ-bpt"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppG-QO-NsZ" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
@@ -88,7 +107,7 @@
                                 <action selector="post:" destination="-1" eventType="touchUpInside" id="xVK-k8-KOe"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qg5-ns-2T7" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qg5-ns-2T7" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="55" height="50"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                             <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
@@ -112,15 +131,15 @@
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="YG5-Ib-Kty"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c0r-kV-Kfm">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xXD-AO-gZT" customClass="BackgroundTableView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="60" width="600" height="490"/>
-                </view>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="ppG-QO-NsZ" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="2fg-Pk-hpO"/>
-                <constraint firstAttribute="trailing" secondItem="c0r-kV-Kfm" secondAttribute="trailing" id="7aC-Hd-3aJ"/>
-                <constraint firstItem="ppG-QO-NsZ" firstAttribute="top" secondItem="c0r-kV-Kfm" secondAttribute="bottom" id="BQF-OE-9QS"/>
+                <constraint firstItem="xXD-AO-gZT" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="8wU-jo-RRW"/>
                 <constraint firstItem="M7u-kM-p9l" firstAttribute="top" secondItem="6Bf-qv-8Cd" secondAttribute="top" constant="10" id="EKB-bW-CUu"/>
                 <constraint firstItem="g8m-x9-if9" firstAttribute="top" secondItem="6Bf-qv-8Cd" secondAttribute="top" constant="60" id="F0R-bI-0AG"/>
                 <constraint firstItem="ppG-QO-NsZ" firstAttribute="top" secondItem="g8m-x9-if9" secondAttribute="bottom" id="FB3-iY-LyH"/>
@@ -128,12 +147,13 @@
                 <constraint firstItem="10O-Zg-a0d" firstAttribute="top" secondItem="6Bf-qv-8Cd" secondAttribute="top" id="INm-Vm-Q9k"/>
                 <constraint firstAttribute="bottom" secondItem="ppG-QO-NsZ" secondAttribute="bottom" id="O4o-1e-eGb"/>
                 <constraint firstAttribute="trailing" secondItem="g8m-x9-if9" secondAttribute="trailing" id="Y0B-u1-bIY"/>
-                <constraint firstItem="c0r-kV-Kfm" firstAttribute="top" secondItem="M7u-kM-p9l" secondAttribute="bottom" id="f4Y-Ue-aWA"/>
                 <constraint firstItem="g8m-x9-if9" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="mc4-8C-jLH"/>
                 <constraint firstItem="10O-Zg-a0d" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="mxq-2w-smN"/>
                 <constraint firstAttribute="trailing" secondItem="M7u-kM-p9l" secondAttribute="trailing" id="ojJ-tA-FMq"/>
+                <constraint firstItem="xXD-AO-gZT" firstAttribute="top" secondItem="M7u-kM-p9l" secondAttribute="bottom" id="rVp-uV-4ca"/>
                 <constraint firstAttribute="trailing" secondItem="ppG-QO-NsZ" secondAttribute="trailing" id="sJL-yU-juM"/>
-                <constraint firstItem="c0r-kV-Kfm" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="vw4-2A-K0h"/>
+                <constraint firstItem="ppG-QO-NsZ" firstAttribute="top" secondItem="xXD-AO-gZT" secondAttribute="bottom" id="t7F-l7-lEq"/>
+                <constraint firstAttribute="trailing" secondItem="xXD-AO-gZT" secondAttribute="trailing" id="ubq-xC-t2l"/>
                 <constraint firstItem="M7u-kM-p9l" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="xR5-Uj-WfX"/>
             </constraints>
         </view>

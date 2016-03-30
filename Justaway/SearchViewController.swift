@@ -17,14 +17,13 @@ class SearchViewController: UIViewController {
 
     let refreshControl = UIRefreshControl()
     let adapter = TwitterStatusAdapter()
+    let keywordAdapter = SearchKeywordAdapter()
     var nextResults: String?
     var keyword: String?
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var keywordTableView: UITableView!
     @IBOutlet weak var keywordTextField: UITextField!
-    @IBOutlet weak var cover: UIView!
-    // @IBOutlet weak var keywordLabel: MenuLable!
-
 
     override var nibName: String {
         return "SearchViewController"
@@ -44,14 +43,15 @@ class SearchViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
-        cover.hidden = true
         keywordTextField.text = keyword
-        if keyword?.isEmpty ?? true {
-            keywordTextField.becomeFirstResponder()
-            keywordTextField.rightViewMode = .Never
-        } else {
+        if let keyword = keyword where !keyword.isEmpty {
             keywordTextField.rightViewMode = .Always
             loadData()
+            keywordAdapter.appendHistory(keyword, tableView: keywordTableView)
+        } else {
+            keywordTextField.becomeFirstResponder()
+            keywordTextField.rightViewMode = .Never
+            keywordTableView.hidden = false
         }
     }
 
@@ -86,9 +86,6 @@ class SearchViewController: UIViewController {
             }
         }
 
-        let touchCover = UITapGestureRecognizer(target: keywordTextField, action: #selector(UIResponder.resignFirstResponder))
-        cover.addGestureRecognizer(touchCover)
-
         let button = MenuButton()
         button.tintColor = UIColor.clearColor()
         button.titleLabel?.font = UIFont(name: "fontello", size: 16.0)
@@ -100,6 +97,21 @@ class SearchViewController: UIViewController {
         keywordTextField.addTarget(self, action: #selector(SearchViewController.change), forControlEvents: .EditingChanged)
         keywordTextField.rightView = button
         keywordTextField.rightViewMode = .Always
+
+        keywordAdapter.configureView(keywordTableView)
+        keywordAdapter.selectCallback = { [weak self] (keyword) -> Void in
+            guard let `self` = self else {
+                return
+            }
+            self.keywordAdapter.appendHistory(keyword, tableView: self.keywordTableView)
+            self.keywordTextField.text = keyword
+            self.keyword = keyword
+            self.loadData()
+            self.keywordTextField.resignFirstResponder()
+        }
+        keywordAdapter.scrollCallback = { [weak self] in
+            self?.keywordTextField.resignFirstResponder()
+        }
     }
 
     func loadData(maxID: String? = nil) {
@@ -109,6 +121,7 @@ class SearchViewController: UIViewController {
         if keyword.isEmpty {
             return
         }
+        keywordTableView.hidden = true
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (Void -> Void) = {
                 op.finish()
@@ -240,7 +253,10 @@ class SearchViewController: UIViewController {
     // MARK: - Actions
 
     func keyboardWillChangeFrame(notification: NSNotification, showsKeyboard: Bool) {
-        cover.hidden = !showsKeyboard
+        if showsKeyboard {
+            keywordTableView.hidden = false
+            keywordAdapter.loadData(keywordTableView)
+        }
         change()
     }
 
@@ -271,9 +287,13 @@ class SearchViewController: UIViewController {
         NSLog("search")
         self.keyword = keyword
         loadData(nil)
+        keywordAdapter.appendHistory(keyword, tableView: keywordTableView)
     }
 
     @IBAction func left(sender: UIButton) {
+        if keywordTextField.isFirstResponder() {
+            keywordTextField.resignFirstResponder()
+        }
         hide()
     }
 
@@ -309,6 +329,8 @@ class SearchViewController: UIViewController {
         ViewTools.slideIn(instance)
     }
 }
+
+// MARK: - Extensions
 
 private extension String {
     var longLongValue: Int64 {

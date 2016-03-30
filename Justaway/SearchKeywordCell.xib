@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="fontello.ttf">
+            <string>fontello</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="d9H-5l-BsP" customClass="SearchKeywordCell" customModule="Justaway" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d9H-5l-BsP" id="WIr-0B-xkZ">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IDy-cb-6o6" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                        <rect key="frame" x="280" y="0.0" width="40" height="39.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="FXg-C9-ixf"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                        <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                        <state key="normal" title="✖">
+                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="remove:" destination="d9H-5l-BsP" eventType="touchUpInside" id="i0i-LR-f4T"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5nd-Sf-fmd" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
+                        <rect key="frame" x="10" y="0.0" width="270" height="39.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="IDy-cb-6o6" firstAttribute="top" secondItem="WIr-0B-xkZ" secondAttribute="top" id="2td-Ys-J2K"/>
+                    <constraint firstItem="IDy-cb-6o6" firstAttribute="leading" secondItem="5nd-Sf-fmd" secondAttribute="trailing" id="5Dx-bJ-WgB"/>
+                    <constraint firstAttribute="bottom" secondItem="5nd-Sf-fmd" secondAttribute="bottom" id="5pS-og-ldd"/>
+                    <constraint firstAttribute="trailing" secondItem="IDy-cb-6o6" secondAttribute="trailing" id="Hlo-bn-hnS"/>
+                    <constraint firstItem="5nd-Sf-fmd" firstAttribute="top" secondItem="WIr-0B-xkZ" secondAttribute="top" id="Q5b-y2-mfM"/>
+                    <constraint firstItem="5nd-Sf-fmd" firstAttribute="leading" secondItem="WIr-0B-xkZ" secondAttribute="leading" constant="10" id="War-X6-f06"/>
+                    <constraint firstAttribute="bottom" secondItem="IDy-cb-6o6" secondAttribute="bottom" id="nUi-FW-fuu"/>
+                </constraints>
+            </tableViewCellContentView>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <connections>
+                <outlet property="nameLabel" destination="5nd-Sf-fmd" id="Wy6-70-egB"/>
+            </connections>
+            <point key="canvasLocation" x="370" y="323"/>
+        </tableViewCell>
+    </objects>
+</document>
