@@ -84,7 +84,7 @@ class SettingsViewController: UIViewController {
 
         // Slide in
         view.hidden = false
-        let frame = view.frame
+        let frame = CGRectOffset(view.frame, -view.frame.origin.x, 0)
         view.frame = CGRectOffset(frame, frame.size.width, 0)
 
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
