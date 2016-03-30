@@ -261,6 +261,9 @@ class SearchesTableViewController: TimelineTableViewController {
         guard let keyword = keyword else {
             return
         }
+        if keyword.isEmpty {
+            return
+        }
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (Void -> Void) = {
                 op.finish()

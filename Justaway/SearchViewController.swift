@@ -252,6 +252,10 @@ class SearchViewController: UIViewController {
         guard let keyword = keywordTextField.text else {
             return
         }
+        if keyword.isEmpty {
+            MessageAlert.show("Please input keyword")
+            return
+        }
         SearchAlert.show(sender, keyword: keyword)
     }
 
