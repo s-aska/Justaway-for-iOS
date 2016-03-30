@@ -164,6 +164,9 @@ class ShareViewController: SLComposeServiceViewController {
                         guard let itemURL = item as? NSURL else {
                             return
                         }
+                        if !itemURL.absoluteString.hasPrefix("http") {
+                            return
+                        }
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             self.textView.text = self.textView.text + " " + itemURL.absoluteString
                         })
