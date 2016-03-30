@@ -147,16 +147,31 @@
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Feedback">
+                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="feedback:" destination="-1" eventType="touchUpInside" id="s83-h7-Rle"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEB-0m-6bT" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="435" width="280" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="n5G-1J-wL4"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="About">
                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="about:" destination="-1" eventType="touchUpInside" id="rWR-QF-aai"/>
+                                <action selector="about:" destination="-1" eventType="touchUpInside" id="xJQ-9i-lvY"/>
                             </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="aEB-0m-6bT" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="2Bv-YP-PTu"/>
                         <constraint firstItem="dk0-Za-Aqj" firstAttribute="top" secondItem="KHH-wF-a5d" secondAttribute="bottom" constant="8" id="6IY-HB-nWS"/>
                         <constraint firstItem="CTe-Zv-03h" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="8kA-sL-fDL"/>
                         <constraint firstItem="WaY-Eb-afl" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="AGl-ag-9Ji"/>
@@ -169,8 +184,10 @@
                         <constraint firstItem="WaY-Eb-afl" firstAttribute="top" secondItem="KyR-Q6-ecg" secondAttribute="bottom" constant="10" id="D0t-C0-QJJ"/>
                         <constraint firstAttribute="trailing" secondItem="uRk-rt-4TJ" secondAttribute="trailing" id="DGZ-wQ-QVZ"/>
                         <constraint firstItem="uRk-rt-4TJ" firstAttribute="top" secondItem="Dfy-QD-dsW" secondAttribute="bottom" constant="10" id="EFH-0P-gQF"/>
+                        <constraint firstItem="aEB-0m-6bT" firstAttribute="top" secondItem="pFH-1Z-3tU" secondAttribute="bottom" id="ENf-gv-uMS"/>
                         <constraint firstAttribute="trailing" secondItem="Dfy-QD-dsW" secondAttribute="trailing" id="FEg-2y-FVW"/>
                         <constraint firstItem="fge-rv-lhz" firstAttribute="leading" secondItem="xmC-0b-3jO" secondAttribute="leading" id="GhE-LL-Ls0"/>
+                        <constraint firstAttribute="trailing" secondItem="aEB-0m-6bT" secondAttribute="trailing" id="KRd-bT-i2m"/>
                         <constraint firstItem="YrP-Vb-6RE" firstAttribute="bottom" secondItem="KyR-Q6-ecg" secondAttribute="bottom" constant="-10" id="Pha-b7-txI"/>
                         <constraint firstItem="KyR-Q6-ecg" firstAttribute="top" secondItem="xmC-0b-3jO" secondAttribute="top" id="QwY-yP-GUR"/>
                         <constraint firstAttribute="trailing" secondItem="dk0-Za-Aqj" secondAttribute="trailing" id="RmR-c4-uGj"/>

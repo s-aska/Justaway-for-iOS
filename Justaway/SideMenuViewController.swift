@@ -198,6 +198,10 @@ class SideMenuViewController: UIViewController {
         hide()
     }
 
+    @IBAction func feedback(sender: UIButton) {
+        EditorViewController.show(" #justaway", range: NSRange(location: 0, length: 0), inReplyToStatus: nil)
+    }
+
     @IBAction func about(sender: UIButton) {
         AboutViewController.show()
         hide()
