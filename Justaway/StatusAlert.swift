@@ -62,7 +62,7 @@ class StatusAlert {
     }
 
     private class func addFavRTAction(actionSheet: UIAlertController, status: TwitterStatus, statusID: String, retweetedStatusID: String?, isFavorite: Bool) {
-        if !isFavorite && retweetedStatusID == nil {
+        if !isFavorite && retweetedStatusID == nil && !status.user.isProtected {
             actionSheet.addAction(UIAlertAction(
                 title: "Like & RT",
                 style: .Default,
@@ -97,7 +97,7 @@ class StatusAlert {
                         Twitter.destroyRetweet(statusID, retweetedStatusID: retweetedStatusID)
                 }))
             }
-        } else {
+        } else if !status.user.isProtected {
             actionSheet.addAction(UIAlertAction(
                 title: "Retweet",
                 style: .Default,
