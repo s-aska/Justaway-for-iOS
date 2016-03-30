@@ -348,8 +348,8 @@ class Twitter {
             })
     }
 
-    class func getSearchTweets(keyword: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus], [String: JSON]) -> Void, failure: (NSError) -> Void) {
-        var parameters: [String: String] = ["count": "200", "q": keyword + " exclude:retweets"]
+    class func getSearchTweets(keyword: String, maxID: String? = nil, sinceID: String? = nil, excludeRetweets: Bool = true, success: ([TwitterStatus], [String: JSON]) -> Void, failure: (NSError) -> Void) {
+        var parameters: [String: String] = ["count": "200", "q": keyword + (excludeRetweets ? " exclude:retweets" : "")]
         if let maxID = maxID {
             parameters["max_id"] = maxID
         }

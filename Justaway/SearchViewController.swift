@@ -18,12 +18,15 @@ class SearchViewController: UIViewController {
     let refreshControl = UIRefreshControl()
     let adapter = TwitterStatusAdapter()
     let keywordAdapter = SearchKeywordAdapter()
+    var keywordStreaming: TwitterSearchStreaming?
     var nextResults: String?
     var keyword: String?
+    var excludeRetweets = true
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var keywordTableView: UITableView!
     @IBOutlet weak var keywordTextField: UITextField!
+    @IBOutlet weak var streamingButton: UIButton!
 
     override var nibName: String {
         return "SearchViewController"
@@ -48,10 +51,12 @@ class SearchViewController: UIViewController {
             keywordTextField.rightViewMode = .Always
             loadData()
             keywordAdapter.appendHistory(keyword, tableView: keywordTableView)
+            streamingButton.enabled = true
         } else {
             keywordTextField.becomeFirstResponder()
             keywordTextField.rightViewMode = .Never
             keywordTableView.hidden = false
+            streamingButton.enabled = false
         }
     }
 
@@ -112,6 +117,8 @@ class SearchViewController: UIViewController {
         keywordAdapter.scrollCallback = { [weak self] in
             self?.keywordTextField.resignFirstResponder()
         }
+
+        streamingButton.setTitleColor(ThemeController.currentTheme.bodyTextColor(), forState: .Normal)
     }
 
     func loadData(maxID: String? = nil) {
@@ -143,7 +150,7 @@ class SearchViewController: UIViewController {
                     return
                 }
             }
-            Twitter.getSearchTweets(keyword, maxID: maxID, sinceID: nil, success: success, failure: failure)
+            Twitter.getSearchTweets(keyword, maxID: maxID, sinceID: nil, excludeRetweets: self.excludeRetweets, success: success, failure: failure)
         })
         self.adapter.loadDataQueue.addOperation(op)
     }
@@ -183,7 +190,7 @@ class SearchViewController: UIViewController {
             }
             if let sinceID = self.adapter.sinceID() {
                 NSLog("loadDataToTop load sinceID:\(sinceID)")
-                Twitter.getSearchTweets(keyword, maxID: nil, sinceID: (sinceID.longLongValue - 1).stringValue, success: success, failure: failure)
+                Twitter.getSearchTweets(keyword, maxID: nil, sinceID: (sinceID.longLongValue - 1).stringValue, excludeRetweets: self.excludeRetweets, success: success, failure: failure)
             } else {
                 op.finish()
             }
@@ -272,7 +279,38 @@ class SearchViewController: UIViewController {
             MessageAlert.show("Please input keyword")
             return
         }
-        SearchAlert.show(sender, keyword: keyword)
+        showMenu(sender, keyword: keyword)
+    }
+
+    @IBAction func streaming(sender: AnyObject) {
+        if let status = keywordStreaming?.status where status == .CONNECTED || status == .CONNECTING {
+            let alert = UIAlertController(title: "Disconnect search streaming?", message: nil, preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { [weak self] action in
+                self?.keywordStreaming?.stop()
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            AlertController.showViewController(alert)
+            return
+        }
+        guard let keyword = self.keyword where !keyword.isEmpty else {
+            return
+        }
+        let alert = UIAlertController(title: "Connect search streaming?", message: nil, preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { [weak self] action in
+            guard let `self` = self else {
+                return
+            }
+            guard let account = AccountSettingsStore.get()?.account() else {
+                return
+            }
+            self.keywordStreaming = TwitterSearchStreaming(
+                account: account,
+                receiveStatus: self.receiveStatus,
+                connected: self.connectStreaming,
+                disconnected: self.disconnectStreaming).start(keyword)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        AlertController.showViewController(alert)
     }
 
     @IBAction func search(sender: AnyObject) {
@@ -312,13 +350,34 @@ class SearchViewController: UIViewController {
     func change() {
         if keywordTextField.text?.isEmpty ?? true {
             keywordTextField.rightViewMode = .Never
+            streamingButton.enabled = false
         } else {
             keywordTextField.rightViewMode = .Always
+            streamingButton.enabled = true
         }
     }
 
     func hide() {
+        keywordStreaming?.stop()
         ViewTools.slideOut(self)
+    }
+
+    // MARK: - TwitterSearchStreaming
+
+
+    func receiveStatus(status: TwitterStatus) {
+        if excludeRetweets && status.actionedBy != nil {
+            return
+        }
+        adapter.renderData(tableView, statuses: [status], mode: .TOP, handler: nil)
+    }
+
+    func connectStreaming() {
+        streamingButton.setTitleColor(ThemeController.currentTheme.streamingConnected(), forState: .Normal)
+    }
+
+    func disconnectStreaming() {
+        streamingButton.setTitleColor(ThemeController.currentTheme.bodyTextColor(), forState: .Normal)
     }
 
     // MARK: - Class Methods

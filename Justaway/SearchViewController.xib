@@ -9,6 +9,7 @@
             <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
+            <string>fontello</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -16,6 +17,7 @@
             <connections>
                 <outlet property="keywordTableView" destination="xXD-AO-gZT" id="YCd-0B-9lp"/>
                 <outlet property="keywordTextField" destination="hDa-pY-VfR" id="Gah-6q-agQ"/>
+                <outlet property="streamingButton" destination="dfN-Qx-Gev" id="W8R-Yw-Dun"/>
                 <outlet property="tableView" destination="g8m-x9-if9" id="7tT-7b-WQT"/>
                 <outlet property="view" destination="6Bf-qv-8Cd" id="JKb-Cy-cQ2"/>
             </connections>
@@ -39,23 +41,23 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M7u-kM-p9l" customClass="NavigationShadowView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="10" width="600" height="50"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfN-Qx-Gev" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                            <rect key="frame" x="540" y="0.0" width="60" height="50"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfN-Qx-Gev">
+                            <rect key="frame" x="500" y="0.0" width="50" height="50"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="60" id="NWn-p4-eIX"/>
+                                <constraint firstAttribute="width" constant="50" id="NWn-p4-eIX"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
-                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
-                            <state key="normal" title="点">
+                            <inset key="contentEdgeInsets" minX="20" minY="15" maxX="10" maxY="15"/>
+                            <state key="normal" title="雷">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="menu:" destination="-1" eventType="touchUpInside" id="Med-GB-vhp"/>
+                                <action selector="streaming:" destination="-1" eventType="touchUpInside" id="peF-Cr-UrT"/>
                             </connections>
                         </button>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="hDa-pY-VfR">
-                            <rect key="frame" x="35" y="10" width="505" height="30"/>
+                            <rect key="frame" x="35" y="10" width="465" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" returnKeyType="search"/>
                             <connections>
@@ -77,19 +79,37 @@
                                 <action selector="left:" destination="-1" eventType="touchUpInside" id="dSx-fj-nvK"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MTu-DO-JHK" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                            <rect key="frame" x="550" y="0.0" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="fM1-iV-aXM"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
+                            <inset key="contentEdgeInsets" minX="10" minY="15" maxX="20" maxY="15"/>
+                            <state key="normal" title="点">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="menu:" destination="-1" eventType="touchUpInside" id="ThY-cS-YXc"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="0.89722521551724133" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="MTu-DO-JHK" secondAttribute="bottom" id="0IQ-Zh-eHx"/>
                         <constraint firstItem="0Fh-ep-jnn" firstAttribute="leading" secondItem="M7u-kM-p9l" secondAttribute="leading" id="44a-YD-2gA"/>
                         <constraint firstItem="hDa-pY-VfR" firstAttribute="leading" secondItem="0Fh-ep-jnn" secondAttribute="trailing" id="8Yj-NY-ktq"/>
                         <constraint firstAttribute="bottom" secondItem="dfN-Qx-Gev" secondAttribute="bottom" id="9cY-rS-eaF"/>
+                        <constraint firstItem="MTu-DO-JHK" firstAttribute="top" secondItem="M7u-kM-p9l" secondAttribute="top" id="AuE-1B-oRR"/>
                         <constraint firstItem="0Fh-ep-jnn" firstAttribute="top" secondItem="M7u-kM-p9l" secondAttribute="top" id="Lvd-kN-Y5X"/>
                         <constraint firstAttribute="height" constant="50" id="WXg-vI-Vor"/>
-                        <constraint firstAttribute="trailing" secondItem="dfN-Qx-Gev" secondAttribute="trailing" id="WgU-lG-zHU"/>
+                        <constraint firstItem="MTu-DO-JHK" firstAttribute="leading" secondItem="dfN-Qx-Gev" secondAttribute="trailing" id="ga9-pN-T9s"/>
                         <constraint firstItem="dfN-Qx-Gev" firstAttribute="top" secondItem="M7u-kM-p9l" secondAttribute="top" id="iY9-eq-yIr"/>
                         <constraint firstItem="dfN-Qx-Gev" firstAttribute="leading" secondItem="hDa-pY-VfR" secondAttribute="trailing" id="peO-Jh-CeN"/>
                         <constraint firstItem="hDa-pY-VfR" firstAttribute="centerY" secondItem="M7u-kM-p9l" secondAttribute="centerY" id="rpH-qz-xkE"/>
                         <constraint firstAttribute="bottom" secondItem="0Fh-ep-jnn" secondAttribute="bottom" id="y72-WQ-bpt"/>
+                        <constraint firstAttribute="trailing" secondItem="MTu-DO-JHK" secondAttribute="trailing" id="zIl-Qa-PkR"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppG-QO-NsZ" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
