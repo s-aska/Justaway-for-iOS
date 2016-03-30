@@ -415,7 +415,7 @@ class EditorViewController: UIViewController {
 
     class func show(text: String? = nil, range: NSRange? = nil, inReplyToStatus: TwitterStatus? = nil, messageTo: TwitterUser? = nil) {
         if let vc = ViewTools.frontViewController() {
-            Static.instance.view.frame = CGRect.init(x: 0, y: 0, width: vc.view.frame.width, height: vc.view.frame.height)
+            Static.instance.view.frame = vc.view.frame
             Static.instance.resetPickerController()
             Static.instance.textView.text = text ?? ""
             Static.instance.countLabel.hidden = messageTo != nil

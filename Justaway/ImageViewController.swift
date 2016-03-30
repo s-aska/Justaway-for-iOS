@@ -149,7 +149,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         Static.instance.initialPage = initialPage
 
         if let vc = ViewTools.frontViewController() {
-            Static.instance.view.frame = CGRect.init(x: 0, y: 0, width: vc.view.frame.width, height: vc.view.frame.height)
+            Static.instance.view.frame = vc.view.frame
             vc.view.addSubview(Static.instance.view)
         }
     }
@@ -165,7 +165,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     func swipeUp() {
         let imageView = imageViews[pageControl.currentPage]
         UIView.animateWithDuration(0.3, animations: { _ in
-            imageView.frame = CGRect.init(x: imageView.frame.origin.x, y: -imageView.frame.size.height, width: imageView.frame.size.width, height: imageView.frame.size.height)
+            imageView.frame = CGRectOffset(imageView.frame, 0, -imageView.frame.size.height)
             }, completion: { _ in
                 self.hide()
         })
@@ -174,7 +174,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     func swipeDown() {
         let imageView = imageViews[pageControl.currentPage]
         UIView.animateWithDuration(0.3, animations: { _ in
-            imageView.frame = CGRect.init(x: imageView.frame.origin.x, y: imageView.frame.size.height, width: imageView.frame.size.width, height: imageView.frame.size.height)
+            imageView.frame = CGRectOffset(imageView.frame, 0, imageView.frame.size.height)
         }, completion: { _ in
             self.hide()
         })

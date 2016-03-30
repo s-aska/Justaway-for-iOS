@@ -188,11 +188,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
 
     func hide() {
         UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseOut, animations: {
-            self.view.frame = CGRect.init(
-                x: self.view.frame.size.width,
-                y: self.view.frame.origin.y,
-                width: self.view.frame.size.width,
-                height: self.view.frame.size.height)
+            self.view.frame = CGRectOffset(self.view.frame, self.view.frame.size.width, 0)
             }, completion: { finished in
                 self.view.removeFromSuperview()
         })

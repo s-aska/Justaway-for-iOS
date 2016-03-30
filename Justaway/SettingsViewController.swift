@@ -84,16 +84,11 @@ class SettingsViewController: UIViewController {
 
         // Slide in
         view.hidden = false
-        view.frame = CGRect.init(x: view.frame.size.width,
-            y: view.frame.origin.y,
-            width: view.frame.size.width,
-            height: view.frame.size.height)
+        let frame = view.frame
+        view.frame = CGRectOffset(frame, frame.size.width, 0)
 
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
-            view.frame = CGRect.init(x: 0,
-                y: view.frame.origin.y,
-                width: view.frame.size.width,
-                height: view.frame.size.height)
+            view.frame = frame
         }) { (finished) -> Void in
 
         }
@@ -104,10 +99,7 @@ class SettingsViewController: UIViewController {
 
         // Slide out
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
-            view.frame = CGRect.init(x: -view.frame.size.width,
-                y: view.frame.origin.y,
-                width: view.frame.size.width,
-                height: view.frame.size.height)
+            view.frame = CGRectOffset(view.frame, -view.frame.size.width, 0)
         }, completion: { finished in
             view.hidden = true
             if completion != nil {

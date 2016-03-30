@@ -668,7 +668,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     func videoSwipeUp() {
         UIView.animateWithDuration(0.3, animations: { _ in
-            self.playerView.frame = CGRect.init(x: self.playerView.frame.origin.x, y: -self.playerView.frame.size.height, width: self.playerView.frame.size.width, height: self.playerView.frame.size.height)
+            self.playerView.frame = CGRectOffset(self.playerView.frame, 0, -self.playerView.frame.size.height)
             }, completion: { _ in
                 self.hideVideo()
         })
@@ -676,7 +676,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     func videoSwipeDown() {
         UIView.animateWithDuration(0.3, animations: { _ in
-            self.playerView.frame = CGRect.init(x: self.playerView.frame.origin.x, y: self.playerView.frame.size.height, width: self.playerView.frame.size.width, height: self.playerView.frame.size.height)
+            self.playerView.frame = CGRectOffset(self.playerView.frame, 0, self.playerView.frame.size.height)
         }, completion: { _ in
             self.hideVideo()
         })

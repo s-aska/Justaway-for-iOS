@@ -148,7 +148,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         siteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.openURL(_:))))
 
         // setup tabview
-        if let windowSize = UIApplication.sharedApplication().keyWindow?.rootViewController?.view.frame.size {
+        if let windowSize = ViewTools.frontViewController()?.view.frame.size {
             view.frame = CGRect.init(x: 0, y: 0, width: windowSize.width, height: windowSize.height)
             view.layoutIfNeeded()
             headerViewWidthConstraint.constant = windowSize.width

@@ -76,10 +76,7 @@ class ViewTools {
         viewController.view.hidden = false
 
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
-            viewController.view.frame = CGRect.init(x: 0,
-                y: rootViewController.view.frame.origin.y,
-                width: rootViewController.view.frame.size.width,
-                height: rootViewController.view.frame.size.height)
+            viewController.view.frame = rootViewController.view.frame
             }) { (finished) -> Void in
         }
         if let viewControllers = Static.overlayViewControllers[key] {
@@ -92,11 +89,7 @@ class ViewTools {
     class func slideOut(viewController: UIViewController) {
         let key = NSStringFromClass(viewController.dynamicType)
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
-            viewController.view.frame = CGRect.init(
-                x: viewController.view.frame.size.width,
-                y: viewController.view.frame.origin.y,
-                width: viewController.view.frame.size.width,
-                height: viewController.view.frame.size.height)
+            viewController.view.frame = CGRectOffset(viewController.view.frame, viewController.view.frame.size.width, 0)
             }, completion: { finished in
                 viewController.view.hidden = true
                 viewController.view.removeFromSuperview()
