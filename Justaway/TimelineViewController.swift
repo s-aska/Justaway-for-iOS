@@ -207,10 +207,25 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
             if let adapter = vc.adapter as? TwitterStatusAdapter {
                 let page = i
+                let isSearches = tab.type == .Searches
                 adapter.renderDataCallback = { (statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode) in
                     if statuses.count > 0 && mode == .HEADER {
                         NSLog("page:\(page) count:\(statuses.count)")
                         self.tabButtons[page].selected = true
+                    }
+                    if statuses.count > 0 && mode == .TOP && isSearches {
+                        if self.currentPage != page {
+                            self.tabButtons[page].selected = true
+                        } else {
+                            let buttonIndex = page
+                            let operation = MainBlockOperation { (operation) -> Void in
+                                if !vc.adapter.isTop {
+                                    self.tabButtons[buttonIndex].selected = true
+                                }
+                                operation.finish()
+                            }
+                            vc.adapter.mainQueue.addOperation(operation)
+                        }
                     }
                 }
             }

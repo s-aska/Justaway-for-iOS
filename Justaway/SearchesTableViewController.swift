@@ -385,7 +385,6 @@ extension SearchesTableViewController {
         if excludeRetweets && status.actionedBy != nil {
             return
         }
-        defaultAdapter.renderDataCallback?(statuses: [status], mode: .HEADER)
         adapter.renderData(tableView, statuses: [status], mode: .TOP, handler: nil)
     }
 }
