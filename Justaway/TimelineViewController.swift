@@ -98,7 +98,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         currentPage = min(currentPage, account.tabs.count - 1)
 
         var vcCache = [String: TimelineTableViewController]()
-        for tableViewController in tableViewControllers {
+        var buttonCache = [String: TabButton]()
+        for (index, tableViewController) in tableViewControllers.enumerate() {
             switch tableViewController {
             case let vc as HomeTimelineTableViewController:
                 vcCache["HomeTimelineTableViewController"] = vc
@@ -109,6 +110,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             case let vc as SearchesTableViewController:
                 if let keyword = vc.keyword {
                     vcCache["SearchesTableViewController-" + keyword] = vc
+                    buttonCache["SearchesTableViewController-" + keyword] = tabButtons[index]
                 }
             case let vc as NotificationsViewController:
                 vcCache["NotificationsViewController"] = vc
@@ -143,6 +145,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             let vc: TimelineTableViewController
             let icon: String
             let title: String
+            var cacheButton: TabButton?
             switch tab.type {
             case .HomeTimline:
                 vc = vcCache["HomeTimelineTableViewController"] ?? HomeTimelineTableViewController()
@@ -166,6 +169,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 let keyword = tab.keyword
                 let svc = vcCache["SearchesTableViewController-" + keyword] as? SearchesTableViewController ?? SearchesTableViewController()
                 svc.keyword = keyword
+                cacheButton = buttonCache["SearchesTableViewController-" + keyword]
+                cacheButton?.tag = i
+                cacheButton?.frame = CGRect.init(x: 58 * CGFloat(i), y: 0, width: 58, height: 50)
                 vc = svc
                 icon = "探"
                 title = keyword
@@ -194,7 +200,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
             vc.adapter.scrollEnd(vc.tableView)
 
-            let button = createTabButton(i, icon: icon)
+            let button = cacheButton ?? createTabButton(i, icon: icon)
             tabWrapperView.addSubview(button)
             newTabButtons.append(button)
             newTitles.append(title)
@@ -229,7 +235,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     // swiftlint:enable function_body_length
 
     func createTabButton(index: Int, icon: String) -> TabButton {
-        let button = TabButton(type: UIButtonType.System)
+        let button = TabButton(type: .System)
         button.tag = index
         button.tintColor = UIColor.clearColor()
         button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
