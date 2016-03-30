@@ -103,6 +103,8 @@ class ThemeController {
         MenuShadowView.appearance().layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         MenuButton.appearance().setTitleColor(theme.menuTextColor(), forState: .Normal)
         MenuButton.appearance().setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)
+        TabButton.appearance().setTitleColor(theme.menuTextColor(), forState: .Normal)
+        TabButton.appearance().setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)
         MenuLable.appearance().textColor = theme.menuTextColor()
         SideMenuShadowView.appearance().backgroundColor =  theme.sideMenuBackgroundColor()
         SideMenuSeparator.appearance().backgroundColor = theme.menuTextColor()
@@ -202,6 +204,13 @@ class ThemeController {
                 v.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
             case let v as MenuView:
                 v.backgroundColor = theme.menuBackgroundColor()
+            case let v as TabButton:
+                if v.streaming {
+                    v.setTitleColor(theme.streamingConnected(), forState: .Normal)
+                } else {
+                    v.setTitleColor(theme.menuTextColor(), forState: .Normal)
+                }
+                v.setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)
             case let v as MenuButton:
                 v.setTitleColor(theme.menuTextColor(), forState: .Normal)
                 v.setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)

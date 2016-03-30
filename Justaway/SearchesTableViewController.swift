@@ -21,6 +21,8 @@ class SearchesTableViewController: TimelineTableViewController {
     var lastID: Int64?
     var keyword: String?
     var cacheLoaded = false
+    var keywordStreaming: TwitterSearchStreaming?
+    var excludeRetweets = true
 
 //    override func viewDidLoad() {
 //        super.viewDidLoad()
@@ -162,26 +164,6 @@ class SearchesTableViewController: TimelineTableViewController {
         }
     }
 
-    // MARK: - UITableViewDataSource
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return adapter.tableView(tableView, numberOfRowsInSection: section)
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return adapter.tableView(tableView, cellForRowAtIndexPath: indexPath)
-    }
-
-    // MARK: UITableViewDelegate
-
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return adapter.tableView(tableView, heightForRowAtIndexPath: indexPath)
-    }
-
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        adapter.tableView(tableView, didSelectRowAtIndexPath: indexPath)
-    }
-
     // MARK: Public Methods
 
     func loadCache() {
@@ -285,19 +267,11 @@ class SearchesTableViewController: TimelineTableViewController {
                     return
                 }
             }
-            Twitter.getSearchTweets(keyword, maxID: maxID, sinceID: nil, success: success, failure: failure)
+            Twitter.getSearchTweets(keyword, maxID: maxID, sinceID: nil, excludeRetweets: self.excludeRetweets, success: success, failure: failure)
         })
         NSLog("keyword:\(keyword) maxID:\(maxID) loadData.")
         self.adapter.loadDataQueue.addOperation(op)
     }
-
-//    func loadData(maxID: String? = nil, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-//        assertionFailure("not implements.")
-//    }
-//
-//    func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-//        success(statuses: [TwitterStatus]())
-//    }
 
     func loadDataToTop() {
         if AccountSettingsStore.get() == nil {
@@ -335,7 +309,7 @@ class SearchesTableViewController: TimelineTableViewController {
             if let sinceID = self.adapter.sinceID() {
                 NSLog("loadDataToTop load sinceID:\(sinceID)")
                 // self.loadData(sinceID: (sinceID.longLongValue - 1).stringValue, maxID: nil, success: success, failure: failure)
-                Twitter.getSearchTweets(keyword, maxID: nil, sinceID: (sinceID.longLongValue - 1).stringValue, success: success, failure: failure)
+                Twitter.getSearchTweets(keyword, maxID: nil, sinceID: (sinceID.longLongValue - 1).stringValue, excludeRetweets: self.excludeRetweets, success: success, failure: failure)
             } else {
                 op.finish()
             }
@@ -357,6 +331,62 @@ class SearchesTableViewController: TimelineTableViewController {
             }
         }
         self.adapter.mainQueue.addOperation(operation)
+    }
+}
+
+extension SearchesTableViewController {
+    func addStreamingAction(actionSheet: UIAlertController, tabButton: TabButton) {
+        if excludeRetweets {
+            actionSheet.addAction(UIAlertAction(title: "Include Retweet", style: .Default, handler: { [weak self] action in
+                self?.excludeRetweets = false
+                }))
+        } else {
+            actionSheet.addAction(UIAlertAction(title: "Exclude Retweet", style: .Default, handler: { [weak self] action in
+                self?.excludeRetweets = true
+                }))
+        }
+
+        if let status = keywordStreaming?.status where status == .CONNECTED || status == .CONNECTING {
+            actionSheet.addAction(UIAlertAction(title: "Disconnect Search Streaming", style: .Default, handler: { [weak self] action in
+                self?.keywordStreaming?.stop()
+            }))
+        } else {
+            guard let keyword = self.keyword where !keyword.isEmpty else {
+                return
+            }
+            actionSheet.addAction(UIAlertAction(title: "Connect Search Streaming", style: .Default, handler: { [weak self] action in
+                guard let `self` = self else {
+                    return
+                }
+                guard let account = AccountSettingsStore.get()?.account() else {
+                    return
+                }
+                let receiveStatus = { [weak self] (status: TwitterStatus) -> Void in
+                    self?.receiveStatus(status, tabButton: tabButton)
+                }
+                let connected = { [weak tabButton] () -> Void in
+                    tabButton?.streaming = true
+                }
+                let disconnected = { [weak tabButton] () -> Void in
+                    tabButton?.streaming = false
+                }
+                self.keywordStreaming = TwitterSearchStreaming(
+                    account: account,
+                    receiveStatus: receiveStatus,
+                    connected: connected,
+                    disconnected: disconnected).start(keyword)
+                }))
+        }
+    }
+
+    // MARK: - TwitterSearchStreaming
+
+    func receiveStatus(status: TwitterStatus, tabButton: TabButton) {
+        if excludeRetweets && status.actionedBy != nil {
+            return
+        }
+        defaultAdapter.renderDataCallback?(statuses: [status], mode: .HEADER)
+        adapter.renderData(tableView, statuses: [status], mode: .TOP, handler: nil)
     }
 }
 

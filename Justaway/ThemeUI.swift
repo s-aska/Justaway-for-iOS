@@ -104,6 +104,17 @@ class StreamingButton: UIButton {
     }
 }
 class MenuButton: BaseButton {}
+class TabButton: BaseButton {
+    var streaming = false {
+        didSet {
+            if streaming {
+                setTitleColor(ThemeController.currentTheme.streamingConnected(), forState: .Normal)
+            } else {
+                setTitleColor(ThemeController.currentTheme.menuTextColor(), forState: .Normal)
+            }
+        }
+    }
+}
 class FavoritesButton: BaseButton {}
 class ReplyButton: BaseButton {}
 class RetweetButton: BaseButton {}

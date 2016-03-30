@@ -49,6 +49,9 @@ class TwitterSearchStreaming {
             }
         }
         let responce = JSON(data: data)
+        if responce["text"] == nil {
+            return
+        }
         let sourceUserID = account.userID
         let status = TwitterStatus(responce, connectionID: "")
         let quotedUserID = status.quotedStatus?.user.userID

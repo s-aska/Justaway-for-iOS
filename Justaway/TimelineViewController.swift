@@ -19,7 +19,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     var settingsViewController: SettingsViewController!
     var sideMenuViewController: SideMenuViewController!
     var tableViewControllers = [TimelineTableViewController]()
-    var tabButtons = [MenuButton]()
+    var tabButtons = [TabButton]()
     var titles = [String]()
     var setupView = false
     var userID = ""
@@ -132,7 +132,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             }
         }
 
-        var newTabButtons = [MenuButton]()
+        var newTabButtons = [TabButton]()
         var newTitles = [String]()
 
         let size = scrollWrapperView.frame.size
@@ -194,7 +194,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
             vc.adapter.scrollEnd(vc.tableView)
 
-            let button = createMenuButton(i, icon: icon)
+            let button = createTabButton(i, icon: icon)
             tabWrapperView.addSubview(button)
             newTabButtons.append(button)
             newTitles.append(title)
@@ -228,8 +228,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     // swiftlint:enable cyclomatic_complexity function_body_length
     // swiftlint:enable function_body_length
 
-    func createMenuButton(index: Int, icon: String) -> MenuButton {
-        let button = MenuButton(type: UIButtonType.System)
+    func createTabButton(index: Int, icon: String) -> TabButton {
+        let button = TabButton(type: UIButtonType.System)
         button.tag = index
         button.tintColor = UIColor.clearColor()
         button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
@@ -423,6 +423,10 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             actionSheet.addAction(UIAlertAction(title: "Tweet with " + tab.keyword, style: .Default, handler: { action in
                 EditorViewController.show(" " + tab.keyword, range: NSRange(location: 0, length: 0), inReplyToStatus: nil)
             }))
+            if let vc = tableViewControllers[index] as? SearchesTableViewController {
+                let tabButton = tabButtons[index]
+                vc.addStreamingAction(actionSheet, tabButton: tabButton)
+            }
         } else if tab.type == .UserTimline {
             actionSheet.addAction(UIAlertAction(title: "Reply to @" + tab.user.screenName, style: .Default, handler: { action in
                 let prefix = "@\(tab.user.screenName) "
@@ -479,9 +483,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     }
 
     @IBAction func openSidemenu(sender: AnyObject) {
-        if let account = AccountSettingsStore.get()?.account() {
-            sideMenuViewController.show(account)
-        }
+        showSideMenu()
     }
 
     @IBAction func streamingSwitch(sender: UIButton) {

@@ -27,11 +27,11 @@ extension SearchViewController {
         }))
 
         if excludeRetweets {
-            actionSheet.addAction(UIAlertAction(title: "Include retweet", style: .Default, handler: { [weak self] action in
+            actionSheet.addAction(UIAlertAction(title: "Include Retweet", style: .Default, handler: { [weak self] action in
                 self?.excludeRetweets = false
                 }))
         } else {
-            actionSheet.addAction(UIAlertAction(title: "Exclude retweet", style: .Default, handler: { [weak self] action in
+            actionSheet.addAction(UIAlertAction(title: "Exclude Retweet", style: .Default, handler: { [weak self] action in
                 self?.excludeRetweets = true
                 }))
         }
