@@ -22,6 +22,7 @@ class Account {
     let profileBannerURL: NSURL
     let tabs: [Tab]
 
+    // swiftlint:disable function_parameter_count
     init(client: Client, userID: String, screenName: String, name: String, profileImageURL: NSURL, profileBannerURL: NSURL) {
         self.client = client
         self.userID = userID

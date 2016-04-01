@@ -60,45 +60,18 @@ class MessagesTableViewController: TimelineTableViewController {
     }
 
     func configureEvent() {
-        EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { (n) -> Void in
+        EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { [weak self] (n) -> Void in
+            guard let `self` = self else {
+                return
+            }
             self.adapter.scrollToTop(self.tableView)
         })
-        // TODO: copy paste
-        EventBox.onBackgroundThread(self, name: eventFontSizeApplied) { (n) -> Void in
+        EventBox.onBackgroundThread(self, name: eventFontSizeApplied) { [weak self] (n) -> Void in
+            guard let `self` = self else {
+                return
+            }
             if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
-                let newNows = self.adapter.rows.map({ (row) -> TwitterStatusAdapter.Row in
-                    if let message = row.message {
-                        return self.adapter.createRow(message, fontSize: CGFloat(fontSize.floatValue), tableView: self.tableView)
-                    } else {
-                        return row
-                    }
-                })
-
-                let op = MainBlockOperation { (op) -> Void in
-                    if var firstCell = self.tableView.visibleCells.first {
-                        var offset = self.tableView.contentOffset.y - firstCell.frame.origin.y + self.tableView.contentInset.top
-                        var firstPath: NSIndexPath
-
-                        // セルが半分以上隠れているている場合、2番目の表示セルを基準にする
-                        if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
-                            if indexPathsForVisibleRows.count > 1 && offset > (firstCell.frame.size.height / 2) {
-                                firstPath = indexPathsForVisibleRows[1]
-                                firstCell = self.tableView.cellForRowAtIndexPath(firstPath)!
-                                offset = self.tableView.contentOffset.y - firstCell.frame.origin.y + self.tableView.contentInset.top
-                            } else {
-                                firstPath = indexPathsForVisibleRows.first!
-                            }
-
-                            self.adapter.rows = newNows
-
-                            self.tableView.reloadData()
-                            self.tableView.scrollToRowAtIndexPath(firstPath, atScrollPosition: .Top, animated: false)
-                            self.tableView.setContentOffset(CGPoint.init(x: 0, y: self.tableView.contentOffset.y + offset), animated: false)
-                        }
-                    }
-                    op.finish()
-                }
-                self.adapter.mainQueue.addOperation(op)
+                self.adapter.fontSizeApplied(self.tableView, fontSize: CGFloat(fontSize.floatValue))
             }
         }
         configureCreateMessageEvent()

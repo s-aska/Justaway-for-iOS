@@ -115,4 +115,3 @@ class MessagesViewController: UIViewController {
         ViewTools.slideIn(instance)
     }
 }
-

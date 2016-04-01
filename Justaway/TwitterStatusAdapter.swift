@@ -83,6 +83,17 @@ class TwitterStatusAdapter: TwitterAdapter {
         }
     }
 
+    func fontSizeApplied(tableView: UITableView, fontSize: CGFloat) {
+        let newRows = self.rows.map({ (row) -> TwitterStatusAdapter.Row in
+            if let status = row.status {
+                return self.createRow(status, fontSize: fontSize, tableView: tableView)
+            } else {
+                return row
+            }
+        })
+        fontSizeApplied(tableView, fontSize: fontSize, rows: newRows)
+    }
+
     // MARK: Public Methods
 
     func renderData(tableView: UITableView, statuses: [TwitterStatus], mode: RenderMode, handler: (() -> Void)?) {

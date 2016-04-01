@@ -86,7 +86,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         configureTimelineView()
     }
 
-    // swiftlint:disable cyclomatic_complexity function_body_length
+    // swiftlint:disable cyclomatic_complexity
     // swiftlint:disable function_body_length
     func configureTimelineView() {
         guard let account = AccountSettingsStore.get()?.account() else {

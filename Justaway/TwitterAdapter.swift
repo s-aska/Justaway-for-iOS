@@ -177,6 +177,34 @@ class TwitterAdapter: NSObject {
             }
         }
     }
+
+    func fontSizeApplied(tableView: UITableView, fontSize: CGFloat, rows: [Row]) {
+        let op = MainBlockOperation { (op) -> Void in
+            if var firstCell = tableView.visibleCells.first {
+                var offset = tableView.contentOffset.y - firstCell.frame.origin.y + tableView.contentInset.top
+                var firstPath: NSIndexPath
+
+                // セルが半分以上隠れているている場合、2番目の表示セルを基準にする
+                if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows {
+                    if indexPathsForVisibleRows.count > 1 && offset > (firstCell.frame.size.height / 2) {
+                        firstPath = indexPathsForVisibleRows[1]
+                        firstCell = tableView.cellForRowAtIndexPath(firstPath)!
+                        offset = tableView.contentOffset.y - firstCell.frame.origin.y + tableView.contentInset.top
+                    } else {
+                        firstPath = indexPathsForVisibleRows.first!
+                    }
+
+                    self.rows = rows
+
+                    tableView.reloadData()
+                    tableView.scrollToRowAtIndexPath(firstPath, atScrollPosition: .Top, animated: false)
+                    tableView.setContentOffset(CGPoint.init(x: 0, y: tableView.contentOffset.y + offset), animated: false)
+                }
+            }
+            op.finish()
+        }
+        mainQueue.addOperation(op)
+    }
 }
 
 // MARK: - UITableViewDataSource

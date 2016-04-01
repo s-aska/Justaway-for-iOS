@@ -24,6 +24,7 @@ class ViewTools {
         containerView.addConstraints(constraints)
     }
 
+    // swiftlint:disable:next function_parameter_count
     class func addSubviewWithEqual(containerView: UIView, view: UIView, top: CGFloat?, right: CGFloat?, bottom: CGFloat?, left: CGFloat?) {
         view.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(view)

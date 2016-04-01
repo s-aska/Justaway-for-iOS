@@ -72,6 +72,17 @@ class TwitterMessageAdapter: TwitterAdapter {
             context: nil).size.height)
     }
 
+    func fontSizeApplied(tableView: UITableView, fontSize: CGFloat) {
+        let newRows = self.rows.map({ (row) -> TwitterStatusAdapter.Row in
+            if let message = row.message {
+                return self.createRow(message, fontSize: fontSize, tableView: tableView)
+            } else {
+                return row
+            }
+        })
+        fontSizeApplied(tableView, fontSize: fontSize, rows: newRows)
+    }
+
     // MARK: Public Methods
 
     func thread(messages: [TwitterMessage]) -> [TwitterMessage] {
