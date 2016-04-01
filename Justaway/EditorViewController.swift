@@ -107,23 +107,18 @@ class EditorViewController: UIViewController {
 
     func configureTextView() {
         // swiftlint:disable:next force_try
-        let regexp = try! NSRegularExpression(pattern: "https?://[0-9a-zA-Z/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+", options: .CaseInsensitive)
-        // swiftlint:disable:next force_try
         let isKatakana = try! NSRegularExpression(pattern: "[\\u30A0-\\u30FF]", options: .CaseInsensitive)
-        textView.callback = {
-            var count = self.textView.text.characters.count
-            let s = self.textView.text as NSString
-            let matches = regexp.matchesInString(self.textView.text, options: NSMatchingOptions(rawValue: 0), range: NSRange(location: 0, length: self.textView.text.utf16.count))
-            for match in matches {
-                let url = s.substringWithRange(match.rangeAtIndex(0)) as String
-                let urlCount = url.hasPrefix("https") ? 23 : 22
-                count = count + urlCount - url.characters.count
+        textView.callback = { [weak self] in
+            guard let `self` = self else {
+                return
             }
-            if self.images.count > 0 {
-                count = count + 23
-            }
+            let count = TwitterText.count(self.textView.text, hasImage: self.images.count > 0)
             self.countLabel.text = String(140 - count)
-            self.halfButton.hidden = isKatakana.firstMatchInString(self.textView.text, options: NSMatchingOptions(rawValue: 0), range: NSRange(location: 0, length: self.textView.text.utf16.count)) == nil
+            self.halfButton.hidden = isKatakana.firstMatchInString(
+                self.textView.text,
+                options: NSMatchingOptions(rawValue: 0),
+                range: NSRange(location: 0, length: self.textView.text.utf16.count)
+                ) == nil
         }
     }
 
@@ -312,16 +307,6 @@ class EditorViewController: UIViewController {
         textView.text = text as String
     }
 
-    @IBAction func feedback(sender: AnyObject) {
-        if textView.text.hasSuffix("#justaway") {
-            return
-        }
-        textView.text = textView.text + " #justaway"
-        textView.selectedRange = NSRange(location: 0, length: 0)
-        textView.callback?()
-
-    }
-
     @IBAction func send(sender: UIButton) {
         let text = textView.text
         if text.isEmpty && images.count == 0 {
@@ -363,18 +348,18 @@ class EditorViewController: UIViewController {
                 self.view.layoutIfNeeded()
             })
         }
-        self.collectionView.highlightRows = self.images.map({ $0.asset })
-        self.collectionView.reloadHighlight()
+        collectionView.highlightRows = images.map({ $0.asset })
+        collectionView.reloadHighlight()
     }
 
     @IBAction func replyCancel(sender: UIButton) {
         if let inReplyToStatusId = inReplyToStatusId {
             let pattern = " ?https?://twitter\\.com/[0-9a-zA-Z_]+/status/\(inReplyToStatusId)"
-            textView.text = textView.text.stringByReplacingOccurrencesOfString(pattern, withString: "", options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
+            textView.text = textView.text.stringByReplacingOccurrencesOfString(pattern, withString: "", options: .RegularExpressionSearch, range: nil)
         }
         inReplyToStatusId = nil
         replyToContainerView.hidden = true
-        textView.text = textView.text.stringByReplacingOccurrencesOfString("^.*@[0-9a-zA-Z_]+ *", withString: "", options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
+        textView.text = textView.text.stringByReplacingOccurrencesOfString("^.*@[0-9a-zA-Z_]+ *", withString: "", options: .RegularExpressionSearch, range: nil)
     }
 
     func image() {
