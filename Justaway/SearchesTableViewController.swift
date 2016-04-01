@@ -356,15 +356,3 @@ extension SearchesTableViewController {
         adapter.renderData(tableView, statuses: [status], mode: .TOP, handler: nil)
     }
 }
-
-private extension String {
-    var longLongValue: Int64 {
-        return (self as NSString).longLongValue
-    }
-}
-
-private extension Int64 {
-    var stringValue: String {
-        return String(self)
-    }
-}

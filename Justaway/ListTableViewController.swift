@@ -204,15 +204,3 @@ class ListTableViewController: TimelineTableViewController {
         assertionFailure("not implements.")
     }
 }
-
-private extension String {
-    var longLongValue: Int64 {
-        return (self as NSString).longLongValue
-    }
-}
-
-private extension Int64 {
-    var stringValue: String {
-        return String(self)
-    }
-}

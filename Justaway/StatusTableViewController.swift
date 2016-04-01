@@ -270,15 +270,3 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         self.adapter.mainQueue.addOperation(operation)
     }
 }
-
-private extension String {
-    var longLongValue: Int64 {
-        return (self as NSString).longLongValue
-    }
-}
-
-private extension Int64 {
-    var stringValue: String {
-        return String(self)
-    }
-}

@@ -355,10 +355,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
 
     @IBAction func menu(sender: UIButton) {
-        if let userFull = userFull {
-            if let relationship = relationship {
-                UserAlert.show(sender, user: userFull, relationship: relationship)
-            }
+        if let userFull = userFull, let relationship = relationship {
+            UserAlert.show(sender, user: userFull, relationship: relationship)
         }
     }
 
@@ -386,11 +384,9 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         let parameters = ["screen_name": screenName]
         let success: (([JSON]) -> Void) = { (rows) in
             if let row = rows.first {
-                let user = TwitterUser(row)
-                let userFull = TwitterUserFull(row)
                 let instance = ProfileViewController()
-                instance.user = user
-                instance.userFull = userFull
+                instance.user = TwitterUser(row)
+                instance.userFull = TwitterUserFull(row)
                 Async.main {
                     ViewTools.slideIn(instance)
                 }
