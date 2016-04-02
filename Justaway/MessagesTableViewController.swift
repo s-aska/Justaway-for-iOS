@@ -176,6 +176,7 @@ class MessagesTableViewController: TimelineTableViewController {
             let thread = self.adapter.thread(messages)
             Async.main {
                 self.adapter.renderData(self.tableView, messages: thread, mode: .OVER, handler: nil)
+                self.refreshControl?.endRefreshing()
             }
         }
         Twitter.getDirectMessages(success)
