@@ -25,7 +25,10 @@ class TwitterStatus {
     let quotedStatus: TwitterStatus?
     let event: String?
     let connectionID: String
+    let possiblySensitive: Bool
 
+    // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable function_body_length
     init(_ json: JSON, connectionID: String = "") {
         let targetJson = json["target_object"] != nil ? json["target_object"] : json
         let statusJson = targetJson["retweeted_status"] != nil ? targetJson["retweeted_status"] : targetJson
@@ -37,6 +40,7 @@ class TwitterStatus {
         self.createdAt = TwitterDate(statusJson["created_at"].string!)
         self.retweetCount = statusJson["retweet_count"].int ?? 0
         self.favoriteCount = statusJson["favorite_count"].int ?? 0
+        self.possiblySensitive = statusJson["possibly_sensitive"].boolValue
 
         if let urls = statusJson["entities"]["urls"].array {
             self.urls = urls.map { TwitterURL($0) }
@@ -118,6 +122,7 @@ class TwitterStatus {
         self.createdAt = TwitterDate(NSDate(timeIntervalSince1970: (dictionary["createdAt"] as? NSNumber ?? 0).doubleValue))
         self.retweetCount = dictionary["retweetCount"] as? Int ?? 0
         self.favoriteCount = dictionary["favoriteCount"] as? Int ?? 0
+        self.possiblySensitive = dictionary["possiblySensitive"] as? Bool ?? false
 
         if let urls = dictionary["urls"] as? [[String: String]] {
             self.urls = urls.map({ TwitterURL($0) })
@@ -204,7 +209,8 @@ class TwitterStatus {
             "mentions": mentions.map({ $0.dictionaryValue }),
             "hashtags": hashtags.map({ $0.dictionaryValue }),
             "media": media.map({ $0.dictionaryValue }),
-            "via": via.dictionaryValue
+            "via": via.dictionaryValue,
+            "possiblySensitive": possiblySensitive
         ]
 
         if let event = self.event {

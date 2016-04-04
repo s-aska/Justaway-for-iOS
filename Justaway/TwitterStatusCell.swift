@@ -384,7 +384,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
             let user = threadMode ? message.collocutor : message.sender
             ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: iconImageView)
         }
-        setImage(message.media)
+        setImage(message.media, possiblySensitive: false)
     }
 
     // swiftlint:disable:next function_body_length
@@ -462,12 +462,12 @@ class TwitterStatusCell: BackgroundTableViewCell {
             ImageLoaderClient.displayUserIcon(status.user.profileImageURL, imageView: iconImageView)
         }
 
-        setImage(status.media)
+        setImage(status.media, possiblySensitive: status.possiblySensitive)
 
         setQuotedImage(status)
     }
 
-    func setImage(mediaList: [TwitterMedia]) {
+    func setImage(mediaList: [TwitterMedia], possiblySensitive: Bool) {
         if mediaList.count > 0 && imagesContainerView.hidden == true {
             imagesContainerView.hidden = false
 
@@ -479,7 +479,11 @@ class TwitterStatusCell: BackgroundTableViewCell {
             case 1:
                 imageView1HeightConstraint.constant = fullHeight
                 imageView1WidthConstraint.constant = fullWidth
-                ImageLoaderClient.displayImage(mediaList[0].mediaURL, imageView: imageView1)
+                if possiblySensitive {
+                    drawAttention(imageView1)
+                } else {
+                    ImageLoaderClient.displayImage(mediaList[0].mediaURL, imageView: imageView1)
+                }
                 imageView1.hidden = false
                 imageView2.hidden = true
                 imageView3.hidden = true
@@ -489,8 +493,13 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 imageView1WidthConstraint.constant = halfWidth
                 imageView2HeightConstraint.constant = fullHeight
                 imageView2WidthConstraint.constant = halfWidth
-                ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
-                ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
+                if possiblySensitive {
+                    drawAttention(imageView1)
+                    drawAttention(imageView2)
+                } else {
+                    ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
+                    ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
+                }
                 imageView1.hidden = false
                 imageView2.hidden = false
                 imageView3.hidden = true
@@ -502,9 +511,15 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 imageView2WidthConstraint.constant = halfWidth
                 imageView3HeightConstraint.constant = harfHeight
                 imageView3WidthConstraint.constant = halfWidth
-                ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
-                ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
-                ImageLoaderClient.displayThumbnailImage(mediaList[2].mediaThumbURL, imageView: imageView3)
+                if possiblySensitive {
+                    drawAttention(imageView1)
+                    drawAttention(imageView2)
+                    drawAttention(imageView3)
+                } else {
+                    ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
+                    ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
+                    ImageLoaderClient.displayThumbnailImage(mediaList[2].mediaThumbURL, imageView: imageView3)
+                }
                 imageView1.hidden = false
                 imageView2.hidden = false
                 imageView3.hidden = false
@@ -518,10 +533,17 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 imageView3WidthConstraint.constant = halfWidth
                 imageView4HeightConstraint.constant = harfHeight
                 imageView4WidthConstraint.constant = halfWidth
-                ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
-                ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
-                ImageLoaderClient.displayThumbnailImage(mediaList[3].mediaThumbURL, imageView: imageView3)
-                ImageLoaderClient.displayThumbnailImage(mediaList[2].mediaThumbURL, imageView: imageView4)
+                if possiblySensitive {
+                    drawAttention(imageView1)
+                    drawAttention(imageView2)
+                    drawAttention(imageView3)
+                    drawAttention(imageView4)
+                } else {
+                    ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
+                    ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
+                    ImageLoaderClient.displayThumbnailImage(mediaList[3].mediaThumbURL, imageView: imageView3)
+                    ImageLoaderClient.displayThumbnailImage(mediaList[2].mediaThumbURL, imageView: imageView4)
+                }
                 imageView1.hidden = false
                 imageView2.hidden = false
                 imageView3.hidden = false
@@ -546,7 +568,11 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 case 1:
                     quotedImageView1HeightConstraint.constant = fullHeight
                     quotedImageView1WidthConstraint.constant = fullWidth
-                    ImageLoaderClient.displayImage(quotedStatus.media[0].mediaURL, imageView: quotedImageView1)
+                    if quotedStatus.possiblySensitive {
+                        drawAttention(quotedImageView1)
+                    } else {
+                        ImageLoaderClient.displayImage(quotedStatus.media[0].mediaURL, imageView: quotedImageView1)
+                    }
                     quotedImageView1.hidden = false
                     quotedImageView2.hidden = true
                     quotedImageView3.hidden = true
@@ -556,8 +582,13 @@ class TwitterStatusCell: BackgroundTableViewCell {
                     quotedImageView1WidthConstraint.constant = halfWidth
                     quotedImageView2HeightConstraint.constant = fullHeight
                     quotedImageView2WidthConstraint.constant = halfWidth
-                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
-                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
+                    if quotedStatus.possiblySensitive {
+                        drawAttention(quotedImageView1)
+                        drawAttention(quotedImageView2)
+                    } else {
+                        ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
+                        ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
+                    }
                     quotedImageView1.hidden = false
                     quotedImageView2.hidden = false
                     quotedImageView3.hidden = true
@@ -569,9 +600,15 @@ class TwitterStatusCell: BackgroundTableViewCell {
                     quotedImageView2WidthConstraint.constant = halfWidth
                     quotedImageView3HeightConstraint.constant = harfHeight
                     quotedImageView3WidthConstraint.constant = halfWidth
-                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
-                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
-                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[2].mediaThumbURL, imageView: quotedImageView3)
+                    if quotedStatus.possiblySensitive {
+                        drawAttention(quotedImageView1)
+                        drawAttention(quotedImageView2)
+                        drawAttention(quotedImageView3)
+                    } else {
+                        ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
+                        ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
+                        ImageLoaderClient.displayThumbnailImage(quotedStatus.media[2].mediaThumbURL, imageView: quotedImageView3)
+                    }
                     quotedImageView1.hidden = false
                     quotedImageView2.hidden = false
                     quotedImageView3.hidden = false
@@ -585,10 +622,17 @@ class TwitterStatusCell: BackgroundTableViewCell {
                     quotedImageView3WidthConstraint.constant = halfWidth
                     quotedImageView4HeightConstraint.constant = harfHeight
                     quotedImageView4WidthConstraint.constant = halfWidth
-                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
-                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
-                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[3].mediaThumbURL, imageView: quotedImageView3)
-                    ImageLoaderClient.displayThumbnailImage(quotedStatus.media[2].mediaThumbURL, imageView: quotedImageView4)
+                    if quotedStatus.possiblySensitive {
+                        drawAttention(quotedImageView1)
+                        drawAttention(quotedImageView2)
+                        drawAttention(quotedImageView3)
+                        drawAttention(quotedImageView4)
+                    } else {
+                        ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
+                        ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
+                        ImageLoaderClient.displayThumbnailImage(quotedStatus.media[3].mediaThumbURL, imageView: quotedImageView3)
+                        ImageLoaderClient.displayThumbnailImage(quotedStatus.media[2].mediaThumbURL, imageView: quotedImageView4)
+                    }
                     quotedImageView1.hidden = false
                     quotedImageView2.hidden = false
                     quotedImageView3.hidden = false
@@ -597,6 +641,26 @@ class TwitterStatusCell: BackgroundTableViewCell {
                     break
                 }
             }
+        }
+    }
+
+    func drawAttention(imageView: UIImageView) {
+        Async.main {
+            let font = UIFont(name: "fontello", size: imageView.frame.height * 0.8)!
+            let rect = CGRectOffset(imageView.frame, (imageView.frame.width - imageView.frame.height) / 2, imageView.frame.height * 0.1)
+            UIGraphicsBeginImageContext(imageView.frame.size)
+            // swiftlint:disable:next force_cast
+            let textStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
+            let textFontAttributes: [String: AnyObject] = [
+                NSFontAttributeName: font,
+                NSForegroundColorAttributeName: ThemeController.currentTheme.bodyTextColor(),
+                NSBackgroundColorAttributeName: UIColor.clearColor(),
+                NSParagraphStyleAttributeName: textStyle
+            ]
+            "!".drawInRect(rect, withAttributes: textFontAttributes)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            imageView.image = image
         }
     }
 
