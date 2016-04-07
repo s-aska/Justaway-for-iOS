@@ -83,6 +83,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if url.absoluteString.hasPrefix("justaway://success") ?? false {
             SafariOAuthURLHandler.callback(url)
         }
+        if url.absoluteString.hasPrefix("justaway://ex/callback/") ?? false {
+            SafariExURLHandler.callback(url)
+        }
 
         return true
     }

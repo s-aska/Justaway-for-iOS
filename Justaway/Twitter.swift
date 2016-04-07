@@ -173,7 +173,8 @@ class Twitter {
                         screenName: user.screenName,
                         name: user.name,
                         profileImageURL: user.profileImageURL,
-                        profileBannerURL: user.profileBannerURL)
+                        profileBannerURL: user.profileBannerURL,
+                        exToken: "")
                     Twitter.refreshAccounts([account])
                 }
         }, failure: failure)
@@ -204,7 +205,8 @@ class Twitter {
                                 screenName: account.username,
                                 name: account.username,
                                 profileImageURL: NSURL(string: "")!,
-                                profileBannerURL: NSURL(string: "")!)
+                                profileBannerURL: NSURL(string: "")!,
+                                exToken: "")
                         })
                     )
                 }

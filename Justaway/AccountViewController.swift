@@ -103,7 +103,8 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         if let account = self.settings?.accounts[indexPath.row] {
             cell.displayNameLabel.text = account.name
             cell.screenNameLabel.text = account.screenName
-            cell.clientNameLabel.text = account.client as? OAuthClient != nil ? "Justaway" : "iOS"
+            let exLabel = account.exToken.isEmpty ? "" : " +Ex"
+            cell.clientNameLabel.text = (account.client as? OAuthClient != nil ? "Justaway" : "iOS") + exLabel
             ImageLoaderClient.displayUserIcon(account.profileImageBiggerURL, imageView: cell.iconImageView)
         }
         return cell

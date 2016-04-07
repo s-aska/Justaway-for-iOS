@@ -12,6 +12,7 @@ class Account {
         static let profileImageURL = "profile_image_url_https"
         static let profileBannerURL = "profile_banner_url"
         static let tabs = "tabs"
+        static let exToken = "ex_token"
     }
 
     let client: Client
@@ -21,9 +22,10 @@ class Account {
     let profileImageURL: NSURL
     let profileBannerURL: NSURL
     let tabs: [Tab]
+    let exToken: String
 
     // swiftlint:disable function_parameter_count
-    init(client: Client, userID: String, screenName: String, name: String, profileImageURL: NSURL, profileBannerURL: NSURL) {
+    init(client: Client, userID: String, screenName: String, name: String, profileImageURL: NSURL, profileBannerURL: NSURL, exToken: String) {
         self.client = client
         self.userID = userID
         self.screenName = screenName
@@ -35,12 +37,14 @@ class Account {
             Tab(type: .Notifications, userID: userID, arguments: [:]),
             Tab(type: .Favorites, userID: userID, arguments: [:])
         ]
+        self.exToken = exToken
     }
 
     init(_ dictionary: NSDictionary) {
         self.userID = dictionary[Constants.userID] as? String ?? "-"
         self.screenName = dictionary[Constants.screenName] as? String ?? "-"
         self.name = dictionary[Constants.name] as? String ?? "-"
+        self.exToken = dictionary[Constants.exToken] as? String ?? ""
         if let profileImageURL = dictionary[Constants.profileImageURL] as? String {
             self.profileImageURL = NSURL(string: profileImageURL) ?? NSURL()
         } else {
@@ -76,6 +80,7 @@ class Account {
         self.profileImageURL = user.profileImageURL
         self.profileBannerURL = user.profileBannerURL
         self.tabs = account.tabs
+        self.exToken = account.exToken
     }
 
     init(account: Account, acAccount: ACAccount) {
@@ -86,6 +91,7 @@ class Account {
         self.profileImageURL = account.profileImageURL
         self.profileBannerURL = account.profileBannerURL
         self.tabs = account.tabs
+        self.exToken = account.exToken
     }
 
     init(account: Account, tabs: [Tab]) {
@@ -100,6 +106,18 @@ class Account {
             Tab(type: .Notifications, userID: userID, arguments: [:]),
             Tab(type: .Favorites, userID: userID, arguments: [:])
         ]
+        self.exToken = account.exToken
+    }
+
+    init(account: Account, exToken: String) {
+        self.client = account.client
+        self.userID = account.userID
+        self.screenName = account.screenName
+        self.name = account.name
+        self.profileImageURL = account.profileImageURL
+        self.profileBannerURL = account.profileBannerURL
+        self.tabs = account.tabs
+        self.exToken = exToken
     }
 
     var profileImageBiggerURL: NSURL {
@@ -114,7 +132,8 @@ class Account {
             Constants.name             : name,
             Constants.profileImageURL  : profileImageURL.absoluteString,
             Constants.profileBannerURL : profileBannerURL.absoluteString,
-            Constants.tabs             : tabs.map({ $0.dictionaryValue })
+            Constants.tabs             : tabs.map({ $0.dictionaryValue }),
+            Constants.exToken          : exToken
         ]
     }
 }

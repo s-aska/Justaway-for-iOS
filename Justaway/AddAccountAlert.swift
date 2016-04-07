@@ -17,6 +17,9 @@ class AddAccountAlert {
         actionSheet.addAction(UIAlertAction(title: "via Justaway for iOS", style: .Default, handler: { action in
             Twitter.addOAuthAccount()
         }))
+        actionSheet.addAction(UIAlertAction(title: "Connect Justaway Ex", style: .Default, handler: { action in
+            SafariExURLHandler.open()
+        }))
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
 
         // iPad
