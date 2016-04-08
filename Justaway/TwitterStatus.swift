@@ -114,7 +114,6 @@ class TwitterStatus {
     }
 
     init(_ dictionary: [String: AnyObject]) {
-        self.type = .Normal
         self.connectionID = ""
         self.user = TwitterUser(dictionary["user"] as? [String: AnyObject] ?? [:])
         self.statusID = dictionary["statusID"] as? String ?? ""
@@ -158,8 +157,16 @@ class TwitterStatus {
 
         if let event = dictionary["event"] as? String {
             self.event = event
+            if event == "favorite" || event == "favorited_retweet" {
+                self.type = .Favorite
+            } else if event == "unfavorite" {
+                self.type = .UnFavorite
+            } else {
+                self.type = .Normal
+            }
         } else {
             self.event = nil
+            self.type = .Normal
         }
 
         if let inReplyToStatusID = dictionary["inReplyToStatusID"] as? String {
