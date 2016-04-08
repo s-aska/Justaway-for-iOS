@@ -118,8 +118,10 @@ class TwitterStatusAdapter: TwitterAdapter {
             }
         }
 
-        statuses = statuses.filter { status -> Bool in
-            return !rows.contains { $0.status?.uniqueID ?? "" == status.uniqueID }
+        if mode != .OVER {
+            statuses = statuses.filter { status -> Bool in
+                return !rows.contains { $0.status?.uniqueID ?? "" == status.uniqueID }
+            }
         }
 
         let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + statuses.count) - limit, 0)
