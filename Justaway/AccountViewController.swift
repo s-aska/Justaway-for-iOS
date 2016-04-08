@@ -102,9 +102,9 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! AccountCell // swiftlint:disable:this force_cast
         if let account = self.settings?.accounts[indexPath.row] {
             cell.displayNameLabel.text = account.name
-            cell.screenNameLabel.text = account.screenName
-            let exLabel = account.exToken.isEmpty ? "" : " +Ex"
-            cell.clientNameLabel.text = (account.client as? OAuthClient != nil ? "Justaway" : "iOS") + exLabel
+            cell.screenNameLabel.text = "@" + account.screenName
+            // let exLabel = account.exToken.isEmpty ? "" : " +Ex"
+            cell.clientNameLabel.text = account.client as? OAuthClient != nil ? "via Justaway for iOS" : "via iOS"
             ImageLoaderClient.displayUserIcon(account.profileImageBiggerURL, imageView: cell.iconImageView)
         }
         return cell
