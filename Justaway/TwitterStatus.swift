@@ -113,6 +113,28 @@ class TwitterStatus {
         }
     }
 
+    init(_ status: TwitterStatus, type: TwitterStatusType, event: String, actionedBy: TwitterUser) {
+        self.type = type
+        self.event = event
+        self.actionedBy = actionedBy
+        self.user = status.user
+        self.statusID = status.statusID
+        self.inReplyToStatusID = status.inReplyToStatusID
+        self.text = status.text
+        self.createdAt = status.createdAt
+        self.via = status.via
+        self.retweetCount = status.retweetCount
+        self.favoriteCount = status.favoriteCount
+        self.urls = status.urls
+        self.mentions = status.mentions
+        self.hashtags = status.hashtags
+        self.media = status.media
+        self.referenceStatusID = status.referenceStatusID
+        self.quotedStatus = status.quotedStatus
+        self.connectionID = status.connectionID
+        self.possiblySensitive = status.possiblySensitive
+    }
+
     init(_ dictionary: [String: AnyObject]) {
         self.connectionID = ""
         self.user = TwitterUser(dictionary["user"] as? [String: AnyObject] ?? [:])

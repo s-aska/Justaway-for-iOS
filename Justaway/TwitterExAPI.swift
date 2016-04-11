@@ -17,14 +17,57 @@ extension Twitter {
             parameters["since_id"] = sinceID
             parameters["count"] = "200"
         }
+        let failure = { (error: NSError) -> Void in
+            ErrorAlert.show(error)
+        }
         let success = { (json: JSON) -> Void in
             guard let array = json.array else {
                 return
             }
-            let statusIDs = array.flatMap { $0["target_object_id"].string }
-            getStatuses(statusIDs, success: success, failure: { (error) in
-                ErrorAlert.show(error)
-            })
+            var userMap = [String: TwitterUser]()
+            let sourceIds = Array(Set(
+                array
+                    .filter({ $0["event"].string ?? "" == "favorite" })
+                    .flatMap({ $0["source_id"].int64?.stringValue })
+            ))
+            let statusIDs = Array(Set(array.flatMap { $0["target_object_id"].int64?.stringValue }))
+            let successStatuses = { (statuses: [TwitterStatus]) -> Void in
+                var statusMap = [String: TwitterStatus]()
+                for status in statuses {
+                    statusMap[status.referenceStatusID ?? status.statusID] = status
+                }
+                var events = [TwitterStatus]()
+                for event in array {
+                    if let statusID = event["target_object_id"].int64?.stringValue,
+                        let sourceID = event["source_id"].int64?.stringValue,
+                        let eventName = event["event"].string {
+                        if let status = statusMap[statusID] {
+                            switch eventName {
+                            case "reply", "retweet", "favorited_retweet", "retweeted_retweet", "quoted_tweet":
+                                events.append(status)
+                            case "favorite":
+                                if let source = userMap[sourceID] {
+                                    events.append(TwitterStatus.init(status, type: .Favorite, event: eventName, actionedBy: source))
+                                }
+                            default:
+                                break
+                            }
+                        }
+                    }
+                }
+                success(events)
+            }
+            let successUsers = { (users: [TwitterUser]) -> Void in
+                for user in users {
+                    userMap[user.userID] = user
+                }
+                getStatuses(statusIDs, success: successStatuses, failure: failure)
+            }
+            if sourceIds.count > 0 {
+                getUsers(sourceIds, success: successUsers, failure: failure)
+            } else {
+                successUsers([])
+            }
 
 //            if maxID == nil {
 //                let dictionary = ["events": statuses.map({ $0.dictionaryValue })]

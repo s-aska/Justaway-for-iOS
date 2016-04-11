@@ -300,6 +300,18 @@ class Twitter {
             })
     }
 
+    class func getUsers(userIDs: [String], success: ([TwitterUser]) -> Void, failure: (NSError) -> Void) {
+        let parameters = ["user_id": userIDs.joinWithSeparator(",")]
+        let success = { (array: [JSON]) -> Void in
+            success(array.map({ TwitterUser($0) }))
+        }
+        client()?
+            .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
+    }
+
     class func getUserTimeline(userID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         var parameters = ["user_id": userID]
         if let maxID = maxID {
