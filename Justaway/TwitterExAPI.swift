@@ -5,6 +5,9 @@ import SwiftyJSON
 
 extension Twitter {
     class func getActivity(maxID maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
         var parameters: [String: String] = [:]
         if let maxID = maxID {
             parameters["max_id"] = maxID
@@ -15,13 +18,13 @@ extension Twitter {
             parameters["count"] = "200"
         }
         let success = { (json: JSON) -> Void in
-
-            guard let array = json["events"].array else {
+            guard let array = json.array else {
                 return
             }
-            let statuses = array.map({ TwitterStatus($0) })
-
-            success(statuses)
+            let statusIDs = array.flatMap { $0["target_object_id"].string }
+            getStatuses(statusIDs, success: success, failure: { (error) in
+                ErrorAlert.show(error)
+            })
 
 //            if maxID == nil {
 //                let dictionary = ["events": statuses.map({ $0.dictionaryValue })]
@@ -29,9 +32,6 @@ extension Twitter {
 //                    NSLog("activity cache success.")
 //                }
 //            }
-        }
-        guard let account = AccountSettingsStore.get()?.account() else {
-            return
         }
         let url = NSURL(string: "https://justaway.info/api/activity/list.json")!
         let req = NSMutableURLRequest(URL: url)
