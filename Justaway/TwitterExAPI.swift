@@ -6,6 +6,7 @@ import SwiftyJSON
 extension Twitter {
     class func getActivity(maxID maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         guard let account = AccountSettingsStore.get()?.account() else {
+            success([])
             return
         }
         var parameters: [String: String] = [:]
@@ -17,11 +18,9 @@ extension Twitter {
             parameters["since_id"] = sinceID
             parameters["count"] = "200"
         }
-        let failure = { (error: NSError) -> Void in
-            ErrorAlert.show(error)
-        }
         let success = { (json: JSON) -> Void in
             guard let array = json.array else {
+                success([])
                 return
             }
             var userMap = [String: TwitterUser]()
@@ -76,44 +75,29 @@ extension Twitter {
 //                }
 //            }
         }
-        let url = NSURL(string: "https://justaway.info/api/activity/list.json")!
-        let req = NSMutableURLRequest(URL: url)
+        let urlComponents = NSURLComponents(string: "https://justaway.info/api/activity/list.json")!
+        urlComponents.queryItems = parameters.map({ NSURLQueryItem.init(name: $0.0, value: $0.1) })
+        guard let url = urlComponents.URL else {
+            success([])
+            return
+        }
+        let req = NSMutableURLRequest.init(URL: url)
         req.setValue(account.exToken, forHTTPHeaderField: "X-Justaway-API-Token")
         NSURLSession.sharedSession().dataTaskWithRequest(req) { (data, response, error) in
             if let error = error {
-                ErrorAlert.show(error)
+                failure(error)
             } else if let data = data {
-                let json = JSON(data: data)
-                if json.error != nil {
-                    let HTTPResponse = response as? NSHTTPURLResponse
-                    let HTTPStatusCode = HTTPResponse?.statusCode ?? 0
+                let HTTPResponse = response as? NSHTTPURLResponse
+                let HTTPStatusCode = HTTPResponse?.statusCode ?? 0
+                if HTTPStatusCode == 200 {
+                    let json = JSON(data: data)
+                    success(json)
+                } else {
                     let error = NSError.init(domain: NSURLErrorDomain, code: HTTPStatusCode, userInfo: [
-                        NSLocalizedDescriptionKey: "Twitter API Error\nURL:\(url)\nHTTP StatusCode:\(HTTPStatusCode)",
+                        NSLocalizedDescriptionKey: "Justaway Ex API Error\nURL:\(url)\nHTTP StatusCode:\(HTTPStatusCode)",
                         NSLocalizedRecoverySuggestionErrorKey: "-"
                         ])
-                    ErrorAlert.show("Twitter API Error", message: error.localizedDescription)
-                } else if let errors = json["errors"].array {
-                    let code = errors[0]["code"].int ?? 0
-                    let message = errors[0]["message"].string ?? "Unknown"
-                    let HTTPResponse = response as? NSHTTPURLResponse
-                    let HTTPStatusCode = HTTPResponse?.statusCode ?? 0
-                    var localizedDescription = "Twitter API Error\nErrorMessage:\(message)\nErrorCode:\(code)\nURL:\(url)\nHTTP StatusCode:\(HTTPStatusCode)"
-                    var recoverySuggestion = "-"
-                    if HTTPStatusCode == 401 && code == 89 {
-                        localizedDescription = "Was revoked access @\(account.screenName)"
-                        if (account.client as? OAuthClient) != nil {
-                            recoverySuggestion = "1. Open the menu (upper left).\n2. Open the Accounts.\n3. Tap the [Add]\n4. Choose via Justaway for iOS\n5. Authorize app."
-                        } else {
-                            recoverySuggestion = "1. Tap the Home button.\n2. Open the [Settings].\n3. Open the [Twitter].\n4. Delete all account.\n5. Add all account.\n6. Open the Justaway."
-                        }
-                    }
-                    let error = NSError.init(domain: NSURLErrorDomain, code: HTTPStatusCode, userInfo: [
-                        NSLocalizedDescriptionKey: localizedDescription,
-                        NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion
-                        ])
-                    ErrorAlert.show("Twitter API Error", message: error.localizedDescription)
-                } else {
-                    success(json)
+                    failure(error)
                 }
             }
         }.resume()

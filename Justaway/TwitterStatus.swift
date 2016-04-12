@@ -10,6 +10,7 @@ class TwitterStatus {
     let user: TwitterUser
     let statusID: String
     let inReplyToStatusID: String?
+    let inReplyToUserID: String?
     let text: String
     let createdAt: TwitterDate
     let via: TwitterVia
@@ -37,6 +38,7 @@ class TwitterStatus {
         self.user = TwitterUser(statusJson["user"])
         self.statusID = statusJson["id_str"].string ?? ""
         self.inReplyToStatusID = statusJson["in_reply_to_status_id_str"].string
+        self.inReplyToUserID = statusJson["in_reply_to_user_id_str"].string
         self.createdAt = TwitterDate(statusJson["created_at"].string!)
         self.retweetCount = statusJson["retweet_count"].int ?? 0
         self.favoriteCount = statusJson["favorite_count"].int ?? 0
@@ -120,6 +122,7 @@ class TwitterStatus {
         self.user = status.user
         self.statusID = status.statusID
         self.inReplyToStatusID = status.inReplyToStatusID
+        self.inReplyToUserID = status.inReplyToUserID
         self.text = status.text
         self.createdAt = status.createdAt
         self.via = status.via
@@ -197,6 +200,12 @@ class TwitterStatus {
             self.inReplyToStatusID = nil
         }
 
+        if let inReplyToUserID = dictionary["inReplyToUserID"] as? String {
+            self.inReplyToUserID = inReplyToUserID
+        } else {
+            self.inReplyToUserID = nil
+        }
+
         if let referenceStatusID = dictionary["referenceStatusID"] as? String {
             self.referenceStatusID = referenceStatusID
         } else {
@@ -215,11 +224,17 @@ class TwitterStatus {
     }
 
     var uniqueID: String {
-        if type == .Normal {
-            return referenceStatusID ?? statusID
+        if let actionedBy = actionedBy, let event = event {
+            return [statusID, event, user.userID, actionedBy.userID].joinWithSeparator(":")
+        } else if let targetID = self.inReplyToUserID {
+            return [statusID, "reply", targetID, user.userID].joinWithSeparator(":")
         } else {
-            return (referenceStatusID ?? statusID) + "-" + (actionedBy?.userID ?? "")
+            return referenceOrStatusID
         }
+    }
+
+    var referenceOrStatusID: String {
+        return referenceStatusID ?? statusID
     }
 
     var statusURL: NSURL {
@@ -252,6 +267,10 @@ class TwitterStatus {
 
         if let inReplyToStatusID = self.inReplyToStatusID {
             dictionary["inReplyToStatusID"] = inReplyToStatusID
+        }
+
+        if let inReplyToUserID = self.inReplyToUserID {
+            dictionary["inReplyToUserID"] = inReplyToUserID
         }
 
         if let referenceStatusID = self.referenceStatusID {

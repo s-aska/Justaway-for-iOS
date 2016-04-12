@@ -26,6 +26,7 @@ class NotificationsViewController: StatusTableViewController {
     }
 
     override func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+        adapter.activityMode = true
         Async.background {
             guard let account = AccountSettingsStore.get()?.account() else {
                 return
