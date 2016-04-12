@@ -26,9 +26,8 @@ extension Twitter {
             var userMap = [String: TwitterUser]()
             let sourceIds = Array(Set(
                 array
-                    .filter({ $0["event"].string ?? "" == "favorite" })
                     .flatMap({ $0["source_id"].int64?.stringValue })
-            ))
+                ))
             let statusIDs = Array(Set(array.flatMap { $0["target_object_id"].int64?.stringValue }))
             let successStatuses = { (statuses: [TwitterStatus]) -> Void in
                 var statusMap = [String: TwitterStatus]()
@@ -42,8 +41,12 @@ extension Twitter {
                         let eventName = event["event"].string {
                         if let status = statusMap[statusID] {
                             switch eventName {
-                            case "reply", "retweet", "favorited_retweet", "retweeted_retweet", "quoted_tweet":
+                            case "reply", "retweet", "favorited_retweet", "quoted_tweet":
                                 events.append(status)
+                            case "retweeted_retweet":
+                                if let source = userMap[sourceID] {
+                                    events.append(TwitterStatus.init(status, type: .Normal, event: eventName, actionedBy: source))
+                                }
                             case "favorite":
                                 if let source = userMap[sourceID] {
                                     events.append(TwitterStatus.init(status, type: .Favorite, event: eventName, actionedBy: source))
