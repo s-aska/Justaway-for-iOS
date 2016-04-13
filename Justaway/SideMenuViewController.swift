@@ -61,9 +61,9 @@ class SideMenuViewController: UIViewController {
 
         view.frame = UIScreen.mainScreen().bounds
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SideMenuViewController.hide)))
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hide)))
 
-        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(SideMenuViewController.hide))
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(hide))
         swipe.numberOfTouchesRequired = 1
         swipe.direction = .Left
         view.addGestureRecognizer(swipe)
@@ -72,6 +72,8 @@ class SideMenuViewController: UIViewController {
 
         bannerImageView.clipsToBounds = true
         bannerImageView.contentMode = .ScaleAspectFill
+        bannerImageView.userInteractionEnabled = true
+        bannerImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profile)))
 
         let gradient = CAGradientLayer()
         gradient.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0).CGColor, UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).CGColor]
@@ -148,6 +150,14 @@ class SideMenuViewController: UIViewController {
                 self.view.layoutIfNeeded()
             }, completion: nil)
         }
+    }
+
+    func profile() {
+        guard let account = account else {
+            return
+        }
+        ProfileViewController.show(account.screenName)
+        hide()
     }
 
     func hide() {
