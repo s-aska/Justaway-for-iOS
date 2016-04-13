@@ -20,15 +20,14 @@ class SafariExURLHandler: NSObject {
     }
 
     class func callback(url: NSURL) {
-        guard let userIdWithExToken = url.lastPathComponent else {
+        guard let exToken = url.lastPathComponent else {
             return
         }
-        let array = userIdWithExToken.characters.split("-", maxSplit: 2, allowEmptySlices: false)
+        let array = exToken.characters.split("-", maxSplit: 2, allowEmptySlices: false)
         if array.count != 2 {
             return
         }
         let userId = String(array[0])
-        let exToken = String(array[1])
         guard let accountSettings = AccountSettingsStore.get() else {
             return
         }
