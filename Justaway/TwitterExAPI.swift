@@ -41,13 +41,13 @@ extension Twitter {
                         let eventName = event["event"].string {
                         if let status = statusMap[statusID] {
                             switch eventName {
-                            case "reply", "retweet", "favorited_retweet", "quoted_tweet":
+                            case "reply", "retweet", "quoted_tweet":
                                 events.append(status)
                             case "retweeted_retweet":
                                 if let source = userMap[sourceID] {
                                     events.append(TwitterStatus.init(status, type: .Normal, event: eventName, actionedBy: source))
                                 }
-                            case "favorite":
+                            case "favorite", "favorited_retweet":
                                 if let source = userMap[sourceID] {
                                     events.append(TwitterStatus.init(status, type: .Favorite, event: eventName, actionedBy: source))
                                 }
