@@ -44,13 +44,16 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uZc-kI-qx4">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uZc-kI-qx4" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="136" y="-0.5" width="55" height="48.5"/>
                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="28"/>
                         <inset key="contentEdgeInsets" minX="15" minY="10" maxX="15" maxY="10"/>
                         <state key="normal" title="文">
                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="message:" destination="rXq-EH-Qkl" eventType="touchUpInside" id="YyQ-Oh-2hS"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="off" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fm-Lu-8Ai">
                         <rect key="frame" x="158" y="39.5" width="12" height="14"/>
@@ -58,13 +61,16 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W0T-LW-MEa">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W0T-LW-MEa" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="201" y="-0.5" width="53" height="48.5"/>
                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="28"/>
                         <inset key="contentEdgeInsets" minX="15" minY="10" maxX="15" maxY="10"/>
                         <state key="normal" title="鐘">
                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="notification:" destination="rXq-EH-Qkl" eventType="touchUpInside" id="AnH-dt-Eko"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="off" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="usa-1f-zaq">
                         <rect key="frame" x="222" y="39.5" width="12" height="14"/>
@@ -112,6 +118,10 @@
                 <outlet property="clientNameLabel" destination="ZSO-Sg-HMX" id="1rs-h4-8y1"/>
                 <outlet property="displayNameLabel" destination="W96-fD-IVA" id="OYH-ZK-Q3e"/>
                 <outlet property="iconImageView" destination="5iF-a6-UBV" id="Sev-1s-uvc"/>
+                <outlet property="messageButton" destination="uZc-kI-qx4" id="506-CI-hF2"/>
+                <outlet property="messageLabel" destination="1fm-Lu-8Ai" id="ry7-WI-LT4"/>
+                <outlet property="notificationButton" destination="W0T-LW-MEa" id="ZAu-yf-rnw"/>
+                <outlet property="notificationLabel" destination="usa-1f-zaq" id="Cch-F8-Ee6"/>
                 <outlet property="screenNameLabel" destination="GqA-Mj-ltT" id="Zpy-83-LOd"/>
             </connections>
             <point key="canvasLocation" x="359" y="259"/>

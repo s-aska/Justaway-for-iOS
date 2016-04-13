@@ -64,7 +64,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpB-WM-7Qz" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="44" width="600" height="50"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NN0-dj-HHc" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NN0-dj-HHc" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="60" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                                     <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
@@ -76,7 +76,7 @@
                                         <action selector="hide:" destination="-1" eventType="touchUpInside" id="WfZ-ML-tyE"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcO-tg-NdG" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcO-tg-NdG" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                                     <rect key="frame" x="60" y="0.0" width="60" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                                     <inset key="contentEdgeInsets" minX="19" minY="15" maxX="19" maxY="15"/>
@@ -88,7 +88,7 @@
                                         <action selector="image:" destination="-1" eventType="touchUpInside" id="IY0-VR-Ta4"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbk-4F-WpO" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbk-4F-WpO" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                                     <rect key="frame" x="541" y="0.0" width="59" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                                     <inset key="contentEdgeInsets" minX="20" minY="15" maxX="20" maxY="15"/>
@@ -100,13 +100,13 @@
                                         <action selector="send:" destination="-1" eventType="touchUpInside" id="e3h-hl-4bj"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="140" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VpL-cL-hHt" customClass="MenuLable" customModule="Justaway" customModuleProvider="target">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="140" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VpL-cL-hHt" customClass="MenuLable" customModule="Justaway" customModuleProvider="target">
                                     <rect key="frame" x="525" y="17" width="24" height="17"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wCW-rF-wl1" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wCW-rF-wl1" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                                     <rect key="frame" x="120" y="0.0" width="59" height="50"/>
                                     <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                                     <inset key="contentEdgeInsets" minX="22" minY="15" maxX="22" maxY="15"/>
@@ -118,7 +118,7 @@
                                         <action selector="music:" destination="-1" eventType="touchUpInside" id="8W6-wK-pW4"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Oa-ZX-3xO" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Oa-ZX-3xO" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                                     <rect key="frame" x="179" y="0.0" width="52" height="50"/>
                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                                     <inset key="contentEdgeInsets" minX="12" minY="15" maxX="12" maxY="15"/>
@@ -275,7 +275,7 @@
                                 <constraint firstAttribute="height" constant="20" id="hOo-6w-cyE"/>
                             </constraints>
                         </imageView>
-                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ibm-Xa-avJ">
+                        <view clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ibm-Xa-avJ">
                             <rect key="frame" x="40" y="10" width="519" height="17"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aska" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIn-Bp-8NL" customClass="DisplayNameLable" customModule="Justaway" customModuleProvider="target">
@@ -310,7 +310,7 @@
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5NA-kE-3L2" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5NA-kE-3L2" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
                             <rect key="frame" x="559" y="0.0" width="41" height="45"/>
                             <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                             <inset key="contentEdgeInsets" minX="15" minY="10" maxX="10" maxY="15"/>

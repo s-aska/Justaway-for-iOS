@@ -43,5 +43,7 @@ class ThemeSolarizedDark: Theme {
     func streamingConnected() -> UIColor { return ThemeColor.Solarized.green }
     func streamingError() -> UIColor { return ThemeColor.Solarized.red }
 
+    func accountOptionEnabled() -> UIColor { return ThemeColor.Solarized.blue }
+
     func shadowOpacity() -> Float { return 0.5 }
 }

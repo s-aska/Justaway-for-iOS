@@ -14,6 +14,10 @@ class AccountCell: BackgroundTableViewCell {
     @IBOutlet weak var displayNameLabel: DisplayNameLable!
     @IBOutlet weak var screenNameLabel: ScreenNameLable!
     @IBOutlet weak var clientNameLabel: ClientNameLable!
+    @IBOutlet weak var messageButton: UIButton!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var notificationButton: UIButton!
+    @IBOutlet weak var notificationLabel: UILabel!
 
     // MARK: - View Life Cycle
 
@@ -29,5 +33,13 @@ class AccountCell: BackgroundTableViewCell {
         separatorInset = UIEdgeInsetsZero
         layoutMargins = UIEdgeInsetsZero
         preservesSuperviewLayoutMargins = false
+    }
+
+    @IBAction func message(sender: UIButton) {
+        Twitter.addOAuthAccount()
+    }
+
+    @IBAction func notification(sender: UIButton) {
+        SafariExURLHandler.open()
     }
 }

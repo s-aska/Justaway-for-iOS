@@ -43,5 +43,7 @@ class ThemeLight: Theme {
     func streamingConnected() -> UIColor { return ThemeColor.Holo.greenDark }
     func streamingError() -> UIColor { return ThemeColor.Holo.redDark }
 
+    func accountOptionEnabled() -> UIColor { return ThemeColor.Holo.blueLight }
+
     func shadowOpacity() -> Float { return 0.1 }
 }

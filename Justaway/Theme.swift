@@ -45,6 +45,8 @@ protocol Theme {
     func streamingConnected() -> UIColor
     func streamingError() -> UIColor
 
+    func accountOptionEnabled() -> UIColor
+
     func shadowOpacity() -> Float
 }
 

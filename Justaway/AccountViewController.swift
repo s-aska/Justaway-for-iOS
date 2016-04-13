@@ -3,6 +3,7 @@ import Accounts
 import Social
 import EventBox
 import TwitterAPI
+import Async
 
 class AccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -49,9 +50,12 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewWillAppear(animated)
         configureEvent()
 
+        let delay = settings == nil ? 0.3 : 0
         settings = AccountSettingsStore.get()
-        tableView.reloadData()
         initEditing()
+        Async.main(after: delay) {
+            self.tableView.reloadData()
+        }
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -103,8 +107,26 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         if let account = self.settings?.accounts[indexPath.row] {
             cell.displayNameLabel.text = account.name
             cell.screenNameLabel.text = "@" + account.screenName
-            // let exLabel = account.exToken.isEmpty ? "" : " +Ex"
-            cell.clientNameLabel.text = account.client as? OAuthClient != nil ? "via Justaway for iOS" : "via iOS"
+            if account.client as? OAuthClient == nil {
+                cell.clientNameLabel.text = "via iOS"
+                cell.messageLabel.text = "off"
+                cell.messageLabel.textColor = ThemeController.currentTheme.menuTextColor()
+                cell.messageButton.setTitleColor(ThemeController.currentTheme.menuTextColor(), forState: .Normal)
+            } else {
+                cell.clientNameLabel.text = "via Justaway for iOS"
+                cell.messageLabel.text = "on"
+                cell.messageLabel.textColor = ThemeController.currentTheme.accountOptionEnabled()
+                cell.messageButton.setTitleColor(ThemeController.currentTheme.accountOptionEnabled(), forState: .Normal)
+            }
+            if account.exToken.isEmpty {
+                cell.notificationLabel.text = "off"
+                cell.notificationLabel.textColor = ThemeController.currentTheme.menuTextColor()
+                cell.notificationButton.setTitleColor(ThemeController.currentTheme.menuTextColor(), forState: .Normal)
+            } else {
+                cell.notificationLabel.text = "on"
+                cell.notificationLabel.textColor = ThemeController.currentTheme.accountOptionEnabled()
+                cell.notificationButton.setTitleColor(ThemeController.currentTheme.accountOptionEnabled(), forState: .Normal)
+            }
             ImageLoaderClient.displayUserIcon(account.profileImageBiggerURL, imageView: cell.iconImageView)
         }
         return cell
