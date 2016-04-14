@@ -34,6 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         GenericSettings.configure()
 
+        if let userInfo = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] {
+            // アプリが起動していない時にpush通知が届き、push通知から起動した場合
+        }
+
         return true
     }
 
@@ -88,6 +92,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         return true
+    }
+
+    // Push通知の登録が完了した場合、deviceTokenが返される
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        let deviceTokenString: String = (deviceToken.description as NSString)
+            .stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "<>"))
+            .stringByReplacingOccurrencesOfString(" ", withString: "") as String
+        NSLog("deviceToken: \(deviceTokenString)")
+    }
+
+    // Push通知が利用不可であればerrorが返ってくる
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        NSLog("error: " + "\(error)")
+    }
+
+    // Push通知受信時とPush通知をタッチして起動したときに呼ばれる
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        switch application.applicationState {
+        case .Inactive:
+            // アプリがバックグラウンドにいる状態で、Push通知から起動したとき
+            break
+        case .Active:
+            // アプリ起動時にPush通知を受信したとき
+            break
+        case .Background:
+            // アプリがバックグラウンドにいる状態でPush通知を受信したとき
+            break
+        }
     }
 
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
