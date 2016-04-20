@@ -188,6 +188,7 @@
 		38E052931BA4845300B67EB2 /* ImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E052911BA46B9200B67EB2 /* ImagePickerCollectionView.swift */; };
 		38E052941BA4848200B67EB2 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E0528F1BA4697800B67EB2 /* ImageCell.swift */; };
 		38E7367F1B78DA1800F49336 /* GenericSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E7367E1B78DA1800F49336 /* GenericSettings.swift */; };
+		38EECCA71CC7877000B82BA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
 		38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */; };
 		38F4EAEC19F14E4700CBD23F /* RoundedFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAEB19F14E4700CBD23F /* RoundedFilter.swift */; };
 		38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */; };
@@ -1321,6 +1322,7 @@
 				384DE9621BBAC9960011AF6E /* NotificationsViewController.swift in Sources */,
 				384DE94B1BBAC9810011AF6E /* EditorViewController.swift in Sources */,
 				384DE96B1BBAC9B30011AF6E /* TwitterRelationship.swift in Sources */,
+				38EECCA71CC7877000B82BA5 /* AppDelegate.swift in Sources */,
 				38A694F619E4E82A00DD6072 /* Secret.swift in Sources */,
 				384DE9551BBAC9810011AF6E /* PocketCoverViewController.swift in Sources */,
 				38230A1B1C68959800F64648 /* TabSettingsCell.swift in Sources */,

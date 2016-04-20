@@ -7,6 +7,12 @@ import Accounts
 import TwitterAPI
 import Async
 
+#if DEBUG
+let deviceType = "APNS_SANDBOX"
+#else
+let deviceType = "APNS"
+#endif
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -100,6 +106,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             .stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "<>"))
             .stringByReplacingOccurrencesOfString(" ", withString: "") as String
         NSLog("deviceToken: \(deviceTokenString)")
+        guard let settings = AccountSettingsStore.get() else {
+            return
+        }
+        for account in settings.accounts {
+            if account.exToken.isEmpty {
+                continue
+            }
+            let currentDevice = UIDevice.currentDevice()
+            let deviceName = [
+                currentDevice.systemName,
+                currentDevice.systemVersion,
+                currentDevice.model
+            ].joinWithSeparator("/")
+            let urlComponents = NSURLComponents(string: "https://justaway.info/api/devices.json")!
+            urlComponents.queryItems = [
+                NSURLQueryItem.init(name: "deviceName", value: deviceName),
+                NSURLQueryItem.init(name: "deviceType", value: deviceType),
+                NSURLQueryItem.init(name: "deviceToken", value: deviceTokenString)
+            ]
+            guard let url = urlComponents.URL else {
+                continue
+            }
+            let req = NSMutableURLRequest.init(URL: url)
+            req.HTTPMethod = "PUT"
+            req.setValue(account.exToken, forHTTPHeaderField: "X-Justaway-API-Token")
+            NSURLSession.sharedSession().dataTaskWithRequest(req) { (data, response, error) in
+            }.resume()
+        }
     }
 
     // Push通知が利用不可であればerrorが返ってくる
