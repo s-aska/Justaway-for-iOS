@@ -65,6 +65,16 @@ class SearchViewController: UIViewController {
         EventBox.off(self)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        for c in tableView.visibleCells {
+            if let cell = c as? TwitterStatusCell {
+                cell.statusLabel.setAttributes()
+            }
+        }
+
+    }
+
     // MARK: - Configuration
 
     func configureView() {

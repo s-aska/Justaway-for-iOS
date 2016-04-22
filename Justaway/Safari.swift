@@ -54,10 +54,5 @@ class SafariDelegate: NSObject, SFSafariViewControllerDelegate {
 
     func safariViewControllerDidFinish(controller: SFSafariViewController) {
         controller.dismissViewControllerAnimated(true, completion: nil)
-
-        // bug?
-        Async.main(after: 0.05) { () -> Void in
-            ThemeController.apply()
-        }
     }
 }

@@ -16,6 +16,16 @@ class TimelineTableViewController: UITableViewController {
     }
     var setup = false
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        for c in tableView.visibleCells {
+            if let cell = c as? TwitterStatusCell {
+                 cell.statusLabel.setAttributes()
+            }
+        }
+
+    }
+
     func refresh() {
         assertionFailure("not implements.")
     }
