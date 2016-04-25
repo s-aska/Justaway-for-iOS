@@ -99,6 +99,7 @@ class ShareViewController: SLComposeServiceViewController {
                         self.account = account
                         if let userID = account.valueForKeyPath("properties.user_id") as? String {
                             ud.setObject(userID, forKey: ShareViewController.keyUserID)
+                            ud.synchronize()
                         }
                 }))
             }
@@ -144,27 +145,6 @@ class ShareViewController: SLComposeServiceViewController {
             }
         }
         return twitter
-    }
-
-    func startIndicator() {
-        let indicatorView = UIActivityIndicatorView(frame: CGRect.init(x: 0, y: 0, width: 80, height: 80))
-        indicatorView.layer.cornerRadius = 10
-        indicatorView.activityIndicatorViewStyle = .WhiteLarge
-        indicatorView.hidesWhenStopped = true
-        indicatorView.center = CGPoint.init(x: self.view.center.x, y: self.view.center.y - 108)
-        indicatorView.backgroundColor = UIColor(white: 0, alpha: 0.6)
-        self.indicatorView = indicatorView
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.view.addSubview(indicatorView)
-            indicatorView.startAnimating()
-        })
-    }
-
-    func stopIndicator() {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.indicatorView?.stopAnimating()
-            self.indicatorView?.removeFromSuperview()
-        })
     }
 
     // MARK: - Public
@@ -237,7 +217,7 @@ class ShareViewController: SLComposeServiceViewController {
                     return
                 }
                 if self.textView.text.isEmpty && self.shareURL == nil {
-                    self.loadInputPageTitle(itemURL)
+                    self.loadPageTitle(itemURL)
                 }
                 self.shareURL = itemURL
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -272,86 +252,16 @@ class ShareViewController: SLComposeServiceViewController {
         }
     }
 
-    func loadInputPageTitle(pageURL: NSURL) {
-        if pageURL.scheme == "https" {
-            self.loadInputPageTitleByHTML(pageURL)
-        } else {
-            self.loadInputPageTitleByFB(pageURL)
-        }
-    }
-
-    func loadInputPageTitleByFB(pageURL: NSURL) {
-        let urlComponents = NSURLComponents(string: "https://graph.facebook.com/")!
-        urlComponents.queryItems = [
-            NSURLQueryItem.init(name: "scrape", value: "true"),
-            NSURLQueryItem.init(name: "id", value: pageURL.absoluteString),
-        ]
-        guard let url = urlComponents.URL else {
-            return
-        }
-        let req = NSMutableURLRequest.init(URL: url)
-        req.HTTPMethod = "POST"
-        let ogpCompletion = { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-            guard let data = data else {
-                self.stopIndicator()
-                return
-            }
-            do {
-                let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
-                if let dic = json as? NSDictionary, title = dic["title"] as? String {
-                    NSOperationQueue.mainQueue().addOperationWithBlock {
-                        self.textView.text = title + " " + self.textView.text
-                        self.textView.selectedRange = NSRange.init(location: 0, length: 0)
-                        self.stopIndicator()
-                    }
-                }
-            } catch _ as NSError {
-                self.stopIndicator()
-                return
-            }
-        }
-        startIndicator()
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
-        session.dataTaskWithRequest(req, completionHandler: ogpCompletion).resume()
-    }
-
-    func loadInputPageTitleByHTML(pageURL: NSURL) {
-        let ogpCompletion = { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-            guard let data = data, title = self.parseTitle(data) else {
-                self.stopIndicator()
-                return
-            }
+    // SFSafariViewController don't set page title to self.textView.text
+    func loadPageTitle(pageURL: NSURL) {
+        if let ud = NSUserDefaults.init(suiteName: "group.pw.aska.justaway"),
+            title = ud.objectForKey("shareTitle") as? String,
+            shareURL = ud.URLForKey("shareURL") where pageURL == shareURL {
             NSOperationQueue.mainQueue().addOperationWithBlock {
                 self.textView.text = title + " " + self.textView.text
                 self.textView.selectedRange = NSRange.init(location: 0, length: 0)
-                self.stopIndicator()
             }
         }
-        startIndicator()
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
-        session.dataTaskWithURL(pageURL, completionHandler: ogpCompletion).resume()
-    }
-
-    func parseTitle(data: NSData) -> String? {
-        guard let html = NSString(data: data, encoding: NSUTF8StringEncoding) else {
-            return nil
-        }
-        let ogps = OGPParser.parse(html)
-        if let titleContent = ogps.filter({ $0.type == .Title }).first?.content where !titleContent.isEmpty {
-            return titleContent
-        }
-        // swiftlint:disable:next force_try
-        let regexp = try! NSRegularExpression(pattern: "<title>(.*?)</title>",
-                                                        options: NSRegularExpressionOptions.UseUnicodeWordBoundaries.intersect(NSRegularExpressionOptions.DotMatchesLineSeparators))
-        let s = html as String
-        let matches = regexp.matchesInString(s, options: NSMatchingOptions(rawValue: 0), range: NSRange(location: 0, length: s.utf16.count))
-        for match in matches {
-            let title = html.substringWithRange(match.rangeAtIndex(1))
-            return title
-        }
-        return nil
     }
 
     func loadImage(image: UIImage) {

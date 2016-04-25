@@ -452,6 +452,8 @@
 		6A35A1C41A6C193400A8E46D /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageViewController.xib; sourceTree = "<group>"; };
 		6A35A1D01A73B1C700A8E46D /* StatusAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusAlert.swift; sourceTree = "<group>"; };
+		6A3B1F191CCE7103008BE665 /* Justaway.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Justaway.entitlements; sourceTree = "<group>"; };
+		6A3B1F1A1CCE7180008BE665 /* JustawayShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = JustawayShare.entitlements; sourceTree = "<group>"; };
 		6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		6A3F4F3D1B110E8E009F80C4 /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -756,6 +758,7 @@
 		6A4B9D2B19BB514900D50D78 /* Justaway */ = {
 			isa = PBXGroup;
 			children = (
+				6A3B1F191CCE7103008BE665 /* Justaway.entitlements */,
 				6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */,
 				6A4B9D3219BB514900D50D78 /* Main.storyboard */,
 				381E6E7D19DE4FB000139654 /* Secret.swift */,
@@ -947,6 +950,7 @@
 		6AEA051B1CA0490200C419A1 /* JustawayShare */ = {
 			isa = PBXGroup;
 			children = (
+				6A3B1F1A1CCE7180008BE665 /* JustawayShare.entitlements */,
 				6AEA051C1CA0490200C419A1 /* ShareViewController.swift */,
 				6AE10E911CA3039800D19FBF /* Twitter.swift */,
 				6AE10E8F1CA3036C00D19FBF /* OGPParser.swift */,
@@ -1039,6 +1043,14 @@
 					6A4B9D2819BB514900D50D78 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = ERYSSE5R77;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					6A4B9D3A19BB514900D50D78 = {
 						CreatedOnToolsVersion = 6.0;
@@ -1047,6 +1059,11 @@
 					6AEA05191CA0490200C419A1 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = ERYSSE5R77;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1553,8 +1570,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_ENTITLEMENTS = Justaway/Justaway.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1567,7 +1585,7 @@
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1306a4c8-0b7b-44df-a367-34e0aba0f0f8";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -1576,8 +1594,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_ENTITLEMENTS = Justaway/Justaway.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1590,7 +1609,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "pw.aska.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c0a4be6c-834d-4b71-8260-2545edc87b21";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;
@@ -1636,6 +1655,7 @@
 		6AEA05261CA0490300C419A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = JustawayShare/JustawayShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1652,6 +1672,7 @@
 		6AEA05271CA0490300C419A1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = JustawayShare/JustawayShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;

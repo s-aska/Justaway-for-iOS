@@ -52,6 +52,16 @@ class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
 
 class SafariDelegate: NSObject, SFSafariViewControllerDelegate {
 
+    // SFSafariViewController don't set page title to SLComposeServiceViewController's textView.text
+    func safariViewController(controller: SFSafariViewController, activityItemsForURL URL: NSURL, title: String?) -> [UIActivity] {
+        if let ud = NSUserDefaults.init(suiteName: "group.pw.aska.justaway") {
+            ud.setURL(URL, forKey: "shareURL")
+            ud.setObject(title ?? "", forKey: "shareTitle")
+            ud.synchronize()
+        }
+        return []
+    }
+
     func safariViewControllerDidFinish(controller: SFSafariViewController) {
         controller.dismissViewControllerAnimated(true, completion: nil)
     }
