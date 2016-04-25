@@ -258,7 +258,11 @@ class ShareViewController: SLComposeServiceViewController {
             title = ud.objectForKey("shareTitle") as? String,
             shareURL = ud.URLForKey("shareURL") where pageURL == shareURL {
             NSOperationQueue.mainQueue().addOperationWithBlock {
-                self.textView.text = title + " " + self.textView.text
+                if self.textView.text.isEmpty {
+                    self.textView.text = title
+                } else {
+                    self.textView.text = title + " " + self.textView.text
+                }
                 self.textView.selectedRange = NSRange.init(location: 0, length: 0)
             }
         }
