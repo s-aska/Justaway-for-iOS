@@ -184,25 +184,9 @@ class ShareViewController: SLComposeServiceViewController {
                 guard let provider = attachment as? NSItemProvider else {
                     continue
                 }
-                loadInputPlainText(provider)
                 loadInputURL(provider)
                 loadInputImage(provider)
             }
-        }
-    }
-
-    func loadInputPlainText(provider: NSItemProvider) {
-        if provider.hasItemConformingToTypeIdentifier("public.plain-text") {
-            provider.loadItemForTypeIdentifier("public.plain-text", options: nil, completionHandler: {
-                (item, error) in
-                guard let title = item as? String else {
-                    return
-                }
-                NSOperationQueue.mainQueue().addOperationWithBlock {
-                    self.textView.text = title + " " + self.textView.text
-                    self.textView.selectedRange = NSRange.init(location: 0, length: 0)
-                }
-            })
         }
     }
 
