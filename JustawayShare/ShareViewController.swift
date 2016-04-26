@@ -43,10 +43,24 @@ class ShareViewController: SLComposeServiceViewController {
     // MARK: - SLComposeServiceViewController
 
     override func isContentValid() -> Bool {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.calcRemaining()
-        })
+        self.calcRemaining()
         return self.account != nil && (self.charactersRemaining?.integerValue ?? 0) > 0
+    }
+
+    func calcRemaining() {
+        let text = textView.text
+        let oldValue = Int(self.charactersRemaining ?? 0)
+        let oldValid = self.account != nil && oldValue > 0
+        let newValue = 140 - Twitter.count(text, hasImage: hasImage)
+        let newValid = self.account != nil && newValue > 0
+        if self.charactersRemaining == nil || oldValue != newValue {
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.charactersRemaining = newValue
+                if oldValid != newValid {
+                    self.validateContent()
+                }
+            })
+        }
     }
 
     override func didSelectPost() {
@@ -149,12 +163,6 @@ class ShareViewController: SLComposeServiceViewController {
 
     // MARK: - Public
 
-    func calcRemaining() {
-        let count = Twitter.count(textView.text, hasImage: hasImage)
-        self.charactersRemaining = 140 - count
-        self.validateContent()
-    }
-
     func loadNowPlayingFromShareContent() {
         GooglePlayMusic.loadMetaFromShareURL(contentText) { (music) in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -211,6 +219,7 @@ class ShareViewController: SLComposeServiceViewController {
                         self.textView.text = self.textView.text + " " + itemURL.absoluteString
                     }
                     self.textView.selectedRange = NSRange.init(location: 0, length: 0)
+                    self.textView.setContentOffset(CGPoint.zero, animated: false)
                 })
             })
         }
@@ -248,6 +257,7 @@ class ShareViewController: SLComposeServiceViewController {
                     self.textView.text = title + " " + self.textView.text
                 }
                 self.textView.selectedRange = NSRange.init(location: 0, length: 0)
+                self.textView.setContentOffset(CGPoint.zero, animated: false)
             }
             return
         }
@@ -273,6 +283,7 @@ class ShareViewController: SLComposeServiceViewController {
                     NSOperationQueue.mainQueue().addOperationWithBlock {
                         self.textView.text = title + " " + self.textView.text
                         self.textView.selectedRange = NSRange.init(location: 0, length: 0)
+                        self.textView.setContentOffset(CGPoint.zero, animated: false)
                         self.stopIndicator()
                     }
                 } else {
