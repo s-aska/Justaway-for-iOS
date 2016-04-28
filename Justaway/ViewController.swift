@@ -73,7 +73,6 @@ class ViewController: UIViewController {
         if let settings = AccountSettingsStore.get() {
             if settings.accounts.contains({ !$0.exToken.isEmpty }) {
                 NSLog("has exToken")
-                // バッジ、サウンド、アラートをリモート通知対象として登録する
                 let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: nil)
                 UIApplication.sharedApplication().registerForRemoteNotifications()
                 UIApplication.sharedApplication().registerUserNotificationSettings(settings)

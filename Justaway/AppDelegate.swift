@@ -146,12 +146,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         switch application.applicationState {
         case .Inactive:
             // アプリがバックグラウンドにいる状態で、Push通知から起動したとき
+            NSLog("didReceiveRemoteNotification Inactive")
             break
         case .Active:
             // アプリ起動時にPush通知を受信したとき
+            NSLog("didReceiveRemoteNotification Active")
             break
         case .Background:
             // アプリがバックグラウンドにいる状態でPush通知を受信したとき
+            NSLog("didReceiveRemoteNotification Background")
             break
         }
     }
