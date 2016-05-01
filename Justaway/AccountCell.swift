@@ -36,10 +36,28 @@ class AccountCell: BackgroundTableViewCell {
     }
 
     @IBAction func message(sender: UIButton) {
-        Twitter.addOAuthAccount()
+        if messageLabel.text == "on" {
+
+        } else {
+            let alert = UIAlertController(title: "Are you sure you want to use the DirectMessage?", message: "Additional authentication is required.", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
+                Twitter.addOAuthAccount()
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            AlertController.showViewController(alert)
+        }
     }
 
     @IBAction func notification(sender: UIButton) {
-        SafariExURLHandler.open()
+        if notificationLabel.text == "on" {
+
+        } else {
+            let alert = UIAlertController(title: "Are you sure you want to use the Notification?", message: "Additional authentication is required.", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
+                SafariExURLHandler.open()
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            AlertController.showViewController(alert)
+        }
     }
 }

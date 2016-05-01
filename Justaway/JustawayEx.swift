@@ -35,7 +35,7 @@ class SafariExURLHandler: NSObject {
             let newSettings = accountSettings.merge([Account.init(account: account, exToken: exToken)])
             AccountSettingsStore.save(newSettings)
             SafariExURLHandler.oAuthViewController?.dismissViewControllerAnimated(true, completion: {
-                MessageAlert.show("!!! Welcome Ex !!!", message: "...")
+                MessageAlert.show("Notification started", message: "Notification you will receive when you are not running Justaway.")
             })
         } else {
             SafariExURLHandler.oAuthViewController?.dismissViewControllerAnimated(true, completion: {

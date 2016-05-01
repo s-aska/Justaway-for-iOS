@@ -167,6 +167,7 @@ class Twitter {
             client.get("https://api.twitter.com/1.1/account/verify_credentials.json")
                 .responseJSON { (json: JSON) -> Void in
                     let user = TwitterUserFull(json)
+                    let exToken = AccountSettingsStore.get()?.find(user.userID)?.exToken ?? ""
                     let account = Account(
                         client: client,
                         userID: user.userID,
@@ -174,7 +175,7 @@ class Twitter {
                         name: user.name,
                         profileImageURL: user.profileImageURL,
                         profileBannerURL: user.profileBannerURL,
-                        exToken: "")
+                        exToken: exToken)
                     Twitter.refreshAccounts([account])
                 }
         }, failure: failure)
@@ -199,14 +200,19 @@ class Twitter {
                 } else {
                     Twitter.refreshAccounts(
                         twitterAccounts.map({ (account: ACAccount) in
-                            Account(
+                            let userID = account.valueForKeyPath("properties.user_id") as? String ?? ""
+                            if let account = AccountSettingsStore.get()?.find(userID) where account.isOAuth {
+                                return account
+                            }
+                            let exToken = AccountSettingsStore.get()?.find(userID)?.exToken ?? ""
+                            return Account(
                                 client: AccountClient(account: account),
-                                userID: account.valueForKeyPath("properties.user_id") as? String ?? "",
+                                userID: userID,
                                 screenName: account.username,
                                 name: account.username,
                                 profileImageURL: NSURL(string: "")!,
                                 profileBannerURL: NSURL(string: "")!,
-                                exToken: "")
+                                exToken: exToken)
                         })
                     )
                 }

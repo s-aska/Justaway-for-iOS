@@ -124,6 +124,10 @@ class Account {
         return NSURL(string: profileImageURL.absoluteString.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: [], range: nil))!
     }
 
+    var isOAuth: Bool {
+        return (client as? OAuthClient) != nil
+    }
+
     var dictionaryValue: NSDictionary {
         return [
             Constants.client           : client.serialize,
