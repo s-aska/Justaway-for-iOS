@@ -69,6 +69,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     var userFull: TwitterUserFull?
     var relationship: TwitterRelationship?
     var closed = false
+    var loaded = false
 
     var tabMenus = [TabMenu]()
     var tabViews = [TimelineTableViewController]()
@@ -104,7 +105,10 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
-        setText()
+        if !loaded {
+            loaded = true
+            setText()
+        }
     }
 
     override func viewDidDisappear(animated: Bool) {
