@@ -105,28 +105,8 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! AccountCell // swiftlint:disable:this force_cast
         if let account = self.settings?.accounts[indexPath.row] {
-            cell.displayNameLabel.text = account.name
-            cell.screenNameLabel.text = "@" + account.screenName
-            if account.client as? OAuthClient == nil {
-                cell.clientNameLabel.text = "via iOS"
-                cell.messageLabel.text = "off"
-                cell.messageLabel.textColor = ThemeController.currentTheme.menuTextColor()
-                cell.messageButton.setTitleColor(ThemeController.currentTheme.menuTextColor(), forState: .Normal)
-            } else {
-                cell.clientNameLabel.text = "via Justaway for iOS"
-                cell.messageLabel.text = "on"
-                cell.messageLabel.textColor = ThemeController.currentTheme.accountOptionEnabled()
-                cell.messageButton.setTitleColor(ThemeController.currentTheme.accountOptionEnabled(), forState: .Normal)
-            }
-            if account.exToken.isEmpty {
-                cell.notificationLabel.text = "off"
-                cell.notificationLabel.textColor = ThemeController.currentTheme.menuTextColor()
-                cell.notificationButton.setTitleColor(ThemeController.currentTheme.menuTextColor(), forState: .Normal)
-            } else {
-                cell.notificationLabel.text = "on"
-                cell.notificationLabel.textColor = ThemeController.currentTheme.accountOptionEnabled()
-                cell.notificationButton.setTitleColor(ThemeController.currentTheme.accountOptionEnabled(), forState: .Normal)
-            }
+            cell.account = account
+            cell.setText()
             ImageLoaderClient.displayUserIcon(account.profileImageBiggerURL, imageView: cell.iconImageView)
         }
         return cell
