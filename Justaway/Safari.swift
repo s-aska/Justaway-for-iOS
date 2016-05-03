@@ -39,7 +39,10 @@ class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
     static var oAuthViewController: SFSafariViewController?
 
     func handle(url: NSURL) {
-        SafariOAuthURLHandler.oAuthViewController = Safari.openURL(url)
+        let components = NSURLComponents.init(URL: url, resolvingAgainstBaseURL: false)
+        let items = components?.queryItems ?? []
+        components?.queryItems = items + [NSURLQueryItem.init(name: "force_login", value: "true")]
+        SafariOAuthURLHandler.oAuthViewController = Safari.openURL(components?.URL ?? url)
     }
 
     class func callback(url: NSURL) {
