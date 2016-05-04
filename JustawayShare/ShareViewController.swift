@@ -50,16 +50,9 @@ class ShareViewController: SLComposeServiceViewController {
     func calcRemaining() {
         let text = textView.text
         let oldValue = Int(self.charactersRemaining ?? 0)
-        let oldValid = self.account != nil && oldValue > 0
         let newValue = 140 - Twitter.count(text, hasImage: hasImage)
-        let newValid = self.account != nil && newValue > 0
         if self.charactersRemaining == nil || oldValue != newValue {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.charactersRemaining = newValue
-                if oldValid != newValid {
-                    self.validateContent()
-                }
-            })
+            self.charactersRemaining = newValue
         }
     }
 
@@ -168,7 +161,7 @@ class ShareViewController: SLComposeServiceViewController {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.textView.text = "#NowPlaying " + music.titleWithArtist + "\n" + music.musicURL.absoluteString
                 self.textView.selectedRange = NSRange.init(location: 0, length: 0)
-                self.calcRemaining()
+                self.validateContent()
             })
 
             if let imageURL = music.albumURL {
@@ -220,6 +213,7 @@ class ShareViewController: SLComposeServiceViewController {
                     }
                     self.textView.selectedRange = NSRange.init(location: 0, length: 0)
                     self.textView.setContentOffset(CGPoint.zero, animated: false)
+                    self.validateContent()
                 })
             })
         }
@@ -258,6 +252,7 @@ class ShareViewController: SLComposeServiceViewController {
                 }
                 self.textView.selectedRange = NSRange.init(location: 0, length: 0)
                 self.textView.setContentOffset(CGPoint.zero, animated: false)
+                self.validateContent()
             }
             return
         }
@@ -284,6 +279,7 @@ class ShareViewController: SLComposeServiceViewController {
                         self.textView.text = title + " " + self.textView.text
                         self.textView.selectedRange = NSRange.init(location: 0, length: 0)
                         self.textView.setContentOffset(CGPoint.zero, animated: false)
+                        self.validateContent()
                         self.stopIndicator()
                     }
                 } else {
@@ -326,7 +322,7 @@ class ShareViewController: SLComposeServiceViewController {
         self.hasImage = true
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.previewView.image = image
-            self.calcRemaining()
+            self.validateContent()
         })
     }
 
@@ -336,7 +332,7 @@ class ShareViewController: SLComposeServiceViewController {
         let image = UIImage(data: data)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.previewView.image = image
-            self.calcRemaining()
+            self.validateContent()
         })
     }
 
@@ -356,7 +352,7 @@ class ShareViewController: SLComposeServiceViewController {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.previewView.image = nil
             self.previewView.removeFromSuperview()
-            self.calcRemaining()
+            self.validateContent()
         })
     }
 
