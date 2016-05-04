@@ -165,7 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // observe statusBar touch
         if let touch = touches.first {
             let location = touch.locationInView(self.window)
-            if CGRectContainsPoint(UIApplication.sharedApplication().statusBarFrame, location) {
+            if UIApplication.sharedApplication().statusBarFrame.contains(location) {
                 EventBox.post(eventStatusBarTouched)
             }
         }
