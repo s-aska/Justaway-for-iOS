@@ -151,6 +151,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case .Active:
             // アプリ起動時にPush通知を受信したとき
             NSLog("didReceiveRemoteNotification Active")
+            let alertMessage: String = {
+                if let aps = userInfo["aps"] as? NSDictionary {
+                    if let alert = aps["alert"] as? NSDictionary {
+                        if let message = alert["message"] as? NSString {
+                            return message as String
+                        }
+                    } else if let alert = aps["alert"] as? NSString {
+                        return alert as String
+                    }
+                }
+                return ""
+            }()
+            if !alertMessage.isEmpty {
+                LocalNotification.show(alertMessage)
+            }
             break
         case .Background:
             // アプリがバックグラウンドにいる状態でPush通知を受信したとき

@@ -635,7 +635,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     func drawAttention(imageViews: [UIImageView]) {
         Async.main {
             let font = UIFont(name: "fontello", size: imageViews[0].frame.height * 0.8)!
-            let rect = CGRectOffset(imageViews[0].frame, (imageViews[0].frame.width - imageViews[0].frame.height) / 2, imageViews[0].frame.height * 0.1)
+            let rect = imageViews[0].frame.offsetBy(dx: (imageViews[0].frame.width - imageViews[0].frame.height) / 2, dy: imageViews[0].frame.height * 0.1)
             UIGraphicsBeginImageContext(imageViews[0].frame.size)
             // swiftlint:disable:next force_cast
             let textStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
@@ -722,7 +722,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     func videoSwipeUp() {
         UIView.animateWithDuration(0.3, animations: { _ in
-            self.playerView.frame = CGRectOffset(self.playerView.frame, 0, -self.playerView.frame.size.height)
+            self.playerView.frame = self.playerView.frame.offsetBy(dx: 0, dy: -self.playerView.frame.size.height)
             }, completion: { _ in
                 self.hideVideo()
         })
@@ -730,7 +730,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     func videoSwipeDown() {
         UIView.animateWithDuration(0.3, animations: { _ in
-            self.playerView.frame = CGRectOffset(self.playerView.frame, 0, self.playerView.frame.size.height)
+            self.playerView.frame = self.playerView.frame.offsetBy(dx: 0, dy: self.playerView.frame.size.height)
         }, completion: { _ in
             self.hideVideo()
         })

@@ -218,6 +218,11 @@
 		6A35A1C51A6C193400A8E46D /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A35A1C41A6C193400A8E46D /* ImageViewController.swift */; };
 		6A35A1CD1A6C196700A8E46D /* ImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */; };
 		6A35A1D11A73B1C700A8E46D /* StatusAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A35A1D01A73B1C700A8E46D /* StatusAlert.swift */; };
+		6A396A761CD9DF0E00E878E5 /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A396A751CD9DF0E00E878E5 /* LocalNotification.swift */; };
+		6A396A781CD9E09A00E878E5 /* ToastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A396A771CD9E09A00E878E5 /* ToastViewController.swift */; };
+		6A396A7A1CD9E0B000E878E5 /* ToastViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A396A791CD9E0B000E878E5 /* ToastViewController.xib */; };
+		6A396A7B1CD9E22200E878E5 /* ToastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A396A771CD9E09A00E878E5 /* ToastViewController.swift */; };
+		6A396A7C1CD9E54200E878E5 /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A396A751CD9DF0E00E878E5 /* LocalNotification.swift */; };
 		6A3F4F3C1B110E74009F80C4 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */; };
 		6A3F4F3E1B110E8E009F80C4 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A3F4F3D1B110E8E009F80C4 /* AccountCell.xib */; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
@@ -452,6 +457,9 @@
 		6A35A1C41A6C193400A8E46D /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageViewController.xib; sourceTree = "<group>"; };
 		6A35A1D01A73B1C700A8E46D /* StatusAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusAlert.swift; sourceTree = "<group>"; };
+		6A396A751CD9DF0E00E878E5 /* LocalNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
+		6A396A771CD9E09A00E878E5 /* ToastViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToastViewController.swift; sourceTree = "<group>"; };
+		6A396A791CD9E0B000E878E5 /* ToastViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToastViewController.xib; sourceTree = "<group>"; };
 		6A3B1F191CCE7103008BE665 /* Justaway.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Justaway.entitlements; sourceTree = "<group>"; };
 		6A3B1F1A1CCE7180008BE665 /* JustawayShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = JustawayShare.entitlements; sourceTree = "<group>"; };
 		6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
@@ -599,6 +607,7 @@
 				381E6E0919DD500700139654 /* Settings */,
 				6A5357D21A74027000291E95 /* Event.swift */,
 				383EAE721C97F85300E17229 /* Relationship.swift */,
+				6A396A751CD9DF0E00E878E5 /* LocalNotification.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -862,6 +871,8 @@
 			isa = PBXGroup;
 			children = (
 				6A4B9D3019BB514900D50D78 /* ViewController.swift */,
+				6A396A771CD9E09A00E878E5 /* ToastViewController.swift */,
+				6A396A791CD9E0B000E878E5 /* ToastViewController.xib */,
 				6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */,
 				6AB55B3F19C563F600DC6442 /* EditorViewController.xib */,
 				6A35A1C41A6C193400A8E46D /* ImageViewController.swift */,
@@ -1101,6 +1112,7 @@
 				6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */,
 				6AB55B4019C563F600DC6442 /* EditorViewController.xib in Resources */,
 				6A0449461B1F4F2400758061 /* ProfileViewController.xib in Resources */,
+				6A396A7A1CD9E0B000E878E5 /* ToastViewController.xib in Resources */,
 				38105F8A1BC554C000CEF2A7 /* LaunchScreen.xib in Resources */,
 				6A9C18391C7378E200A1FE77 /* ChooseListsViewController.xib in Resources */,
 				38BC24A31CA92942003D7BBB /* MessagesViewController.xib in Resources */,
@@ -1290,6 +1302,7 @@
 				38F9B5741B46C30600F429E7 /* ListMemberOfViewController.swift in Sources */,
 				6AD963E51A69ABBC00136B53 /* AlertController.swift in Sources */,
 				381E6E8019DE9DAB00139654 /* Twitter.swift in Sources */,
+				6A396A781CD9E09A00E878E5 /* ToastViewController.swift in Sources */,
 				6A51769A1B487085003D0A86 /* FavoritesViewController.swift in Sources */,
 				38BC24A11CA928EB003D7BBB /* MessagesViewController.swift in Sources */,
 				38F7B8F319E5720F0081C735 /* StatusTableViewController.swift in Sources */,
@@ -1326,6 +1339,7 @@
 				6A0449561B249CE100758061 /* UserAlert.swift in Sources */,
 				3805DEA81A67F34900FBD015 /* ThemeMonokai.swift in Sources */,
 				6A56F5CA1B19ECDC0058D6DD /* MessageAlert.swift in Sources */,
+				6A396A761CD9DF0E00E878E5 /* LocalNotification.swift in Sources */,
 				3868B94719EFCCCF001221BF /* TwitterVia.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1366,6 +1380,7 @@
 				384DE95F1BBAC9960011AF6E /* StatusTableViewController.swift in Sources */,
 				382340CE19D043C000554D8C /* AccountTests.swift in Sources */,
 				384BBC141CB6768400A6CCC3 /* JustawayEx.swift in Sources */,
+				6A396A7C1CD9E54200E878E5 /* LocalNotification.swift in Sources */,
 				6A83EDA41B69400B000F3C43 /* ThemeLight.swift in Sources */,
 				384DE9651BBAC9990011AF6E /* FollowingUserViewController.swift in Sources */,
 				384DE97C1BBACA310011AF6E /* ViewTools.swift in Sources */,
@@ -1404,6 +1419,7 @@
 				38E052941BA4848200B67EB2 /* ImageCell.swift in Sources */,
 				6A27E91A1C6B8A30001D7C87 /* AddTabAlert.swift in Sources */,
 				38585FF61CABF1970095ACFB /* TwitterSearchStreaming.swift in Sources */,
+				6A396A7B1CD9E22200E878E5 /* ToastViewController.swift in Sources */,
 				383EAE741C9804E600E17229 /* Relationship.swift in Sources */,
 				384DE97E1BBACA310011AF6E /* Constants.swift in Sources */,
 				384DE9531BBAC9810011AF6E /* TalkViewController.swift in Sources */,
