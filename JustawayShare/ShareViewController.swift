@@ -134,10 +134,11 @@ class ShareViewController: SLComposeServiceViewController {
                         }
                     }
                     if self.account == nil {
+                        self.account = account
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             twitter.value = account.username
+                            self.validateContent()
                         })
-                        self.account = account
                     }
                 } else {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
