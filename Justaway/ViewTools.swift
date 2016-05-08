@@ -63,13 +63,15 @@ class ViewTools {
         return nil
     }
 
-    class func slideIn(viewController: UIViewController) {
+    class func slideIn(viewController: UIViewController, keepEditor: Bool = false) {
         let key = NSStringFromClass(viewController.dynamicType)
         guard let rootViewController = frontViewController() else {
             return
         }
 
-        EditorViewController.hide()
+        if !keepEditor {
+            EditorViewController.hide()
+        }
 
         viewController.view.hidden = true
         viewController.view.frame = rootViewController.view.frame.offsetBy(dx: rootViewController.view.frame.width, dy: 0)

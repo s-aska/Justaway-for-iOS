@@ -34,8 +34,8 @@ class ToastViewController: UIViewController {
 
     func configureView() {
         messageLabel.text = message
+        messageLabel.backgroundColor = UIColor.clearColor()
         messageHeightConstraint.constant = measure(message ?? "")
-        NSLog("messageHeightConstraint:\(messageHeightConstraint.constant)")
 
         Async.background(after: 2, block: {
             Async.main {
@@ -62,7 +62,7 @@ class ToastViewController: UIViewController {
         instance.message = message
         instance.completion = completion
         Async.main {
-            ViewTools.slideIn(instance)
+            ViewTools.slideIn(instance, keepEditor: true)
         }
     }
 }
