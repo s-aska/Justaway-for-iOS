@@ -32,7 +32,7 @@ class Twitter {
             count = count + urlCount - url.characters.count
         }
         if hasImage {
-            count = count + 23
+            count = count + 24
         }
         return count
     }
