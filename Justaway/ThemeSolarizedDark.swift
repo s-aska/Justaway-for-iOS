@@ -14,6 +14,7 @@ class ThemeSolarizedDark: Theme {
 
     func statusBarStyle() -> UIStatusBarStyle { return .LightContent }
     func activityIndicatorStyle() -> UIActivityIndicatorViewStyle { return .White }
+    func showMoreTweetIndicatorStyle() -> UIActivityIndicatorViewStyle { return .Gray }
     func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle { return .White }
 
     func mainBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes03 }
@@ -36,6 +37,9 @@ class ThemeSolarizedDark: Theme {
     func menuHighlightedTextColor() -> UIColor { return UIColor(red: 0.58, green: 0.63, blue: 0.63, alpha: 0.5) }
     func menuSelectedTextColor() -> UIColor { return ThemeColor.Solarized.blue }
     func menuDisabledTextColor() -> UIColor { return ThemeColor.Solarized.baes01 }
+
+    func showMoreTweetBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes1 }
+    func showMoreTweetLabelTextColor() -> UIColor { return ThemeColor.Solarized.baes03 }
 
     func buttonNormal() -> UIColor { return ThemeColor.Solarized.baes1 }
     func retweetButtonSelected() -> UIColor { return ThemeColor.Solarized.green }
