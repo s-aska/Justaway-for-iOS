@@ -25,6 +25,7 @@ class StatusAlert {
                 addReplyAction(actionSheet, status: status)
                 addShowReplyAction(actionSheet, status: status)
                 addFavRTAction(actionSheet, status: status, statusID: statusID, retweetedStatusID: retweetedStatusID, isFavorite: isFavorite)
+                addTranslateAction(actionSheet, status: status)
                 addShareAction(actionSheet, status: status)
                 addURLAction(actionSheet, status: status)
                 addHashTagAction(actionSheet, status: status)
@@ -186,6 +187,19 @@ class StatusAlert {
                     ProfileViewController.show(user)
             }))
         }
+    }
+
+    private class func addTranslateAction(actionSheet: UIAlertController, status: TwitterStatus) {
+        actionSheet.addAction(UIAlertAction(
+            title: "Translate",
+            style: .Default,
+            handler: { action in
+                let text = status.text as NSString
+                let encodeText = text.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) ?? text
+                let lang = NSLocale.preferredLanguages()[0].componentsSeparatedByString("-")[0]
+                Safari.openURL("https://translate.google.co.jp/#auto/\(lang)/" + (encodeText as String))
+                return
+        }))
     }
 
     private class func addViaAction(actionSheet: UIAlertController, status: TwitterStatus) {
