@@ -11,6 +11,7 @@ import AVFoundation
 
 class AVPlayerView: UIView {
 
+    var indicatorView: UIActivityIndicatorView?
     var player: AVPlayer? {
         get {
             if let layer = self.layer as? AVPlayerLayer {

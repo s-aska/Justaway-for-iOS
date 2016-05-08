@@ -698,21 +698,68 @@ class TwitterStatusCell: BackgroundTableViewCell {
         }
         playerWrapperView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
         playerView.frame = playerWrapperView.frame
-        playerView.player = AVPlayer(URL: videoURL)
-        playerView.player?.actionAtItemEnd = AVPlayerActionAtItemEnd.None
-        playerView.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+        let player = AVPlayer(URL: videoURL)
+        player.actionAtItemEnd = .None
+        player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions(), context: nil)
+        playerView.player = player
+
+        let indicatorView = UIActivityIndicatorView(frame: CGRect.init(x: 0, y: 0, width: 80, height: 80))
+        indicatorView.layer.cornerRadius = 10
+        indicatorView.activityIndicatorViewStyle = .WhiteLarge
+        indicatorView.hidesWhenStopped = true
+        indicatorView.center = playerView.center
+        indicatorView.backgroundColor = UIColor(white: 0, alpha: 0.6)
+        playerView.indicatorView = indicatorView
+        playerView.addSubview(indicatorView)
         view.addSubview(playerWrapperView)
-        playerView.player?.play()
+        indicatorView.startAnimating()
+    }
+
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if keyPath == "status" {
+            if let player = playerView.player {
+                switch player.status {
+                case .ReadyToPlay:
+                    playerView.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+                    player.play()
+                    playerView.indicatorView?.stopAnimating()
+                    playerView.indicatorView?.removeFromSuperview()
+                    playerView.indicatorView = nil
+                    break
+                case .Failed:
+                    ErrorAlert.show("Movie load failure")
+                    hideVideo()
+                    break
+                case .Unknown:
+                    break
+                }
+            }
+        } else {
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+        }
     }
 
     func hideVideo() {
-        playerView.player?.pause()
-        playerWrapperView.removeFromSuperview()
-        do {
-            try AVAudioSession.sharedInstance().setActive(false, withOptions:
-                AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation)
-        } catch {
-            print("AVAudioSession setActive failure.")
+        Async.main {
+            if let player = self.playerView.player {
+                Async.background {
+                    player.removeObserver(self, forKeyPath: "status")
+                    player.pause()
+                    Async.background(after: 0.1) {
+                        do {
+                            try AVAudioSession.sharedInstance().setActive(false, withOptions:
+                                AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation)
+                        } catch {
+                            print("AVAudioSession setActive failure.")
+                        }
+                    }
+                }
+            }
+            self.playerView.indicatorView?.stopAnimating()
+            self.playerView.indicatorView?.removeFromSuperview()
+            self.playerView.indicatorView = nil
+            self.playerView.player = nil
+            self.playerWrapperView.removeFromSuperview()
         }
     }
 
