@@ -21,12 +21,13 @@ class UserAlert {
                 actionSheet.dismissViewControllerAnimated(true, completion: nil)
         }))
 
+        addTabAction(actionSheet, user: user)
+
         if AccountSettingsStore.isCurrent(user.userID) {
 
             // EditProfile
 
         } else {
-            addTabAction(actionSheet, user: user)
             addReplyAction(actionSheet, user: user)
             addMessageAction(actionSheet, user: user, relationship: relationship)
             addFollowAction(actionSheet, user: user, relationship: relationship)
