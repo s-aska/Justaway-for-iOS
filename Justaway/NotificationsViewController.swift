@@ -47,13 +47,25 @@ class NotificationsViewController: StatusTableViewController {
     }
 
     override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-        // Twitter.getMentionTimeline(maxID: maxID, success: success, failure: failure)
-        Twitter.getActivity(maxID: maxID, success: success, failure: failure)
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
+        if account.exToken.isEmpty {
+            Twitter.getMentionTimeline(maxID: maxID, success: success, failure: failure)
+        } else {
+            Twitter.getActivity(maxID: maxID, success: success, failure: failure)
+        }
     }
 
     override func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-        // Twitter.getMentionTimeline(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
-        Twitter.getActivity(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
+        if account.exToken.isEmpty {
+            Twitter.getMentionTimeline(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
+        } else {
+            Twitter.getActivity(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
+        }
     }
 
     override func accept(status: TwitterStatus) -> Bool {
