@@ -10,14 +10,13 @@ import UIKit
 
 class ShowMoreTweetsCell: BackgroundTableViewCell {
 
-    @IBOutlet weak var showMoreLabel: TextLable!
-    @IBOutlet weak var indicator: UIActivityIndicatorView!
+    @IBOutlet weak var showMoreLabel: ShowMoreTweetLabel!
+    @IBOutlet weak var indicator: ShowMoreTweetIndicatorView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         separatorInset = UIEdgeInsetsZero
         layoutMargins = UIEdgeInsetsZero
         preservesSuperviewLayoutMargins = false
-        indicator.activityIndicatorViewStyle = ThemeController.currentTheme.activityIndicatorStyle()
     }
 }

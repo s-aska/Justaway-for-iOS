@@ -155,11 +155,11 @@ extension Twitter {
             }
         } else if event == "list_member_added",
             let targetUserID = responce["target"]["id_str"].string,
-            let targetListID = responce["target_object"]["id_str"].string {
+                targetListID = responce["target_object"]["id_str"].string {
             EventBox.post(Twitter.Event.ListMemberAdded.rawValue, sender: ["targetUserID": targetUserID, "targetListID": targetListID])
         } else if event == "list_member_removed",
             let targetUserID = responce["target"]["id_str"].string,
-            let targetListID = responce["target_object"]["id_str"].string {
+                targetListID = responce["target_object"]["id_str"].string {
                 EventBox.post(Twitter.Event.ListMemberRemoved.rawValue, sender: ["targetUserID": targetUserID, "targetListID": targetListID])
         } else if event == "access_revoked" {
             revoked()

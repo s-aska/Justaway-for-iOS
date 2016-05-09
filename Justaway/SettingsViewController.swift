@@ -84,8 +84,8 @@ class SettingsViewController: UIViewController {
 
         // Slide in
         view.hidden = false
-        let frame = CGRectOffset(view.frame, -view.frame.origin.x, 0)
-        view.frame = CGRectOffset(frame, frame.size.width, 0)
+        let frame = view.frame.offsetBy(dx: -view.frame.origin.x, dy: 0)
+        view.frame = frame.offsetBy(dx: frame.size.width, dy: 0)
 
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
             view.frame = frame
@@ -99,7 +99,7 @@ class SettingsViewController: UIViewController {
 
         // Slide out
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
-            view.frame = CGRectOffset(view.frame, -view.frame.size.width, 0)
+            view.frame = view.frame.offsetBy(dx: -view.frame.size.width, dy: 0)
         }, completion: { finished in
             view.hidden = true
             if completion != nil {

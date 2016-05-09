@@ -14,6 +14,7 @@ class ThemeSolarizedLight: Theme {
 
     func statusBarStyle() -> UIStatusBarStyle { return .Default }
     func activityIndicatorStyle() -> UIActivityIndicatorViewStyle { return .Gray }
+    func showMoreTweetIndicatorStyle() -> UIActivityIndicatorViewStyle { return .White }
     func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle { return .Black }
 
     func mainBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes3 }
@@ -37,11 +38,16 @@ class ThemeSolarizedLight: Theme {
     func menuSelectedTextColor() -> UIColor { return ThemeColor.Solarized.blue }
     func menuDisabledTextColor() -> UIColor { return ThemeColor.Solarized.baes1 }
 
+    func showMoreTweetBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes01 }
+    func showMoreTweetLabelTextColor() -> UIColor { return ThemeColor.Solarized.baes3 }
+
     func buttonNormal() -> UIColor { return ThemeColor.Solarized.baes1 }
     func retweetButtonSelected() -> UIColor { return ThemeColor.Solarized.cyan }
     func favoritesButtonSelected() -> UIColor { return ThemeColor.Solarized.red }
     func streamingConnected() -> UIColor { return ThemeColor.Solarized.cyan }
     func streamingError() -> UIColor { return ThemeColor.Solarized.red }
+
+    func accountOptionEnabled() -> UIColor { return ThemeColor.Solarized.blue }
 
     func shadowOpacity() -> Float { return 0.1 }
 }

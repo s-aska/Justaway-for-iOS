@@ -42,6 +42,10 @@
 		3848FFEC1BB1327900AC04FC /* TwitterAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3848FFEB1BB1327900AC04FC /* TwitterAPI.framework */; };
 		3848FFED1BB1327900AC04FC /* TwitterAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3848FFEB1BB1327900AC04FC /* TwitterAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3848FFEF1BB1363F00AC04FC /* AVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3848FFEE1BB1363F00AC04FC /* AVPlayerView.swift */; };
+		384BBC131CB6762000A6CCC3 /* JustawayEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384BBC121CB6762000A6CCC3 /* JustawayEx.swift */; };
+		384BBC141CB6768400A6CCC3 /* JustawayEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384BBC121CB6762000A6CCC3 /* JustawayEx.swift */; };
+		384BBC161CB67FDF00A6CCC3 /* TwitterExAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384BBC151CB67FDF00A6CCC3 /* TwitterExAPI.swift */; };
+		384BBC171CB67FF500A6CCC3 /* TwitterExAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384BBC151CB67FDF00A6CCC3 /* TwitterExAPI.swift */; };
 		384DE93C1BBAC9350011AF6E /* StatusAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A35A1D01A73B1C700A8E46D /* StatusAlert.swift */; };
 		384DE93E1BBAC94D0011AF6E /* Twitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E6E7F19DE9DAB00139654 /* Twitter.swift */; };
 		384DE93F1BBAC9600011AF6E /* RetweetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3469BA1A699D21004AD091 /* RetweetAlert.swift */; };
@@ -184,6 +188,7 @@
 		38E052931BA4845300B67EB2 /* ImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E052911BA46B9200B67EB2 /* ImagePickerCollectionView.swift */; };
 		38E052941BA4848200B67EB2 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E0528F1BA4697800B67EB2 /* ImageCell.swift */; };
 		38E7367F1B78DA1800F49336 /* GenericSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E7367E1B78DA1800F49336 /* GenericSettings.swift */; };
+		38EECCA71CC7877000B82BA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
 		38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EACE19F1176C00CBD23F /* AsyncOperation.swift */; };
 		38F4EAEC19F14E4700CBD23F /* RoundedFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4EAEB19F14E4700CBD23F /* RoundedFilter.swift */; };
 		38F5E42D19C88F780041A489 /* AutoExpandTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F5E42C19C88F780041A489 /* AutoExpandTextView.swift */; };
@@ -213,6 +218,11 @@
 		6A35A1C51A6C193400A8E46D /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A35A1C41A6C193400A8E46D /* ImageViewController.swift */; };
 		6A35A1CD1A6C196700A8E46D /* ImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */; };
 		6A35A1D11A73B1C700A8E46D /* StatusAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A35A1D01A73B1C700A8E46D /* StatusAlert.swift */; };
+		6A396A761CD9DF0E00E878E5 /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A396A751CD9DF0E00E878E5 /* LocalNotification.swift */; };
+		6A396A781CD9E09A00E878E5 /* ToastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A396A771CD9E09A00E878E5 /* ToastViewController.swift */; };
+		6A396A7A1CD9E0B000E878E5 /* ToastViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A396A791CD9E0B000E878E5 /* ToastViewController.xib */; };
+		6A396A7B1CD9E22200E878E5 /* ToastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A396A771CD9E09A00E878E5 /* ToastViewController.swift */; };
+		6A396A7C1CD9E54200E878E5 /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A396A751CD9DF0E00E878E5 /* LocalNotification.swift */; };
 		6A3F4F3C1B110E74009F80C4 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */; };
 		6A3F4F3E1B110E8E009F80C4 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A3F4F3D1B110E8E009F80C4 /* AccountCell.xib */; };
 		6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */; };
@@ -371,6 +381,8 @@
 		383EAE721C97F85300E17229 /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
 		3848FFEB1BB1327900AC04FC /* TwitterAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterAPI.framework; path = Carthage/Build/iOS/TwitterAPI.framework; sourceTree = "<group>"; };
 		3848FFEE1BB1363F00AC04FC /* AVPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVPlayerView.swift; sourceTree = "<group>"; };
+		384BBC121CB6762000A6CCC3 /* JustawayEx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JustawayEx.swift; sourceTree = "<group>"; };
+		384BBC151CB67FDF00A6CCC3 /* TwitterExAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterExAPI.swift; sourceTree = "<group>"; };
 		384DE9801BBAD62E0011AF6E /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		384DE9821BBAD64D0011AF6E /* SearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
 		384DE9871BBC1BDC0011AF6E /* Safari.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Safari.swift; sourceTree = "<group>"; };
@@ -445,6 +457,11 @@
 		6A35A1C41A6C193400A8E46D /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		6A35A1CC1A6C196700A8E46D /* ImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageViewController.xib; sourceTree = "<group>"; };
 		6A35A1D01A73B1C700A8E46D /* StatusAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusAlert.swift; sourceTree = "<group>"; };
+		6A396A751CD9DF0E00E878E5 /* LocalNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
+		6A396A771CD9E09A00E878E5 /* ToastViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToastViewController.swift; sourceTree = "<group>"; };
+		6A396A791CD9E0B000E878E5 /* ToastViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToastViewController.xib; sourceTree = "<group>"; };
+		6A3B1F191CCE7103008BE665 /* Justaway.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Justaway.entitlements; sourceTree = "<group>"; };
+		6A3B1F1A1CCE7180008BE665 /* JustawayShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = JustawayShare.entitlements; sourceTree = "<group>"; };
 		6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		6A3F4F3D1B110E8E009F80C4 /* AccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
 		6A4B9D2919BB514900D50D78 /* Justaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Justaway.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -578,6 +595,7 @@
 				381E6E7F19DE9DAB00139654 /* Twitter.swift */,
 				383EAE6F1C918B6F00E17229 /* TwitterStreaming.swift */,
 				38585FF41CABE5E50095ACFB /* TwitterSearchStreaming.swift */,
+				384BBC151CB67FDF00A6CCC3 /* TwitterExAPI.swift */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -589,6 +607,7 @@
 				381E6E0919DD500700139654 /* Settings */,
 				6A5357D21A74027000291E95 /* Event.swift */,
 				383EAE721C97F85300E17229 /* Relationship.swift */,
+				6A396A751CD9DF0E00E878E5 /* LocalNotification.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -748,6 +767,7 @@
 		6A4B9D2B19BB514900D50D78 /* Justaway */ = {
 			isa = PBXGroup;
 			children = (
+				6A3B1F191CCE7103008BE665 /* Justaway.entitlements */,
 				6A4B9D2E19BB514900D50D78 /* AppDelegate.swift */,
 				6A4B9D3219BB514900D50D78 /* Main.storyboard */,
 				381E6E7D19DE4FB000139654 /* Secret.swift */,
@@ -756,6 +776,7 @@
 				3839245E1B14A1020025176D /* Constants.swift */,
 				384DE9871BBC1BDC0011AF6E /* Safari.swift */,
 				38585FFA1CAE91DF0095ACFB /* Extensions.swift */,
+				384BBC121CB6762000A6CCC3 /* JustawayEx.swift */,
 				6A0B236719DC49A3004819BB /* OS */,
 				381E6E8119DE9DB300139654 /* Network */,
 				382340C219D031FF00554D8C /* Models */,
@@ -850,6 +871,8 @@
 			isa = PBXGroup;
 			children = (
 				6A4B9D3019BB514900D50D78 /* ViewController.swift */,
+				6A396A771CD9E09A00E878E5 /* ToastViewController.swift */,
+				6A396A791CD9E0B000E878E5 /* ToastViewController.xib */,
 				6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */,
 				6AB55B3F19C563F600DC6442 /* EditorViewController.xib */,
 				6A35A1C41A6C193400A8E46D /* ImageViewController.swift */,
@@ -938,6 +961,7 @@
 		6AEA051B1CA0490200C419A1 /* JustawayShare */ = {
 			isa = PBXGroup;
 			children = (
+				6A3B1F1A1CCE7180008BE665 /* JustawayShare.entitlements */,
 				6AEA051C1CA0490200C419A1 /* ShareViewController.swift */,
 				6AE10E911CA3039800D19FBF /* Twitter.swift */,
 				6AE10E8F1CA3036C00D19FBF /* OGPParser.swift */,
@@ -1030,6 +1054,14 @@
 					6A4B9D2819BB514900D50D78 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = ERYSSE5R77;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					6A4B9D3A19BB514900D50D78 = {
 						CreatedOnToolsVersion = 6.0;
@@ -1038,6 +1070,14 @@
 					6AEA05191CA0490200C419A1 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = ERYSSE5R77;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -1072,6 +1112,7 @@
 				6A4B9D3419BB514900D50D78 /* Main.storyboard in Resources */,
 				6AB55B4019C563F600DC6442 /* EditorViewController.xib in Resources */,
 				6A0449461B1F4F2400758061 /* ProfileViewController.xib in Resources */,
+				6A396A7A1CD9E0B000E878E5 /* ToastViewController.xib in Resources */,
 				38105F8A1BC554C000CEF2A7 /* LaunchScreen.xib in Resources */,
 				6A9C18391C7378E200A1FE77 /* ChooseListsViewController.xib in Resources */,
 				38BC24A31CA92942003D7BBB /* MessagesViewController.xib in Resources */,
@@ -1245,6 +1286,7 @@
 				6A0449541B24952000758061 /* FollowerUserViewController.swift in Sources */,
 				6AB55B4D19C8ADBE00DC6442 /* FontSizeViewController.swift in Sources */,
 				6AB55B5119C8B2B200DC6442 /* ThemeViewController.swift in Sources */,
+				384BBC161CB67FDF00A6CCC3 /* TwitterExAPI.swift in Sources */,
 				38E052921BA46B9200B67EB2 /* ImagePickerCollectionView.swift in Sources */,
 				38585FF51CABE5E50095ACFB /* TwitterSearchStreaming.swift in Sources */,
 				6A04494E1B24812E00758061 /* TwitterUserCell.swift in Sources */,
@@ -1260,6 +1302,7 @@
 				38F9B5741B46C30600F429E7 /* ListMemberOfViewController.swift in Sources */,
 				6AD963E51A69ABBC00136B53 /* AlertController.swift in Sources */,
 				381E6E8019DE9DAB00139654 /* Twitter.swift in Sources */,
+				6A396A781CD9E09A00E878E5 /* ToastViewController.swift in Sources */,
 				6A51769A1B487085003D0A86 /* FavoritesViewController.swift in Sources */,
 				38BC24A11CA928EB003D7BBB /* MessagesViewController.swift in Sources */,
 				38F7B8F319E5720F0081C735 /* StatusTableViewController.swift in Sources */,
@@ -1277,6 +1320,7 @@
 				6A35A1C51A6C193400A8E46D /* ImageViewController.swift in Sources */,
 				38585FE31CAA5EE20095ACFB /* DirectMessageAlert.swift in Sources */,
 				6A35A1D11A73B1C700A8E46D /* StatusAlert.swift in Sources */,
+				384BBC131CB6762000A6CCC3 /* JustawayEx.swift in Sources */,
 				6A9C183C1C737F6600A1FE77 /* ListsTimelineViewController.swift in Sources */,
 				383EAE701C918B6F00E17229 /* TwitterStreaming.swift in Sources */,
 				6AD963E81A69BB1900136B53 /* ErrorAlert.swift in Sources */,
@@ -1295,6 +1339,7 @@
 				6A0449561B249CE100758061 /* UserAlert.swift in Sources */,
 				3805DEA81A67F34900FBD015 /* ThemeMonokai.swift in Sources */,
 				6A56F5CA1B19ECDC0058D6DD /* MessageAlert.swift in Sources */,
+				6A396A761CD9DF0E00E878E5 /* LocalNotification.swift in Sources */,
 				3868B94719EFCCCF001221BF /* TwitterVia.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1311,6 +1356,7 @@
 				384DE9621BBAC9960011AF6E /* NotificationsViewController.swift in Sources */,
 				384DE94B1BBAC9810011AF6E /* EditorViewController.swift in Sources */,
 				384DE96B1BBAC9B30011AF6E /* TwitterRelationship.swift in Sources */,
+				38EECCA71CC7877000B82BA5 /* AppDelegate.swift in Sources */,
 				38A694F619E4E82A00DD6072 /* Secret.swift in Sources */,
 				384DE9551BBAC9810011AF6E /* PocketCoverViewController.swift in Sources */,
 				38230A1B1C68959800F64648 /* TabSettingsCell.swift in Sources */,
@@ -1333,6 +1379,8 @@
 				384DE9421BBAC9600011AF6E /* AlertController.swift in Sources */,
 				384DE95F1BBAC9960011AF6E /* StatusTableViewController.swift in Sources */,
 				382340CE19D043C000554D8C /* AccountTests.swift in Sources */,
+				384BBC141CB6768400A6CCC3 /* JustawayEx.swift in Sources */,
+				6A396A7C1CD9E54200E878E5 /* LocalNotification.swift in Sources */,
 				6A83EDA41B69400B000F3C43 /* ThemeLight.swift in Sources */,
 				384DE9651BBAC9990011AF6E /* FollowingUserViewController.swift in Sources */,
 				384DE97C1BBACA310011AF6E /* ViewTools.swift in Sources */,
@@ -1371,11 +1419,13 @@
 				38E052941BA4848200B67EB2 /* ImageCell.swift in Sources */,
 				6A27E91A1C6B8A30001D7C87 /* AddTabAlert.swift in Sources */,
 				38585FF61CABF1970095ACFB /* TwitterSearchStreaming.swift in Sources */,
+				6A396A7B1CD9E22200E878E5 /* ToastViewController.swift in Sources */,
 				383EAE741C9804E600E17229 /* Relationship.swift in Sources */,
 				384DE97E1BBACA310011AF6E /* Constants.swift in Sources */,
 				384DE9531BBAC9810011AF6E /* TalkViewController.swift in Sources */,
 				384DE9721BBAC9F80011AF6E /* RoundedFilter.swift in Sources */,
 				3868B95119EFCCF4001221BF /* TwitterURL.swift in Sources */,
+				384BBC171CB67FF500A6CCC3 /* TwitterExAPI.swift in Sources */,
 				6A5EAF1E1C9B124C004283F2 /* TwitterMessage.swift in Sources */,
 				380F1DE51C9C3C0A00195D32 /* OAuthRequestBuilder.swift in Sources */,
 				3868B94F19EFCCF4001221BF /* TwitterVia.swift in Sources */,
@@ -1470,7 +1520,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1515,7 +1565,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1539,6 +1589,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Justaway/Justaway.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -1562,6 +1613,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Justaway/Justaway.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
@@ -1598,6 +1650,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "info.justaway.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Justaway.app/Justaway";
 			};
 			name = Debug;
@@ -1622,6 +1675,7 @@
 		6AEA05261CA0490300C419A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = JustawayShare/JustawayShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1631,6 +1685,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pw.aska.Justaway.JustawayShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -1638,6 +1693,7 @@
 		6AEA05271CA0490300C419A1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = JustawayShare/JustawayShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
@@ -1648,6 +1704,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pw.aska.Justaway.JustawayShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;

@@ -26,6 +26,7 @@ class NotificationsViewController: StatusTableViewController {
     }
 
     override func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+        adapter.activityMode = true
         Async.background {
             guard let account = AccountSettingsStore.get()?.account() else {
                 return
@@ -46,11 +47,13 @@ class NotificationsViewController: StatusTableViewController {
     }
 
     override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-        Twitter.getMentionTimeline(maxID: maxID, success: success, failure: failure)
+        // Twitter.getMentionTimeline(maxID: maxID, success: success, failure: failure)
+        Twitter.getActivity(maxID: maxID, success: success, failure: failure)
     }
 
     override func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-        Twitter.getMentionTimeline(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
+        // Twitter.getMentionTimeline(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
+        Twitter.getActivity(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
     }
 
     override func accept(status: TwitterStatus) -> Bool {

@@ -3,6 +3,7 @@ import Accounts
 import Social
 import EventBox
 import TwitterAPI
+import Async
 
 class AccountViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -49,9 +50,12 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewWillAppear(animated)
         configureEvent()
 
+        let delay = settings == nil ? 0.3 : 0
         settings = AccountSettingsStore.get()
-        tableView.reloadData()
         initEditing()
+        Async.main(after: delay) {
+            self.tableView.reloadData()
+        }
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -101,9 +105,8 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! AccountCell // swiftlint:disable:this force_cast
         if let account = self.settings?.accounts[indexPath.row] {
-            cell.displayNameLabel.text = account.name
-            cell.screenNameLabel.text = account.screenName
-            cell.clientNameLabel.text = account.client as? OAuthClient != nil ? "Justaway" : "iOS"
+            cell.account = account
+            cell.setText()
             ImageLoaderClient.displayUserIcon(account.profileImageBiggerURL, imageView: cell.iconImageView)
         }
         return cell
@@ -188,7 +191,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
 
     func hide() {
         UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseOut, animations: {
-            self.view.frame = CGRectOffset(self.view.frame, self.view.frame.size.width, 0)
+            self.view.frame = self.view.frame.offsetBy(dx: self.view.frame.size.width, dy: 0)
             }, completion: { finished in
                 self.view.removeFromSuperview()
         })

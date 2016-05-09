@@ -63,16 +63,18 @@ class ViewTools {
         return nil
     }
 
-    class func slideIn(viewController: UIViewController) {
+    class func slideIn(viewController: UIViewController, keepEditor: Bool = false) {
         let key = NSStringFromClass(viewController.dynamicType)
         guard let rootViewController = frontViewController() else {
             return
         }
 
-        EditorViewController.hide()
+        if !keepEditor {
+            EditorViewController.hide()
+        }
 
         viewController.view.hidden = true
-        viewController.view.frame = CGRectOffset(rootViewController.view.frame, rootViewController.view.frame.width, 0)
+        viewController.view.frame = rootViewController.view.frame.offsetBy(dx: rootViewController.view.frame.width, dy: 0)
         rootViewController.view.addSubview(viewController.view)
         viewController.view.hidden = false
 
@@ -90,7 +92,18 @@ class ViewTools {
     class func slideOut(viewController: UIViewController) {
         let key = NSStringFromClass(viewController.dynamicType)
         UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
-            viewController.view.frame = CGRectOffset(viewController.view.frame, viewController.view.frame.size.width, 0)
+            viewController.view.frame = viewController.view.frame.offsetBy(dx: viewController.view.frame.width, dy: 0)
+            }, completion: { finished in
+                viewController.view.hidden = true
+                viewController.view.removeFromSuperview()
+                Static.overlayViewControllers[key]?.removeLast()
+        })
+    }
+
+    class func slideOutLeft(viewController: UIViewController) {
+        let key = NSStringFromClass(viewController.dynamicType)
+        UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
+            viewController.view.frame = viewController.view.frame.offsetBy(dx: -viewController.view.frame.width, dy: 0)
             }, completion: { finished in
                 viewController.view.hidden = true
                 viewController.view.removeFromSuperview()

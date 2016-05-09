@@ -480,7 +480,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 imageView1HeightConstraint.constant = fullHeight
                 imageView1WidthConstraint.constant = fullWidth
                 if possiblySensitive {
-                    drawAttention(imageView1)
+                    drawAttention([imageView1])
                 } else {
                     ImageLoaderClient.displayImage(mediaList[0].mediaURL, imageView: imageView1)
                 }
@@ -494,8 +494,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 imageView2HeightConstraint.constant = fullHeight
                 imageView2WidthConstraint.constant = halfWidth
                 if possiblySensitive {
-                    drawAttention(imageView1)
-                    drawAttention(imageView2)
+                    drawAttention([imageView1, imageView2])
                 } else {
                     ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
                     ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
@@ -512,9 +511,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 imageView3HeightConstraint.constant = harfHeight
                 imageView3WidthConstraint.constant = halfWidth
                 if possiblySensitive {
-                    drawAttention(imageView1)
-                    drawAttention(imageView2)
-                    drawAttention(imageView3)
+                    drawAttention([imageView1, imageView2, imageView3])
                 } else {
                     ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
                     ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
@@ -534,10 +531,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 imageView4HeightConstraint.constant = harfHeight
                 imageView4WidthConstraint.constant = halfWidth
                 if possiblySensitive {
-                    drawAttention(imageView1)
-                    drawAttention(imageView2)
-                    drawAttention(imageView3)
-                    drawAttention(imageView4)
+                    drawAttention([imageView1, imageView2, imageView3, imageView4])
                 } else {
                     ImageLoaderClient.displayThumbnailImage(mediaList[0].mediaThumbURL, imageView: imageView1)
                     ImageLoaderClient.displayThumbnailImage(mediaList[1].mediaThumbURL, imageView: imageView2)
@@ -569,7 +563,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                     quotedImageView1HeightConstraint.constant = fullHeight
                     quotedImageView1WidthConstraint.constant = fullWidth
                     if quotedStatus.possiblySensitive {
-                        drawAttention(quotedImageView1)
+                        drawAttention([quotedImageView1])
                     } else {
                         ImageLoaderClient.displayImage(quotedStatus.media[0].mediaURL, imageView: quotedImageView1)
                     }
@@ -583,8 +577,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                     quotedImageView2HeightConstraint.constant = fullHeight
                     quotedImageView2WidthConstraint.constant = halfWidth
                     if quotedStatus.possiblySensitive {
-                        drawAttention(quotedImageView1)
-                        drawAttention(quotedImageView2)
+                        drawAttention([quotedImageView1, quotedImageView2])
                     } else {
                         ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
                         ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
@@ -601,9 +594,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                     quotedImageView3HeightConstraint.constant = harfHeight
                     quotedImageView3WidthConstraint.constant = halfWidth
                     if quotedStatus.possiblySensitive {
-                        drawAttention(quotedImageView1)
-                        drawAttention(quotedImageView2)
-                        drawAttention(quotedImageView3)
+                        drawAttention([quotedImageView1, quotedImageView2, quotedImageView3])
                     } else {
                         ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
                         ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
@@ -623,10 +614,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                     quotedImageView4HeightConstraint.constant = harfHeight
                     quotedImageView4WidthConstraint.constant = halfWidth
                     if quotedStatus.possiblySensitive {
-                        drawAttention(quotedImageView1)
-                        drawAttention(quotedImageView2)
-                        drawAttention(quotedImageView3)
-                        drawAttention(quotedImageView4)
+                        drawAttention([quotedImageView1, quotedImageView2, quotedImageView3, quotedImageView4])
                     } else {
                         ImageLoaderClient.displayThumbnailImage(quotedStatus.media[0].mediaThumbURL, imageView: quotedImageView1)
                         ImageLoaderClient.displayThumbnailImage(quotedStatus.media[1].mediaThumbURL, imageView: quotedImageView2)
@@ -644,11 +632,11 @@ class TwitterStatusCell: BackgroundTableViewCell {
         }
     }
 
-    func drawAttention(imageView: UIImageView) {
+    func drawAttention(imageViews: [UIImageView]) {
         Async.main {
-            let font = UIFont(name: "fontello", size: imageView.frame.height * 0.8)!
-            let rect = CGRectOffset(imageView.frame, (imageView.frame.width - imageView.frame.height) / 2, imageView.frame.height * 0.1)
-            UIGraphicsBeginImageContext(imageView.frame.size)
+            let font = UIFont(name: "fontello", size: imageViews[0].frame.height * 0.8)!
+            let rect = imageViews[0].frame.offsetBy(dx: (imageViews[0].frame.width - imageViews[0].frame.height) / 2, dy: imageViews[0].frame.height * 0.1)
+            UIGraphicsBeginImageContext(imageViews[0].frame.size)
             // swiftlint:disable:next force_cast
             let textStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
             let textFontAttributes: [String: AnyObject] = [
@@ -660,7 +648,9 @@ class TwitterStatusCell: BackgroundTableViewCell {
             "!".drawInRect(rect, withAttributes: textFontAttributes)
             let image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
-            imageView.image = image
+            for imageView in imageViews {
+                imageView.image = image
+            }
         }
     }
 
@@ -708,21 +698,68 @@ class TwitterStatusCell: BackgroundTableViewCell {
         }
         playerWrapperView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
         playerView.frame = playerWrapperView.frame
-        playerView.player = AVPlayer(URL: videoURL)
-        playerView.player?.actionAtItemEnd = AVPlayerActionAtItemEnd.None
-        playerView.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+        let player = AVPlayer(URL: videoURL)
+        player.actionAtItemEnd = .None
+        player.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions(), context: nil)
+        playerView.player = player
+
+        let indicatorView = UIActivityIndicatorView(frame: CGRect.init(x: 0, y: 0, width: 80, height: 80))
+        indicatorView.layer.cornerRadius = 10
+        indicatorView.activityIndicatorViewStyle = .WhiteLarge
+        indicatorView.hidesWhenStopped = true
+        indicatorView.center = playerView.center
+        indicatorView.backgroundColor = UIColor(white: 0, alpha: 0.6)
+        playerView.indicatorView = indicatorView
+        playerView.addSubview(indicatorView)
         view.addSubview(playerWrapperView)
-        playerView.player?.play()
+        indicatorView.startAnimating()
+    }
+
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if keyPath == "status" {
+            if let player = playerView.player {
+                switch player.status {
+                case .ReadyToPlay:
+                    playerView.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+                    player.play()
+                    playerView.indicatorView?.stopAnimating()
+                    playerView.indicatorView?.removeFromSuperview()
+                    playerView.indicatorView = nil
+                    break
+                case .Failed:
+                    ErrorAlert.show("Movie load failure")
+                    hideVideo()
+                    break
+                case .Unknown:
+                    break
+                }
+            }
+        } else {
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+        }
     }
 
     func hideVideo() {
-        playerView.player?.pause()
-        playerWrapperView.removeFromSuperview()
-        do {
-            try AVAudioSession.sharedInstance().setActive(false, withOptions:
-                AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation)
-        } catch {
-            print("AVAudioSession setActive failure.")
+        Async.main {
+            if let player = self.playerView.player {
+                Async.background {
+                    player.removeObserver(self, forKeyPath: "status")
+                    player.pause()
+                    Async.background(after: 0.1) {
+                        do {
+                            try AVAudioSession.sharedInstance().setActive(false, withOptions:
+                                AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation)
+                        } catch {
+                            print("AVAudioSession setActive failure.")
+                        }
+                    }
+                }
+            }
+            self.playerView.indicatorView?.stopAnimating()
+            self.playerView.indicatorView?.removeFromSuperview()
+            self.playerView.indicatorView = nil
+            self.playerView.player = nil
+            self.playerWrapperView.removeFromSuperview()
         }
     }
 
@@ -732,7 +769,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     func videoSwipeUp() {
         UIView.animateWithDuration(0.3, animations: { _ in
-            self.playerView.frame = CGRectOffset(self.playerView.frame, 0, -self.playerView.frame.size.height)
+            self.playerView.frame = self.playerView.frame.offsetBy(dx: 0, dy: -self.playerView.frame.size.height)
             }, completion: { _ in
                 self.hideVideo()
         })
@@ -740,7 +777,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     func videoSwipeDown() {
         UIView.animateWithDuration(0.3, animations: { _ in
-            self.playerView.frame = CGRectOffset(self.playerView.frame, 0, self.playerView.frame.size.height)
+            self.playerView.frame = self.playerView.frame.offsetBy(dx: 0, dy: self.playerView.frame.size.height)
         }, completion: { _ in
             self.hideVideo()
         })

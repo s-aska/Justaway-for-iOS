@@ -7,6 +7,12 @@ import Accounts
 import TwitterAPI
 import Async
 
+#if DEBUG
+let deviceType = "APNS_SANDBOX"
+#else
+let deviceType = "APNS"
+#endif
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -34,6 +40,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         GenericSettings.configure()
 
+        if let userInfo = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] {
+            // アプリが起動していない時にpush通知が届き、push通知から起動した場合
+        }
+
         return true
     }
 
@@ -41,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
         NSLog("applicationWillResignActive")
+        EventBox.post("applicationWillResignActive")
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
@@ -62,6 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         NSLog("applicationDidBecomeActive")
+        EventBox.post("applicationDidBecomeActive")
 
         Async.background(after: 1) { () -> Void in
             Twitter.startStreamingIfEnable()
@@ -83,8 +95,85 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if url.absoluteString.hasPrefix("justaway://success") ?? false {
             SafariOAuthURLHandler.callback(url)
         }
+        if url.absoluteString.hasPrefix("justaway://ex/callback/") ?? false {
+            SafariExURLHandler.callback(url)
+        }
 
         return true
+    }
+
+    // Push通知の登録が完了した場合、deviceTokenが返される
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        let deviceTokenString: String = (deviceToken.description as NSString)
+            .stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "<>"))
+            .stringByReplacingOccurrencesOfString(" ", withString: "") as String
+        NSLog("deviceToken: \(deviceTokenString)")
+        guard let settings = AccountSettingsStore.get() else {
+            return
+        }
+        for account in settings.accounts {
+            if account.exToken.isEmpty {
+                continue
+            }
+            let currentDevice = UIDevice.currentDevice()
+            let deviceName = [
+                currentDevice.systemName,
+                currentDevice.systemVersion,
+                currentDevice.model
+            ].joinWithSeparator("/")
+            let urlComponents = NSURLComponents(string: "https://justaway.info/api/devices.json")!
+            urlComponents.queryItems = [
+                NSURLQueryItem.init(name: "deviceName", value: deviceName),
+                NSURLQueryItem.init(name: "deviceType", value: deviceType),
+                NSURLQueryItem.init(name: "deviceToken", value: deviceTokenString)
+            ]
+            guard let url = urlComponents.URL else {
+                continue
+            }
+            let req = NSMutableURLRequest.init(URL: url)
+            req.HTTPMethod = "PUT"
+            req.setValue(account.exToken, forHTTPHeaderField: "X-Justaway-API-Token")
+            NSURLSession.sharedSession().dataTaskWithRequest(req) { (data, response, error) in
+            }.resume()
+        }
+    }
+
+    // Push通知が利用不可であればerrorが返ってくる
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        NSLog("error: " + "\(error)")
+    }
+
+    // Push通知受信時とPush通知をタッチして起動したときに呼ばれる
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        switch application.applicationState {
+        case .Inactive:
+            // アプリがバックグラウンドにいる状態で、Push通知から起動したとき
+            NSLog("didReceiveRemoteNotification Inactive")
+            break
+        case .Active:
+            // アプリ起動時にPush通知を受信したとき
+            NSLog("didReceiveRemoteNotification Active")
+            let alertMessage: String = {
+                if let aps = userInfo["aps"] as? NSDictionary {
+                    if let alert = aps["alert"] as? NSDictionary {
+                        if let message = alert["message"] as? NSString {
+                            return message as String
+                        }
+                    } else if let alert = aps["alert"] as? NSString {
+                        return alert as String
+                    }
+                }
+                return ""
+            }()
+            if !alertMessage.isEmpty {
+                LocalNotification.show(alertMessage)
+            }
+            break
+        case .Background:
+            // アプリがバックグラウンドにいる状態でPush通知を受信したとき
+            NSLog("didReceiveRemoteNotification Background")
+            break
+        }
     }
 
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -93,7 +182,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // observe statusBar touch
         if let touch = touches.first {
             let location = touch.locationInView(self.window)
-            if CGRectContainsPoint(UIApplication.sharedApplication().statusBarFrame, location) {
+            if UIApplication.sharedApplication().statusBarFrame.contains(location) {
                 EventBox.post(eventStatusBarTouched)
             }
         }

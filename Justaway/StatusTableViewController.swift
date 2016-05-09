@@ -224,10 +224,11 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                 ErrorAlert.show(error)
                 always()
             }
-            if let sinceID = self.adapter.sinceID() {
-                NSLog("loadDataToTop load sinceID:\(sinceID)")
+            if let topSinceID = self.adapter.sinceID() {
+                NSLog("loadDataToTop load sinceID:\(topSinceID)")
                 // "Show more tweets" are and need the same id
-                self.loadData(sinceID: (sinceID.longLongValue - 1).stringValue, maxID: nil, success: success, failure: failure)
+                let sinceID = self.adapter.activityMode ? topSinceID : (topSinceID.longLongValue - 1).stringValue
+                self.loadData(sinceID: sinceID, maxID: nil, success: success, failure: failure)
             } else {
                 op.finish()
             }

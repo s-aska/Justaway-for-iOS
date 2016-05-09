@@ -39,7 +39,10 @@ class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
     static var oAuthViewController: SFSafariViewController?
 
     func handle(url: NSURL) {
-        SafariOAuthURLHandler.oAuthViewController = Safari.openURL(url)
+        let components = NSURLComponents.init(URL: url, resolvingAgainstBaseURL: false)
+        let items = components?.queryItems ?? []
+        components?.queryItems = items + [NSURLQueryItem.init(name: "force_login", value: "true")]
+        SafariOAuthURLHandler.oAuthViewController = Safari.openURL(components?.URL ?? url)
     }
 
     class func callback(url: NSURL) {
@@ -52,12 +55,17 @@ class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
 
 class SafariDelegate: NSObject, SFSafariViewControllerDelegate {
 
+    // SFSafariViewController don't set page title to SLComposeServiceViewController's textView.text
+    func safariViewController(controller: SFSafariViewController, activityItemsForURL URL: NSURL, title: String?) -> [UIActivity] {
+        if let ud = NSUserDefaults.init(suiteName: "group.pw.aska.justaway") {
+            ud.setURL(URL, forKey: "shareURL")
+            ud.setObject(title ?? "", forKey: "shareTitle")
+            ud.synchronize()
+        }
+        return []
+    }
+
     func safariViewControllerDidFinish(controller: SFSafariViewController) {
         controller.dismissViewControllerAnimated(true, completion: nil)
-
-        // bug?
-        Async.main(after: 0.05) { () -> Void in
-            ThemeController.apply()
-        }
     }
 }

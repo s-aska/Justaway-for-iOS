@@ -11,7 +11,7 @@ import UIKit
 class AddAccountAlert {
     class func show(sender: UIView) {
         let actionSheet =  UIAlertController(title: "Add Account", message: "Choose via", preferredStyle: .ActionSheet)
-        actionSheet.addAction(UIAlertAction(title: "via iOS", style: .Default, handler: { action in
+        actionSheet.addAction(UIAlertAction(title: "via iOS ( from iOS Settings )", style: .Default, handler: { action in
             Twitter.addACAccount(false)
         }))
         actionSheet.addAction(UIAlertAction(title: "via Justaway for iOS", style: .Default, handler: { action in

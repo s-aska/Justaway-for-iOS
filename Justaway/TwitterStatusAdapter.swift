@@ -17,6 +17,7 @@ class TwitterStatusAdapter: TwitterAdapter {
 
     var renderDataCallback: ((statuses: [TwitterStatus], mode: RenderMode) -> Void)?
     var delegate: TwitterStatusAdapterDelegate?
+    var activityMode = false
 
     var statuses: [TwitterStatus] {
         return rows.filter({ $0.status != nil }).map({ $0.status! })
@@ -103,8 +104,8 @@ class TwitterStatusAdapter: TwitterAdapter {
 
         var addShowMore = false
         if mode == .HEADER {
-            if let sinceID = sinceID() {
-                if statuses.contains({ $0.uniqueID == sinceID }) {
+            if let firstUniqueID = firstUniqueID() {
+                if statuses.contains({ $0.uniqueID == firstUniqueID }) {
                     statuses.removeAtIndex(statuses.count - 1)
                 } else {
                     addShowMore = true
@@ -118,8 +119,10 @@ class TwitterStatusAdapter: TwitterAdapter {
             }
         }
 
-        statuses = statuses.filter { status -> Bool in
-            return !rows.contains { $0.status?.uniqueID ?? "" == status.uniqueID }
+        if mode != .OVER {
+            statuses = statuses.filter { status -> Bool in
+                return !rows.contains { $0.status?.uniqueID ?? "" == status.uniqueID }
+            }
         }
 
         let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + statuses.count) - limit, 0)
@@ -203,7 +206,10 @@ class TwitterStatusAdapter: TwitterAdapter {
             }
             for i in 1 ... indexPath.row {
                 if let status = self.rows[indexPath.row - i].status {
-                    return String((status.uniqueID as NSString).longLongValue - 1)
+                    if activityMode {
+                        return status.uniqueID
+                    }
+                    return String((status.referenceOrStatusID as NSString).longLongValue - 1)
                 }
             }
             return nil
@@ -212,7 +218,10 @@ class TwitterStatusAdapter: TwitterAdapter {
         let sinceID: String? = {
             for i in indexPath.row ..< rows.count {
                 if let status = self.rows[i].status {
-                    return String((status.uniqueID as NSString).longLongValue - 1)
+                    if activityMode {
+                        return status.uniqueID
+                    }
+                    return String((status.referenceOrStatusID as NSString).longLongValue - 1)
                 }
             }
             return nil
@@ -221,19 +230,22 @@ class TwitterStatusAdapter: TwitterAdapter {
         delegate?.loadData(sinceID: sinceID, maxID: maxID, success: { (statuses) -> Void in
 
             let findLast: Bool = {
-                guard let lastStatusID = statuses.last?.uniqueID else {
+                guard let lastUniqueID = statuses.last?.uniqueID else {
                     return true
                 }
-                for status in self.statuses {
-                    if status.uniqueID == lastStatusID {
-                        return true
-                    }
+                if self.statuses.contains({ $0.uniqueID == lastUniqueID }) {
+                    return true
                 }
                 if statuses.count == 0 {
                     return true
                 }
                 return false
             }()
+
+            var statuses = statuses
+            statuses = statuses.filter { status -> Bool in
+                return !self.rows.contains { $0.status?.uniqueID ?? "" == status.uniqueID }
+            }
 
             let fontSize = CGFloat(GenericSettings.get().fontSize)
 
@@ -243,7 +255,7 @@ class TwitterStatusAdapter: TwitterAdapter {
             let deleteIndexPaths = findLast ? [indexPath] : [NSIndexPath]()
 
             let insertStart = indexPath.row
-            let insertIndexPaths = statuses.count == 0 ? [] : (insertStart ..< (insertStart + statuses.count - ( findLast ? 1 : 0 ))).map { i in NSIndexPath(forRow: i, inSection: 0) }
+            let insertIndexPaths = statuses.count == 0 ? [] : (insertStart ..< (insertStart + statuses.count)).map { i in NSIndexPath(forRow: i, inSection: 0) }
 
             // print("showMoreTweets sinceID:\(sinceID) maxID:\(maxID) findLast:\(findLast) insertIndexPaths:\(insertIndexPaths.count) deleteIndexPaths:\(deleteIndexPaths.count) oldRows:\(self.rows.count)")
 
@@ -277,10 +289,20 @@ class TwitterStatusAdapter: TwitterAdapter {
     }
 
     func sinceID() -> String? {
+        if activityMode {
+            return firstUniqueID()
+        }
         for status in statuses {
             if status.type == .Normal {
-                return status.uniqueID
+                return status.referenceOrStatusID
             }
+        }
+        return nil
+    }
+
+    func firstUniqueID() -> String? {
+        for status in statuses {
+            return status.uniqueID
         }
         return nil
     }

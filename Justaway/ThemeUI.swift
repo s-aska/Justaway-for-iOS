@@ -63,6 +63,9 @@ class QuotedStatusContainerView: UIView {
         layer.borderWidth = (1.0 / UIScreen.mainScreen().scale) / 1
     }
 }
+class ShowMoreTweetBackgroundView: UIView {}
+class ShowMoreTweetLabel: UILabel {}
+class ShowMoreTweetIndicatorView: UIActivityIndicatorView {}
 
 // MARK: - Buttons
 

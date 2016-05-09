@@ -13,7 +13,7 @@ import Accounts
 class Twitter {
 
     // swiftlint:disable:next force_try
-    static let urlRegexp = try! NSRegularExpression(pattern: "https?://[0-9a-zA-Z/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+", options: NSRegularExpressionOptions.CaseInsensitive)
+    static let urlRegexp = try! NSRegularExpression(pattern: "https?://[^ ]+", options: NSRegularExpressionOptions.CaseInsensitive)
     static let statusUpdateURL = NSURL(string: "https://api.twitter.com/1.1/statuses/update.json")!
     static let mediaUploadURL = NSURL(string: "https://upload.twitter.com/1.1/media/upload.json")!
 
@@ -32,7 +32,7 @@ class Twitter {
             count = count + urlCount - url.characters.count
         }
         if hasImage {
-            count = count + 23
+            count = count + 24
         }
         return count
     }

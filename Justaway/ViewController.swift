@@ -64,6 +64,15 @@ class ViewController: UIViewController {
         if timelineViewController == nil {
             timelineViewController = TimelineViewController()
             ViewTools.addSubviewWithEqual(containerView, view: timelineViewController!.view)
+
+            if let settings = AccountSettingsStore.get() {
+                if settings.accounts.contains({ !$0.exToken.isEmpty }) {
+                    NSLog("has exToken")
+                    let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: nil)
+                    UIApplication.sharedApplication().registerForRemoteNotifications()
+                    UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+                }
+            }
         }
         timelineViewController?.view.hidden = false
         signInView.hidden = true

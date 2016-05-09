@@ -24,6 +24,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     var setupView = false
     var userID = ""
     var currentPage = 0
+    var isActive = true
+    var rederStatusStock = [TwitterStatus]()
+    var eraseStatusIDStock = [String]()
 
     struct Static {
         private static let connectionQueue = NSOperationQueue().serial()
@@ -300,6 +303,23 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 tableViewController.saveCache()
             }
         }
+        EventBox.on(self, name: "applicationWillResignActive", sender: nil, queue: nil) { [weak self] (_) in
+            self?.isActive = false
+        }
+        EventBox.on(self, name: "applicationDidBecomeActive", sender: nil, queue: nil) { [weak self] (_) in
+            guard let `self` = self else {
+                return
+            }
+            self.isActive = true
+            if self.rederStatusStock.count > 0 {
+                self.createStatuses(self.rederStatusStock.filter({ !self.eraseStatusIDStock.contains($0.statusID) }).reverse())
+                self.rederStatusStock.removeAll()
+            }
+            if self.eraseStatusIDStock.count > 0 {
+                self.destroyStatuses(self.eraseStatusIDStock)
+                self.eraseStatusIDStock.removeAll()
+            }
+        }
     }
 
     func configureCreateStatusEvent() {
@@ -307,17 +327,31 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             guard let status = n.object as? TwitterStatus else {
                 return
             }
-            var page = 0
-            for tableViewController in self.tableViewControllers {
-                switch tableViewController {
-                case let vc as StatusTableViewController:
-                    if vc.accept(status) {
-                        vc.renderData([status], mode: .TOP, handler: {})
+            if self.isActive {
+                self.createStatuses([status])
+            } else {
+                self.rederStatusStock.append(status)
+            }
+        }
+    }
+
+    func createStatuses(statuses: [TwitterStatus]) {
+        var page = 0
+        for tableViewController in self.tableViewControllers {
+            switch tableViewController {
+            case let vc as StatusTableViewController:
+                let acceptStatuses = statuses.filter({ vc.accept($0) })
+                if acceptStatuses.count > 0 {
+                    vc.renderData(acceptStatuses, mode: .TOP, handler: {})
+                    NSLog("acceptStatuses count:\(acceptStatuses.count)")
+                    for status in acceptStatuses {
                         let actionedByUserID = status.actionedBy?.userID ?? ""
                         let actionedByMe = AccountSettingsStore.get()?.isMe(actionedByUserID) ?? false
                         if !actionedByMe {
                             if self.currentPage != page {
                                 self.tabButtons[page].selected = true
+                                NSLog("tabButtons selected page:\(page)")
+                                break
                             } else {
                                 let buttonIndex = page
                                 let operation = MainBlockOperation { (operation) -> Void in
@@ -327,15 +361,17 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                                     operation.finish()
                                 }
                                 vc.adapter.mainQueue.addOperation(operation)
+                                NSLog("tabButtons selected addOperation page:\(page)")
+                                break
                             }
                         }
-                        vc.saveCacheSchedule()
                     }
-                default:
-                    break
+                    vc.saveCacheSchedule()
                 }
-                page += 1
+            default:
+                break
             }
+            page += 1
         }
     }
 
@@ -344,16 +380,26 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             guard let statusID = n.object as? String else {
                 return
             }
-            var page = 0
-            for tableViewController in self.tableViewControllers {
-                switch tableViewController {
-                case let vc as StatusTableViewController:
-                    vc.eraseData(statusID, handler: {})
-                default:
-                    break
-                }
-                page += 1
+            if self.isActive {
+                self.destroyStatuses([statusID])
+            } else {
+                self.eraseStatusIDStock.append(statusID)
             }
+        }
+    }
+
+    func destroyStatuses(statusIDs: [String]) {
+        var page = 0
+        for tableViewController in self.tableViewControllers {
+            switch tableViewController {
+            case let vc as StatusTableViewController:
+                for statusID in statusIDs {
+                    vc.eraseData(statusID, handler: {})
+                }
+            default:
+                break
+            }
+            page += 1
         }
     }
 

@@ -174,7 +174,7 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
 
     func hide() {
         UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseOut, animations: {
-            self.view.frame = CGRectOffset(self.view.frame, self.view.frame.size.width, 0)
+            self.view.frame = self.view.frame.offsetBy(dx: self.view.frame.size.width, dy: 0)
             }, completion: { finished in
                 self.view.removeFromSuperview()
         })

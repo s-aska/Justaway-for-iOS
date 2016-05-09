@@ -15,6 +15,7 @@ protocol Theme {
 
     func statusBarStyle() -> UIStatusBarStyle
     func activityIndicatorStyle() -> UIActivityIndicatorViewStyle
+    func showMoreTweetIndicatorStyle() -> UIActivityIndicatorViewStyle
     func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle
 
     func mainBackgroundColor() -> UIColor
@@ -38,12 +39,17 @@ protocol Theme {
     func menuSelectedTextColor() -> UIColor
     func menuDisabledTextColor() -> UIColor
 
+    func showMoreTweetBackgroundColor() -> UIColor
+    func showMoreTweetLabelTextColor() -> UIColor
+
     func buttonNormal() -> UIColor
     func retweetButtonSelected() -> UIColor
     func favoritesButtonSelected() -> UIColor
 
     func streamingConnected() -> UIColor
     func streamingError() -> UIColor
+
+    func accountOptionEnabled() -> UIColor
 
     func shadowOpacity() -> Float
 }
@@ -109,6 +115,10 @@ class ThemeController {
         SideMenuShadowView.appearance().backgroundColor =  theme.sideMenuBackgroundColor()
         SideMenuSeparator.appearance().backgroundColor = theme.menuTextColor()
         UISwitch.appearance().tintColor = theme.switchTintColor()
+
+        ShowMoreTweetBackgroundView.appearance().backgroundColor = theme.showMoreTweetBackgroundColor()
+        ShowMoreTweetLabel.appearance().textColor = theme.showMoreTweetLabelTextColor()
+        ShowMoreTweetIndicatorView.appearance().activityIndicatorViewStyle = theme.showMoreTweetIndicatorStyle()
 
         // for TwitterStatus
         DisplayNameLable.appearance().textColor = theme.displayNameTextColor()
@@ -194,16 +204,24 @@ class ThemeController {
                 v.backgroundColor = theme.menuTextColor()
             case let v as SideMenuShadowView:
                 v.backgroundColor = theme.sideMenuBackgroundColor()
+                v.layer.shadowOpacity = theme.shadowOpacity()
             case let v as UISwitch:
                 v.tintColor = theme.switchTintColor()
             case let v as MenuShadowView:
                 v.backgroundColor = theme.menuBackgroundColor()
-                v.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
+                v.layer.shadowOpacity = theme.shadowOpacity()
+                // v.layer.setNeedsLayout()
             case let v as NavigationShadowView:
                 v.backgroundColor = theme.menuBackgroundColor().colorWithAlphaComponent(0.8)
-                v.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
+                v.layer.shadowOpacity = theme.shadowOpacity()
             case let v as MenuView:
                 v.backgroundColor = theme.menuBackgroundColor()
+            case let v as ShowMoreTweetIndicatorView:
+                v.activityIndicatorViewStyle = theme.showMoreTweetIndicatorStyle()
+            case let v as ShowMoreTweetBackgroundView:
+                v.backgroundColor = theme.showMoreTweetBackgroundColor()
+            case let v as ShowMoreTweetLabel:
+                v.textColor = theme.showMoreTweetLabelTextColor()
             case let v as TabButton:
                 if v.streaming {
                     v.setTitleColor(theme.streamingConnected(), forState: .Normal)

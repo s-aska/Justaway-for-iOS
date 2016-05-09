@@ -71,6 +71,7 @@ class TwitterAdapter: NSObject {
     var scrollCallback: ((scrollView: UIScrollView) -> Void)?
     let loadDataQueue = NSOperationQueue().serial()
     let mainQueue = NSOperationQueue().serial()
+    var renderStatusStack = [TwitterStatus]()
 
     // MARK: Configuration
 
@@ -86,10 +87,17 @@ class TwitterAdapter: NSObject {
 
     override init() {
         super.init()
+        // copy paste tooltip
         EventBox.on(self, name: UIMenuControllerWillShowMenuNotification, sender: nil, queue: nil) { [weak self] (_) in
             self?.mainQueue.suspended = true
         }
         EventBox.on(self, name: UIMenuControllerDidHideMenuNotification, sender: nil, queue: nil) { [weak self] (_) in
+            self?.mainQueue.suspended = false
+        }
+        EventBox.on(self, name: "applicationWillResignActive", sender: nil, queue: nil) { [weak self] (_) in
+            self?.mainQueue.suspended = true
+        }
+        EventBox.on(self, name: "applicationDidBecomeActive", sender: nil, queue: nil) { [weak self] (_) in
             self?.mainQueue.suspended = false
         }
     }
