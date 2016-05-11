@@ -9,20 +9,19 @@
 import Foundation
 
 // swiftlint:disable:next force_try
-let urlRegexp = try! NSRegularExpression(pattern: "https?://[0-9a-zA-Z/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+", options: .CaseInsensitive)
+let linkDetector = try! NSDataDetector.init(types: NSTextCheckingType.Link.rawValue)
 
 class TwitterText {
     class func count(text: String, hasImage: Bool) -> Int {
         var count = text.characters.count
         let s = text as NSString
-        let matches = urlRegexp.matchesInString(text, options: NSMatchingOptions(rawValue: 0), range: NSRange(location: 0, length: text.utf16.count))
+        let matches = linkDetector.matchesInString(text, options: [], range: NSRange.init(location: 0, length: text.utf16.count))
         for match in matches {
-            let url = s.substringWithRange(match.rangeAtIndex(0)) as String
-            let urlCount = url.hasPrefix("https") ? 23 : 22
-            count = count + urlCount - url.characters.count
+            let url = s.substringWithRange(match.range) as String
+            count = count + 23 - url.characters.count
         }
         if hasImage {
-            count = count + 23
+            count = count + 24
         }
         return count
     }
