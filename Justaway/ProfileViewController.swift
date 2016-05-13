@@ -193,8 +193,10 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
                 self.bottomContainerTopConstraint.constant = 100
             }
         }
-        userTimelineTableViewController.tableView.contentInset = UIEdgeInsetsMake(159, 0, 0, 0)
-        userTimelineTableViewController.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(159, 0, 0, 0)
+
+        let insets = UIEdgeInsets(top: 159, left: 0, bottom: 0, right: 0)
+        userTimelineTableViewController.tableView.contentInset = insets
+        userTimelineTableViewController.tableView.scrollIndicatorInsets = insets
         userTimelineTableViewController.adapter.scrollEnd(userTimelineTableViewController.tableView)
     }
 

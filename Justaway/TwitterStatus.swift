@@ -224,7 +224,7 @@ class TwitterStatus {
     }
 
     var uniqueID: String {
-        if let actionedBy = actionedBy, let event = event {
+        if let actionedBy = actionedBy, event = event {
             return [statusID, event, actionedBy.userID].joinWithSeparator(":")
         } else if self.inReplyToUserID != nil {
             return [statusID, "reply", user.userID].joinWithSeparator(":")

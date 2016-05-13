@@ -378,7 +378,7 @@ class Twitter {
         }
         let success = { (json: JSON) -> Void in
             if let statuses = json["statuses"].array,
-                let search_metadata = json["search_metadata"].dictionary {
+                search_metadata = json["search_metadata"].dictionary {
                     success(statuses.map({ TwitterStatus($0) }), search_metadata)
             }
         }

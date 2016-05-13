@@ -37,8 +37,8 @@ extension Twitter {
                 var events = [TwitterStatus]()
                 for event in array {
                     if let statusID = event["target_object_id"].int64?.stringValue,
-                        let sourceID = event["source_id"].int64?.stringValue,
-                        let eventName = event["event"].string {
+                        sourceID = event["source_id"].int64?.stringValue,
+                        eventName = event["event"].string {
                         if let status = statusMap[statusID] {
                             switch eventName {
                             case "reply", "retweet", "quoted_tweet":

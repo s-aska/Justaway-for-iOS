@@ -20,7 +20,7 @@ class ListsTimelineTableViewController: StatusTableViewController {
             guard let object = n.object as? [String: String] else {
                 return
             }
-            guard let targetUserID = object["targetUserID"], let targetListID = object["targetListID"] else {
+            guard let targetUserID = object["targetUserID"], targetListID = object["targetListID"] else {
                 return
             }
             if let list = self.list where list.id == targetListID {
@@ -32,7 +32,7 @@ class ListsTimelineTableViewController: StatusTableViewController {
             guard let object = n.object as? [String: String] else {
                 return
             }
-            guard let targetUserID = object["targetUserID"], let targetListID = object["targetListID"] else {
+            guard let targetUserID = object["targetUserID"], targetListID = object["targetListID"] else {
                 return
             }
             if let list = self.list where list.id == targetListID {
@@ -76,7 +76,7 @@ class ListsTimelineTableViewController: StatusTableViewController {
                 Async.background {
                     let key = "lists:\(list.id):members"
                     var createdAt: NSNumber = 0
-                    if let cache = KeyClip.load(key) as NSDictionary?, let ids = cache["ids"] as? [String] {
+                    if let cache = KeyClip.load(key) as NSDictionary?, ids = cache["ids"] as? [String] {
                         for id in ids {
                             self.memberIDs?.setObject(true, forKey: id)
                         }
