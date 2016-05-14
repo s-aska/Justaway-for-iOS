@@ -210,6 +210,10 @@ class TwitterStatusCell: BackgroundTableViewCell {
         iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openProfile(_:))))
         iconImageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(openUserMenu(_:))))
 
+        menuButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(openFullMenu(_:))))
+
+        quotedStatusContainerView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(openFullMenuForQuoted(_:))))
+
         playerWrapperView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideVideo)))
         playerWrapperView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
 
@@ -684,6 +688,24 @@ class TwitterStatusCell: BackgroundTableViewCell {
         }
     }
 
+    func openFullMenu(sender: UILongPressGestureRecognizer) {
+        if sender.state != .Began {
+            return
+        }
+        if let status = status, view = sender.view {
+            StatusAlert.show(view, status: status, full: true)
+        }
+    }
+
+    func openFullMenuForQuoted(sender: UILongPressGestureRecognizer) {
+        if sender.state != .Began {
+            return
+        }
+        if let status = status?.quotedStatus, view = sender.view {
+            StatusAlert.show(view, status: status, full: true)
+        }
+    }
+
     // 1 ... left top (tag:0, page:0)
     // 2 ... left top (tag:0, page:0) => right top (tag:1, page:1)
     // 3 ... left top (tag:0, page:0) => right top (tag:1, page:1) => right bottom (tag:2, page:2)
@@ -843,7 +865,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     @IBAction func menu(sender: BaseButton) {
         if let status = status {
-            StatusAlert.show(sender, status: status)
+            StatusAlert.show(sender, status: status, full: false)
         }
     }
 

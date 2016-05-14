@@ -17,6 +17,8 @@ class TwitterUserCell: BackgroundTableViewCell {
     @IBOutlet weak var descriptionLabel: StatusLable!
     @IBOutlet weak var textHeightConstraint: NSLayoutConstraint!
 
+    var user: TwitterUserFull?
+
     // MARK: - View Life Cycle
 
     override func awakeFromNib() {
@@ -31,5 +33,16 @@ class TwitterUserCell: BackgroundTableViewCell {
         separatorInset = UIEdgeInsetsZero
         layoutMargins = UIEdgeInsetsZero
         preservesSuperviewLayoutMargins = false
+    }
+
+    @IBAction func menu(sender: UIButton) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
+        if let user = user {
+            Relationship.checkUser(account.userID, targetUserID: user.userID, callback: { (relationshop) in
+                UserAlert.show(sender, user: TwitterUser(user), userFull: user, relationship: relationshop)
+            })
+        }
     }
 }

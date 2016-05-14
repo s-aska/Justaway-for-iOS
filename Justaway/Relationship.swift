@@ -25,20 +25,20 @@ class Relationship {
         var noRetweets = [String: Bool]()
     }
 
-    class func check(sourceUserID: String, targetUserID: String, retweetUserID: String?, quotedUserID: String?, callback: ((blocking: Bool, muting: Bool, wantRetweets: Bool) -> Void)) {
+    class func check(sourceUserID: String, targetUserID: String, retweetUserID: String?, quotedUserID: String?, callback: ((blocking: Bool, muting: Bool, noRetweets: Bool) -> Void)) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             guard let data = Static.users[sourceUserID] else {
                 op.finish()
-                callback(blocking: false, muting: false, wantRetweets: false)
+                callback(blocking: false, muting: false, noRetweets: false)
                 return
             }
 
             var blocking = data.blocks[targetUserID] ?? false
             var muting = data.mutes[targetUserID] ?? false
-            var wantRetweets = false
+            var noRetweets = false
 
             if let retweetUserID = retweetUserID {
-                wantRetweets = data.noRetweets[retweetUserID] ?? false
+                noRetweets = data.noRetweets[retweetUserID] ?? false
             }
 
             if let quotedUserID = quotedUserID {
@@ -50,7 +50,7 @@ class Relationship {
                 }
             }
             op.finish()
-            callback(blocking: blocking, muting: muting, wantRetweets: wantRetweets)
+            callback(blocking: blocking, muting: muting, noRetweets: noRetweets)
         }))
     }
 

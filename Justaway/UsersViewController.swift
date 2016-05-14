@@ -1,16 +1,15 @@
 //
-//  UserViewController.swift
+//  UsersViewController.swift
 //  Justaway
 //
-//  Created by Shinichiro Aska on 6/7/15.
-//  Copyright (c) 2015 Shinichiro Aska. All rights reserved.
+//  Created by Shinichiro Aska on 5/15/16.
+//  Copyright © 2016 Shinichiro Aska. All rights reserved.
 //
 
 import UIKit
-import EventBox
 import Async
 
-class UserTableViewController: TimelineTableViewController {
+class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     // MARK: Types
 
@@ -20,14 +19,15 @@ class UserTableViewController: TimelineTableViewController {
 
     // MARK: Properties
 
+    @IBOutlet weak var tableView: UITableView!
+
     var footerView: UIView?
     var footerIndicatorView: UIActivityIndicatorView?
-
-    var userID: String?
 
     var rows = [Row]()
     var layoutHeightCell: TwitterUserCell?
     var layoutHeight: CGFloat?
+    var loaded = false
 
     struct Row {
         let user: TwitterUserFull
@@ -43,21 +43,8 @@ class UserTableViewController: TimelineTableViewController {
         }
     }
 
-    // MARK: UITableViewDelegate
-
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return timelineHooterHeight
-    }
-
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if footerView == nil {
-            footerView = UIView(frame: CGRect.init(x: 0, y: 0, width: view.frame.size.width, height: timelineHooterHeight))
-            footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
-            footerView?.addSubview(footerIndicatorView!)
-            footerIndicatorView?.hidesWhenStopped = true
-            footerIndicatorView?.center = (footerView?.center)!
-        }
-        return footerView
+    override var nibName: String {
+        return "UsersViewController"
     }
 
     // MARK: - View Life Cycle
@@ -67,48 +54,36 @@ class UserTableViewController: TimelineTableViewController {
         configureView()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        configureEvent()
-    }
-
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        EventBox.off(self)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if loaded == false {
+            loaded = true
+            loadData()
+        }
     }
 
     // MARK: - Configuration
 
     func configureView() {
-        self.tableView.separatorInset = UIEdgeInsetsZero
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        tableView.separatorInset = UIEdgeInsetsZero
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        tableView.delegate = self
+        tableView.dataSource = self
 
         let nib = UINib(nibName: "TwitterUserCell", bundle: nil)
-        self.tableView.registerNib(nib, forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
-        self.layoutHeightCell = self.tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier) as? TwitterUserCell
-
-//        let refreshControl = UIRefreshControl()
-//        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
-//        self.refreshControl = refreshControl
+        tableView.registerNib(nib, forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
+        layoutHeightCell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier) as? TwitterUserCell
     }
 
-    func configureEvent() {
-        EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { (n) -> Void in
-            self.tableView.setContentOffset(CGPoint.zero, animated: true)
-        })
-    }
+    // MARK: - Private
 
     // MARK: - UITableViewDataSource
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return rows.count ?? 0
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let row = rows[indexPath.row]
         let user = row.user
         // swiftlint:disable:next force_cast
@@ -137,12 +112,27 @@ class UserTableViewController: TimelineTableViewController {
 
     // MARK: UITableViewDelegate
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return timelineHooterHeight
+    }
+
+    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if footerView == nil {
+            footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: timelineHooterHeight))
+            footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
+            footerView?.addSubview(footerIndicatorView!)
+            footerIndicatorView?.hidesWhenStopped = true
+            footerIndicatorView?.center = (footerView?.center)!
+        }
+        return footerView
+    }
+
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let row = rows[indexPath.row]
         return row.height
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let row = rows[indexPath.row]
         ProfileViewController.show(TwitterUser(row.user))
     }
@@ -154,6 +144,8 @@ class UserTableViewController: TimelineTableViewController {
             return Row(user: user, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
         } else if let cell = self.layoutHeightCell {
             cell.frame = self.tableView.bounds
+            cell.setNeedsLayout()
+            cell.layoutIfNeeded()
             let textHeight = measure(user.description, fontSize: fontSize)
             cell.textHeightConstraint.constant = 0
             let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
@@ -172,11 +164,7 @@ class UserTableViewController: TimelineTableViewController {
             context: nil).size.height)
     }
 
-    override func refresh() {
-        loadData(nil)
-    }
-
-    func loadData(maxID: Int64?) {
+    func loadData() {
         let fontSize = CGFloat(GenericSettings.get().fontSize)
 
         let s = { (users: [TwitterUserFull]) -> Void in
@@ -189,17 +177,25 @@ class UserTableViewController: TimelineTableViewController {
             self.footerIndicatorView?.stopAnimating()
         }
 
-        if !(self.refreshControl?.refreshing ?? false) {
-            Async.main {
-                self.footerIndicatorView?.startAnimating()
-                return
-            }
+        Async.main {
+            self.footerIndicatorView?.startAnimating()
         }
 
-        loadData(maxID?.stringValue, success: s, failure: f)
+        loadData(success: s, failure: f)
     }
 
-    func loadData(maxID: String?, success: ((users: [TwitterUserFull]) -> Void), failure: ((error: NSError) -> Void)) {
-        assertionFailure("not implements.")
+    func loadData(success success: ((users: [TwitterUserFull]) -> Void), failure: ((error: NSError) -> Void)) {
+    }
+
+    // MARK: - Action
+
+    @IBAction func left(sender: UIButton) {
+        hide()
+    }
+
+    // MARK: - Public
+
+    func hide() {
+        ViewTools.slideOut(self)
     }
 }

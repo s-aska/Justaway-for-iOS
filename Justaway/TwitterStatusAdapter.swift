@@ -317,7 +317,7 @@ extension TwitterStatusAdapter {
         }
         let row = rows[indexPath.row]
         if let status = row.status {
-            StatusAlert.show(cell, status: status)
+            TalkViewController.show(status)
         } else if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ShowMoreTweetsCell {
 
             Async.main {

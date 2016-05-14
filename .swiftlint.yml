@@ -3,6 +3,7 @@ included:
 - JustawayShare
 disabled_rules:
 - line_length
+- file_length
 - type_body_length
 variable_name:
   excluded:
