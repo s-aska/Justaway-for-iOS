@@ -7,35 +7,38 @@
 //
 
 import Foundation
-import Async
 import SwiftyJSON
+import KeyClip
 
 class Relationship {
 
     struct Static {
         static var users = [String: Data]()
-        private static let queue = dispatch_queue_create("pw.aska.justaway.relationship", DISPATCH_QUEUE_SERIAL)
+        private static let queue = NSOperationQueue().serial()
     }
 
     struct Data {
+        var friends = [String: Bool]()
+        var followers = [String: Bool]()
         var blocks = [String: Bool]()
         var mutes = [String: Bool]()
         var noRetweets = [String: Bool]()
     }
 
-    class func check(sourceUserID: String, targetUserID: String, retweetUserID: String?, quotedUserID: String?, callback: ((blocking: Bool, muting: Bool, want_retweets: Bool) -> Void)) {
-        dispatch_sync(Static.queue) {
+    class func check(sourceUserID: String, targetUserID: String, retweetUserID: String?, quotedUserID: String?, callback: ((blocking: Bool, muting: Bool, wantRetweets: Bool) -> Void)) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
             guard let data = Static.users[sourceUserID] else {
-                callback(blocking: false, muting: false, want_retweets: false)
+                op.finish()
+                callback(blocking: false, muting: false, wantRetweets: false)
                 return
             }
 
             var blocking = data.blocks[targetUserID] ?? false
             var muting = data.mutes[targetUserID] ?? false
-            var want_retweets = false
+            var wantRetweets = false
 
             if let retweetUserID = retweetUserID {
-                want_retweets = data.noRetweets[retweetUserID] ?? false
+                wantRetweets = data.noRetweets[retweetUserID] ?? false
             }
 
             if let quotedUserID = quotedUserID {
@@ -46,106 +49,282 @@ class Relationship {
                     muting = data.mutes[quotedUserID] ?? false
                 }
             }
+            op.finish()
+            callback(blocking: blocking, muting: muting, wantRetweets: wantRetweets)
+        }))
+    }
 
-            Async.background {
-                callback(blocking: blocking, muting: muting, want_retweets: want_retweets)
+    class func checkUser(sourceUserID: String, targetUserID: String, callback: ((relationshop: TwitterRelationship) -> Void)) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            guard let data = Static.users[sourceUserID] else {
+                op.finish()
+                callback(relationshop: TwitterRelationship(following: false, followedBy: false, blocking: false, muting: false, wantRetweets: false))
+                return
             }
-        }
+
+            let following = data.friends[targetUserID] ?? false
+            let followedBy = data.followers[targetUserID] ?? false
+            let blocking = data.blocks[targetUserID] ?? false
+            let muting = data.mutes[targetUserID] ?? false
+            let noRetweets = data.noRetweets[targetUserID] ?? false
+
+            op.finish()
+            callback(relationshop: TwitterRelationship(following: following, followedBy: followedBy, blocking: blocking, muting: muting, wantRetweets: !noRetweets))
+        }))
+    }
+
+    class func follow(account: Account, targetUserID: String) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            Static.users[account.userID]?.friends[targetUserID] = true
+            op.finish()
+        }))
+    }
+
+    class func unfollow(account: Account, targetUserID: String) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            Static.users[account.userID]?.friends.removeValueForKey(targetUserID)
+            op.finish()
+        }))
+    }
+
+    class func followed(account: Account, targetUserID: String) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            Static.users[account.userID]?.followers[targetUserID] = true
+            op.finish()
+        }))
     }
 
     class func block(account: Account, targetUserID: String) {
-        dispatch_sync(Static.queue) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
             Static.users[account.userID]?.blocks[targetUserID] = true
-        }
+            op.finish()
+        }))
     }
 
     class func unblock(account: Account, targetUserID: String) {
-        dispatch_sync(Static.queue) {
-            Static.users[account.userID]?.blocks[targetUserID] = false
-        }
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            Static.users[account.userID]?.blocks.removeValueForKey(targetUserID)
+            op.finish()
+        }))
     }
 
     class func mute(account: Account, targetUserID: String) {
-        dispatch_sync(Static.queue) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
             Static.users[account.userID]?.mutes[targetUserID] = true
-        }
+            op.finish()
+        }))
     }
 
     class func unmute(account: Account, targetUserID: String) {
-        dispatch_sync(Static.queue) {
-            Static.users[account.userID]?.mutes[targetUserID] = false
-        }
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            Static.users[account.userID]?.mutes.removeValueForKey(targetUserID)
+            op.finish()
+        }))
     }
 
     class func turnOffRetweets(account: Account, targetUserID: String) {
-        dispatch_sync(Static.queue) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
             Static.users[account.userID]?.noRetweets[targetUserID] = true
-        }
+            op.finish()
+        }))
     }
 
     class func turnOnRetweets(account: Account, targetUserID: String) {
-        dispatch_sync(Static.queue) {
-            Static.users[account.userID]?.noRetweets[targetUserID] = false
-        }
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            Static.users[account.userID]?.noRetweets.removeValueForKey(targetUserID)
+            op.finish()
+        }))
     }
 
     class func setup(account: Account) {
-        dispatch_sync(Static.queue) {
-            if Static.users[account.userID] == nil {
-                Async.background {
-                    load(account)
-                }
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            if Static.users[account.userID] != nil {
+                op.finish()
+                return
             }
-        }
+            Static.users[account.userID] = Data()
+            op.finish()
+            load(account)
+        }))
     }
 
     class func load(account: Account) {
-        Static.users[account.userID] = Data()
+        loadFriends(account)
+        loadFollowers(account)
+        loadMutes(account)
+        loadNoRetweets(account)
+        loadBlocks(account)
+    }
 
-        let successBlocks = { (json: JSON) -> Void in
-            guard let ids = json["ids"].array?.map({ $0.string ?? "" }).filter({ !$0.isEmpty }) else {
-                return
-            }
-            NSLog("[Relationship] load user:\(account.screenName) blocks: \(ids.count)")
-            dispatch_sync(Static.queue) {
+    class func loadFriends(account: Account) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            let cacheKey = "relationship-friends-\(account.userID)"
+            let now = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970
+            if let cache = KeyClip.load(cacheKey) as NSDictionary?,
+                createdAt = cache["createdAt"] as? NSNumber,
+                ids = cache["ids"] as? [String]
+                where (now - createdAt.doubleValue) < 600 {
+                NSLog("[Relationship] load cache user:\(account.screenName) friends: \(ids.count) delta:\(now - createdAt.doubleValue)")
                 for id in ids {
-                    Static.users[account.userID]?.blocks[id] = true
+                    Static.users[account.userID]?.friends[id] = true
                 }
-            }
-        }
-
-        let successMutes = { (json: JSON) -> Void in
-            guard let ids = json["ids"].array?.map({ $0.string ?? "" }).filter({ !$0.isEmpty }) else {
+                op.finish()
                 return
             }
-            NSLog("[Relationship] load user:\(account.screenName) mutes: \(ids.count)")
-            dispatch_sync(Static.queue) {
+            let success = { (json: JSON) -> Void in
+                guard let ids = json["ids"].array?.map({ $0.string ?? "" }).filter({ !$0.isEmpty }) else {
+                    op.finish()
+                    return
+                }
+                NSLog("[Relationship] load user:\(account.screenName) friends: \(ids.count)")
+                for id in ids {
+                    Static.users[account.userID]?.friends[id] = true
+                }
+                op.finish()
+                KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970)])
+            }
+            account.client
+                .get("https://api.twitter.com/1.1/friends/ids.json", parameters: ["stringify_ids": "true"])
+                .responseJSON(success, failure: { (code, message, error) in
+                    op.finish()
+                })
+        }))
+    }
+
+    class func loadFollowers(account: Account) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            let cacheKey = "relationship-followers-\(account.userID)"
+            let now = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970
+            if let cache = KeyClip.load(cacheKey) as NSDictionary?,
+                createdAt = cache["createdAt"] as? NSNumber,
+                ids = cache["ids"] as? [String]
+                where (now - createdAt.doubleValue) < 600 {
+                NSLog("[Relationship] load cache user:\(account.screenName) followers: \(ids.count) delta:\(now - createdAt.doubleValue)")
+                for id in ids {
+                    Static.users[account.userID]?.followers[id] = true
+                }
+                op.finish()
+                return
+            }
+            let success = { (json: JSON) -> Void in
+                guard let ids = json["ids"].array?.map({ $0.string ?? "" }).filter({ !$0.isEmpty }) else {
+                    op.finish()
+                    return
+                }
+                NSLog("[Relationship] load user:\(account.screenName) followers: \(ids.count)")
+                for id in ids {
+                    Static.users[account.userID]?.followers[id] = true
+                }
+                op.finish()
+                KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970)])
+            }
+            account.client
+                .get("https://api.twitter.com/1.1/followers/ids.json", parameters: ["stringify_ids": "true"])
+                .responseJSON(success, failure: { (code, message, error) in
+                    op.finish()
+                })
+        }))
+    }
+
+    class func loadMutes(account: Account) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            let cacheKey = "relationship-mutes-\(account.userID)"
+            let now = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970
+            if let cache = KeyClip.load(cacheKey) as NSDictionary?,
+                createdAt = cache["createdAt"] as? NSNumber,
+                ids = cache["ids"] as? [String]
+                where (now - createdAt.doubleValue) < 600 {
+                NSLog("[Relationship] load cache user:\(account.screenName) mutes: \(ids.count) delta:\(now - createdAt.doubleValue)")
                 for id in ids {
                     Static.users[account.userID]?.mutes[id] = true
                 }
+                op.finish()
+                return
             }
-        }
+            let success = { (json: JSON) -> Void in
+                guard let ids = json["ids"].array?.map({ $0.string ?? "" }).filter({ !$0.isEmpty }) else {
+                    op.finish()
+                    return
+                }
+                NSLog("[Relationship] load user:\(account.screenName) mutes: \(ids.count)")
+                for id in ids {
+                    Static.users[account.userID]?.mutes[id] = true
+                }
+                op.finish()
+                KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970)])
+            }
+            account.client
+                .get("https://api.twitter.com/1.1/mutes/users/ids.json", parameters: ["stringify_ids": "true"])
+                .responseJSON(success, failure: { (code, message, error) in
+                    op.finish()
+                })
+        }))
+    }
 
-        let successNoRetweets = { (array: [JSON]) -> Void in
-            let ids = array.map({ $0.string ?? "" }).filter({ !$0.isEmpty })
-            NSLog("[Relationship] load user:\(account.screenName) noRetweets: \(ids.count)")
-            dispatch_sync(Static.queue) {
+    class func loadNoRetweets(account: Account) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            let cacheKey = "relationship-noRetweets-\(account.userID)"
+            let now = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970
+            if let cache = KeyClip.load(cacheKey) as NSDictionary?,
+                createdAt = cache["createdAt"] as? NSNumber,
+                ids = cache["ids"] as? [String]
+                where (now - createdAt.doubleValue) < 600 {
+                NSLog("[Relationship] load cache user:\(account.screenName) noRetweets: \(ids.count) delta:\(now - createdAt.doubleValue)")
                 for id in ids {
                     Static.users[account.userID]?.noRetweets[id] = true
                 }
+                op.finish()
+                return
             }
-        }
+            let success = { (array: [JSON]) -> Void in
+                let ids = array.map({ $0.string ?? "" }).filter({ !$0.isEmpty })
+                NSLog("[Relationship] load user:\(account.screenName) noRetweets: \(ids.count)")
+                for id in ids {
+                    Static.users[account.userID]?.noRetweets[id] = true
+                }
+                op.finish()
+                KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970)])
+            }
+            account.client
+                .get("https://api.twitter.com/1.1/friendships/no_retweets/ids.json", parameters: ["stringify_ids": "true"])
+                .responseJSONArray(success, failure: { (code, message, error) in
+                    op.finish()
+                })
+        }))
+    }
 
-        account.client
-            .get("https://api.twitter.com/1.1/mutes/users/ids.json", parameters: ["stringify_ids": "true"])
-            .responseJSON(successMutes)
-
-        account.client
-            .get("https://api.twitter.com/1.1/friendships/no_retweets/ids.json", parameters: ["stringify_ids": "true"])
-            .responseJSONArray(successNoRetweets)
-
-        account.client
-            .get("https://api.twitter.com/1.1/blocks/ids.json", parameters: ["stringify_ids": "true"])
-            .responseJSON(successBlocks)
+    class func loadBlocks(account: Account) {
+        Static.queue.addOperation(AsyncBlockOperation({ (op) in
+            let cacheKey = "relationship-blocks-\(account.userID)"
+            let now = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970
+            if let cache = KeyClip.load(cacheKey) as NSDictionary?,
+                createdAt = cache["createdAt"] as? NSNumber,
+                ids = cache["ids"] as? [String]
+                where (now - createdAt.doubleValue) < 600 {
+                NSLog("[Relationship] load cache user:\(account.screenName) blocks: \(ids.count) delta:\(now - createdAt.doubleValue)")
+                for id in ids {
+                    Static.users[account.userID]?.blocks[id] = true
+                }
+                op.finish()
+                return
+            }
+            let success = { (json: JSON) -> Void in
+                guard let ids = json["ids"].array?.map({ $0.string ?? "" }).filter({ !$0.isEmpty }) else {
+                    op.finish()
+                    return
+                }
+                NSLog("[Relationship] load user:\(account.screenName) blocks: \(ids.count)")
+                for id in ids {
+                    Static.users[account.userID]?.blocks[id] = true
+                }
+                op.finish()
+                KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970)])
+            }
+            account.client
+                .get("https://api.twitter.com/1.1/blocks/ids.json", parameters: ["stringify_ids": "true"])
+                .responseJSON(success, failure: { (code, message, error) in
+                    op.finish()
+                })
+        }))
     }
 }

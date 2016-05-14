@@ -343,14 +343,12 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 let acceptStatuses = statuses.filter({ vc.accept($0) })
                 if acceptStatuses.count > 0 {
                     vc.renderData(acceptStatuses, mode: .TOP, handler: {})
-                    NSLog("acceptStatuses count:\(acceptStatuses.count)")
                     for status in acceptStatuses {
                         let actionedByUserID = status.actionedBy?.userID ?? ""
                         let actionedByMe = AccountSettingsStore.get()?.isMe(actionedByUserID) ?? false
                         if !actionedByMe {
                             if self.currentPage != page {
                                 self.tabButtons[page].selected = true
-                                NSLog("tabButtons selected page:\(page)")
                                 break
                             } else {
                                 let buttonIndex = page
@@ -361,7 +359,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                                     operation.finish()
                                 }
                                 vc.adapter.mainQueue.addOperation(operation)
-                                NSLog("tabButtons selected addOperation page:\(page)")
                                 break
                             }
                         }

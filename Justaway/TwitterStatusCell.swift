@@ -165,6 +165,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
     @IBOutlet weak var replyButton: UIButton!
     @IBOutlet weak var retweetButton: UIButton!
     @IBOutlet weak var favoriteButton: UIButton!
+    @IBOutlet weak var menuButton: UIButton!
 
     @IBOutlet weak var retweetCountLabel: UILabel!
     @IBOutlet weak var favoriteCountLabel: UILabel!
@@ -197,26 +198,27 @@ class TwitterStatusCell: BackgroundTableViewCell {
         for imageView in [imageView1, imageView2, imageView3, imageView4] {
             imageView.clipsToBounds = true
             imageView.contentMode = .ScaleAspectFill
-            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(TwitterStatusCell.showImage(_:))))
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showImage(_:))))
         }
 
         for imageView in [quotedImageView1, quotedImageView2, quotedImageView3, quotedImageView4] {
             imageView.clipsToBounds = true
             imageView.contentMode = .ScaleAspectFill
-            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(TwitterStatusCell.showQuotedImage(_:))))
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showQuotedImage(_:))))
         }
 
-        iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(TwitterStatusCell.openProfile(_:))))
+        iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openProfile(_:))))
+        iconImageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(openUserMenu(_:))))
 
-        playerWrapperView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(TwitterStatusCell.hideVideo)))
+        playerWrapperView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideVideo)))
         playerWrapperView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
 
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(TwitterStatusCell.videoSwipeUp))
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(videoSwipeUp))
         swipeUp.numberOfTouchesRequired = 1
         swipeUp.direction = .Up
         playerWrapperView.addGestureRecognizer(swipeUp)
 
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(TwitterStatusCell.videoSwipeDown))
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(videoSwipeDown))
         swipeDown.numberOfTouchesRequired = 1
         swipeDown.direction = .Down
         playerWrapperView.addGestureRecognizer(swipeDown)
@@ -664,6 +666,24 @@ class TwitterStatusCell: BackgroundTableViewCell {
         }
     }
 
+    func openUserMenu(sender: UILongPressGestureRecognizer) {
+        if sender.state != .Began {
+            return
+        }
+        guard let account = AccountSettingsStore.get()?.account(), view = sender.view else {
+            return
+        }
+        if let user = status?.user {
+            Relationship.checkUser(account.userID, targetUserID: user.userID, callback: { (relationshop) in
+                UserAlert.show(view, user: user, userFull: nil, relationship: relationshop)
+            })
+        } else if let user = message?.sender {
+            Relationship.checkUser(account.userID, targetUserID: user.userID, callback: { (relationshop) in
+                UserAlert.show(view, user: user, userFull: nil, relationship: relationshop)
+            })
+        }
+    }
+
     // 1 ... left top (tag:0, page:0)
     // 2 ... left top (tag:0, page:0) => right top (tag:1, page:1)
     // 3 ... left top (tag:0, page:0) => right top (tag:1, page:1) => right bottom (tag:2, page:2)
@@ -818,6 +838,12 @@ class TwitterStatusCell: BackgroundTableViewCell {
             if let statusID = self.status?.statusID {
                 Twitter.toggleFavorite(statusID)
             }
+        }
+    }
+
+    @IBAction func menu(sender: BaseButton) {
+        if let status = status {
+            StatusAlert.show(sender, status: status)
         }
     }
 

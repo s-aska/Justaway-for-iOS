@@ -56,9 +56,9 @@ class TwitterSearchStreaming {
         let status = TwitterStatus(responce, connectionID: "")
         let quotedUserID = status.quotedStatus?.user.userID
         let retweetUserID = status.actionedBy != nil && status.type != .Favorite ? status.actionedBy?.userID : nil
-        Relationship.check(sourceUserID, targetUserID: status.user.userID, retweetUserID: retweetUserID, quotedUserID: quotedUserID) { (blocking, muting, want_retweets) -> Void in
-            if blocking || muting || want_retweets {
-                NSLog("skip blocking:\(blocking) muting:\(muting) want_retweets:\(want_retweets) text:\(status.text)")
+        Relationship.check(sourceUserID, targetUserID: status.user.userID, retweetUserID: retweetUserID, quotedUserID: quotedUserID) { (blocking, muting, wantRetweets) -> Void in
+            if blocking || muting || wantRetweets {
+                NSLog("skip blocking:\(blocking) muting:\(muting) wantRetweets:\(wantRetweets) text:\(status.text)")
                 return
             }
             Async.main {

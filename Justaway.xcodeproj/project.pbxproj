@@ -258,6 +258,12 @@
 		6A83EDA71B69400B000F3C43 /* ThemeSolarizedLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEA91A67F52400FBD015 /* ThemeSolarizedLight.swift */; };
 		6A83EDA81B69400B000F3C43 /* ThemeSolarizedDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3805DEAB1A67F63300FBD015 /* ThemeSolarizedDark.swift */; };
 		6A83EDA91B694210000F3C43 /* BaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADB648B1A5DD65800602B2B /* BaseButton.swift */; };
+		6A8A287F1CE7266F00BF9606 /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8A287E1CE7266F00BF9606 /* TweetViewController.swift */; };
+		6A8A28801CE7266F00BF9606 /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8A287E1CE7266F00BF9606 /* TweetViewController.swift */; };
+		6A8A28821CE726A500BF9606 /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A8A28811CE726A500BF9606 /* TweetViewController.xib */; };
+		6A8A28831CE726A500BF9606 /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A8A28811CE726A500BF9606 /* TweetViewController.xib */; };
+		6A8A28851CE7309A00BF9606 /* TweetDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A8A28841CE7309A00BF9606 /* TweetDetailCell.xib */; };
+		6A8A28861CE7309A00BF9606 /* TweetDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A8A28841CE7309A00BF9606 /* TweetDetailCell.xib */; };
 		6A923A7F1BBAECC900F74AC9 /* TwitterAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3848FFEB1BB1327900AC04FC /* TwitterAPI.framework */; };
 		6A923A811BBAECCD00F74AC9 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */; };
 		6A9C18371C7378CD00A1FE77 /* ChooseListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C18361C7378CD00A1FE77 /* ChooseListsViewController.swift */; };
@@ -486,6 +492,9 @@
 		6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pinwheel.framework; path = Carthage/Build/iOS/Pinwheel.framework; sourceTree = "<group>"; };
 		6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuViewController.xib; sourceTree = "<group>"; };
+		6A8A287E1CE7266F00BF9606 /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetViewController.swift; sourceTree = "<group>"; };
+		6A8A28811CE726A500BF9606 /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TweetViewController.xib; sourceTree = "<group>"; };
+		6A8A28841CE7309A00BF9606 /* TweetDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TweetDetailCell.xib; sourceTree = "<group>"; };
 		6A9C18361C7378CD00A1FE77 /* ChooseListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseListsViewController.swift; sourceTree = "<group>"; };
 		6A9C18381C7378E200A1FE77 /* ChooseListsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseListsViewController.xib; sourceTree = "<group>"; };
 		6A9C183B1C737F6600A1FE77 /* ListsTimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsTimelineViewController.swift; sourceTree = "<group>"; };
@@ -617,6 +626,7 @@
 			children = (
 				381E6E8419E2A69200139654 /* TwitterStatusCell.swift */,
 				381E6E8219E2A56A00139654 /* TwitterStatusCell.xib */,
+				6A8A28841CE7309A00BF9606 /* TweetDetailCell.xib */,
 				6A3F4F3B1B110E74009F80C4 /* AccountCell.swift */,
 				6A3F4F3D1B110E8E009F80C4 /* AccountCell.xib */,
 				6A04494D1B24812E00758061 /* TwitterUserCell.swift */,
@@ -873,6 +883,8 @@
 				6A4B9D3019BB514900D50D78 /* ViewController.swift */,
 				6A396A771CD9E09A00E878E5 /* ToastViewController.swift */,
 				6A396A791CD9E0B000E878E5 /* ToastViewController.xib */,
+				6A8A287E1CE7266F00BF9606 /* TweetViewController.swift */,
+				6A8A28811CE726A500BF9606 /* TweetViewController.xib */,
 				6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */,
 				6AB55B3F19C563F600DC6442 /* EditorViewController.xib */,
 				6A35A1C41A6C193400A8E46D /* ImageViewController.swift */,
@@ -1115,6 +1127,7 @@
 				6A396A7A1CD9E0B000E878E5 /* ToastViewController.xib in Resources */,
 				38105F8A1BC554C000CEF2A7 /* LaunchScreen.xib in Resources */,
 				6A9C18391C7378E200A1FE77 /* ChooseListsViewController.xib in Resources */,
+				6A8A28851CE7309A00BF9606 /* TweetDetailCell.xib in Resources */,
 				38BC24A31CA92942003D7BBB /* MessagesViewController.xib in Resources */,
 				38B4475D19C062460055F074 /* fontello.ttf in Resources */,
 				6A81CF211BC406F400EBE567 /* SideMenuViewController.xib in Resources */,
@@ -1136,6 +1149,7 @@
 				6AB55B4519C584B300DC6442 /* SettingsViewController.xib in Resources */,
 				38F9B5781B46C6E800F429E7 /* TwitterListCell.xib in Resources */,
 				6A0AE9E51B5177FD00FBF937 /* Default-568h@2x.png in Resources */,
+				6A8A28821CE726A500BF9606 /* TweetViewController.xib in Resources */,
 				6A35A1CD1A6C196700A8E46D /* ImageViewController.xib in Resources */,
 				381E6E8319E2A56A00139654 /* TwitterStatusCell.xib in Resources */,
 				384DE9831BBAD64D0011AF6E /* SearchViewController.xib in Resources */,
@@ -1152,8 +1166,10 @@
 				384DE9501BBAC9810011AF6E /* TimelineViewController.xib in Resources */,
 				384DE9581BBAC9840011AF6E /* AccountCell.xib in Resources */,
 				384DE95A1BBAC9840011AF6E /* TwitterListCell.xib in Resources */,
+				6A8A28861CE7309A00BF9606 /* TweetDetailCell.xib in Resources */,
 				38BC24A41CA92B73003D7BBB /* MessagesViewController.xib in Resources */,
 				384DE9791BBACA140011AF6E /* AccountViewController.xib in Resources */,
+				6A8A28831CE726A500BF9606 /* TweetViewController.xib in Resources */,
 				384DE9541BBAC9810011AF6E /* TalkViewController.xib in Resources */,
 				6A7255741BC59EFF00A41020 /* SideMenuViewController.xib in Resources */,
 				384DE94E1BBAC9810011AF6E /* ImageViewController.xib in Resources */,
@@ -1269,6 +1285,7 @@
 				6A4B9D2F19BB514900D50D78 /* AppDelegate.swift in Sources */,
 				381E6E7E19DE4FB000139654 /* Secret.swift in Sources */,
 				3848FFEF1BB1363F00AC04FC /* AVPlayerView.swift in Sources */,
+				6A8A287F1CE7266F00BF9606 /* TweetViewController.swift in Sources */,
 				6AB839D31B669D2F00B772C8 /* TalkViewController.swift in Sources */,
 				3868B94519EFCCC7001221BF /* TwitterDate.swift in Sources */,
 				38A1A9A719F786EC0085EE12 /* TwitterHashtag.swift in Sources */,
@@ -1368,6 +1385,7 @@
 				6AB8CDEB1A29BB3B00D22268 /* TwitterTests.swift in Sources */,
 				384DE9781BBACA140011AF6E /* AccountViewController.swift in Sources */,
 				384DE93E1BBAC94D0011AF6E /* Twitter.swift in Sources */,
+				6A8A28801CE7266F00BF9606 /* TweetViewController.swift in Sources */,
 				384DE93F1BBAC9600011AF6E /* RetweetAlert.swift in Sources */,
 				384DE9691BBAC99F0011AF6E /* SettingsViewController.swift in Sources */,
 				6A83EDA81B69400B000F3C43 /* ThemeSolarizedDark.swift in Sources */,

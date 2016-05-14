@@ -22,15 +22,15 @@ class StatusAlert {
         Twitter.isRetweet(statusID) { (retweetedStatusID) -> Void in
             Twitter.isFavorite(statusID) { (isFavorite) -> Void in
 
-                addReplyAction(actionSheet, status: status)
+                // addReplyAction(actionSheet, status: status)
                 addShowReplyAction(actionSheet, status: status)
-                addFavRTAction(actionSheet, status: status, statusID: statusID, retweetedStatusID: retweetedStatusID, isFavorite: isFavorite)
+                // addFavRTAction(actionSheet, status: status, statusID: statusID, retweetedStatusID: retweetedStatusID, isFavorite: isFavorite)
                 addTranslateAction(actionSheet, status: status)
                 addShareAction(actionSheet, status: status)
-                addURLAction(actionSheet, status: status)
-                addHashTagAction(actionSheet, status: status)
-                addUserAction(actionSheet, status: status)
-                addViaAction(actionSheet, status: status)
+                // addURLAction(actionSheet, status: status)
+                // addHashTagAction(actionSheet, status: status)
+                // addUserAction(actionSheet, status: status)
+                // addViaAction(actionSheet, status: status)
                 addDeleteAction(actionSheet, status: status, statusID: statusID)
 
                 // iPad
@@ -81,12 +81,14 @@ class StatusAlert {
                     Twitter.destroyFavorite(statusID)
             }))
         } else {
+            /*
             actionSheet.addAction(UIAlertAction(
                 title: "Like",
                 style: .Default,
                 handler: { action in
                     Twitter.createFavorite(statusID)
             }))
+             */
         }
 
         if let retweetedStatusID = retweetedStatusID {
@@ -99,20 +101,24 @@ class StatusAlert {
                 }))
             }
         } else if !status.user.isProtected {
+            /*
             actionSheet.addAction(UIAlertAction(
                 title: "Retweet",
                 style: .Default,
                 handler: { action in
                     Twitter.createRetweet(statusID)
             }))
+             */
         }
 
+        /*
         actionSheet.addAction(UIAlertAction(
             title: "Quote",
             style: .Default,
             handler: { action in
                 Twitter.quoteURL(status)
         }))
+         */
     }
 
     private class func addShareAction(actionSheet: UIAlertController, status: TwitterStatus) {

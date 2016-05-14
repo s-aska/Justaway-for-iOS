@@ -31,4 +31,16 @@ struct TwitterRelationship {
         self.allReplies = json["all_replies"].boolValue
         self.notificationsEnabled = json["notifications_enabled"].boolValue
     }
+
+    init(following: Bool, followedBy: Bool, blocking: Bool, muting: Bool, wantRetweets: Bool) {
+        self.following = following
+        self.followedBy = followedBy
+        self.blocking = blocking
+        self.muting = muting
+        self.wantRetweets = wantRetweets
+        self.canDM = following && followedBy
+        self.markedSpam = false
+        self.allReplies = false
+        self.notificationsEnabled = false
+    }
 }

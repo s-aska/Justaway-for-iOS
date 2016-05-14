@@ -361,8 +361,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
 
     @IBAction func menu(sender: UIButton) {
-        if let userFull = userFull, let relationship = relationship {
-            UserAlert.show(sender, user: userFull, relationship: relationship)
+        if let user = user, userFull = userFull, relationship = relationship {
+            UserAlert.show(sender, user: user, userFull: userFull, relationship: relationship)
         }
     }
 
