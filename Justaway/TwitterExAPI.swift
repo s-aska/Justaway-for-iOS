@@ -105,4 +105,44 @@ extension Twitter {
             }
         }.resume()
     }
+
+    class func getFavoriters(status: TwitterStatus, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
+        guard let account = AccountSettingsStore.get()?.find(status.user.userID) where !account.exToken.isEmpty else {
+            success([])
+            return
+        }
+        let idsSuccess = { (json: JSON) in
+            guard let ids = json["ids"].array?.map({ $0.string ?? "" }).filter({ !$0.isEmpty }) else {
+                success([])
+                return
+            }
+            Twitter.getUsers(ids, success: success, failure: failure)
+        }
+        let urlComponents = NSURLComponents(string: "https://justaway.info/api/statuses/favoriters/ids.json")!
+        urlComponents.queryItems = [NSURLQueryItem(name: "id", value: status.statusID)]
+        guard let url = urlComponents.URL else {
+            success([])
+            return
+        }
+        let req = NSMutableURLRequest.init(URL: url)
+        req.setValue(account.exToken, forHTTPHeaderField: "X-Justaway-API-Token")
+        NSURLSession.sharedSession().dataTaskWithRequest(req) { (data, response, error) in
+            if let error = error {
+                failure(error)
+            } else if let data = data {
+                let HTTPResponse = response as? NSHTTPURLResponse
+                let HTTPStatusCode = HTTPResponse?.statusCode ?? 0
+                if HTTPStatusCode == 200 {
+                    let json = JSON(data: data)
+                    idsSuccess(json)
+                } else {
+                    let error = NSError.init(domain: NSURLErrorDomain, code: HTTPStatusCode, userInfo: [
+                        NSLocalizedDescriptionKey: "Justaway Ex API Error\nURL:\(url)\nHTTP StatusCode:\(HTTPStatusCode)",
+                        NSLocalizedRecoverySuggestionErrorKey: "-"
+                        ])
+                    failure(error)
+                }
+            }
+            }.resume()
+    }
 }

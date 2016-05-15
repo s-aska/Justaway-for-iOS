@@ -264,6 +264,8 @@
 		6A8A28891CE7AD5D00BF9606 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8A28871CE7AD5D00BF9606 /* UsersViewController.swift */; };
 		6A8A288E1CE7B22900BF9606 /* RetweetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8A288D1CE7B22900BF9606 /* RetweetsViewController.swift */; };
 		6A8A288F1CE7B22900BF9606 /* RetweetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8A288D1CE7B22900BF9606 /* RetweetsViewController.swift */; };
+		6A8A28911CE84D4400BF9606 /* LikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8A28901CE84D4400BF9606 /* LikesViewController.swift */; };
+		6A8A28921CE84D4400BF9606 /* LikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8A28901CE84D4400BF9606 /* LikesViewController.swift */; };
 		6A923A7F1BBAECC900F74AC9 /* TwitterAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3848FFEB1BB1327900AC04FC /* TwitterAPI.framework */; };
 		6A923A811BBAECCD00F74AC9 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3815C6891B7C97DF0014B0A2 /* OAuthSwift.framework */; };
 		6A9C18371C7378CD00A1FE77 /* ChooseListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C18361C7378CD00A1FE77 /* ChooseListsViewController.swift */; };
@@ -495,6 +497,7 @@
 		6A8A28811CE726A500BF9606 /* UsersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UsersViewController.xib; sourceTree = "<group>"; };
 		6A8A28871CE7AD5D00BF9606 /* UsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		6A8A288D1CE7B22900BF9606 /* RetweetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetweetsViewController.swift; sourceTree = "<group>"; };
+		6A8A28901CE84D4400BF9606 /* LikesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesViewController.swift; sourceTree = "<group>"; };
 		6A9C18361C7378CD00A1FE77 /* ChooseListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseListsViewController.swift; sourceTree = "<group>"; };
 		6A9C18381C7378E200A1FE77 /* ChooseListsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseListsViewController.xib; sourceTree = "<group>"; };
 		6A9C183B1C737F6600A1FE77 /* ListsTimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsTimelineViewController.swift; sourceTree = "<group>"; };
@@ -883,6 +886,7 @@
 				6A8A28871CE7AD5D00BF9606 /* UsersViewController.swift */,
 				6A8A28811CE726A500BF9606 /* UsersViewController.xib */,
 				6A8A288D1CE7B22900BF9606 /* RetweetsViewController.swift */,
+				6A8A28901CE84D4400BF9606 /* LikesViewController.swift */,
 				6A396A771CD9E09A00E878E5 /* ToastViewController.swift */,
 				6A396A791CD9E0B000E878E5 /* ToastViewController.xib */,
 				6AB55B3D19C562CF00DC6442 /* EditorViewController.swift */,
@@ -1318,6 +1322,7 @@
 				38F9B5741B46C30600F429E7 /* ListMemberOfViewController.swift in Sources */,
 				6AD963E51A69ABBC00136B53 /* AlertController.swift in Sources */,
 				381E6E8019DE9DAB00139654 /* Twitter.swift in Sources */,
+				6A8A28911CE84D4400BF9606 /* LikesViewController.swift in Sources */,
 				6A396A781CD9E09A00E878E5 /* ToastViewController.swift in Sources */,
 				6A51769A1B487085003D0A86 /* FavoritesViewController.swift in Sources */,
 				38BC24A11CA928EB003D7BBB /* MessagesViewController.swift in Sources */,
@@ -1453,6 +1458,7 @@
 				384DE9631BBAC9960011AF6E /* FavoritesViewController.swift in Sources */,
 				384DE97D1BBACA310011AF6E /* Scheduler.swift in Sources */,
 				38BC24A51CA92B76003D7BBB /* MessagesViewController.swift in Sources */,
+				6A8A28921CE84D4400BF9606 /* LikesViewController.swift in Sources */,
 				6ABECB4E1C625B6200423CB7 /* TabSettings.swift in Sources */,
 				6A83EDA71B69400B000F3C43 /* ThemeSolarizedLight.swift in Sources */,
 				384DE9701BBAC9EB0011AF6E /* AsyncOperation.swift in Sources */,

@@ -36,7 +36,9 @@ class StatusAlert {
                 if status.retweetCount > 0 {
                     addShowRetweets(actionSheet, status: status)
                 }
-                // TODO: Show Likes
+                if status.favoriteCount > 0 {
+                    addShowLikes(actionSheet, status: status)
+                }
 
                 if full {
                      addShowReplyAction(actionSheet, status: status)
@@ -104,6 +106,18 @@ class StatusAlert {
             style: .Default,
             handler: { action in
                 RetweetsViewController.show(status.statusID)
+        }))
+    }
+
+    private class func addShowLikes(actionSheet: UIAlertController, status: TwitterStatus) {
+        guard let account = AccountSettingsStore.get()?.find(status.user.userID) where !account.exToken.isEmpty else {
+            return
+        }
+        actionSheet.addAction(UIAlertAction(
+            title: "Show Likes",
+            style: .Default,
+            handler: { action in
+                LikesViewController.show(status)
         }))
     }
 

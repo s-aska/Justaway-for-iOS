@@ -318,22 +318,25 @@ class Twitter {
             })
     }
 
-    class func getRetweeters(statusID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
-        let lookupSuccess = { (array: [JSON]) -> Void in
+    class func getUsers(userIDs: [String], success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
+        let parameters = ["user_id": userIDs.joinWithSeparator(",")]
+        let success = { (array: [JSON]) -> Void in
             success(array.map({ TwitterUserFull($0) }))
         }
+        client()?
+            .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
+    }
+
+    class func getRetweeters(statusID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
         let retweetersSuccess = { (json: JSON) -> Void in
             guard let ids = json["ids"].array?.map({ $0.string ?? "" }).filter({ !$0.isEmpty }) else {
                 success([])
                 return
             }
-            let parameters = ["user_id": ids.joinWithSeparator(",")]
-            client()?
-                .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
-                .responseJSONArray(lookupSuccess, failure: { (code, message, error) -> Void in
-                    failure(error)
-                })
-
+            Twitter.getUsers(ids, success: success, failure: failure)
         }
         let parameters = ["id": statusID, "count": "100", "stringify_ids": "true"]
         client()?
