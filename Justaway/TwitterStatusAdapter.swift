@@ -165,11 +165,11 @@ class TwitterStatusAdapter: TwitterAdapter {
                 }
             }
             tableView.endUpdates()
-            tableView.setContentOffset(CGPoint.init(x: 0, y: lastCell.frame.origin.y - offset), animated: false)
+            tableView.setContentOffset(CGPoint(x: 0, y: lastCell.frame.origin.y - offset), animated: false)
             UIView.setAnimationsEnabled(true)
             if isTop {
                 UIView.animateWithDuration(0.3, animations: { _ in
-                    tableView.contentOffset = CGPoint.init(x: 0, y: -tableView.contentInset.top)
+                    tableView.contentOffset = CGPoint(x: 0, y: -tableView.contentInset.top)
                     }, completion: { _ in
                         self.scrollEnd(tableView)
                         self.renderDataCallback?(statuses: statuses, mode: mode)
@@ -177,7 +177,7 @@ class TwitterStatusAdapter: TwitterAdapter {
                 })
             } else {
                 if mode == .OVER {
-                    tableView.contentOffset = CGPoint.init(x: 0, y: -tableView.contentInset.top)
+                    tableView.contentOffset = CGPoint(x: 0, y: -tableView.contentInset.top)
                 }
                 self.renderDataCallback?(statuses: statuses, mode: mode)
                 handler?()
@@ -190,7 +190,7 @@ class TwitterStatusAdapter: TwitterAdapter {
             for status in statuses {
                 self.rows.append(self.createRow(status, fontSize: fontSize, tableView: tableView))
             }
-            tableView.setContentOffset(CGPoint.init(x: 0, y: -tableView.contentInset.top), animated: false)
+            tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: false)
             tableView.reloadData()
             self.renderImages(tableView)
             self.renderDataCallback?(statuses: statuses, mode: mode)
@@ -227,6 +227,23 @@ class TwitterStatusAdapter: TwitterAdapter {
             return nil
         }()
 
+        let keep: Bool = {
+            if maxID == nil {
+                return true
+            }
+            if sinceID == nil {
+                return false
+            }
+            if let iterator = tableView.indexPathsForVisibleRows?.enumerate() {
+                for (i, visibleIndexPath) in iterator {
+                    if indexPath.row == visibleIndexPath.row {
+                        return i < 4
+                    }
+                }
+            }
+            return false
+        }()
+
         delegate?.loadData(sinceID: sinceID, maxID: maxID, success: { (statuses) -> Void in
 
             let findLast: Bool = {
@@ -257,7 +274,12 @@ class TwitterStatusAdapter: TwitterAdapter {
             let insertStart = indexPath.row
             let insertIndexPaths = statuses.count == 0 ? [] : (insertStart ..< (insertStart + statuses.count)).map { i in NSIndexPath(forRow: i, inSection: 0) }
 
-            // print("showMoreTweets sinceID:\(sinceID) maxID:\(maxID) findLast:\(findLast) insertIndexPaths:\(insertIndexPaths.count) deleteIndexPaths:\(deleteIndexPaths.count) oldRows:\(self.rows.count)")
+            let lastCell = tableView.visibleCells.last
+            let offset = (lastCell?.frame.origin.y ?? 0) - tableView.contentOffset.y
+
+            if keep {
+                UIView.setAnimationsEnabled(false)
+            }
 
             tableView.beginUpdates()
             if deleteIndexPaths.count > 0 {
@@ -274,6 +296,19 @@ class TwitterStatusAdapter: TwitterAdapter {
                 tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
             }
             tableView.endUpdates()
+            if keep {
+                if let lastCell = lastCell {
+                    tableView.setContentOffset(CGPoint(x: 0, y: lastCell.frame.origin.y - offset), animated: false)
+                    UIView.setAnimationsEnabled(true)
+                    if insertIndexPaths.count > 0 && !findLast && indexPath.row == 0 {
+                        tableView.setContentOffset(CGPoint(x: 0, y: lastCell.frame.origin.y - offset - 50), animated: true)
+                    } else {
+                        self.scrollEnd(tableView)
+                    }
+                } else {
+                    UIView.setAnimationsEnabled(true)
+                }
+            }
             handler()
         }, failure: { (error) -> Void in
             ErrorAlert.show(error)
@@ -312,7 +347,7 @@ class TwitterStatusAdapter: TwitterAdapter {
 
 extension TwitterStatusAdapter {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+        guard let _ = tableView.cellForRowAtIndexPath(indexPath) else {
             return
         }
         let row = rows[indexPath.row]
@@ -337,6 +372,7 @@ extension TwitterStatusAdapter {
                 }
                 self.showMoreTweets(tableView, indexPath: indexPath, handler: always)
             })
+            NSLog("didSelectRowAtIndexPath loadDataQueue operationCount:\(self.loadDataQueue.operationCount) suspended:\(self.loadDataQueue.suspended)")
             self.loadDataQueue.addOperation(op)
         }
     }

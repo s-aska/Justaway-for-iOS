@@ -115,7 +115,7 @@ class TwitterStatus {
         }
     }
 
-    init(_ status: TwitterStatus, type: TwitterStatusType, event: String, actionedBy: TwitterUser) {
+    init(_ status: TwitterStatus, type: TwitterStatusType, event: String?, actionedBy: TwitterUser?) {
         self.type = type
         self.event = event
         self.actionedBy = actionedBy
@@ -132,7 +132,7 @@ class TwitterStatus {
         self.mentions = status.mentions
         self.hashtags = status.hashtags
         self.media = status.media
-        self.referenceStatusID = status.referenceStatusID
+        self.referenceStatusID = actionedBy != nil ? status.referenceStatusID : nil
         self.quotedStatus = status.quotedStatus
         self.connectionID = status.connectionID
         self.possiblySensitive = status.possiblySensitive

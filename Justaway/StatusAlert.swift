@@ -33,12 +33,16 @@ class StatusAlert {
                 addDeleteAction(actionSheet, status: status, statusID: statusID)
                 addTranslateAction(actionSheet, status: status)
                 addShareAction(actionSheet, status: status)
+
                 if status.retweetCount > 0 {
                     addShowRetweets(actionSheet, status: status)
                 }
+
                 if status.favoriteCount > 0 {
                     addShowLikes(actionSheet, status: status)
                 }
+
+                addShowAround(actionSheet, status: status)
 
                 if full {
                      addShowReplyAction(actionSheet, status: status)
@@ -98,6 +102,24 @@ class StatusAlert {
                 Safari.openURL("https://translate.google.co.jp/#auto/\(lang)/" + (encodeText as String))
                 return
         }))
+    }
+
+    private class func addShowAround(actionSheet: UIAlertController, status: TwitterStatus) {
+        actionSheet.addAction(UIAlertAction(
+            title: "Show around the Tweet",
+            style: .Default,
+            handler: { action in
+                AroundViewController.show(status.user.userID, statusID: status.statusID, rootStatus: TwitterStatus(status, type: .Normal, event: nil, actionedBy: nil))
+        }))
+
+        if let actionedBy = status.actionedBy, referenceStatusID = status.referenceStatusID where status.type == .Normal {
+            actionSheet.addAction(UIAlertAction(
+                title: "Show around the Retweet",
+                style: .Default,
+                handler: { action in
+                    AroundViewController.show(actionedBy.userID, statusID: referenceStatusID, rootStatus: status)
+            }))
+        }
     }
 
     private class func addShowRetweets(actionSheet: UIAlertController, status: TwitterStatus) {

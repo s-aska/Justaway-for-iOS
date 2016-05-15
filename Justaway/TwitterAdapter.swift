@@ -110,7 +110,7 @@ class TwitterAdapter: NSObject {
 
     func scrollBegin() {
         if !scrolling {
-            // NSLog("scrollBegin")
+            NSLog("scrollBegin")
         }
         isTop = false
         scrolling = true
@@ -120,7 +120,7 @@ class TwitterAdapter: NSObject {
 
     func scrollEnd(scrollView: UIScrollView) {
         if scrolling {
-            // NSLog("scrollEnd isTop:\(scrollView.contentOffset.y + scrollView.contentInset.top <= 0)")
+            NSLog("scrollEnd isTop:\(scrollView.contentOffset.y + scrollView.contentInset.top <= 0)")
         }
         scrolling = false
         loadDataQueue.suspended = false

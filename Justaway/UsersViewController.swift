@@ -8,6 +8,7 @@
 
 import UIKit
 import Async
+import EventBox
 
 class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -54,6 +55,16 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
         configureView()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        configureEvent()
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        EventBox.off(self)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if loaded == false {
@@ -73,6 +84,12 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let nib = UINib(nibName: "TwitterUserCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         layoutHeightCell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier) as? TwitterUserCell
+    }
+
+    func configureEvent() {
+        EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { (n) -> Void in
+            self.tableView.setContentOffset(CGPoint.init(x: 0, y: -self.tableView.contentInset.top), animated: true)
+        })
     }
 
     // MARK: - Private
