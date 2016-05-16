@@ -36,7 +36,9 @@ class TwitterStatusAdapter: TwitterAdapter {
         let nib = UINib(nibName: "TwitterStatusCell", bundle: nil)
         for layout in TwitterStatusCellLayout.allValues {
             tableView.registerNib(nib, forCellReuseIdentifier: layout.rawValue)
-            self.layoutHeightCell[layout] = tableView.dequeueReusableCellWithIdentifier(layout.rawValue) as? TwitterStatusCell
+            if let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue) as? TwitterStatusCell {
+                self.layoutHeightCell[layout] = cell
+            }
         }
     }
 
@@ -55,7 +57,9 @@ class TwitterStatusAdapter: TwitterAdapter {
             let textHeight = measure(status.text, fontSize: fontSize)
             let quotedTextHeight = measureQuoted(status, fontSize: fontSize)
             cell.textHeightConstraint.constant = 0
-            cell.quotedStatusLabelHeightConstraint.constant = 0
+            if layout.hasQuote {
+                cell.quotedStatusLabelHeightConstraint.constant = 0
+            }
             let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
             layoutHeight[layout] = height
             let totalHeight = ceil(height + textHeight + quotedTextHeight)
