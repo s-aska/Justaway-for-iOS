@@ -13,6 +13,7 @@ class LoadReplies {
     class func loadData(adapter: TwitterStatusAdapter, tableView: UITableView, sourceStatus: TwitterStatus) {
         adapter.mainQueue.addOperation(MainBlockOperation({ (op) in
             adapter.renderData(tableView, statuses: [sourceStatus], mode: .BOTTOM, handler: {
+                tableView.hidden = false
                 op.finish()
             })
         }))
