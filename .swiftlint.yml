@@ -6,6 +6,7 @@ disabled_rules:
 - file_length
 - type_body_length
 - cyclomatic_complexity
+- function_body_length
 variable_name:
   excluded:
     - id

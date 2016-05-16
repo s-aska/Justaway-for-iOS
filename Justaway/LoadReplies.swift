@@ -1,34 +1,37 @@
 //
-//  TalkViewController.swift
+//  LoadReplies.swift
 //  Justaway
 //
-//  Created by Shinichiro Aska on 5/15/16.
+//  Created by Shinichiro Aska on 5/16/16.
 //  Copyright © 2016 Shinichiro Aska. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import SwiftyJSON
 
-class TalkViewController: TweetsViewController {
-
-    var rootStatus: TwitterStatus?
-
-    override func loadData() {
-        if let status = rootStatus {
-            adapter.renderData(tableView, statuses: [status], mode: .BOTTOM, handler: nil)
-            if let inReplyToStatusID = status.inReplyToStatusID {
-                loadStatus(inReplyToStatusID)
-            }
-            searchStatus(status)
+class LoadReplies {
+    class func loadData(adapter: TwitterStatusAdapter, tableView: UITableView, sourceStatus: TwitterStatus) {
+        adapter.mainQueue.addOperation(MainBlockOperation({ (op) in
+            adapter.renderData(tableView, statuses: [sourceStatus], mode: .BOTTOM, handler: {
+                op.finish()
+            })
+        }))
+        if let inReplyToStatusID = sourceStatus.inReplyToStatusID {
+            LoadReplies.loadStatus(adapter, tableView: tableView, statusID: inReplyToStatusID)
         }
+        LoadReplies.searchStatus(adapter, tableView: tableView, sourceStatus: sourceStatus)
     }
 
-    func loadStatus(statusID: String) {
+    class func loadStatus(adapter: TwitterStatusAdapter, tableView: UITableView, statusID: String) {
         let success = { (statuses: [TwitterStatus]) -> Void in
-            self.adapter.renderData(self.tableView, statuses: statuses, mode: .TOP, handler: nil)
+            adapter.mainQueue.addOperation(MainBlockOperation({ (op) in
+                adapter.renderData(tableView, statuses: statuses, mode: .TOP, handler: {
+                    op.finish()
+                })
+            }))
             for status in statuses {
                 if let inReplyToStatusID = status.inReplyToStatusID {
-                    self.loadStatus(inReplyToStatusID)
+                    LoadReplies.loadStatus(adapter, tableView: tableView, statusID: inReplyToStatusID)
                 }
             }
         }
@@ -38,7 +41,7 @@ class TalkViewController: TweetsViewController {
         Twitter.getStatuses([statusID], success: success, failure: failure)
     }
 
-    func searchStatus(sourceStatus: TwitterStatus) {
+    class func searchStatus(adapter: TwitterStatusAdapter, tableView: UITableView, sourceStatus: TwitterStatus) {
         var allStatuses = [TwitterStatus]()
         var isReplyIDs = [String: Bool]()
         isReplyIDs[sourceStatus.statusID] = true
@@ -48,7 +51,6 @@ class TalkViewController: TweetsViewController {
                 allStatuses
                     .sort { $0.0.statusID.longLongValue < $0.1.statusID.longLongValue }
                     .filter { status in
-                        // NSLog("\(status.statusID.longLongValue) \(status.createdAt.absoluteString) \(status.text)")
                         if let inReplyToStatusID = status.inReplyToStatusID where isReplyIDs[inReplyToStatusID] != nil {
                             isReplyIDs[status.statusID] = true
                             return true
@@ -57,7 +59,11 @@ class TalkViewController: TweetsViewController {
                         }
             }
             if replies.count > 0 {
-                self.adapter.renderData(self.tableView, statuses: replies, mode: .BOTTOM, handler: nil)
+                adapter.mainQueue.addOperation(MainBlockOperation({ (op) in
+                    adapter.renderData(tableView, statuses: replies, mode: .BOTTOM, handler: {
+                        op.finish()
+                    })
+                }))
             }
         }
         let lookupSuccess = { (statuses: [TwitterStatus]) in
@@ -108,13 +114,5 @@ class TalkViewController: TweetsViewController {
         }
         let toQuery = "to:\(sourceStatus.user.screenName) AND filter:replies"
         Twitter.getSearchTweets(toQuery, maxID: nil, sinceID: sourceStatus.statusID, excludeRetweets: true, success: toSuccess, failure: toFailure)
-    }
-
-    // MARK: - Class Methods
-
-    class func show(status: TwitterStatus) {
-        let instance = TalkViewController()
-        instance.rootStatus = TwitterStatus(status, type: .Normal, event: nil, actionedBy: nil)
-        ViewTools.slideIn(instance)
     }
 }

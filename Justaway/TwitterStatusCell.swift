@@ -871,7 +871,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
 
     @IBAction func talk(sender: UIButton) {
         if let status = status {
-            TalkViewController.show(status)
+            TweetsViewController.show(status)
         }
     }
 }

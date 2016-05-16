@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -11,7 +11,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TweetsViewController">
             <connections>
-                <outlet property="tableView" destination="ydg-Tj-vxa" id="VkB-J1-4Xg"/>
+                <outlet property="segmentedControl" destination="EeV-Lg-fGP" id="Y7n-OO-tv4"/>
+                <outlet property="tableViewNearOriginal" destination="Df0-Rz-JOQ" id="mWz-yy-rbK"/>
+                <outlet property="tableViewNearRetweet" destination="3v1-NW-bx2" id="E1I-j1-VgT"/>
+                <outlet property="tableViewReplies" destination="ydg-Tj-vxa" id="bbB-HR-gX6"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Nke-j0-ZG5"/>
             </connections>
         </placeholder>
@@ -45,19 +48,48 @@
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ydg-Tj-vxa" customClass="BackgroundTableView" customModule="Justaway" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="25" width="600" height="525"/>
+                    <rect key="frame" x="0.0" y="68" width="600" height="482"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3v1-NW-bx2" customClass="BackgroundTableView" customModule="Justaway" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="68" width="600" height="482"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Df0-Rz-JOQ" customClass="BackgroundTableView" customModule="Justaway" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="68" width="600" height="482"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="EeV-Lg-fGP">
+                    <rect key="frame" x="155" y="30" width="290" height="29"/>
+                    <segments>
+                        <segment title="Replies"/>
+                        <segment title="Near Retweet"/>
+                        <segment title="Near Original"/>
+                    </segments>
+                    <connections>
+                        <action selector="move:" destination="-1" eventType="valueChanged" id="Uv8-YT-0WM"/>
+                    </connections>
+                </segmentedControl>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="Df0-Rz-JOQ" firstAttribute="top" secondItem="EeV-Lg-fGP" secondAttribute="bottom" constant="10" id="2NC-Sl-76Q"/>
                 <constraint firstItem="NVq-s8-CHn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="D2v-YS-Sh0"/>
                 <constraint firstItem="NVq-s8-CHn" firstAttribute="top" secondItem="ydg-Tj-vxa" secondAttribute="bottom" id="OT1-eH-TeE"/>
+                <constraint firstItem="3v1-NW-bx2" firstAttribute="top" secondItem="EeV-Lg-fGP" secondAttribute="bottom" constant="10" id="SOD-c1-a7O"/>
                 <constraint firstAttribute="trailing" secondItem="NVq-s8-CHn" secondAttribute="trailing" id="Sp2-gC-aB0"/>
+                <constraint firstAttribute="trailing" secondItem="Df0-Rz-JOQ" secondAttribute="trailing" id="TEK-Kh-TOy"/>
                 <constraint firstAttribute="trailing" secondItem="ydg-Tj-vxa" secondAttribute="trailing" id="TME-Yu-SjE"/>
+                <constraint firstAttribute="trailing" secondItem="3v1-NW-bx2" secondAttribute="trailing" id="X1Y-dL-Lzj"/>
+                <constraint firstItem="EeV-Lg-fGP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="dvo-0A-4g4"/>
+                <constraint firstItem="NVq-s8-CHn" firstAttribute="top" secondItem="Df0-Rz-JOQ" secondAttribute="bottom" id="hpp-MU-hm9"/>
+                <constraint firstItem="ydg-Tj-vxa" firstAttribute="top" secondItem="EeV-Lg-fGP" secondAttribute="bottom" constant="10" id="igw-rI-yBc"/>
+                <constraint firstItem="Df0-Rz-JOQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="kb7-oE-YNr"/>
                 <constraint firstAttribute="bottom" secondItem="NVq-s8-CHn" secondAttribute="bottom" id="q1n-EN-qfx"/>
-                <constraint firstItem="ydg-Tj-vxa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="25" id="qAP-hH-BH1"/>
+                <constraint firstItem="EeV-Lg-fGP" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="tAt-QA-PPK"/>
+                <constraint firstItem="3v1-NW-bx2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="tU4-t5-Fui"/>
                 <constraint firstItem="ydg-Tj-vxa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vhH-fV-rh7"/>
+                <constraint firstItem="NVq-s8-CHn" firstAttribute="top" secondItem="3v1-NW-bx2" secondAttribute="bottom" id="xQy-hq-alM"/>
             </constraints>
         </view>
     </objects>

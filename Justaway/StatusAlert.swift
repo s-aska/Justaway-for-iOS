@@ -35,17 +35,15 @@ class StatusAlert {
                 addShareAction(actionSheet, status: status)
 
                 if status.retweetCount > 0 {
-                    addShowRetweets(actionSheet, status: status)
+                    addViewRetweets(actionSheet, status: status)
                 }
 
                 if status.favoriteCount > 0 {
-                    addShowLikes(actionSheet, status: status)
+                    addViewLikes(actionSheet, status: status)
                 }
 
-                addShowAround(actionSheet, status: status)
-
                 if full {
-                     addShowReplyAction(actionSheet, status: status)
+                     addReplyAction(actionSheet, status: status)
                      addFavRTAction(actionSheet, status: status, statusID: statusID, retweetedStatusID: retweetedStatusID, isFavorite: isFavorite)
                      addURLAction(actionSheet, status: status)
                      addHashTagAction(actionSheet, status: status)
@@ -104,44 +102,28 @@ class StatusAlert {
         }))
     }
 
-    private class func addShowAround(actionSheet: UIAlertController, status: TwitterStatus) {
+    private class func addViewRetweets(actionSheet: UIAlertController, status: TwitterStatus) {
         actionSheet.addAction(UIAlertAction(
-            title: "Show around the Tweet",
-            style: .Default,
-            handler: { action in
-                AroundViewController.show(status.user.userID, statusID: status.statusID, rootStatus: TwitterStatus(status, type: .Normal, event: nil, actionedBy: nil))
-        }))
-
-        if let actionedBy = status.actionedBy, referenceStatusID = status.referenceStatusID where status.type == .Normal {
-            actionSheet.addAction(UIAlertAction(
-                title: "Show around the Retweet",
-                style: .Default,
-                handler: { action in
-                    AroundViewController.show(actionedBy.userID, statusID: referenceStatusID, rootStatus: status)
-            }))
-        }
-    }
-
-    private class func addShowRetweets(actionSheet: UIAlertController, status: TwitterStatus) {
-        actionSheet.addAction(UIAlertAction(
-            title: "Show Retweets",
+            title: "View Retweets",
             style: .Default,
             handler: { action in
                 RetweetsViewController.show(status.statusID)
         }))
     }
 
-    private class func addShowLikes(actionSheet: UIAlertController, status: TwitterStatus) {
+    private class func addViewLikes(actionSheet: UIAlertController, status: TwitterStatus) {
         guard let account = AccountSettingsStore.get()?.find(status.user.userID) where !account.exToken.isEmpty else {
             return
         }
         actionSheet.addAction(UIAlertAction(
-            title: "Show Likes",
+            title: "View Likes",
             style: .Default,
             handler: { action in
                 LikesViewController.show(status)
         }))
     }
+
+    // MARK: - Long tap
 
     private class func addReplyAction(actionSheet: UIAlertController, status: TwitterStatus) {
         actionSheet.addAction(UIAlertAction(
@@ -149,15 +131,6 @@ class StatusAlert {
             style: .Default,
             handler: { action in
                 Twitter.reply(status)
-        }))
-    }
-
-    private class func addShowReplyAction(actionSheet: UIAlertController, status: TwitterStatus) {
-        actionSheet.addAction(UIAlertAction(
-            title: "Show Replies",
-            style: .Default,
-            handler: { action in
-                TalkViewController.show(status)
         }))
     }
 
@@ -180,14 +153,12 @@ class StatusAlert {
                     Twitter.destroyFavorite(statusID)
             }))
         } else {
-            /*
             actionSheet.addAction(UIAlertAction(
                 title: "Like",
                 style: .Default,
                 handler: { action in
                     Twitter.createFavorite(statusID)
             }))
-             */
         }
 
         if let retweetedStatusID = retweetedStatusID {
@@ -200,24 +171,20 @@ class StatusAlert {
                 }))
             }
         } else if !status.user.isProtected {
-            /*
             actionSheet.addAction(UIAlertAction(
                 title: "Retweet",
                 style: .Default,
                 handler: { action in
                     Twitter.createRetweet(statusID)
             }))
-             */
         }
 
-        /*
         actionSheet.addAction(UIAlertAction(
             title: "Quote",
             style: .Default,
             handler: { action in
                 Twitter.quoteURL(status)
         }))
-         */
     }
 
     private class func addURLAction(actionSheet: UIAlertController, status: TwitterStatus) {

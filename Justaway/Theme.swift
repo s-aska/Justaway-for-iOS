@@ -91,6 +91,7 @@ class ThemeController {
         UITextField.appearance().layer.borderColor = theme.cellSeparatorColor().CGColor
         UITextField.appearance().tintColor = theme.bodyTextColor()
         UITableView.appearance().separatorColor = theme.cellSeparatorColor()
+        UISegmentedControl.appearance().tintColor = theme.bodyTextColor()
 
         // for CustomView
         TextLable.appearance().textColor = theme.bodyTextColor()
@@ -170,6 +171,8 @@ class ThemeController {
         for subview in view.subviews as [UIView] {
             refreshView(subview, theme: theme, indent: indent + "  ")
             switch subview {
+            case let v as UISegmentedControl:
+                v.tintColor = theme.bodyTextColor()
             case let v as BackgroundScrollView:
                 v.indicatorStyle = theme.scrollViewIndicatorStyle()
                 v.backgroundColor = theme.mainBackgroundColor()

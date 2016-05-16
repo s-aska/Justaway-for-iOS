@@ -267,7 +267,7 @@ class StatusLable: UITextView {
             }
         }
         if let status = status {
-            TalkViewController.show(status)
+            TweetsViewController.show(status)
         } else if let message = message, account = AccountSettingsStore.get()?.account() {
             if threadMode {
                 if let messages = Twitter.messages[account.userID] {
