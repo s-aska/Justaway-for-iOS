@@ -123,9 +123,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ].joinWithSeparator("/")
             let urlComponents = NSURLComponents(string: "https://justaway.info/api/devices.json")!
             urlComponents.queryItems = [
-                NSURLQueryItem.init(name: "deviceName", value: deviceName),
-                NSURLQueryItem.init(name: "deviceType", value: deviceType),
-                NSURLQueryItem.init(name: "deviceToken", value: deviceTokenString)
+                NSURLQueryItem(name: "deviceName", value: deviceName),
+                NSURLQueryItem(name: "deviceType", value: deviceType),
+                NSURLQueryItem(name: "deviceToken", value: deviceTokenString)
             ]
             guard let url = urlComponents.URL else {
                 continue

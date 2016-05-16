@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="AvenirNext.ttc">
             <string>AvenirNext-Regular</string>
         </mutableArray>
         <mutableArray key="fontello.ttf">
-            <string>fontello</string>
             <string>fontello</string>
             <string>fontello</string>
         </mutableArray>
@@ -43,7 +43,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uZc-kI-qx4" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="136" y="-1" width="55" height="48.5"/>
+                        <rect key="frame" x="184" y="-1" width="55" height="48.5"/>
                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="28"/>
                         <inset key="contentEdgeInsets" minX="15" minY="10" maxX="15" maxY="10"/>
                         <state key="normal" title="文">
@@ -54,13 +54,13 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="off" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fm-Lu-8Ai">
-                        <rect key="frame" x="156.5" y="36.5" width="15" height="16.5"/>
+                        <rect key="frame" x="204.5" y="36.5" width="15" height="16.5"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W0T-LW-MEa" customClass="MenuButton" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="201" y="-1" width="53" height="48.5"/>
+                        <rect key="frame" x="249" y="-1" width="53" height="48.5"/>
                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="28"/>
                         <inset key="contentEdgeInsets" minX="15" minY="10" maxX="15" maxY="10"/>
                         <state key="normal" title="鐘">
@@ -71,19 +71,11 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="off" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="usa-1f-zaq">
-                        <rect key="frame" x="220.5" y="36.5" width="15" height="16.5"/>
+                        <rect key="frame" x="268.5" y="36.5" width="15" height="16.5"/>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QVs-iB-TW6">
-                        <rect key="frame" x="254" y="6" width="56" height="48"/>
-                        <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="28"/>
-                        <inset key="contentEdgeInsets" minX="15" minY="10" maxX="15" maxY="10"/>
-                        <state key="normal" title="点">
-                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                    </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="screen_name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GqA-Mj-ltT" customClass="ScreenNameLable" customModule="Justaway" customModuleProvider="target">
                         <rect key="frame" x="56" y="25" width="63.5" height="12"/>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
@@ -94,7 +86,6 @@
                 <constraints>
                     <constraint firstItem="GqA-Mj-ltT" firstAttribute="centerY" secondItem="5iF-a6-UBV" secondAttribute="centerY" constant="2" id="0E6-V2-yEy"/>
                     <constraint firstAttribute="bottom" secondItem="ZSO-Sg-HMX" secondAttribute="bottom" constant="7" id="0LN-cH-46t"/>
-                    <constraint firstItem="QVs-iB-TW6" firstAttribute="centerY" secondItem="V0P-QV-zVm" secondAttribute="centerY" id="1z3-bB-k2t"/>
                     <constraint firstItem="5iF-a6-UBV" firstAttribute="top" secondItem="V0P-QV-zVm" secondAttribute="top" constant="8" id="2nM-7E-L7A"/>
                     <constraint firstItem="W96-fD-IVA" firstAttribute="leading" secondItem="5iF-a6-UBV" secondAttribute="trailing" constant="7" id="76u-Dc-1kQ"/>
                     <constraint firstItem="W0T-LW-MEa" firstAttribute="centerY" secondItem="V0P-QV-zVm" secondAttribute="centerY" constant="-6" id="92W-w2-hB3"/>
@@ -103,9 +94,8 @@
                     <constraint firstItem="W0T-LW-MEa" firstAttribute="leading" secondItem="uZc-kI-qx4" secondAttribute="trailing" constant="10" id="MHN-Jz-jhA"/>
                     <constraint firstAttribute="bottom" secondItem="usa-1f-zaq" secondAttribute="bottom" constant="6" id="fAS-q0-eLJ"/>
                     <constraint firstItem="ZSO-Sg-HMX" firstAttribute="leading" secondItem="5iF-a6-UBV" secondAttribute="trailing" constant="7" id="fjf-e3-tUq"/>
-                    <constraint firstItem="QVs-iB-TW6" firstAttribute="leading" secondItem="W0T-LW-MEa" secondAttribute="trailing" id="gBb-92-Q5O"/>
-                    <constraint firstAttribute="trailing" secondItem="QVs-iB-TW6" secondAttribute="trailing" constant="10" id="heM-Eu-9sa"/>
                     <constraint firstItem="W96-fD-IVA" firstAttribute="top" secondItem="V0P-QV-zVm" secondAttribute="top" constant="8" id="ipQ-tE-ujr"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="W0T-LW-MEa" secondAttribute="trailing" constant="10" id="mVm-rF-cLe"/>
                     <constraint firstItem="5iF-a6-UBV" firstAttribute="leading" secondItem="V0P-QV-zVm" secondAttribute="leading" constant="7" id="rV5-dj-vDB"/>
                     <constraint firstItem="GqA-Mj-ltT" firstAttribute="leading" secondItem="5iF-a6-UBV" secondAttribute="trailing" constant="7" id="s2H-45-rQ4"/>
                     <constraint firstItem="usa-1f-zaq" firstAttribute="centerX" secondItem="W0T-LW-MEa" secondAttribute="centerX" id="uxA-JF-7mu"/>

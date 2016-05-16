@@ -8,21 +8,27 @@
 
 import Foundation
 
-// swiftlint:disable:next force_try
-let linkDetector = try! NSDataDetector.init(types: NSTextCheckingType.Link.rawValue)
-
 class TwitterText {
+
+    // swiftlint:disable:next force_try
+    static let linkDetector = try! NSDataDetector(types: NSTextCheckingType.Link.rawValue)
+
     class func count(text: String, hasImage: Bool) -> Int {
-        var count = text.characters.count
-        let s = text as NSString
-        let matches = linkDetector.matchesInString(text, options: [], range: NSRange.init(location: 0, length: text.utf16.count))
-        for match in matches {
-            let url = s.substringWithRange(match.range) as String
-            count = count + 23 - url.characters.count
-        }
-        if hasImage {
-            count = count + 24
-        }
-        return count
+        let textLength = text.characters.count // 🍣 is 1
+        let objcLength = text.utf16.count // 🍣 is 2
+        let objcText = text as NSString
+        let objcRange = NSRange(location: 0, length: objcLength)
+        let matches = linkDetector.matchesInString(text, options: [], range: objcRange)
+
+        let urlLength = matches
+            .map { objcText.substringWithRange($0.range) as String }
+            .map { $0.characters.count }
+            .reduce(0, combine: +)
+
+        let shortURLLength = matches.count * 23
+
+        let imageURLLength = hasImage ? 24 : 0
+
+        return textLength - urlLength + shortURLLength + imageURLLength
     }
 }

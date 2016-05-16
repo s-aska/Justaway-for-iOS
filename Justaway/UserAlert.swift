@@ -10,7 +10,7 @@ import UIKit
 import EventBox
 
 class UserAlert {
-    class func show(sender: UIView, user: TwitterUserFull, relationship: TwitterRelationship) {
+    class func show(sender: UIView, user: TwitterUser, userFull: TwitterUserFull?, relationship: TwitterRelationship) {
         let actionSheet = UIAlertController()
         actionSheet.title = "@" + user.screenName
         actionSheet.message = user.name
@@ -37,7 +37,9 @@ class UserAlert {
             addBlockAction(actionSheet, user: user, relationship: relationship)
         }
 
-        addURLAction(actionSheet, user: user)
+        if let userFull = userFull {
+            addURLAction(actionSheet, user: userFull)
+        }
 
         // iPad
         actionSheet.popoverPresentationController?.sourceView = sender
@@ -46,13 +48,13 @@ class UserAlert {
         AlertController.showViewController(actionSheet)
     }
 
-    private class func addTabAction(actionSheet: UIAlertController, user: TwitterUserFull) {
+    private class func addTabAction(actionSheet: UIAlertController, user: TwitterUser) {
         actionSheet.addAction(UIAlertAction(
             title: "Add to tab",
             style: .Default,
             handler: { action in
                 if let settings = AccountSettingsStore.get() {
-                    let tab = Tab.init(userID: settings.account().userID, user: TwitterUser(user))
+                    let tab = Tab.init(userID: settings.account().userID, user: user)
                     let tabs = settings.account().tabs + [tab]
                     let account = Account(account: settings.account(), tabs: tabs)
                     let accounts = settings.accounts.map({ $0.userID == account.userID ? account : $0 })
@@ -62,31 +64,31 @@ class UserAlert {
         }))
     }
 
-    private class func addReplyAction(actionSheet: UIAlertController, user: TwitterUserFull) {
+    private class func addReplyAction(actionSheet: UIAlertController, user: TwitterUser) {
         actionSheet.addAction(UIAlertAction(
             title: "Reply",
             style: .Default,
             handler: { action in
                 let prefix = "@\(user.screenName) "
-                let range = NSRange.init(location: prefix.characters.count, length: 0)
+                let range = NSRange(location: prefix.characters.count, length: 0)
                 EditorViewController.show(prefix, range: range)
         }))
     }
 
-    private class func addMessageAction(actionSheet: UIAlertController, user: TwitterUserFull, relationship: TwitterRelationship) {
-        if relationship.followedBy {
+    private class func addMessageAction(actionSheet: UIAlertController, user: TwitterUser, relationship: TwitterRelationship) {
+        if relationship.canDM {
             actionSheet.addAction(UIAlertAction(
                 title: "Direct Message",
                 style: .Default,
                 handler: { action in
                     let prefix = "D \(user.screenName) "
-                    let range = NSRange.init(location: prefix.characters.count, length: 0)
+                    let range = NSRange(location: prefix.characters.count, length: 0)
                     EditorViewController.show(prefix, range: range)
             }))
         }
     }
 
-    private class func addFollowAction(actionSheet: UIAlertController, user: TwitterUserFull, relationship: TwitterRelationship) {
+    private class func addFollowAction(actionSheet: UIAlertController, user: TwitterUser, relationship: TwitterRelationship) {
         if relationship.following {
             actionSheet.addAction(UIAlertAction(
                 title: "Unfollow",
@@ -104,7 +106,7 @@ class UserAlert {
         }
     }
 
-    private class func addNotificationsAction(actionSheet: UIAlertController, user: TwitterUserFull, relationship: TwitterRelationship) {
+    private class func addNotificationsAction(actionSheet: UIAlertController, user: TwitterUser, relationship: TwitterRelationship) {
         if relationship.notificationsEnabled {
             actionSheet.addAction(UIAlertAction(
                 title: "Turn off notifications",
@@ -122,7 +124,7 @@ class UserAlert {
         }
     }
 
-    private class func addRetweetsAction(actionSheet: UIAlertController, user: TwitterUserFull, relationship: TwitterRelationship) {
+    private class func addRetweetsAction(actionSheet: UIAlertController, user: TwitterUser, relationship: TwitterRelationship) {
         if relationship.wantRetweets {
             actionSheet.addAction(UIAlertAction(
                 title: "Turn off retweets",
@@ -140,7 +142,7 @@ class UserAlert {
         }
     }
 
-    private class func addMuteAction(actionSheet: UIAlertController, user: TwitterUserFull, relationship: TwitterRelationship) {
+    private class func addMuteAction(actionSheet: UIAlertController, user: TwitterUser, relationship: TwitterRelationship) {
         if relationship.muting {
             actionSheet.addAction(UIAlertAction(
                 title: "Unmute",
@@ -158,7 +160,7 @@ class UserAlert {
         }
     }
 
-    private class func addBlockAction(actionSheet: UIAlertController, user: TwitterUserFull, relationship: TwitterRelationship) {
+    private class func addBlockAction(actionSheet: UIAlertController, user: TwitterUser, relationship: TwitterRelationship) {
 
         if relationship.blocking {
             actionSheet.addAction(UIAlertAction(

@@ -267,8 +267,8 @@ class StatusLable: UITextView {
             }
         }
         if let status = status {
-            StatusAlert.show(self, status: status)
-        } else if let message = message, let account = AccountSettingsStore.get()?.account() {
+            TalkViewController.show(status)
+        } else if let message = message, account = AccountSettingsStore.get()?.account() {
             if threadMode {
                 if let messages = Twitter.messages[account.userID] {
                     let threadMessages = messages.filter({ $0.collocutor.userID == message.collocutor.userID })

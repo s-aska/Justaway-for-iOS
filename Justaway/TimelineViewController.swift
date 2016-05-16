@@ -190,9 +190,9 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 icon = "文"
                 title = "Messages"
             }
-            vc.tableView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
-            vc.view.frame = CGRect.init(x: 0, y: 0, width: size.width, height: size.height)
-            let view = UIView(frame: CGRect.init(x: size.width * CGFloat(i), y: 0, width: size.width, height: size.height))
+            vc.tableView.contentInset = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
+            vc.view.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+            let view = UIView(frame: CGRect(x: size.width * CGFloat(i), y: 0, width: size.width, height: size.height))
             view.addSubview(vc.view)
             contentView.addSubview(view)
             tableViewControllers.append(vc)
@@ -343,14 +343,12 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 let acceptStatuses = statuses.filter({ vc.accept($0) })
                 if acceptStatuses.count > 0 {
                     vc.renderData(acceptStatuses, mode: .TOP, handler: {})
-                    NSLog("acceptStatuses count:\(acceptStatuses.count)")
                     for status in acceptStatuses {
                         let actionedByUserID = status.actionedBy?.userID ?? ""
                         let actionedByMe = AccountSettingsStore.get()?.isMe(actionedByUserID) ?? false
                         if !actionedByMe {
                             if self.currentPage != page {
                                 self.tabButtons[page].selected = true
-                                NSLog("tabButtons selected page:\(page)")
                                 break
                             } else {
                                 let buttonIndex = page
@@ -361,7 +359,6 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                                     operation.finish()
                                 }
                                 vc.adapter.mainQueue.addOperation(operation)
-                                NSLog("tabButtons selected addOperation page:\(page)")
                                 break
                             }
                         }

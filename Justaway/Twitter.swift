@@ -318,6 +318,34 @@ class Twitter {
             })
     }
 
+    class func getUsers(userIDs: [String], success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
+        let parameters = ["user_id": userIDs.joinWithSeparator(",")]
+        let success = { (array: [JSON]) -> Void in
+            success(array.map({ TwitterUserFull($0) }))
+        }
+        client()?
+            .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
+    }
+
+    class func getRetweeters(statusID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
+        let retweetersSuccess = { (json: JSON) -> Void in
+            guard let ids = json["ids"].array?.map({ $0.string ?? "" }).filter({ !$0.isEmpty }) else {
+                success([])
+                return
+            }
+            Twitter.getUsers(ids, success: success, failure: failure)
+        }
+        let parameters = ["id": statusID, "count": "100", "stringify_ids": "true"]
+        client()?
+            .get("https://api.twitter.com/1.1/statuses/retweeters/ids.json", parameters: parameters)
+            .responseJSON(retweetersSuccess, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
+    }
+
     class func getUserTimeline(userID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
         var parameters = ["user_id": userID]
         if let maxID = maxID {
@@ -369,7 +397,7 @@ class Twitter {
     }
 
     class func getSearchTweets(keyword: String, maxID: String? = nil, sinceID: String? = nil, excludeRetweets: Bool = true, success: ([TwitterStatus], [String: JSON]) -> Void, failure: (NSError) -> Void) {
-        var parameters: [String: String] = ["count": "200", "q": keyword + (excludeRetweets ? " exclude:retweets" : "")]
+        var parameters: [String: String] = ["count": "200", "q": keyword + (excludeRetweets ? " exclude:retweets" : ""), "result_type": "recent"]
         if let maxID = maxID {
             parameters["max_id"] = maxID
         }
@@ -378,7 +406,7 @@ class Twitter {
         }
         let success = { (json: JSON) -> Void in
             if let statuses = json["statuses"].array,
-                let search_metadata = json["search_metadata"].dictionary {
+                search_metadata = json["search_metadata"].dictionary {
                     success(statuses.map({ TwitterStatus($0) }), search_metadata)
             }
         }

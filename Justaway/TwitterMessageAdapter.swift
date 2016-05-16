@@ -184,7 +184,7 @@ extension TwitterMessageAdapter {
         NSLog("TwitterMessageAdapter didSelectRowAtIndexPath")
         let row = rows[indexPath.row]
         if let message = row.message {
-            if threadMode, let account = AccountSettingsStore.get()?.account(), let messages = Twitter.messages[account.userID] {
+            if let account = AccountSettingsStore.get()?.account(), messages = Twitter.messages[account.userID] where threadMode {
                 let collocutorID = message.collocutor.userID
                 let threadMessages = messages.filter({ $0.collocutor.userID == collocutorID })
                 Async.main {

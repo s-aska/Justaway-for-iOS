@@ -3,7 +3,9 @@ included:
 - JustawayShare
 disabled_rules:
 - line_length
+- file_length
 - type_body_length
+- cyclomatic_complexity
 variable_name:
   excluded:
     - id

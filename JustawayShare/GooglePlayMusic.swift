@@ -63,7 +63,7 @@ class GooglePlayMusic {
                 return
             }
             let titleWithArtist = titleContent == "Listen on Google Play Music" ? GooglePlayMusic.getTitleByShareURL(shareURL) : titleContent
-            if let content = ogps.filter({ $0.type == .Image }).first?.content, let imageURLComponents = NSURLComponents(string: content) {
+            if let content = ogps.filter({ $0.type == .Image }).first?.content, imageURLComponents = NSURLComponents(string: content) {
                 imageURLComponents.scheme = "https"
                 if let imageURL = imageURLComponents.URL {
                     completion(MusicInfo(musicURL: musicURL, titleWithArtist: titleWithArtist, albumURL: imageURL))
