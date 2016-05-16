@@ -8,3 +8,9 @@ variable_name:
   excluded:
     - id
     - URL
+custom_rules:
+  characters_count_in_nsrange:
+    name: "Using characters.count in NSRange()"
+    regex: "NSRange\([^)]*characters.count\s*\)"
+    message: "Using String.characters.count in NSRange() may cause an issue."
+    serverity: warning
