@@ -358,6 +358,7 @@ class TwitterStatusCell: BackgroundTableViewCell {
                 talkButton.hidden = true
                 viaLabel.hidden = true
                 replyButton.hidden = true
+                menuButton.hidden = true
             }
             setNeedsLayout()
             layoutIfNeeded()

@@ -14,14 +14,13 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
 
     // MARK: Properties
 
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
-
     let adapterReplies = TwitterStatusAdapter()
     let adapterNearOriginal = TwitterStatusAdapter()
     let adapterNearRetweet = TwitterStatusAdapter()
     var loaded = false
     var rootStatus: TwitterStatus?
 
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var tableViewReplies: UITableView!
     @IBOutlet weak var tableViewNearOriginal: UITableView!
     @IBOutlet weak var tableViewNearRetweet: UITableView!
@@ -93,6 +92,7 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
             segmentedControl.removeSegmentAtIndex(1, animated: false)
             segmentedControl.insertSegmentWithTitle("Near Tweets", atIndex: 1, animated: false)
         }
+        segmentedControl.hidden = false
     }
 
     func configureEvent() {
