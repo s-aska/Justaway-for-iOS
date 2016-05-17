@@ -19,9 +19,9 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
     let adapterNearRetweet = TwitterStatusAdapter()
     var loaded = false
     var rootStatus: TwitterStatus?
-    var indicatorView: UIActivityIndicatorView?
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     @IBOutlet weak var tableViewReplies: UITableView!
     @IBOutlet weak var tableViewNearOriginal: UITableView!
     @IBOutlet weak var tableViewNearRetweet: UITableView!
@@ -77,22 +77,23 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
         }
         segmentedControl.hidden = false
 
-        let indicatorView = UIActivityIndicatorView(frame: CGRect.init(x: 0, y: 0, width: 80, height: 80))
-        indicatorView.layer.cornerRadius = 10
-        indicatorView.activityIndicatorViewStyle = .WhiteLarge
-        indicatorView.backgroundColor = UIColor(white: 0, alpha: 0.6)
+        indicatorView.activityIndicatorViewStyle = ThemeController.currentTheme.activityIndicatorStyle()
         indicatorView.hidesWhenStopped = true
-        if let center = ViewTools.frontViewController()?.view.center {
-            indicatorView.center = center
-        }
-        view.addSubview(indicatorView)
         indicatorView.startAnimating()
-        self.indicatorView = indicatorView
     }
 
     func configureEvent() {
-        EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { (n) -> Void in
-            // self.adapter.scrollToTop(self.tableView)
+        EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { [weak self] (n) -> Void in
+            guard let `self` = self, rootStatus = self.rootStatus else {
+                return
+            }
+            if self.segmentedControl.selectedSegmentIndex == 0 {
+                self.adapterReplies.scrollToTop(self.tableViewReplies)
+            } else if self.segmentedControl.selectedSegmentIndex == 1 && rootStatus.actionedBy != nil && rootStatus.type == .Normal {
+                self.adapterNearRetweet.scrollToTop(self.tableViewNearRetweet)
+            } else {
+                self.adapterNearOriginal.scrollToTop(self.tableViewNearOriginal)
+            }
         })
     }
 
@@ -106,12 +107,17 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
         let fontSize = CGFloat(GenericSettings.get().fontSize)
         let originalStatus = TwitterStatus(rootStatus, type: .Normal, event: nil, actionedBy: nil)
 
-        LoadReplies.loadData(adapterReplies, tableView: tableViewReplies, sourceStatus: originalStatus)
-
         adapterReplies.mainQueue.addOperation(MainBlockOperation({ (op) in
-            self.indicatorView?.stopAnimating()
-            op.finish()
+            self.adapterReplies.configureView(nil, tableView: self.tableViewReplies)
+            self.adapterReplies.renderData(self.tableViewReplies, statuses: [originalStatus], mode: .BOTTOM, handler: {
+                self.indicatorView.stopAnimating()
+                self.tableViewReplies.hidden = false
+                self.adapterReplies.footerIndicatorView?.startAnimating()
+                op.finish()
+            })
         }))
+
+        LoadReplies.loadData(adapterReplies, tableView: tableViewReplies, sourceStatus: originalStatus)
 
         adapterNearOriginal.mainQueue.addOperation(MainBlockOperation({ (op) in
             self.adapterNearOriginal.configureView(self, tableView: self.tableViewNearOriginal)

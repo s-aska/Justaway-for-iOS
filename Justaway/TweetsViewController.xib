@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TweetsViewController">
             <connections>
+                <outlet property="indicatorView" destination="OcB-UB-vtJ" id="tKz-Ju-1Gy"/>
                 <outlet property="segmentedControl" destination="EeV-Lg-fGP" id="Y7n-OO-tv4"/>
                 <outlet property="tableViewNearOriginal" destination="Df0-Rz-JOQ" id="mWz-yy-rbK"/>
                 <outlet property="tableViewNearRetweet" destination="3v1-NW-bx2" id="E1I-j1-VgT"/>
@@ -70,10 +71,14 @@
                         <action selector="move:" destination="-1" eventType="valueChanged" id="Uv8-YT-0WM"/>
                     </connections>
                 </segmentedControl>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OcB-UB-vtJ">
+                    <rect key="frame" x="290" y="108" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Df0-Rz-JOQ" firstAttribute="top" secondItem="EeV-Lg-fGP" secondAttribute="bottom" constant="10" id="2NC-Sl-76Q"/>
+                <constraint firstItem="OcB-UB-vtJ" firstAttribute="centerX" secondItem="EeV-Lg-fGP" secondAttribute="centerX" id="37O-nd-KMd"/>
                 <constraint firstItem="NVq-s8-CHn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="D2v-YS-Sh0"/>
                 <constraint firstItem="NVq-s8-CHn" firstAttribute="top" secondItem="ydg-Tj-vxa" secondAttribute="bottom" id="OT1-eH-TeE"/>
                 <constraint firstItem="3v1-NW-bx2" firstAttribute="top" secondItem="EeV-Lg-fGP" secondAttribute="bottom" constant="10" id="SOD-c1-a7O"/>
@@ -82,6 +87,7 @@
                 <constraint firstAttribute="trailing" secondItem="ydg-Tj-vxa" secondAttribute="trailing" id="TME-Yu-SjE"/>
                 <constraint firstAttribute="trailing" secondItem="3v1-NW-bx2" secondAttribute="trailing" id="X1Y-dL-Lzj"/>
                 <constraint firstItem="EeV-Lg-fGP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="dvo-0A-4g4"/>
+                <constraint firstItem="OcB-UB-vtJ" firstAttribute="top" secondItem="EeV-Lg-fGP" secondAttribute="bottom" constant="50" id="gy3-G1-efD"/>
                 <constraint firstItem="NVq-s8-CHn" firstAttribute="top" secondItem="Df0-Rz-JOQ" secondAttribute="bottom" id="hpp-MU-hm9"/>
                 <constraint firstItem="ydg-Tj-vxa" firstAttribute="top" secondItem="EeV-Lg-fGP" secondAttribute="bottom" constant="10" id="igw-rI-yBc"/>
                 <constraint firstItem="Df0-Rz-JOQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="kb7-oE-YNr"/>
