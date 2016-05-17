@@ -19,6 +19,7 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
     let adapterNearRetweet = TwitterStatusAdapter()
     var loaded = false
     var rootStatus: TwitterStatus?
+    var indicatorView: UIActivityIndicatorView?
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var tableViewReplies: UITableView!
@@ -33,12 +34,7 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        Async.background {
-            Async.main {
-                self.configureView()
-            }
-        }
+        self.configureView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -61,11 +57,6 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
             loaded = true
 
             Async.background {
-                Async.main {
-                    self.adapterReplies.setupLayout(self.tableViewReplies)
-                    self.adapterNearRetweet.setupLayout(self.tableViewNearRetweet)
-                    self.adapterNearOriginal.setupLayout(self.tableViewNearOriginal)
-                }
                 self.loadData()
             }
         }
@@ -79,20 +70,24 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
             return
         }
 
-        tableViewReplies.hidden = false
-        tableViewNearRetweet.hidden = true
-        tableViewNearOriginal.hidden = true
-
-        adapterReplies.configureView(nil, tableView: tableViewReplies)
-        adapterNearOriginal.configureView(self, tableView: tableViewNearOriginal)
-        adapterNearRetweet.configureView(self, tableView: tableViewNearRetweet)
-
         if rootStatus.actionedBy == nil || rootStatus.type != .Normal {
             segmentedControl.removeSegmentAtIndex(2, animated: false)
             segmentedControl.removeSegmentAtIndex(1, animated: false)
             segmentedControl.insertSegmentWithTitle("Near Tweets", atIndex: 1, animated: false)
         }
         segmentedControl.hidden = false
+
+        let indicatorView = UIActivityIndicatorView(frame: CGRect.init(x: 0, y: 0, width: 80, height: 80))
+        indicatorView.layer.cornerRadius = 10
+        indicatorView.activityIndicatorViewStyle = .WhiteLarge
+        indicatorView.backgroundColor = UIColor(white: 0, alpha: 0.6)
+        indicatorView.hidesWhenStopped = true
+        if let center = ViewTools.frontViewController()?.view.center {
+            indicatorView.center = center
+        }
+        view.addSubview(indicatorView)
+        indicatorView.startAnimating()
+        self.indicatorView = indicatorView
     }
 
     func configureEvent() {
@@ -113,7 +108,13 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
 
         LoadReplies.loadData(adapterReplies, tableView: tableViewReplies, sourceStatus: originalStatus)
 
+        adapterReplies.mainQueue.addOperation(MainBlockOperation({ (op) in
+            self.indicatorView?.stopAnimating()
+            op.finish()
+        }))
+
         adapterNearOriginal.mainQueue.addOperation(MainBlockOperation({ (op) in
+            self.adapterNearOriginal.configureView(self, tableView: self.tableViewNearOriginal)
             let originalRow = self.adapterNearOriginal.createRow(originalStatus, fontSize: fontSize, tableView: self.tableViewNearOriginal)
             self.adapterNearOriginal.rows = [TwitterAdapter.Row(), originalRow, TwitterAdapter.Row()]
             self.tableViewNearOriginal.reloadData()
@@ -122,6 +123,7 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
 
         if rootStatus.actionedBy != nil && rootStatus.type == .Normal {
             adapterNearRetweet.mainQueue.addOperation(MainBlockOperation({ (op) in
+                self.adapterNearRetweet.configureView(self, tableView: self.tableViewNearRetweet)
                 let retweetRow = self.adapterNearRetweet.createRow(rootStatus, fontSize: fontSize, tableView: self.tableViewNearRetweet)
                 self.adapterNearRetweet.rows = [TwitterAdapter.Row(), retweetRow, TwitterAdapter.Row()]
                 self.tableViewNearRetweet.reloadData()

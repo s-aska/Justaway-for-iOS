@@ -12,6 +12,7 @@ import SwiftyJSON
 class LoadReplies {
     class func loadData(adapter: TwitterStatusAdapter, tableView: UITableView, sourceStatus: TwitterStatus) {
         adapter.mainQueue.addOperation(MainBlockOperation({ (op) in
+            adapter.configureView(nil, tableView: tableView)
             adapter.renderData(tableView, statuses: [sourceStatus], mode: .BOTTOM, handler: {
                 tableView.hidden = false
                 op.finish()
@@ -43,11 +44,14 @@ class LoadReplies {
     }
 
     class func searchStatus(adapter: TwitterStatusAdapter, tableView: UITableView, sourceStatus: TwitterStatus) {
+        adapter.mainQueue.addOperation(MainBlockOperation({ (op) in
+            adapter.footerIndicatorView?.startAnimating()
+            op.finish()
+        }))
         var allStatuses = [TwitterStatus]()
         var isReplyIDs = [String: Bool]()
         isReplyIDs[sourceStatus.statusID] = true
         let lookupAlways = {
-
             let replies =
                 allStatuses
                     .sort { $0.0.statusID.longLongValue < $0.1.statusID.longLongValue }
@@ -62,8 +66,14 @@ class LoadReplies {
             if replies.count > 0 {
                 adapter.mainQueue.addOperation(MainBlockOperation({ (op) in
                     adapter.renderData(tableView, statuses: replies, mode: .BOTTOM, handler: {
+                        adapter.footerIndicatorView?.stopAnimating()
                         op.finish()
                     })
+                }))
+            } else {
+                adapter.mainQueue.addOperation(MainBlockOperation({ (op) in
+                    adapter.footerIndicatorView?.stopAnimating()
+                    op.finish()
                 }))
             }
         }
