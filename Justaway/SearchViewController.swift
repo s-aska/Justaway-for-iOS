@@ -19,11 +19,13 @@ class SearchViewController: UIViewController {
     let adapter = TwitterStatusAdapter()
     let keywordAdapter = SearchKeywordAdapter()
     var keywordStreaming: TwitterSearchStreaming?
+    let userAdapter = TwitterUserAdapter()
     var nextResults: String?
     var keyword: String?
     var excludeRetweets = true
 
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tweetsTableView: UITableView!
+    @IBOutlet weak var usersTableView: UITableView!
     @IBOutlet weak var keywordTableView: UITableView!
     @IBOutlet weak var keywordTextField: UITextField!
     @IBOutlet weak var streamingButton: UIButton!
@@ -68,7 +70,7 @@ class SearchViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        for c in tableView.visibleCells {
+        for c in tweetsTableView.visibleCells {
             if let cell = c as? TwitterStatusCell {
                 cell.statusLabel.setAttributes()
             }
@@ -80,15 +82,15 @@ class SearchViewController: UIViewController {
 
     func configureView() {
         refreshControl.addTarget(self, action: #selector(loadDataToTop), forControlEvents: UIControlEvents.ValueChanged)
-        tableView.addSubview(refreshControl)
+        tweetsTableView.addSubview(refreshControl)
 
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(hide))
         swipe.numberOfTouchesRequired = 1
         swipe.direction = .Right
-        tableView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
-        tableView.addGestureRecognizer(swipe)
+        tweetsTableView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
+        tweetsTableView.addGestureRecognizer(swipe)
 
-        adapter.configureView(nil, tableView: tableView)
+        adapter.configureView(nil, tableView: tweetsTableView)
         adapter.didScrollToBottom = {
             if let nextResults = self.nextResults {
                 if let queryItems = NSURLComponents(string: nextResults)?.queryItems {
@@ -211,9 +213,9 @@ class SearchViewController: UIViewController {
 
     func renderData(statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
         let operation = MainBlockOperation { (operation) -> Void in
-            self.adapter.renderData(self.tableView, statuses: statuses, mode: mode, handler: { () -> Void in
+            self.adapter.renderData(self.tweetsTableView, statuses: statuses, mode: mode, handler: { () -> Void in
                 if self.adapter.isTop {
-                    self.adapter.scrollEnd(self.tableView)
+                    self.adapter.scrollEnd(self.tweetsTableView)
                 }
                 operation.finish()
             })
@@ -227,7 +229,7 @@ class SearchViewController: UIViewController {
 
     func configureEvent() {
         EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { (n) -> Void in
-            self.adapter.scrollToTop(self.tableView)
+            self.adapter.scrollToTop(self.tweetsTableView)
         })
         EventBox.onMainThread(self, name: UIKeyboardWillShowNotification) { n in
             self.keyboardWillChangeFrame(n, showsKeyboard: true)
@@ -260,7 +262,7 @@ class SearchViewController: UIViewController {
                 return
             }
             let operation = MainBlockOperation { (operation) -> Void in
-                self.adapter.eraseData(self.tableView, statusID: statusID, handler: { () -> Void in
+                self.adapter.eraseData(self.tweetsTableView, statusID: statusID, handler: { () -> Void in
                     operation.finish()
                 })
             }
@@ -384,7 +386,7 @@ class SearchViewController: UIViewController {
         if excludeRetweets && status.actionedBy != nil {
             return
         }
-        adapter.renderData(tableView, statuses: [status], mode: .TOP, handler: nil)
+        adapter.renderData(tweetsTableView, statuses: [status], mode: .TOP, handler: nil)
     }
 
     func connectStreaming() {

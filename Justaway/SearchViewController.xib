@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -19,7 +19,8 @@
                 <outlet property="keywordTextField" destination="hDa-pY-VfR" id="Gah-6q-agQ"/>
                 <outlet property="segmentedControl" destination="73X-qI-KHo" id="GtY-DZ-7j8"/>
                 <outlet property="streamingButton" destination="dfN-Qx-Gev" id="W8R-Yw-Dun"/>
-                <outlet property="tableView" destination="g8m-x9-if9" id="7tT-7b-WQT"/>
+                <outlet property="tweetsTableView" destination="g8m-x9-if9" id="S97-wB-OhT"/>
+                <outlet property="usersTableView" destination="tMo-5K-hIb" id="Wbu-l5-UHM"/>
                 <outlet property="view" destination="6Bf-qv-8Cd" id="JKb-Cy-cQ2"/>
             </connections>
         </placeholder>
@@ -36,6 +37,10 @@
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="g8m-x9-if9" customClass="BackgroundTableView" customModule="Justaway" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="100" width="600" height="450"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tMo-5K-hIb" customClass="BackgroundTableView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="100" width="600" height="450"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
@@ -123,7 +128,7 @@
                                 <segment title="Top Tweets"/>
                                 <segment title="People"/>
                             </segments>
-                            <color key="tintColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="segmentedChange:" destination="-1" eventType="valueChanged" id="OVL-4O-JZP"/>
                             </connections>
@@ -186,13 +191,17 @@
                 <constraint firstItem="ppG-QO-NsZ" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="2fg-Pk-hpO"/>
                 <constraint firstItem="xXD-AO-gZT" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="8wU-jo-RRW"/>
                 <constraint firstItem="xia-t3-AzV" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="9KF-4L-1rI"/>
+                <constraint firstItem="tMo-5K-hIb" firstAttribute="top" secondItem="xia-t3-AzV" secondAttribute="bottom" id="9jE-B8-0A9"/>
                 <constraint firstItem="M7u-kM-p9l" firstAttribute="top" secondItem="6Bf-qv-8Cd" secondAttribute="top" constant="10" id="EKB-bW-CUu"/>
-                <constraint firstItem="g8m-x9-if9" firstAttribute="top" secondItem="6Bf-qv-8Cd" secondAttribute="top" constant="100" id="F0R-bI-0AG"/>
                 <constraint firstItem="ppG-QO-NsZ" firstAttribute="top" secondItem="g8m-x9-if9" secondAttribute="bottom" id="FB3-iY-LyH"/>
                 <constraint firstAttribute="trailing" secondItem="10O-Zg-a0d" secondAttribute="trailing" id="Fr4-oI-zYO"/>
                 <constraint firstItem="10O-Zg-a0d" firstAttribute="top" secondItem="6Bf-qv-8Cd" secondAttribute="top" id="INm-Vm-Q9k"/>
+                <constraint firstAttribute="trailing" secondItem="tMo-5K-hIb" secondAttribute="trailing" id="NkG-5Z-tZC"/>
                 <constraint firstAttribute="bottom" secondItem="ppG-QO-NsZ" secondAttribute="bottom" id="O4o-1e-eGb"/>
                 <constraint firstItem="xia-t3-AzV" firstAttribute="top" secondItem="M7u-kM-p9l" secondAttribute="bottom" id="PpG-qc-XXz"/>
+                <constraint firstItem="tMo-5K-hIb" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="R8X-8t-fNM"/>
+                <constraint firstItem="g8m-x9-if9" firstAttribute="top" secondItem="xia-t3-AzV" secondAttribute="bottom" id="Rxb-Kw-TQo"/>
+                <constraint firstItem="ppG-QO-NsZ" firstAttribute="top" secondItem="tMo-5K-hIb" secondAttribute="bottom" id="W2w-Dv-4vx"/>
                 <constraint firstAttribute="trailing" secondItem="g8m-x9-if9" secondAttribute="trailing" id="Y0B-u1-bIY"/>
                 <constraint firstItem="xXD-AO-gZT" firstAttribute="top" secondItem="xia-t3-AzV" secondAttribute="bottom" id="bO7-vP-jG2"/>
                 <constraint firstAttribute="trailing" secondItem="xia-t3-AzV" secondAttribute="trailing" id="cse-Nw-PNj"/>

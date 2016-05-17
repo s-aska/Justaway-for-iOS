@@ -247,6 +247,8 @@
 		6A7255741BC59EFF00A41020 /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */; };
 		6A7A534E1C57CF72005F3E6B /* Pinwheel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */; };
 		6A7A534F1C57CF72005F3E6B /* Pinwheel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6A7CF8341CEB6E47008277FC /* TwitterUserAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF8331CEB6E47008277FC /* TwitterUserAdapter.swift */; };
+		6A7CF8351CEB7154008277FC /* TwitterUserAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF8331CEB6E47008277FC /* TwitterUserAdapter.swift */; };
 		6A81CF1E1BC406E500EBE567 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */; };
 		6A81CF211BC406F400EBE567 /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */; };
 		6A81CF221BC4127A00EBE567 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */; };
@@ -495,6 +497,7 @@
 		6A5EAF1A1C9986CA004283F2 /* MessagesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesTableViewController.swift; sourceTree = "<group>"; };
 		6A5EAF1C1C998B50004283F2 /* TwitterMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterMessage.swift; sourceTree = "<group>"; };
 		6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pinwheel.framework; path = Carthage/Build/iOS/Pinwheel.framework; sourceTree = "<group>"; };
+		6A7CF8331CEB6E47008277FC /* TwitterUserAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterUserAdapter.swift; sourceTree = "<group>"; };
 		6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuViewController.xib; sourceTree = "<group>"; };
 		6A8A28811CE726A500BF9606 /* UsersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UsersViewController.xib; sourceTree = "<group>"; };
@@ -683,6 +686,7 @@
 				38A032151B7233810020D109 /* TwitterStatusAdapter.swift */,
 				380F1DDD1C9C16E000195D32 /* TwitterMessageAdapter.swift */,
 				38585FEC1CABB38F0095ACFB /* SearchKeywordAdapter.swift */,
+				6A7CF8331CEB6E47008277FC /* TwitterUserAdapter.swift */,
 			);
 			name = TableView;
 			sourceTree = "<group>";
@@ -1320,6 +1324,7 @@
 				38958B351C91822C000BD859 /* StreamingAlert.swift in Sources */,
 				381E6E0719D98A7300139654 /* AccountSettings.swift in Sources */,
 				6ABECB4B1C624F7700423CB7 /* TabSettingsViewController.swift in Sources */,
+				6A7CF8341CEB6E47008277FC /* TwitterUserAdapter.swift in Sources */,
 				3805DE9B1A5FFCD400FBD015 /* Scheduler.swift in Sources */,
 				38F4EACF19F1176C00CBD23F /* AsyncOperation.swift in Sources */,
 				6A0449541B24952000758061 /* FollowerUserViewController.swift in Sources */,
@@ -1444,6 +1449,7 @@
 				380F1DDC1C9C069900195D32 /* TwitterAdapter.swift in Sources */,
 				38585FF31CABBC380095ACFB /* SearchKeywordCell.swift in Sources */,
 				6A83EDA31B69400B000F3C43 /* ThemeUI.swift in Sources */,
+				6A7CF8351CEB7154008277FC /* TwitterUserAdapter.swift in Sources */,
 				384DE9481BBAC9740011AF6E /* TwitterUserCell.swift in Sources */,
 				384DE96C1BBAC9B30011AF6E /* TwitterList.swift in Sources */,
 				384DE9681BBAC99C0011AF6E /* ListMemberOfViewController.swift in Sources */,
