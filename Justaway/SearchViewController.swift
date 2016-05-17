@@ -27,6 +27,7 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var keywordTableView: UITableView!
     @IBOutlet weak var keywordTextField: UITextField!
     @IBOutlet weak var streamingButton: UIButton!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
 
     override var nibName: String {
         return "SearchViewController"
@@ -78,10 +79,10 @@ class SearchViewController: UIViewController {
     // MARK: - Configuration
 
     func configureView() {
-        refreshControl.addTarget(self, action: #selector(SearchViewController.loadDataToTop), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(loadDataToTop), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
 
-        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(SearchViewController.hide))
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(hide))
         swipe.numberOfTouchesRequired = 1
         swipe.direction = .Right
         tableView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
@@ -104,12 +105,12 @@ class SearchViewController: UIViewController {
         let button = MenuButton()
         button.tintColor = UIColor.clearColor()
         button.titleLabel?.font = UIFont(name: "fontello", size: 16.0)
-        button.frame = CGRect.init(x: 0, y: 0, width: 32, height: 32)
+        button.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
         button.setTitle("✖", forState: UIControlState.Normal)
-        button.addTarget(self, action: #selector(SearchViewController.clear), forControlEvents: .TouchUpInside)
-        keywordTextField.addTarget(self, action: #selector(SearchViewController.change), forControlEvents: .EditingChanged)
+        button.addTarget(self, action: #selector(clear), forControlEvents: .TouchUpInside)
+        keywordTextField.addTarget(self, action: #selector(change), forControlEvents: .EditingChanged)
         keywordTextField.rightView = button
         keywordTextField.rightViewMode = .Always
 
@@ -350,6 +351,10 @@ class SearchViewController: UIViewController {
             return
         }
         EditorViewController.show(" " + keyword, range: NSRange(location: 0, length: 0), inReplyToStatus: nil)
+    }
+
+    @IBAction func segmentedChange(sender: AnyObject) {
+        
     }
 
     func clear() {

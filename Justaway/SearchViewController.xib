@@ -17,6 +17,7 @@
             <connections>
                 <outlet property="keywordTableView" destination="xXD-AO-gZT" id="YCd-0B-9lp"/>
                 <outlet property="keywordTextField" destination="hDa-pY-VfR" id="Gah-6q-agQ"/>
+                <outlet property="segmentedControl" destination="73X-qI-KHo" id="GtY-DZ-7j8"/>
                 <outlet property="streamingButton" destination="dfN-Qx-Gev" id="W8R-Yw-Dun"/>
                 <outlet property="tableView" destination="g8m-x9-if9" id="7tT-7b-WQT"/>
                 <outlet property="view" destination="6Bf-qv-8Cd" id="JKb-Cy-cQ2"/>
@@ -29,13 +30,13 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="10O-Zg-a0d" customClass="NavigationShadowView" customModule="Justaway" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="10"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="10" id="rn7-Oe-Dy0"/>
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="g8m-x9-if9" customClass="BackgroundTableView" customModule="Justaway" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="60" width="600" height="490"/>
+                    <rect key="frame" x="0.0" y="100" width="600" height="450"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M7u-kM-p9l" customClass="NavigationShadowView" customModule="Justaway" customModuleProvider="target">
@@ -95,7 +96,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="0.89722521551724133" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="MTu-DO-JHK" secondAttribute="bottom" id="0IQ-Zh-eHx"/>
                         <constraint firstItem="0Fh-ep-jnn" firstAttribute="leading" secondItem="M7u-kM-p9l" secondAttribute="leading" id="44a-YD-2gA"/>
@@ -110,6 +111,30 @@
                         <constraint firstItem="hDa-pY-VfR" firstAttribute="centerY" secondItem="M7u-kM-p9l" secondAttribute="centerY" id="rpH-qz-xkE"/>
                         <constraint firstAttribute="bottom" secondItem="0Fh-ep-jnn" secondAttribute="bottom" id="y72-WQ-bpt"/>
                         <constraint firstAttribute="trailing" secondItem="MTu-DO-JHK" secondAttribute="trailing" id="zIl-Qa-PkR"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xia-t3-AzV" customClass="NavigationShadowView" customModule="Justaway" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="60" width="600" height="40"/>
+                    <subviews>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="73X-qI-KHo">
+                            <rect key="frame" x="10" y="0.0" width="580" height="29"/>
+                            <segments>
+                                <segment title="All Tweets"/>
+                                <segment title="Top Tweets"/>
+                                <segment title="People"/>
+                            </segments>
+                            <color key="tintColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                            <connections>
+                                <action selector="segmentedChange:" destination="-1" eventType="valueChanged" id="OVL-4O-JZP"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="H0w-aT-noe"/>
+                        <constraint firstItem="73X-qI-KHo" firstAttribute="top" secondItem="xia-t3-AzV" secondAttribute="top" id="Okb-pE-Vmx"/>
+                        <constraint firstItem="73X-qI-KHo" firstAttribute="leading" secondItem="xia-t3-AzV" secondAttribute="leading" constant="10" id="QfT-f1-8Fr"/>
+                        <constraint firstAttribute="trailing" secondItem="73X-qI-KHo" secondAttribute="trailing" constant="10" id="lav-Ev-5CM"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppG-QO-NsZ" customClass="MenuView" customModule="Justaway" customModuleProvider="target">
@@ -152,7 +177,7 @@
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xXD-AO-gZT" customClass="BackgroundTableView" customModule="Justaway" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="60" width="600" height="490"/>
+                    <rect key="frame" x="0.0" y="100" width="600" height="450"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
             </subviews>
@@ -160,17 +185,20 @@
             <constraints>
                 <constraint firstItem="ppG-QO-NsZ" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="2fg-Pk-hpO"/>
                 <constraint firstItem="xXD-AO-gZT" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="8wU-jo-RRW"/>
+                <constraint firstItem="xia-t3-AzV" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="9KF-4L-1rI"/>
                 <constraint firstItem="M7u-kM-p9l" firstAttribute="top" secondItem="6Bf-qv-8Cd" secondAttribute="top" constant="10" id="EKB-bW-CUu"/>
-                <constraint firstItem="g8m-x9-if9" firstAttribute="top" secondItem="6Bf-qv-8Cd" secondAttribute="top" constant="60" id="F0R-bI-0AG"/>
+                <constraint firstItem="g8m-x9-if9" firstAttribute="top" secondItem="6Bf-qv-8Cd" secondAttribute="top" constant="100" id="F0R-bI-0AG"/>
                 <constraint firstItem="ppG-QO-NsZ" firstAttribute="top" secondItem="g8m-x9-if9" secondAttribute="bottom" id="FB3-iY-LyH"/>
                 <constraint firstAttribute="trailing" secondItem="10O-Zg-a0d" secondAttribute="trailing" id="Fr4-oI-zYO"/>
                 <constraint firstItem="10O-Zg-a0d" firstAttribute="top" secondItem="6Bf-qv-8Cd" secondAttribute="top" id="INm-Vm-Q9k"/>
                 <constraint firstAttribute="bottom" secondItem="ppG-QO-NsZ" secondAttribute="bottom" id="O4o-1e-eGb"/>
+                <constraint firstItem="xia-t3-AzV" firstAttribute="top" secondItem="M7u-kM-p9l" secondAttribute="bottom" id="PpG-qc-XXz"/>
                 <constraint firstAttribute="trailing" secondItem="g8m-x9-if9" secondAttribute="trailing" id="Y0B-u1-bIY"/>
+                <constraint firstItem="xXD-AO-gZT" firstAttribute="top" secondItem="xia-t3-AzV" secondAttribute="bottom" id="bO7-vP-jG2"/>
+                <constraint firstAttribute="trailing" secondItem="xia-t3-AzV" secondAttribute="trailing" id="cse-Nw-PNj"/>
                 <constraint firstItem="g8m-x9-if9" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="mc4-8C-jLH"/>
                 <constraint firstItem="10O-Zg-a0d" firstAttribute="leading" secondItem="6Bf-qv-8Cd" secondAttribute="leading" id="mxq-2w-smN"/>
                 <constraint firstAttribute="trailing" secondItem="M7u-kM-p9l" secondAttribute="trailing" id="ojJ-tA-FMq"/>
-                <constraint firstItem="xXD-AO-gZT" firstAttribute="top" secondItem="M7u-kM-p9l" secondAttribute="bottom" id="rVp-uV-4ca"/>
                 <constraint firstAttribute="trailing" secondItem="ppG-QO-NsZ" secondAttribute="trailing" id="sJL-yU-juM"/>
                 <constraint firstItem="ppG-QO-NsZ" firstAttribute="top" secondItem="xXD-AO-gZT" secondAttribute="bottom" id="t7F-l7-lEq"/>
                 <constraint firstAttribute="trailing" secondItem="xXD-AO-gZT" secondAttribute="trailing" id="ubq-xC-t2l"/>
