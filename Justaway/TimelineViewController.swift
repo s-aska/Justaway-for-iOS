@@ -75,8 +75,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
         ViewTools.addSubviewWithEqual(self.view, view: settingsViewController.view)
 
-        if let account = AccountSettingsStore.get() {
-            userID = account.account().userID
+        if let account = AccountSettingsStore.get()?.account() {
+            userID = account.userID
         }
 
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(TimelineViewController.showSideMenu))
