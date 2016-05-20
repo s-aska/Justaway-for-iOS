@@ -356,7 +356,7 @@ class SearchViewController: UIViewController {
     }
 
     @IBAction func segmentedChange(sender: AnyObject) {
-
+        
     }
 
     func clear() {
