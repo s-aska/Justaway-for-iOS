@@ -76,8 +76,9 @@ class ImageLoaderClient {
 
     class func displayImage(url: NSURL, imageView: UIImageView) {
         #if DEBUG
-            ImageLoader.displayImage(url, imageView: imageView, options: Static.defaultOptions,
-                                     loadingListener: DebugListener(), loadingProgressListener: DebugProgressListener())
+            ImageLoader.displayImage(url, imageView: imageView, options: Static.defaultOptions)
+//            ImageLoader.displayImage(url, imageView: imageView, options: Static.defaultOptions,
+//                                     loadingListener: DebugListener(), loadingProgressListener: DebugProgressListener())
         #else
             ImageLoader.displayImage(url, imageView: imageView, options: Static.defaultOptions)
         #endif

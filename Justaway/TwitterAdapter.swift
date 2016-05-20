@@ -71,6 +71,7 @@ class TwitterAdapter: NSObject {
     var scrollCallback: ((scrollView: UIScrollView) -> Void)?
     let loadDataQueue = NSOperationQueue().serial()
     let mainQueue = NSOperationQueue().serial()
+    let renderQueue = NSOperationQueue().serial()
     var renderStatusStack = [TwitterStatus]()
 
     // MARK: Configuration
@@ -100,6 +101,7 @@ class TwitterAdapter: NSObject {
         EventBox.on(self, name: "applicationDidBecomeActive", sender: nil, queue: nil) { [weak self] (_) in
             self?.mainQueue.suspended = false
         }
+        renderQueue.qualityOfService = .Background
     }
 
     deinit {
@@ -243,39 +245,55 @@ extension TwitterAdapter: UITableViewDataSource {
         // swiftlint:disable:next force_cast
         let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as! TwitterStatusCell
 
-        if cell.textHeightConstraint.constant != row.textHeight {
-            cell.textHeightConstraint.constant = row.textHeight
-        }
-
-        if let quotedStatusLabelHeightConstraint = cell.quotedStatusLabelHeightConstraint {
-            if quotedStatusLabelHeightConstraint.constant != row.quotedTextHeight {
-                quotedStatusLabelHeightConstraint.constant = row.quotedTextHeight
-            }
-        }
-
-        if row.fontSize != cell.statusLabel.font?.pointSize ?? 0 {
-            cell.statusLabel.font = UIFont.systemFontOfSize(row.fontSize)
-        }
-
-        if let quotedStatusLabel = cell.quotedStatusLabel {
-            if row.fontSize != quotedStatusLabel.font?.pointSize ?? 0 {
-                quotedStatusLabel.font = UIFont.systemFontOfSize(row.fontSize)
-            }
-        }
-
-        if let s = cell.status {
-            if s.uniqueID == status.uniqueID {
-                return cell
-            }
+        if cell.status?.uniqueID ?? "" == status.uniqueID {
+            return cell
         }
 
         cell.status = status
-        cell.setLayout(layout)
-        cell.setText(status)
+
+        let op = MainBlockOperation({ (op) in
+            if cell.status?.uniqueID ?? "" != status.uniqueID {
+                op.finish()
+                return
+            }
+
+            if cell.textHeightConstraint.constant != row.textHeight {
+                cell.textHeightConstraint.constant = row.textHeight
+            }
+
+            if let quotedStatusLabelHeightConstraint = cell.quotedStatusLabelHeightConstraint {
+                if quotedStatusLabelHeightConstraint.constant != row.quotedTextHeight {
+                    quotedStatusLabelHeightConstraint.constant = row.quotedTextHeight
+                }
+            }
+
+            if row.fontSize != cell.statusLabel.font?.pointSize ?? 0 {
+                cell.statusLabel.font = UIFont.systemFontOfSize(row.fontSize)
+            }
+
+            if let quotedStatusLabel = cell.quotedStatusLabel {
+                if row.fontSize != quotedStatusLabel.font?.pointSize ?? 0 {
+                    quotedStatusLabel.font = UIFont.systemFontOfSize(row.fontSize)
+                }
+            }
+
+            cell.setLayout(layout)
+            cell.setText(status)
+            op.finish()
+        })
+        renderQueue.addOperation(op)
 
         if !ImageLoader.suspend {
-            cell.setImage(status)
+            let imageOp = MainBlockOperation({ (op) in
+                if !ImageLoader.suspend && cell.status?.uniqueID ?? "" == status.uniqueID {
+                    cell.setImage(status)
+                }
+                op.finish()
+            })
+            imageOp.queuePriority = .VeryLow
+            renderQueue.addOperation(imageOp)
         }
+
         return cell
     }
 
