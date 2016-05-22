@@ -45,7 +45,7 @@ class LoadReplies {
                 allStatuses
                     .sort { $0.0.statusID.longLongValue < $0.1.statusID.longLongValue }
                     .filter { status in
-                        if let inReplyToStatusID = status.inReplyToStatusID where isReplyIDs[inReplyToStatusID] != nil {
+                        if let inReplyToStatusID = status.inReplyToStatusID where isReplyIDs[inReplyToStatusID] != nil && isReplyIDs[status.statusID] == nil {
                             isReplyIDs[status.statusID] = true
                             return true
                         } else {
