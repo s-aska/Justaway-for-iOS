@@ -86,7 +86,10 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
             guard let tab = notification.object as? Tab else {
                 return
             }
-            guard let account = self.account else {
+            guard let userID = self.account?.userID else {
+                return
+            }
+            guard let account = AccountSettingsStore.get()?.find(userID) else {
                 return
             }
             let newAccount = Account(account: account, tabs: account.tabs + [tab])
@@ -178,6 +181,9 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
             case .Notifications:
                 cell.nameLabel.text = "Notifications"
                 cell.iconLabel.text = "鐘"
+            case .Mentions:
+                cell.nameLabel.text = "Mentions"
+                cell.iconLabel.text = "@"
             case .Favorites:
                 cell.nameLabel.text = "Likes"
                 cell.iconLabel.text = "好"
@@ -255,7 +261,7 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
             cancel()
         } else {
             if let account = account {
-                AddTabAlert.show(sender, tabs: account.tabs)
+                AddTabAlert.show(sender, account: account)
             }
         }
     }

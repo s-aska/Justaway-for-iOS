@@ -117,6 +117,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 }
             case let vc as NotificationsViewController:
                 vcCache["NotificationsViewController"] = vc
+            case let vc as MentionsTableViewController:
+                vcCache["MentionsTableViewController"] = vc
             case let vc as FavoritesTableViewController:
                 vcCache["FavoritesTableViewController"] = vc
             case let vc as ListsTimelineTableViewController:
@@ -164,6 +166,11 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 vc = vcCache["NotificationsViewController"] ?? NotificationsViewController()
                 icon = "鐘"
                 title = "Notifications"
+            case .Mentions:
+                vc = vcCache["MentionsTableViewController"] ?? MentionsTableViewController()
+                icon = "@"
+                title = "Mentions"
+
             case .Favorites:
                 vc = vcCache["FavoritesTableViewController"] ?? FavoritesTableViewController()
                 icon = "好"
@@ -497,6 +504,12 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 let range = NSRange.init(location: prefix.characters.count, length: 0)
                 EditorViewController.show(prefix, range: range, inReplyToStatus: nil)
             }))
+        } else if tab.type == .Notifications {
+            if account.exToken.isEmpty {
+                actionSheet.addAction(UIAlertAction(title: "Enable Notification", style: .Default, handler: { action in
+                    SafariExURLHandler.open()
+                }))
+            }
         }
 
         actionSheet.addAction(UIAlertAction(title: "Tab Settings", style: .Default, handler: { action in

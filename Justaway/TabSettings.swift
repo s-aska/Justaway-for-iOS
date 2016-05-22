@@ -20,6 +20,7 @@ class Tab {
     enum Type: String {
         case HomeTimline
         case UserTimline
+        case Mentions
         case Notifications
         case Favorites
         case Searches

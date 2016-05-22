@@ -249,6 +249,8 @@
 		6A7A534F1C57CF72005F3E6B /* Pinwheel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6A7CF8341CEB6E47008277FC /* TwitterUserAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF8331CEB6E47008277FC /* TwitterUserAdapter.swift */; };
 		6A7CF8351CEB7154008277FC /* TwitterUserAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF8331CEB6E47008277FC /* TwitterUserAdapter.swift */; };
+		6A7CF8371CF18F34008277FC /* MentionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF8361CF18F34008277FC /* MentionsTableViewController.swift */; };
+		6A7CF8381CF1903C008277FC /* MentionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF8361CF18F34008277FC /* MentionsTableViewController.swift */; };
 		6A81CF1E1BC406E500EBE567 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */; };
 		6A81CF211BC406F400EBE567 /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */; };
 		6A81CF221BC4127A00EBE567 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */; };
@@ -498,6 +500,7 @@
 		6A5EAF1C1C998B50004283F2 /* TwitterMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterMessage.swift; sourceTree = "<group>"; };
 		6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pinwheel.framework; path = Carthage/Build/iOS/Pinwheel.framework; sourceTree = "<group>"; };
 		6A7CF8331CEB6E47008277FC /* TwitterUserAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterUserAdapter.swift; sourceTree = "<group>"; };
+		6A7CF8361CF18F34008277FC /* MentionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionsTableViewController.swift; sourceTree = "<group>"; };
 		6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		6A81CF201BC406F400EBE567 /* SideMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuViewController.xib; sourceTree = "<group>"; };
 		6A8A28811CE726A500BF9606 /* UsersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UsersViewController.xib; sourceTree = "<group>"; };
@@ -847,6 +850,7 @@
 				6A0449491B241FEF00758061 /* UserTimelineTableViewController.swift */,
 				6A5357D81A7429A600291E95 /* NotificationsViewController.swift */,
 				6A5176991B487085003D0A86 /* FavoritesViewController.swift */,
+				6A7CF8361CF18F34008277FC /* MentionsTableViewController.swift */,
 				6A27E91B1C6B9B50001D7C87 /* SearchesTableViewController.swift */,
 				6A9C183B1C737F6600A1FE77 /* ListsTimelineViewController.swift */,
 				6A5EAF1A1C9986CA004283F2 /* MessagesTableViewController.swift */,
@@ -1333,6 +1337,7 @@
 				384BBC161CB67FDF00A6CCC3 /* TwitterExAPI.swift in Sources */,
 				38E052921BA46B9200B67EB2 /* ImagePickerCollectionView.swift in Sources */,
 				38585FF51CABE5E50095ACFB /* TwitterSearchStreaming.swift in Sources */,
+				6A7CF8371CF18F34008277FC /* MentionsTableViewController.swift in Sources */,
 				6A04494E1B24812E00758061 /* TwitterUserCell.swift in Sources */,
 				380F1DDB1C9C066100195D32 /* TwitterAdapter.swift in Sources */,
 				38B057D91B72702A00295C23 /* PocketCoverViewController.swift in Sources */,
@@ -1395,6 +1400,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A7CF8381CF1903C008277FC /* MentionsTableViewController.swift in Sources */,
 				382445AC1CE9911000B5FCA0 /* LoadReplies.swift in Sources */,
 				383EAE711C918C7A00E17229 /* TwitterStreaming.swift in Sources */,
 				384DE9401BBAC9600011AF6E /* UserAlert.swift in Sources */,

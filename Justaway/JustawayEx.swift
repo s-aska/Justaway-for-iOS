@@ -14,9 +14,11 @@ import SafariServices
 class SafariExURLHandler: NSObject {
 
     static var oAuthViewController: SFSafariViewController?
+    static var successCallback: ((account: Account) -> ())?
 
-    class func open() {
+    class func open(successCallback: ((account: Account) -> ())? = nil) {
         SafariExURLHandler.oAuthViewController = Safari.openURL(NSURL(string: "https://justaway.info/signin/")!)
+        SafariExURLHandler.successCallback = successCallback
     }
 
     class func callback(url: NSURL) {
@@ -32,9 +34,11 @@ class SafariExURLHandler: NSObject {
             return
         }
         if let account = accountSettings.find(userId) {
-            let newSettings = accountSettings.merge([Account.init(account: account, exToken: exToken)])
+            let newAccount = Account(account: account, exToken: exToken)
+            let newSettings = accountSettings.merge([newAccount])
             AccountSettingsStore.save(newSettings)
             SafariExURLHandler.oAuthViewController?.dismissViewControllerAnimated(true, completion: {
+                SafariExURLHandler.successCallback?(account: newAccount)
                 MessageAlert.show("Notification started", message: "Notification you will receive when you are not running Justaway.")
             })
         } else {

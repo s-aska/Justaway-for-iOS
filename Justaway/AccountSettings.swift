@@ -103,7 +103,7 @@ class Account {
         self.profileBannerURL = account.profileBannerURL
         self.tabs = tabs.count > 0 ? tabs : [
             Tab(type: .HomeTimline, userID: userID, arguments: [:]),
-            Tab(type: .Notifications, userID: userID, arguments: [:]),
+            Tab(type: .Mentions, userID: userID, arguments: [:]),
             Tab(type: .Favorites, userID: userID, arguments: [:])
         ]
         self.exToken = account.exToken
