@@ -82,7 +82,7 @@ extension TwitterUserAdapter: UITableViewDataSource {
 
         cell.iconImageView.image = nil
         ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: cell.iconImageView)
-        
+
         return cell
     }
 }
