@@ -330,6 +330,18 @@ class Twitter {
             })
     }
 
+    class func getUsers(keyword: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
+        let parameters = ["q": keyword, "count": "200", "include_entities": "false"]
+        let success = { (array: [JSON]) -> Void in
+            success(array.map({ TwitterUserFull($0) }))
+        }
+        client()?
+            .get("https://api.twitter.com/1.1/users/search.json", parameters: parameters)
+            .responseJSONArray(success, failure: { (code, message, error) -> Void in
+                failure(error)
+            })
+    }
+
     class func getRetweeters(statusID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
         let retweetersSuccess = { (json: JSON) -> Void in
             guard let ids = json["ids"].array?.map({ $0.string ?? "" }).filter({ !$0.isEmpty }) else {
@@ -800,20 +812,30 @@ extension Twitter {
                 }, failure: nil)
     }
 
-    class func follow(userID: String) {
+    class func follow(userID: String, success: (() -> Void)? = nil) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
         let parameters = ["user_id": userID]
-        client()?
+        account.client
             .post("https://api.twitter.com/1.1/friendships/create.json", parameters: parameters)
             .responseJSON({ (json: JSON) -> Void in
+                Relationship.follow(account, targetUserID: userID)
+                success?()
                 ErrorAlert.show("Follow success")
             })
     }
 
-    class func unfollow(userID: String) {
+    class func unfollow(userID: String, success: (() -> Void)? = nil) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
         let parameters = ["user_id": userID]
-        client()?
+        account.client
             .post("https://api.twitter.com/1.1/friendships/destroy.json", parameters: parameters)
             .responseJSON({ (json: JSON) -> Void in
+                Relationship.unfollow(account, targetUserID: userID)
+                success?()
                 ErrorAlert.show("Unfollow success")
             })
     }

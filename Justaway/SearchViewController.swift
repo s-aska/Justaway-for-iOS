@@ -104,6 +104,10 @@ class SearchViewController: UIViewController {
             }
         }
 
+        userAdapter.configureView(usersTableView)
+        usersTableView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
+        usersTableView.addGestureRecognizer(swipe)
+
         let button = MenuButton()
         button.tintColor = UIColor.clearColor()
         button.titleLabel?.font = UIFont(name: "fontello", size: 16.0)
@@ -142,6 +146,14 @@ class SearchViewController: UIViewController {
             return
         }
         keywordTableView.hidden = true
+        if segmentedControl.selectedSegmentIndex > 1 {
+            tweetsTableView.hidden = true
+            usersTableView.hidden = false
+            loadUserData()
+            return
+        }
+        tweetsTableView.hidden = false
+        usersTableView.hidden = true
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (Void -> Void) = {
                 op.finish()
@@ -174,12 +186,16 @@ class SearchViewController: UIViewController {
         }
 
         if self.adapter.rows.count == 0 {
-            loadData(nil)
+            loadData()
             return
         }
 
         if self.adapter.loadDataQueue.operationCount > 0 {
             NSLog("loadDataToTop busy")
+            return
+        }
+
+        if segmentedControl.selectedSegmentIndex > 1 {
             return
         }
 
@@ -217,6 +233,55 @@ class SearchViewController: UIViewController {
                 if self.adapter.isTop {
                     self.adapter.scrollEnd(self.tweetsTableView)
                 }
+                operation.finish()
+            })
+
+            if let h = handler {
+                h()
+            }
+        }
+        self.adapter.mainQueue.addOperation(operation)
+    }
+
+    func loadUserData(maxID: String? = nil) {
+        guard let keyword = keyword else {
+            return
+        }
+        if keyword.isEmpty {
+            return
+        }
+        keywordTableView.hidden = true
+        let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
+            let always: (Void -> Void) = {
+                op.finish()
+                self.adapter.footerIndicatorView?.stopAnimating()
+                self.refreshControl.endRefreshing()
+            }
+            let success = { (users: [TwitterUserFull]) -> Void in
+
+                self.renderUserData(users, mode: (maxID != nil ? .BOTTOM : .OVER), handler: always)
+            }
+            let failure = { (error: NSError) -> Void in
+                ErrorAlert.show("Error", message: error.localizedDescription)
+                always()
+            }
+            if !self.refreshControl.refreshing {
+                Async.main {
+                    self.adapter.footerIndicatorView?.startAnimating()
+                    return
+                }
+            }
+            Twitter.getUsers(keyword, success: success, failure: failure)
+        })
+        self.adapter.loadDataQueue.addOperation(op)
+    }
+
+    func renderUserData(users: [TwitterUserFull], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
+        let operation = MainBlockOperation { (operation) -> Void in
+            self.userAdapter.renderData(self.usersTableView, users: users, mode: mode, handler: { () -> Void in
+//                if self.userAdapter.isTop {
+//                    self.userAdapter.scrollEnd(self.tweetsTableView)
+//                }
                 operation.finish()
             })
 
@@ -292,6 +357,9 @@ class SearchViewController: UIViewController {
             MessageAlert.show("Please input keyword")
             return
         }
+        if segmentedControl.selectedSegmentIndex > 1 {
+            return
+        }
         showMenu(sender, keyword: keyword)
     }
 
@@ -306,6 +374,9 @@ class SearchViewController: UIViewController {
             return
         }
         guard let keyword = self.keyword where !keyword.isEmpty else {
+            return
+        }
+        if segmentedControl.selectedSegmentIndex > 1 {
             return
         }
         let alert = UIAlertController(title: "Connect search streaming?", message: nil, preferredStyle: .Alert)
@@ -337,7 +408,7 @@ class SearchViewController: UIViewController {
         }
         NSLog("search")
         self.keyword = keyword
-        loadData(nil)
+        loadData()
         keywordAdapter.appendHistory(keyword, tableView: keywordTableView)
     }
 

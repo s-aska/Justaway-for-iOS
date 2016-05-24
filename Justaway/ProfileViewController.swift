@@ -386,6 +386,13 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         ViewTools.slideIn(instance)
     }
 
+    class func show(user: TwitterUserFull) {
+        let instance = ProfileViewController()
+        instance.user = TwitterUser(user)
+        instance.userFull = user
+        ViewTools.slideIn(instance)
+    }
+
     class func show(screenName: String) {
         let parameters = ["screen_name": screenName]
         let success: (([JSON]) -> Void) = { (rows) in

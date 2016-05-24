@@ -50,6 +50,101 @@ class TwitterUserAdapter: NSObject {
         tableView.registerNib(UINib(nibName: "TwitterUserCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         layoutHeightCell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier) as? TwitterUserCell
     }
+
+    func renderData(tableView: UITableView, users: [TwitterUserFull], mode: TwitterAdapter.RenderMode, handler: (() -> Void)?) {
+        var users = users
+        let fontSize = CGFloat(GenericSettings.get().fontSize)
+        let limit = mode == .OVER ? 0 : timelineRowsLimit
+
+//        var addShowMore = false
+//        if mode == .HEADER {
+//            if let firstUniqueID = firstUniqueID() {
+//                if statuses.contains({ $0.uniqueID == firstUniqueID }) {
+//                    statuses.removeAtIndex(statuses.count - 1)
+//                } else {
+//                    addShowMore = true
+//                }
+//            }
+//        } else if mode == .TOP {
+//            if let topRowStatus = rows.first?.status, firstReceivedStatus = statuses.first {
+//                if !firstReceivedStatus.connectionID.isEmpty && firstReceivedStatus.connectionID != topRowStatus.connectionID {
+//                    addShowMore = true
+//                }
+//            }
+//        }
+
+        if mode != .OVER {
+            users = users.filter { user -> Bool in
+                return !rows.contains { $0.user.userID ?? "" == user.userID }
+            }
+        }
+
+        let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + users.count) - limit, 0)
+        let deleteStart = mode == .TOP || mode == .HEADER ? self.rows.count - deleteCount : 0
+        let deleteRange = deleteStart ..< (deleteStart + deleteCount)
+        let deleteIndexPaths = deleteRange.map { row in NSIndexPath(forRow: row, inSection: 0) }
+
+        let insertStart = mode == .BOTTOM ? self.rows.count - deleteCount : 0
+        let insertIndexPaths = (insertStart ..< (insertStart + users.count)).map { row in NSIndexPath(forRow: row, inSection: 0) }
+
+        if deleteIndexPaths.count == 0 && users.count == 0 {
+            handler?()
+            return
+        }
+        // println("renderData lastID: \(self.lastID ?? 0) insertIndexPaths: \(insertIndexPaths.count) deleteIndexPaths: \(deleteIndexPaths.count) oldRows:\(self.rows.count)")
+
+        if let lastCell = tableView.visibleCells.last {
+            // NSLog("y:\(tableView.contentOffset.y) top:\(tableView.contentInset.top)")
+            let isTop = tableView.contentOffset.y + tableView.contentInset.top <= 0 && mode == .TOP
+            let offset = lastCell.frame.origin.y - tableView.contentOffset.y
+            UIView.setAnimationsEnabled(false)
+            tableView.beginUpdates()
+            if deleteIndexPaths.count > 0 {
+                tableView.deleteRowsAtIndexPaths(deleteIndexPaths, withRowAnimation: .None)
+                self.rows.removeRange(deleteRange)
+            }
+            if insertIndexPaths.count > 0 {
+                var i = 0
+                for insertIndexPath in insertIndexPaths {
+                    let row = self.createRow(users[i], fontSize: fontSize, tableView: tableView)
+                    self.rows.insert(row, atIndex: insertIndexPath.row)
+                    i += 1
+                }
+                tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
+            }
+            tableView.endUpdates()
+            tableView.setContentOffset(CGPoint(x: 0, y: lastCell.frame.origin.y - offset), animated: false)
+            UIView.setAnimationsEnabled(true)
+            if isTop {
+                UIView.animateWithDuration(0.3, animations: { _ in
+                    tableView.contentOffset = CGPoint(x: 0, y: -tableView.contentInset.top)
+                    }, completion: { _ in
+                        // self.scrollEnd(tableView)
+                        // self.renderDataCallback?(statuses: statuses, mode: mode)
+                        handler?()
+                })
+            } else {
+                if mode == .OVER {
+                    tableView.contentOffset = CGPoint(x: 0, y: -tableView.contentInset.top)
+                }
+                // self.renderDataCallback?(statuses: statuses, mode: mode)
+                handler?()
+            }
+
+        } else {
+            if deleteIndexPaths.count > 0 {
+                self.rows.removeRange(deleteRange)
+            }
+            for user in users {
+                self.rows.append(self.createRow(user, fontSize: fontSize, tableView: tableView))
+            }
+            tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: false)
+            tableView.reloadData()
+            // self.renderImages(tableView)
+            // self.renderDataCallback?(statuses: statuses, mode: mode)
+            handler?()
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -79,6 +174,14 @@ extension TwitterUserAdapter: UITableViewDataSource {
         cell.screenNameLabel.text = user.screenName
         cell.protectedLabel.hidden = !user.isProtected
         cell.descriptionLabel.text = user.description
+
+        if let account = AccountSettingsStore.get()?.account() {
+            Relationship.checkUser(account.userID, targetUserID: user.userID, callback: { (relationshop) in
+                Async.main {
+                    cell.followButton.selected = relationshop.following
+                }
+            })
+        }
 
         cell.iconImageView.image = nil
         ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: cell.iconImageView)

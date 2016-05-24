@@ -121,6 +121,7 @@ class TabButton: BaseButton {
 class FavoritesButton: BaseButton {}
 class ReplyButton: BaseButton {}
 class RetweetButton: BaseButton {}
+class FollowButton: BaseButton {}
 
 // MARK: - Lable
 

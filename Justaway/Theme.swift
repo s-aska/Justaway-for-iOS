@@ -45,6 +45,7 @@ protocol Theme {
     func buttonNormal() -> UIColor
     func retweetButtonSelected() -> UIColor
     func favoritesButtonSelected() -> UIColor
+    func followButtonSelected() -> UIColor
 
     func streamingConnected() -> UIColor
     func streamingError() -> UIColor
@@ -135,6 +136,8 @@ class ThemeController {
         RetweetButton.appearance().setTitleColor(theme.retweetButtonSelected(), forState: .Selected)
         FavoritesButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Normal)
         FavoritesButton.appearance().setTitleColor(theme.favoritesButtonSelected(), forState: .Selected)
+
+        FollowButton.appearance().setTitleColor(theme.followButtonSelected(), forState: .Selected)
 
         if refresh {
             CATransaction.begin()
@@ -258,6 +261,9 @@ class ThemeController {
             case let v as FavoritesButton:
                 v.setTitleColor(theme.buttonNormal(), forState: .Normal)
                 v.setTitleColor(theme.favoritesButtonSelected(), forState: .Selected)
+            case let v as FollowButton:
+                v.setTitleColor(theme.buttonNormal(), forState: .Normal)
+                v.setTitleColor(theme.followButtonSelected(), forState: .Selected)
             case let v as StreamingButton:
                 v.normalColor = theme.bodyTextColor()
                 v.connectedColor = theme.streamingConnected()
