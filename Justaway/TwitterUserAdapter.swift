@@ -174,11 +174,22 @@ extension TwitterUserAdapter: UITableViewDataSource {
         cell.screenNameLabel.text = user.screenName
         cell.protectedLabel.hidden = !user.isProtected
         cell.descriptionLabel.text = user.description
+        cell.followingLabel.text = user.friendsCount.description
+        cell.followerLabel.text = user.followersCount.description
+        cell.listsLabel.text = user.listedCount.description
+        cell.blockLabel.hidden = true
+        cell.muteLabel.hidden = true
+        cell.retweetLabel.hidden = true
+        cell.retweetDeleteLabel.hidden = true
 
         if let account = AccountSettingsStore.get()?.account() {
             Relationship.checkUser(account.userID, targetUserID: user.userID, callback: { (relationshop) in
                 Async.main {
                     cell.followButton.selected = relationshop.following
+                    cell.blockLabel.hidden = !relationshop.blocking
+                    cell.muteLabel.hidden = !relationshop.muting
+                    cell.retweetLabel.hidden = relationshop.wantRetweets
+                    cell.retweetDeleteLabel.hidden = relationshop.wantRetweets
                 }
             })
         }
@@ -242,10 +253,11 @@ extension TwitterUserAdapter {
     }
 
     func measure(text: NSString, fontSize: CGFloat) -> CGFloat {
-        return ceil(text.boundingRectWithSize(
+        let heigit = ceil(text.boundingRectWithSize(
             CGSize.init(width: (self.layoutHeightCell?.descriptionLabel.frame.size.width)!, height: 0),
             options: NSStringDrawingOptions.UsesLineFragmentOrigin,
             attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
             context: nil).size.height)
+        return max(heigit, 23)
     }
 }

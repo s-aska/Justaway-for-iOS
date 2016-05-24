@@ -17,6 +17,13 @@ class TwitterUserCell: BackgroundTableViewCell {
     @IBOutlet weak var descriptionLabel: StatusLable!
     @IBOutlet weak var textHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var followButton: FollowButton!
+    @IBOutlet weak var blockLabel: TextLable!
+    @IBOutlet weak var muteLabel: TextLable!
+    @IBOutlet weak var retweetLabel: TextLable!
+    @IBOutlet weak var retweetDeleteLabel: TextLable!
+    @IBOutlet weak var followingLabel: TextLable!
+    @IBOutlet weak var followerLabel: TextLable!
+    @IBOutlet weak var listsLabel: TextLable!
 
     var user: TwitterUserFull?
 
@@ -108,6 +115,17 @@ class TwitterUserCell: BackgroundTableViewCell {
 
                     AlertController.showViewController(actionSheet)
                 }
+            })
+        }
+    }
+
+    @IBAction func menu(sender: UIButton) {
+        guard let account = AccountSettingsStore.get()?.account() else {
+            return
+        }
+        if let user = user {
+            Relationship.checkUser(account.userID, targetUserID: user.userID, callback: { (relationshop) in
+                UserAlert.show(sender, user: TwitterUser(user), userFull: user, relationship: relationshop)
             })
         }
     }

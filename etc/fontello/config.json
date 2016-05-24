@@ -221,6 +221,18 @@
       "css": "attention",
       "code": 33,
       "src": "fontawesome"
+    },
+    {
+      "uid": "98d9c83c1ee7c2c25af784b518c522c5",
+      "css": "block",
+      "code": 31105,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "43c629249e2cca7e73cd4ef410c9551f",
+      "css": "mute",
+      "code": 40665,
+      "src": "fontawesome"
     }
   ]
 }
