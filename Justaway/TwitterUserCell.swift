@@ -17,6 +17,7 @@ class TwitterUserCell: BackgroundTableViewCell {
     @IBOutlet weak var descriptionLabel: StatusLable!
     @IBOutlet weak var textHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var followButton: FollowButton!
+    @IBOutlet weak var unfollowButton: BaseButton!
     @IBOutlet weak var blockLabel: TextLable!
     @IBOutlet weak var muteLabel: TextLable!
     @IBOutlet weak var retweetLabel: TextLable!
@@ -84,7 +85,8 @@ class TwitterUserCell: BackgroundTableViewCell {
                         style: .Default,
                         handler: { action in
                             Twitter.unfollow(user.userID) {
-                                self.followButton.selected = false
+                                self.followButton.hidden = false
+                                self.unfollowButton.hidden = true
                             }
                     }))
 
@@ -105,7 +107,8 @@ class TwitterUserCell: BackgroundTableViewCell {
                         style: .Default,
                         handler: { action in
                             Twitter.follow(user.userID) {
-                                self.followButton.selected = true
+                                self.followButton.hidden = true
+                                self.unfollowButton.hidden = false
                             }
                     }))
 

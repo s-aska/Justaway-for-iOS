@@ -185,7 +185,8 @@ extension TwitterUserAdapter: UITableViewDataSource {
         if let account = AccountSettingsStore.get()?.account() {
             Relationship.checkUser(account.userID, targetUserID: user.userID, callback: { (relationshop) in
                 Async.main {
-                    cell.followButton.selected = relationshop.following
+                    cell.followButton.hidden = relationshop.following
+                    cell.unfollowButton.hidden = !relationshop.following
                     cell.blockLabel.hidden = !relationshop.blocking
                     cell.muteLabel.hidden = !relationshop.muting
                     cell.retweetLabel.hidden = relationshop.wantRetweets

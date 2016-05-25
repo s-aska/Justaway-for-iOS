@@ -137,7 +137,8 @@ class ThemeController {
         FavoritesButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Normal)
         FavoritesButton.appearance().setTitleColor(theme.favoritesButtonSelected(), forState: .Selected)
 
-        FollowButton.appearance().setTitleColor(theme.followButtonSelected(), forState: .Selected)
+        FollowButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Normal)
+        UnfollowButton.appearance().setTitleColor(theme.mainBackgroundColor(), forState: .Normal)
 
         if refresh {
             CATransaction.begin()
@@ -263,7 +264,8 @@ class ThemeController {
                 v.setTitleColor(theme.favoritesButtonSelected(), forState: .Selected)
             case let v as FollowButton:
                 v.setTitleColor(theme.buttonNormal(), forState: .Normal)
-                v.setTitleColor(theme.followButtonSelected(), forState: .Selected)
+            case let v as UnfollowButton:
+                v.setTitleColor(theme.mainBackgroundColor(), forState: .Normal)
             case let v as StreamingButton:
                 v.normalColor = theme.bodyTextColor()
                 v.connectedColor = theme.streamingConnected()

@@ -9,9 +9,14 @@
 import UIKit
 import Async
 
-class BaseButton: UIButton {
+@IBDesignable class BaseButton: UIButton {
 
     var locked = false
+
+    @IBInspectable var cornerRadius: CGFloat = 0
+    @IBInspectable var borderColor: UIColor = UIColor.clearColor()
+    @IBInspectable var borderWidth: CGFloat = 0
+    @IBInspectable var layerColor: UIColor = UIColor.clearColor()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,6 +30,16 @@ class BaseButton: UIButton {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+
+    override func drawRect(rect: CGRect) {
+        if borderWidth > 0 {
+            layer.cornerRadius = cornerRadius
+            layer.borderColor = borderColor.CGColor
+            layer.borderWidth = borderWidth
+            layer.backgroundColor = layerColor.CGColor
+        }
+        super.drawRect(rect)
     }
 
     func setup() {
