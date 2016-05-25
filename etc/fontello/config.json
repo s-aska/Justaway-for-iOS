@@ -233,6 +233,18 @@
       "css": "mute",
       "code": 40665,
       "src": "fontawesome"
+    },
+    {
+      "uid": "1bafeeb1808a5fe24484c7890096901a",
+      "css": "user-plus",
+      "code": 21442,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "fb1c59faa93eb6e2248c2456625b08a2",
+      "css": "user-times",
+      "code": 38626,
+      "src": "fontawesome"
     }
   ]
 }

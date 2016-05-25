@@ -121,7 +121,13 @@ class TabButton: BaseButton {
 class FavoritesButton: BaseButton {}
 class ReplyButton: BaseButton {}
 class RetweetButton: BaseButton {}
-class FollowButton: BaseButton {}
+class FollowButton: BaseButton {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.setTitle("参", forState: .Normal)
+        self.setTitle("人", forState: .Selected)
+    }
+}
 
 // MARK: - Lable
 

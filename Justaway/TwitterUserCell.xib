@@ -84,11 +84,11 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eiJ-Lb-etD" customClass="FollowButton" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="262" y="0.0" width="58" height="45"/>
-                        <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="22"/>
+                        <rect key="frame" x="257" y="0.0" width="63" height="43"/>
+                        <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="20"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <inset key="contentEdgeInsets" minX="20" minY="16" maxX="20" maxY="7"/>
-                        <state key="normal" title="人">
+                        <inset key="contentEdgeInsets" minX="23" minY="15" maxX="17" maxY="8"/>
+                        <state key="normal" title="参">
                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
@@ -176,11 +176,11 @@
                             <constraint firstItem="Eg9-IN-37N" firstAttribute="leading" secondItem="IC3-oO-8Ui" secondAttribute="leading" id="uBu-iZ-la2"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ecf-nu-H93" customClass="FollowButton" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="260" y="45" width="60" height="45"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ecf-nu-H93" customClass="ReplyButton" customModule="Justaway" customModuleProvider="target">
+                        <rect key="frame" x="259" y="43" width="61" height="45"/>
                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="22"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <inset key="contentEdgeInsets" minX="20" minY="8" maxX="19" maxY="15"/>
+                        <inset key="contentEdgeInsets" minX="20" minY="8" maxX="20" maxY="15"/>
                         <state key="normal" title="点">
                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -207,7 +207,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✖" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nbh-DO-683" customClass="TextLable" customModule="Justaway" customModuleProvider="target">
-                        <rect key="frame" x="40.5" y="70" width="6.5" height="8"/>
+                        <rect key="frame" x="40" y="70" width="6.5" height="8"/>
                         <fontDescription key="fontDescription" name="fontello" family="fontello" pointSize="8"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
