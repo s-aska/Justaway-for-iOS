@@ -42,6 +42,8 @@ class TwitterUserAdapter: NSObject {
     var layoutHeightCell: TwitterUserCell?
     var layoutHeight: CGFloat?
     var didScrollToBottom: (Void -> Void)?
+    let loadDataQueue = NSOperationQueue().serial()
+    let mainQueue = NSOperationQueue().serial()
 
     func configureView(tableView: UITableView) {
         tableView.separatorInset = UIEdgeInsetsZero

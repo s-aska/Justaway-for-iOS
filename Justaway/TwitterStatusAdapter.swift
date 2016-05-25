@@ -182,6 +182,7 @@ class TwitterStatusAdapter: TwitterAdapter {
             } else {
                 if mode == .OVER {
                     tableView.contentOffset = CGPoint(x: 0, y: -tableView.contentInset.top)
+                    self.scrollEnd(tableView)
                 }
                 self.renderDataCallback?(statuses: statuses, mode: mode)
                 handler?()

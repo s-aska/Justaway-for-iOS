@@ -183,7 +183,8 @@ class SearchViewController: UIViewController {
                     return
                 }
             }
-            Twitter.getSearchTweets(keyword, maxID: maxID, sinceID: nil, excludeRetweets: self.excludeRetweets, success: success, failure: failure)
+            let resultType = self.segmentedControl.selectedSegmentIndex == 0 ? "recent" : "popular"
+            Twitter.getSearchTweets(keyword, maxID: maxID, sinceID: nil, excludeRetweets: self.excludeRetweets, resultType: resultType, success: success, failure: failure)
         })
         self.adapter.loadDataQueue.addOperation(op)
     }
@@ -227,7 +228,8 @@ class SearchViewController: UIViewController {
             }
             if let sinceID = self.adapter.sinceID() {
                 NSLog("loadDataToTop load sinceID:\(sinceID)")
-                Twitter.getSearchTweets(keyword, maxID: nil, sinceID: (sinceID.longLongValue - 1).stringValue, excludeRetweets: self.excludeRetweets, success: success, failure: failure)
+                let resultType = self.segmentedControl.selectedSegmentIndex == 0 ? "recent" : "popular"
+                Twitter.getSearchTweets(keyword, maxID: nil, sinceID: (sinceID.longLongValue - 1).stringValue, excludeRetweets: self.excludeRetweets, resultType: resultType, success: success, failure: failure)
             } else {
                 op.finish()
             }
@@ -283,7 +285,7 @@ class SearchViewController: UIViewController {
             }
             Twitter.getUsers(keyword, page: page, success: success, failure: failure)
         })
-        self.adapter.loadDataQueue.addOperation(op)
+        self.userAdapter.loadDataQueue.addOperation(op)
     }
 
     func renderUserData(users: [TwitterUserFull], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
@@ -299,7 +301,7 @@ class SearchViewController: UIViewController {
                 h()
             }
         }
-        self.adapter.mainQueue.addOperation(operation)
+        self.userAdapter.mainQueue.addOperation(operation)
     }
 
     func configureEvent() {
