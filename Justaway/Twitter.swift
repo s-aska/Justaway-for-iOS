@@ -330,8 +330,8 @@ class Twitter {
             })
     }
 
-    class func getUsers(keyword: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
-        let parameters = ["q": keyword, "count": "200", "include_entities": "false"]
+    class func getUsers(keyword: String, page: Int = 1, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
+        let parameters = ["q": keyword, "count": "200", "page": String(page), "include_entities": "false"]
         let success = { (array: [JSON]) -> Void in
             success(array.map({ TwitterUserFull($0) }))
         }
@@ -821,8 +821,11 @@ extension Twitter {
             .post("https://api.twitter.com/1.1/friendships/create.json", parameters: parameters)
             .responseJSON({ (json: JSON) -> Void in
                 Relationship.follow(account, targetUserID: userID)
-                success?()
-                ErrorAlert.show("Follow success")
+                if let success = success {
+                    success()
+                } else {
+                    ErrorAlert.show("Follow success")
+                }
             })
     }
 
@@ -835,8 +838,11 @@ extension Twitter {
             .post("https://api.twitter.com/1.1/friendships/destroy.json", parameters: parameters)
             .responseJSON({ (json: JSON) -> Void in
                 Relationship.unfollow(account, targetUserID: userID)
-                success?()
-                ErrorAlert.show("Unfollow success")
+                if let success = success {
+                    success()
+                } else {
+                    ErrorAlert.show("Unfollow success")
+                }
             })
     }
 

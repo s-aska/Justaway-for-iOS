@@ -21,6 +21,7 @@ class SearchViewController: UIViewController {
     var keywordStreaming: TwitterSearchStreaming?
     let userAdapter = TwitterUserAdapter()
     var nextResults: String?
+    var nextPage: Int?
     var keyword: String?
     var excludeRetweets = true
 
@@ -105,6 +106,13 @@ class SearchViewController: UIViewController {
         }
 
         userAdapter.configureView(usersTableView)
+        userAdapter.didScrollToBottom = {
+            if let nextPage = self.nextPage {
+                self.nextPage = nil
+                self.loadUserData(nextPage)
+            }
+        }
+
         usersTableView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
         usersTableView.addGestureRecognizer(swipe)
 
@@ -243,7 +251,7 @@ class SearchViewController: UIViewController {
         self.adapter.mainQueue.addOperation(operation)
     }
 
-    func loadUserData(maxID: String? = nil) {
+    func loadUserData(page: Int = 1) {
         guard let keyword = keyword else {
             return
         }
@@ -254,12 +262,14 @@ class SearchViewController: UIViewController {
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
             let always: (Void -> Void) = {
                 op.finish()
-                self.adapter.footerIndicatorView?.stopAnimating()
+                self.userAdapter.footerIndicatorView?.stopAnimating()
                 self.refreshControl.endRefreshing()
             }
             let success = { (users: [TwitterUserFull]) -> Void in
-
-                self.renderUserData(users, mode: (maxID != nil ? .BOTTOM : .OVER), handler: always)
+                if users.count > 0 {
+                    self.nextPage = page + 1
+                }
+                self.renderUserData(users, mode: (page > 1 ? .BOTTOM : .OVER), handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 ErrorAlert.show("Error", message: error.localizedDescription)
@@ -267,11 +277,11 @@ class SearchViewController: UIViewController {
             }
             if !self.refreshControl.refreshing {
                 Async.main {
-                    self.adapter.footerIndicatorView?.startAnimating()
+                    self.userAdapter.footerIndicatorView?.startAnimating()
                     return
                 }
             }
-            Twitter.getUsers(keyword, success: success, failure: failure)
+            Twitter.getUsers(keyword, page: page, success: success, failure: failure)
         })
         self.adapter.loadDataQueue.addOperation(op)
     }

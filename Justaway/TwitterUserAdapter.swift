@@ -41,6 +41,7 @@ class TwitterUserAdapter: NSObject {
     var rows = [Row]()
     var layoutHeightCell: TwitterUserCell?
     var layoutHeight: CGFloat?
+    var didScrollToBottom: (Void -> Void)?
 
     func configureView(tableView: UITableView) {
         tableView.separatorInset = UIEdgeInsetsZero
@@ -230,6 +231,36 @@ extension TwitterUserAdapter: UITableViewDelegate {
         ProfileViewController.show(TwitterUser(row.user))
     }
 }
+
+// MARK: - UIScrollViewDelegate
+
+extension TwitterUserAdapter {
+
+    func scrollEnd(scrollView: UIScrollView) {
+        let y = scrollView.contentOffset.y + scrollView.bounds.size.height - scrollView.contentInset.bottom
+        let h = scrollView.contentSize.height
+        let f = h - y
+        if f < timelineHooterHeight && h > scrollView.bounds.size.height {
+            didScrollToBottom?()
+        }
+    }
+
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate {
+            return
+        }
+        scrollEnd(scrollView) // end of flick scrolling no deceleration
+    }
+
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        scrollEnd(scrollView) // end of deceleration of flick scrolling
+    }
+
+    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+        scrollEnd(scrollView) // end of setContentOffset
+    }
+}
+
 
 // MARK: - Public
 
