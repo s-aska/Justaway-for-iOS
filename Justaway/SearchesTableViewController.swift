@@ -209,9 +209,11 @@ class SearchesTableViewController: TimelineTableViewController {
 
     func loadData(maxID: String? = nil) {
         guard let keyword = keyword else {
+            ErrorAlert.show("missing keyword")
             return
         }
         if keyword.isEmpty {
+            ErrorAlert.show("keyword is empty")
             return
         }
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
@@ -239,6 +241,21 @@ class SearchesTableViewController: TimelineTableViewController {
         })
         NSLog("keyword:\(keyword) maxID:\(maxID) loadData.")
         self.adapter.loadDataQueue.addOperation(op)
+    }
+
+    func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+        guard let keyword = keyword else {
+            ErrorAlert.show("missing keyword")
+            return
+        }
+        if keyword.isEmpty {
+            ErrorAlert.show("keyword is empty")
+            return
+        }
+        let success = { (statuses: [TwitterStatus], searchMetadata: [String: JSON]) -> Void in
+            success(statuses: statuses)
+        }
+        Twitter.getSearchTweets(keyword, maxID: maxID, sinceID: nil, excludeRetweets: self.excludeRetweets, success: success, failure: failure)
     }
 
     func loadDataToTop() {
