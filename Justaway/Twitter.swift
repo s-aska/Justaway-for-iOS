@@ -516,11 +516,11 @@ class Twitter {
             .responseJSON(success)
     }
 
-    class func getFollowingUsers(userID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
-        let parameters = ["user_id": userID, "count": "200"]
+    class func getFollowingUsers(userID: String, cursor: String = "-1", success: (users: [TwitterUserFull], nextCursor: String?) -> Void, failure: (NSError) -> Void) {
+        let parameters = ["user_id": userID, "cursor": cursor, "count": "200"]
         let success = { (json: JSON) -> Void in
             if let users = json["users"].array {
-                success(users.map({ TwitterUserFull($0) }))
+                success(users: users.map({ TwitterUserFull($0) }), nextCursor: json["next_cursor_str"].string)
             }
         }
         client()?
@@ -530,11 +530,11 @@ class Twitter {
             })
     }
 
-    class func getFollowerUsers(userID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
-        let parameters = ["user_id": userID, "count": "200"]
+    class func getFollowerUsers(userID: String, cursor: String = "-1", success: (users: [TwitterUserFull], nextCursor: String?) -> Void, failure: (NSError) -> Void) {
+        let parameters = ["user_id": userID, "cursor": cursor, "count": "200"]
         let success = { (json: JSON) -> Void in
             if let users = json["users"].array {
-                success(users.map({ TwitterUserFull($0) }))
+                success(users: users.map({ TwitterUserFull($0) }), nextCursor: json["next_cursor_str"].string)
             }
         }
         client()?

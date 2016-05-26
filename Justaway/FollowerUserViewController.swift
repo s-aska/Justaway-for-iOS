@@ -9,9 +9,9 @@
 import Foundation
 
 class FollowerUserViewController: UserTableViewController {
-    override func loadData(maxID: String?, success: ((users: [TwitterUserFull]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(cursor: String, success: ((users: [TwitterUserFull], nextCursor: String?) -> Void), failure: ((error: NSError) -> Void)) {
         if let userID = userID {
-            Twitter.getFollowerUsers(userID, success: success, failure: failure)
+            Twitter.getFollowerUsers(userID, cursor: cursor, success: success, failure: failure)
         }
     }
 }

@@ -17,6 +17,7 @@ class UserTableViewController: TimelineTableViewController {
     let userAdapter = TwitterUserAdapter()
 
     var userID: String?
+    var nextCursor: String?
 
     // MARK: UITableViewDelegate
 
@@ -52,7 +53,14 @@ class UserTableViewController: TimelineTableViewController {
     // MARK: - Configuration
 
     func configureView() {
+        tableView.backgroundColor = UIColor.clearColor()
         userAdapter.configureView(tableView)
+        userAdapter.didScrollToBottom = {
+            if let nextCursor = self.nextCursor {
+                self.nextCursor = nil
+                self.loadData(nextCursor)
+            }
+        }
     }
 
     func configureEvent() {
@@ -82,16 +90,17 @@ class UserTableViewController: TimelineTableViewController {
     }
 
     override func refresh() {
-        loadData(nil)
+        loadData()
     }
 
-    func loadData(maxID: Int64?) {
-        let fontSize = CGFloat(GenericSettings.get().fontSize)
-
-        let s = { (users: [TwitterUserFull]) -> Void in
-            self.userAdapter.rows = users.map({ self.userAdapter.createRow($0, fontSize: fontSize, tableView: self.tableView) })
-            self.tableView.reloadData()
-            self.userAdapter.footerIndicatorView?.stopAnimating()
+    func loadData(cursor: String? = nil) {
+        let s = { (users: [TwitterUserFull], nextCursor: String?) -> Void in
+            self.userAdapter.renderData(self.tableView, users: users, mode: (cursor != nil ? .BOTTOM : .OVER), handler: {
+                self.userAdapter.footerIndicatorView?.stopAnimating()
+                if let nextCursor = nextCursor where nextCursor != "0" {
+                    self.nextCursor = nextCursor
+                }
+            })
         }
 
         let f = { (error: NSError) -> Void in
@@ -105,10 +114,10 @@ class UserTableViewController: TimelineTableViewController {
             }
         }
 
-        loadData(maxID?.stringValue, success: s, failure: f)
+        loadData(cursor ?? "-1", success: s, failure: f)
     }
 
-    func loadData(maxID: String?, success: ((users: [TwitterUserFull]) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadData(cursor: String, success: ((users: [TwitterUserFull], nextCursor: String?) -> Void), failure: ((error: NSError) -> Void)) {
         assertionFailure("not implements.")
     }
 }

@@ -48,6 +48,7 @@ class TwitterUserAdapter: NSObject {
     func configureView(tableView: UITableView) {
         tableView.separatorInset = UIEdgeInsetsZero
         tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        tableView.separatorColor = ThemeController.currentTheme.cellSeparatorColor()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.registerNib(UINib(nibName: "TwitterUserCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
@@ -77,9 +78,9 @@ class TwitterUserAdapter: NSObject {
 //        }
 
         if mode != .OVER {
-            users = users.filter { user -> Bool in
-                return !rows.contains { $0.user.userID ?? "" == user.userID }
-            }
+            //users = users.filter { user -> Bool in
+            //    return !rows.contains { $0.user.userID ?? "" == user.userID }
+            //}
         }
 
         let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + users.count) - limit, 0)
@@ -129,6 +130,7 @@ class TwitterUserAdapter: NSObject {
             } else {
                 if mode == .OVER {
                     tableView.contentOffset = CGPoint(x: 0, y: -tableView.contentInset.top)
+                    scrollEnd(tableView)
                 }
                 // self.renderDataCallback?(statuses: statuses, mode: mode)
                 handler?()

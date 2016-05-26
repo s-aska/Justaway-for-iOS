@@ -84,6 +84,7 @@ class ListTableViewController: TimelineTableViewController {
     // MARK: - Configuration
 
     func configureView() {
+        self.tableView.backgroundColor = UIColor.clearColor()
         self.tableView.separatorInset = UIEdgeInsetsZero
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
 
