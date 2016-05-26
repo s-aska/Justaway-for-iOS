@@ -214,7 +214,7 @@ class TwitterStatusAdapter: TwitterAdapter {
                     if activityMode {
                         return status.uniqueID
                     }
-                    return String((status.referenceOrStatusID as NSString).longLongValue - 1)
+                    return String(status.referenceOrStatusID.longLongValue - 1)
                 }
             }
             return nil
@@ -226,7 +226,7 @@ class TwitterStatusAdapter: TwitterAdapter {
                     if activityMode {
                         return status.uniqueID
                     }
-                    return String((status.referenceOrStatusID as NSString).longLongValue - 1)
+                    return String(status.referenceOrStatusID.longLongValue - 1)
                 }
             }
             return nil
@@ -249,6 +249,8 @@ class TwitterStatusAdapter: TwitterAdapter {
             return false
         }()
 
+        NSLog("[TwitterStatusAdapter] maxID:\(maxID ?? "-") sinceID:\(sinceID ?? "-")")
+
         delegate?.loadData(sinceID: sinceID, maxID: maxID, success: { (statuses) -> Void in
 
             let findLast: Bool = {
@@ -259,10 +261,15 @@ class TwitterStatusAdapter: TwitterAdapter {
                     return true
                 }
                 if statuses.count == 0 {
+                    #if DEBGU
+                        ErrorAlert.show("maxID:\(maxID ?? "-") sinceID:\(sinceID ?? "-")")
+                    #endif
                     return true
                 }
                 return false
             }()
+
+            NSLog("[TwitterStatusAdapter] maxID:\(maxID ?? "-") sinceID:\(sinceID ?? "-") count:\(statuses.count) findLast:\(findLast)")
 
             var statuses = statuses
             statuses = statuses.filter { status -> Bool in
