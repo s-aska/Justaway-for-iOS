@@ -12,7 +12,7 @@ import KeyClip
 import EventBox
 import Async
 
-class SearchesTableViewController: TimelineTableViewController {
+class SearchesTableViewController: TimelineTableViewController, TwitterStatusAdapterDelegate {
 
     override var adapter: TwitterStatusAdapter {
         return defaultAdapter
@@ -61,7 +61,7 @@ class SearchesTableViewController: TimelineTableViewController {
     func configureView() {
         self.tableView.backgroundColor = UIColor.clearColor()
 
-        adapter.configureView(nil, tableView: tableView)
+        adapter.configureView(self, tableView: tableView)
 
         adapter.didScrollToBottom = {
             if let nextResults = self.nextResults {
