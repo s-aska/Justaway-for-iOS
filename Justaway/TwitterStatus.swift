@@ -27,6 +27,7 @@ class TwitterStatus {
     let event: String?
     let connectionID: String
     let possiblySensitive: Bool
+    let isRoot: Bool
 
     // swiftlint:disable cyclomatic_complexity
     // swiftlint:disable function_body_length
@@ -113,9 +114,11 @@ class TwitterStatus {
         } else {
             self.quotedStatus = nil
         }
+
+        self.isRoot = false
     }
 
-    init(_ status: TwitterStatus, type: TwitterStatusType, event: String?, actionedBy: TwitterUser?) {
+    init(_ status: TwitterStatus, type: TwitterStatusType, event: String?, actionedBy: TwitterUser?, isRoot: Bool) {
         self.type = type
         self.event = event
         self.actionedBy = actionedBy
@@ -136,6 +139,7 @@ class TwitterStatus {
         self.quotedStatus = status.quotedStatus
         self.connectionID = status.connectionID
         self.possiblySensitive = status.possiblySensitive
+        self.isRoot = isRoot
     }
 
     init(_ dictionary: [String: AnyObject]) {
@@ -217,6 +221,8 @@ class TwitterStatus {
         } else {
             self.quotedStatus = nil
         }
+
+        self.isRoot = false
     }
 
     var isActioned: Bool {

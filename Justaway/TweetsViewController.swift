@@ -105,7 +105,7 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
         }
 
         let fontSize = CGFloat(GenericSettings.get().fontSize)
-        let originalStatus = TwitterStatus(rootStatus, type: .Normal, event: nil, actionedBy: nil)
+        let originalStatus = TwitterStatus(rootStatus, type: .Normal, event: nil, actionedBy: nil, isRoot: true)
 
         adapterReplies.mainQueue.addOperation(MainBlockOperation({ (op) in
             self.adapterReplies.configureView(nil, tableView: self.tableViewReplies)

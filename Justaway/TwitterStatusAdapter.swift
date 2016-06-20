@@ -364,7 +364,9 @@ extension TwitterStatusAdapter {
         }
         let row = rows[indexPath.row]
         if let status = row.status {
-            TweetsViewController.show(status)
+            if !status.isRoot {
+                TweetsViewController.show(status)
+            }
         } else if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ShowMoreTweetsCell {
 
             Async.main {

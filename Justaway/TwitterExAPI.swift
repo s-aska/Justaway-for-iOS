@@ -45,11 +45,11 @@ extension Twitter {
                                 events.append(status)
                             case "retweeted_retweet":
                                 if let source = userMap[sourceID] {
-                                    events.append(TwitterStatus.init(status, type: .Normal, event: eventName, actionedBy: source))
+                                    events.append(TwitterStatus(status, type: .Normal, event: eventName, actionedBy: source, isRoot: false))
                                 }
                             case "favorite", "favorited_retweet":
                                 if let source = userMap[sourceID] {
-                                    events.append(TwitterStatus.init(status, type: .Favorite, event: eventName, actionedBy: source))
+                                    events.append(TwitterStatus(status, type: .Favorite, event: eventName, actionedBy: source, isRoot: false))
                                 }
                             default:
                                 break
