@@ -173,7 +173,7 @@ extension Twitter {
         let retweetUserID = status.actionedBy != nil && status.type != .Favorite ? status.actionedBy?.userID : nil
         Relationship.check(sourceUserID, targetUserID: status.user.userID, retweetUserID: retweetUserID, quotedUserID: quotedUserID) { (blocking, muting, noRetweets) -> Void in
             if blocking || muting || noRetweets {
-                NSLog("skip blocking:\(blocking) muting:\(muting) noRetweets:\(noRetweets) text:\(status.text)")
+                // NSLog("skip blocking:\(blocking) muting:\(muting) noRetweets:\(noRetweets) text:\(status.text)")
                 return
             }
             EventBox.post(Event.CreateStatus.rawValue, sender: status)
