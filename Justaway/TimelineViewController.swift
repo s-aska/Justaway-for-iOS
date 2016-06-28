@@ -418,11 +418,11 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     }
 
     func reset() {
-        if let account = AccountSettingsStore.get() {
+        if let account = AccountSettingsStore.get()?.account() {
 
             // other account
-            if userID != account.account().userID {
-                userID = account.account().userID
+            if userID != account.userID {
+                userID = account.userID
                 configureTimelineView()
                 for tableViewController in self.tableViewControllers {
                     switch tableViewController {

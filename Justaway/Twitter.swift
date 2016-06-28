@@ -249,7 +249,7 @@ class Twitter {
         }
 
         let parameters = ["user_id": userIDs]
-        accountSettings.account().client
+        accountSettings.account()?.client
             .get("https://api.twitter.com/1.1/users/lookup.json", parameters: parameters)
             .responseJSONArray(success, failure: { (code, message, error) -> Void in
 
@@ -260,7 +260,7 @@ class Twitter {
     }
 
     class func client() -> Client? {
-        let client = AccountSettingsStore.get()?.account().client
+        let client = AccountSettingsStore.get()?.account()?.client
         if let c = client as? AccountClient {
             NSLog("debugDescription:\(c.debugDescription)")
         }
@@ -502,10 +502,10 @@ class Twitter {
     }
 
     class func getFriendships(targetID: String, success: (TwitterRelationship) -> Void) {
-        guard let account = AccountSettingsStore.get() else {
+        guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
-        let parameters = ["source_id": account.account().userID, "target_id": targetID]
+        let parameters = ["source_id": account.userID, "target_id": targetID]
         let success = { (json: JSON) -> Void in
             if let source: JSON = json["relationship"]["source"] {
                 let relationship = TwitterRelationship(source)

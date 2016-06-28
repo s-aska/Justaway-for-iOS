@@ -235,8 +235,8 @@ extension Twitter {
     }
 
     class func revoked() {
-        if let settings = AccountSettingsStore.get() {
-            let currentUserID = settings.account().userID
+        if let settings = AccountSettingsStore.get(), account = settings.account() {
+            let currentUserID = account.userID
             let newAccounts = settings.accounts.filter({ $0.userID != currentUserID })
             if newAccounts.count > 0 {
                 let newSettings = AccountSettings(current: 0, accounts: newAccounts)

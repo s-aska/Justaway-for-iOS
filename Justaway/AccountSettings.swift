@@ -170,12 +170,12 @@ class AccountSettings {
 
     // MARK: - Public Methods
 
-    func account() -> Account {
-        return accounts[current]
+    func account() -> Account? {
+        return accounts.count > current ? accounts[current] : nil
     }
 
-    func account(index: Int) -> Account {
-        return accounts[index]
+    func account(index: Int) -> Account? {
+        return accounts.count > index ? accounts[index] : nil
     }
 
     func merge(newAccounts: [Account]) -> AccountSettings {
@@ -190,7 +190,7 @@ class AccountSettings {
             mergeAccounts.insert(newAccount, atIndex: 0)
         }
 
-        let currentUserID = account().userID
+        let currentUserID = account()?.userID ?? ""
         let current = mergeAccounts.indexOf { $0.userID == currentUserID } ?? 0
         return AccountSettings(current: current, accounts: mergeAccounts)
     }

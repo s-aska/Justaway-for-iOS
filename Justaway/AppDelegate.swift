@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         GenericSettings.configure()
 
-        if let userInfo = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] {
+        if let _ = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] {
             // アプリが起動していない時にpush通知が届き、push通知から起動した場合
         }
 

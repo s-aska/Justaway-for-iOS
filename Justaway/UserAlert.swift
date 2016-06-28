@@ -53,10 +53,10 @@ class UserAlert {
             title: "Add to tab",
             style: .Default,
             handler: { action in
-                if let settings = AccountSettingsStore.get() {
-                    let tab = Tab.init(userID: settings.account().userID, user: user)
-                    let tabs = settings.account().tabs + [tab]
-                    let account = Account(account: settings.account(), tabs: tabs)
+                if let settings = AccountSettingsStore.get(), account = settings.account() {
+                    let tab = Tab.init(userID: account.userID, user: user)
+                    let tabs = account.tabs + [tab]
+                    let account = Account(account: account, tabs: tabs)
                     let accounts = settings.accounts.map({ $0.userID == account.userID ? account : $0 })
                     AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
                     EventBox.post(eventTabChanged)
