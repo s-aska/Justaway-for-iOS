@@ -9,6 +9,7 @@
 import Foundation
 import SwiftyJSON
 import KeyClip
+import Async
 
 class Relationship {
 
@@ -50,7 +51,9 @@ class Relationship {
                 }
             }
             op.finish()
-            callback(blocking: blocking, muting: muting, noRetweets: noRetweets)
+            Async.main {
+                callback(blocking: blocking, muting: muting, noRetweets: noRetweets)
+            }
         }))
     }
 
@@ -58,7 +61,9 @@ class Relationship {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             guard let data = Static.users[sourceUserID] else {
                 op.finish()
-                callback(relationshop: TwitterRelationship(following: false, followedBy: false, blocking: false, muting: false, wantRetweets: false))
+                Async.main {
+                    callback(relationshop: TwitterRelationship(following: false, followedBy: false, blocking: false, muting: false, wantRetweets: false))
+                }
                 return
             }
 
@@ -69,7 +74,9 @@ class Relationship {
             let noRetweets = data.noRetweets[targetUserID] ?? false
 
             op.finish()
-            callback(relationshop: TwitterRelationship(following: following, followedBy: followedBy, blocking: blocking, muting: muting, wantRetweets: !noRetweets))
+            Async.main {
+                callback(relationshop: TwitterRelationship(following: following, followedBy: followedBy, blocking: blocking, muting: muting, wantRetweets: !noRetweets))
+            }
         }))
     }
 
