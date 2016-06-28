@@ -12,6 +12,8 @@ import Async
 
 class NotificationsViewController: StatusTableViewController {
 
+    var maxMentionID: String?
+
     override func saveCache() {
         if self.adapter.rows.count > 0 {
             guard let account = AccountSettingsStore.get()?.account() else {
@@ -27,13 +29,16 @@ class NotificationsViewController: StatusTableViewController {
 
     override func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         adapter.activityMode = true
+        maxMentionID = nil
         Async.background {
             guard let account = AccountSettingsStore.get()?.account() else {
                 return
             }
-            let key = "notifications:\(account.userID)"
+            let oldKey = "notifications:\(account.userID)"
+            KeyClip.delete(oldKey)
+            let key = "notifications-v2:\(account.userID)"
             if let cache = KeyClip.load(key) as NSDictionary? {
-                if let statuses = cache["statuses"] as? [[String: AnyObject]] {
+                if let statuses = cache["statuses"] as? [[String: AnyObject]] where statuses.count > 0 {
                     success(statuses: statuses.map({ TwitterStatus($0) }))
                     return
                 }
@@ -46,6 +51,11 @@ class NotificationsViewController: StatusTableViewController {
         }
     }
 
+    override func refresh() {
+        maxMentionID = nil
+        loadData(nil)
+    }
+
     override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
@@ -53,7 +63,13 @@ class NotificationsViewController: StatusTableViewController {
         if account.exToken.isEmpty {
             Twitter.getMentionTimeline(maxID: maxID, success: success, failure: failure)
         } else {
-            Twitter.getActivity(maxID: maxID, success: success, failure: failure)
+            let activitySuccess = { (statuses: [TwitterStatus], maxMentionID: String?) -> Void in
+                if let maxMentionID = maxMentionID {
+                    self.maxMentionID = maxMentionID
+                }
+                success(statuses: statuses)
+            }
+            Twitter.getActivity(maxID: maxID, maxMentionID: maxMentionID, success: activitySuccess, failure: failure)
         }
     }
 
@@ -64,7 +80,13 @@ class NotificationsViewController: StatusTableViewController {
         if account.exToken.isEmpty {
             Twitter.getMentionTimeline(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
         } else {
-            Twitter.getActivity(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
+            let activitySuccess = { (statuses: [TwitterStatus], maxMentionID: String?) -> Void in
+                if let maxMentionID = maxMentionID {
+                    self.maxMentionID = maxMentionID
+                }
+                success(statuses: statuses)
+            }
+            Twitter.getActivity(sinceID: sinceID, maxID: maxID, maxMentionID: maxMentionID, success: activitySuccess, failure: failure)
         }
     }
 

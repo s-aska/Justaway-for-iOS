@@ -41,7 +41,7 @@ class MentionsTableViewController: StatusTableViewController {
             success(statuses: [TwitterStatus]())
 
             Async.background(after: 0.4, block: { () -> Void in
-                self.loadData(nil)
+                self.refresh()
             })
         }
     }

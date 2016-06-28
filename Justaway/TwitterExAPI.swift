@@ -4,9 +4,19 @@ import TwitterAPI
 import SwiftyJSON
 
 extension Twitter {
-    class func getActivity(maxID maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+
+    struct TwitterEvent {
+        let status: TwitterStatus
+        let createdAt: Int
+        init (status: TwitterStatus, createdAt: Int) {
+            self.status = status
+            self.createdAt = createdAt
+        }
+    }
+
+    class func getActivity(maxID maxID: String? = nil, sinceID: String? = nil, maxMentionID: String?, success: (statuses: [TwitterStatus], maxMentionID: String?) -> Void, failure: (NSError) -> Void) {
         guard let account = AccountSettingsStore.get()?.account() else {
-            success([])
+            success(statuses: [], maxMentionID: nil)
             return
         }
         var parameters: [String: String] = [:]
@@ -20,7 +30,7 @@ extension Twitter {
         }
         let success = { (json: JSON) -> Void in
             guard let array = json.array else {
-                success([])
+                success(statuses: [], maxMentionID: nil)
                 return
             }
             var userMap = [String: TwitterUser]()
@@ -30,26 +40,33 @@ extension Twitter {
                 ))
             let statusIDs = Array(Set(array.flatMap { $0["target_object_id"].int64?.stringValue }))
             let successStatuses = { (statuses: [TwitterStatus]) -> Void in
+                var replyMap = [String: Bool]()
                 var statusMap = [String: TwitterStatus]()
                 for status in statuses {
                     statusMap[status.referenceStatusID ?? status.statusID] = status
                 }
-                var events = [TwitterStatus]()
+                var events = [TwitterEvent]()
                 for event in array {
                     if let statusID = event["target_object_id"].int64?.stringValue,
                         sourceID = event["source_id"].int64?.stringValue,
-                        eventName = event["event"].string {
+                        eventName = event["event"].string,
+                        createdAt = event["created_at"].int {
                         if let status = statusMap[statusID] {
+                            if eventName == "reply" {
+                                replyMap[status.statusID] = true
+                            }
                             switch eventName {
                             case "reply", "retweet", "quoted_tweet":
-                                events.append(status)
+                                events.append(TwitterEvent(status: status, createdAt: createdAt))
                             case "retweeted_retweet":
                                 if let source = userMap[sourceID] {
-                                    events.append(TwitterStatus(status, type: .Normal, event: eventName, actionedBy: source, isRoot: false))
+                                    let newStatus = TwitterStatus(status, type: .Normal, event: eventName, actionedBy: source, isRoot: false)
+                                    events.append(TwitterEvent(status: newStatus, createdAt: createdAt))
                                 }
                             case "favorite", "favorited_retweet":
                                 if let source = userMap[sourceID] {
-                                    events.append(TwitterStatus(status, type: .Favorite, event: eventName, actionedBy: source, isRoot: false))
+                                    let newStatus = TwitterStatus(status, type: .Favorite, event: eventName, actionedBy: source, isRoot: false)
+                                    events.append(TwitterEvent(status: newStatus, createdAt: createdAt))
                                 }
                             default:
                                 break
@@ -57,7 +74,18 @@ extension Twitter {
                         }
                     }
                 }
-                success(events)
+                let successMention = { (statuses: [TwitterStatus]) -> Void in
+                    let newMaxMentionID = statuses.last?.statusID
+                    let mentionEvents = statuses
+                        .filter { replyMap[$0.statusID] == nil }
+                        .map { TwitterEvent(status: $0, createdAt: Int($0.createdAt.date.timeIntervalSince1970)) }
+                    let newStatuses = (events + mentionEvents).sort({ (s0, s1) -> Bool in
+                        return s0.createdAt > s1.createdAt
+                    }).map { $0.status }
+                    NSLog("[getActivity] maxID:\(maxID) sinceID:\(sinceID) maxMentionID:\(maxMentionID) newMaxMentionID:\(newMaxMentionID) mentions:\(statuses.count) => \(mentionEvents.count) => \(newStatuses.count)")
+                    success(statuses: newStatuses, maxMentionID: newMaxMentionID)
+                }
+                Twitter.getMentionTimeline(sinceID: nil, maxID: maxMentionID, success: successMention, failure: failure)
             }
             let successUsers = { (users: [TwitterUser]) -> Void in
                 for user in users {
