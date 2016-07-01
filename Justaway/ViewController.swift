@@ -50,7 +50,7 @@ class ViewController: UIViewController {
 
     func toggleView() {
         logoImageView.hidden = true
-        if AccountSettingsStore.get() != nil {
+        if let _ = AccountSettingsStore.get()?.account() {
             showView()
         } else {
             timelineViewController?.view.hidden = true

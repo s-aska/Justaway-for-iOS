@@ -163,9 +163,15 @@ class AccountSettings {
         self.accounts = accounts
     }
 
-    init(_ dictionary: NSDictionary) {
-        self.current = dictionary[Constants.current] as? Int ?? 0
-        self.accounts = (dictionary[Constants.accounts] as? [NSDictionary] ?? []).map({ Account($0) })
+    init?(_ dictionary: NSDictionary) {
+        let current = dictionary[Constants.current] as? Int ?? 0
+        let accounts = (dictionary[Constants.accounts] as? [NSDictionary] ?? []).map({ Account($0) })
+        if accounts.count > 0 {
+            self.current = current
+            self.accounts = accounts
+        } else {
+            return nil
+        }
     }
 
     // MARK: - Public Methods

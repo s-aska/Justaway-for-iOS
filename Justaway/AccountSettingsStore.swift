@@ -48,8 +48,7 @@ class AccountSettingsStore {
     }
 
     class func load() {
-        if let data: NSDictionary = KeyClip.load(Constants.keychainKey) {
-            let settings = AccountSettings(data)
+        if let data: NSDictionary = KeyClip.load(Constants.keychainKey), settings = AccountSettings(data) {
             if settings.hasAccountClient() {
                 reloadACAccounts(settings)
             } else {
