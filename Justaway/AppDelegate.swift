@@ -35,6 +35,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
 
+        let cache = KingfisherManager.sharedManager.cache
+        cache.maxDiskCacheSize = 50 * 1024 * 1024 // 50mb
+
         Twitter.setup()
 
         #if DEBUG
