@@ -207,8 +207,12 @@ class TwitterStatusCell: BackgroundTableViewCell {
             imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showQuotedImage(_:))))
         }
 
+        iconImageView.layer.cornerRadius = 6
+        iconImageView.clipsToBounds = true
         iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openProfile(_:))))
         iconImageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(openUserMenu(_:))))
+
+
 
         menuButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(openFullMenu(_:))))
 

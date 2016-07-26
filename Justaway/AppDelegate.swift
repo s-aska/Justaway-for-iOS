@@ -1,11 +1,11 @@
 import UIKit
-import Pinwheel
 import KeyClip
 import EventBox
 import OAuthSwift
 import Accounts
 import TwitterAPI
 import Async
+import Kingfisher
 
 #if DEBUG
 let deviceType = "APNS_SANDBOX"
@@ -21,17 +21,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
 
-        ImageLoader.setup(
-            Configuration.Builder()
-                .maxConcurrent(5)
-                .defaultTimeoutIntervalForRequest(5)
-                //.debug()
-                .build())
+        let downloader = KingfisherManager.sharedManager.downloader
+        downloader.requestModifier = {
+            (request: NSMutableURLRequest) in
+            guard let URL = request.URL else {
+                return
+            }
+            if URL.absoluteString.hasPrefix("https://ton.twitter.com/1.1/ton/data/dm/") {
+                if let client = Twitter.client() as? OAuthClient {
+                    let authorization = client.oAuthCredential.authorizationHeaderForMethod(.GET, url: URL, parameters: [:])
+                    request.setValue(authorization, forHTTPHeaderField: "Authorization")
+                }
+            }
+        }
 
         Twitter.setup()
 
         #if DEBUG
-            // DiskCache.sharedInstance().clear()
             KeyClip.printError(true)
             NSLog("debug")
         #endif

@@ -37,6 +37,8 @@ class AccountCell: BackgroundTableViewCell {
         separatorInset = UIEdgeInsetsZero
         layoutMargins = UIEdgeInsetsZero
         preservesSuperviewLayoutMargins = false
+        iconImageView.layer.cornerRadius = 6
+        iconImageView.clipsToBounds = true
     }
 
     func setText() {

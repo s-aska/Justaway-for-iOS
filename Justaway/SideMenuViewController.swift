@@ -70,6 +70,8 @@ class SideMenuViewController: UIViewController {
 
         sideViewLeftConstraint.constant = -300
 
+        iconImageView.layer.cornerRadius = 30
+
         bannerImageView.clipsToBounds = true
         bannerImageView.contentMode = .ScaleAspectFill
         bannerImageView.userInteractionEnabled = true

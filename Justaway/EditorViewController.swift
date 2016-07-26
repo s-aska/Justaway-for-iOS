@@ -98,6 +98,9 @@ class EditorViewController: UIViewController {
             imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(EditorViewController.removeImage(_:))))
         }
 
+        replyToIconImageView.layer.cornerRadius = 3
+        replyToIconImageView.clipsToBounds = true
+
         resetPickerController()
 
         configureTextView()
