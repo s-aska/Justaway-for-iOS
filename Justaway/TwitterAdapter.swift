@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Pinwheel
 import EventBox
 import Async
 
@@ -125,7 +124,6 @@ class TwitterAdapter: NSObject {
         scrolling = false
         loadDataQueue.suspended = false
         mainQueue.suspended = false
-        ImageLoader.suspend = false
         if let tableView = scrollView as? UITableView {
             renderImages(tableView)
         }
@@ -142,7 +140,6 @@ class TwitterAdapter: NSObject {
     }
 
     func scrollToTop(scrollView: UIScrollView) {
-        ImageLoader.suspend = true
         scrollView.setContentOffset(CGPoint.init(x: 0, y: -scrollView.contentInset.top), animated: true)
     }
 
@@ -272,10 +269,8 @@ extension TwitterAdapter: UITableViewDataSource {
         cell.status = status
         cell.setLayout(layout)
         cell.setText(status)
+        cell.setImage(status)
 
-        if !ImageLoader.suspend {
-            cell.setImage(status)
-        }
         return cell
     }
 
@@ -305,10 +300,7 @@ extension TwitterAdapter: UITableViewDataSource {
         cell.message = message
         cell.setLayout(layout)
         cell.setText(message)
-
-        if !ImageLoader.suspend {
-            cell.setImage(message)
-        }
+        cell.setImage(message)
 
         return cell
     }

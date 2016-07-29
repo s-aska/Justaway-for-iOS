@@ -493,7 +493,6 @@
 		6A5EAF151C7B139B004283F2 /* SearchAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAlert.swift; sourceTree = "<group>"; };
 		6A5EAF1A1C9986CA004283F2 /* MessagesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesTableViewController.swift; sourceTree = "<group>"; };
 		6A5EAF1C1C998B50004283F2 /* TwitterMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterMessage.swift; sourceTree = "<group>"; };
-		6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pinwheel.framework; path = Carthage/Build/iOS/Pinwheel.framework; sourceTree = "<group>"; };
 		6A7CF8331CEB6E47008277FC /* TwitterUserAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterUserAdapter.swift; sourceTree = "<group>"; };
 		6A7CF8361CF18F34008277FC /* MentionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionsTableViewController.swift; sourceTree = "<group>"; };
 		6A81CF1D1BC406E500EBE567 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
@@ -982,7 +981,6 @@
 			children = (
 				38D031041D47612C00CEC9AD /* Kingfisher.framework */,
 				389F37DA1CA3FDC00044A424 /* CryptoSwift.framework */,
-				6A7A534D1C57CF72005F3E6B /* Pinwheel.framework */,
 				6A11CF9B1C57CB59007C1F36 /* Reachability.framework */,
 				387AA04A1C465A2C00D3FCAB /* Async.framework */,
 				3848FFEB1BB1327900AC04FC /* TwitterAPI.framework */,

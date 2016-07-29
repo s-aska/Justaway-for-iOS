@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Pinwheel
 import SwiftyJSON
 import Async
 

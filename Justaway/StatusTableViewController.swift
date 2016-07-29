@@ -1,7 +1,6 @@
 import UIKit
 import EventBox
 import KeyClip
-import Pinwheel
 import Async
 
 let timelineRowsLimit = 1000
