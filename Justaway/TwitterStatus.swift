@@ -44,26 +44,27 @@ class TwitterStatus {
         self.retweetCount = statusJson["retweet_count"].int ?? 0
         self.favoriteCount = statusJson["favorite_count"].int ?? 0
         self.possiblySensitive = statusJson["possibly_sensitive"].boolValue
+        let entities = statusJson["extended_tweet"]["entities"] ?? statusJson["entities"]
 
-        if let urls = statusJson["entities"]["urls"].array {
+        if let urls = entities["urls"].array {
             self.urls = urls.map { TwitterURL($0) }
         } else {
             self.urls = [TwitterURL]()
         }
 
-        if let userMentions = statusJson["entities"]["user_mentions"].array {
+        if let userMentions = entities["user_mentions"].array {
             self.mentions = userMentions.map { TwitterUser($0) }
         } else {
             self.mentions = [TwitterUser]()
         }
 
-        if let hashtags = statusJson["entities"]["hashtags"].array {
+        if let hashtags = entities["hashtags"].array {
             self.hashtags = hashtags.map { TwitterHashtag($0) }
         } else {
             self.hashtags = [TwitterHashtag]()
         }
 
-        if let extended_entities = statusJson["extended_entities"]["media"].array {
+        if let extended_entities = statusJson["extended_tweet"]["entities"]["media"].array ?? statusJson["extended_entities"]["media"].array {
             self.media = extended_entities.map { TwitterMedia($0) }
         } else if let media = statusJson["entities"]["media"].array {
             self.media = media.map { TwitterMedia($0) }
@@ -72,7 +73,7 @@ class TwitterStatus {
         }
 
         self.text = { (urls, media) in
-            var text = statusJson["text"].string ?? ""
+            var text = statusJson["extended_tweet"]["full_text"].string ?? statusJson["full_text"].string ?? statusJson["text"].string ?? ""
             text = text.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: [], range: nil)
             text = text.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: [], range: nil)
             text = text.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: [], range: nil)
@@ -230,7 +231,7 @@ class TwitterStatus {
     }
 
     var uniqueID: String {
-        if let actionedBy = actionedBy, event = event {
+        if let actionedBy = actionedBy, let event = event {
             return [statusID, event, actionedBy.userID].joinWithSeparator(":")
         } else if self.inReplyToUserID != nil {
             return [statusID, "reply", user.userID].joinWithSeparator(":")
