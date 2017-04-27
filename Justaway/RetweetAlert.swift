@@ -9,20 +9,20 @@
 import UIKit
 
 class RetweetAlert {
-    class func show(sender: UIView, status: TwitterStatus) {
+    class func show(_ sender: UIView, status: TwitterStatus) {
         let actionSheet = UIAlertController()
         actionSheet.addAction(UIAlertAction(
             title: "Cancel",
-            style: .Cancel,
+            style: .cancel,
             handler: { action in
-                actionSheet.dismissViewControllerAnimated(true, completion: nil)
+                actionSheet.dismiss(animated: true, completion: nil)
         }))
         Twitter.isRetweet(status.statusID) { (retweetedStatusID) -> Void in
             if let retweetedStatusID = retweetedStatusID {
                 if retweetedStatusID != "0" {
                     actionSheet.addAction(UIAlertAction(
                         title: "Undo Retweet",
-                        style: .Destructive,
+                        style: .destructive,
                         handler: { action in
                             Twitter.destroyRetweet(status.statusID, retweetedStatusID: retweetedStatusID)
                     }))
@@ -30,14 +30,14 @@ class RetweetAlert {
             } else {
                 actionSheet.addAction(UIAlertAction(
                     title: "Retweet",
-                    style: .Default,
+                    style: .default,
                     handler: { action in
                         Twitter.createRetweet(status.statusID)
                 }))
             }
             actionSheet.addAction(UIAlertAction(
                 title: "Quote",
-                style: .Default,
+                style: .default,
                 handler: { action in
                     Twitter.quoteURL(status)
             }))

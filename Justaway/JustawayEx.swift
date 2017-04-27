@@ -14,18 +14,16 @@ import SafariServices
 class SafariExURLHandler: NSObject {
 
     static var oAuthViewController: SFSafariViewController?
-    static var successCallback: ((account: Account) -> ())?
+    static var successCallback: ((_ account: Account) -> ())?
 
-    class func open(successCallback: ((account: Account) -> ())? = nil) {
-        SafariExURLHandler.oAuthViewController = Safari.openURL(NSURL(string: "https://justaway.info/signin/")!)
+    class func open(_ successCallback: ((_ account: Account) -> ())? = nil) {
+        SafariExURLHandler.oAuthViewController = Safari.openURL(URL(string: "https://justaway.info/signin/")!)
         SafariExURLHandler.successCallback = successCallback
     }
 
-    class func callback(url: NSURL) {
-        guard let exToken = url.lastPathComponent else {
-            return
-        }
-        let array = exToken.characters.split("-", maxSplit: 2, allowEmptySlices: false)
+    class func callback(_ url: URL) {
+        let exToken = url.lastPathComponent
+        let array = exToken.characters.split(separator: "-", maxSplits: 2, omittingEmptySubsequences: true)
         if array.count != 2 {
             return
         }
@@ -37,12 +35,12 @@ class SafariExURLHandler: NSObject {
             let newAccount = Account(account: account, exToken: exToken)
             let newSettings = accountSettings.merge([newAccount])
             AccountSettingsStore.save(newSettings)
-            SafariExURLHandler.oAuthViewController?.dismissViewControllerAnimated(true, completion: {
-                SafariExURLHandler.successCallback?(account: newAccount)
+            SafariExURLHandler.oAuthViewController?.dismiss(animated: true, completion: {
+                SafariExURLHandler.successCallback?(newAccount)
                 MessageAlert.show("Notification started", message: "Notification you will receive when you are not running Justaway.")
             })
         } else {
-            SafariExURLHandler.oAuthViewController?.dismissViewControllerAnimated(true, completion: {
+            SafariExURLHandler.oAuthViewController?.dismiss(animated: true, completion: {
                 ErrorAlert.show("Missing Account", message: "Please refer to the first account registration.")
             })
         }

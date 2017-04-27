@@ -25,46 +25,46 @@ class UserTimelineTableViewController: StatusTableViewController {
                 let key = "user:\(userID)"
                 let statuses = self.adapter.statuses
                 let dictionary = ["statuses": ( statuses.count > 100 ? Array(statuses[0 ..< 100]) : statuses ).map({ $0.dictionaryValue })]
-                KeyClip.save(key, dictionary: dictionary)
+                KeyClip.save(key, dictionary: dictionary as NSDictionary)
                 NSLog("\(key) saveCache.")
             }
         }
     }
 
-    override func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadCache(_ success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         if let userID = self.userID {
             let key = "user:\(userID)"
             Async.background {
                 if let cache = KeyClip.load(key) as NSDictionary? {
                     if let statuses = cache["statuses"] as? [[String: AnyObject]] {
-                        success(statuses: statuses.map({ TwitterStatus($0) }))
+                        success(statuses.map({ TwitterStatus($0) }))
                         return
                     }
                 }
-                success(statuses: [TwitterStatus]())
+                success([TwitterStatus]())
 
-                Async.background(after: 0.5, block: { () -> Void in
+                Async.background(after: 0.5, { () -> Void in
                     self.loadData(nil)
                 })
             }
         } else {
-            success(statuses: [])
+            success([])
         }
     }
 
-    override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(_ maxID: String?, success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         if let userID = userID {
             Twitter.getUserTimeline(userID, maxID: maxID, success: success, failure: failure)
         }
     }
 
-    override func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(sinceID: String?, maxID: String?, success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         if let userID = userID {
-            Twitter.getUserTimeline(userID, sinceID: sinceID, maxID: maxID, success: success, failure: failure)
+            Twitter.getUserTimeline(userID, maxID: maxID, sinceID: sinceID, success: success, failure: failure)
         }
     }
 
-    override func accept(status: TwitterStatus) -> Bool {
+    override func accept(_ status: TwitterStatus) -> Bool {
         return false
     }
 }

@@ -15,8 +15,8 @@ class ShowMoreTweetsCell: BackgroundTableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
         preservesSuperviewLayoutMargins = false
     }
 }

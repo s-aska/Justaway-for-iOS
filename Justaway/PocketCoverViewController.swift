@@ -14,7 +14,7 @@ class PocketCoverViewController: UIViewController {
         return "PocketCoverViewController"
     }
 
-    var timer: NSTimer?
+    var timer: Timer?
     var state = 1
 
     @IBOutlet weak var button1: UIButton!
@@ -33,25 +33,25 @@ class PocketCoverViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         self.timer?.invalidate()
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1800, target: self, selector: #selector(PocketCoverViewController.timeout), userInfo: nil, repeats: false)
+        self.timer = Timer.scheduledTimer(timeInterval: 1800, target: self, selector: #selector(PocketCoverViewController.timeout), userInfo: nil, repeats: false)
 
         self.state = 1
-        self.button1.hidden = false
-        self.button2.hidden = false
-        self.button3.hidden = false
-        self.button4.hidden = false
+        self.button1.isHidden = false
+        self.button2.isHidden = false
+        self.button3.isHidden = false
+        self.button4.isHidden = false
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
         self.timer?.invalidate()
 
-        UIApplication.sharedApplication().idleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = true
     }
 
     // MARK: - Configuration
@@ -61,20 +61,20 @@ class PocketCoverViewController: UIViewController {
     }
 
     func timeout() {
-        UIApplication.sharedApplication().idleTimerDisabled = false
+        UIApplication.shared.isIdleTimerDisabled = false
     }
 
-    @IBAction func button(sender: UIButton) {
+    @IBAction func button(_ sender: UIButton) {
         if sender.tag == state {
             switch state {
             case 1:
-                button1.hidden = true
+                button1.isHidden = true
             case 2:
-                button2.hidden = true
+                button2.isHidden = true
             case 3:
-                button3.hidden = true
+                button3.isHidden = true
             case 4:
-                button4.hidden = true
+                button4.isHidden = true
                 hide()
             default:
                 break
@@ -82,10 +82,10 @@ class PocketCoverViewController: UIViewController {
             state += 1
         } else {
             state = 1
-            button1.hidden = false
-            button2.hidden = false
-            button3.hidden = false
-            button4.hidden = false
+            button1.isHidden = false
+            button2.isHidden = false
+            button3.isHidden = false
+            button4.isHidden = false
         }
     }
 

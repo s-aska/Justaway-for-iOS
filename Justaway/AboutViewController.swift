@@ -30,12 +30,12 @@ class AboutViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -43,8 +43,8 @@ class AboutViewController: UIViewController {
     // MARK: - Configuration
 
     func configureView() {
-        tableView.separatorInset = UIEdgeInsetsZero
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        tableView.separatorInset = UIEdgeInsets.zero
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -54,7 +54,7 @@ class AboutViewController: UIViewController {
 
     // MARK: - Actions
 
-    @IBAction func left(sender: UIButton) {
+    @IBAction func left(_ sender: UIButton) {
         hide()
     }
 
@@ -73,17 +73,17 @@ class AboutViewController: UIViewController {
 // MARK: - UITableViewDataSource
 
 extension AboutViewController: UITableViewDataSource {
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 8
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: nil)
-        cell.selectionStyle = .None
-        cell.separatorInset = UIEdgeInsetsZero
-        cell.layoutMargins = UIEdgeInsetsZero
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        cell.selectionStyle = .none
+        cell.separatorInset = UIEdgeInsets.zero
+        cell.layoutMargins = UIEdgeInsets.zero
         cell.preservesSuperviewLayoutMargins = false
-        cell.backgroundColor = UIColor.clearColor()
+        cell.backgroundColor = UIColor.clear
         cell.textLabel?.textColor = ThemeController.currentTheme.bodyTextColor()
         switch indexPath.row {
         case 0:
@@ -99,10 +99,10 @@ extension AboutViewController: UITableViewDataSource {
         case 5:
             cell.textLabel?.text = "Privacy Policy"
         case 6:
-            let version = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String ?? "-"
+            let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "-"
             cell.textLabel?.text = "Version: " + version
         case 7:
-            let build = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleVersion") as? String ?? "-"
+            let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "-"
             cell.textLabel?.text = "Build: " + build
         default:
             break
@@ -114,11 +114,11 @@ extension AboutViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension AboutViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
             EditorViewController.show(" #justaway", range: NSRange(location: 0, length: 0), inReplyToStatus: nil)

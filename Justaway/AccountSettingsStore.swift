@@ -11,7 +11,7 @@ class AccountSettingsCache {
     class var sharedInstance: AccountSettingsCache {
         return Static.instance
     }
-    private var settings: AccountSettings?
+    fileprivate var settings: AccountSettings?
 }
 
 class AccountSettingsStore {
@@ -38,7 +38,7 @@ class AccountSettingsStore {
 
     // MARK: - Public Methods
 
-    class func save(settings: AccountSettings) -> Bool {
+    class func save(_ settings: AccountSettings) -> Bool {
         assert(settings.accounts.count > 0, "settings.accounts.count is zero")
         assert(settings.accounts.count > settings.current, "current out of range")
 
@@ -48,7 +48,7 @@ class AccountSettingsStore {
     }
 
     class func load() {
-        if let data: NSDictionary = KeyClip.load(Constants.keychainKey), settings = AccountSettings(data) {
+        if let data: NSDictionary = KeyClip.load(Constants.keychainKey), let settings = AccountSettings(data) {
             if settings.hasAccountClient() {
                 reloadACAccounts(settings)
             } else {
@@ -60,18 +60,18 @@ class AccountSettingsStore {
         }
     }
 
-    class func reloadACAccounts(settings: AccountSettings) {
+    class func reloadACAccounts(_ settings: AccountSettings) {
         var activeAccounts = [Account]()
         let callback = { (acAccounts: [ACAccount]) in
             NSLog("refreshACAccounts retrieve count:\(acAccounts.count)")
             var acAccountMap = [String: ACAccount]()
             for acAccount in acAccounts {
-                acAccountMap[acAccount.valueForKeyPath("properties.user_id") as? String ?? ""] = acAccount
+                acAccountMap[acAccount.value(forKeyPath: "properties.user_id") as? String ?? ""] = acAccount
             }
             for account in settings.accounts {
                 switch account.client {
                 case let client as AccountClient:
-                    if let acAccount = acAccountMap.removeValueForKey(account.userID) {
+                    if let acAccount = acAccountMap.removeValue(forKey: account.userID) {
                         NSLog("refreshACAccounts update \(account.userID) \(client.identifier) => \(acAccount.identifier!)")
                         activeAccounts.append(Account(account: account, acAccount: acAccount))
                     } else {
@@ -94,12 +94,12 @@ class AccountSettingsStore {
             EventBox.post(twitterAuthorizeNotification)
         }
         let accountStore = ACAccountStore()
-        let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-        accountStore.requestAccessToAccountsWithType(accountType, options: nil) {
+        let accountType = accountStore.accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter)
+        accountStore.requestAccessToAccounts(with: accountType, options: nil) {
             granted, error in
 
             if granted {
-                let twitterAccounts = accountStore.accountsWithAccountType(accountType) as? [ACAccount] ?? []
+                let twitterAccounts = accountStore.accounts(with: accountType) as? [ACAccount] ?? []
                 callback(twitterAccounts)
             } else {
                 callback([])
@@ -113,7 +113,7 @@ class AccountSettingsStore {
         KeyClip.delete(Constants.keychainKey)
     }
 
-    class func isCurrent(userID: String) -> Bool {
+    class func isCurrent(_ userID: String) -> Bool {
         if let account = get()?.account() {
             return account.userID == userID
         }

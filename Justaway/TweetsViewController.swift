@@ -41,12 +41,12 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -70,12 +70,12 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
             return
         }
 
-        if rootStatus.actionedBy == nil || rootStatus.type != .Normal {
-            segmentedControl.removeSegmentAtIndex(2, animated: false)
-            segmentedControl.removeSegmentAtIndex(1, animated: false)
-            segmentedControl.insertSegmentWithTitle("Near Tweets", atIndex: 1, animated: false)
+        if rootStatus.actionedBy == nil || rootStatus.type != .normal {
+            segmentedControl.removeSegment(at: 2, animated: false)
+            segmentedControl.removeSegment(at: 1, animated: false)
+            segmentedControl.insertSegment(withTitle: "Near Tweets", at: 1, animated: false)
         }
-        segmentedControl.hidden = false
+        segmentedControl.isHidden = false
 
         indicatorView.activityIndicatorViewStyle = ThemeController.currentTheme.activityIndicatorStyle()
         indicatorView.hidesWhenStopped = true
@@ -84,12 +84,12 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
 
     func configureEvent() {
         EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { [weak self] (n) -> Void in
-            guard let `self` = self, rootStatus = self.rootStatus else {
+            guard let `self` = self, let rootStatus = self.rootStatus else {
                 return
             }
             if self.segmentedControl.selectedSegmentIndex == 0 {
                 self.adapterReplies.scrollToTop(self.tableViewReplies)
-            } else if self.segmentedControl.selectedSegmentIndex == 1 && rootStatus.actionedBy != nil && rootStatus.type == .Normal {
+            } else if self.segmentedControl.selectedSegmentIndex == 1 && rootStatus.actionedBy != nil && rootStatus.type == .normal {
                 self.adapterNearRetweet.scrollToTop(self.tableViewNearRetweet)
             } else {
                 self.adapterNearOriginal.scrollToTop(self.tableViewNearOriginal)
@@ -105,13 +105,13 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
         }
 
         let fontSize = CGFloat(GenericSettings.get().fontSize)
-        let originalStatus = TwitterStatus(rootStatus, type: .Normal, event: nil, actionedBy: nil, isRoot: true)
+        let originalStatus = TwitterStatus(rootStatus, type: .normal, event: nil, actionedBy: nil, isRoot: true)
 
         adapterReplies.mainQueue.addOperation(MainBlockOperation({ (op) in
             self.adapterReplies.configureView(nil, tableView: self.tableViewReplies)
-            self.adapterReplies.renderData(self.tableViewReplies, statuses: [originalStatus], mode: .BOTTOM, handler: {
+            self.adapterReplies.renderData(self.tableViewReplies, statuses: [originalStatus], mode: .bottom, handler: {
                 self.indicatorView.stopAnimating()
-                self.tableViewReplies.hidden = false
+                self.tableViewReplies.isHidden = false
                 self.adapterReplies.footerIndicatorView?.startAnimating()
                 op.finish()
             })
@@ -127,7 +127,7 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
             op.finish()
         }))
 
-        if rootStatus.actionedBy != nil && rootStatus.type == .Normal {
+        if rootStatus.actionedBy != nil && rootStatus.type == .normal {
             adapterNearRetweet.mainQueue.addOperation(MainBlockOperation({ (op) in
                 self.adapterNearRetweet.configureView(self, tableView: self.tableViewNearRetweet)
                 let retweetRow = self.adapterNearRetweet.createRow(rootStatus, fontSize: fontSize, tableView: self.tableViewNearRetweet)
@@ -140,12 +140,12 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
 
     // MARK: - TwitterStatusAdapterDelegate
 
-    func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadData(sinceID: String?, maxID: String?, success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         guard let rootStatus = rootStatus else {
-            success(statuses: [])
+            success([])
             return
         }
-        if let actionedBy = rootStatus.actionedBy where rootStatus.type == .Normal && segmentedControl.selectedSegmentIndex == 1 {
+        if let actionedBy = rootStatus.actionedBy, rootStatus.type == .normal && segmentedControl.selectedSegmentIndex == 1 {
             Twitter.getUserTimeline(actionedBy.userID, maxID: maxID, sinceID: sinceID, success: success, failure: failure)
         } else {
             Twitter.getUserTimeline(rootStatus.user.userID, maxID: maxID, sinceID: sinceID, success: success, failure: failure)
@@ -154,25 +154,25 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
 
     // MARK: - Actions
 
-    @IBAction func move(sender: UISegmentedControl) {
+    @IBAction func move(_ sender: UISegmentedControl) {
         guard let rootStatus = rootStatus else {
             return
         }
 
-        tableViewReplies.hidden = true
-        tableViewNearRetweet.hidden = true
-        tableViewNearOriginal.hidden = true
+        tableViewReplies.isHidden = true
+        tableViewNearRetweet.isHidden = true
+        tableViewNearOriginal.isHidden = true
 
         if sender.selectedSegmentIndex == 0 {
-            tableViewReplies.hidden = false
-        } else if sender.selectedSegmentIndex == 1 && rootStatus.actionedBy != nil && rootStatus.type == .Normal {
-            tableViewNearRetweet.hidden = false
+            tableViewReplies.isHidden = false
+        } else if sender.selectedSegmentIndex == 1 && rootStatus.actionedBy != nil && rootStatus.type == .normal {
+            tableViewNearRetweet.isHidden = false
         } else {
-            tableViewNearOriginal.hidden = false
+            tableViewNearOriginal.isHidden = false
         }
     }
 
-    @IBAction func left(sender: UIButton) {
+    @IBAction func left(_ sender: UIButton) {
         hide()
     }
 
@@ -180,7 +180,7 @@ class TweetsViewController: UIViewController, TwitterStatusAdapterDelegate {
         ViewTools.slideOut(self)
     }
 
-    class func show(status: TwitterStatus) {
+    class func show(_ status: TwitterStatus) {
         let instance = TweetsViewController()
         instance.rootStatus = status
         Async.main {

@@ -1,44 +1,44 @@
 import UIKit
 
 class StreamingAlert {
-    class func show(sender: UIView) {
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .Alert)
+    class func show(_ sender: UIView) {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
         actionSheet.addAction(UIAlertAction(
             title: "Cancel",
-            style: .Cancel,
+            style: .cancel,
             handler: { action in
-                actionSheet.dismissViewControllerAnimated(true, completion: nil)
+                actionSheet.dismiss(animated: true, completion: nil)
         }))
         actionSheet.message = "Streaming Menu"
         actionSheet.addAction(UIAlertAction(
             title: "Set to Auto Connect" + (Twitter.streamingMode == .AutoAlways ? " *" : ""),
-            style: .Default,
+            style: .default,
             handler: { action in
                 Twitter.changeMode(.AutoAlways)
         }))
         actionSheet.addAction(UIAlertAction(
             title: "Set to Auto Connect on Wi-Fi" + (Twitter.streamingMode == .AutoOnWiFi ? " *" : ""),
-            style: .Default,
+            style: .default,
             handler: { action in
                 Twitter.changeMode(.AutoOnWiFi)
         }))
         actionSheet.addAction(UIAlertAction(
             title: "Set to Manual Connect" + (Twitter.streamingMode == .Manual ? " *" : ""),
-            style: .Default,
+            style: .default,
             handler: { action in
                 Twitter.changeMode(.Manual)
         }))
-        if Twitter.connectionStatus == Twitter.ConnectionStatus.DISCONNECTED {
+        if Twitter.connectionStatus == Twitter.ConnectionStatus.disconnected {
             actionSheet.addAction(UIAlertAction(
                 title: "Connect once",
-                style: .Default,
+                style: .default,
                 handler: { action in
                     Twitter.startStreamingIfDisconnected()
             }))
-        } else if Twitter.connectionStatus == Twitter.ConnectionStatus.CONNECTED {
+        } else if Twitter.connectionStatus == Twitter.ConnectionStatus.connected {
             actionSheet.addAction(UIAlertAction(
                 title: "Disconnect",
-                style: .Destructive,
+                style: .destructive,
                 handler: { action in
                     Twitter.stopStreamingIFConnected()
             }))

@@ -77,19 +77,19 @@ class ThemeController {
     }
 
     // swiftlint:disable:next function_body_length
-    class func apply(theme: Theme, refresh: Bool = true) {
+    class func apply(_ theme: Theme, refresh: Bool = true) {
 
         Static.currentTheme = theme
 
         // for UIKit
 
         // Note: Adding "View controller-based status bar appearance" to info.plist and setting it to "NO"
-        UIApplication.sharedApplication().statusBarStyle = theme.statusBarStyle()
+        UIApplication.shared.statusBarStyle = theme.statusBarStyle()
         UITextView.appearance().textColor = theme.bodyTextColor()
         UITextView.appearance().backgroundColor = theme.mainBackgroundColor()
         UITextField.appearance().textColor = theme.bodyTextColor()
         UITextField.appearance().backgroundColor = theme.mainBackgroundColor()
-        UITextField.appearance().layer.borderColor = theme.cellSeparatorColor().CGColor
+        UITextField.appearance().layer.borderColor = theme.cellSeparatorColor().cgColor
         UITextField.appearance().tintColor = theme.bodyTextColor()
         UITableView.appearance().separatorColor = theme.cellSeparatorColor()
         UISegmentedControl.appearance().tintColor = theme.bodyTextColor()
@@ -105,14 +105,14 @@ class ThemeController {
         ImagePickerCollectionView.appearance().indicatorStyle = theme.scrollViewIndicatorStyle()
         BackgroundView.appearance().backgroundColor = theme.mainBackgroundColor()
         CurrentTabMaskView.appearance().backgroundColor = theme.menuTextColor()
-        NavigationShadowView.appearance().backgroundColor = theme.menuBackgroundColor().colorWithAlphaComponent(0.8)
+        NavigationShadowView.appearance().backgroundColor = theme.menuBackgroundColor().withAlphaComponent(0.8)
         NavigationShadowView.appearance().layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         MenuView.appearance().backgroundColor = theme.menuBackgroundColor()
         MenuShadowView.appearance().layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
-        MenuButton.appearance().setTitleColor(theme.menuTextColor(), forState: .Normal)
-        MenuButton.appearance().setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)
-        TabButton.appearance().setTitleColor(theme.menuTextColor(), forState: .Normal)
-        TabButton.appearance().setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)
+        MenuButton.appearance().setTitleColor(theme.menuTextColor(), for: UIControlState())
+        MenuButton.appearance().setTitleColor(theme.menuSelectedTextColor(), for: .selected)
+        TabButton.appearance().setTitleColor(theme.menuTextColor(), for: UIControlState())
+        TabButton.appearance().setTitleColor(theme.menuSelectedTextColor(), for: .selected)
         MenuLable.appearance().textColor = theme.menuTextColor()
         SideMenuShadowView.appearance().backgroundColor =  theme.sideMenuBackgroundColor()
         SideMenuSeparator.appearance().backgroundColor = theme.menuTextColor()
@@ -130,15 +130,15 @@ class ThemeController {
         AbsoluteDateLable.appearance().textColor = theme.absoluteDateTextColor()
         StatusLable.appearance().textColor = theme.bodyTextColor()
 
-        ReplyButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Normal)
-        ReplyButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Selected)
-        RetweetButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Normal)
-        RetweetButton.appearance().setTitleColor(theme.retweetButtonSelected(), forState: .Selected)
-        FavoritesButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Normal)
-        FavoritesButton.appearance().setTitleColor(theme.favoritesButtonSelected(), forState: .Selected)
+        ReplyButton.appearance().setTitleColor(theme.buttonNormal(), for: UIControlState())
+        ReplyButton.appearance().setTitleColor(theme.buttonNormal(), for: .selected)
+        RetweetButton.appearance().setTitleColor(theme.buttonNormal(), for: UIControlState())
+        RetweetButton.appearance().setTitleColor(theme.retweetButtonSelected(), for: .selected)
+        FavoritesButton.appearance().setTitleColor(theme.buttonNormal(), for: UIControlState())
+        FavoritesButton.appearance().setTitleColor(theme.favoritesButtonSelected(), for: .selected)
 
-        FollowButton.appearance().setTitleColor(theme.buttonNormal(), forState: .Normal)
-        UnfollowButton.appearance().setTitleColor(theme.mainBackgroundColor(), forState: .Normal)
+        FollowButton.appearance().setTitleColor(theme.buttonNormal(), for: UIControlState())
+        UnfollowButton.appearance().setTitleColor(theme.mainBackgroundColor(), for: UIControlState())
 
         if refresh {
             CATransaction.begin()
@@ -150,8 +150,8 @@ class ThemeController {
         }
     }
 
-    class func refreshAppearance(theme: Theme) {
-        let windows = UIApplication.sharedApplication().windows as [UIWindow]
+    class func refreshAppearance(_ theme: Theme) {
+        let windows = UIApplication.shared.windows as [UIWindow]
         for window in windows {
             refreshWindow(window, theme: theme)
         }
@@ -161,7 +161,7 @@ class ThemeController {
         windows.first?.rootViewController?.setNeedsStatusBarAppearanceUpdate()
     }
 
-    class func refreshWindow(window: UIWindow, theme: Theme) {
+    class func refreshWindow(_ window: UIWindow, theme: Theme) {
         // NSLog("+ \(NSStringFromClass(window.dynamicType))")
         for subview in window.subviews as [UIView] {
             refreshView(subview, theme: theme)
@@ -170,7 +170,7 @@ class ThemeController {
 
     // swiftlint:disable cyclomatic_complexity
     // swiftlint:disable function_body_length
-    class func refreshView(view: UIView, theme: Theme, indent: String = "  ") {
+    class func refreshView(_ view: UIView, theme: Theme, indent: String = "  ") {
         // NSLog("\(indent)- \(NSStringFromClass(view.dynamicType))")
         for subview in view.subviews as [UIView] {
             refreshView(subview, theme: theme, indent: indent + "  ")
@@ -197,7 +197,7 @@ class ThemeController {
                 v.textColor = theme.bodyTextColor()
                 v.tintColor = theme.bodyTextColor()
                 v.backgroundColor = theme.mainBackgroundColor()
-                v.layer.borderColor = theme.cellSeparatorColor().CGColor
+                v.layer.borderColor = theme.cellSeparatorColor().cgColor
             case let v as BackgroundTableViewCell:
                 v.backgroundColor = theme.mainBackgroundColor()
             case let v as BackgroundView:
@@ -219,7 +219,7 @@ class ThemeController {
                 v.layer.shadowOpacity = theme.shadowOpacity()
                 // v.layer.setNeedsLayout()
             case let v as NavigationShadowView:
-                v.backgroundColor = theme.menuBackgroundColor().colorWithAlphaComponent(0.8)
+                v.backgroundColor = theme.menuBackgroundColor().withAlphaComponent(0.8)
                 v.layer.shadowOpacity = theme.shadowOpacity()
             case let v as MenuView:
                 v.backgroundColor = theme.menuBackgroundColor()
@@ -231,14 +231,14 @@ class ThemeController {
                 v.textColor = theme.showMoreTweetLabelTextColor()
             case let v as TabButton:
                 if v.streaming {
-                    v.setTitleColor(theme.streamingConnected(), forState: .Normal)
+                    v.setTitleColor(theme.streamingConnected(), for: UIControlState())
                 } else {
-                    v.setTitleColor(theme.menuTextColor(), forState: .Normal)
+                    v.setTitleColor(theme.menuTextColor(), for: UIControlState())
                 }
-                v.setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)
+                v.setTitleColor(theme.menuSelectedTextColor(), for: .selected)
             case let v as MenuButton:
-                v.setTitleColor(theme.menuTextColor(), forState: .Normal)
-                v.setTitleColor(theme.menuSelectedTextColor(), forState: .Selected)
+                v.setTitleColor(theme.menuTextColor(), for: UIControlState())
+                v.setTitleColor(theme.menuSelectedTextColor(), for: .selected)
             case let v as TextLable:
                 v.textColor = theme.titleTextColor()
             case let v as MenuLable:
@@ -254,25 +254,25 @@ class ThemeController {
             case let v as AbsoluteDateLable:
                 v.textColor = theme.absoluteDateTextColor()
             case let v as ReplyButton:
-                v.setTitleColor(theme.buttonNormal(), forState: .Normal)
-                v.setTitleColor(theme.buttonNormal(), forState: .Selected)
+                v.setTitleColor(theme.buttonNormal(), for: UIControlState())
+                v.setTitleColor(theme.buttonNormal(), for: .selected)
             case let v as RetweetButton:
-                v.setTitleColor(theme.buttonNormal(), forState: .Normal)
-                v.setTitleColor(theme.retweetButtonSelected(), forState: .Selected)
+                v.setTitleColor(theme.buttonNormal(), for: UIControlState())
+                v.setTitleColor(theme.retweetButtonSelected(), for: .selected)
             case let v as FavoritesButton:
-                v.setTitleColor(theme.buttonNormal(), forState: .Normal)
-                v.setTitleColor(theme.favoritesButtonSelected(), forState: .Selected)
+                v.setTitleColor(theme.buttonNormal(), for: UIControlState())
+                v.setTitleColor(theme.favoritesButtonSelected(), for: .selected)
             case let v as FollowButton:
-                v.setTitleColor(theme.buttonNormal(), forState: .Normal)
+                v.setTitleColor(theme.buttonNormal(), for: UIControlState())
             case let v as UnfollowButton:
-                v.setTitleColor(theme.mainBackgroundColor(), forState: .Normal)
+                v.setTitleColor(theme.mainBackgroundColor(), for: UIControlState())
             case let v as StreamingButton:
                 v.normalColor = theme.bodyTextColor()
                 v.connectedColor = theme.streamingConnected()
                 v.errorColor = theme.streamingError()
                 v.setTitleColor()
             case let v as QuotedStatusContainerView:
-                v.layer.borderColor = theme.cellSeparatorColor().CGColor
+                v.layer.borderColor = theme.cellSeparatorColor().cgColor
             case let v as UIActivityIndicatorView:
                 v.activityIndicatorViewStyle = theme.activityIndicatorStyle()
             default:
@@ -286,7 +286,7 @@ class ThemeController {
     // viewWillAppear of various ViewController is executed.
     // very heavy.
     class func refreshAppearanceSuperSlow() {
-        let windows = UIApplication.sharedApplication().windows as [UIWindow]
+        let windows = UIApplication.shared.windows as [UIWindow]
         for window in windows {
             let subviews = window.subviews as [UIView]
             for v in subviews {
@@ -304,8 +304,8 @@ private extension UIColor {
         view.alpha = 1
         UIGraphicsBeginImageContext(view.frame.size)
         let context = UIGraphicsGetCurrentContext()!
-        view.layer.renderInContext(context)
+        view.layer.render(in: context)
         let image = UIGraphicsGetImageFromCurrentImageContext()
-        return image
+        return image!
     }
 }

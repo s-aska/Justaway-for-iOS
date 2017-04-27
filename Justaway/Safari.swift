@@ -15,19 +15,19 @@ class Safari {
 
     static let delegate = SafariDelegate()
 
-    class func openURL(string: String) {
-        if let url = NSURL(string: string) {
+    class func openURL(_ string: String) {
+        if let url = URL(string: string) {
             openURL(url)
         }
     }
 
-    class func openURL(url: NSURL) -> SFSafariViewController? {
+    class func openURL(_ url: URL) -> SFSafariViewController? {
         guard let frontVc = ViewTools.frontViewController() else {
             return nil
         }
-        let vc = SFSafariViewController(URL: url)
+        let vc = SFSafariViewController(url: url)
         vc.delegate = delegate
-        frontVc.presentViewController(vc, animated: true, completion: nil)
+        frontVc.present(vc, animated: true, completion: nil)
         return vc
     }
 }
@@ -38,16 +38,16 @@ class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
 
     static var oAuthViewController: SFSafariViewController?
 
-    func handle(url: NSURL) {
-        let components = NSURLComponents.init(URL: url, resolvingAgainstBaseURL: false)
+    func handle(_ url: URL) {
+        var components = URLComponents.init(url: url, resolvingAgainstBaseURL: false)
         let items = components?.queryItems ?? []
-        components?.queryItems = items + [NSURLQueryItem.init(name: "force_login", value: "true")]
-        SafariOAuthURLHandler.oAuthViewController = Safari.openURL(components?.URL ?? url)
+        components?.queryItems = items + [URLQueryItem.init(name: "force_login", value: "true")]
+        SafariOAuthURLHandler.oAuthViewController = Safari.openURL(components?.url ?? url)
     }
 
-    class func callback(url: NSURL) {
-        OAuthSwift.handleOpenURL(url)
-        SafariOAuthURLHandler.oAuthViewController?.dismissViewControllerAnimated(true, completion: nil)
+    class func callback(_ url: URL) {
+        OAuthSwift.handle(url: url)
+        SafariOAuthURLHandler.oAuthViewController?.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -56,16 +56,16 @@ class SafariOAuthURLHandler: NSObject, OAuthSwiftURLHandlerType {
 class SafariDelegate: NSObject, SFSafariViewControllerDelegate {
 
     // SFSafariViewController don't set page title to SLComposeServiceViewController's textView.text
-    func safariViewController(controller: SFSafariViewController, activityItemsForURL URL: NSURL, title: String?) -> [UIActivity] {
-        if let ud = NSUserDefaults.init(suiteName: "group.pw.aska.justaway") {
-            ud.setURL(URL, forKey: "shareURL")
-            ud.setObject(title ?? "", forKey: "shareTitle")
+    func safariViewController(_ controller: SFSafariViewController, activityItemsFor URL: URL, title: String?) -> [UIActivity] {
+        if let ud = UserDefaults.init(suiteName: "group.pw.aska.justaway") {
+            ud.set(URL, forKey: "shareURL")
+            ud.set(title ?? "", forKey: "shareTitle")
             ud.synchronize()
         }
         return []
     }
 
-    func safariViewControllerDidFinish(controller: SFSafariViewController) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

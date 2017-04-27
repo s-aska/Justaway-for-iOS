@@ -13,13 +13,13 @@ class LikesViewController: UsersViewController {
 
     var status: TwitterStatus?
 
-    override func loadData(success success: ((users: [TwitterUserFull]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(success: @escaping ((_ users: [TwitterUserFull]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         if let status = status {
             Twitter.getFavoriters(status, success: success, failure: failure)
         }
     }
 
-    class func show(status: TwitterStatus) {
+    class func show(_ status: TwitterStatus) {
         let instance = LikesViewController()
         instance.status = status
         Async.main {

@@ -10,25 +10,25 @@ import Foundation
 
 class Scheduler {
     struct Schedule {
-        let timer: NSTimer
+        let timer: Timer
 
-        init(timer: NSTimer) {
+        init(timer: Timer) {
             self.timer = timer
         }
     }
 
     struct Static {
-        private static var schedules = [String: Schedule]()
-        private static let serial = dispatch_queue_create("pw.aska.Scheduler", DISPATCH_QUEUE_SERIAL)
+        fileprivate static var schedules = [String: Schedule]()
+        fileprivate static let serial = DispatchQueue(label: "pw.aska.Scheduler", attributes: [])
     }
 
-    class func regsiter(interval interval: NSTimeInterval, target: AnyObject, selector: Selector) {
-        let key = "\(ObjectIdentifier(target).uintValue):\(selector)"
-        dispatch_sync(Static.serial) {
-            if Static.schedules[key]?.timer.valid ?? false {
+    class func regsiter(interval: TimeInterval, target: AnyObject, selector: Selector) {
+        let key = "\(UInt(bitPattern: ObjectIdentifier(target))):\(selector)"
+        Static.serial.sync {
+            if Static.schedules[key]?.timer.isValid ?? false {
                 return
             }
-            let timer = NSTimer.scheduledTimerWithTimeInterval(interval, target: target, selector: selector, userInfo: nil, repeats: false)
+            let timer = Timer.scheduledTimer(timeInterval: interval, target: target, selector: selector, userInfo: nil, repeats: false)
             Static.schedules[key] = Schedule(timer: timer)
         }
     }

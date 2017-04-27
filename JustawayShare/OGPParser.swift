@@ -12,7 +12,7 @@ class OGPParser {
 
     // swiftlint:disable:next force_try
     static let regexpOgp = try! NSRegularExpression(pattern: "<meta property=\"og:([^\"]+)\" content=[\"']([^\"']+)[\"'] ?/?>",
-                                                    options: NSRegularExpressionOptions.UseUnicodeWordBoundaries.intersect(NSRegularExpressionOptions.DotMatchesLineSeparators))
+                                                    options: NSRegularExpression.Options.useUnicodeWordBoundaries.intersection(NSRegularExpression.Options.dotMatchesLineSeparators))
 
     enum OGPType: String {
         case Title = "title", Image = "image"
@@ -30,12 +30,12 @@ class OGPParser {
         }
     }
 
-    class func parse(html: NSString) -> [OGP] {
+    class func parse(_ html: NSString) -> [OGP] {
         let s = html as String
-        let matches = regexpOgp.matchesInString(s, options: NSMatchingOptions(rawValue: 0), range: NSRange(location: 0, length: s.utf16.count))
+        let matches = regexpOgp.matches(in: s, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: s.utf16.count))
         return matches.flatMap { (match) -> OGP? in
-            let type = html.substringWithRange(match.rangeAtIndex(1))
-            let content = html.substringWithRange(match.rangeAtIndex(2))
+            let type = html.substring(with: match.rangeAt(1))
+            let content = html.substring(with: match.rangeAt(2))
             return OGP(type: type, content: content)
         }
     }

@@ -40,24 +40,24 @@ class TwitterUserAdapter: NSObject {
     var rows = [Row]()
     var layoutHeightCell: TwitterUserCell?
     var layoutHeight: CGFloat?
-    var didScrollToBottom: (Void -> Void)?
-    let loadDataQueue = NSOperationQueue().serial()
-    let mainQueue = NSOperationQueue().serial()
+    var didScrollToBottom: ((Void) -> Void)?
+    let loadDataQueue = OperationQueue().serial()
+    let mainQueue = OperationQueue().serial()
 
-    func configureView(tableView: UITableView) {
-        tableView.separatorInset = UIEdgeInsetsZero
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+    func configureView(_ tableView: UITableView) {
+        tableView.separatorInset = UIEdgeInsets.zero
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
         tableView.separatorColor = ThemeController.currentTheme.cellSeparatorColor()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.registerNib(UINib(nibName: "TwitterUserCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
-        layoutHeightCell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier) as? TwitterUserCell
+        tableView.register(UINib(nibName: "TwitterUserCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
+        layoutHeightCell = tableView.dequeueReusableCell(withIdentifier: TableViewConstants.tableViewCellIdentifier) as? TwitterUserCell
     }
 
-    func renderData(tableView: UITableView, users: [TwitterUserFull], mode: TwitterAdapter.RenderMode, handler: (() -> Void)?) {
+    func renderData(_ tableView: UITableView, users: [TwitterUserFull], mode: TwitterAdapter.RenderMode, handler: (() -> Void)?) {
         var users = users
         let fontSize = CGFloat(GenericSettings.get().fontSize)
-        let limit = mode == .OVER ? 0 : timelineRowsLimit
+        let limit = mode == .over ? 0 : timelineRowsLimit
 
 //        var addShowMore = false
 //        if mode == .HEADER {
@@ -76,19 +76,19 @@ class TwitterUserAdapter: NSObject {
 //            }
 //        }
 
-        if mode != .OVER {
+        if mode != .over {
             //users = users.filter { user -> Bool in
             //    return !rows.contains { $0.user.userID ?? "" == user.userID }
             //}
         }
 
-        let deleteCount = mode == .OVER ? self.rows.count : max((self.rows.count + users.count) - limit, 0)
-        let deleteStart = mode == .TOP || mode == .HEADER ? self.rows.count - deleteCount : 0
+        let deleteCount = mode == .over ? self.rows.count : max((self.rows.count + users.count) - limit, 0)
+        let deleteStart = mode == .top || mode == .header ? self.rows.count - deleteCount : 0
         let deleteRange = deleteStart ..< (deleteStart + deleteCount)
-        let deleteIndexPaths = deleteRange.map { row in NSIndexPath(forRow: row, inSection: 0) }
+        let deleteIndexPaths = deleteRange.map { row in IndexPath(row: row, section: 0) }
 
-        let insertStart = mode == .BOTTOM ? self.rows.count - deleteCount : 0
-        let insertIndexPaths = (insertStart ..< (insertStart + users.count)).map { row in NSIndexPath(forRow: row, inSection: 0) }
+        let insertStart = mode == .bottom ? self.rows.count - deleteCount : 0
+        let insertIndexPaths = (insertStart ..< (insertStart + users.count)).map { row in IndexPath(row: row, section: 0) }
 
         if deleteIndexPaths.count == 0 && users.count == 0 {
             handler?()
@@ -98,28 +98,28 @@ class TwitterUserAdapter: NSObject {
 
         if let lastCell = tableView.visibleCells.last {
             // NSLog("y:\(tableView.contentOffset.y) top:\(tableView.contentInset.top)")
-            let isTop = tableView.contentOffset.y + tableView.contentInset.top <= 0 && mode == .TOP
+            let isTop = tableView.contentOffset.y + tableView.contentInset.top <= 0 && mode == .top
             let offset = lastCell.frame.origin.y - tableView.contentOffset.y
             UIView.setAnimationsEnabled(false)
             tableView.beginUpdates()
             if deleteIndexPaths.count > 0 {
-                tableView.deleteRowsAtIndexPaths(deleteIndexPaths, withRowAnimation: .None)
-                self.rows.removeRange(deleteRange)
+                tableView.deleteRows(at: deleteIndexPaths, with: .none)
+                self.rows.removeSubrange(deleteRange)
             }
             if insertIndexPaths.count > 0 {
                 var i = 0
                 for insertIndexPath in insertIndexPaths {
                     let row = self.createRow(users[i], fontSize: fontSize, tableView: tableView)
-                    self.rows.insert(row, atIndex: insertIndexPath.row)
+                    self.rows.insert(row, at: insertIndexPath.row)
                     i += 1
                 }
-                tableView.insertRowsAtIndexPaths(insertIndexPaths, withRowAnimation: .None)
+                tableView.insertRows(at: insertIndexPaths, with: .none)
             }
             tableView.endUpdates()
             tableView.setContentOffset(CGPoint(x: 0, y: lastCell.frame.origin.y - offset), animated: false)
             UIView.setAnimationsEnabled(true)
             if isTop {
-                UIView.animateWithDuration(0.3, animations: { _ in
+                UIView.animate(withDuration: 0.3, animations: { _ in
                     tableView.contentOffset = CGPoint(x: 0, y: -tableView.contentInset.top)
                     }, completion: { _ in
                         // self.scrollEnd(tableView)
@@ -127,7 +127,7 @@ class TwitterUserAdapter: NSObject {
                         handler?()
                 })
             } else {
-                if mode == .OVER {
+                if mode == .over {
                     tableView.contentOffset = CGPoint(x: 0, y: -tableView.contentInset.top)
                     scrollEnd(tableView)
                 }
@@ -137,7 +137,7 @@ class TwitterUserAdapter: NSObject {
 
         } else {
             if deleteIndexPaths.count > 0 {
-                self.rows.removeRange(deleteRange)
+                self.rows.removeSubrange(deleteRange)
             }
             for user in users {
                 self.rows.append(self.createRow(user, fontSize: fontSize, tableView: tableView))
@@ -154,15 +154,15 @@ class TwitterUserAdapter: NSObject {
 // MARK: - UITableViewDataSource
 
 extension TwitterUserAdapter: UITableViewDataSource {
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return rows.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = rows[indexPath.row]
         let user = row.user
         // swiftlint:disable:next force_cast
-        let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! TwitterUserCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: TableViewConstants.tableViewCellIdentifier, for: indexPath) as! TwitterUserCell
 
         cell.user = user
 
@@ -171,30 +171,30 @@ extension TwitterUserAdapter: UITableViewDataSource {
         }
 
         if row.fontSize != cell.descriptionLabel.font?.pointSize ?? 0 {
-            cell.descriptionLabel.font = UIFont.systemFontOfSize(row.fontSize)
+            cell.descriptionLabel.font = UIFont.systemFont(ofSize: row.fontSize)
         }
 
         cell.displayNameLabel.text = user.name
         cell.screenNameLabel.text = user.screenName
-        cell.protectedLabel.hidden = !user.isProtected
+        cell.protectedLabel.isHidden = !user.isProtected
         cell.descriptionLabel.text = user.description
         cell.followingLabel.text = user.friendsCount.description
         cell.followerLabel.text = user.followersCount.description
         cell.listsLabel.text = user.listedCount.description
-        cell.blockLabel.hidden = true
-        cell.muteLabel.hidden = true
-        cell.retweetLabel.hidden = true
-        cell.retweetDeleteLabel.hidden = true
+        cell.blockLabel.isHidden = true
+        cell.muteLabel.isHidden = true
+        cell.retweetLabel.isHidden = true
+        cell.retweetDeleteLabel.isHidden = true
 
         if let account = AccountSettingsStore.get()?.account() {
             Relationship.checkUser(account.userID, targetUserID: user.userID, callback: { (relationshop) in
                 Async.main {
-                    cell.followButton.hidden = relationshop.following
-                    cell.unfollowButton.hidden = !relationshop.following
-                    cell.blockLabel.hidden = !relationshop.blocking
-                    cell.muteLabel.hidden = !relationshop.muting
-                    cell.retweetLabel.hidden = relationshop.wantRetweets
-                    cell.retweetDeleteLabel.hidden = relationshop.wantRetweets
+                    cell.followButton.isHidden = relationshop.following
+                    cell.unfollowButton.isHidden = !relationshop.following
+                    cell.blockLabel.isHidden = !relationshop.blocking
+                    cell.muteLabel.isHidden = !relationshop.muting
+                    cell.retweetLabel.isHidden = relationshop.wantRetweets
+                    cell.retweetDeleteLabel.isHidden = relationshop.wantRetweets
                 }
             })
         }
@@ -209,11 +209,11 @@ extension TwitterUserAdapter: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension TwitterUserAdapter: UITableViewDelegate {
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return timelineHooterHeight
     }
 
-    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if footerView == nil {
             footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: timelineHooterHeight))
             footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
@@ -224,12 +224,12 @@ extension TwitterUserAdapter: UITableViewDelegate {
         return footerView
     }
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let row = rows[indexPath.row]
         return row.height
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
         ProfileViewController.show(TwitterUser(row.user))
     }
@@ -239,7 +239,7 @@ extension TwitterUserAdapter: UITableViewDelegate {
 
 extension TwitterUserAdapter {
 
-    func scrollEnd(scrollView: UIScrollView) {
+    func scrollEnd(_ scrollView: UIScrollView) {
         let y = scrollView.contentOffset.y + scrollView.bounds.size.height - scrollView.contentInset.bottom
         let h = scrollView.contentSize.height
         let f = h - y
@@ -248,38 +248,37 @@ extension TwitterUserAdapter {
         }
     }
 
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if decelerate {
             return
         }
         scrollEnd(scrollView) // end of flick scrolling no deceleration
     }
 
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollEnd(scrollView) // end of deceleration of flick scrolling
     }
 
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         scrollEnd(scrollView) // end of setContentOffset
     }
 }
 
-
 // MARK: - Public
 
 extension TwitterUserAdapter {
-    func createRow(user: TwitterUserFull, fontSize: CGFloat, tableView: UITableView) -> Row {
+    func createRow(_ user: TwitterUserFull, fontSize: CGFloat, tableView: UITableView) -> Row {
         if let height = layoutHeight {
-            let textHeight = measure(user.description, fontSize: fontSize)
+            let textHeight = measure(user.description as NSString, fontSize: fontSize)
             let totalHeight = ceil(height + textHeight)
             return Row(user: user, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
         } else if let cell = self.layoutHeightCell {
             cell.frame = tableView.bounds
             cell.setNeedsLayout()
             cell.layoutIfNeeded()
-            let textHeight = measure(user.description, fontSize: fontSize)
+            let textHeight = measure(user.description as NSString, fontSize: fontSize)
             cell.textHeightConstraint.constant = 0
-            let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+            let height = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
             layoutHeight = height
             let totalHeight = ceil(height + textHeight)
             return Row(user: user, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
@@ -287,11 +286,11 @@ extension TwitterUserAdapter {
         fatalError("cellForHeight is missing.")
     }
 
-    func measure(text: NSString, fontSize: CGFloat) -> CGFloat {
-        let heigit = ceil(text.boundingRectWithSize(
-            CGSize.init(width: (self.layoutHeightCell?.descriptionLabel.frame.size.width)!, height: 0),
-            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
-            attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
+    func measure(_ text: NSString, fontSize: CGFloat) -> CGFloat {
+        let heigit = ceil(text.boundingRect(
+            with: CGSize.init(width: (self.layoutHeightCell?.descriptionLabel.frame.size.width)!, height: 0),
+            options: NSStringDrawingOptions.usesLineFragmentOrigin,
+            attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: fontSize)],
             context: nil).size.height)
         return max(heigit, 23)
     }

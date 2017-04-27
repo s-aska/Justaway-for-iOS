@@ -14,9 +14,9 @@ import Async
     var locked = false
 
     @IBInspectable var cornerRadius: CGFloat = 0
-    @IBInspectable var borderColor: UIColor = UIColor.clearColor()
+    @IBInspectable var borderColor: UIColor = UIColor.clear
     @IBInspectable var borderWidth: CGFloat = 0
-    @IBInspectable var layerColor: UIColor = UIColor.clearColor()
+    @IBInspectable var layerColor: UIColor = UIColor.clear
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,21 +32,21 @@ import Async
         super.init(coder: aDecoder)
     }
 
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         if borderWidth > 0 {
             layer.cornerRadius = cornerRadius
-            layer.borderColor = borderColor.CGColor
+            layer.borderColor = borderColor.cgColor
             layer.borderWidth = borderWidth
-            layer.backgroundColor = layerColor.CGColor
+            layer.backgroundColor = layerColor.cgColor
         }
-        super.drawRect(rect)
+        super.draw(rect)
     }
 
     func setup() {
-        self.exclusiveTouch = true
+        self.isExclusiveTouch = true
     }
 
-    func lock(interval: NSTimeInterval = 1) -> Bool {
+    func lock(_ interval: TimeInterval = 1) -> Bool {
         if !locked {
             locked = true
             Async.background(after: interval) {

@@ -13,21 +13,21 @@ import Accounts
 class Twitter {
 
     // swiftlint:disable:next force_try
-    static let urlRegexp = try! NSRegularExpression(pattern: "https?://[^ ]+", options: NSRegularExpressionOptions.CaseInsensitive)
-    static let statusUpdateURL = NSURL(string: "https://api.twitter.com/1.1/statuses/update.json")!
-    static let mediaUploadURL = NSURL(string: "https://upload.twitter.com/1.1/media/upload.json")!
+    static let urlRegexp = try! NSRegularExpression(pattern: "https?://[^ ]+", options: NSRegularExpression.Options.caseInsensitive)
+    static let statusUpdateURL = URL(string: "https://api.twitter.com/1.1/statuses/update.json")!
+    static let mediaUploadURL = URL(string: "https://upload.twitter.com/1.1/media/upload.json")!
 
-    static let session: NSURLSession = {
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        return NSURLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
+    static let session: URLSession = {
+        let configuration = URLSessionConfiguration.default
+        return URLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
     }()
 
-    class func count(text: String, hasImage: Bool) -> Int {
+    class func count(_ text: String, hasImage: Bool) -> Int {
         var count = text.characters.count
         let s = text as NSString
-        let matches = urlRegexp.matchesInString(text, options: NSMatchingOptions(rawValue: 0), range: NSRange(location: 0, length: text.utf16.count))
+        let matches = urlRegexp.matches(in: text, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: text.utf16.count))
         for match in matches {
-            let url = s.substringWithRange(match.rangeAtIndex(0)) as String
+            let url = s.substring(with: match.rangeAt(0)) as String
             let urlCount = url.hasPrefix("https") ? 23 : 22
             count = count + urlCount - url.characters.count
         }
@@ -37,18 +37,18 @@ class Twitter {
         return count
     }
 
-    class func updateStatusWithMedia(account: ACAccount, status: String, imageData: NSData) {
-        let media = imageData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-        let socialRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .POST, URL: mediaUploadURL, parameters: ["media": media])
-        socialRequest.account = account
-        let completion = { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+    class func updateStatusWithMedia(_ account: ACAccount, status: String, imageData: Data) {
+        let media = imageData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        let socialRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .POST, url: mediaUploadURL, parameters: ["media": media])
+        socialRequest?.account = account
+        let completion = { (data: Data?, response: URLResponse?, error: Error?) -> Void in
             if let error = error {
                 NSLog("\(error.localizedDescription)")
             }
             if let data = data {
                 do {
-                    let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
-                    if let media_id = json["media_id_string"] as? String {
+                    let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                    if let media_id = json?["media_id_string"] as? String {
                         updateStatusWithMedia(account, status: status, mediaID: media_id)
                     }
                 } catch let error as NSError {
@@ -56,18 +56,18 @@ class Twitter {
                 }
             }
         }
-        session.dataTaskWithRequest(socialRequest.preparedURLRequest(), completionHandler: completion).resume()
+        session.dataTask(with: (socialRequest?.preparedURLRequest())!, completionHandler: completion).resume()
     }
 
-    class func updateStatus(account: ACAccount, status: String) {
-        let socialRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .POST, URL: statusUpdateURL, parameters: ["status": status])
-        socialRequest.account = account
-        session.dataTaskWithRequest(socialRequest.preparedURLRequest()).resume()
+    class func updateStatus(_ account: ACAccount, status: String) {
+        let socialRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .POST, url: statusUpdateURL, parameters: ["status": status])
+        socialRequest?.account = account
+        session.dataTask(with: (socialRequest?.preparedURLRequest())!).resume()
     }
 
-    class func updateStatusWithMedia(account: ACAccount, status: String, mediaID: String) {
-        let socialRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .POST, URL: statusUpdateURL, parameters: ["status": status, "media_ids": mediaID])
-        socialRequest.account = account
-        session.dataTaskWithRequest(socialRequest.preparedURLRequest()).resume()
+    class func updateStatusWithMedia(_ account: ACAccount, status: String, mediaID: String) {
+        let socialRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .POST, url: statusUpdateURL, parameters: ["status": status, "media_ids": mediaID])
+        socialRequest?.account = account
+        session.dataTask(with: (socialRequest?.preparedURLRequest())!).resume()
     }
 }

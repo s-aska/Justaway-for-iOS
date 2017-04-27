@@ -22,7 +22,7 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
 
     struct Constants {
         static let duration: Double = 0.2
-        static let delay: NSTimeInterval = 0
+        static let delay: TimeInterval = 0
     }
 
     struct Static {
@@ -63,7 +63,7 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
 
@@ -72,7 +72,7 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -80,8 +80,8 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - Configuration
 
     func configureView() {
-        tableView.separatorInset = UIEdgeInsetsZero
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        tableView.separatorInset = UIEdgeInsets.zero
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
         tableView.delegate = self
         tableView.dataSource = self
         tableView.addSubview(refreshControl)
@@ -91,11 +91,11 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
             cell.textLabel?.textColor = ThemeController.currentTheme.bodyTextColor()
         }
 
-        refreshControl.addTarget(self, action: #selector(ChooseListsViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(ChooseListsViewController.refresh), for: UIControlEvents.valueChanged)
 
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(ChooseListsViewController.hide))
         swipe.numberOfTouchesRequired = 1
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        swipe.direction = UISwipeGestureRecognizerDirection.right
         tableView.addGestureRecognizer(swipe)
     }
 
@@ -104,40 +104,40 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
 
     // MARK: - UITableViewDataSource
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count ?? 0
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: TableViewConstants.tableViewCellIdentifier)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         let item = items[indexPath.row]
-        cell.selectionStyle = .None
-        cell.separatorInset = UIEdgeInsetsZero
-        cell.layoutMargins = UIEdgeInsetsZero
+        cell.selectionStyle = .none
+        cell.separatorInset = UIEdgeInsets.zero
+        cell.layoutMargins = UIEdgeInsets.zero
         cell.preservesSuperviewLayoutMargins = false
         cell.textLabel?.text = item.list.name
-        cell.accessoryType = item.selected ? .Checkmark : .None
-        cell.backgroundColor = UIColor.clearColor()
+        cell.accessoryType = item.selected ? .checkmark : .none
+        cell.backgroundColor = UIColor.clear
         cell.textLabel?.textColor = ThemeController.currentTheme.bodyTextColor()
         return cell
     }
 
-    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
     // MARK: UITableViewDelegate
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else {
             return
         }
         items[indexPath.row].selected = !items[indexPath.row].selected
-        cell.accessoryType = items[indexPath.row].selected ? .Checkmark : .None
+        cell.accessoryType = items[indexPath.row].selected ? .checkmark : .none
     }
 
     // MARK: - Actions
@@ -149,7 +149,7 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
         let success = { (array: [TwitterList]) -> Void in
             self.refreshControl.endRefreshing()
             self.items = array.map({ (list: TwitterList) -> Item in
-                return Item(list: list, selected: account.tabs.indexOf({ $0.type == .Lists && $0.list.id == list.id }) != nil)
+                return Item(list: list, selected: account.tabs.index(where: { $0.type == .Lists && $0.list.id == list.id }) != nil)
             })
             self.tableView.reloadData()
         }
@@ -160,20 +160,20 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
         Twitter.getLists(success, failure: failure)
     }
 
-    @IBAction func close(sender: AnyObject) {
+    @IBAction func close(_ sender: AnyObject) {
         hide()
     }
 
-    @IBAction func left(sender: UIButton) {
+    @IBAction func left(_ sender: UIButton) {
         hide()
     }
 
-    @IBAction func right(sender: UIButton) {
+    @IBAction func right(_ sender: UIButton) {
         done()
     }
 
     func hide() {
-        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
             self.view.frame = self.view.frame.offsetBy(dx: self.view.frame.size.width, dy: 0)
             }, completion: { finished in
                 self.view.removeFromSuperview()
@@ -189,7 +189,7 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
             return
         }
         let tabs = items.filter({ $0.selected }).map({ Tab.init(userID: account.userID, list: $0.list) })
-        EventBox.post("setListsTab", sender: tabs)
+        EventBox.post(Notification.Name(rawValue: "setListsTab"), sender: tabs as AnyObject)
         hide()
     }
 
@@ -199,12 +199,12 @@ class ChooseListsViewController: UIViewController, UITableViewDataSource, UITabl
 
     class func show() {
         if let vc = ViewTools.frontViewController() {
-            Static.instance.view.hidden = true
+            Static.instance.view.isHidden = true
             vc.view.addSubview(Static.instance.view)
             Static.instance.view.frame = CGRect.init(x: vc.view.frame.width, y: 20, width: vc.view.frame.width, height: vc.view.frame.height - 20)
-            Static.instance.view.hidden = false
+            Static.instance.view.isHidden = false
 
-            UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
+            UIView.animate(withDuration: Constants.duration, delay: Constants.delay, options: .curveEaseOut, animations: { () -> Void in
                 Static.instance.view.frame = CGRect.init(x: 0,
                     y: 20,
                     width: vc.view.frame.size.width,

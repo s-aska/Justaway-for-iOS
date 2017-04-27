@@ -11,10 +11,10 @@ import Photos
 
 class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
-    let manager = PHImageManager.defaultManager()
+    let manager = PHImageManager.default()
     var rows = [PHAsset]()
     var highlightRows = [PHAsset]()
-    var callback: (PHAsset -> Void)?
+    var callback: ((PHAsset) -> Void)?
     var cellSize = CGSize(width: 80, height: 80)
 
     override func awakeFromNib() {
@@ -24,17 +24,16 @@ class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, U
 
     func configureView() {
         let nib = UINib(nibName: "ImageCell", bundle: nil)
-        self.registerNib(nib, forCellWithReuseIdentifier: "ImageCell")
+        self.register(nib, forCellWithReuseIdentifier: "ImageCell")
         self.delegate = self
         self.dataSource = self
-        let width = (UIScreen.mainScreen().bounds.size.width / 4)
+        let width = (UIScreen.main.bounds.size.width / 4)
         self.cellSize = CGSize(width: width, height: width)
     }
 
-
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // swiftlint:disable:next force_cast
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageCell", forIndexPath: indexPath) as! ImageCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCell
         let row = rows[indexPath.row]
         cell.tag = indexPath.row
         cell.asset = row
@@ -44,13 +43,13 @@ class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, U
         }
         let itemSize = layout.itemSize
 
-        manager.requestImageForAsset(row,
+        manager.requestImage(for: row,
             targetSize: itemSize,
-            contentMode: .AspectFill,
+            contentMode: .aspectFill,
             options: nil) { (image, info) -> Void in
                 if cell.tag == indexPath.row {
                     cell.imageView.alpha = self.isHighlight(row) ? 0.3 : 1
-                    cell.imageView.contentMode = .ScaleAspectFill
+                    cell.imageView.contentMode = .scaleAspectFill
                     cell.imageView.image = image
                 }
         }
@@ -58,20 +57,20 @@ class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, U
         return cell
     }
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return rows.count
     }
 
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let row = rows[indexPath.row]
         callback?(row)
     }
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return cellSize
     }
 
-    func isHighlight(asset: PHAsset) -> Bool {
+    func isHighlight(_ asset: PHAsset) -> Bool {
         for highlightRow in highlightRows {
             if highlightRow == asset {
                 return true
@@ -81,7 +80,7 @@ class ImagePickerCollectionView: UICollectionView, UICollectionViewDataSource, U
     }
 
     func reloadHighlight() {
-        for cell in visibleCells() as? [ImageCell] ?? [] {
+        for cell in visibleCells as? [ImageCell] ?? [] {
             if let asset = cell.asset {
                 cell.imageView.alpha = self.isHighlight(asset) ? 0.3 : 1
             }

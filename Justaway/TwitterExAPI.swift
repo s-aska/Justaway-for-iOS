@@ -14,9 +14,9 @@ extension Twitter {
         }
     }
 
-    class func getActivity(maxID maxID: String? = nil, sinceID: String? = nil, maxMentionID: String?, success: (statuses: [TwitterStatus], maxMentionID: String?) -> Void, failure: (NSError) -> Void) {
+    class func getActivity(maxID: String? = nil, sinceID: String? = nil, maxMentionID: String?, success: @escaping (_ statuses: [TwitterStatus], _ maxMentionID: String?) -> Void, failure: @escaping (NSError) -> Void) {
         guard let account = AccountSettingsStore.get()?.account() else {
-            success(statuses: [], maxMentionID: nil)
+            success([], nil)
             return
         }
         var parameters: [String: String] = [:]
@@ -30,7 +30,7 @@ extension Twitter {
         }
         let success = { (json: JSON) -> Void in
             guard let array = json.array else {
-                success(statuses: [], maxMentionID: nil)
+                success([], nil)
                 return
             }
             var userMap = [String: TwitterUser]()
@@ -48,9 +48,9 @@ extension Twitter {
                 var events = [TwitterEvent]()
                 for event in array {
                     if let statusID = event["target_object_id"].int64?.stringValue,
-                        sourceID = event["source_id"].int64?.stringValue,
-                        eventName = event["event"].string,
-                        createdAt = event["created_at"].int {
+                        let sourceID = event["source_id"].int64?.stringValue,
+                        let eventName = event["event"].string,
+                        let createdAt = event["created_at"].int {
                         if let status = statusMap[statusID] {
                             if eventName == "reply" {
                                 replyMap[status.statusID] = true
@@ -60,12 +60,12 @@ extension Twitter {
                                 events.append(TwitterEvent(status: status, createdAt: createdAt))
                             case "retweeted_retweet":
                                 if let source = userMap[sourceID] {
-                                    let newStatus = TwitterStatus(status, type: .Normal, event: eventName, actionedBy: source, isRoot: false)
+                                    let newStatus = TwitterStatus(status, type: .normal, event: eventName, actionedBy: source, isRoot: false)
                                     events.append(TwitterEvent(status: newStatus, createdAt: createdAt))
                                 }
                             case "favorite", "favorited_retweet":
                                 if let source = userMap[sourceID] {
-                                    let newStatus = TwitterStatus(status, type: .Favorite, event: eventName, actionedBy: source, isRoot: false)
+                                    let newStatus = TwitterStatus(status, type: .favorite, event: eventName, actionedBy: source, isRoot: false)
                                     events.append(TwitterEvent(status: newStatus, createdAt: createdAt))
                                 }
                             default:
@@ -79,13 +79,13 @@ extension Twitter {
                     let mentionEvents = statuses
                         .filter { replyMap[$0.statusID] == nil }
                         .map { TwitterEvent(status: $0, createdAt: Int($0.createdAt.date.timeIntervalSince1970)) }
-                    let newStatuses = (events + mentionEvents).sort({ (s0, s1) -> Bool in
+                    let newStatuses = (events + mentionEvents).sorted(by: { (s0, s1) -> Bool in
                         return s0.createdAt > s1.createdAt
                     }).map { $0.status }
                     NSLog("[getActivity] maxID:\(maxID) sinceID:\(sinceID) maxMentionID:\(maxMentionID) newMaxMentionID:\(newMaxMentionID) mentions:\(statuses.count) => \(mentionEvents.count) => \(newStatuses.count)")
-                    success(statuses: newStatuses, maxMentionID: newMaxMentionID)
+                    success(newStatuses, newMaxMentionID)
                 }
-                Twitter.getMentionTimeline(sinceID: nil, maxID: maxMentionID, success: successMention, failure: failure)
+                Twitter.getMentionTimeline(maxID: maxMentionID, sinceID: nil, success: successMention, failure: failure)
             }
             let successUsers = { (users: [TwitterUser]) -> Void in
                 for user in users {
@@ -106,19 +106,19 @@ extension Twitter {
 //                }
 //            }
         }
-        let urlComponents = NSURLComponents(string: "https://justaway.info/api/activity/list.json")!
-        urlComponents.queryItems = parameters.map({ NSURLQueryItem.init(name: $0.0, value: $0.1) })
-        guard let url = urlComponents.URL else {
+        var urlComponents = URLComponents(string: "https://justaway.info/api/activity/list.json")!
+        urlComponents.queryItems = parameters.map({ URLQueryItem.init(name: $0.0, value: $0.1) })
+        guard let url = urlComponents.url else {
             success([])
             return
         }
-        let req = NSMutableURLRequest.init(URL: url)
+        var req = URLRequest.init(url: url)
         req.setValue(account.exToken, forHTTPHeaderField: "X-Justaway-API-Token")
-        NSURLSession.sharedSession().dataTaskWithRequest(req) { (data, response, error) in
+        URLSession.shared.dataTask(with: req, completionHandler: { (data, response, error) in
             if let error = error {
-                failure(error)
+                failure(error as NSError)
             } else if let data = data {
-                let HTTPResponse = response as? NSHTTPURLResponse
+                let HTTPResponse = response as? HTTPURLResponse
                 let HTTPStatusCode = HTTPResponse?.statusCode ?? 0
                 if HTTPStatusCode == 200 {
                     let json = JSON(data: data)
@@ -131,11 +131,11 @@ extension Twitter {
                     failure(error)
                 }
             }
-        }.resume()
+        }).resume()
     }
 
-    class func getFavoriters(status: TwitterStatus, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
-        guard let account = AccountSettingsStore.get()?.find(status.user.userID) where !account.exToken.isEmpty else {
+    class func getFavoriters(_ status: TwitterStatus, success: @escaping ([TwitterUserFull]) -> Void, failure: @escaping (NSError) -> Void) {
+        guard let account = AccountSettingsStore.get()?.find(status.user.userID), !account.exToken.isEmpty else {
             success([])
             return
         }
@@ -146,19 +146,19 @@ extension Twitter {
             }
             Twitter.getUsers(ids, success: success, failure: failure)
         }
-        let urlComponents = NSURLComponents(string: "https://justaway.info/api/statuses/favoriters/ids.json")!
-        urlComponents.queryItems = [NSURLQueryItem(name: "id", value: status.statusID)]
-        guard let url = urlComponents.URL else {
+        var urlComponents = URLComponents(string: "https://justaway.info/api/statuses/favoriters/ids.json")!
+        urlComponents.queryItems = [URLQueryItem(name: "id", value: status.statusID)]
+        guard let url = urlComponents.url else {
             success([])
             return
         }
-        let req = NSMutableURLRequest.init(URL: url)
+        var req = URLRequest.init(url: url)
         req.setValue(account.exToken, forHTTPHeaderField: "X-Justaway-API-Token")
-        NSURLSession.sharedSession().dataTaskWithRequest(req) { (data, response, error) in
+        URLSession.shared.dataTask(with: req, completionHandler: { (data, response, error) in
             if let error = error {
-                failure(error)
+                failure(error as NSError)
             } else if let data = data {
-                let HTTPResponse = response as? NSHTTPURLResponse
+                let HTTPResponse = response as? HTTPURLResponse
                 let HTTPStatusCode = HTTPResponse?.statusCode ?? 0
                 if HTTPStatusCode == 200 {
                     let json = JSON(data: data)
@@ -171,6 +171,6 @@ extension Twitter {
                     failure(error)
                 }
             }
-            }.resume()
+            }).resume()
     }
 }

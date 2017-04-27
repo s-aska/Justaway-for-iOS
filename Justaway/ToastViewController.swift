@@ -34,10 +34,10 @@ class ToastViewController: UIViewController {
 
     func configureView() {
         messageLabel.text = message
-        messageLabel.backgroundColor = UIColor.clearColor()
-        messageHeightConstraint.constant = measure(message ?? "")
+        messageLabel.backgroundColor = UIColor.clear
+        messageHeightConstraint.constant = measure(message as? NSString ?? "")
 
-        Async.background(after: 2, block: {
+        Async.background(after: 2, {
             Async.main {
                 ViewTools.slideOutLeft(self)
             }
@@ -47,17 +47,17 @@ class ToastViewController: UIViewController {
 
     // MARK: - Private
 
-    private func measure(text: NSString) -> CGFloat {
-        return ceil(text.boundingRectWithSize(
-            CGSize.init(width: self.messageLabel.frame.size.width, height: 0),
-            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
-            attributes: [NSFontAttributeName: UIFont.systemFontOfSize(CGFloat(GenericSettings.get().fontSize))],
+    fileprivate func measure(_ text: NSString) -> CGFloat {
+        return ceil(text.boundingRect(
+            with: CGSize.init(width: self.messageLabel.frame.size.width, height: 0),
+            options: NSStringDrawingOptions.usesLineFragmentOrigin,
+            attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: CGFloat(GenericSettings.get().fontSize))],
             context: nil).size.height)
     }
 
     // MARK: - Public
 
-    class func show(message: String, completion: (() -> ())) {
+    class func show(_ message: String, completion: @escaping (() -> ())) {
         let instance = ToastViewController()
         instance.message = message
         instance.completion = completion

@@ -13,13 +13,13 @@ class RetweetsViewController: UsersViewController {
 
     var statusID: String?
 
-    override func loadData(success success: ((users: [TwitterUserFull]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(success: @escaping ((_ users: [TwitterUserFull]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         if let statusID = statusID {
             Twitter.getRetweeters(statusID, success: success, failure: failure)
         }
     }
 
-    class func show(statusID: String) {
+    class func show(_ statusID: String) {
         let instance = RetweetsViewController()
         instance.statusID = statusID
         Async.main {

@@ -21,27 +21,27 @@ class ImageCell: UICollectionViewCell {
     }
 
     func configureView() {
-        imageView.userInteractionEnabled = true
+        imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(ImageCell.preview(_:))))
     }
 
-    func preview(sender: UILongPressGestureRecognizer) {
-        if sender.state != .Began {
+    func preview(_ sender: UILongPressGestureRecognizer) {
+        if sender.state != .began {
             return
         }
         if let asset = asset {
             let options = PHImageRequestOptions()
-            options.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
-            options.synchronous = false
-            options.networkAccessAllowed = true
-            PHImageManager.defaultManager().requestImageDataForAsset(asset, options: options, resultHandler: {
-                (imageData: NSData?, dataUTI: String?, orientation: UIImageOrientation, info: [NSObject : AnyObject]?) -> Void in
+            options.deliveryMode = PHImageRequestOptionsDeliveryMode.highQualityFormat
+            options.isSynchronous = false
+            options.isNetworkAccessAllowed = true
+            PHImageManager.default().requestImageData(for: asset, options: options, resultHandler: {
+                (imageData: Data?, dataUTI: String?, orientation: UIImageOrientation, info: [AnyHashable: Any]?) -> Void in
                 if let imageData = imageData {
-                    if let window = UIApplication.sharedApplication().keyWindow {
+                    if let window = UIApplication.shared.keyWindow {
                         let imageView = UIImageView(frame: window.frame)
-                        imageView.contentMode = .ScaleAspectFit
+                        imageView.contentMode = .scaleAspectFit
                         imageView.image = UIImage(data: imageData)
-                        imageView.userInteractionEnabled = true
+                        imageView.isUserInteractionEnabled = true
                         imageView.addGestureRecognizer(UITapGestureRecognizer(target: imageView, action: #selector(UIView.removeFromSuperview)))
                         window.addSubview(imageView)
                     }

@@ -9,7 +9,7 @@
 import Foundation
 
 class FollowingUserViewController: UserTableViewController {
-    override func loadData(cursor: String, success: ((users: [TwitterUserFull], nextCursor: String?) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(_ cursor: String, success: @escaping ((_ users: [TwitterUserFull], _ nextCursor: String?) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         if let userID = userID {
             Twitter.getFollowingUsers(userID, cursor: cursor, success: success, failure: failure)
         }

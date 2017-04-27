@@ -14,7 +14,7 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
 
     struct Constants {
         static let duration: Double = 0.2
-        static let delay: NSTimeInterval = 0
+        static let delay: TimeInterval = 0
     }
 
     struct Static {
@@ -56,7 +56,7 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
 
@@ -65,7 +65,7 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         }
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -73,8 +73,8 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
     // MARK: - Configuration
 
     func configureView() {
-        tableView.separatorInset = UIEdgeInsetsZero
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        tableView.separatorInset = UIEdgeInsets.zero
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
         tableView.delegate = self
         tableView.dataSource = self
         tableView.addSubview(refreshControl)
@@ -84,11 +84,11 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
             cell.textLabel?.textColor = ThemeController.currentTheme.bodyTextColor()
         }
 
-        refreshControl.addTarget(self, action: #selector(SavedSearchesViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(SavedSearchesViewController.refresh), for: UIControlEvents.valueChanged)
 
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(SavedSearchesViewController.hide))
         swipe.numberOfTouchesRequired = 1
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        swipe.direction = UISwipeGestureRecognizerDirection.right
         tableView.addGestureRecognizer(swipe)
     }
 
@@ -97,40 +97,40 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
 
     // MARK: - UITableViewDataSource
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return words.count ?? 0
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: TableViewConstants.tableViewCellIdentifier)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         let word = words[indexPath.row]
-        cell.selectionStyle = .None
-        cell.separatorInset = UIEdgeInsetsZero
-        cell.layoutMargins = UIEdgeInsetsZero
+        cell.selectionStyle = .none
+        cell.separatorInset = UIEdgeInsets.zero
+        cell.layoutMargins = UIEdgeInsets.zero
         cell.preservesSuperviewLayoutMargins = false
         cell.textLabel?.text = word.text
-        cell.accessoryType = word.selected ? .Checkmark : .None
-        cell.backgroundColor = UIColor.clearColor()
+        cell.accessoryType = word.selected ? .checkmark : .none
+        cell.backgroundColor = UIColor.clear
         cell.textLabel?.textColor = ThemeController.currentTheme.bodyTextColor()
         return cell
     }
 
-    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
     // MARK: UITableViewDelegate
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else {
             return
         }
         words[indexPath.row].selected = !words[indexPath.row].selected
-        cell.accessoryType = words[indexPath.row].selected ? .Checkmark : .None
+        cell.accessoryType = words[indexPath.row].selected ? .checkmark : .none
     }
 
     // MARK: - Actions
@@ -142,7 +142,7 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         let success = { (array: [String]) -> Void in
             self.refreshControl.endRefreshing()
             self.words = array.map({ (text: String) -> Word in
-                return Word(text: text, selected: account.tabs.indexOf({ $0.type == .Searches && $0.keyword == text }) != nil)
+                return Word(text: text, selected: account.tabs.index(where: { $0.type == .Searches && $0.keyword == text }) != nil)
             })
             self.tableView.reloadData()
         }
@@ -153,20 +153,20 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
         Twitter.getSavedSearches(success, failure: failure)
     }
 
-    @IBAction func close(sender: AnyObject) {
+    @IBAction func close(_ sender: AnyObject) {
         hide()
     }
 
-    @IBAction func left(sender: UIButton) {
+    @IBAction func left(_ sender: UIButton) {
         hide()
     }
 
-    @IBAction func right(sender: UIButton) {
+    @IBAction func right(_ sender: UIButton) {
         done()
     }
 
     func hide() {
-        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
             self.view.frame = self.view.frame.offsetBy(dx: self.view.frame.size.width, dy: 0)
             }, completion: { finished in
                 self.view.removeFromSuperview()
@@ -182,7 +182,7 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
             return
         }
         let tabs = words.filter({ $0.selected }).map({ Tab.init(userID: account.userID, keyword: $0.text) })
-        EventBox.post("setSavedSearchTab", sender: tabs)
+        EventBox.post(Notification.Name(rawValue: "setSavedSearchTab"), sender: tabs as AnyObject)
         hide()
     }
 
@@ -192,12 +192,12 @@ class SavedSearchesViewController: UIViewController, UITableViewDataSource, UITa
 
     class func show() {
         if let vc = ViewTools.frontViewController() {
-            Static.instance.view.hidden = true
+            Static.instance.view.isHidden = true
             vc.view.addSubview(Static.instance.view)
             Static.instance.view.frame = CGRect.init(x: vc.view.frame.width, y: 20, width: vc.view.frame.width, height: vc.view.frame.height - 20)
-            Static.instance.view.hidden = false
+            Static.instance.view.isHidden = false
 
-            UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
+            UIView.animate(withDuration: Constants.duration, delay: Constants.delay, options: .curveEaseOut, animations: { () -> Void in
                 Static.instance.view.frame = CGRect.init(x: 0,
                     y: 20,
                     width: vc.view.frame.size.width,

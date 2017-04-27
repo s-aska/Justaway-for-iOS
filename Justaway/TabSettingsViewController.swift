@@ -14,7 +14,7 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
 
     struct Constants {
         static let duration: Double = 0.2
-        static let delay: NSTimeInterval = 0
+        static let delay: TimeInterval = 0
     }
 
     struct Static {
@@ -45,7 +45,7 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
 
@@ -54,7 +54,7 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
         initEditing()
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -62,24 +62,24 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - Configuration
 
     func configureView() {
-        tableView.separatorInset = UIEdgeInsetsZero
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        tableView.separatorInset = UIEdgeInsets.zero
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.registerNib(UINib(nibName: "TabSettingsCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
+        tableView.register(UINib(nibName: "TabSettingsCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         tableView.addSubview(refreshControl)
 
-        refreshControl.addTarget(self, action: #selector(TabSettingsViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(TabSettingsViewController.refresh), for: UIControlEvents.valueChanged)
 
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(TabSettingsViewController.hide))
         swipe.numberOfTouchesRequired = 1
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        swipe.direction = UISwipeGestureRecognizerDirection.right
         tableView.addGestureRecognizer(swipe)
     }
 
     func configureEvent() {
-        EventBox.onMainThread(self, name: "addTab") {
-            [weak self] (notification: NSNotification!) in
+        EventBox.onMainThread(self, name: Notification.Name(rawValue: "addTab")) {
+            [weak self] (notification: Notification!) in
             guard let `self` = self else {
                 return
             }
@@ -94,15 +94,15 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
             }
             let newAccount = Account(account: account, tabs: account.tabs + [tab])
             self.account = newAccount
-            self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: newAccount.tabs.count - 1, inSection: 0)], withRowAnimation: .Automatic)
+            self.tableView.insertRows(at: [IndexPath(row: newAccount.tabs.count - 1, section: 0)], with: .automatic)
             if let settings = AccountSettingsStore.get() {
                 let accounts = settings.accounts.map({ $0.userID == newAccount.userID ? newAccount : $0 })
                 AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
                 EventBox.post(eventTabChanged)
             }
         }
-        EventBox.onMainThread(self, name: "setSavedSearchTab") {
-            [weak self] (notification: NSNotification!) in
+        EventBox.onMainThread(self, name: Notification.Name(rawValue: "setSavedSearchTab")) {
+            [weak self] (notification: Notification!) in
             guard let `self` = self else {
                 return
             }
@@ -116,9 +116,9 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
             for tab in account.tabs {
                 if tab.type != .Searches {
                     keepTabs.append(tab)
-                } else if let index = addTabs.indexOf({ $0.keyword == tab.keyword }) {
+                } else if let index = addTabs.index(where: { $0.keyword == tab.keyword }) {
                     keepTabs.append(tab)
-                    addTabs.removeAtIndex(index)
+                    addTabs.remove(at: index)
                 }
             }
             let newAccount = Account(account: account, tabs: keepTabs + addTabs)
@@ -130,8 +130,8 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
                 EventBox.post(eventTabChanged)
             }
         }
-        EventBox.onMainThread(self, name: "setListsTab") {
-            [weak self] (notification: NSNotification!) in
+        EventBox.onMainThread(self, name: Notification.Name(rawValue: "setListsTab")) {
+            [weak self] (notification: Notification!) in
             guard let `self` = self else {
                 return
             }
@@ -145,9 +145,9 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
             for tab in account.tabs {
                 if tab.type != .Lists {
                     keepTabs.append(tab)
-                } else if let index = addTabs.indexOf({ $0.list.id == tab.list.id }) {
+                } else if let index = addTabs.index(where: { $0.list.id == tab.list.id }) {
                     keepTabs.append(tab)
-                    addTabs.removeAtIndex(index)
+                    addTabs.remove(at: index)
                 }
             }
             let newAccount = Account(account: account, tabs: keepTabs + addTabs)
@@ -163,13 +163,13 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
 
     // MARK: - UITableViewDataSource
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return account?.tabs.count ?? 0
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // swiftlint:disable:next force_cast
-        let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! TabSettingsCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: TableViewConstants.tableViewCellIdentifier, for: indexPath) as! TabSettingsCell
         if let tab = self.account?.tabs[indexPath.row] {
             switch tab.type {
             case .HomeTimline:
@@ -201,11 +201,11 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
         return cell
     }
 
-    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         guard let account = account else {
             return
         }
@@ -213,17 +213,17 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
             return
         }
         var tabs = account.tabs
-        tabs.insert(tabs.removeAtIndex(sourceIndexPath.row), atIndex: destinationIndexPath.row)
+        tabs.insert(tabs.remove(at: sourceIndexPath.row), at: destinationIndexPath.row)
         self.account = Account(account: account, tabs: tabs)
     }
 
     // MARK: UITableViewDelegate
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        if let settings = self.settings {
 //            self.settings = AccountSettings(current: indexPath.row, accounts: settings.accounts)
 //            self.tableView.reloadData()
@@ -233,18 +233,18 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
 //        }
     }
 
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle != .Delete {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle != .delete {
             return
         }
         guard let account = account else {
             return
         }
         var tabs = account.tabs
-        tabs.removeAtIndex(indexPath.row)
+        tabs.remove(at: indexPath.row)
         self.account = Account(account: account, tabs: tabs)
         if tabs.count > 0 {
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
         } else {
             tableView.reloadData()
         }
@@ -252,12 +252,12 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
 
     // MARK: - Actions
 
-    @IBAction func close(sender: AnyObject) {
+    @IBAction func close(_ sender: AnyObject) {
         hide()
     }
 
-    @IBAction func left(sender: UIButton) {
-        if tableView.editing {
+    @IBAction func left(_ sender: UIButton) {
+        if tableView.isEditing {
             cancel()
         } else {
             if let account = account {
@@ -266,8 +266,8 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
 
-    @IBAction func right(sender: UIButton) {
-        if tableView.editing {
+    @IBAction func right(_ sender: UIButton) {
+        if tableView.isEditing {
             done()
         } else {
             edit()
@@ -275,7 +275,7 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func hide() {
-        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
             self.view.frame = self.view.frame.offsetBy(dx: self.view.frame.size.width, dy: 0)
             }, completion: { finished in
                 self.view.removeFromSuperview()
@@ -284,9 +284,9 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
 
     func initEditing() {
         tableView.setEditing(false, animated: false)
-        leftButton.setTitle("Add", forState: UIControlState.Normal)
-        rightButton.setTitle("Edit", forState: UIControlState.Normal)
-        rightButton.hidden = account == nil
+        leftButton.setTitle("Add", for: UIControlState())
+        rightButton.setTitle("Edit", for: UIControlState())
+        rightButton.isHidden = account == nil
     }
 
     func cancel() {
@@ -297,15 +297,15 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
 
     func edit() {
         tableView.setEditing(true, animated: true)
-        leftButton.setTitle("Cancel", forState: UIControlState.Normal)
-        rightButton.setTitle("Done", forState: UIControlState.Normal)
+        leftButton.setTitle("Cancel", for: UIControlState())
+        rightButton.setTitle("Done", for: UIControlState())
     }
 
     func done() {
         if let account = account {
             if let settings = AccountSettingsStore.get() {
                 let accounts = settings.accounts.map({ $0.userID == account.userID ? account : $0 })
-                AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
+                _ = AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
                 EventBox.post(eventTabChanged)
             }
         }
@@ -319,12 +319,12 @@ class TabSettingsViewController: UIViewController, UITableViewDataSource, UITabl
 
     class func show() {
         if let vc = ViewTools.frontViewController() {
-            Static.instance.view.hidden = true
+            Static.instance.view.isHidden = true
             vc.view.addSubview(Static.instance.view)
             Static.instance.view.frame = CGRect.init(x: vc.view.frame.width, y: 20, width: vc.view.frame.width, height: vc.view.frame.height - 20)
-            Static.instance.view.hidden = false
+            Static.instance.view.isHidden = false
 
-            UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
+            UIView.animate(withDuration: Constants.duration, delay: Constants.delay, options: .curveEaseOut, animations: { () -> Void in
                 Static.instance.view.frame = CGRect.init(x: 0,
                     y: 20,
                     width: vc.view.frame.size.width,

@@ -12,37 +12,37 @@ class ThemeDark: Theme {
 
     func name() -> String { return "Dark" }
 
-    func statusBarStyle() -> UIStatusBarStyle { return .LightContent }
+    func statusBarStyle() -> UIStatusBarStyle { return .lightContent }
     func statusBarBackgroundColor() -> UIColor { return UIColor(red: 0.90, green: 0.90, blue: 0.90, alpha: 0.9) }
-    func activityIndicatorStyle() -> UIActivityIndicatorViewStyle { return .White }
-    func showMoreTweetIndicatorStyle() -> UIActivityIndicatorViewStyle { return .Gray }
-    func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle { return .White }
+    func activityIndicatorStyle() -> UIActivityIndicatorViewStyle { return .white }
+    func showMoreTweetIndicatorStyle() -> UIActivityIndicatorViewStyle { return .gray }
+    func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle { return .white }
 
     func mainBackgroundColor() -> UIColor { return UIColor(red: 0.10, green: 0.10, blue: 0.10, alpha: 1) }
-    func mainHighlightBackgroundColor() -> UIColor { return UIColor.darkGrayColor() }
-    func titleTextColor() -> UIColor { return UIColor.whiteColor() }
-    func bodyTextColor() -> UIColor { return UIColor.whiteColor() }
-    func cellSeparatorColor() -> UIColor { return UIColor.lightGrayColor() }
+    func mainHighlightBackgroundColor() -> UIColor { return UIColor.darkGray }
+    func titleTextColor() -> UIColor { return UIColor.white }
+    func bodyTextColor() -> UIColor { return UIColor.white }
+    func cellSeparatorColor() -> UIColor { return UIColor.lightGray }
 
-    func sideMenuBackgroundColor() -> UIColor { return UIColor.darkGrayColor() }
-    func switchTintColor() -> UIColor { return UIColor.whiteColor() }
+    func sideMenuBackgroundColor() -> UIColor { return UIColor.darkGray }
+    func switchTintColor() -> UIColor { return UIColor.white }
 
-    func displayNameTextColor() -> UIColor { return UIColor.whiteColor() }
-    func screenNameTextColor() -> UIColor { return UIColor.lightGrayColor() }
-    func relativeDateTextColor() -> UIColor { return UIColor.lightGrayColor() }
-    func absoluteDateTextColor() -> UIColor { return UIColor.lightGrayColor() }
-    func clientNameTextColor() -> UIColor { return UIColor.lightGrayColor() }
+    func displayNameTextColor() -> UIColor { return UIColor.white }
+    func screenNameTextColor() -> UIColor { return UIColor.lightGray }
+    func relativeDateTextColor() -> UIColor { return UIColor.lightGray }
+    func absoluteDateTextColor() -> UIColor { return UIColor.lightGray }
+    func clientNameTextColor() -> UIColor { return UIColor.lightGray }
 
-    func menuBackgroundColor() -> UIColor { return UIColor.darkGrayColor() }
-    func menuTextColor() -> UIColor { return UIColor.whiteColor() }
+    func menuBackgroundColor() -> UIColor { return UIColor.darkGray }
+    func menuTextColor() -> UIColor { return UIColor.white }
     func menuHighlightedTextColor() -> UIColor { return UIColor(red: 1, green: 1, blue: 1, alpha: 0.5) }
     func menuSelectedTextColor() -> UIColor { return ThemeColor.Holo.blueLight }
-    func menuDisabledTextColor() -> UIColor { return UIColor.grayColor() }
+    func menuDisabledTextColor() -> UIColor { return UIColor.gray }
 
-    func showMoreTweetBackgroundColor() -> UIColor { return UIColor.lightGrayColor() }
-    func showMoreTweetLabelTextColor() -> UIColor { return UIColor.blackColor() }
+    func showMoreTweetBackgroundColor() -> UIColor { return UIColor.lightGray }
+    func showMoreTweetLabelTextColor() -> UIColor { return UIColor.black }
 
-    func buttonNormal() -> UIColor { return UIColor.lightGrayColor() }
+    func buttonNormal() -> UIColor { return UIColor.lightGray }
     func retweetButtonSelected() -> UIColor { return ThemeColor.Holo.greenLight }
     func favoritesButtonSelected() -> UIColor { return ThemeColor.Holo.redLight }
     func followButtonSelected() -> UIColor { return ThemeColor.Holo.blueLight }

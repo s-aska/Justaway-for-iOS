@@ -6,7 +6,7 @@ class SettingsViewController: UIViewController {
 
     struct Constants {
         static let duration: Double = 0.2
-        static let delay: NSTimeInterval = 0
+        static let delay: TimeInterval = 0
     }
 
     // MARK: Properties
@@ -33,12 +33,12 @@ class SettingsViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // configureEvent()
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         // EventBox.off(self)
     }
@@ -51,29 +51,29 @@ class SettingsViewController: UIViewController {
         containerViewBottomConstraint.constant = -menuHeight
 
         fontSizeViewController = FontSizeViewController()
-        fontSizeViewController.view.hidden = true
+        fontSizeViewController.view.isHidden = true
         ViewTools.addSubviewWithEqual(view, view: fontSizeViewController.view, top: nil, right: 0.0, bottom: menuHeight, left: 0.0)
 
         themeViewController = ThemeViewController()
-        themeViewController.view.hidden = true
+        themeViewController.view.isHidden = true
         ViewTools.addSubviewWithEqual(view, view: themeViewController.view, top: nil, right: 0.0, bottom: menuHeight, left: 0.0)
     }
 
     // MARK: - Actions
 
-    @IBAction func hide(sender: UIButton) {
+    @IBAction func hide(_ sender: UIButton) {
         hide()
     }
 
-    @IBAction func showFontSizeSettingsView(sender: UIButton) {
+    @IBAction func showFontSizeSettingsView(_ sender: UIButton) {
         showSettingsView(fontSizeViewController.view)
     }
 
-    @IBAction func showThemeSettingsView(sender: UIButton) {
+    @IBAction func showThemeSettingsView(_ sender: UIButton) {
         showSettingsView(themeViewController.view)
     }
 
-    func showSettingsView(view: UIView) {
+    func showSettingsView(_ view: UIView) {
         if currentSettingsView != nil {
             if currentSettingsView === view {
                 return
@@ -83,25 +83,25 @@ class SettingsViewController: UIViewController {
         currentSettingsView = view
 
         // Slide in
-        view.hidden = false
+        view.isHidden = false
         let frame = view.frame.offsetBy(dx: -view.frame.origin.x, dy: 0)
         view.frame = frame.offsetBy(dx: frame.size.width, dy: 0)
 
-        UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: Constants.duration, delay: Constants.delay, options: .curveEaseOut, animations: { () -> Void in
             view.frame = frame
         }) { (finished) -> Void in
 
         }
     }
 
-    func hideSettingsView(view: UIView, completion: (Void -> Void)?) {
+    func hideSettingsView(_ view: UIView, completion: ((Void) -> Void)?) {
         currentSettingsView = nil
 
         // Slide out
-        UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: Constants.duration, delay: Constants.delay, options: .curveEaseOut, animations: {
             view.frame = view.frame.offsetBy(dx: -view.frame.size.width, dy: 0)
         }, completion: { finished in
-            view.hidden = true
+            view.isHidden = true
             if completion != nil {
                 completion!()
             }
@@ -111,7 +111,7 @@ class SettingsViewController: UIViewController {
     func show() {
         containerViewBottomConstraint.constant = 0
 
-        UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: Constants.duration, delay: Constants.delay, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
         }, completion: { finished in
         })
@@ -122,7 +122,7 @@ class SettingsViewController: UIViewController {
         func hideContainer() {
             containerViewBottomConstraint.constant = -containerView.frame.size.height
 
-            UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: {
+            UIView.animate(withDuration: Constants.duration, delay: Constants.delay, options: .curveEaseOut, animations: {
                 self.view.layoutIfNeeded()
             }, completion: { finished in
             })

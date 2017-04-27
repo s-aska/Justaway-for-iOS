@@ -13,7 +13,7 @@ class StatusAlert {
 
     // MARK: - Public
 
-    class func show(sender: UIView, status: TwitterStatus, full: Bool) {
+    class func show(_ sender: UIView, status: TwitterStatus, full: Bool) {
         let statusID = status.statusID
         let actionSheet = UIAlertController()
         if full {
@@ -24,7 +24,7 @@ class StatusAlert {
         }
         actionSheet.addAction(UIAlertAction(
             title: "Cancel",
-            style: .Cancel,
+            style: .cancel,
             handler: { action in
         }))
         Twitter.isRetweet(statusID) { (retweetedStatusID) -> Void in
@@ -62,62 +62,62 @@ class StatusAlert {
 
     // MARK: - Private
 
-    private class func addDeleteAction(actionSheet: UIAlertController, status: TwitterStatus, statusID: String) {
+    fileprivate class func addDeleteAction(_ actionSheet: UIAlertController, status: TwitterStatus, statusID: String) {
         if let account = AccountSettingsStore.get()?.find(status.user.userID) {
             actionSheet.addAction(UIAlertAction(
                 title: "Delete Tweet",
-                style: .Destructive,
+                style: .destructive,
                 handler: { action in
                     Twitter.destroyStatus(account, statusID: statusID)
             }))
         }
     }
 
-    private class func addShareAction(actionSheet: UIAlertController, status: TwitterStatus) {
+    fileprivate class func addShareAction(_ actionSheet: UIAlertController, status: TwitterStatus) {
         actionSheet.addAction(UIAlertAction(
             title: "Share",
-            style: .Default,
+            style: .default,
             handler: { action in
                 let items = [
                     status.text,
                     status.statusURL
-                ]
+                ] as [Any]
                 let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
-                if let rootVc: UIViewController = UIApplication.sharedApplication().keyWindow?.rootViewController {
-                    rootVc.presentViewController(activityVC, animated: true, completion: nil)
+                if let rootVc: UIViewController = UIApplication.shared.keyWindow?.rootViewController {
+                    rootVc.present(activityVC, animated: true, completion: nil)
                 }
         }))
     }
 
-    private class func addTranslateAction(actionSheet: UIAlertController, status: TwitterStatus) {
+    fileprivate class func addTranslateAction(_ actionSheet: UIAlertController, status: TwitterStatus) {
         actionSheet.addAction(UIAlertAction(
             title: "Translate",
-            style: .Default,
+            style: .default,
             handler: { action in
                 let text = status.text as NSString
-                let encodeText = text.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) ?? text
-                let lang = NSLocale.preferredLanguages()[0].componentsSeparatedByString("-")[0]
+                let encodeText = text.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? text as String
+                let lang = Locale.preferredLanguages[0].components(separatedBy: "-")[0]
                 Safari.openURL("https://translate.google.co.jp/#auto/\(lang)/" + (encodeText as String))
                 return
         }))
     }
 
-    private class func addViewRetweets(actionSheet: UIAlertController, status: TwitterStatus) {
+    fileprivate class func addViewRetweets(_ actionSheet: UIAlertController, status: TwitterStatus) {
         actionSheet.addAction(UIAlertAction(
             title: "View Retweets",
-            style: .Default,
+            style: .default,
             handler: { action in
                 RetweetsViewController.show(status.statusID)
         }))
     }
 
-    private class func addViewLikes(actionSheet: UIAlertController, status: TwitterStatus) {
-        guard let account = AccountSettingsStore.get()?.find(status.user.userID) where !account.exToken.isEmpty else {
+    fileprivate class func addViewLikes(_ actionSheet: UIAlertController, status: TwitterStatus) {
+        guard let account = AccountSettingsStore.get()?.find(status.user.userID), !account.exToken.isEmpty else {
             return
         }
         actionSheet.addAction(UIAlertAction(
             title: "View Likes",
-            style: .Default,
+            style: .default,
             handler: { action in
                 LikesViewController.show(status)
         }))
@@ -125,20 +125,20 @@ class StatusAlert {
 
     // MARK: - Long tap
 
-    private class func addReplyAction(actionSheet: UIAlertController, status: TwitterStatus) {
+    fileprivate class func addReplyAction(_ actionSheet: UIAlertController, status: TwitterStatus) {
         actionSheet.addAction(UIAlertAction(
             title: "Reply",
-            style: .Default,
+            style: .default,
             handler: { action in
                 Twitter.reply(status)
         }))
     }
 
-    private class func addFavRTAction(actionSheet: UIAlertController, status: TwitterStatus, statusID: String, retweetedStatusID: String?, isFavorite: Bool) {
+    fileprivate class func addFavRTAction(_ actionSheet: UIAlertController, status: TwitterStatus, statusID: String, retweetedStatusID: String?, isFavorite: Bool) {
         if !isFavorite && retweetedStatusID == nil && !status.user.isProtected {
             actionSheet.addAction(UIAlertAction(
                 title: "Like & RT",
-                style: .Default,
+                style: .default,
                 handler: { action in
                     Twitter.createFavorite(statusID)
                     Twitter.createRetweet(statusID)
@@ -148,14 +148,14 @@ class StatusAlert {
         if isFavorite {
             actionSheet.addAction(UIAlertAction(
                 title: "Unlike",
-                style: .Destructive,
+                style: .destructive,
                 handler: { action in
                     Twitter.destroyFavorite(statusID)
             }))
         } else {
             actionSheet.addAction(UIAlertAction(
                 title: "Like",
-                style: .Default,
+                style: .default,
                 handler: { action in
                     Twitter.createFavorite(statusID)
             }))
@@ -165,7 +165,7 @@ class StatusAlert {
             if retweetedStatusID != "0" {
                 actionSheet.addAction(UIAlertAction(
                     title: "Undo Retweet",
-                    style: .Destructive,
+                    style: .destructive,
                     handler: { action in
                         Twitter.destroyRetweet(statusID, retweetedStatusID: retweetedStatusID)
                 }))
@@ -173,7 +173,7 @@ class StatusAlert {
         } else if !status.user.isProtected {
             actionSheet.addAction(UIAlertAction(
                 title: "Retweet",
-                style: .Default,
+                style: .default,
                 handler: { action in
                     Twitter.createRetweet(statusID)
             }))
@@ -181,18 +181,18 @@ class StatusAlert {
 
         actionSheet.addAction(UIAlertAction(
             title: "Quote",
-            style: .Default,
+            style: .default,
             handler: { action in
                 Twitter.quoteURL(status)
         }))
     }
 
-    private class func addURLAction(actionSheet: UIAlertController, status: TwitterStatus) {
+    fileprivate class func addURLAction(_ actionSheet: UIAlertController, status: TwitterStatus) {
         for url in status.urls {
-            if let expandedURL = NSURL(string: url.expandedURL) {
+            if let expandedURL = URL(string: url.expandedURL) {
                 actionSheet.addAction(UIAlertAction(
                     title: url.displayURL,
-                    style: .Default,
+                    style: .default,
                     handler: { action in
                         Safari.openURL(expandedURL)
                         return
@@ -201,20 +201,20 @@ class StatusAlert {
         }
     }
 
-    private class func addHashTagAction(actionSheet: UIAlertController, status: TwitterStatus) {
+    fileprivate class func addHashTagAction(_ actionSheet: UIAlertController, status: TwitterStatus) {
         for hashtag in status.hashtags {
             actionSheet.addAction(UIAlertAction(
                 title: "#" + hashtag.text,
-                style: .Default,
+                style: .default,
                 handler: { action in
                     SearchViewController.show("#" + hashtag.text)
                     return
             }))
             actionSheet.addAction(UIAlertAction(
                 title: "Add to tab #" + hashtag.text,
-                style: .Default,
+                style: .default,
                 handler: { action in
-                    if let settings = AccountSettingsStore.get(), account = settings.account() {
+                    if let settings = AccountSettingsStore.get(), let account = settings.account() {
                         let tabs = account.tabs + [Tab.init(userID: account.userID, keyword: "#" + hashtag.text)]
                         let account = Account(account: account, tabs: tabs)
                         let accounts = settings.accounts.map({ $0.userID == account.userID ? account : $0 })
@@ -225,31 +225,31 @@ class StatusAlert {
         }
     }
 
-    private class func addUserAction(actionSheet: UIAlertController, status: TwitterStatus) {
+    fileprivate class func addUserAction(_ actionSheet: UIAlertController, status: TwitterStatus) {
         var users = [status.user] + status.mentions
         if let actionedBy = status.actionedBy {
             users.append(actionedBy)
         }
         var userMap = [String: Bool]()
         for user in users {
-            if userMap.indexForKey(user.userID) != nil {
+            if userMap.index(forKey: user.userID) != nil {
                 continue
             }
             userMap.updateValue(true, forKey: user.userID)
             actionSheet.addAction(UIAlertAction(
                 title: "@" + user.screenName,
-                style: .Default,
+                style: .default,
                 handler: { action in
                     ProfileViewController.show(user)
             }))
         }
     }
 
-    private class func addViaAction(actionSheet: UIAlertController, status: TwitterStatus) {
+    fileprivate class func addViaAction(_ actionSheet: UIAlertController, status: TwitterStatus) {
         if let viaURL = status.via.URL {
             actionSheet.addAction(UIAlertAction(
                 title: "via " + status.via.name,
-                style: .Default,
+                style: .default,
                 handler: { action in
                     Safari.openURL(viaURL)
                     return

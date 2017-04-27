@@ -26,11 +26,11 @@ class GeneralSettingsViewController: UIViewController {
     }
 
     func configureView() {
-        disableSleepSwitch.on = GenericSettings.get().disableSleep
+        disableSleepSwitch.isOn = GenericSettings.get().disableSleep
     }
 
-    @IBAction func disableSleepSwitchChange(sender: UISwitch) {
-        GenericSettings.update(sender.on)
-        UIApplication.sharedApplication().idleTimerDisabled = sender.on
+    @IBAction func disableSleepSwitchChange(_ sender: UISwitch) {
+        GenericSettings.update(sender.isOn)
+        UIApplication.shared.isIdleTimerDisabled = sender.isOn
     }
 }

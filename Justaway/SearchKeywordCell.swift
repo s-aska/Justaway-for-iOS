@@ -26,13 +26,13 @@ class SearchKeywordCell: BackgroundTableViewCell {
     // MARK: - Configuration
 
     func configureView() {
-        selectionStyle = .None
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
+        selectionStyle = .none
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
         preservesSuperviewLayoutMargins = false
     }
 
-    @IBAction func remove(sender: AnyObject) {
-        EventBox.post("SearchKeywordDeleted", sender: ["keyword": keyword ?? "", "searchID": searchID ?? ""])
+    @IBAction func remove(_ sender: AnyObject) {
+        EventBox.post(eventSearchKeywordDeleted, sender: ["keyword": keyword ?? "", "searchID": searchID ?? ""] as NSDictionary)
     }
 }

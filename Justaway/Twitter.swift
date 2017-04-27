@@ -8,17 +8,17 @@ import SwiftyJSON
 import Async
 import Reachability
 
-let twitterAuthorizeNotification = "TwitterAuthorizeNotification"
+let twitterAuthorizeNotification = Notification.Name.init(rawValue: "TwitterAuthorizeNotification")
 
 class Twitter {
 
     // MARK: - Types
 
     enum ConnectionStatus {
-        case CONNECTING
-        case CONNECTED
-        case DISCONNECTING
-        case DISCONNECTED
+        case connecting
+        case connected
+        case disconnecting
+        case disconnected
     }
 
     enum StreamingMode: String {
@@ -39,37 +39,41 @@ class Twitter {
         case StreamingStatusChanged = "StreamingStatusChanged"
         case ListMemberAdded = "ListMemberAdded"
         case ListMemberRemoved = "ListMemberRemoved"
+
+        func Name() -> Notification.Name {
+            return Notification.Name.init(rawValue: self.rawValue)
+        }
     }
 
     struct Static {
         static var reachability: Reachability? // keep memory
         static var streamingMode = StreamingMode.Manual
         static var onWiFi = false
-        static var connectionStatus: ConnectionStatus = .DISCONNECTED
-        static var connectionID: String = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970.description
+        static var connectionStatus: ConnectionStatus = .disconnected
+        static var connectionID: String = Date(timeIntervalSinceNow: 0).timeIntervalSince1970.description
         static var streamingRequest: StreamingRequest?
         static var favorites = [String: Bool]()
         static var retweets = [String: String]()
         static var messages = [String: [TwitterMessage]]()
         static var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
-        private static let favoritesQueue = dispatch_queue_create("pw.aska.justaway.twitter.favorites", DISPATCH_QUEUE_SERIAL)
-        private static let retweetsQueue = dispatch_queue_create("pw.aska.justaway.twitter.retweets", DISPATCH_QUEUE_SERIAL)
-        private static let messagesSemaphore = dispatch_semaphore_create(1)
+        fileprivate static let favoritesQueue = DispatchQueue(label: "pw.aska.justaway.twitter.favorites", attributes: [])
+        fileprivate static let retweetsQueue = DispatchQueue(label: "pw.aska.justaway.twitter.retweets", attributes: [])
+        fileprivate static let messagesSemaphore = DispatchSemaphore(value: 1)
     }
 
     class var connectionStatus: ConnectionStatus { return Static.connectionStatus }
     class var streamingMode: StreamingMode { return Static.streamingMode }
     class var messages: [String: [TwitterMessage]] {
         get {
-            dispatch_semaphore_wait(Static.messagesSemaphore, DISPATCH_TIME_FOREVER)
+            Static.messagesSemaphore.wait(timeout: DispatchTime.distantFuture)
             let messages = Static.messages
-            dispatch_semaphore_signal(Static.messagesSemaphore)
+            Static.messagesSemaphore.signal()
             return messages
         }
         set {
-            dispatch_semaphore_wait(Static.messagesSemaphore, DISPATCH_TIME_FOREVER)
+            _ = Static.messagesSemaphore.wait(timeout: DispatchTime.distantFuture)
             Static.messages = newValue
-            dispatch_semaphore_signal(Static.messagesSemaphore)
+            Static.messagesSemaphore.signal()
         }
     }
 
@@ -87,17 +91,16 @@ class Twitter {
     // MARK: - Class Methods
 
     class func setup() {
-        do {
-            Static.reachability = try Reachability.reachabilityForInternetConnection()
-        } catch {
+        guard let r = Reachability.init() else {
             print("Unable to create Reachability")
             return
         }
+        Static.reachability = r
 
         Static.reachability?.whenReachable = { reachability in
             NSLog("whenReachable")
             Async.main {
-                if reachability.isReachableViaWiFi() {
+                if reachability.isReachableViaWiFi {
                     NSLog("Reachable via WiFi")
                     Static.onWiFi = true
                 } else {
@@ -128,18 +131,18 @@ class Twitter {
             if let streamingMode = StreamingMode(rawValue: streamingModeString) {
                 Static.streamingMode = streamingMode
             } else {
-                KeyClip.delete("settings.streamingMode")
+                _ = KeyClip.delete("settings.streamingMode")
             }
         }
     }
 
     class func addOAuthAccount() {
-        let failure: ((NSError) -> Void) = {
+        let failure: ((OAuthSwiftError) -> Void) = {
             error in
 
-            if error.code == 401 {
+            if error._code == 401 {
                 ErrorAlert.show("Twitter auth failure", message: error.localizedDescription)
-            } else if error.code == 429 {
+            } else if error._code == 429 {
                 ErrorAlert.show("Twitter auth failure", message: "API Limit")
             } else {
                 ErrorAlert.show("Twitter auth failure", message: error.localizedDescription)
@@ -154,15 +157,15 @@ class Twitter {
             authorizeUrl:    "https://api.twitter.com/oauth/authorize",
             accessTokenUrl:  "https://api.twitter.com/oauth/access_token"
         )
-        oauthswift.authorize_url_handler = SafariOAuthURLHandler()
-        oauthswift.authorizeWithCallbackURL( NSURL(string: "justaway://success")!, success: {
+        oauthswift.authorizeURLHandler = SafariOAuthURLHandler()
+        oauthswift.authorize(withCallbackURL: "justaway://success", success: {
             credential, response, parameters in
 
             let client = OAuthClient(
                 consumerKey: twitterConsumerKey,
                 consumerSecret: twitterConsumerSecret,
-                accessToken: credential.oauth_token,
-                accessTokenSecret: credential.oauth_token_secret)
+                accessToken: credential.oauthToken,
+                accessTokenSecret: credential.oauthTokenSecret)
 
             client.get("https://api.twitter.com/1.1/account/verify_credentials.json")
                 .responseJSON { (json: JSON) -> Void in
@@ -181,16 +184,16 @@ class Twitter {
         }, failure: failure)
     }
 
-    class func addACAccount(silent: Bool) {
+    class func addACAccount(_ silent: Bool) {
         let accountStore = ACAccountStore()
-        let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+        let accountType = accountStore.accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter)
 
         // Prompt the user for permission to their twitter account stored in the phone's settings
-        accountStore.requestAccessToAccountsWithType(accountType, options: nil) {
+        accountStore.requestAccessToAccounts(with: accountType, options: nil) {
             granted, error in
 
             if granted {
-                let twitterAccounts = accountStore.accountsWithAccountType(accountType) as? [ACAccount] ?? []
+                let twitterAccounts = accountStore.accounts(with: accountType) as? [ACAccount] ?? []
 
                 if twitterAccounts.count == 0 {
                     if !silent {
@@ -200,8 +203,8 @@ class Twitter {
                 } else {
                     Twitter.refreshAccounts(
                         twitterAccounts.map({ (account: ACAccount) in
-                            let userID = account.valueForKeyPath("properties.user_id") as? String ?? ""
-                            if let account = AccountSettingsStore.get()?.find(userID) where account.isOAuth {
+                            let userID = account.value(forKeyPath: "properties.user_id") as? String ?? ""
+                            if let account = AccountSettingsStore.get()?.find(userID), account.isOAuth {
                                 return account
                             }
                             let exToken = AccountSettingsStore.get()?.find(userID)?.exToken ?? ""
@@ -210,8 +213,8 @@ class Twitter {
                                 userID: userID,
                                 screenName: account.username,
                                 name: account.username,
-                                profileImageURL: NSURL(string: "")!,
-                                profileBannerURL: NSURL(string: "")!,
+                                profileImageURL: nil,
+                                profileBannerURL: nil,
                                 exToken: exToken)
                         })
                     )
@@ -225,7 +228,7 @@ class Twitter {
         }
     }
 
-    class func refreshAccounts(newAccounts: [Account]) {
+    class func refreshAccounts(_ newAccounts: [Account]) {
         let accountSettings: AccountSettings
 
         if let storeAccountSettings = AccountSettingsStore.get() {
@@ -236,7 +239,7 @@ class Twitter {
             return
         }
 
-        let userIDs = accountSettings.accounts.map({ $0.userID }).joinWithSeparator(",")
+        let userIDs = accountSettings.accounts.map({ $0.userID }).joined(separator: ",")
 
         let success: (([JSON]) -> Void) = { (rows) in
 
@@ -267,7 +270,7 @@ class Twitter {
         return client
     }
 
-    class func getHomeTimeline(maxID maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+    class func getHomeTimeline(maxID: String? = nil, sinceID: String? = nil, success: @escaping ([TwitterStatus]) -> Void, failure: @escaping (NSError) -> Void) {
         var parameters = [String: String]()
         if let maxID = maxID {
             parameters["max_id"] = maxID
@@ -282,7 +285,7 @@ class Twitter {
             success(statuses)
             if maxID == nil {
                 let dictionary = ["statuses": statuses.map({ $0.dictionaryValue })]
-                if KeyClip.save("homeTimeline", dictionary: dictionary) {
+                if KeyClip.save("homeTimeline", dictionary: dictionary as NSDictionary) {
                     NSLog("homeTimeline cache success.")
                 }
             }
@@ -294,8 +297,8 @@ class Twitter {
             })
     }
 
-    class func getStatuses(statusIDs: [String], success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
-        let parameters = ["id": statusIDs.joinWithSeparator(",")]
+    class func getStatuses(_ statusIDs: [String], success: @escaping ([TwitterStatus]) -> Void, failure: @escaping (NSError) -> Void) {
+        let parameters = ["id": statusIDs.joined(separator: ",")]
         let success = { (array: [JSON]) -> Void in
             success(array.map({ TwitterStatus($0) }))
         }
@@ -306,8 +309,8 @@ class Twitter {
             })
     }
 
-    class func getUsers(userIDs: [String], success: ([TwitterUser]) -> Void, failure: (NSError) -> Void) {
-        let parameters = ["user_id": userIDs.joinWithSeparator(",")]
+    class func getUsers(_ userIDs: [String], success: @escaping ([TwitterUser]) -> Void, failure: @escaping (NSError) -> Void) {
+        let parameters = ["user_id": userIDs.joined(separator: ",")]
         let success = { (array: [JSON]) -> Void in
             success(array.map({ TwitterUser($0) }))
         }
@@ -318,8 +321,8 @@ class Twitter {
             })
     }
 
-    class func getUsers(userIDs: [String], success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
-        let parameters = ["user_id": userIDs.joinWithSeparator(",")]
+    class func getUsers(_ userIDs: [String], success: @escaping ([TwitterUserFull]) -> Void, failure: @escaping (NSError) -> Void) {
+        let parameters = ["user_id": userIDs.joined(separator: ",")]
         let success = { (array: [JSON]) -> Void in
             success(array.map({ TwitterUserFull($0) }))
         }
@@ -330,7 +333,7 @@ class Twitter {
             })
     }
 
-    class func getUsers(keyword: String, page: Int = 1, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
+    class func getUsers(_ keyword: String, page: Int = 1, success: @escaping ([TwitterUserFull]) -> Void, failure: @escaping (NSError) -> Void) {
         let parameters = ["q": keyword, "count": "200", "page": String(page), "include_entities": "false"]
         let success = { (array: [JSON]) -> Void in
             success(array.map({ TwitterUserFull($0) }))
@@ -342,7 +345,7 @@ class Twitter {
             })
     }
 
-    class func getRetweeters(statusID: String, success: ([TwitterUserFull]) -> Void, failure: (NSError) -> Void) {
+    class func getRetweeters(_ statusID: String, success: @escaping ([TwitterUserFull]) -> Void, failure: @escaping (NSError) -> Void) {
         let retweetersSuccess = { (json: JSON) -> Void in
             guard let ids = json["ids"].array?.map({ $0.string ?? "" }).filter({ !$0.isEmpty }) else {
                 success([])
@@ -358,7 +361,7 @@ class Twitter {
             })
     }
 
-    class func getUserTimeline(userID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+    class func getUserTimeline(_ userID: String, maxID: String? = nil, sinceID: String? = nil, success: @escaping ([TwitterStatus]) -> Void, failure: @escaping (NSError) -> Void) {
         var parameters = ["user_id": userID]
         if let maxID = maxID {
             parameters["max_id"] = maxID
@@ -378,7 +381,7 @@ class Twitter {
             })
     }
 
-    class func getMentionTimeline(maxID maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+    class func getMentionTimeline(maxID: String? = nil, sinceID: String? = nil, success: @escaping ([TwitterStatus]) -> Void, failure: @escaping (NSError) -> Void) {
         var parameters: [String: String] = [:]
         if let maxID = maxID {
             parameters["max_id"] = maxID
@@ -396,7 +399,7 @@ class Twitter {
 
             if maxID == nil {
                 let dictionary = ["statuses": statuses.map({ $0.dictionaryValue })]
-                if KeyClip.save("mentionTimeline", dictionary: dictionary) {
+                if KeyClip.save("mentionTimeline", dictionary: dictionary as NSDictionary) {
                     NSLog("mentionTimeline cache success.")
                 }
             }
@@ -408,7 +411,7 @@ class Twitter {
             })
     }
 
-    class func getSearchTweets(keyword: String, maxID: String? = nil, sinceID: String? = nil, excludeRetweets: Bool = true, resultType: String = "recent", success: ([TwitterStatus], [String: JSON]) -> Void, failure: (NSError) -> Void) {
+    class func getSearchTweets(_ keyword: String, maxID: String? = nil, sinceID: String? = nil, excludeRetweets: Bool = true, resultType: String = "recent", success: @escaping ([TwitterStatus], [String: JSON]) -> Void, failure: @escaping (NSError) -> Void) {
         var parameters: [String: String] = ["count": "200", "q": keyword + (excludeRetweets ? " exclude:retweets" : ""), "result_type": resultType]
         if let maxID = maxID {
             parameters["max_id"] = maxID
@@ -418,7 +421,7 @@ class Twitter {
         }
         let success = { (json: JSON) -> Void in
             if let statuses = json["statuses"].array,
-                search_metadata = json["search_metadata"].dictionary {
+                let search_metadata = json["search_metadata"].dictionary {
                     success(statuses.map({ TwitterStatus($0) }), search_metadata)
             }
         }
@@ -430,7 +433,7 @@ class Twitter {
             })
     }
 
-    class func getListsStatuses(listID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+    class func getListsStatuses(_ listID: String, maxID: String? = nil, sinceID: String? = nil, success: @escaping ([TwitterStatus]) -> Void, failure: @escaping (NSError) -> Void) {
         var parameters = ["list_id": listID]
         if let maxID = maxID {
             parameters["max_id"] = maxID
@@ -449,7 +452,7 @@ class Twitter {
             })
     }
 
-    class func getFavorites(userID: String, maxID: String? = nil, sinceID: String? = nil, success: ([TwitterStatus]) -> Void, failure: (NSError) -> Void) {
+    class func getFavorites(_ userID: String, maxID: String? = nil, sinceID: String? = nil, success: @escaping ([TwitterStatus]) -> Void, failure: @escaping (NSError) -> Void) {
         var parameters = ["user_id": userID]
         if let maxID = maxID {
             parameters["max_id"] = maxID
@@ -468,7 +471,7 @@ class Twitter {
             })
     }
 
-    class func getDirectMessages(success: ([TwitterMessage]) -> Void) {
+    class func getDirectMessages(_ success: @escaping ([TwitterMessage]) -> Void) {
         guard let account = AccountSettingsStore.get()?.account() else {
             success([])
             return
@@ -490,7 +493,7 @@ class Twitter {
                             return true
                         }
                     })
-                    .sort({
+                    .sorted(by: {
                         return $0.0.createdAt.date.timeIntervalSince1970 > $0.1.createdAt.date.timeIntervalSince1970
                     }))
             }
@@ -501,7 +504,7 @@ class Twitter {
             .responseJSONArray(successReceived)
     }
 
-    class func getFriendships(targetID: String, success: (TwitterRelationship) -> Void) {
+    class func getFriendships(_ targetID: String, success: @escaping (TwitterRelationship) -> Void) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
@@ -516,11 +519,11 @@ class Twitter {
             .responseJSON(success)
     }
 
-    class func getFollowingUsers(userID: String, cursor: String = "-1", success: (users: [TwitterUserFull], nextCursor: String?) -> Void, failure: (NSError) -> Void) {
+    class func getFollowingUsers(_ userID: String, cursor: String = "-1", success: @escaping (_ users: [TwitterUserFull], _ nextCursor: String?) -> Void, failure: @escaping (NSError) -> Void) {
         let parameters = ["user_id": userID, "cursor": cursor, "count": "200"]
         let success = { (json: JSON) -> Void in
             if let users = json["users"].array {
-                success(users: users.map({ TwitterUserFull($0) }), nextCursor: json["next_cursor_str"].string)
+                success(users.map({ TwitterUserFull($0) }), json["next_cursor_str"].string)
             }
         }
         client()?
@@ -530,11 +533,11 @@ class Twitter {
             })
     }
 
-    class func getFollowerUsers(userID: String, cursor: String = "-1", success: (users: [TwitterUserFull], nextCursor: String?) -> Void, failure: (NSError) -> Void) {
+    class func getFollowerUsers(_ userID: String, cursor: String = "-1", success: @escaping (_ users: [TwitterUserFull], _ nextCursor: String?) -> Void, failure: @escaping (NSError) -> Void) {
         let parameters = ["user_id": userID, "cursor": cursor, "count": "200"]
         let success = { (json: JSON) -> Void in
             if let users = json["users"].array {
-                success(users: users.map({ TwitterUserFull($0) }), nextCursor: json["next_cursor_str"].string)
+                success(users.map({ TwitterUserFull($0) }), json["next_cursor_str"].string)
             }
         }
         client()?
@@ -544,7 +547,7 @@ class Twitter {
             })
     }
 
-    class func getListsMemberOf(userID: String, success: ([TwitterList]) -> Void, failure: (NSError) -> Void) {
+    class func getListsMemberOf(_ userID: String, success: @escaping ([TwitterList]) -> Void, failure: @escaping (NSError) -> Void) {
         let parameters = ["user_id": userID, "count": "200"]
         let success = { (json: JSON) -> Void in
             if let lists = json["lists"].array {
@@ -558,7 +561,7 @@ class Twitter {
             })
     }
 
-    class func getSavedSearches(success: ([String]) -> Void, failure: (NSError) -> Void) {
+    class func getSavedSearches(_ success: @escaping ([String]) -> Void, failure: @escaping (NSError) -> Void) {
         let success = { (array: [JSON]) -> Void in
             success(array.map({ $0["query"].string ?? "" }))
         }
@@ -569,7 +572,7 @@ class Twitter {
             })
     }
 
-    class func getLists(success: ([TwitterList]) -> Void, failure: (NSError) -> Void) {
+    class func getLists(_ success: @escaping ([TwitterList]) -> Void, failure: @escaping (NSError) -> Void) {
         let success = { (array: [JSON]) -> Void in
             success(array.map({ TwitterList($0) }))
         }
@@ -580,12 +583,12 @@ class Twitter {
             })
     }
 
-    class func statusUpdate(status: String, inReplyToStatusID: String?, images: [NSData], mediaIds: [String]) {
+    class func statusUpdate(_ status: String, inReplyToStatusID: String?, images: [Data], mediaIds: [String]) {
         if images.count == 0 {
             return statusUpdate(status, inReplyToStatusID: inReplyToStatusID, mediaIds: mediaIds)
         }
         var images = images
-        let image = images.removeAtIndex(0)
+        let image = images.remove(at: 0)
         Async.background { () -> Void in
             client()?
                 .postMedia(image)
@@ -599,19 +602,19 @@ class Twitter {
         }
     }
 
-    class func statusUpdate(status: String, inReplyToStatusID: String?, mediaIds: [String]) {
+    class func statusUpdate(_ status: String, inReplyToStatusID: String?, mediaIds: [String]) {
         var parameters = [String: String]()
         parameters["status"] = status
         if let inReplyToStatusID = inReplyToStatusID {
             parameters["in_reply_to_status_id"] = inReplyToStatusID
         }
         if mediaIds.count > 0 {
-            parameters["media_ids"] = mediaIds.joinWithSeparator(",")
+            parameters["media_ids"] = mediaIds.joined(separator: ",")
         }
         client()?.post("https://api.twitter.com/1.1/statuses/update.json", parameters: parameters).responseJSONWithError(nil, failure: nil)
     }
 
-    class func postDirectMessage(text: String, userID: String) {
+    class func postDirectMessage(_ text: String, userID: String) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
@@ -619,11 +622,11 @@ class Twitter {
         account.client.post("https://api.twitter.com/1.1/direct_messages/new.json", parameters: parameters).responseJSONWithError({ (json) in
             let message = TwitterMessage(json, ownerID: account.userID)
             if Twitter.messages[account.userID] != nil {
-                Twitter.messages[account.userID]?.insert(message, atIndex: 0)
+                Twitter.messages[account.userID]?.insert(message, at: 0)
             } else {
                 Twitter.messages[account.userID] = [message]
             }
-            EventBox.post(Event.CreateMessage.rawValue, sender: message)
+            EventBox.post(Event.CreateMessage.Name(), sender: message)
         }, failure: nil)
     }
 }
@@ -632,20 +635,20 @@ class Twitter {
 
 extension Twitter {
 
-    class func reply(status: TwitterStatus) {
+    class func reply(_ status: TwitterStatus) {
         if let account = AccountSettingsStore.get()?.account() {
             let prefix = "@\(status.user.screenName) "
             var users = status.mentions
             if let actionedBy = status.actionedBy {
                 users.append(actionedBy)
             }
-            let mentions = users.filter({ $0.userID != status.user.userID && account.userID != $0.userID }).map({ "@\($0.screenName) " }).joinWithSeparator("")
+            let mentions = users.filter({ $0.userID != status.user.userID && account.userID != $0.userID }).map({ "@\($0.screenName) " }).joined(separator: "")
             let range = NSRange.init(location: prefix.characters.count, length: mentions.characters.count)
             EditorViewController.show(prefix + mentions, range: range, inReplyToStatus: status)
         }
     }
 
-    class func quoteURL(status: TwitterStatus) {
+    class func quoteURL(_ status: TwitterStatus) {
         EditorViewController.show(" \(status.statusURL)", range: NSRange(location: 0, length: 0), inReplyToStatus: status)
     }
 
@@ -655,14 +658,14 @@ extension Twitter {
 
 extension Twitter {
 
-    class func isFavorite(statusID: String, handler: (Bool) -> Void) {
-        Async.customQueue(Static.favoritesQueue) {
+    class func isFavorite(_ statusID: String, handler: @escaping (Bool) -> Void) {
+        Async.custom(queue: Static.favoritesQueue) {
             handler(Static.favorites[statusID] == true)
         }
     }
 
-    class func toggleFavorite(statusID: String) {
-        Async.customQueue(Static.favoritesQueue) {
+    class func toggleFavorite(_ statusID: String) {
+        Async.custom(queue: Static.favoritesQueue) {
             if Static.favorites[statusID] == true {
                 Twitter.destroyFavorite(statusID)
             } else {
@@ -673,14 +676,14 @@ extension Twitter {
         }
     }
 
-    class func createFavorite(statusID: String) {
-        Async.customQueue(Static.favoritesQueue) {
+    class func createFavorite(_ statusID: String) {
+        Async.custom(queue: Static.favoritesQueue) {
             if Static.favorites[statusID] == true {
                 ErrorAlert.show("Like failure", message: "already like.")
                 return
             }
             Static.favorites[statusID] = true
-            EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
+            EventBox.post(Event.CreateFavorites.Name(), sender: statusID as AnyObject)
             let parameters = ["id": statusID]
             client()?
                 .post("https://api.twitter.com/1.1/favorites/create.json", parameters: parameters)
@@ -690,9 +693,9 @@ extension Twitter {
                         if code == 139 {
                             ErrorAlert.show("Like failure", message: "already like.")
                         } else {
-                            Async.customQueue(Static.favoritesQueue) {
-                                Static.favorites.removeValueForKey(statusID)
-                                EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
+                            Async.custom(queue: Static.favoritesQueue) {
+                                Static.favorites.removeValue(forKey: statusID)
+                                EventBox.post(Event.DestroyFavorites.Name(), sender: statusID as AnyObject)
                             }
                             ErrorAlert.show("Like failure", message: message ?? error.localizedDescription)
                         }
@@ -700,14 +703,14 @@ extension Twitter {
         }
     }
 
-    class func destroyFavorite(statusID: String) {
-        Async.customQueue(Static.favoritesQueue) {
+    class func destroyFavorite(_ statusID: String) {
+        Async.custom(queue: Static.favoritesQueue) {
             if Static.favorites[statusID] == nil {
                 ErrorAlert.show("Unlike failure", message: "missing like.")
                 return
             }
-            Static.favorites.removeValueForKey(statusID)
-            EventBox.post(Event.DestroyFavorites.rawValue, sender: statusID)
+            Static.favorites.removeValue(forKey: statusID)
+            EventBox.post(Event.DestroyFavorites.Name(), sender: statusID as AnyObject)
             let parameters = ["id": statusID]
             client()?
                 .post("https://api.twitter.com/1.1/favorites/destroy.json", parameters: parameters)
@@ -717,9 +720,9 @@ extension Twitter {
                     if code == 34 {
                         ErrorAlert.show("Unlike failure", message: "missing like.")
                     } else {
-                        Async.customQueue(Static.favoritesQueue) {
+                        Async.custom(queue: Static.favoritesQueue) {
                             Static.favorites[statusID] = true
-                            EventBox.post(Event.CreateFavorites.rawValue, sender: statusID)
+                            EventBox.post(Event.CreateFavorites.Name(), sender: statusID as AnyObject)
                         }
                         ErrorAlert.show("Unlike failure", message: message ?? error.localizedDescription)
                     }
@@ -727,24 +730,24 @@ extension Twitter {
         }
     }
 
-    class func isRetweet(statusID: String, handler: (String?) -> Void) {
-        Async.customQueue(Static.retweetsQueue) {
+    class func isRetweet(_ statusID: String, handler: @escaping (String?) -> Void) {
+        Async.custom(queue: Static.retweetsQueue) {
             handler(Static.retweets[statusID])
         }
     }
 
-    class func createRetweet(statusID: String) {
-        Async.customQueue(Static.retweetsQueue) {
+    class func createRetweet(_ statusID: String) {
+        Async.custom(queue: Static.retweetsQueue) {
             if Static.retweets[statusID] != nil {
                 ErrorAlert.show("Retweet failure", message: "already retweets.")
                 return
             }
             Static.retweets[statusID] = "0"
-            EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
+            EventBox.post(Event.CreateRetweet.Name(), sender: statusID as AnyObject)
             client()?
                 .post("https://api.twitter.com/1.1/statuses/retweet/\(statusID).json")
                 .responseJSONWithError({ (json: JSON) -> Void in
-                    Async.customQueue(Static.retweetsQueue) {
+                    Async.custom(queue: Static.retweetsQueue) {
                         if let id = json["id_str"].string {
                             Static.retweets[statusID] = id
                         }
@@ -754,9 +757,9 @@ extension Twitter {
                     if code == 34 {
                         ErrorAlert.show("Retweet failure", message: "already retweets.")
                     } else {
-                        Async.customQueue(Static.retweetsQueue) {
-                            Static.retweets.removeValueForKey(statusID)
-                            EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
+                        Async.custom(queue: Static.retweetsQueue) {
+                            Static.retweets.removeValue(forKey: statusID)
+                            EventBox.post(Event.DestroyRetweet.Name(), sender: statusID as AnyObject)
                         }
                         ErrorAlert.show("Retweet failure", message: message ?? error.localizedDescription)
                     }
@@ -764,14 +767,14 @@ extension Twitter {
         }
     }
 
-    class func destroyRetweet(statusID: String, retweetedStatusID: String) {
-        Async.customQueue(Static.retweetsQueue) {
+    class func destroyRetweet(_ statusID: String, retweetedStatusID: String) {
+        Async.custom(queue: Static.retweetsQueue) {
             if Static.retweets[statusID] == nil {
                 ErrorAlert.show("Unod Retweet failure", message: "missing retweets.")
                 return
             }
-            Static.retweets.removeValueForKey(statusID)
-            EventBox.post(Event.DestroyRetweet.rawValue, sender: statusID)
+            Static.retweets.removeValue(forKey: statusID)
+            EventBox.post(Event.DestroyRetweet.Name(), sender: statusID as AnyObject)
             client()?
                 .post("https://api.twitter.com/1.1/statuses/destroy/\(retweetedStatusID).json", parameters: [:])
                 .responseJSONWithError({ (json: JSON) -> Void in
@@ -779,9 +782,9 @@ extension Twitter {
                         if code == 34 {
                             ErrorAlert.show("Undo Retweet failure", message: "missing retweets.")
                         } else {
-                            Async.customQueue(Static.retweetsQueue) {
+                            Async.custom(queue: Static.retweetsQueue) {
                                 Static.retweets[statusID] = retweetedStatusID
-                                EventBox.post(Event.CreateRetweet.rawValue, sender: statusID)
+                                EventBox.post(Event.CreateRetweet.Name(), sender: statusID as AnyObject)
                             }
                             ErrorAlert.show("Undo Retweet failure", message: message ?? error.localizedDescription)
                         }
@@ -789,18 +792,18 @@ extension Twitter {
         }
     }
 
-    class func destroyStatus(account: Account, statusID: String) {
+    class func destroyStatus(_ account: Account, statusID: String) {
         account
             .client
             .post("https://api.twitter.com/1.1/statuses/destroy/\(statusID).json")
             .responseJSONWithError({ (json: JSON) -> Void in
-                EventBox.post(Event.DestroyStatus.rawValue, sender: statusID)
+                EventBox.post(Event.DestroyStatus.Name(), sender: statusID as AnyObject)
             }, failure: { (code, message, error) -> Void in
                 ErrorAlert.show("Undo Tweet failure code:\(code)", message: message ?? error.localizedDescription)
             })
     }
 
-    class func destroyMessage(account: Account, messageID: String) {
+    class func destroyMessage(_ account: Account, messageID: String) {
         account
             .client
             .post("https://api.twitter.com/1.1/direct_messages/destroy.json", parameters: ["id": messageID])
@@ -808,11 +811,11 @@ extension Twitter {
                 if let messages = Twitter.messages[account.userID] {
                     Twitter.messages[account.userID] = messages.filter({ $0.id != messageID })
                 }
-                EventBox.post(Event.DestroyMessage.rawValue, sender: messageID)
+                EventBox.post(Event.DestroyMessage.Name(), sender: messageID as AnyObject)
                 }, failure: nil)
     }
 
-    class func follow(userID: String, success: (() -> Void)? = nil) {
+    class func follow(_ userID: String, success: (() -> Void)? = nil) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
@@ -829,7 +832,7 @@ extension Twitter {
             })
     }
 
-    class func unfollow(userID: String, success: (() -> Void)? = nil) {
+    class func unfollow(_ userID: String, success: (() -> Void)? = nil) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
@@ -846,7 +849,7 @@ extension Twitter {
             })
     }
 
-    class func turnOnNotification(userID: String) {
+    class func turnOnNotification(_ userID: String) {
         let parameters = ["user_id": userID, "device": "true"]
         client()?.post("https://api.twitter.com/1.1/friendships/update.json", parameters: parameters)
             .responseJSON({ (json: JSON) -> Void in
@@ -854,7 +857,7 @@ extension Twitter {
             })
     }
 
-    class func turnOffNotification(userID: String) {
+    class func turnOffNotification(_ userID: String) {
         let parameters = ["user_id": userID, "device": "false"]
         client()?
             .post("https://api.twitter.com/1.1/friendships/update.json", parameters: parameters)
@@ -863,7 +866,7 @@ extension Twitter {
             })
     }
 
-    class func turnOnRetweets(userID: String) {
+    class func turnOnRetweets(_ userID: String) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
@@ -876,7 +879,7 @@ extension Twitter {
             })
     }
 
-    class func turnOffRetweets(userID: String) {
+    class func turnOffRetweets(_ userID: String) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
@@ -889,7 +892,7 @@ extension Twitter {
             })
     }
 
-    class func mute(userID: String) { //
+    class func mute(_ userID: String) { //
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
@@ -902,7 +905,7 @@ extension Twitter {
             })
     }
 
-    class func unmute(userID: String) {
+    class func unmute(_ userID: String) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
@@ -915,7 +918,7 @@ extension Twitter {
             })
     }
 
-    class func block(userID: String) {
+    class func block(_ userID: String) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
@@ -928,7 +931,7 @@ extension Twitter {
             })
     }
 
-    class func unblock(userID: String) {
+    class func unblock(_ userID: String) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
@@ -941,7 +944,7 @@ extension Twitter {
             })
     }
 
-    class func reportSpam(userID: String) {
+    class func reportSpam(_ userID: String) {
         let parameters = ["user_id": userID]
         client()?
             .post("https://api.twitter.com/1.1/users/report_spam.json", parameters: parameters)
@@ -953,15 +956,15 @@ extension Twitter {
 
 extension TwitterAPI.Request {
 
-    public func responseJSON(success: ((JSON) -> Void)) {
+    public func responseJSON(_ success: @escaping ((JSON) -> Void)) {
         return responseJSONWithError(success, failure: nil)
     }
 
-    public func responseJSON(success: ((JSON) -> Void), failure: ((code: Int?, message: String?, error: NSError) -> Void)?) {
+    public func responseJSON(_ success: @escaping ((JSON) -> Void), failure: ((_ code: Int?, _ message: String?, _ error: NSError) -> Void)?) {
         return responseJSONWithError(success, failure: failure)
     }
 
-    public func responseJSONArray(success: (([JSON]) -> Void)) {
+    public func responseJSONArray(_ success: @escaping (([JSON]) -> Void)) {
         let s = { (json: JSON) in
             if let array = json.array {
                 success(array)
@@ -970,7 +973,7 @@ extension TwitterAPI.Request {
         responseJSONWithError(s, failure: nil)
     }
 
-    public func responseJSONArray(success: (([JSON]) -> Void), failure: ((code: Int?, message: String?, error: NSError) -> Void)?) {
+    public func responseJSONArray(_ success: @escaping (([JSON]) -> Void), failure: ((_ code: Int?, _ message: String?, _ error: NSError) -> Void)?) {
         let s = { (json: JSON) in
             if let array = json.array {
                 success(array)
@@ -979,15 +982,15 @@ extension TwitterAPI.Request {
         responseJSONWithError(s, failure: failure)
     }
 
-    public func responseJSONWithError(success: ((JSON) -> Void)?, failure: ((code: Int?, message: String?, error: NSError) -> Void)?) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        let url = self.originalRequest.URL?.absoluteString ?? "-"
+    public func responseJSONWithError(_ success: ((JSON) -> Void)?, failure: ((_ code: Int?, _ message: String?, _ error: NSError) -> Void)?) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        let url = self.originalRequest.url?.absoluteString ?? "-"
         let account = AccountSettingsStore.get()?.accounts.filter({ $0.client.serialize == self.originalClient.serialize }).first
         response { (responseData, response, error) -> Void in
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             if let error = error {
                 if let failure = failure {
-                    failure(code: nil, message: nil, error: error)
+                    failure(nil, nil, error)
                 } else {
                     ErrorAlert.show("Twitter API Error", message: "url:\(url) error:\(error.localizedDescription)")
                 }
@@ -1001,7 +1004,7 @@ extension TwitterAPI.Request {
                         NSLocalizedRecoverySuggestionErrorKey: "-"
                     ])
                     if let failure = failure {
-                        failure(code: nil, message: nil, error: error)
+                        failure(nil, nil, error)
                     } else {
                         ErrorAlert.show("Twitter API Error", message: error.localizedDescription)
                     }
@@ -1028,7 +1031,7 @@ extension TwitterAPI.Request {
                         NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion
                     ])
                     if let failure = failure {
-                        failure(code: code, message: message, error: error)
+                        failure(code, message, error)
                     } else {
                         ErrorAlert.show("Twitter API Error", message: error.localizedDescription)
                     }

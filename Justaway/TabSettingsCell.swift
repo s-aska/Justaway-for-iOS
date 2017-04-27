@@ -23,9 +23,9 @@ class TabSettingsCell: BackgroundTableViewCell {
     // MARK: - Configuration
 
     func configureView() {
-        selectionStyle = .None
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
+        selectionStyle = .none
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
         preservesSuperviewLayoutMargins = false
     }
 }

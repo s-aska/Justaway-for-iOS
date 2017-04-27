@@ -14,8 +14,8 @@ class ThemeViewController: UIViewController {
     @IBOutlet weak var themeSolarizedDark: UILabel!
     @IBOutlet weak var themeMonokai: UILabel!
 
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesEnded(touches, withEvent: event)
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
 
         for touch in touches {
             switch touch.view!.tag {

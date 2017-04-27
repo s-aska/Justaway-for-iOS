@@ -32,7 +32,7 @@ class MessagesTableViewController: TimelineTableViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
         if !cacheLoaded {
@@ -42,7 +42,7 @@ class MessagesTableViewController: TimelineTableViewController {
         // adapter.scrollEnd(tableView) // contentInset call scrollViewDidScroll, but call scrollEnd
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -50,12 +50,12 @@ class MessagesTableViewController: TimelineTableViewController {
     // MARK: - Configuration
 
     func configureView() {
-        self.tableView.backgroundColor = UIColor.clearColor()
+        self.tableView.backgroundColor = UIColor.clear
 
         adapter.configureView(tableView)
 
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(TimelineTableViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(TimelineTableViewController.refresh), for: UIControlEvents.valueChanged)
         self.refreshControl = refreshControl
     }
 
@@ -78,10 +78,8 @@ class MessagesTableViewController: TimelineTableViewController {
         configureDestroyMessageEvent()
     }
 
-
-
     func configureCreateMessageEvent() {
-        EventBox.onMainThread(self, name: Twitter.Event.CreateMessage.rawValue) { [weak self] (n) -> Void in
+        EventBox.onMainThread(self, name: Twitter.Event.CreateMessage.Name()) { [weak self] (n) -> Void in
             guard let `self` = self else {
                 return
             }
@@ -93,13 +91,13 @@ class MessagesTableViewController: TimelineTableViewController {
             }
             let thread = self.adapter.thread(messages)
             Async.main {
-                self.adapter.renderData(self.tableView, messages: thread, mode: .OVER, handler: nil)
+                self.adapter.renderData(self.tableView, messages: thread, mode: .over, handler: nil)
             }
         }
     }
 
     func configureDestroyMessageEvent() {
-        EventBox.onMainThread(self, name: Twitter.Event.DestroyMessage.rawValue) { [weak self] (n) -> Void in
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyMessage.Name()) { [weak self] (n) -> Void in
             guard let `self` = self else {
                 return
             }
@@ -111,7 +109,7 @@ class MessagesTableViewController: TimelineTableViewController {
             }
             let thread = self.adapter.thread(messages)
             Async.main {
-                self.adapter.renderData(self.tableView, messages: thread, mode: .OVER, handler: nil)
+                self.adapter.renderData(self.tableView, messages: thread, mode: .over, handler: nil)
             }
         }
     }
@@ -130,14 +128,14 @@ class MessagesTableViewController: TimelineTableViewController {
                     Twitter.messages.updateValue(messages, forKey: account.userID)
                     let thread = self.adapter.thread(messages)
                     Async.main {
-                        self.adapter.renderData(self.tableView, messages: thread, mode: .OVER, handler: nil)
+                        self.adapter.renderData(self.tableView, messages: thread, mode: .over, handler: nil)
                         NSLog("messages: loadCache.")
                     }
                     return
                 }
             }
 
-            Async.background(after: 0.5, block: { () -> Void in
+            Async.background(after: 0.5, { () -> Void in
                 self.loadData()
             })
         }
@@ -155,7 +153,7 @@ class MessagesTableViewController: TimelineTableViewController {
             return
         }
         let dictionary = ["messages": ( messages.count > 200 ? Array(messages[0 ..< 200]) : messages ).map({ $0.dictionaryValue })]
-        KeyClip.save(key, dictionary: dictionary)
+        KeyClip.save(key, dictionary: dictionary as NSDictionary)
         NSLog("messages: saveCache.")
     }
 
@@ -175,7 +173,7 @@ class MessagesTableViewController: TimelineTableViewController {
             Twitter.messages.updateValue(messages, forKey: account.userID)
             let thread = self.adapter.thread(messages)
             Async.main {
-                self.adapter.renderData(self.tableView, messages: thread, mode: .OVER, handler: nil)
+                self.adapter.renderData(self.tableView, messages: thread, mode: .over, handler: nil)
                 self.refreshControl?.endRefreshing()
             }
         }

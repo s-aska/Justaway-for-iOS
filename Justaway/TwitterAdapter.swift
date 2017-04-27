@@ -15,10 +15,10 @@ class TwitterAdapter: NSObject {
     // MARK: Types
 
     enum RenderMode {
-        case HEADER
-        case TOP
-        case BOTTOM
-        case OVER
+        case header
+        case top
+        case bottom
+        case over
     }
 
     struct Row {
@@ -66,17 +66,17 @@ class TwitterAdapter: NSObject {
     var footerIndicatorView: UIActivityIndicatorView?
     var isTop: Bool = true
     var scrolling: Bool = false
-    var didScrollToBottom: (Void -> Void)?
-    var scrollCallback: ((scrollView: UIScrollView) -> Void)?
-    let loadDataQueue = NSOperationQueue().serial()
-    let mainQueue = NSOperationQueue().serial()
+    var didScrollToBottom: ((Void) -> Void)?
+    var scrollCallback: ((_ scrollView: UIScrollView) -> Void)?
+    let loadDataQueue = OperationQueue().serial()
+    let mainQueue = OperationQueue().serial()
     var renderStatusStack = [TwitterStatus]()
 
     // MARK: Configuration
 
-    func configureView(tableView: UITableView) {
-        tableView.separatorInset = UIEdgeInsetsZero
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+    func configureView(_ tableView: UITableView) {
+        tableView.separatorInset = UIEdgeInsets.zero
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
         tableView.separatorColor = ThemeController.currentTheme.cellSeparatorColor()
         tableView.delegate = self
         tableView.dataSource = self
@@ -87,17 +87,17 @@ class TwitterAdapter: NSObject {
     override init() {
         super.init()
         // copy paste tooltip
-        EventBox.on(self, name: UIMenuControllerWillShowMenuNotification, sender: nil, queue: nil) { [weak self] (_) in
-            self?.mainQueue.suspended = true
+        _ = EventBox.on(self, name: NSNotification.Name.UIMenuControllerWillShowMenu, sender: nil, queue: nil) { [weak self] (_) in
+            self?.mainQueue.isSuspended = true
         }
-        EventBox.on(self, name: UIMenuControllerDidHideMenuNotification, sender: nil, queue: nil) { [weak self] (_) in
-            self?.mainQueue.suspended = false
+        _ = EventBox.on(self, name: NSNotification.Name.UIMenuControllerDidHideMenu, sender: nil, queue: nil) { [weak self] (_) in
+            self?.mainQueue.isSuspended = false
         }
-        EventBox.on(self, name: "applicationWillResignActive", sender: nil, queue: nil) { [weak self] (_) in
-            self?.mainQueue.suspended = true
+        _ = EventBox.on(self, name: Notification.Name(rawValue: "applicationWillResignActive"), sender: nil, queue: nil) { [weak self] (_) in
+            self?.mainQueue.isSuspended = true
         }
-        EventBox.on(self, name: "applicationDidBecomeActive", sender: nil, queue: nil) { [weak self] (_) in
-            self?.mainQueue.suspended = false
+        _ = EventBox.on(self, name: Notification.Name(rawValue: "applicationDidBecomeActive"), sender: nil, queue: nil) { [weak self] (_) in
+            self?.mainQueue.isSuspended = false
         }
     }
 
@@ -113,17 +113,17 @@ class TwitterAdapter: NSObject {
         }
         isTop = false
         scrolling = true
-        loadDataQueue.suspended = true
-        mainQueue.suspended = true
+        loadDataQueue.isSuspended = true
+        mainQueue.isSuspended = true
     }
 
-    func scrollEnd(scrollView: UIScrollView) {
+    func scrollEnd(_ scrollView: UIScrollView) {
         if scrolling {
             // NSLog("scrollEnd isTop:\(scrollView.contentOffset.y + scrollView.contentInset.top <= 0)")
         }
         scrolling = false
-        loadDataQueue.suspended = false
-        mainQueue.suspended = false
+        loadDataQueue.isSuspended = false
+        mainQueue.isSuspended = false
         if let tableView = scrollView as? UITableView {
             renderImages(tableView)
         }
@@ -135,21 +135,21 @@ class TwitterAdapter: NSObject {
             didScrollToBottom?()
         }
         if isTop {
-            EventBox.post("timelineScrollToTop")
+            EventBox.post(Notification.Name(rawValue: "timelineScrollToTop"))
         }
     }
 
-    func scrollToTop(scrollView: UIScrollView) {
+    func scrollToTop(_ scrollView: UIScrollView) {
         scrollView.setContentOffset(CGPoint.init(x: 0, y: -scrollView.contentInset.top), animated: true)
     }
 
-    func eraseData(tableView: UITableView, target: ((row: Row) -> Bool), handler: (() -> Void)?) {
-        var deleteIndexPaths = [NSIndexPath]()
+    func eraseData(_ tableView: UITableView, target: ((_ row: Row) -> Bool), handler: (() -> Void)?) {
+        var deleteIndexPaths = [IndexPath]()
         var i = 0
         var newRows = [Row]()
         for row in self.rows {
-            if target(row: row) {
-                deleteIndexPaths.append(NSIndexPath(forRow: i, inSection: 0))
+            if target(row) {
+                deleteIndexPaths.append(IndexPath(row: i, section: 0))
             } else {
                 newRows.append(row)
             }
@@ -163,7 +163,7 @@ class TwitterAdapter: NSObject {
             }
             tableView.beginUpdates()
             self.rows = newRows
-            tableView.deleteRowsAtIndexPaths(deleteIndexPaths, withRowAnimation: .Fade)
+            tableView.deleteRows(at: deleteIndexPaths, with: .fade)
             tableView.endUpdates()
             CATransaction.commit()
         } else {
@@ -171,7 +171,7 @@ class TwitterAdapter: NSObject {
         }
     }
 
-    func renderImages(tableView: UITableView) {
+    func renderImages(_ tableView: UITableView) {
         for cell in tableView.visibleCells {
             if let statusCell = cell as? TwitterStatusCell {
                 if let status = statusCell.status {
@@ -183,17 +183,17 @@ class TwitterAdapter: NSObject {
         }
     }
 
-    func fontSizeApplied(tableView: UITableView, fontSize: CGFloat, rows: [Row]) {
+    func fontSizeApplied(_ tableView: UITableView, fontSize: CGFloat, rows: [Row]) {
         let op = MainBlockOperation { (op) -> Void in
             if var firstCell = tableView.visibleCells.first {
                 var offset = tableView.contentOffset.y - firstCell.frame.origin.y + tableView.contentInset.top
-                var firstPath: NSIndexPath
+                var firstPath: IndexPath
 
                 // セルが半分以上隠れているている場合、2番目の表示セルを基準にする
                 if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows {
                     if indexPathsForVisibleRows.count > 1 && offset > (firstCell.frame.size.height / 2) {
                         firstPath = indexPathsForVisibleRows[1]
-                        firstCell = tableView.cellForRowAtIndexPath(firstPath)!
+                        firstCell = tableView.cellForRow(at: firstPath)!
                         offset = tableView.contentOffset.y - firstCell.frame.origin.y + tableView.contentInset.top
                     } else {
                         firstPath = indexPathsForVisibleRows.first!
@@ -202,7 +202,7 @@ class TwitterAdapter: NSObject {
                     self.rows = rows
 
                     tableView.reloadData()
-                    tableView.scrollToRowAtIndexPath(firstPath, atScrollPosition: .Top, animated: false)
+                    tableView.scrollToRow(at: firstPath, at: .top, animated: false)
                     tableView.setContentOffset(CGPoint.init(x: 0, y: tableView.contentOffset.y + offset), animated: false)
                 }
             }
@@ -216,11 +216,11 @@ class TwitterAdapter: NSObject {
 
 extension TwitterAdapter: UITableViewDataSource {
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rows.count ?? 0
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return rows.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = rows[indexPath.row]
         if let status = row.status {
             return cellForRowAtIndexPath(tableView, indexPath: indexPath, row: row, status: status)
@@ -228,17 +228,17 @@ extension TwitterAdapter: UITableViewDataSource {
             return cellForRowAtIndexPath(tableView, indexPath: indexPath, row: row, message: message)
         } else {
             // swiftlint:disable:next force_cast
-            let cell = tableView.dequeueReusableCellWithIdentifier("ShowMoreTweetsCell", forIndexPath: indexPath) as! ShowMoreTweetsCell
-            cell.showMoreLabel.hidden = false
-            cell.indicator.hidden = true
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ShowMoreTweetsCell", for: indexPath) as! ShowMoreTweetsCell
+            cell.showMoreLabel.isHidden = false
+            cell.indicator.isHidden = true
             return cell
         }
     }
 
-    func cellForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath, row: Row, status: TwitterStatus) -> UITableViewCell {
+    func cellForRowAtIndexPath(_ tableView: UITableView, indexPath: IndexPath, row: Row, status: TwitterStatus) -> UITableViewCell {
         let layout = TwitterStatusCellLayout.fromStatus(status)
         // swiftlint:disable:next force_cast
-        let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as! TwitterStatusCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: layout.rawValue, for: indexPath) as! TwitterStatusCell
 
         if cell.textHeightConstraint.constant != row.textHeight {
             cell.textHeightConstraint.constant = row.textHeight
@@ -251,12 +251,12 @@ extension TwitterAdapter: UITableViewDataSource {
         }
 
         if row.fontSize != cell.statusLabel.font?.pointSize ?? 0 {
-            cell.statusLabel.font = UIFont.systemFontOfSize(row.fontSize)
+            cell.statusLabel.font = UIFont.systemFont(ofSize: row.fontSize)
         }
 
         if let quotedStatusLabel = cell.quotedStatusLabel {
             if row.fontSize != quotedStatusLabel.font?.pointSize ?? 0 {
-                quotedStatusLabel.font = UIFont.systemFontOfSize(row.fontSize)
+                quotedStatusLabel.font = UIFont.systemFont(ofSize: row.fontSize)
             }
         }
 
@@ -274,17 +274,17 @@ extension TwitterAdapter: UITableViewDataSource {
         return cell
     }
 
-    func cellForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath, row: Row, message: TwitterMessage) -> UITableViewCell {
+    func cellForRowAtIndexPath(_ tableView: UITableView, indexPath: IndexPath, row: Row, message: TwitterMessage) -> UITableViewCell {
         let layout = TwitterStatusCellLayout.fromMessage(message)
         // swiftlint:disable:next force_cast
-        let cell = tableView.dequeueReusableCellWithIdentifier(layout.rawValue, forIndexPath: indexPath) as! TwitterStatusCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: layout.rawValue, for: indexPath) as! TwitterStatusCell
 
         if cell.textHeightConstraint.constant != row.textHeight {
             cell.textHeightConstraint.constant = row.textHeight
         }
 
         if row.fontSize != cell.statusLabel.font?.pointSize ?? 0 {
-            cell.statusLabel.font = UIFont.systemFontOfSize(row.fontSize)
+            cell.statusLabel.font = UIFont.systemFont(ofSize: row.fontSize)
         }
 
         if let m = cell.message {
@@ -293,7 +293,7 @@ extension TwitterAdapter: UITableViewDataSource {
             }
         }
 
-        if let adapter = self as? TwitterMessageAdapter where adapter.threadMode {
+        if let adapter = self as? TwitterMessageAdapter, adapter.threadMode {
             cell.threadMode = true
         }
 
@@ -309,16 +309,16 @@ extension TwitterAdapter: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension TwitterAdapter: UITableViewDelegate {
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let row = rows[indexPath.row]
         return row.height
     }
 
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return timelineHooterHeight
     }
 
-    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if footerView == nil {
             footerView = TransparentView(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.size.width, height: timelineHooterHeight))
             footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
@@ -333,30 +333,30 @@ extension TwitterAdapter: UITableViewDelegate {
 // MARK: - UIScrollViewDelegate
 
 extension TwitterAdapter {
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        scrollCallback?(scrollView: scrollView)
-        if loadDataQueue.suspended {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollCallback?(scrollView)
+        if loadDataQueue.isSuspended {
             return
         }
         scrollBegin() // now scrolling
     }
 
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         scrollBegin() // begin of flick scrolling
     }
 
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if decelerate {
             return
         }
         scrollEnd(scrollView) // end of flick scrolling no deceleration
     }
 
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollEnd(scrollView) // end of deceleration of flick scrolling
     }
 
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         scrollEnd(scrollView) // end of setContentOffset
     }
 }

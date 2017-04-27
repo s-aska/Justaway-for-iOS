@@ -19,13 +19,13 @@ class Account {
     let userID: String
     let screenName: String
     let name: String
-    let profileImageURL: NSURL
-    let profileBannerURL: NSURL
+    let profileImageURL: URL?
+    let profileBannerURL: URL?
     let tabs: [Tab]
     let exToken: String
 
     // swiftlint:disable function_parameter_count
-    init(client: Client, userID: String, screenName: String, name: String, profileImageURL: NSURL, profileBannerURL: NSURL, exToken: String) {
+    init(client: Client, userID: String, screenName: String, name: String, profileImageURL: URL?, profileBannerURL: URL?, exToken: String) {
         self.client = client
         self.userID = userID
         self.screenName = screenName
@@ -46,14 +46,14 @@ class Account {
         self.name = dictionary[Constants.name] as? String ?? "-"
         self.exToken = dictionary[Constants.exToken] as? String ?? ""
         if let profileImageURL = dictionary[Constants.profileImageURL] as? String {
-            self.profileImageURL = NSURL(string: profileImageURL) ?? NSURL()
+            self.profileImageURL = URL(string: profileImageURL)
         } else {
-            self.profileImageURL = NSURL()
+            self.profileImageURL = nil
         }
         if let profileBannerURL = dictionary[Constants.profileBannerURL] as? String {
-            self.profileBannerURL = NSURL(string: profileBannerURL) ?? NSURL()
+            self.profileBannerURL = URL(string: profileBannerURL)
         } else {
-            self.profileBannerURL = NSURL()
+            self.profileBannerURL = nil
         }
         if let tabs = dictionary[Constants.tabs] as? [NSDictionary] {
             self.tabs = tabs.map({ Tab($0) })
@@ -77,8 +77,8 @@ class Account {
         self.userID = user.userID
         self.screenName = user.screenName
         self.name = user.name
-        self.profileImageURL = user.profileImageURL
-        self.profileBannerURL = user.profileBannerURL
+        self.profileImageURL = user.profileImageURL as URL
+        self.profileBannerURL = user.profileBannerURL as URL
         self.tabs = account.tabs
         self.exToken = account.exToken
     }
@@ -120,8 +120,12 @@ class Account {
         self.exToken = exToken
     }
 
-    var profileImageBiggerURL: NSURL {
-        return NSURL(string: profileImageURL.absoluteString.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: [], range: nil))!
+    var profileImageBiggerURL: URL? {
+        if let string = profileImageURL?.absoluteString {
+            return URL(string: string.replacingOccurrences(of: "_normal", with: "_bigger", options: [], range: nil))
+        } else {
+            return nil
+        }
     }
 
     var isOAuth: Bool {
@@ -134,8 +138,8 @@ class Account {
             Constants.userID           : userID,
             Constants.screenName       : screenName,
             Constants.name             : name,
-            Constants.profileImageURL  : profileImageURL.absoluteString,
-            Constants.profileBannerURL : profileBannerURL.absoluteString,
+            Constants.profileImageURL  : profileImageURL?.absoluteString ?? "",
+            Constants.profileBannerURL : profileBannerURL?.absoluteString ?? "",
             Constants.tabs             : tabs.map({ $0.dictionaryValue }),
             Constants.exToken          : exToken
         ]
@@ -180,28 +184,28 @@ class AccountSettings {
         return accounts.count > current ? accounts[current] : nil
     }
 
-    func account(index: Int) -> Account? {
+    func account(_ index: Int) -> Account? {
         return accounts.count > index ? accounts[index] : nil
     }
 
-    func merge(newAccounts: [Account]) -> AccountSettings {
+    func merge(_ newAccounts: [Account]) -> AccountSettings {
         var newAccountDictionary = [String: Account]()
         for newAccount in newAccounts {
             newAccountDictionary[newAccount.userID] = newAccount
         }
 
         // keep sequence
-        var mergeAccounts = accounts.map({ newAccountDictionary.removeValueForKey($0.userID) ?? $0 })
+        var mergeAccounts = accounts.map({ newAccountDictionary.removeValue(forKey: $0.userID) ?? $0 })
         for newAccount in newAccountDictionary.values {
-            mergeAccounts.insert(newAccount, atIndex: 0)
+            mergeAccounts.insert(newAccount, at: 0)
         }
 
         let currentUserID = account()?.userID ?? ""
-        let current = mergeAccounts.indexOf { $0.userID == currentUserID } ?? 0
+        let current = mergeAccounts.index { $0.userID == currentUserID } ?? 0
         return AccountSettings(current: current, accounts: mergeAccounts)
     }
 
-    func update(users: [TwitterUserFull]) -> AccountSettings {
+    func update(_ users: [TwitterUserFull]) -> AccountSettings {
         let updateAccounts = accounts.map { (account: Account) -> Account in
             if let user = users.filter({ $0.userID == account.userID }).first {
                 return Account(account: account, user: user)
@@ -212,7 +216,7 @@ class AccountSettings {
         return AccountSettings(current: current, accounts: updateAccounts)
     }
 
-    func find(userID: String) -> Account? {
+    func find(_ userID: String) -> Account? {
         for i in 0 ..< accounts.count {
             if accounts[i].userID == userID {
                 return accounts[i]
@@ -221,7 +225,7 @@ class AccountSettings {
         return nil
     }
 
-    func isMe(userID: String) -> Bool {
+    func isMe(_ userID: String) -> Bool {
         return find(userID) == nil ? false : true
     }
 

@@ -14,6 +14,6 @@ class Event {
         return NSStringFromClass(self)
     }
     func post() {
-        EventBox.post(NSStringFromClass(self.dynamicType), sender: self)
+        EventBox.post(Notification.Name.init(rawValue: NSStringFromClass(type(of: self))), sender: self)
     }
 }

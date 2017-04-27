@@ -9,15 +9,15 @@
 import UIKit
 
 class AddAccountAlert {
-    class func show(sender: UIView) {
-        let actionSheet =  UIAlertController(title: "Add Account", message: "Choose via", preferredStyle: .ActionSheet)
-        actionSheet.addAction(UIAlertAction(title: "via iOS ( from iOS Settings )", style: .Default, handler: { action in
+    class func show(_ sender: UIView) {
+        let actionSheet =  UIAlertController(title: "Add Account", message: "Choose via", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "via iOS ( from iOS Settings )", style: .default, handler: { action in
             Twitter.addACAccount(false)
         }))
-        actionSheet.addAction(UIAlertAction(title: "via Justaway for iOS", style: .Default, handler: { action in
+        actionSheet.addAction(UIAlertAction(title: "via Justaway for iOS", style: .default, handler: { action in
             Twitter.addOAuthAccount()
         }))
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
         // iPad
         actionSheet.popoverPresentationController?.sourceView = sender

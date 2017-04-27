@@ -17,7 +17,7 @@ class MenuView: UIView {}
 class MenuShadowView: MenuView {
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.layer.shadowColor = UIColor.blackColor().CGColor
+        self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: -2.0)
         self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         self.layer.shadowRadius = 1.0
@@ -26,7 +26,7 @@ class MenuShadowView: MenuView {
 class SideMenuShadowView: MenuShadowView {
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.layer.shadowColor = UIColor.blackColor().CGColor
+        self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOffset = CGSize(width: 2.0, height: 0)
         self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         self.layer.shadowRadius = 1.0
@@ -36,7 +36,7 @@ class SideMenuSeparator: UIView {}
 class NavigationShadowView: MenuView {
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.layer.shadowColor = UIColor.blackColor().CGColor
+        self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 2.0)
         self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         self.layer.shadowRadius = 1.0
@@ -46,7 +46,7 @@ class BackgroundView: UIView {}
 class BackgroundShadowView: BackgroundView {
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.layer.shadowColor = UIColor.blackColor().CGColor
+        self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: -2.0)
         self.layer.shadowOpacity = ThemeController.currentTheme.shadowOpacity()
         self.layer.shadowRadius = 1.0
@@ -59,8 +59,8 @@ class CurrentTabMaskView: UIView {}
 class QuotedStatusContainerView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
-        layer.borderColor = ThemeController.currentTheme.cellSeparatorColor().CGColor
-        layer.borderWidth = (1.0 / UIScreen.mainScreen().scale) / 1
+        layer.borderColor = ThemeController.currentTheme.cellSeparatorColor().cgColor
+        layer.borderWidth = (1.0 / UIScreen.main.scale) / 1
     }
 }
 class ShowMoreTweetBackgroundView: UIView {}
@@ -70,16 +70,16 @@ class ShowMoreTweetIndicatorView: UIActivityIndicatorView {}
 // MARK: - Buttons
 
 class StreamingButton: UIButton {
-    var connectedColor = UIColor.greenColor()
-    var normalColor = UIColor.grayColor()
-    var errorColor = UIColor.redColor()
+    var connectedColor = UIColor.green
+    var normalColor = UIColor.gray
+    var errorColor = UIColor.red
 
     override func awakeFromNib() {
         super.awakeFromNib()
         normalColor = ThemeController.currentTheme.bodyTextColor()
         connectedColor = ThemeController.currentTheme.streamingConnected()
         errorColor = ThemeController.currentTheme.streamingError()
-        EventBox.onMainThread(self, name: Twitter.Event.StreamingStatusChanged.rawValue) { _ in
+        EventBox.onMainThread(self, name: Twitter.Event.StreamingStatusChanged.Name()) { _ in
             self.setTitleColor()
         }
         setTitleColor()
@@ -87,18 +87,18 @@ class StreamingButton: UIButton {
 
     func setTitleColor() {
         switch Twitter.connectionStatus {
-        case .CONNECTED:
-            setTitleColor(connectedColor, forState: .Normal)
-        case .CONNECTING:
-            setTitleColor(normalColor, forState: .Normal)
-        case .DISCONNECTED:
+        case .connected:
+            setTitleColor(connectedColor, for: UIControlState())
+        case .connecting:
+            setTitleColor(normalColor, for: UIControlState())
+        case .disconnected:
             if Twitter.enableStreaming {
-                setTitleColor(errorColor, forState: .Normal)
+                setTitleColor(errorColor, for: UIControlState())
             } else {
-                setTitleColor(normalColor, forState: .Normal)
+                setTitleColor(normalColor, for: UIControlState())
             }
-        case .DISCONNECTING:
-            setTitleColor(normalColor, forState: .Normal)
+        case .disconnecting:
+            setTitleColor(normalColor, for: UIControlState())
         }
     }
 
@@ -111,9 +111,9 @@ class TabButton: BaseButton {
     var streaming = false {
         didSet {
             if streaming {
-                setTitleColor(ThemeController.currentTheme.streamingConnected(), forState: .Normal)
+                setTitleColor(ThemeController.currentTheme.streamingConnected(), for: UIControlState())
             } else {
-                setTitleColor(ThemeController.currentTheme.menuTextColor(), forState: .Normal)
+                setTitleColor(ThemeController.currentTheme.menuTextColor(), for: UIControlState())
             }
         }
     }
@@ -156,52 +156,52 @@ class StatusLable: UITextView {
     }
 
     enum Entity {
-        case URL(TwitterURL)
-        case Media(TwitterMedia)
-        case Hashtag(TwitterHashtag)
-        case User(TwitterUser)
+        case url(TwitterURL)
+        case media(TwitterMedia)
+        case hashtag(TwitterHashtag)
+        case user(TwitterUser)
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         textContainer.lineFragmentPadding = 0
-        textContainerInset = UIEdgeInsetsZero
+        textContainerInset = UIEdgeInsets.zero
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(StatusLable.touchesText(_:))))
     }
 
     // Disable text selection
-    override func addGestureRecognizer(gestureRecognizer: UIGestureRecognizer) {
-        if gestureRecognizer.isKindOfClass(UILongPressGestureRecognizer) {
-            gestureRecognizer.enabled = false
+    override func addGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
+        if gestureRecognizer.isKind(of: UILongPressGestureRecognizer.self) {
+            gestureRecognizer.isEnabled = false
         }
         super.addGestureRecognizer(gestureRecognizer)
     }
 
-    func setStatus(status: TwitterStatus) {
+    func setStatus(_ status: TwitterStatus) {
         self.status = status
         self.text = status.text
         var newlinks = [Link]()
         for url in status.urls {
             for result in findString(url.displayURL) {
-                let link = Link(entity: Entity.URL(url), range: result.range)
+                let link = Link(entity: Entity.url(url), range: result.range)
                 newlinks.append(link)
             }
         }
         for media in status.media {
             for result in findString(media.displayURL) {
-                let link = Link(entity: Entity.Media(media), range: result.range)
+                let link = Link(entity: Entity.media(media), range: result.range)
                 newlinks.append(link)
             }
         }
         for hashtag in status.hashtags {
             for result in findString("#" + hashtag.text) {
-                let link = Link(entity: Entity.Hashtag(hashtag), range: result.range)
+                let link = Link(entity: Entity.hashtag(hashtag), range: result.range)
                 newlinks.append(link)
             }
         }
         for mention in status.mentions {
             for result in findString("@" + mention.screenName) {
-                let link = Link(entity: Entity.User(mention), range: result.range)
+                let link = Link(entity: Entity.user(mention), range: result.range)
                 newlinks.append(link)
             }
         }
@@ -209,32 +209,32 @@ class StatusLable: UITextView {
         setAttributes()
     }
 
-    func setMessage(message: TwitterMessage, threadMode: Bool) {
+    func setMessage(_ message: TwitterMessage, threadMode: Bool) {
         self.threadMode = threadMode
         self.message = message
         self.text = message.text
         var newlinks = [Link]()
         for url in message.urls {
             for result in findString(url.displayURL) {
-                let link = Link(entity: Entity.URL(url), range: result.range)
+                let link = Link(entity: Entity.url(url), range: result.range)
                 newlinks.append(link)
             }
         }
         for media in message.media {
             for result in findString(media.displayURL) {
-                let link = Link(entity: Entity.Media(media), range: result.range)
+                let link = Link(entity: Entity.media(media), range: result.range)
                 newlinks.append(link)
             }
         }
         for hashtag in message.hashtags {
             for result in findString("#" + hashtag.text) {
-                let link = Link(entity: Entity.Hashtag(hashtag), range: result.range)
+                let link = Link(entity: Entity.hashtag(hashtag), range: result.range)
                 newlinks.append(link)
             }
         }
         for mention in message.mentions {
             for result in findString("@" + mention.screenName) {
-                let link = Link(entity: Entity.User(mention), range: result.range)
+                let link = Link(entity: Entity.user(mention), range: result.range)
                 newlinks.append(link)
             }
         }
@@ -247,7 +247,7 @@ class StatusLable: UITextView {
         let attributedText = NSMutableAttributedString(string: text)
         attributedText.addAttribute(NSForegroundColorAttributeName, value: ThemeController.currentTheme.bodyTextColor(), range: NSRange.init(location: 0, length: text.utf16.count))
         if let font = font {
-            attributedText.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(font.pointSize), range: NSRange.init(location: 0, length: text.utf16.count))
+            attributedText.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: font.pointSize), range: NSRange.init(location: 0, length: text.utf16.count))
         }
         for link in links {
             attributedText.addAttribute(NSForegroundColorAttributeName, value: ThemeController.currentTheme.menuSelectedTextColor(), range: link.range)
@@ -255,19 +255,19 @@ class StatusLable: UITextView {
         self.attributedText = attributedText
     }
 
-    private func findString(string: String) -> [NSTextCheckingResult] {
-        let pattern = NSRegularExpression.escapedPatternForString(string)
+    fileprivate func findString(_ string: String) -> [NSTextCheckingResult] {
+        let pattern = NSRegularExpression.escapedPattern(for: string)
         // swiftlint:disable:next force_try
-        let regexp = try! NSRegularExpression(pattern: pattern, options: NSRegularExpressionOptions(rawValue: 0))
-        return regexp.matchesInString(text, options: NSMatchingOptions(rawValue: 0), range: NSRange.init(location: 0, length: text.utf16.count))
+        let regexp = try! NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options(rawValue: 0))
+        return regexp.matches(in: text, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange.init(location: 0, length: text.utf16.count))
     }
 
-    func touchesText(gestureRecognizer: UITapGestureRecognizer) {
-        let location = gestureRecognizer.locationInView(self)
-        guard let position = closestPositionToPoint(location) else {
+    func touchesText(_ gestureRecognizer: UITapGestureRecognizer) {
+        let location = gestureRecognizer.location(in: self)
+        guard let position = closestPosition(to: location) else {
             return
         }
-        let selectedPosition = offsetFromPosition(beginningOfDocument, toPosition: position)
+        let selectedPosition = offset(from: beginningOfDocument, to: position)
         for link in links {
             if NSLocationInRange(selectedPosition, link.range) {
                 touchesLink(link)
@@ -278,7 +278,7 @@ class StatusLable: UITextView {
             if !status.isRoot {
                 TweetsViewController.show(status)
             }
-        } else if let message = message, account = AccountSettingsStore.get()?.account() {
+        } else if let message = message, let account = AccountSettingsStore.get()?.account() {
             if threadMode {
                 if let messages = Twitter.messages[account.userID] {
                     let threadMessages = messages.filter({ $0.collocutor.userID == message.collocutor.userID })
@@ -294,32 +294,32 @@ class StatusLable: UITextView {
         }
     }
 
-    func touchesLink(link: Link) {
+    func touchesLink(_ link: Link) {
         switch link.entity {
-        case .URL(let url):
-            Safari.openURL(NSURL(string: url.expandedURL)!)
-        case .Media(let media):
+        case .url(let url):
+            Safari.openURL(URL(string: url.expandedURL)!)
+        case .media(let media):
             if !media.videoURL.isEmpty {
-                if let videoURL = NSURL(string: media.videoURL) {
+                if let videoURL = URL(string: media.videoURL) {
                     showVideo(videoURL)
                 }
             } else {
                 ImageViewController.show([media.mediaURL], initialPage: 0)
             }
-        case .Hashtag(let hashtag):
+        case .hashtag(let hashtag):
             SearchViewController.show("#" + hashtag.text)
-        case .User(let user):
+        case .user(let user):
             ProfileViewController.show(user)
         }
     }
 
-    func showVideo(videoURL: NSURL) {
-        guard let view = UIApplication.sharedApplication().keyWindow else {
+    func showVideo(_ videoURL: URL) {
+        guard let view = UIApplication.shared.keyWindow else {
             return
         }
         playerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
-        playerView.player = AVPlayer(URL: videoURL)
-        playerView.player?.actionAtItemEnd = AVPlayerActionAtItemEnd.None
+        playerView.player = AVPlayer(url: videoURL)
+        playerView.player?.actionAtItemEnd = AVPlayerActionAtItemEnd.none
         playerView.setVideoFillMode(AVLayerVideoGravityResizeAspect)
         view.addSubview(playerView)
         playerView.player?.play()

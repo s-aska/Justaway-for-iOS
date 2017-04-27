@@ -29,7 +29,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     var eraseStatusIDStock = [String]()
 
     struct Static {
-        private static let connectionQueue = NSOperationQueue().serial()
+        fileprivate static let connectionQueue = OperationQueue().serial()
     }
 
     override var nibName: String {
@@ -53,11 +53,11 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }
 
@@ -81,8 +81,8 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(TimelineViewController.showSideMenu))
         swipe.numberOfTouchesRequired = 1
-        swipe.direction = .Right
-        scrollView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
+        swipe.direction = .right
+        scrollView.panGestureRecognizer.require(toFail: swipe)
         scrollView.addGestureRecognizer(swipe)
         swipeGestureRecognizer = swipe
 
@@ -102,7 +102,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
         var vcCache = [String: TimelineTableViewController]()
         var buttonCache = [String: TabButton]()
-        for (index, tableViewController) in tableViewControllers.enumerate() {
+        for (index, tableViewController) in tableViewControllers.enumerated() {
             switch tableViewController {
             case let vc as HomeTimelineTableViewController:
                 vcCache["HomeTimelineTableViewController"] = vc
@@ -146,7 +146,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         let contentView = UIView(frame: CGRect.init(x: 0, y: 0, width: size.width * CGFloat(account.tabs.count), height: size.height))
         tabWrapperWidthConstraint.constant = 58 * CGFloat(account.tabs.count)
 
-        for (i, tab) in account.tabs.enumerate() {
+        for (i, tab) in account.tabs.enumerated() {
             let vc: TimelineTableViewController
             let icon: String
             let title: String
@@ -219,18 +219,18 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 let page = i
                 let isSearches = tab.type == .Searches
                 adapter.renderDataCallback = { (statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode) in
-                    if statuses.count > 0 && mode == .HEADER {
+                    if statuses.count > 0 && mode == .header {
                         NSLog("page:\(page) count:\(statuses.count)")
-                        self.tabButtons[page].selected = true
+                        self.tabButtons[page].isSelected = true
                     }
-                    if statuses.count > 0 && mode == .TOP && isSearches {
+                    if statuses.count > 0 && mode == .top && isSearches {
                         if self.currentPage != page {
-                            self.tabButtons[page].selected = true
+                            self.tabButtons[page].isSelected = true
                         } else {
                             let buttonIndex = page
                             let operation = MainBlockOperation { (operation) -> Void in
                                 if !vc.adapter.isTop {
-                                    self.tabButtons[buttonIndex].selected = true
+                                    self.tabButtons[buttonIndex].isSelected = true
                                 }
                                 operation.finish()
                             }
@@ -250,7 +250,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         }
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
-        scrollView.pagingEnabled = true
+        scrollView.isPagingEnabled = true
         scrollView.delegate = self
         scrollView.contentOffset = CGPoint.init(x: scrollView.frame.size.width * CGFloat(currentPage), y: 0)
 
@@ -259,15 +259,15 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     // swiftlint:enable cyclomatic_complexity function_body_length
     // swiftlint:enable function_body_length
 
-    func createTabButton(index: Int, icon: String) -> TabButton {
-        let button = TabButton(type: .System)
+    func createTabButton(_ index: Int, icon: String) -> TabButton {
+        let button = TabButton(type: .system)
         button.tag = index
-        button.tintColor = UIColor.clearColor()
+        button.tintColor = UIColor.clear
         button.titleLabel?.font = UIFont(name: "fontello", size: 20.0)
         button.frame = CGRect.init(x: 58 * CGFloat(index), y: 0, width: 58, height: 50)
-        button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
-        button.setTitle(icon, forState: UIControlState.Normal)
+        button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.center
+        button.contentVerticalAlignment = UIControlContentVerticalAlignment.center
+        button.setTitle(icon, for: UIControlState())
         button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(TimelineViewController.tabButton(_:))))
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(TimelineViewController.tabMenu(_:)))
         longPress.minimumPressDuration = 0.5
@@ -295,31 +295,31 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
         configureStreamingEvent()
 
-        EventBox.onMainThread(self, name: "timelineScrollToTop", handler: { _ in
+        EventBox.onMainThread(self, name: Notification.Name(rawValue: "timelineScrollToTop"), handler: { _ in
             if self.tableViewControllers.count <= self.currentPage {
                 return
             }
             let vc = self.tableViewControllers[self.currentPage]
             if vc.adapter.isTop {
-                self.tabButtons[self.currentPage].selected = false
+                self.tabButtons[self.currentPage].isSelected = false
             }
         })
 
-        EventBox.onBackgroundThread(self, name: "applicationDidEnterBackground") { (n) -> Void in
+        EventBox.onBackgroundThread(self, name: Notification.Name(rawValue: "applicationDidEnterBackground")) { (n) -> Void in
             for tableViewController in self.tableViewControllers {
                 tableViewController.saveCache()
             }
         }
-        EventBox.on(self, name: "applicationWillResignActive", sender: nil, queue: nil) { [weak self] (_) in
+        EventBox.on(self, name: Notification.Name(rawValue: "applicationWillResignActive"), sender: nil, queue: nil) { [weak self] (_) in
             self?.isActive = false
         }
-        EventBox.on(self, name: "applicationDidBecomeActive", sender: nil, queue: nil) { [weak self] (_) in
+        EventBox.on(self, name: Notification.Name(rawValue: "applicationDidBecomeActive"), sender: nil, queue: nil) { [weak self] (_) in
             guard let `self` = self else {
                 return
             }
             self.isActive = true
             if self.rederStatusStock.count > 0 {
-                self.createStatuses(self.rederStatusStock.filter({ !self.eraseStatusIDStock.contains($0.statusID) }).reverse())
+                self.createStatuses(self.rederStatusStock.filter({ !self.eraseStatusIDStock.contains($0.statusID) }).reversed())
                 self.rederStatusStock.removeAll()
             }
             if self.eraseStatusIDStock.count > 0 {
@@ -330,7 +330,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     }
 
     func configureCreateStatusEvent() {
-        EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
+        EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.Name(), sender: nil) { n in
             guard let status = n.object as? TwitterStatus else {
                 return
             }
@@ -342,26 +342,26 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         }
     }
 
-    func createStatuses(statuses: [TwitterStatus]) {
+    func createStatuses(_ statuses: [TwitterStatus]) {
         var page = 0
         for tableViewController in self.tableViewControllers {
             switch tableViewController {
             case let vc as StatusTableViewController:
                 let acceptStatuses = statuses.filter({ vc.accept($0) })
                 if acceptStatuses.count > 0 {
-                    vc.renderData(acceptStatuses, mode: .TOP, handler: {})
+                    vc.renderData(acceptStatuses, mode: .top, handler: {})
                     for status in acceptStatuses {
                         let actionedByUserID = status.actionedBy?.userID ?? ""
                         let actionedByMe = AccountSettingsStore.get()?.isMe(actionedByUserID) ?? false
                         if !actionedByMe {
                             if self.currentPage != page {
-                                self.tabButtons[page].selected = true
+                                self.tabButtons[page].isSelected = true
                                 break
                             } else {
                                 let buttonIndex = page
                                 let operation = MainBlockOperation { (operation) -> Void in
                                     if !vc.adapter.isTop {
-                                        self.tabButtons[buttonIndex].selected = true
+                                        self.tabButtons[buttonIndex].isSelected = true
                                     }
                                     operation.finish()
                                 }
@@ -380,7 +380,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     }
 
     func configureDestroyStatusEvent() {
-        EventBox.onMainThread(self, name: Twitter.Event.DestroyStatus.rawValue, sender: nil) { n in
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyStatus.Name(), sender: nil) { n in
             guard let statusID = n.object as? String else {
                 return
             }
@@ -392,7 +392,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         }
     }
 
-    func destroyStatuses(statusIDs: [String]) {
+    func destroyStatuses(_ statusIDs: [String]) {
         var page = 0
         for tableViewController in self.tableViewControllers {
             switch tableViewController {
@@ -408,7 +408,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
     }
 
     func configureStreamingEvent() {
-        EventBox.onMainThread(self, name: Twitter.Event.StreamingStatusChanged.rawValue) { _ in
+        EventBox.onMainThread(self, name: Twitter.Event.StreamingStatusChanged.Name()) { _ in
             self.sideMenuViewController.updateStreamingButtonTitle()
         }
     }
@@ -438,7 +438,7 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: - UIScrollViewDelegate
 
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let page = Int((scrollView.contentOffset.x + (scrollWrapperView.frame.size.width / 2)) / scrollWrapperView.frame.size.width)
         if currentPage != page {
             currentPage = page
@@ -455,22 +455,22 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         }
     }
 
-    func highlightUpdate(page: Int) {
+    func highlightUpdate(_ page: Int) {
 
-        swipeGestureRecognizer?.enabled = page == 0
+        swipeGestureRecognizer?.isEnabled = page == 0
 
         tabCurrentMaskLeftConstraint.constant = CGFloat(page * 58)
 
         let vc = tableViewControllers[currentPage]
         if vc.adapter.isTop {
-            tabButtons[currentPage].selected = false
+            tabButtons[currentPage].isSelected = false
         }
 
         titleLabelView.text = titles[currentPage]
     }
 
-    func tabMenu(sender: UILongPressGestureRecognizer) {
-        if sender.state != .Began {
+    func tabMenu(_ sender: UILongPressGestureRecognizer) {
+        if sender.state != .began {
             return
         }
         guard let view = sender.view else {
@@ -484,14 +484,14 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
             return
         }
 
-        let actionSheet =  UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Refresh", style: .Default, handler: { action in
+        let actionSheet =  UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Refresh", style: .default, handler: { action in
             self.tableViewControllers[index].refresh()
         }))
 
         let tab = account.tabs[index]
         if tab.type == .Searches {
-            actionSheet.addAction(UIAlertAction(title: "Tweet with " + tab.keyword, style: .Default, handler: { action in
+            actionSheet.addAction(UIAlertAction(title: "Tweet with " + tab.keyword, style: .default, handler: { action in
                 EditorViewController.show(" " + tab.keyword, range: NSRange(location: 0, length: 0), inReplyToStatus: nil)
             }))
             if let vc = tableViewControllers[index] as? SearchesTableViewController {
@@ -499,37 +499,37 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
                 vc.addStreamingAction(actionSheet, tabButton: tabButton)
             }
         } else if tab.type == .UserTimline {
-            actionSheet.addAction(UIAlertAction(title: "Reply to @" + tab.user.screenName, style: .Default, handler: { action in
+            actionSheet.addAction(UIAlertAction(title: "Reply to @" + tab.user.screenName, style: .default, handler: { action in
                 let prefix = "@\(tab.user.screenName) "
                 let range = NSRange.init(location: prefix.characters.count, length: 0)
                 EditorViewController.show(prefix, range: range, inReplyToStatus: nil)
             }))
         } else if tab.type == .Notifications {
             if account.exToken.isEmpty {
-                actionSheet.addAction(UIAlertAction(title: "Enable Notification", style: .Default, handler: { action in
+                actionSheet.addAction(UIAlertAction(title: "Enable Notification", style: .default, handler: { action in
                     SafariExURLHandler.open()
                 }))
             }
         }
 
-        actionSheet.addAction(UIAlertAction(title: "Tab Settings", style: .Default, handler: { action in
+        actionSheet.addAction(UIAlertAction(title: "Tab Settings", style: .default, handler: { action in
             TabSettingsViewController.show()
         }))
 
         if account.tabs.count > 1 {
-            actionSheet.addAction(UIAlertAction(title: "Remove tab", style: .Destructive, handler: { action in
+            actionSheet.addAction(UIAlertAction(title: "Remove tab", style: .destructive, handler: { action in
                 var tabs = account.tabs
-                tabs.removeAtIndex(index)
+                tabs.remove(at: index)
                 let newAccount = Account(account: account, tabs: tabs)
                 if let settings = AccountSettingsStore.get() {
                     let accounts = settings.accounts.map({ $0.userID == newAccount.userID ? newAccount : $0 })
-                    AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
+                    _ = AccountSettingsStore.save(AccountSettings(current: settings.current, accounts: accounts))
                     EventBox.post(eventTabChanged)
                 }
             }))
         }
 
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
         // iPad
         actionSheet.popoverPresentationController?.sourceView = view
@@ -538,14 +538,14 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         AlertController.showViewController(actionSheet)
     }
 
-    func tabButton(sender: UITapGestureRecognizer) {
+    func tabButton(_ sender: UITapGestureRecognizer) {
         if let page = sender.view?.tag {
             if currentPage == page {
                 let vc = tableViewControllers[page]
                 vc.adapter.scrollToTop(vc.tableView)
-                tabButtons[page].selected = false
+                tabButtons[page].isSelected = false
             } else {
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                UIView.animate(withDuration: 0.3, animations: { () -> Void in
                     self.scrollView.contentOffset = CGPoint.init(x: self.scrollView.frame.size.width * CGFloat(page), y: 0)
                 }, completion: { (flag) -> Void in
                     self.currentPage = page
@@ -555,27 +555,27 @@ class TimelineViewController: UIViewController, UIScrollViewDelegate {
         }
     }
 
-    @IBAction func search(sender: AnyObject) {
+    @IBAction func search(_ sender: AnyObject) {
         SearchViewController.show("")
     }
 
-    @IBAction func openSidemenu(sender: AnyObject) {
+    @IBAction func openSidemenu(_ sender: AnyObject) {
         showSideMenu()
     }
 
-    @IBAction func streamingSwitch(sender: UIButton) {
+    @IBAction func streamingSwitch(_ sender: UIButton) {
         StreamingAlert.show(sender)
     }
 
-    @IBAction func showEditor(sender: UIButton) {
+    @IBAction func showEditor(_ sender: UIButton) {
         EditorViewController.show()
     }
 
-    @IBAction func showSettings(sender: UIButton) {
+    @IBAction func showSettings(_ sender: UIButton) {
         settingsViewController.show()
     }
 
-    @IBAction func showPocketCover(sender: UIButton) {
+    @IBAction func showPocketCover(_ sender: UIButton) {
         PocketCoverViewController.show()
     }
 

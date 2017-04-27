@@ -12,10 +12,10 @@ class ThemeSolarizedDark: Theme {
 
     func name() -> String { return "SolarizedDark" }
 
-    func statusBarStyle() -> UIStatusBarStyle { return .LightContent }
-    func activityIndicatorStyle() -> UIActivityIndicatorViewStyle { return .White }
-    func showMoreTweetIndicatorStyle() -> UIActivityIndicatorViewStyle { return .Gray }
-    func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle { return .White }
+    func statusBarStyle() -> UIStatusBarStyle { return .lightContent }
+    func activityIndicatorStyle() -> UIActivityIndicatorViewStyle { return .white }
+    func showMoreTweetIndicatorStyle() -> UIActivityIndicatorViewStyle { return .gray }
+    func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle { return .white }
 
     func mainBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes03 }
     func mainHighlightBackgroundColor() -> UIColor { return ThemeColor.Solarized.baes02 }

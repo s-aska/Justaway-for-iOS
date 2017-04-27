@@ -41,7 +41,7 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
         if !cacheLoaded {
@@ -51,7 +51,7 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
         adapter.scrollEnd(tableView) // contentInset call scrollViewDidScroll, but call scrollEnd
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -59,13 +59,13 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
     // MARK: - Configuration
 
     func configureView() {
-        self.tableView.backgroundColor = UIColor.clearColor()
+        self.tableView.backgroundColor = UIColor.clear
 
         adapter.configureView(self, tableView: tableView)
 
         adapter.didScrollToBottom = {
             if let nextResults = self.nextResults {
-                if let queryItems = NSURLComponents(string: nextResults)?.queryItems {
+                if let queryItems = URLComponents(string: nextResults)?.queryItems {
                     for item in queryItems {
                         if item.name == "max_id" {
                             NSLog("nextResults maxID:\(item.value)")
@@ -81,7 +81,7 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
         }
 
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(SearchesTableViewController.loadDataToTop), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(SearchesTableViewController.loadDataToTop), for: UIControlEvents.valueChanged)
         self.refreshControl = refreshControl
     }
 
@@ -102,24 +102,24 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
     }
 
     func configureCreateStatusEvent() {
-        EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
+        EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.Name(), sender: nil) { n in
             guard let status = n.object as? TwitterStatus else {
                 return
             }
             guard let keyword = self.keyword else {
                 return
             }
-            if status.type != .Normal {
+            if status.type != .normal {
                 return
             }
-            if status.text.containsString(keyword) {
-                self.renderData([status], mode: .TOP, handler: {})
+            if status.text.contains(keyword) {
+                self.renderData([status], mode: .top, handler: {})
             }
         }
     }
 
     func configureDestroyStatusEvent() {
-        EventBox.onMainThread(self, name: Twitter.Event.DestroyStatus.rawValue, sender: nil) { n in
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyStatus.Name(), sender: nil) { n in
             guard let statusID = n.object as? String else {
                 return
             }
@@ -139,7 +139,7 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
             return
         }
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
-            let always: (Void-> Void) = {
+            let always: ((Void)-> Void) = {
                 op.finish()
                 self.adapter.footerIndicatorView?.stopAnimating()
                 self.refreshControl?.endRefreshing()
@@ -151,13 +151,13 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
                         self.lastID = uniqueID
                     }
                 }
-                self.renderData(statuses, mode: .OVER, handler: always)
+                self.renderData(statuses, mode: .over, handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 ErrorAlert.show("Error", message: error.localizedDescription)
                 always()
             }
-            dispatch_sync(dispatch_get_main_queue(), {
+            DispatchQueue.main.sync(execute: {
                 self.adapter.footerIndicatorView?.startAnimating()
                 return
             })
@@ -166,24 +166,24 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
         self.adapter.loadDataQueue.addOperation(op)
     }
 
-    func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadCache(_ success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         if let keyword = self.keyword {
             let key = "searches:\(keyword)"
             Async.background {
                 if let cache = KeyClip.load(key) as NSDictionary? {
                     if let statuses = cache["statuses"] as? [[String: AnyObject]] {
-                        success(statuses: statuses.map({ TwitterStatus($0) }))
+                        success(statuses.map({ TwitterStatus($0) }))
                         return
                     }
                 }
-                success(statuses: [TwitterStatus]())
+                success([TwitterStatus]())
 
-                Async.background(after: 0.5, block: { () -> Void in
+                Async.background(after: 0.5, { () -> Void in
                     self.loadData(nil)
                 })
             }
         } else {
-            success(statuses: [])
+            success([])
         }
     }
 
@@ -193,7 +193,7 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
                 let key = "searches:\(keyword)"
                 let statuses = self.adapter.statuses
                 let dictionary = ["statuses": ( statuses.count > 100 ? Array(statuses[0 ..< 100]) : statuses ).map({ $0.dictionaryValue })]
-                KeyClip.save(key, dictionary: dictionary)
+                KeyClip.save(key, dictionary: dictionary as NSDictionary)
                 NSLog("searches:\(keyword) saveCache.")
             }
         }
@@ -207,7 +207,7 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
         loadData(nil)
     }
 
-    func loadData(maxID: String? = nil) {
+    func loadData(_ maxID: String? = nil) {
         guard let keyword = keyword else {
             ErrorAlert.show("missing keyword")
             return
@@ -217,7 +217,7 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
             return
         }
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
-            let always: (Void -> Void) = {
+            let always: ((Void) -> Void) = {
                 op.finish()
                 self.adapter.footerIndicatorView?.stopAnimating()
                 self.refreshControl?.endRefreshing()
@@ -225,13 +225,13 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
             let success = { (statuses: [TwitterStatus], search_metadata: [String: JSON]) -> Void in
 
                 self.nextResults = search_metadata["next_results"]?.string
-                self.renderData(statuses, mode: (maxID != nil ? .BOTTOM : .OVER), handler: always)
+                self.renderData(statuses, mode: (maxID != nil ? .bottom : .over), handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 ErrorAlert.show("Error", message: error.localizedDescription)
                 always()
             }
-            if !(self.refreshControl?.refreshing ?? false) {
+            if !(self.refreshControl?.isRefreshing ?? false) {
                 Async.main {
                     self.adapter.footerIndicatorView?.startAnimating()
                     return
@@ -243,7 +243,7 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
         self.adapter.loadDataQueue.addOperation(op)
     }
 
-    func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadData(sinceID: String?, maxID: String?, success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         guard let keyword = keyword else {
             ErrorAlert.show("missing keyword")
             return
@@ -253,7 +253,7 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
             return
         }
         let success = { (statuses: [TwitterStatus], searchMetadata: [String: JSON]) -> Void in
-            success(statuses: statuses)
+            success(statuses)
         }
         Twitter.getSearchTweets(keyword, maxID: maxID, sinceID: nil, excludeRetweets: self.excludeRetweets, success: success, failure: failure)
     }
@@ -273,19 +273,19 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
             return
         }
 
-        NSLog("loadDataToTop addOperation: suspended:\(self.adapter.loadDataQueue.suspended)")
+        NSLog("loadDataToTop addOperation: suspended:\(self.adapter.loadDataQueue.isSuspended)")
         guard let keyword = keyword else {
             return
         }
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
-            let always: (Void -> Void) = {
+            let always: ((Void) -> Void) = {
                 op.finish()
                 self.refreshControl?.endRefreshing()
             }
             let success = { (statuses: [TwitterStatus], search_metadata: [String: JSON]) -> Void in
 
                 // render statuses
-                self.renderData(statuses, mode: .HEADER, handler: always)
+                self.renderData(statuses, mode: .header, handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 ErrorAlert.show("Error", message: error.localizedDescription)
@@ -302,7 +302,7 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
         self.adapter.loadDataQueue.addOperation(op)
     }
 
-    func renderData(statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
+    func renderData(_ statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
         let operation = MainBlockOperation { (operation) -> Void in
             self.adapter.renderData(self.tableView, statuses: statuses, mode: mode, handler: { () -> Void in
                 if self.adapter.isTop {
@@ -320,26 +320,26 @@ class SearchesTableViewController: TimelineTableViewController, TwitterStatusAda
 }
 
 extension SearchesTableViewController {
-    func addStreamingAction(actionSheet: UIAlertController, tabButton: TabButton) {
+    func addStreamingAction(_ actionSheet: UIAlertController, tabButton: TabButton) {
         if excludeRetweets {
-            actionSheet.addAction(UIAlertAction(title: "Include Retweet", style: .Default, handler: { [weak self] action in
+            actionSheet.addAction(UIAlertAction(title: "Include Retweet", style: .default, handler: { [weak self] action in
                 self?.excludeRetweets = false
                 }))
         } else {
-            actionSheet.addAction(UIAlertAction(title: "Exclude Retweet", style: .Default, handler: { [weak self] action in
+            actionSheet.addAction(UIAlertAction(title: "Exclude Retweet", style: .default, handler: { [weak self] action in
                 self?.excludeRetweets = true
                 }))
         }
 
-        if let status = keywordStreaming?.status where status == .CONNECTED || status == .CONNECTING {
-            actionSheet.addAction(UIAlertAction(title: "Disconnect Search Streaming", style: .Default, handler: { [weak self] action in
+        if let status = keywordStreaming?.status, status == .connected || status == .connecting {
+            actionSheet.addAction(UIAlertAction(title: "Disconnect Search Streaming", style: .default, handler: { [weak self] action in
                 self?.keywordStreaming?.stop()
             }))
         } else {
-            guard let keyword = self.keyword where !keyword.isEmpty else {
+            guard let keyword = self.keyword, !keyword.isEmpty else {
                 return
             }
-            actionSheet.addAction(UIAlertAction(title: "Connect Search Streaming", style: .Default, handler: { [weak self] action in
+            actionSheet.addAction(UIAlertAction(title: "Connect Search Streaming", style: .default, handler: { [weak self] action in
                 guard let `self` = self else {
                     return
                 }
@@ -366,10 +366,10 @@ extension SearchesTableViewController {
 
     // MARK: - TwitterSearchStreaming
 
-    func receiveStatus(status: TwitterStatus, tabButton: TabButton) {
+    func receiveStatus(_ status: TwitterStatus, tabButton: TabButton) {
         if excludeRetweets && status.actionedBy != nil {
             return
         }
-        adapter.renderData(tableView, statuses: [status], mode: .TOP, handler: nil)
+        adapter.renderData(tableView, statuses: [status], mode: .top, handler: nil)
     }
 }

@@ -47,24 +47,24 @@ class SearchViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
         keywordTextField.text = keyword
-        if let keyword = keyword where !keyword.isEmpty {
-            keywordTextField.rightViewMode = .Always
+        if let keyword = keyword, !keyword.isEmpty {
+            keywordTextField.rightViewMode = .always
             loadData()
             keywordAdapter.appendHistory(keyword, tableView: keywordTableView)
-            streamingButton.enabled = true
+            streamingButton.isEnabled = true
         } else {
             keywordTextField.becomeFirstResponder()
-            keywordTextField.rightViewMode = .Never
-            keywordTableView.hidden = false
-            streamingButton.enabled = false
+            keywordTextField.rightViewMode = .never
+            keywordTableView.isHidden = false
+            streamingButton.isEnabled = false
         }
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -82,19 +82,19 @@ class SearchViewController: UIViewController {
     // MARK: - Configuration
 
     func configureView() {
-        refreshControl.addTarget(self, action: #selector(loadDataToTop), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(loadDataToTop), for: UIControlEvents.valueChanged)
         tweetsTableView.addSubview(refreshControl)
 
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(hide))
         swipe.numberOfTouchesRequired = 1
-        swipe.direction = .Right
-        tweetsTableView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
+        swipe.direction = .right
+        tweetsTableView.panGestureRecognizer.require(toFail: swipe)
         tweetsTableView.addGestureRecognizer(swipe)
 
         adapter.configureView(nil, tableView: tweetsTableView)
         adapter.didScrollToBottom = {
             if let nextResults = self.nextResults {
-                if let queryItems = NSURLComponents(string: nextResults)?.queryItems {
+                if let queryItems = URLComponents(string: nextResults)?.queryItems {
                     for item in queryItems {
                         if item.name == "max_id" {
                             self.loadData(item.value)
@@ -113,20 +113,20 @@ class SearchViewController: UIViewController {
             }
         }
 
-        usersTableView.panGestureRecognizer.requireGestureRecognizerToFail(swipe)
+        usersTableView.panGestureRecognizer.require(toFail: swipe)
         usersTableView.addGestureRecognizer(swipe)
 
         let button = MenuButton()
-        button.tintColor = UIColor.clearColor()
+        button.tintColor = UIColor.clear
         button.titleLabel?.font = UIFont(name: "fontello", size: 16.0)
         button.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
-        button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
-        button.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
-        button.setTitle("✖", forState: UIControlState.Normal)
-        button.addTarget(self, action: #selector(clear), forControlEvents: .TouchUpInside)
-        keywordTextField.addTarget(self, action: #selector(change), forControlEvents: .EditingChanged)
+        button.contentHorizontalAlignment = UIControlContentHorizontalAlignment.center
+        button.contentVerticalAlignment = UIControlContentVerticalAlignment.center
+        button.setTitle("✖", for: UIControlState())
+        button.addTarget(self, action: #selector(clear), for: .touchUpInside)
+        keywordTextField.addTarget(self, action: #selector(change), for: .editingChanged)
         keywordTextField.rightView = button
-        keywordTextField.rightViewMode = .Always
+        keywordTextField.rightViewMode = .always
 
         keywordAdapter.configureView(keywordTableView)
         keywordAdapter.selectCallback = { [weak self] (keyword) -> Void in
@@ -143,27 +143,27 @@ class SearchViewController: UIViewController {
             self?.keywordTextField.resignFirstResponder()
         }
 
-        streamingButton.setTitleColor(ThemeController.currentTheme.bodyTextColor(), forState: .Normal)
+        streamingButton.setTitleColor(ThemeController.currentTheme.bodyTextColor(), for: UIControlState())
     }
 
-    func loadData(maxID: String? = nil) {
+    func loadData(_ maxID: String? = nil) {
         guard let keyword = keyword else {
             return
         }
         if keyword.isEmpty {
             return
         }
-        keywordTableView.hidden = true
+        keywordTableView.isHidden = true
         if segmentedControl.selectedSegmentIndex > 1 {
-            tweetsTableView.hidden = true
-            usersTableView.hidden = false
+            tweetsTableView.isHidden = true
+            usersTableView.isHidden = false
             loadUserData()
             return
         }
-        tweetsTableView.hidden = false
-        usersTableView.hidden = true
+        tweetsTableView.isHidden = false
+        usersTableView.isHidden = true
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
-            let always: (Void -> Void) = {
+            let always: ((Void) -> Void) = {
                 op.finish()
                 self.adapter.footerIndicatorView?.stopAnimating()
                 self.refreshControl.endRefreshing()
@@ -171,13 +171,13 @@ class SearchViewController: UIViewController {
             let success = { (statuses: [TwitterStatus], search_metadata: [String: JSON]) -> Void in
 
                 self.nextResults = search_metadata["next_results"]?.string
-                self.renderData(statuses, mode: (maxID != nil ? .BOTTOM : .OVER), handler: always)
+                self.renderData(statuses, mode: (maxID != nil ? .bottom : .over), handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 ErrorAlert.show("Error", message: error.localizedDescription)
                 always()
             }
-            if !self.refreshControl.refreshing {
+            if !self.refreshControl.isRefreshing {
                 Async.main {
                     self.adapter.footerIndicatorView?.startAnimating()
                     return
@@ -208,19 +208,19 @@ class SearchViewController: UIViewController {
             return
         }
 
-        NSLog("loadDataToTop addOperation: suspended:\(self.adapter.loadDataQueue.suspended)")
+        NSLog("loadDataToTop addOperation: suspended:\(self.adapter.loadDataQueue.isSuspended)")
         guard let keyword = keyword else {
             return
         }
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
-            let always: (Void -> Void) = {
+            let always: ((Void) -> Void) = {
                 op.finish()
                 self.refreshControl.endRefreshing()
             }
             let success = { (statuses: [TwitterStatus], search_metadata: [String: JSON]) -> Void in
 
                 // render statuses
-                self.renderData(statuses, mode: .HEADER, handler: always)
+                self.renderData(statuses, mode: .header, handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 ErrorAlert.show("Error", message: error.localizedDescription)
@@ -237,7 +237,7 @@ class SearchViewController: UIViewController {
         self.adapter.loadDataQueue.addOperation(op)
     }
 
-    func renderData(statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
+    func renderData(_ statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
         let operation = MainBlockOperation { (operation) -> Void in
             self.adapter.renderData(self.tweetsTableView, statuses: statuses, mode: mode, handler: { () -> Void in
                 if self.adapter.isTop {
@@ -253,16 +253,16 @@ class SearchViewController: UIViewController {
         self.adapter.mainQueue.addOperation(operation)
     }
 
-    func loadUserData(page: Int = 1) {
+    func loadUserData(_ page: Int = 1) {
         guard let keyword = keyword else {
             return
         }
         if keyword.isEmpty {
             return
         }
-        keywordTableView.hidden = true
+        keywordTableView.isHidden = true
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
-            let always: (Void -> Void) = {
+            let always: ((Void) -> Void) = {
                 op.finish()
                 self.userAdapter.footerIndicatorView?.stopAnimating()
                 self.refreshControl.endRefreshing()
@@ -271,13 +271,13 @@ class SearchViewController: UIViewController {
                 if users.count > 0 {
                     self.nextPage = page + 1
                 }
-                self.renderUserData(users, mode: (page > 1 ? .BOTTOM : .OVER), handler: always)
+                self.renderUserData(users, mode: (page > 1 ? .bottom : .over), handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 ErrorAlert.show("Error", message: error.localizedDescription)
                 always()
             }
-            if !self.refreshControl.refreshing {
+            if !self.refreshControl.isRefreshing {
                 Async.main {
                     self.userAdapter.footerIndicatorView?.startAnimating()
                     return
@@ -288,7 +288,7 @@ class SearchViewController: UIViewController {
         self.userAdapter.loadDataQueue.addOperation(op)
     }
 
-    func renderUserData(users: [TwitterUserFull], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
+    func renderUserData(_ users: [TwitterUserFull], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
         let operation = MainBlockOperation { (operation) -> Void in
             self.userAdapter.renderData(self.usersTableView, users: users, mode: mode, handler: { () -> Void in
 //                if self.userAdapter.isTop {
@@ -308,11 +308,11 @@ class SearchViewController: UIViewController {
         EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { (n) -> Void in
             self.adapter.scrollToTop(self.tweetsTableView)
         })
-        EventBox.onMainThread(self, name: UIKeyboardWillShowNotification) { n in
+        EventBox.onMainThread(self, name: NSNotification.Name.UIKeyboardWillShow) { n in
             self.keyboardWillChangeFrame(n, showsKeyboard: true)
         }
 
-        EventBox.onMainThread(self, name: UIKeyboardWillHideNotification) { n in
+        EventBox.onMainThread(self, name: NSNotification.Name.UIKeyboardWillHide) { n in
             self.keyboardWillChangeFrame(n, showsKeyboard: false)
         }
         configureCreateStatusEvent()
@@ -320,21 +320,21 @@ class SearchViewController: UIViewController {
     }
 
     func configureCreateStatusEvent() {
-        EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.rawValue, sender: nil) { n in
+        EventBox.onMainThread(self, name: Twitter.Event.CreateStatus.Name(), sender: nil) { n in
             guard let status = n.object as? TwitterStatus else {
                 return
             }
             guard let keyword = self.keyword else {
                 return
             }
-            if status.text.containsString(keyword) {
-                self.renderData([status], mode: .TOP, handler: {})
+            if status.text.contains(keyword) {
+                self.renderData([status], mode: .top, handler: {})
             }
         }
     }
 
     func configureDestroyStatusEvent() {
-        EventBox.onMainThread(self, name: Twitter.Event.DestroyStatus.rawValue, sender: nil) { n in
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyStatus.Name(), sender: nil) { n in
             guard let statusID = n.object as? String else {
                 return
             }
@@ -349,16 +349,16 @@ class SearchViewController: UIViewController {
 
     // MARK: - Actions
 
-    func keyboardWillChangeFrame(notification: NSNotification, showsKeyboard: Bool) {
+    func keyboardWillChangeFrame(_ notification: Notification, showsKeyboard: Bool) {
         if showsKeyboard {
-            keywordTableView.hidden = false
+            keywordTableView.isHidden = false
             keywordAdapter.loadData(keywordTableView)
         }
         change()
     }
 
-    @IBAction func menu(sender: UIView) {
-        if keywordTextField.isFirstResponder() {
+    @IBAction func menu(_ sender: UIView) {
+        if keywordTextField.isFirstResponder {
             keywordTextField.resignFirstResponder()
             return
         }
@@ -375,24 +375,24 @@ class SearchViewController: UIViewController {
         showMenu(sender, keyword: keyword)
     }
 
-    @IBAction func streaming(sender: AnyObject) {
-        if let status = keywordStreaming?.status where status == .CONNECTED || status == .CONNECTING {
-            let alert = UIAlertController(title: "Disconnect search streaming?", message: nil, preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { [weak self] action in
+    @IBAction func streaming(_ sender: AnyObject) {
+        if let status = keywordStreaming?.status, status == .connected || status == .connecting {
+            let alert = UIAlertController(title: "Disconnect search streaming?", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] action in
                 self?.keywordStreaming?.stop()
             }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             AlertController.showViewController(alert)
             return
         }
-        guard let keyword = self.keyword where !keyword.isEmpty else {
+        guard let keyword = self.keyword, !keyword.isEmpty else {
             return
         }
         if segmentedControl.selectedSegmentIndex > 1 {
             return
         }
-        let alert = UIAlertController(title: "Connect search streaming?", message: nil, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { [weak self] action in
+        let alert = UIAlertController(title: "Connect search streaming?", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] action in
             guard let `self` = self else {
                 return
             }
@@ -405,11 +405,11 @@ class SearchViewController: UIViewController {
                 connected: self.connectStreaming,
                 disconnected: self.disconnectStreaming).start(keyword)
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         AlertController.showViewController(alert)
     }
 
-    @IBAction func search(sender: AnyObject) {
+    @IBAction func search(_ sender: AnyObject) {
         guard let keyword = keywordTextField.text else {
             NSLog("no data")
             return
@@ -424,36 +424,36 @@ class SearchViewController: UIViewController {
         keywordAdapter.appendHistory(keyword, tableView: keywordTableView)
     }
 
-    @IBAction func left(sender: UIButton) {
-        if keywordTextField.isFirstResponder() {
+    @IBAction func left(_ sender: UIButton) {
+        if keywordTextField.isFirstResponder {
             keywordTextField.resignFirstResponder()
         }
         hide()
     }
 
-    @IBAction func post(sender: AnyObject) {
+    @IBAction func post(_ sender: AnyObject) {
         guard let keyword = keyword else {
             return
         }
         EditorViewController.show(" " + keyword, range: NSRange(location: 0, length: 0), inReplyToStatus: nil)
     }
 
-    @IBAction func segmentedChange(sender: AnyObject) {
+    @IBAction func segmentedChange(_ sender: AnyObject) {
 
     }
 
     func clear() {
         keywordTextField.text = ""
-        keywordTextField.rightViewMode = .Never
+        keywordTextField.rightViewMode = .never
     }
 
     func change() {
         if keywordTextField.text?.isEmpty ?? true {
-            keywordTextField.rightViewMode = .Never
-            streamingButton.enabled = false
+            keywordTextField.rightViewMode = .never
+            streamingButton.isEnabled = false
         } else {
-            keywordTextField.rightViewMode = .Always
-            streamingButton.enabled = true
+            keywordTextField.rightViewMode = .always
+            streamingButton.isEnabled = true
         }
     }
 
@@ -464,25 +464,24 @@ class SearchViewController: UIViewController {
 
     // MARK: - TwitterSearchStreaming
 
-
-    func receiveStatus(status: TwitterStatus) {
+    func receiveStatus(_ status: TwitterStatus) {
         if excludeRetweets && status.actionedBy != nil {
             return
         }
-        adapter.renderData(tweetsTableView, statuses: [status], mode: .TOP, handler: nil)
+        adapter.renderData(tweetsTableView, statuses: [status], mode: .top, handler: nil)
     }
 
     func connectStreaming() {
-        streamingButton.setTitleColor(ThemeController.currentTheme.streamingConnected(), forState: .Normal)
+        streamingButton.setTitleColor(ThemeController.currentTheme.streamingConnected(), for: UIControlState())
     }
 
     func disconnectStreaming() {
-        streamingButton.setTitleColor(ThemeController.currentTheme.bodyTextColor(), forState: .Normal)
+        streamingButton.setTitleColor(ThemeController.currentTheme.bodyTextColor(), for: UIControlState())
     }
 
     // MARK: - Class Methods
 
-    class func show(keyword: String) {
+    class func show(_ keyword: String) {
         let instance = SearchViewController()
         instance.keyword = keyword
         ViewTools.slideIn(instance)

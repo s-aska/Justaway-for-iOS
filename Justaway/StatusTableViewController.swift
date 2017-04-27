@@ -26,7 +26,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
         if !cacheLoaded {
@@ -35,7 +35,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         }
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -43,7 +43,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
     // MARK: - Configuration
 
     func configureView() {
-        self.tableView.backgroundColor = UIColor.clearColor()
+        self.tableView.backgroundColor = UIColor.clear
 
         adapter.configureView(self, tableView: tableView)
 
@@ -54,7 +54,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         }
 
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(StatusTableViewController.loadDataToTop), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(StatusTableViewController.loadDataToTop), for: UIControlEvents.valueChanged)
         self.refreshControl = refreshControl
     }
 
@@ -77,21 +77,21 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
 
     // MARK: - UITableViewDataSource
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return adapter.tableView(tableView, numberOfRowsInSection: section)
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return adapter.tableView(tableView, cellForRowAtIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return adapter.tableView(tableView, cellForRowAt: indexPath)
     }
 
     // MARK: UITableViewDelegate
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return adapter.tableView(tableView, heightForRowAtIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return adapter.tableView(tableView, heightForRowAt: indexPath)
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         adapter.tableView(tableView, didSelectRowAtIndexPath: indexPath)
     }
 
@@ -102,7 +102,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
             return
         }
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
-            let always: (Void-> Void) = {
+            let always: ((Void)-> Void) = {
                 op.finish()
                 self.adapter.footerIndicatorView?.stopAnimating()
                 self.refreshControl?.endRefreshing()
@@ -114,13 +114,13 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                         self.lastID = uniqueID
                     }
                 }
-                self.renderData(statuses, mode: .OVER, handler: always)
+                self.renderData(statuses, mode: .over, handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 ErrorAlert.show(error)
                 always()
             }
-            dispatch_sync(dispatch_get_main_queue(), {
+            DispatchQueue.main.sync(execute: {
                 self.adapter.footerIndicatorView?.startAnimating()
                 return
             })
@@ -129,7 +129,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         self.adapter.loadDataQueue.addOperation(op)
     }
 
-    func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadCache(_ success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         assertionFailure("not implements.")
     }
 
@@ -141,7 +141,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         loadData(nil)
     }
 
-    func loadData(maxID: Int64?) {
+    func loadData(_ maxID: Int64?) {
         if self.adapter.loadDataQueue.operationCount > 0 {
             NSLog("loadData busy")
             return
@@ -149,9 +149,9 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         if maxID == nil {
             self.lastID = nil
         }
-        NSLog("loadData addOperation: \(maxID ?? 0) suspended:\(self.adapter.loadDataQueue.suspended)")
+        NSLog("loadData addOperation: \(maxID ?? 0) suspended:\(self.adapter.loadDataQueue.isSuspended)")
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
-            let always: (Void -> Void) = {
+            let always: ((Void) -> Void) = {
                 op.finish()
                 self.adapter.footerIndicatorView?.stopAnimating()
                 self.refreshControl?.endRefreshing()
@@ -167,13 +167,13 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
                 }
 
                 // render statuses
-                self.renderData(statuses, mode: (maxID != nil ? .BOTTOM : .OVER), handler: always)
+                self.renderData(statuses, mode: (maxID != nil ? .bottom : .over), handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 ErrorAlert.show(error)
                 always()
             }
-            if !(self.refreshControl?.refreshing ?? false) {
+            if !(self.refreshControl?.isRefreshing ?? false) {
                 Async.main {
                     self.adapter.footerIndicatorView?.startAnimating()
                     return
@@ -184,12 +184,12 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         self.adapter.loadDataQueue.addOperation(op)
     }
 
-    func loadData(maxID: String? = nil, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadData(_ maxID: String? = nil, success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         assertionFailure("not implements.")
     }
 
-    func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
-        success(statuses: [TwitterStatus]())
+    func loadData(sinceID: String?, maxID: String?, success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
+        success([TwitterStatus]())
     }
 
     func loadDataToTop() {
@@ -207,17 +207,17 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
             return
         }
 
-        NSLog("loadDataToTop addOperation: suspended:\(self.adapter.loadDataQueue.suspended)")
+        NSLog("loadDataToTop addOperation: suspended:\(self.adapter.loadDataQueue.isSuspended)")
 
         let op = AsyncBlockOperation({ (op: AsyncBlockOperation) in
-            let always: (Void -> Void) = {
+            let always: ((Void) -> Void) = {
                 op.finish()
                 self.refreshControl?.endRefreshing()
             }
             let success = { (statuses: [TwitterStatus]) -> Void in
 
                 // render statuses
-                self.renderData(statuses, mode: .HEADER, handler: always)
+                self.renderData(statuses, mode: .header, handler: always)
             }
             let failure = { (error: NSError) -> Void in
                 ErrorAlert.show(error)
@@ -235,15 +235,15 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         self.adapter.loadDataQueue.addOperation(op)
     }
 
-    func accept(status: TwitterStatus) -> Bool {
+    func accept(_ status: TwitterStatus) -> Bool {
         fatalError("not implements.")
     }
 
-    func renderData(statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
+    func renderData(_ statuses: [TwitterStatus], mode: TwitterStatusAdapter.RenderMode, handler: (() -> Void)?) {
         let operation = MainBlockOperation { (operation) -> Void in
             self.adapter.renderData(self.tableView, statuses: statuses, mode: mode, handler: { () -> Void in
                 if self.adapter.scrolling {
-                    Async.main(after: 0.1, block: { () -> Void in
+                    Async.main(after: 0.1, { () -> Void in
                         self.adapter.scrollEnd(self.tableView)
                     })
                 }
@@ -257,7 +257,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
         self.adapter.mainQueue.addOperation(operation)
     }
 
-    func eraseData(statusID: String, handler: (() -> Void)?) {
+    func eraseData(_ statusID: String, handler: (() -> Void)?) {
         let operation = MainBlockOperation { (operation) -> Void in
             self.adapter.eraseData(self.tableView, statusID: statusID, handler: { () -> Void in
                 operation.finish()

@@ -14,17 +14,16 @@ import EventBox
 class SearchKeywordAdapter: NSObject {
 
     var historyWord = [String]()
-    var selectCallback: (String -> Void)?
+    var selectCallback: ((String) -> Void)?
     var scrollCallback: (() -> Void)?
 
-
-    func configureView(tableView: UITableView) {
-        tableView.registerNib(UINib(nibName: "SearchKeywordCell", bundle: nil), forCellReuseIdentifier: "SearchKeywordCell")
+    func configureView(_ tableView: UITableView) {
+        tableView.register(UINib(nibName: "SearchKeywordCell", bundle: nil), forCellReuseIdentifier: "SearchKeywordCell")
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.separatorInset = UIEdgeInsetsZero
+        tableView.separatorInset = UIEdgeInsets.zero
         loadData(tableView)
-        EventBox.onMainThread(self, name: "SearchKeywordDeleted") { [weak self] (n) in
+        EventBox.onMainThread(self, name: eventSearchKeywordDeleted) { [weak self] (n) in
             guard let data = n.object as? [String: String] else {
                 return
             }
@@ -34,7 +33,7 @@ class SearchKeywordAdapter: NSObject {
         }
     }
 
-    func loadData(tableView: UITableView) {
+    func loadData(_ tableView: UITableView) {
         if let data = KeyClip.load("searchKeywordHistory") as NSDictionary? {
             if let keywords = data["keywords"] as? [String] {
                 historyWord = keywords
@@ -45,20 +44,20 @@ class SearchKeywordAdapter: NSObject {
         }
     }
 
-    func appendHistory(keyword: String, tableView: UITableView) {
+    func appendHistory(_ keyword: String, tableView: UITableView) {
         historyWord = historyWord.filter { $0 != keyword }
-        historyWord.insert(keyword, atIndex: 0)
+        historyWord.insert(keyword, at: 0)
         Async.main {
             tableView.reloadData()
         }
         KeyClip.save("searchKeywordHistory", dictionary: ["keywords": historyWord])
     }
 
-    func removeHistory(keyword: String, tableView: UITableView) {
-        if let index = historyWord.indexOf(keyword) {
-            historyWord.removeAtIndex(index)
-            let indexPath = NSIndexPath.init(forRow: index, inSection: 0)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+    func removeHistory(_ keyword: String, tableView: UITableView) {
+        if let index = historyWord.index(of: keyword) {
+            historyWord.remove(at: index)
+            let indexPath = IndexPath.init(row: index, section: 0)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         KeyClip.save("searchKeywordHistory", dictionary: ["keywords": historyWord])
     }
@@ -92,13 +91,13 @@ extension SearchKeywordAdapter: UITableViewDataSource {
 //        }
 //    }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return historyWord.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // swiftlint:disable:next force_cast
-        let cell = tableView.dequeueReusableCellWithIdentifier("SearchKeywordCell", forIndexPath: indexPath) as! SearchKeywordCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchKeywordCell", for: indexPath) as! SearchKeywordCell
         if historyWord.count > indexPath.row {
             cell.keyword = historyWord[indexPath.row]
             cell.nameLabel.text = historyWord[indexPath.row]
@@ -110,11 +109,11 @@ extension SearchKeywordAdapter: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension SearchKeywordAdapter: UITableViewDelegate {
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if historyWord.count > indexPath.row {
             selectCallback?(historyWord[indexPath.row])
         }
@@ -124,7 +123,7 @@ extension SearchKeywordAdapter: UITableViewDelegate {
 // MARK: - UIScrollViewDelegate
 
 extension SearchKeywordAdapter {
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         scrollCallback?()
     }
 }

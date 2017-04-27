@@ -15,7 +15,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
 
     struct Constants {
         static let duration: Double = 0.2
-        static let delay: NSTimeInterval = 0
+        static let delay: TimeInterval = 0
     }
 
     struct Static {
@@ -46,7 +46,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
 
@@ -58,7 +58,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -66,24 +66,24 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     // MARK: - Configuration
 
     func configureView() {
-        tableView.separatorInset = UIEdgeInsetsZero
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        tableView.separatorInset = UIEdgeInsets.zero
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.registerNib(UINib(nibName: "AccountCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
+        tableView.register(UINib(nibName: "AccountCell", bundle: nil), forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
         tableView.addSubview(refreshControl)
 
-        refreshControl.addTarget(self, action: #selector(refresh), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh), for: UIControlEvents.valueChanged)
 
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(hide))
         swipe.numberOfTouchesRequired = 1
-        swipe.direction = UISwipeGestureRecognizerDirection.Right
+        swipe.direction = UISwipeGestureRecognizerDirection.right
         tableView.addGestureRecognizer(swipe)
     }
 
     func configureEvent() {
         EventBox.onMainThread(self, name: twitterAuthorizeNotification) {
-            [weak self] (notification: NSNotification!) in
+            [weak self] (notification: Notification!) in
             guard let `self` = self else {
                 return
             }
@@ -98,29 +98,31 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
 
     // MARK: - UITableViewDataSource
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return settings?.accounts.count ?? 0
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! AccountCell // swiftlint:disable:this force_cast
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: TableViewConstants.tableViewCellIdentifier, for: indexPath) as! AccountCell // swiftlint:disable:this force_cast
         if let account = self.settings?.accounts[indexPath.row] {
             cell.account = account
             cell.setText()
-            ImageLoaderClient.displayUserIcon(account.profileImageBiggerURL, imageView: cell.iconImageView)
+            if let url = account.profileImageBiggerURL {
+                ImageLoaderClient.displayUserIcon(url, imageView: cell.iconImageView)
+            }
         }
         return cell
     }
 
-    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         if let settings = self.settings {
             if destinationIndexPath.row < settings.accounts.count {
                 var accounts = settings.accounts
-                accounts.insert(accounts.removeAtIndex(sourceIndexPath.row), atIndex: destinationIndexPath.row)
+                accounts.insert(accounts.remove(at: sourceIndexPath.row), at: destinationIndexPath.row)
                 let current =
                     settings.current == sourceIndexPath.row ? destinationIndexPath.row :
                     settings.current == destinationIndexPath.row ? sourceIndexPath.row :
@@ -133,11 +135,11 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
 
     // MARK: UITableViewDelegate
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let settings = self.settings {
             self.settings = AccountSettings(current: indexPath.row, accounts: settings.accounts)
             self.tableView.reloadData()
@@ -147,42 +149,42 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
 
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
             if let settings = self.settings {
                 var accounts = settings.accounts
                 let current =
                     indexPath.row == settings.current ? 0 :
                     indexPath.row < settings.current ? settings.current - 1 :
                     settings.current
-                accounts.removeAtIndex(indexPath.row)
+                accounts.remove(at: indexPath.row)
                 NSLog("commitEditingStyle current:%i", current)
                 if accounts.count > 0 {
                     self.settings = AccountSettings(current: current, accounts: accounts)
                 } else {
                     self.settings = nil
                 }
-                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         }
     }
 
     // MARK: - Actions
 
-    @IBAction func close(sender: AnyObject) {
+    @IBAction func close(_ sender: AnyObject) {
         hide()
     }
 
-    @IBAction func left(sender: UIButton) {
-        if tableView.editing {
+    @IBAction func left(_ sender: UIButton) {
+        if tableView.isEditing {
             cancel()
         } else {
             AddAccountAlert.show(sender)
         }
     }
 
-    @IBAction func right(sender: UIButton) {
-        if tableView.editing {
+    @IBAction func right(_ sender: UIButton) {
+        if tableView.isEditing {
             done()
         } else {
             edit()
@@ -190,7 +192,7 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     func hide() {
-        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
             self.view.frame = self.view.frame.offsetBy(dx: self.view.frame.size.width, dy: 0)
             }, completion: { finished in
                 self.view.removeFromSuperview()
@@ -199,9 +201,9 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
 
     func initEditing() {
         tableView.setEditing(false, animated: false)
-        leftButton.setTitle("Add", forState: UIControlState.Normal)
-        rightButton.setTitle("Edit", forState: UIControlState.Normal)
-        rightButton.hidden = self.settings == nil
+        leftButton.setTitle("Add", for: UIControlState())
+        rightButton.setTitle("Edit", for: UIControlState())
+        rightButton.isHidden = self.settings == nil
     }
 
     func cancel() {
@@ -212,8 +214,8 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
 
     func edit() {
         tableView.setEditing(true, animated: true)
-        leftButton.setTitle("Cancel", forState: UIControlState.Normal)
-        rightButton.setTitle("Done", forState: UIControlState.Normal)
+        leftButton.setTitle("Cancel", for: UIControlState())
+        rightButton.setTitle("Done", for: UIControlState())
     }
 
     func done() {
@@ -233,12 +235,12 @@ class AccountViewController: UIViewController, UITableViewDataSource, UITableVie
 
     class func show() {
         if let vc = ViewTools.frontViewController() {
-            Static.instance.view.hidden = true
+            Static.instance.view.isHidden = true
             vc.view.addSubview(Static.instance.view)
             Static.instance.view.frame = CGRect.init(x: vc.view.frame.width, y: 20, width: vc.view.frame.width, height: vc.view.frame.height - 20)
-            Static.instance.view.hidden = false
+            Static.instance.view.isHidden = false
 
-            UIView.animateWithDuration(Constants.duration, delay: Constants.delay, options: .CurveEaseOut, animations: { () -> Void in
+            UIView.animate(withDuration: Constants.duration, delay: Constants.delay, options: .curveEaseOut, animations: { () -> Void in
                 Static.instance.view.frame = CGRect.init(x: 0,
                     y: 20,
                     width: vc.view.frame.size.width,

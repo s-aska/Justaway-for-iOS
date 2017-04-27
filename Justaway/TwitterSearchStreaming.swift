@@ -12,38 +12,38 @@ class TwitterSearchStreaming {
 
     var request: StreamingRequest?
     let account: Account
-    let receiveStatus: (TwitterStatus -> Void)
+    let receiveStatus: ((TwitterStatus) -> Void)
     let connected: (() -> Void)
     let disconnected: (() -> Void)
-    var status = Twitter.ConnectionStatus.DISCONNECTED
+    var status = Twitter.ConnectionStatus.disconnected
 
-    init(account: Account, receiveStatus: (TwitterStatus -> Void), connected: (() -> Void), disconnected: (() -> Void)) {
+    init(account: Account, receiveStatus: @escaping ((TwitterStatus) -> Void), connected: @escaping (() -> Void), disconnected: @escaping (() -> Void)) {
         self.account = account
         self.receiveStatus = receiveStatus
         self.connected = connected
         self.disconnected = disconnected
     }
 
-    func start(track: String) -> TwitterSearchStreaming {
+    func start(_ track: String) -> TwitterSearchStreaming {
         NSLog("TwitterSearchStreaming: start")
         request = account.client
             .streaming("https://stream.twitter.com/1.1/statuses/filter.json", parameters: ["track": track])
             .progress(progress)
             .completion(completion)
             .start()
-        status = .CONNECTING
+        status = .connecting
         return self
     }
 
     func stop() {
         NSLog("TwitterSearchStreaming: stop")
-        status = .DISCONNECTING
+        status = .disconnecting
         request?.stop()
     }
 
-    func progress(data: NSData) {
-        if self.status != .CONNECTED {
-            self.status = .CONNECTED
+    func progress(_ data: Data) {
+        if self.status != .connected {
+            self.status = .connected
             Async.main {
                 self.connected()
             }
@@ -55,7 +55,7 @@ class TwitterSearchStreaming {
         let sourceUserID = account.userID
         let status = TwitterStatus(responce, connectionID: "")
         let quotedUserID = status.quotedStatus?.user.userID
-        let retweetUserID = status.actionedBy != nil && status.type != .Favorite ? status.actionedBy?.userID : nil
+        let retweetUserID = status.actionedBy != nil && status.type != .favorite ? status.actionedBy?.userID : nil
         Relationship.check(sourceUserID, targetUserID: status.user.userID, retweetUserID: retweetUserID, quotedUserID: quotedUserID) { (blocking, muting, noRetweets) -> Void in
             if blocking || muting || noRetweets {
                 NSLog("skip blocking:\(blocking) muting:\(muting) noRetweets:\(noRetweets) text:\(status.text)")
@@ -67,13 +67,13 @@ class TwitterSearchStreaming {
         }
     }
 
-    func completion(responseData: NSData?, response: NSURLResponse?, error: NSError?) {
-        status = .DISCONNECTED
+    func completion(_ responseData: Data?, response: URLResponse?, error: NSError?) {
+        status = .disconnected
         Async.main {
             self.disconnected()
         }
-        if let response = response as? NSHTTPURLResponse {
-            NSLog("TwitterSearchStreaming [connectionDidFinishLoading] code:\(response.statusCode) data:\(NSString(data: responseData!, encoding: NSUTF8StringEncoding))")
+        if let response = response as? HTTPURLResponse {
+            NSLog("TwitterSearchStreaming [connectionDidFinishLoading] code:\(response.statusCode) data:\(NSString(data: responseData!, encoding: String.Encoding.utf8.rawValue))")
             if response.statusCode == 420 {
                 // Rate Limited
                 // The client has connected too frequently. For example, an endpoint returns this status if:

@@ -2,20 +2,20 @@ import Foundation
 
 struct TwitterVia {
     let name: String
-    let URL: NSURL?
+    let URL: Foundation.URL?
 
     struct Static {
         // swiftlint:disable:next force_try
         static let regexp = try! NSRegularExpression(pattern: "<a href=\"(.+)\" rel=\"nofollow\">(.+)</a>",
-            options: NSRegularExpressionOptions.UseUnicodeWordBoundaries.intersect(NSRegularExpressionOptions.DotMatchesLineSeparators))
+            options: NSRegularExpression.Options.useUnicodeWordBoundaries.intersection(NSRegularExpression.Options.dotMatchesLineSeparators))
     }
 
     init(_ source: String) {
         let s = source as NSString
-        if let match = Static.regexp.firstMatchInString(source, options: NSMatchingOptions(rawValue: 0), range: NSRange(location: 0, length: source.utf16.count)) {
+        if let match = Static.regexp.firstMatch(in: source, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: source.utf16.count)) {
             if match.numberOfRanges > 0 {
-                self.URL = NSURL(string: s.substringWithRange(match.rangeAtIndex(1)) as String)
-                self.name = s.substringWithRange(match.rangeAtIndex(2))
+                self.URL = Foundation.URL(string: s.substring(with: match.rangeAt(1)) as String)
+                self.name = s.substring(with: match.rangeAt(2))
                 return
             }
         }
@@ -25,7 +25,7 @@ struct TwitterVia {
 
     init(_ dictionary: [String: String]) {
         self.name = dictionary["name"] ?? ""
-        self.URL = NSURL(string: dictionary["URL"] ?? "")
+        self.URL = Foundation.URL(string: dictionary["URL"] ?? "")
     }
 
     var dictionaryValue: [String: String] {

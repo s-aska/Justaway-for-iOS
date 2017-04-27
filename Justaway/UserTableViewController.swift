@@ -21,11 +21,11 @@ class UserTableViewController: TimelineTableViewController {
 
     // MARK: UITableViewDelegate
 
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return userAdapter.tableView(tableView, heightForFooterInSection: section)
     }
 
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return userAdapter.tableView(tableView, viewForFooterInSection: section)
     }
 
@@ -40,12 +40,12 @@ class UserTableViewController: TimelineTableViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -53,7 +53,7 @@ class UserTableViewController: TimelineTableViewController {
     // MARK: - Configuration
 
     func configureView() {
-        tableView.backgroundColor = UIColor.clearColor()
+        tableView.backgroundColor = UIColor.clear
         userAdapter.configureView(tableView)
         userAdapter.didScrollToBottom = {
             if let nextCursor = self.nextCursor {
@@ -64,40 +64,40 @@ class UserTableViewController: TimelineTableViewController {
     }
 
     func configureEvent() {
-        EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { (n) -> Void in
+        _ = EventBox.onMainThread(self, name: eventStatusBarTouched, handler: { (n) -> Void in
             self.tableView.setContentOffset(CGPoint.zero, animated: true)
         })
     }
 
     // MARK: - UITableViewDataSource
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return userAdapter.tableView(tableView, numberOfRowsInSection: section)
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return userAdapter.tableView(tableView, cellForRowAtIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return userAdapter.tableView(tableView, cellForRowAt: indexPath)
     }
 
     // MARK: UITableViewDelegate
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return userAdapter.tableView(tableView, heightForRowAtIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return userAdapter.tableView(tableView, heightForRowAt: indexPath)
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        userAdapter.tableView(tableView, didSelectRowAtIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        userAdapter.tableView(tableView, didSelectRowAt: indexPath)
     }
 
     override func refresh() {
         loadData()
     }
 
-    func loadData(cursor: String? = nil) {
+    func loadData(_ cursor: String? = nil) {
         let s = { (users: [TwitterUserFull], nextCursor: String?) -> Void in
-            self.userAdapter.renderData(self.tableView, users: users, mode: (cursor != nil ? .BOTTOM : .OVER), handler: {
+            self.userAdapter.renderData(self.tableView, users: users, mode: (cursor != nil ? .bottom : .over), handler: {
                 self.userAdapter.footerIndicatorView?.stopAnimating()
-                if let nextCursor = nextCursor where nextCursor != "0" {
+                if let nextCursor = nextCursor, nextCursor != "0" {
                     self.nextCursor = nextCursor
                 }
             })
@@ -107,7 +107,7 @@ class UserTableViewController: TimelineTableViewController {
             self.userAdapter.footerIndicatorView?.stopAnimating()
         }
 
-        if !(self.refreshControl?.refreshing ?? false) {
+        if !(self.refreshControl?.isRefreshing ?? false) {
             Async.main {
                 self.userAdapter.footerIndicatorView?.startAnimating()
                 return
@@ -117,7 +117,7 @@ class UserTableViewController: TimelineTableViewController {
         loadData(cursor ?? "-1", success: s, failure: f)
     }
 
-    func loadData(cursor: String, success: ((users: [TwitterUserFull], nextCursor: String?) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadData(_ cursor: String, success: @escaping ((_ users: [TwitterUserFull], _ nextCursor: String?) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         assertionFailure("not implements.")
     }
 }

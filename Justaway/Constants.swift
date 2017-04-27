@@ -9,12 +9,14 @@
 import Foundation
 
 // Device
-let eventStatusBarTouched = "EventStatusBarTouched"
+let eventStatusBarTouched = Notification.Name.init(rawValue: "EventStatusBarTouched")
 
 // Account Settings
-let eventAccountChanged = "EventAccountChanged"
-let eventTabChanged = "EventTabChanged"
+let eventAccountChanged = Notification.Name.init(rawValue: "EventAccountChanged")
+let eventTabChanged = Notification.Name.init(rawValue: "EventTabChanged")
 
 // FontSize Settings
-let eventFontSizePreview = "EventFontSizePreview"
-let eventFontSizeApplied = "EventFontSizeApplied"
+let eventFontSizePreview = Notification.Name.init(rawValue: "EventFontSizePreview")
+let eventFontSizeApplied = Notification.Name.init(rawValue: "EventFontSizeApplied")
+let eventChangeStreamingMode = Notification.Name.init(rawValue: "ChangeStreamingMode")
+let eventSearchKeywordDeleted = Notification.Name.init(rawValue: "SearchKeywordDeleted")

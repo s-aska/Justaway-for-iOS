@@ -26,16 +26,16 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
         if AccountSettingsStore.get() != nil {
-            logoImageView.hidden = true
+            logoImageView.isHidden = true
             showView()
         }
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -49,14 +49,14 @@ class ViewController: UIViewController {
     }
 
     func toggleView() {
-        logoImageView.hidden = true
+        logoImageView.isHidden = true
         if let _ = AccountSettingsStore.get()?.account() {
             showView()
         } else {
-            timelineViewController?.view.hidden = true
-            signInView.hidden = false
-            signInButton.hidden = false
-            signInButton.enabled = true
+            timelineViewController?.view.isHidden = true
+            signInView.isHidden = false
+            signInButton.isHidden = false
+            signInButton.isEnabled = true
         }
     }
 
@@ -66,18 +66,18 @@ class ViewController: UIViewController {
             ViewTools.addSubviewWithEqual(containerView, view: timelineViewController!.view)
 
             if let settings = AccountSettingsStore.get() {
-                if settings.accounts.contains({ !$0.exToken.isEmpty }) {
+                if settings.accounts.contains(where: { !$0.exToken.isEmpty }) {
                     NSLog("has exToken")
-                    let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: nil)
-                    UIApplication.sharedApplication().registerForRemoteNotifications()
-                    UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+                    let settings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
+                    UIApplication.shared.registerForRemoteNotifications()
+                    UIApplication.shared.registerUserNotificationSettings(settings)
                 }
             }
         }
-        timelineViewController?.view.hidden = false
-        signInView.hidden = true
-        signInButton.hidden = true
-        signInButton.enabled = false
+        timelineViewController?.view.isHidden = false
+        signInView.isHidden = true
+        signInButton.isHidden = true
+        signInButton.isEnabled = false
     }
 
     func configureEvent() {
@@ -88,21 +88,21 @@ class ViewController: UIViewController {
 
     // MARK: - Actions
 
-    func signInMenu(sender: UILongPressGestureRecognizer) {
-        if sender.state == .Began {
+    func signInMenu(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
             AddAccountAlert.show(signInButton)
         }
     }
 
-    @IBAction func signInButtonClick(sender: UIButton) {
+    @IBAction func signInButtonClick(_ sender: UIButton) {
         Twitter.addACAccount(false)
     }
 
-    @IBAction func terms(sender: UIButton) {
+    @IBAction func terms(_ sender: UIButton) {
         Safari.openURL("http://justaway.info/iOS/terms.html")
     }
 
-    @IBAction func privacy(sender: UIButton) {
+    @IBAction func privacy(_ sender: UIButton) {
         Safari.openURL("http://justaway.info/iOS/privacy.html")
     }
 }

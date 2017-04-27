@@ -11,7 +11,7 @@ class EditorViewController: UIViewController {
     }
 
     struct UploadImage {
-        let data: NSData
+        let data: Data
         let asset: PHAsset
     }
 
@@ -70,16 +70,16 @@ class EditorViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
         Async.main {
-            self.view.hidden = false
+            self.view.isHidden = false
             self.show()
         }
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -87,14 +87,14 @@ class EditorViewController: UIViewController {
     // MARK: - Configuration
 
     func configureView() {
-        view.hidden = true
+        view.isHidden = true
         textView.configure(heightConstraint: textViewHeightConstraint)
 
         imageViews = [imageView1, imageView2, imageView3, imageView4]
         for imageView in imageViews {
             imageView.clipsToBounds = true
-            imageView.contentMode = .ScaleAspectFill
-            imageView.userInteractionEnabled = true
+            imageView.contentMode = .scaleAspectFill
+            imageView.isUserInteractionEnabled = true
             imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(EditorViewController.removeImage(_:))))
         }
 
@@ -110,16 +110,16 @@ class EditorViewController: UIViewController {
 
     func configureTextView() {
         // swiftlint:disable:next force_try
-        let isKatakana = try! NSRegularExpression(pattern: "[\\u30A0-\\u30FF]", options: .CaseInsensitive)
+        let isKatakana = try! NSRegularExpression(pattern: "[\\u30A0-\\u30FF]", options: .caseInsensitive)
         textView.callback = { [weak self] in
             guard let `self` = self else {
                 return
             }
             let count = TwitterText.count(self.textView.text, hasImage: self.images.count > 0)
             self.countLabel.text = String(140 - count)
-            self.halfButton.hidden = isKatakana.firstMatchInString(
-                self.textView.text,
-                options: NSMatchingOptions(rawValue: 0),
+            self.halfButton.isHidden = isKatakana.firstMatch(
+                in: self.textView.text,
+                options: NSRegularExpression.MatchingOptions(rawValue: 0),
                 range: NSRange(location: 0, length: self.textView.text.utf16.count)
                 ) == nil
         }
@@ -128,11 +128,11 @@ class EditorViewController: UIViewController {
     func configureCollectionView() {
         collectionView.callback = { (asset: PHAsset) in
             let options = PHImageRequestOptions()
-            options.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
-            options.synchronous = false
-            options.networkAccessAllowed = true
-            PHImageManager.defaultManager().requestImageDataForAsset(asset, options: options, resultHandler: {
-                (imageData: NSData?, dataUTI: String?, orientation: UIImageOrientation, info: [NSObject : AnyObject]?) -> Void in
+            options.deliveryMode = PHImageRequestOptionsDeliveryMode.highQualityFormat
+            options.isSynchronous = false
+            options.isNetworkAccessAllowed = true
+            PHImageManager.default().requestImageData(for: asset, options: options, resultHandler: {
+                (imageData: Data?, dataUTI: String?, orientation: UIImageOrientation, info: [AnyHashable: Any]?) -> Void in
                 if let imageData = imageData {
                     if self.images.count > 0 {
                         var i = 0
@@ -154,45 +154,43 @@ class EditorViewController: UIViewController {
                     self.collectionView.reloadHighlight()
                     if self.imageContainerHeightConstraint.constant == 0 {
                         self.imageContainerHeightConstraint.constant = self.imageContainerHeightConstraintDefault
-                        UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        UIView.animate(withDuration: 0.2, animations: { () -> Void in
                             self.view.layoutIfNeeded()
                         })
                     }
                 }
             })
         }
-        refreshControl.addTarget(self, action: #selector(loadImages), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(loadImages), for: UIControlEvents.valueChanged)
         collectionView.addSubview(refreshControl)
         collectionView.alwaysBounceVertical = true
     }
 
     func loadImages() {
-        Async.background(block: { () -> Void in
+        Async.background { () -> Void in
             let options = PHFetchOptions()
             options.sortDescriptors = [
                 NSSortDescriptor(key: "creationDate", ascending: false)
             ]
             var rows = [PHAsset]()
-            let assets: PHFetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: options)
-            assets.enumerateObjectsUsingBlock { (asset, index, stop) -> Void in
-                if let phasset = asset as? PHAsset {
-                    rows.append(phasset)
-                }
-            }
+            let assets: PHFetchResult = PHAsset.fetchAssets(with: .image, options: options)
+            assets.enumerateObjects({ (asset, index, stop) -> Void in
+                rows.append(asset as PHAsset)
+            })
             self.collectionView.rows = rows
-            Async.main(block: { () -> Void in
+            Async.main { () -> Void in
                 self.collectionView.reloadData()
                 self.refreshControl.endRefreshing()
-            })
-        })
+            }
+        }
     }
 
     func configureEvent() {
-        EventBox.onMainThread(self, name: UIKeyboardWillShowNotification) { n in
+        EventBox.onMainThread(self, name: NSNotification.Name.UIKeyboardWillShow) { n in
             self.keyboardWillChangeFrame(n, showsKeyboard: true)
         }
 
-        EventBox.onMainThread(self, name: UIKeyboardWillHideNotification) { n in
+        EventBox.onMainThread(self, name: NSNotification.Name.UIKeyboardWillHide) { n in
             self.keyboardWillChangeFrame(n, showsKeyboard: false)
         }
     }
@@ -206,27 +204,27 @@ class EditorViewController: UIViewController {
         collectionView.highlightRows = []
         collectionHeightConstraint.constant = 0
         imageContainerHeightConstraint.constant = 0
-        collectionMenuView.hidden = true
+        collectionMenuView.isHidden = true
     }
 
     // MARK: - Keyboard Event Notifications
 
-    func keyboardWillChangeFrame(notification: NSNotification, showsKeyboard: Bool) {
+    func keyboardWillChangeFrame(_ notification: Notification, showsKeyboard: Bool) {
         let userInfo = notification.userInfo!
         // swiftlint:disable force_cast
-        let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
-        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey]as! NSValue).CGRectValue()
+        let animationDuration: TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey]as! NSValue).cgRectValue
         // swiftlint:enable force_cast
 
         if showsKeyboard {
-            let orientation: UIInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
+            let orientation: UIInterfaceOrientation = UIApplication.shared.statusBarOrientation
             if orientation.isLandscape {
                 containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.width
             } else {
                 containerViewButtomConstraint.constant = keyboardScreenEndFrame.size.height
             }
             collectionHeightConstraint.constant = 0
-            collectionMenuView.hidden = true
+            collectionMenuView.isHidden = true
         } else {
 
             // en: UIKeyboardWillHideNotification occurs when you scroll through the conversion candidates in iOS9
@@ -239,7 +237,7 @@ class EditorViewController: UIViewController {
 
         self.view.setNeedsUpdateConstraints()
 
-        UIView.animateWithDuration(animationDuration, delay: 0, options: .BeginFromCurrentState, animations: {
+        UIView.animate(withDuration: animationDuration, delay: 0, options: .beginFromCurrentState, animations: {
             self.containerView.alpha = showsKeyboard || self.picking ? 1 : 0
             self.view.layoutIfNeeded()
         }, completion: { finished in
@@ -251,7 +249,7 @@ class EditorViewController: UIViewController {
 
     // MARK: - Actions
 
-    @IBAction func hide(sender: UIButton) {
+    @IBAction func hide(_ sender: UIButton) {
         if picking {
             picking = false
             textView.becomeFirstResponder()
@@ -260,15 +258,15 @@ class EditorViewController: UIViewController {
         }
     }
 
-    @IBAction func image(sender: UIButton) {
+    @IBAction func image(_ sender: UIButton) {
         image()
     }
 
-    @IBAction func music(sender: UIButton) {
+    @IBAction func music(_ sender: UIButton) {
         guard let item = MPMusicPlayerController.systemMusicPlayer().nowPlayingItem else {
-            if let url = NSURL.init(string: "googleplaymusic://") {
-                if UIApplication.sharedApplication().canOpenURL(url) {
-                    UIApplication.sharedApplication().openURL(url)
+            if let url = URL.init(string: "googleplaymusic://") {
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.openURL(url)
                     return
                 }
             }
@@ -286,8 +284,8 @@ class EditorViewController: UIViewController {
             textView.text = "#NowPlaying " + text
             textView.selectedRange = NSRange.init(location: 0, length: 0)
         }
-        if let artwork = item.valueForProperty(MPMediaItemPropertyArtwork) as? MPMediaItemArtwork {
-            if let image = artwork.imageWithSize(artwork.bounds.size), imageData = UIImagePNGRepresentation(image) {
+        if let artwork = item.value(forProperty: MPMediaItemPropertyArtwork) as? MPMediaItemArtwork {
+            if let image = artwork.image(at: artwork.bounds.size), let imageData = UIImagePNGRepresentation(image) {
                 let i = self.images.count
                 if i >= 4 {
                     return
@@ -296,7 +294,7 @@ class EditorViewController: UIViewController {
                 self.imageViews[i].image = image
                 if self.imageContainerHeightConstraint.constant == 0 {
                     self.imageContainerHeightConstraint.constant = self.imageContainerHeightConstraintDefault
-                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    UIView.animate(withDuration: 0.2, animations: { () -> Void in
                         self.view.layoutIfNeeded()
                     })
                 }
@@ -304,27 +302,27 @@ class EditorViewController: UIViewController {
         }
     }
 
-    @IBAction func half(sender: AnyObject) {
+    @IBAction func half(_ sender: AnyObject) {
         let text = NSMutableString(string: textView.text) as CFMutableString
         CFStringTransform(text, nil, kCFStringTransformFullwidthHalfwidth, false)
         textView.text = text as String
     }
 
-    @IBAction func send(sender: UIButton) {
+    @IBAction func send(_ sender: UIButton) {
         let text = textView.text
-        if text.isEmpty && images.count == 0 {
+        if (text?.isEmpty)! && images.count == 0 {
             hide()
         } else {
             if let messageTo = messageTo {
-                Twitter.postDirectMessage(text, userID: messageTo.userID)
+                Twitter.postDirectMessage(text!, userID: messageTo.userID)
             } else {
-                Twitter.statusUpdate(text, inReplyToStatusID: self.inReplyToStatusId, images: self.images.map({ $0.data }), mediaIds: [])
+                Twitter.statusUpdate(text!, inReplyToStatusID: self.inReplyToStatusId, images: self.images.map({ $0.data }), mediaIds: [])
             }
             hide()
         }
     }
 
-    func removeImage(sender: UITapGestureRecognizer) {
+    func removeImage(_ sender: UITapGestureRecognizer) {
         guard let index = sender.view?.tag else {
             return
         }
@@ -334,8 +332,8 @@ class EditorViewController: UIViewController {
         removeImageIndex(index)
     }
 
-    func removeImageIndex(index: Int) {
-        images.removeAtIndex(index)
+    func removeImageIndex(_ index: Int) {
+        images.remove(at: index)
         var i = 0
         for imageView in imageViews {
             if images.count > i {
@@ -347,7 +345,7 @@ class EditorViewController: UIViewController {
         }
         if images.count == 0 {
             imageContainerHeightConstraint.constant = 0
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, animations: { () -> Void in
                 self.view.layoutIfNeeded()
             })
         }
@@ -355,14 +353,14 @@ class EditorViewController: UIViewController {
         collectionView.reloadHighlight()
     }
 
-    @IBAction func replyCancel(sender: UIButton) {
+    @IBAction func replyCancel(_ sender: UIButton) {
         if let inReplyToStatusId = inReplyToStatusId {
             let pattern = " ?https?://twitter\\.com/[0-9a-zA-Z_]+/status/\(inReplyToStatusId)"
-            textView.text = textView.text.stringByReplacingOccurrencesOfString(pattern, withString: "", options: .RegularExpressionSearch, range: nil)
+            textView.text = textView.text.replacingOccurrences(of: pattern, with: "", options: .regularExpression, range: nil)
         }
         inReplyToStatusId = nil
-        replyToContainerView.hidden = true
-        textView.text = textView.text.stringByReplacingOccurrencesOfString("^.*@[0-9a-zA-Z_]+ *", withString: "", options: .RegularExpressionSearch, range: nil)
+        replyToContainerView.isHidden = true
+        textView.text = textView.text.replacingOccurrences(of: "^.*@[0-9a-zA-Z_]+ *", with: "", options: .regularExpression, range: nil)
     }
 
     func image() {
@@ -372,9 +370,9 @@ class EditorViewController: UIViewController {
         }
 
         picking = true
-        let height = UIApplication.sharedApplication().keyWindow?.frame.height ?? 480
+        let height = UIApplication.shared.keyWindow?.frame.height ?? 480
         collectionHeightConstraint.constant = height - imageContainerHeightConstraintDefault - 10
-        collectionMenuView.hidden = false
+        collectionMenuView.isHidden = false
         textView.resignFirstResponder()
         if collectionView.rows.count == 0 {
             loadImages()
@@ -390,24 +388,24 @@ class EditorViewController: UIViewController {
         picking = false
         inReplyToStatusId = nil
         messageTo = nil
-        replyToContainerView.hidden = true
+        replyToContainerView.isHidden = true
         textView.reset()
         resetPickerController()
 
-        if textView.isFirstResponder() {
+        if textView.isFirstResponder {
             textView.resignFirstResponder()
         } else {
             view.removeFromSuperview()
         }
     }
 
-    class func show(text: String? = nil, range: NSRange? = nil, inReplyToStatus: TwitterStatus? = nil, messageTo: TwitterUser? = nil) {
+    class func show(_ text: String? = nil, range: NSRange? = nil, inReplyToStatus: TwitterStatus? = nil, messageTo: TwitterUser? = nil) {
         if let vc = ViewTools.frontViewController() {
             Static.instance.view.frame = vc.view.frame
             Static.instance.resetPickerController()
             Static.instance.textView.text = text ?? ""
-            Static.instance.countLabel.hidden = messageTo != nil
-            Static.instance.replyCancelButton.hidden = messageTo != nil
+            Static.instance.countLabel.isHidden = messageTo != nil
+            Static.instance.replyCancelButton.isHidden = messageTo != nil
             Static.instance.messageTo = messageTo
             if let inReplyToStatus = inReplyToStatus {
                 Static.instance.inReplyToStatusId = inReplyToStatus.statusID
@@ -415,22 +413,26 @@ class EditorViewController: UIViewController {
                 Static.instance.replyToScreenNameLabel.text = "@" + inReplyToStatus.user.screenName
                 Static.instance.replyToStatusLabel.text = inReplyToStatus.text
                 Static.instance.replyToStatusLabelHeightConstraint.constant =
-                    measure(inReplyToStatus.text,
+                    measure(inReplyToStatus.text as NSString,
                         fontSize: Static.instance.replyToStatusLabel.font?.pointSize ?? 12,
                         wdith: Static.instance.replyToStatusLabel.frame.size.width)
-                Static.instance.replyToContainerView.hidden = false
-                ImageLoaderClient.displayUserIcon(inReplyToStatus.user.profileImageURL, imageView: Static.instance.replyToIconImageView)
+                Static.instance.replyToContainerView.isHidden = false
+                if let url = inReplyToStatus.user.profileImageURL {
+                    ImageLoaderClient.displayUserIcon(url, imageView: Static.instance.replyToIconImageView)
+                }
             } else if let messageTo = messageTo {
                 Static.instance.inReplyToStatusId = nil
                 Static.instance.replyToNameLabel.text = messageTo.name
                 Static.instance.replyToScreenNameLabel.text = "@" + messageTo.screenName
                 Static.instance.replyToStatusLabel.text = ""
                 Static.instance.replyToStatusLabelHeightConstraint.constant = 0
-                Static.instance.replyToContainerView.hidden = false
-                ImageLoaderClient.displayUserIcon(messageTo.profileImageURL, imageView: Static.instance.replyToIconImageView)
+                Static.instance.replyToContainerView.isHidden = false
+                if let url = messageTo.profileImageURL {
+                    ImageLoaderClient.displayUserIcon(url, imageView: Static.instance.replyToIconImageView)
+                }
             } else {
                 Static.instance.inReplyToStatusId = nil
-                Static.instance.replyToContainerView.hidden = true
+                Static.instance.replyToContainerView.isHidden = true
             }
             if let selectedRange = range {
                 Static.instance.textView.selectedRange = selectedRange
@@ -446,11 +448,11 @@ class EditorViewController: UIViewController {
         Static.instance.hide()
     }
 
-    class func measure(text: NSString, fontSize: CGFloat, wdith: CGFloat) -> CGFloat {
-        return ceil(text.boundingRectWithSize(
-            CGSize.init(width: wdith, height: 0),
-            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
-            attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
+    class func measure(_ text: NSString, fontSize: CGFloat, wdith: CGFloat) -> CGFloat {
+        return ceil(text.boundingRect(
+            with: CGSize.init(width: wdith, height: 0),
+            options: NSStringDrawingOptions.usesLineFragmentOrigin,
+            attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: fontSize)],
             context: nil).size.height)
     }
 }

@@ -23,26 +23,26 @@ class FontSizeViewController: UIViewController {
     // MARK: - Configuration
 
     func configureView() {
-        fontSizeSlider.addTarget(self, action: #selector(FontSizeViewController.fontSizeChanged), forControlEvents: UIControlEvents.ValueChanged)
-        fontSizeSlider.addTarget(self, action: #selector(FontSizeViewController.fontSizeFixed), forControlEvents: [UIControlEvents.TouchUpInside, UIControlEvents.TouchUpOutside])
+        fontSizeSlider.addTarget(self, action: #selector(FontSizeViewController.fontSizeChanged), for: UIControlEvents.valueChanged)
+        fontSizeSlider.addTarget(self, action: #selector(FontSizeViewController.fontSizeFixed), for: [UIControlEvents.touchUpInside, UIControlEvents.touchUpOutside])
 
         actionSheet.addAction(UIAlertAction(
             title: "Cancel",
-            style: .Cancel,
+            style: .cancel,
             handler: { action in
-                self.actionSheet.dismissViewControllerAnimated(true, completion: nil)
+                self.actionSheet.dismiss(animated: true, completion: nil)
         }))
 
         for size in Int(fontSizeSlider.minimumValue) ... Int(fontSizeSlider.maximumValue) {
             let fontSize = String(size)
             let title = fontSize + "pt"
-            let style: UIAlertActionStyle = size == 12 ? .Destructive : .Default
+            let style: UIAlertActionStyle = size == 12 ? .destructive : .default
             actionSheet.addAction(UIAlertAction(
                 title: title,
                 style: style,
                 handler: { action in
                     self.fontSizeSlider.value = Float(size)
-                    EventBox.post(eventFontSizeApplied, userInfo: ["fontSize": NSNumber(integer: size)])
+                    EventBox.post(eventFontSizeApplied, userInfo: ["fontSize": NSNumber(value: size as Int)])
                     KeyClip.save("fontSize", string: fontSize)
             }))
         }
@@ -50,7 +50,7 @@ class FontSizeViewController: UIViewController {
         fontSizeSlider.value = GenericSettings.get().fontSize
     }
 
-    @IBAction func menuAction(sender: UIButton) {
+    @IBAction func menuAction(_ sender: UIButton) {
 
         // iPad
         actionSheet.popoverPresentationController?.sourceView = sender

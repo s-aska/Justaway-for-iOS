@@ -10,17 +10,17 @@ import UIKit
 import SwiftyJSON
 
 class LoadReplies {
-    class func loadData(adapter: TwitterStatusAdapter, tableView: UITableView, sourceStatus: TwitterStatus) {
+    class func loadData(_ adapter: TwitterStatusAdapter, tableView: UITableView, sourceStatus: TwitterStatus) {
         if let inReplyToStatusID = sourceStatus.inReplyToStatusID {
             LoadReplies.loadStatus(adapter, tableView: tableView, statusID: inReplyToStatusID)
         }
         LoadReplies.searchStatus(adapter, tableView: tableView, sourceStatus: sourceStatus)
     }
 
-    class func loadStatus(adapter: TwitterStatusAdapter, tableView: UITableView, statusID: String) {
+    class func loadStatus(_ adapter: TwitterStatusAdapter, tableView: UITableView, statusID: String) {
         let success = { (statuses: [TwitterStatus]) -> Void in
             adapter.mainQueue.addOperation(MainBlockOperation({ (op) in
-                adapter.renderData(tableView, statuses: statuses, mode: .TOP, handler: {
+                adapter.renderData(tableView, statuses: statuses, mode: .top, handler: {
                     op.finish()
                 })
             }))
@@ -36,16 +36,16 @@ class LoadReplies {
         Twitter.getStatuses([statusID], success: success, failure: failure)
     }
 
-    class func searchStatus(adapter: TwitterStatusAdapter, tableView: UITableView, sourceStatus: TwitterStatus) {
+    class func searchStatus(_ adapter: TwitterStatusAdapter, tableView: UITableView, sourceStatus: TwitterStatus) {
         var allStatuses = [TwitterStatus]()
         var isReplyIDs = [String: Bool]()
         isReplyIDs[sourceStatus.statusID] = true
         let lookupAlways = {
             let replies =
                 allStatuses
-                    .sort { $0.0.statusID.longLongValue < $0.1.statusID.longLongValue }
+                    .sorted { $0.0.statusID.longLongValue < $0.1.statusID.longLongValue }
                     .filter { status in
-                        if let inReplyToStatusID = status.inReplyToStatusID where isReplyIDs[inReplyToStatusID] != nil && isReplyIDs[status.statusID] == nil {
+                        if let inReplyToStatusID = status.inReplyToStatusID, isReplyIDs[inReplyToStatusID] != nil && isReplyIDs[status.statusID] == nil {
                             isReplyIDs[status.statusID] = true
                             return true
                         } else {
@@ -54,7 +54,7 @@ class LoadReplies {
             }
             if replies.count > 0 {
                 adapter.mainQueue.addOperation(MainBlockOperation({ (op) in
-                    adapter.renderData(tableView, statuses: replies, mode: .BOTTOM, handler: {
+                    adapter.renderData(tableView, statuses: replies, mode: .bottom, handler: {
                         adapter.footerIndicatorView?.stopAnimating()
                         op.finish()
                     })
@@ -80,7 +80,7 @@ class LoadReplies {
             }
             var lookupIDs = [String]()
             for status in allStatuses {
-                if let inReplyToStatusID = status.inReplyToStatusID where loadIDs[inReplyToStatusID] == nil {
+                if let inReplyToStatusID = status.inReplyToStatusID, loadIDs[inReplyToStatusID] == nil {
                     loadIDs[inReplyToStatusID] = true
                     lookupIDs.append(inReplyToStatusID)
                     if lookupIDs.count >= 100 {

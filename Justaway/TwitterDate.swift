@@ -3,52 +3,52 @@ import Foundation
 class TwitterDateFormatter {
 
     struct Static {
-        static let twitter: NSDateFormatter = TwitterDateFormatter.makeTwitter()
-        static let absolute: NSDateFormatter = TwitterDateFormatter.makeAbsolute()
+        static let twitter: DateFormatter = TwitterDateFormatter.makeTwitter()
+        static let absolute: DateFormatter = TwitterDateFormatter.makeAbsolute()
     }
 
-    private class func makeTwitter() -> NSDateFormatter {
-        let formatter = NSDateFormatter()
-        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-        formatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+    fileprivate class func makeTwitter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         formatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
         return formatter
     }
 
-    private class func makeAbsolute() -> NSDateFormatter {
-        let formatter = NSDateFormatter()
-        formatter.locale = NSLocale.currentLocale()
-        formatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+    fileprivate class func makeAbsolute() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
         return formatter
     }
 
-    class var twitter: NSDateFormatter { return Static.twitter }
-    class var absolute: NSDateFormatter { return Static.absolute }
+    class var twitter: DateFormatter { return Static.twitter }
+    class var absolute: DateFormatter { return Static.absolute }
 
 }
 
 struct TwitterDate {
-    let date: NSDate
+    let date: Date
 
     init(_ string: String) {
-        if let date = TwitterDateFormatter.twitter.dateFromString(string) {
+        if let date = TwitterDateFormatter.twitter.date(from: string) {
             self.date = date
         } else {
-            self.date = NSDate(timeIntervalSince1970: 0)
+            self.date = Date(timeIntervalSince1970: 0)
         }
     }
 
-    init(_ date: NSDate) {
+    init(_ date: Date) {
         self.date = date
     }
 
     var absoluteString: String {
-        return TwitterDateFormatter.absolute.stringFromDate(date)
+        return TwitterDateFormatter.absolute.string(from: date)
     }
 
     var relativeString: String {
-        let diff = Int(NSDate().timeIntervalSinceDate(date))
+        let diff = Int(Date().timeIntervalSince(date))
         if diff < 1 {
             return "now"
         } else if diff < 60 {

@@ -22,8 +22,8 @@ struct TwitterHashtag {
 
     var dictionaryValue: [String: AnyObject] {
         return [
-            "text": text,
-            "indices": indices
+            "text": text as AnyObject,
+            "indices": indices as AnyObject
         ]
     }
 }

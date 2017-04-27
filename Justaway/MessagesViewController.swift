@@ -35,12 +35,12 @@ class MessagesViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -50,7 +50,7 @@ class MessagesViewController: UIViewController {
         if !loadData {
             loadData = true
             adapter.setupLayout(tableView)
-            adapter.renderData(tableView, messages: messages, mode: .OVER, handler: nil)
+            adapter.renderData(tableView, messages: messages, mode: .over, handler: nil)
         }
     }
 
@@ -67,18 +67,18 @@ class MessagesViewController: UIViewController {
             }
             self.adapter.scrollToTop(self.tableView)
         }
-        EventBox.onMainThread(self, name: Twitter.Event.CreateMessage.rawValue) { [weak self] (n) -> Void in
+        EventBox.onMainThread(self, name: Twitter.Event.CreateMessage.Name()) { [weak self] (n) -> Void in
             guard let `self` = self else {
                 return
             }
             guard let message = n.object as? TwitterMessage else {
                 return
             }
-            if let collocutorID = self.collocutor?.userID where message.collocutor.userID == collocutorID {
-                self.adapter.renderData(self.tableView, messages: [message], mode: .TOP, handler: nil)
+            if let collocutorID = self.collocutor?.userID, message.collocutor.userID == collocutorID {
+                self.adapter.renderData(self.tableView, messages: [message], mode: .top, handler: nil)
             }
         }
-        EventBox.onMainThread(self, name: Twitter.Event.DestroyMessage.rawValue) { [weak self] (n) -> Void in
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyMessage.Name()) { [weak self] (n) -> Void in
             guard let `self` = self else {
                 return
             }
@@ -93,11 +93,11 @@ class MessagesViewController: UIViewController {
 
     // MARK: - Actions
 
-    @IBAction func left(sender: UIButton) {
+    @IBAction func left(_ sender: UIButton) {
         hide()
     }
 
-    @IBAction func reply(sender: UIButton) {
+    @IBAction func reply(_ sender: UIButton) {
         EditorViewController.show(nil, range: nil, inReplyToStatus: nil, messageTo: collocutor)
     }
 
@@ -107,7 +107,7 @@ class MessagesViewController: UIViewController {
 
     // MARK: - Class Methods
 
-    class func show(collocutor: TwitterUser, messages: [TwitterMessage]) {
+    class func show(_ collocutor: TwitterUser, messages: [TwitterMessage]) {
         let instance = MessagesViewController()
         instance.collocutor = collocutor
         instance.messages = messages

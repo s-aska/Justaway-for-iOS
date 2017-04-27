@@ -21,53 +21,53 @@ class FavoritesTableViewController: StatusTableViewController {
                 let key = "favorites:\(userID)"
                 let statuses = self.adapter.statuses
                 let dictionary = ["statuses": ( statuses.count > 100 ? Array(statuses[0 ..< 100]) : statuses ).map({ $0.dictionaryValue })]
-                KeyClip.save(key, dictionary: dictionary)
+                _ = KeyClip.save(key, dictionary: dictionary as NSDictionary)
                 NSLog("favorites:\(userID) saveCache.")
             }
         }
     }
 
-    override func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadCache(_ success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         if let userID = self.userID {
             let key = "favorites:\(userID)"
             Async.background {
                 if let cache = KeyClip.load(key) as NSDictionary? {
                     if let statuses = cache["statuses"] as? [[String: AnyObject]] {
-                        success(statuses: statuses.map({ TwitterStatus($0) }))
+                        success(statuses.map({ TwitterStatus($0) }))
                         return
                     }
                 }
-                success(statuses: [TwitterStatus]())
+                success([TwitterStatus]())
 
-                Async.background(after: 0.5, block: { () -> Void in
+                Async.background(after: 0.5, { () -> Void in
                     self.loadData(nil)
                 })
             }
         } else {
-            success(statuses: [])
+            success([])
         }
     }
 
-    override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(_ maxID: String?, success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         if let userID = self.userID {
             Twitter.getFavorites(userID, maxID: maxID, success: success, failure: failure)
         } else {
-            success(statuses: [])
+            success([])
         }
     }
 
-    override func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(sinceID: String?, maxID: String?, success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         if let userID = self.userID {
-            Twitter.getFavorites(userID, sinceID: sinceID, maxID: maxID, success: success, failure: failure)
+            Twitter.getFavorites(userID, maxID: maxID, sinceID: sinceID, success: success, failure: failure)
         } else {
-            success(statuses: [])
+            success([])
         }
     }
 
-    override func accept(status: TwitterStatus) -> Bool {
+    override func accept(_ status: TwitterStatus) -> Bool {
         if let userID = self.userID {
             if let actionedByUserID = status.actionedBy?.userID {
-                if actionedByUserID == userID && status.type == .Favorite {
+                if actionedByUserID == userID && status.type == .favorite {
                     return true
                 }
             }
@@ -77,7 +77,7 @@ class FavoritesTableViewController: StatusTableViewController {
 
     override func configureEvent() {
         super.configureEvent()
-        EventBox.onMainThread(self, name: Twitter.Event.DestroyFavorites.rawValue, sender: nil) { n in
+        EventBox.onMainThread(self, name: Twitter.Event.DestroyFavorites.Name(), sender: nil) { n in
             if let statusID = n.object as? String {
                 self.eraseData(statusID, handler: {})
             }

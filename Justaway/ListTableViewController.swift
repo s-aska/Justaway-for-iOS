@@ -45,11 +45,11 @@ class ListTableViewController: TimelineTableViewController {
 
     // MARK: UITableViewDelegate
 
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return timelineHooterHeight
     }
 
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if footerView == nil {
             footerView = UIView(frame: CGRect.init(x: 0, y: 0, width: view.frame.size.width, height: timelineHooterHeight))
             footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: ThemeController.currentTheme.activityIndicatorStyle())
@@ -71,12 +71,12 @@ class ListTableViewController: TimelineTableViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -84,13 +84,13 @@ class ListTableViewController: TimelineTableViewController {
     // MARK: - Configuration
 
     func configureView() {
-        self.tableView.backgroundColor = UIColor.clearColor()
-        self.tableView.separatorInset = UIEdgeInsetsZero
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        self.tableView.backgroundColor = UIColor.clear
+        self.tableView.separatorInset = UIEdgeInsets.zero
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
 
         let nib = UINib(nibName: "TwitterListCell", bundle: nil)
-        self.tableView.registerNib(nib, forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
-        self.layoutHeightCell = self.tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier) as? TwitterListCell
+        self.tableView.register(nib, forCellReuseIdentifier: TableViewConstants.tableViewCellIdentifier)
+        self.layoutHeightCell = self.tableView.dequeueReusableCell(withIdentifier: TableViewConstants.tableViewCellIdentifier) as? TwitterListCell
 
 //        let refreshControl = UIRefreshControl()
 //        refreshControl.addTarget(self, action: Selector("refresh"), forControlEvents: UIControlEvents.ValueChanged)
@@ -105,22 +105,22 @@ class ListTableViewController: TimelineTableViewController {
 
     // MARK: - UITableViewDataSource
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return rows.count ?? 0
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = rows[indexPath.row]
         let list = row.list
         // swiftlint:disable:next force_cast
-        let cell = tableView.dequeueReusableCellWithIdentifier(TableViewConstants.tableViewCellIdentifier, forIndexPath: indexPath) as! TwitterListCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: TableViewConstants.tableViewCellIdentifier, for: indexPath) as! TwitterListCell
 
         if cell.textHeightConstraint.constant != row.textHeight {
             cell.textHeightConstraint.constant = row.textHeight
         }
 
         if row.fontSize != cell.descriptionLabel.font?.pointSize ?? 0 {
-            cell.descriptionLabel.font = UIFont.systemFontOfSize(row.fontSize)
+            cell.descriptionLabel.font = UIFont.systemFont(ofSize: row.fontSize)
         }
 
         cell.listNameLabel.text = list.name
@@ -130,35 +130,37 @@ class ListTableViewController: TimelineTableViewController {
         cell.descriptionLabel.text = list.description
 
         cell.iconImageView.image = nil
-        ImageLoaderClient.displayUserIcon(list.user.profileImageURL, imageView: cell.iconImageView)
+        if let url = list.user.profileImageURL {
+            ImageLoaderClient.displayUserIcon(url, imageView: cell.iconImageView)
+        }
 
         return cell
     }
 
     // MARK: UITableViewDelegate
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let row = rows[indexPath.row]
         return row.height
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        let row = rows[indexPath.row]
 //        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
 //            ProfileViewController.show(TwitterUser(row.user))
 //        }
     }
 
-    func createRow(list: TwitterList, fontSize: CGFloat) -> Row {
+    func createRow(_ list: TwitterList, fontSize: CGFloat) -> Row {
         if let height = layoutHeight {
-            let textHeight = measure(list.description, fontSize: fontSize)
+            let textHeight = measure(list.description as NSString, fontSize: fontSize)
             let totalHeight = ceil(height + textHeight)
             return Row(list: list, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
         } else if let cell = self.layoutHeightCell {
             cell.frame = self.tableView.bounds
-            let textHeight = measure(list.description, fontSize: fontSize)
+            let textHeight = measure(list.description as NSString, fontSize: fontSize)
             cell.textHeightConstraint.constant = 0
-            let height = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+            let height = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
             layoutHeight = height
             let totalHeight = ceil(height + textHeight)
             return Row(list: list, fontSize: fontSize, height: totalHeight, textHeight: textHeight)
@@ -166,11 +168,11 @@ class ListTableViewController: TimelineTableViewController {
         fatalError("cellForHeight is missing.")
     }
 
-    func measure(text: NSString, fontSize: CGFloat) -> CGFloat {
-        return ceil(text.boundingRectWithSize(
-            CGSize.init(width: (self.layoutHeightCell?.descriptionLabel.frame.size.width)!, height: 0),
-            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
-            attributes: [NSFontAttributeName: UIFont.systemFontOfSize(fontSize)],
+    func measure(_ text: NSString, fontSize: CGFloat) -> CGFloat {
+        return ceil(text.boundingRect(
+            with: CGSize.init(width: (self.layoutHeightCell?.descriptionLabel.frame.size.width)!, height: 0),
+            options: NSStringDrawingOptions.usesLineFragmentOrigin,
+            attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: fontSize)],
             context: nil).size.height)
     }
 
@@ -178,7 +180,7 @@ class ListTableViewController: TimelineTableViewController {
         loadData(nil)
     }
 
-    func loadData(maxID: Int64?) {
+    func loadData(_ maxID: Int64?) {
         let fontSize = CGFloat(GenericSettings.get().fontSize)
 
         let s = { (userLists: [TwitterList]) -> Void in
@@ -191,7 +193,7 @@ class ListTableViewController: TimelineTableViewController {
             self.footerIndicatorView?.stopAnimating()
         }
 
-        if !(self.refreshControl?.refreshing ?? false) {
+        if !(self.refreshControl?.isRefreshing ?? false) {
             Async.main {
                 self.footerIndicatorView?.startAnimating()
                 return
@@ -201,7 +203,7 @@ class ListTableViewController: TimelineTableViewController {
         loadData(maxID?.stringValue, success: s, failure: f)
     }
 
-    func loadData(maxID: String?, success: ((userLists: [TwitterList]) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadData(_ maxID: String?, success: @escaping ((_ userLists: [TwitterList]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         assertionFailure("not implements.")
     }
 }

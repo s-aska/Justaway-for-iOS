@@ -10,13 +10,13 @@ import UIKit
 import EventBox
 
 extension SearchViewController {
-    func showMenu(sender: UIView, keyword: String) {
+    func showMenu(_ sender: UIView, keyword: String) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
 
-        let actionSheet = UIAlertController(title: "Menu", message: nil, preferredStyle: .ActionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Add to tab", style: .Default, handler: { action in
+        let actionSheet = UIAlertController(title: "Menu", message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Add to tab", style: .default, handler: { action in
             let tab = Tab.init(userID: account.userID, keyword: keyword)
             let newAccount = Account(account: account, tabs: account.tabs + [tab])
             if let settings = AccountSettingsStore.get() {
@@ -27,16 +27,16 @@ extension SearchViewController {
         }))
 
         if excludeRetweets {
-            actionSheet.addAction(UIAlertAction(title: "Include Retweet", style: .Default, handler: { [weak self] action in
+            actionSheet.addAction(UIAlertAction(title: "Include Retweet", style: .default, handler: { [weak self] action in
                 self?.excludeRetweets = false
                 }))
         } else {
-            actionSheet.addAction(UIAlertAction(title: "Exclude Retweet", style: .Default, handler: { [weak self] action in
+            actionSheet.addAction(UIAlertAction(title: "Exclude Retweet", style: .default, handler: { [weak self] action in
                 self?.excludeRetweets = true
                 }))
         }
 
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
         // iPad
         actionSheet.popoverPresentationController?.sourceView = sender

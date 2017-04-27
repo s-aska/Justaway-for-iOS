@@ -60,7 +60,7 @@ class TwitterMessage {
         self.ownerID = ownerID
         self.id = dictionary["id"] as? String ?? ""
         self.text = dictionary["text"] as? String ?? ""
-        self.createdAt = TwitterDate(NSDate(timeIntervalSince1970: (dictionary["createdAt"] as? NSNumber ?? 0).doubleValue))
+        self.createdAt = TwitterDate(Date(timeIntervalSince1970: (dictionary["createdAt"] as? NSNumber ?? 0).doubleValue))
         self.recipient = TwitterUser(dictionary["recipient"] as? [String: AnyObject] ?? [:])
         self.sender = TwitterUser(dictionary["sender"] as? [String: AnyObject] ?? [:])
 
@@ -95,15 +95,15 @@ class TwitterMessage {
 
     var dictionaryValue: [String: AnyObject] {
         return [
-            "id": id,
-            "text": text,
-            "createdAt": Int(createdAt.date.timeIntervalSince1970),
-            "recipient": recipient.dictionaryValue,
-            "sender": sender.dictionaryValue,
-            "urls": urls.map({ $0.dictionaryValue }),
-            "mentions": mentions.map({ $0.dictionaryValue }),
-            "hashtags": hashtags.map({ $0.dictionaryValue }),
-            "media": media.map({ $0.dictionaryValue })
+            "id": id as AnyObject,
+            "text": text as AnyObject,
+            "createdAt": Int(createdAt.date.timeIntervalSince1970) as AnyObject,
+            "recipient": recipient.dictionaryValue as AnyObject,
+            "sender": sender.dictionaryValue as AnyObject,
+            "urls": urls.map({ $0.dictionaryValue }) as AnyObject,
+            "mentions": mentions.map({ $0.dictionaryValue }) as AnyObject,
+            "hashtags": hashtags.map({ $0.dictionaryValue }) as AnyObject,
+            "media": media.map({ $0.dictionaryValue }) as AnyObject
         ]
     }
 }

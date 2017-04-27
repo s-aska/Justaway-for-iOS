@@ -11,19 +11,19 @@ import Foundation
 class TwitterText {
 
     // swiftlint:disable:next force_try
-    static let linkDetector = try! NSDataDetector(types: NSTextCheckingType.Link.rawValue)
+    static let linkDetector = try! NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
 
-    class func count(text: String, hasImage: Bool) -> Int {
+    class func count(_ text: String, hasImage: Bool) -> Int {
         let textLength = text.characters.count // 🍣 is 1
         let objcLength = text.utf16.count // 🍣 is 2
         let objcText = text as NSString
         let objcRange = NSRange(location: 0, length: objcLength)
-        let matches = linkDetector.matchesInString(text, options: [], range: objcRange)
+        let matches = linkDetector.matches(in: text, options: [], range: objcRange)
 
         let urlLength = matches
-            .map { objcText.substringWithRange($0.range) as String }
+            .map { objcText.substring(with: $0.range) as String }
             .map { $0.characters.count }
-            .reduce(0, combine: +)
+            .reduce(0, +)
 
         let shortURLLength = matches.count * 23
 

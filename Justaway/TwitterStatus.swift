@@ -4,7 +4,7 @@ import SwiftyJSON
 class TwitterStatus {
 
     enum TwitterStatusType {
-        case Normal, Favorite, UnFavorite
+        case normal, favorite, unFavorite
     }
 
     let user: TwitterUser
@@ -74,14 +74,14 @@ class TwitterStatus {
 
         self.text = { (urls, media) in
             var text = statusJson["extended_tweet"]["full_text"].string ?? statusJson["full_text"].string ?? statusJson["text"].string ?? ""
-            text = text.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: [], range: nil)
-            text = text.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: [], range: nil)
-            text = text.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: [], range: nil)
+            text = text.replacingOccurrences(of: "&lt;", with: "<", options: [], range: nil)
+            text = text.replacingOccurrences(of: "&gt;", with: ">", options: [], range: nil)
+            text = text.replacingOccurrences(of: "&amp;", with: "&", options: [], range: nil)
             for url in urls {
-                text = text.stringByReplacingOccurrencesOfString(url.shortURL, withString: url.displayURL, options: NSStringCompareOptions.LiteralSearch, range: nil)
+                text = text.replacingOccurrences(of: url.shortURL, with: url.displayURL, options: NSString.CompareOptions.literal, range: nil)
             }
             for media in media {
-                text = text.stringByReplacingOccurrencesOfString(media.shortURL, withString: media.displayURL, options: NSStringCompareOptions.LiteralSearch, range: nil)
+                text = text.replacingOccurrences(of: media.shortURL, with: media.displayURL, options: NSString.CompareOptions.literal, range: nil)
             }
             return text
         }(self.urls, self.media)
@@ -89,23 +89,23 @@ class TwitterStatus {
         self.via = TwitterVia(statusJson["source"].string ?? "unknown")
 
         if json["event"].string == "favorite" || json["event"].string == "favorited_retweet" {
-            self.type = .Favorite
+            self.type = .favorite
             self.actionedBy = TwitterUser(json["source"])
             self.referenceStatusID = nil
         } else if json["event"].string == "unfavorite" {
-            self.type = .UnFavorite
+            self.type = .unFavorite
             self.actionedBy = TwitterUser(json["source"])
             self.referenceStatusID = nil
         } else if json["event"].string == "retweeted_retweet" {
-            self.type = .Normal
+            self.type = .normal
             self.actionedBy = TwitterUser(json["source"])
             self.referenceStatusID = targetJson["id_str"].string
         } else if targetJson["retweeted_status"] != nil {
-            self.type = .Normal
+            self.type = .normal
             self.actionedBy = TwitterUser(targetJson["user"])
             self.referenceStatusID = targetJson["id_str"].string
         } else {
-            self.type = .Normal
+            self.type = .normal
             self.actionedBy = nil
             self.referenceStatusID = nil
         }
@@ -148,7 +148,7 @@ class TwitterStatus {
         self.user = TwitterUser(dictionary["user"] as? [String: AnyObject] ?? [:])
         self.statusID = dictionary["statusID"] as? String ?? ""
         self.text = dictionary["text"] as? String ?? ""
-        self.createdAt = TwitterDate(NSDate(timeIntervalSince1970: (dictionary["createdAt"] as? NSNumber ?? 0).doubleValue))
+        self.createdAt = TwitterDate(Date(timeIntervalSince1970: (dictionary["createdAt"] as? NSNumber ?? 0).doubleValue))
         self.retweetCount = dictionary["retweetCount"] as? Int ?? 0
         self.favoriteCount = dictionary["favoriteCount"] as? Int ?? 0
         self.possiblySensitive = dictionary["possiblySensitive"] as? Bool ?? false
@@ -188,15 +188,15 @@ class TwitterStatus {
         if let event = dictionary["event"] as? String {
             self.event = event
             if event == "favorite" || event == "favorited_retweet" {
-                self.type = .Favorite
+                self.type = .favorite
             } else if event == "unfavorite" {
-                self.type = .UnFavorite
+                self.type = .unFavorite
             } else {
-                self.type = .Normal
+                self.type = .normal
             }
         } else {
             self.event = nil
-            self.type = .Normal
+            self.type = .normal
         }
 
         if let inReplyToStatusID = dictionary["inReplyToStatusID"] as? String {
@@ -232,9 +232,9 @@ class TwitterStatus {
 
     var uniqueID: String {
         if let actionedBy = actionedBy, let event = event {
-            return [statusID, event, actionedBy.userID].joinWithSeparator(":")
+            return [statusID, event, actionedBy.userID].joined(separator: ":")
         } else if self.inReplyToUserID != nil {
-            return [statusID, "reply", user.userID].joinWithSeparator(":")
+            return [statusID, "reply", user.userID].joined(separator: ":")
         } else {
             return referenceOrStatusID
         }
@@ -244,48 +244,48 @@ class TwitterStatus {
         return referenceStatusID ?? statusID
     }
 
-    var statusURL: NSURL {
-        return NSURL(string: "https://twitter.com/\(user.screenName)/status/\(statusID)")!
+    var statusURL: URL {
+        return URL(string: "https://twitter.com/\(user.screenName)/status/\(statusID)")!
     }
 
     var dictionaryValue: [String: AnyObject] {
         var dictionary: [String: AnyObject] = [
-            "user": user.dictionaryValue,
-            "statusID": statusID,
-            "text": text,
-            "createdAt": Int(createdAt.date.timeIntervalSince1970),
-            "retweetCount": retweetCount,
-            "favoriteCount": favoriteCount,
-            "urls": urls.map({ $0.dictionaryValue }),
-            "mentions": mentions.map({ $0.dictionaryValue }),
-            "hashtags": hashtags.map({ $0.dictionaryValue }),
-            "media": media.map({ $0.dictionaryValue }),
-            "via": via.dictionaryValue,
-            "possiblySensitive": possiblySensitive
+            "user": user.dictionaryValue as AnyObject,
+            "statusID": statusID as AnyObject,
+            "text": text as AnyObject,
+            "createdAt": Int(createdAt.date.timeIntervalSince1970) as AnyObject,
+            "retweetCount": retweetCount as AnyObject,
+            "favoriteCount": favoriteCount as AnyObject,
+            "urls": urls.map({ $0.dictionaryValue }) as AnyObject,
+            "mentions": mentions.map({ $0.dictionaryValue }) as AnyObject,
+            "hashtags": hashtags.map({ $0.dictionaryValue }) as AnyObject,
+            "media": media.map({ $0.dictionaryValue }) as AnyObject,
+            "via": via.dictionaryValue as AnyObject,
+            "possiblySensitive": possiblySensitive as AnyObject
         ]
 
         if let event = self.event {
-            dictionary["event"] = event
+            dictionary["event"] = event as AnyObject
         }
 
         if let actionedBy = self.actionedBy {
-            dictionary["actionedBy"] = actionedBy.dictionaryValue
+            dictionary["actionedBy"] = actionedBy.dictionaryValue as AnyObject
         }
 
         if let inReplyToStatusID = self.inReplyToStatusID {
-            dictionary["inReplyToStatusID"] = inReplyToStatusID
+            dictionary["inReplyToStatusID"] = inReplyToStatusID as AnyObject
         }
 
         if let inReplyToUserID = self.inReplyToUserID {
-            dictionary["inReplyToUserID"] = inReplyToUserID
+            dictionary["inReplyToUserID"] = inReplyToUserID as AnyObject
         }
 
         if let referenceStatusID = self.referenceStatusID {
-            dictionary["referenceStatusID"] = referenceStatusID
+            dictionary["referenceStatusID"] = referenceStatusID as AnyObject
         }
 
         if let quotedStatus = self.quotedStatus {
-            dictionary["quotedStatus"] = quotedStatus.dictionaryValue
+            dictionary["quotedStatus"] = quotedStatus.dictionaryValue as AnyObject
         }
 
         return dictionary

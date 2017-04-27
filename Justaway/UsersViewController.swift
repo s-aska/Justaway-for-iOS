@@ -12,7 +12,6 @@ import EventBox
 
 class UsersViewController: UIViewController {
 
-
     // MARK: Properties
 
     @IBOutlet weak var tableView: UITableView!
@@ -31,12 +30,12 @@ class UsersViewController: UIViewController {
         configureView()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -83,12 +82,12 @@ class UsersViewController: UIViewController {
         loadData(success: s, failure: f)
     }
 
-    func loadData(success success: ((users: [TwitterUserFull]) -> Void), failure: ((error: NSError) -> Void)) {
+    func loadData(success: @escaping ((_ users: [TwitterUserFull]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
     }
 
     // MARK: - Action
 
-    @IBAction func left(sender: UIButton) {
+    @IBAction func left(_ sender: UIButton) {
         hide()
     }
 

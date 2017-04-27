@@ -38,9 +38,9 @@ class TwitterUserCell: BackgroundTableViewCell {
     // MARK: - Configuration
 
     func configureView() {
-        selectionStyle = .None
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
+        selectionStyle = .none
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
         preservesSuperviewLayoutMargins = false
         iconImageView.layer.cornerRadius = 6
         iconImageView.clipsToBounds = true
@@ -49,17 +49,17 @@ class TwitterUserCell: BackgroundTableViewCell {
         followButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(openUserMenu(_:))))
     }
 
-    func openProfile(sender: UIGestureRecognizer) {
+    func openProfile(_ sender: UIGestureRecognizer) {
         if let user = user {
             ProfileViewController.show(user)
         }
     }
 
-    func openUserMenu(sender: UILongPressGestureRecognizer) {
-        if sender.state != .Began {
+    func openUserMenu(_ sender: UILongPressGestureRecognizer) {
+        if sender.state != .began {
             return
         }
-        guard let account = AccountSettingsStore.get()?.account(), view = sender.view else {
+        guard let account = AccountSettingsStore.get()?.account(), let view = sender.view else {
             return
         }
         if let user = user {
@@ -69,26 +69,26 @@ class TwitterUserCell: BackgroundTableViewCell {
         }
     }
 
-    @IBAction func follow(sender: UIButton) {
+    @IBAction func follow(_ sender: UIButton) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
         if let user = user {
             Relationship.checkUser(account.userID, targetUserID: user.userID, callback: { (relationshop) in
                 if relationshop.following {
-                    let actionSheet = UIAlertController(title: "Unfollow @\(user.screenName)?", message: nil, preferredStyle: .Alert)
+                    let actionSheet = UIAlertController(title: "Unfollow @\(user.screenName)?", message: nil, preferredStyle: .alert)
                     actionSheet.addAction(UIAlertAction(
                         title: "Cancel",
-                        style: .Cancel,
+                        style: .cancel,
                         handler: { action in
                     }))
                     actionSheet.addAction(UIAlertAction(
                         title: "Unfollow",
-                        style: .Default,
+                        style: .default,
                         handler: { action in
                             Twitter.unfollow(user.userID) {
-                                self.followButton.hidden = false
-                                self.unfollowButton.hidden = true
+                                self.followButton.isHidden = false
+                                self.unfollowButton.isHidden = true
                             }
                     }))
 
@@ -98,19 +98,19 @@ class TwitterUserCell: BackgroundTableViewCell {
 
                     AlertController.showViewController(actionSheet)
                 } else {
-                    let actionSheet = UIAlertController(title: "Follow @\(user.screenName)?", message: nil, preferredStyle: .Alert)
+                    let actionSheet = UIAlertController(title: "Follow @\(user.screenName)?", message: nil, preferredStyle: .alert)
                     actionSheet.addAction(UIAlertAction(
                         title: "Cancel",
-                        style: .Cancel,
+                        style: .cancel,
                         handler: { action in
                     }))
                     actionSheet.addAction(UIAlertAction(
                         title: "Follow",
-                        style: .Default,
+                        style: .default,
                         handler: { action in
                             Twitter.follow(user.userID) {
-                                self.followButton.hidden = true
-                                self.unfollowButton.hidden = false
+                                self.followButton.isHidden = true
+                                self.unfollowButton.isHidden = false
                             }
                     }))
 
@@ -124,7 +124,7 @@ class TwitterUserCell: BackgroundTableViewCell {
         }
     }
 
-    @IBAction func menu(sender: UIButton) {
+    @IBAction func menu(_ sender: UIButton) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }

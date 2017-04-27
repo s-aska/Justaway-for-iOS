@@ -58,7 +58,7 @@ class GenericSettings {
     class func configure() {
         EventBox.onMainThread(self, name: eventFontSizeApplied) { (n) -> Void in
             if let fontSize = n.userInfo?["fontSize"] as? NSNumber {
-                GenericSettings.update(fontSize.floatValue)
+                _ = GenericSettings.update(fontSize.floatValue)
             }
         }
     }
@@ -77,19 +77,19 @@ class GenericSettings {
         }
     }
 
-    class func save(genericSettings: GenericSettings) -> Bool {
+    class func save(_ genericSettings: GenericSettings) -> Bool {
         Static.instance = genericSettings
         return KeyClip.save(Constants.keychainKey, dictionary: genericSettings.dictionaryValue)
     }
 
-    class func update(fontSize: Float) -> GenericSettings {
+    class func update(_ fontSize: Float) -> GenericSettings {
         let currentSettings = get()
         let updatedSettings = GenericSettings(fontSize: fontSize, disableSleep: currentSettings.disableSleep)
         save(updatedSettings)
         return updatedSettings
     }
 
-    class func update(disableSleep: Bool) -> GenericSettings {
+    class func update(_ disableSleep: Bool) -> GenericSettings {
         let currentSettings = get()
         let updatedSettings = GenericSettings(fontSize: currentSettings.fontSize, disableSleep: disableSleep)
         save(updatedSettings)

@@ -22,12 +22,12 @@ class NotificationsViewController: StatusTableViewController {
             let key = "notifications:\(account.userID)"
             let statuses = self.adapter.statuses
             let dictionary = ["statuses": ( statuses.count > 100 ? Array(statuses[0 ..< 100]) : statuses ).map({ $0.dictionaryValue })]
-            KeyClip.save(key, dictionary: dictionary)
+            _ = KeyClip.save(key, dictionary: dictionary as NSDictionary)
             NSLog("notifications saveCache.")
         }
     }
 
-    override func loadCache(success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadCache(_ success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         adapter.activityMode = true
         maxMentionID = nil
         Async.background {
@@ -35,17 +35,17 @@ class NotificationsViewController: StatusTableViewController {
                 return
             }
             let oldKey = "notifications:\(account.userID)"
-            KeyClip.delete(oldKey)
+            _ = KeyClip.delete(oldKey)
             let key = "notifications-v2:\(account.userID)"
             if let cache = KeyClip.load(key) as NSDictionary? {
-                if let statuses = cache["statuses"] as? [[String: AnyObject]] where statuses.count > 0 {
-                    success(statuses: statuses.map({ TwitterStatus($0) }))
+                if let statuses = cache["statuses"] as? [[String: AnyObject]], statuses.count > 0 {
+                    success(statuses.map({ TwitterStatus($0) }))
                     return
                 }
             }
-            success(statuses: [TwitterStatus]())
+            success([TwitterStatus]())
 
-            Async.background(after: 0.4, block: { () -> Void in
+            Async.background(after: 0.4, { () -> Void in
                 self.loadData(nil)
             })
         }
@@ -56,7 +56,7 @@ class NotificationsViewController: StatusTableViewController {
         loadData(nil)
     }
 
-    override func loadData(maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(_ maxID: String?, success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
@@ -67,30 +67,30 @@ class NotificationsViewController: StatusTableViewController {
                 if let maxMentionID = maxMentionID {
                     self.maxMentionID = maxMentionID
                 }
-                success(statuses: statuses)
+                success(statuses)
             }
             Twitter.getActivity(maxID: maxID, maxMentionID: maxMentionID, success: activitySuccess, failure: failure)
         }
     }
 
-    override func loadData(sinceID sinceID: String?, maxID: String?, success: ((statuses: [TwitterStatus]) -> Void), failure: ((error: NSError) -> Void)) {
+    override func loadData(sinceID: String?, maxID: String?, success: @escaping ((_ statuses: [TwitterStatus]) -> Void), failure: @escaping ((_ error: NSError) -> Void)) {
         guard let account = AccountSettingsStore.get()?.account() else {
             return
         }
         if account.exToken.isEmpty {
-            Twitter.getMentionTimeline(sinceID: sinceID, maxID: maxID, success: success, failure: failure)
+            Twitter.getMentionTimeline(maxID: maxID, sinceID: sinceID, success: success, failure: failure)
         } else {
             let activitySuccess = { (statuses: [TwitterStatus], maxMentionID: String?) -> Void in
                 if let maxMentionID = maxMentionID {
                     self.maxMentionID = maxMentionID
                 }
-                success(statuses: statuses)
+                success(statuses)
             }
-            Twitter.getActivity(sinceID: sinceID, maxID: maxID, maxMentionID: maxMentionID, success: activitySuccess, failure: failure)
+            Twitter.getActivity(maxID: maxID, sinceID: sinceID, maxMentionID: maxMentionID, success: activitySuccess, failure: failure)
         }
     }
 
-    override func accept(status: TwitterStatus) -> Bool {
+    override func accept(_ status: TwitterStatus) -> Bool {
 
         if let event = status.event {
             if let accountSettings = AccountSettingsStore.get() {

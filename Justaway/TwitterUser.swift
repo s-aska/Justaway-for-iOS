@@ -5,7 +5,7 @@ struct TwitterUser {
     let userID: String
     let screenName: String
     let name: String
-    let profileImageURL: NSURL
+    let profileImageURL: URL?
     let isProtected: Bool
 
     init(_ json: JSON) {
@@ -14,9 +14,9 @@ struct TwitterUser {
         self.name = json["name"].string ?? ""
         self.isProtected = json["protected"].boolValue ? true : false
         if let url = json["profile_image_url_https"].string {
-            self.profileImageURL = NSURL(string: url.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: [], range: nil))!
+            self.profileImageURL = URL(string: url.replacingOccurrences(of: "_normal", with: "_bigger", options: [], range: nil))!
         } else {
-            self.profileImageURL = NSURL(string: json["profile_image_url_https"].string ?? "")!
+            self.profileImageURL = URL(string: json["profile_image_url_https"].string ?? "")!
         }
     }
 
@@ -26,9 +26,9 @@ struct TwitterUser {
         self.name = json["name"] as? String ?? ""
         self.isProtected = json["protected"] as? Bool ?? false
         if let url = json["profile_image_url_https"] as? String {
-            self.profileImageURL = NSURL(string: url.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: [], range: nil))!
+            self.profileImageURL = URL(string: url.replacingOccurrences(of: "_normal", with: "_bigger", options: [], range: nil))!
         } else {
-            self.profileImageURL = NSURL(string: json["profile_image_url_https"] as? String ?? "")!
+            self.profileImageURL = URL(string: json["profile_image_url_https"] as? String ?? "")!
         }
     }
 
@@ -52,22 +52,26 @@ struct TwitterUser {
         self.userID = dictionary["userID"] as? String ?? ""
         self.screenName = dictionary["screenName"] as? String ?? ""
         self.name = dictionary["name"] as? String ?? ""
-        self.profileImageURL = NSURL(string: dictionary["profileImageURL"] as? String ?? "")!
+        self.profileImageURL = URL(string: dictionary["profileImageURL"] as? String ?? "")!
         self.isProtected = dictionary["isProtected"] as? Bool ?? false
     }
 
     var dictionaryValue: [String: AnyObject] {
         return [
-            "userID": userID,
-            "screenName": screenName,
-            "name": name,
-            "isProtected": isProtected,
-            "profileImageURL": profileImageURL.absoluteString ?? ""
+            "userID": userID as AnyObject,
+            "screenName": screenName as AnyObject,
+            "name": name as AnyObject,
+            "isProtected": isProtected as AnyObject,
+            "profileImageURL": (profileImageURL?.absoluteString ?? "") as AnyObject
         ]
     }
 
-    var profileOriginalImageURL: NSURL? {
-        return NSURL(string: profileImageURL.absoluteString.stringByReplacingOccurrencesOfString("_bigger", withString: "", options: [], range: nil))
+    var profileOriginalImageURL: URL? {
+        if let url = profileImageURL {
+            return URL(string: url.absoluteString.replacingOccurrences(of: "_bigger", with: "", options: [], range: nil))
+        } else {
+            return nil
+        }
     }
 }
 
@@ -75,7 +79,7 @@ struct TwitterUserFull {
     let userID: String
     let screenName: String
     let name: String
-    let profileImageURL: NSURL
+    let profileImageURL: URL
     let isProtected: Bool
     let createdAt: TwitterDate
     let description: String
@@ -83,9 +87,9 @@ struct TwitterUserFull {
     let followRequestSent: Bool
     let following: Bool
     let location: String
-    let profileBannerURL: NSURL
+    let profileBannerURL: URL
     let displayURL: String
-    let expandedURL: NSURL?
+    let expandedURL: URL?
     let favouritesCount: Int
     let followersCount: Int
     let friendsCount: Int
@@ -98,14 +102,14 @@ struct TwitterUserFull {
         self.name = json["name"].string ?? ""
         self.isProtected = json["protected"].boolValue ? true : false
         if let url = json["profile_image_url_https"].string {
-            self.profileImageURL = NSURL(string: url.stringByReplacingOccurrencesOfString("_normal", withString: "_bigger", options: [], range: nil))!
+            self.profileImageURL = URL(string: url.replacingOccurrences(of: "_normal", with: "_bigger", options: [], range: nil))!
         } else {
-            self.profileImageURL = NSURL(string: json["profile_image_url_https"].string ?? "")!
+            self.profileImageURL = URL(string: json["profile_image_url_https"].string ?? "")!
         }
         if let url = json["profile_banner_url"].string {
-            self.profileBannerURL = NSURL(string: url + "/mobile_retina")!
+            self.profileBannerURL = URL(string: url + "/mobile_retina")!
         } else {
-            self.profileBannerURL = NSURL(string: json["profile_background_image_url_https"].string ?? "")!
+            self.profileBannerURL = URL(string: json["profile_background_image_url_https"].string ?? "")!
         }
         self.createdAt = TwitterDate(json["created_at"].string ?? "")
         self.description = json["description"].string ?? ""
@@ -119,7 +123,7 @@ struct TwitterUserFull {
         self.location = json["location"].string ?? ""
 
         var displayURL = json["url"].string ?? ""
-        var expandedURL: NSURL?
+        var expandedURL: URL?
         self.favouritesCount = json["favourites_count"].int ?? 0
         self.followersCount = json["followers_count"].int ?? 0
         self.friendsCount = json["friends_count"].int ?? 0
@@ -129,7 +133,7 @@ struct TwitterUserFull {
         for url in self.urls {
             if url.shortURL == displayURL {
                 displayURL = url.displayURL
-                expandedURL = NSURL(string: url.expandedURL)
+                expandedURL = URL(string: url.expandedURL)
                 break
             }
         }

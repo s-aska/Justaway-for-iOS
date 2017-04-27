@@ -5,19 +5,19 @@
 import Foundation
 import Async
 
-class AsyncOperation: NSOperation {
+class AsyncOperation: Operation {
 
     // MARK: - Types
 
     enum State {
-        case Ready, Executing, Finished
+        case ready, executing, finished
         func keyPath() -> String {
             switch self {
-            case Ready:
+            case .ready:
                 return "isReady"
-            case Executing:
+            case .executing:
                 return "isExecuting"
-            case Finished:
+            case .finished:
                 return "isFinished"
             }
         }
@@ -27,37 +27,37 @@ class AsyncOperation: NSOperation {
 
     var state: State {
         willSet {
-            willChangeValueForKey(newValue.keyPath())
-            willChangeValueForKey(state.keyPath())
+            willChangeValue(forKey: newValue.keyPath())
+            willChangeValue(forKey: state.keyPath())
         }
         didSet {
-            didChangeValueForKey(oldValue.keyPath())
-            didChangeValueForKey(state.keyPath())
+            didChangeValue(forKey: oldValue.keyPath())
+            didChangeValue(forKey: state.keyPath())
         }
     }
 
     // MARK: - Initializers
 
     override init() {
-        state = .Ready
+        state = .ready
         super.init()
     }
 
     // MARK: - NSOperation
 
-    override var ready: Bool {
-        return super.ready && state == .Ready
+    override var isReady: Bool {
+        return super.isReady && state == .ready
     }
 
-    override var executing: Bool {
-        return state == .Executing
+    override var isExecuting: Bool {
+        return state == .executing
     }
 
-    override var finished: Bool {
-        return state == .Finished
+    override var isFinished: Bool {
+        return state == .finished
     }
 
-    override var asynchronous: Bool {
+    override var isAsynchronous: Bool {
         return true
     }
 
@@ -65,54 +65,54 @@ class AsyncOperation: NSOperation {
 
 class AsyncBlockOperation: AsyncOperation {
 
-    let executionBlock: (op: AsyncBlockOperation) -> Void
+    let executionBlock: (_ op: AsyncBlockOperation) -> Void
 
-    init(_ executionBlock: (op: AsyncBlockOperation) -> Void) {
+    init(_ executionBlock: @escaping (_ op: AsyncBlockOperation) -> Void) {
         self.executionBlock = executionBlock
         super.init()
     }
 
     override func start() {
         super.start()
-        state = .Executing
-        executionBlock(op: self)
+        state = .executing
+        executionBlock(self)
     }
 
     override func cancel() {
         super.cancel()
-        state = .Finished
+        state = .finished
     }
 
     func finish() {
-        state = .Finished
+        state = .finished
     }
 
 }
 
 class MainBlockOperation: AsyncOperation {
 
-    let executionBlock: (op: MainBlockOperation) -> Void
+    let executionBlock: (_ op: MainBlockOperation) -> Void
 
-    init(_ executionBlock: (op: MainBlockOperation) -> Void) {
+    init(_ executionBlock: @escaping (_ op: MainBlockOperation) -> Void) {
         self.executionBlock = executionBlock
         super.init()
     }
 
     override func start() {
         super.start()
-        state = .Executing
+        state = .executing
         Async.main {
-            self.executionBlock(op: self)
+            self.executionBlock(self)
         }
     }
 
     override func cancel() {
         super.cancel()
-        state = .Finished
+        state = .finished
     }
 
     func finish() {
-        state = .Finished
+        state = .finished
     }
 
 }

@@ -12,19 +12,19 @@ class ThemeMonokai: Theme {
 
     func name() -> String { return "Monokai" }
 
-    func statusBarStyle() -> UIStatusBarStyle { return .LightContent }
-    func activityIndicatorStyle() -> UIActivityIndicatorViewStyle { return .White }
-    func showMoreTweetIndicatorStyle() -> UIActivityIndicatorViewStyle { return .Gray }
-    func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle { return .White }
+    func statusBarStyle() -> UIStatusBarStyle { return .lightContent }
+    func activityIndicatorStyle() -> UIActivityIndicatorViewStyle { return .white }
+    func showMoreTweetIndicatorStyle() -> UIActivityIndicatorViewStyle { return .gray }
+    func scrollViewIndicatorStyle() -> UIScrollViewIndicatorStyle { return .white }
 
     func mainBackgroundColor() -> UIColor { return ThemeColor.Monokai.black }
-    func mainHighlightBackgroundColor() -> UIColor { return UIColor.darkGrayColor() }
-    func titleTextColor() -> UIColor { return UIColor.whiteColor() }
-    func bodyTextColor() -> UIColor { return UIColor.whiteColor() }
+    func mainHighlightBackgroundColor() -> UIColor { return UIColor.darkGray }
+    func titleTextColor() -> UIColor { return UIColor.white }
+    func bodyTextColor() -> UIColor { return UIColor.white }
     func cellSeparatorColor() -> UIColor { return ThemeColor.Monokai.gray }
 
     func sideMenuBackgroundColor() -> UIColor { return ThemeColor.Monokai.gray }
-    func switchTintColor() -> UIColor { return UIColor.whiteColor() }
+    func switchTintColor() -> UIColor { return UIColor.white }
 
     func displayNameTextColor() -> UIColor { return ThemeColor.Monokai.yellow }
     func screenNameTextColor() -> UIColor { return ThemeColor.Monokai.red }
@@ -33,15 +33,15 @@ class ThemeMonokai: Theme {
     func clientNameTextColor() -> UIColor { return ThemeColor.Monokai.blue }
 
     func menuBackgroundColor() -> UIColor { return ThemeColor.Monokai.gray }
-    func menuTextColor() -> UIColor { return UIColor.whiteColor() }
+    func menuTextColor() -> UIColor { return UIColor.white }
     func menuHighlightedTextColor() -> UIColor { return UIColor(red: 1, green: 1, blue: 1, alpha: 0.5) }
     func menuSelectedTextColor() -> UIColor { return ThemeColor.Monokai.blue }
-    func menuDisabledTextColor() -> UIColor { return UIColor.grayColor() }
+    func menuDisabledTextColor() -> UIColor { return UIColor.gray }
 
     func showMoreTweetBackgroundColor() -> UIColor { return ThemeColor.Monokai.gray }
-    func showMoreTweetLabelTextColor() -> UIColor { return UIColor.whiteColor() }
+    func showMoreTweetLabelTextColor() -> UIColor { return UIColor.white }
 
-    func buttonNormal() -> UIColor { return UIColor.lightGrayColor() }
+    func buttonNormal() -> UIColor { return UIColor.lightGray }
     func retweetButtonSelected() -> UIColor { return ThemeColor.Monokai.green }
     func favoritesButtonSelected() -> UIColor { return ThemeColor.Monokai.red }
     func followButtonSelected() -> UIColor { return ThemeColor.Monokai.blue }

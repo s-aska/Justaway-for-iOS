@@ -40,12 +40,12 @@ class SideMenuViewController: UIViewController {
         configureView()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         EventBox.off(self)
     }
@@ -53,19 +53,19 @@ class SideMenuViewController: UIViewController {
     // MARK: - Configuration
 
     func configureView() {
-        overlayWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+        overlayWindow = UIWindow(frame: UIScreen.main.bounds)
         overlayWindow?.rootViewController = self
-        overlayWindow?.backgroundColor = UIColor.clearColor()
-        overlayWindow?.rootViewController?.view.backgroundColor = UIColor.clearColor()
+        overlayWindow?.backgroundColor = UIColor.clear
+        overlayWindow?.rootViewController?.view.backgroundColor = UIColor.clear
         overlayWindow?.windowLevel = UIWindowLevelStatusBar
 
-        view.frame = UIScreen.mainScreen().bounds
+        view.frame = UIScreen.main.bounds
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hide)))
 
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(hide))
         swipe.numberOfTouchesRequired = 1
-        swipe.direction = .Left
+        swipe.direction = .left
         view.addGestureRecognizer(swipe)
 
         sideViewLeftConstraint.constant = -300
@@ -73,14 +73,14 @@ class SideMenuViewController: UIViewController {
         iconImageView.layer.cornerRadius = 30
 
         bannerImageView.clipsToBounds = true
-        bannerImageView.contentMode = .ScaleAspectFill
-        bannerImageView.userInteractionEnabled = true
+        bannerImageView.contentMode = .scaleAspectFill
+        bannerImageView.isUserInteractionEnabled = true
         bannerImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profile)))
 
         let gradient = CAGradientLayer()
-        gradient.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0).CGColor, UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).CGColor]
+        gradient.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor, UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor]
         gradient.frame = bannerImageView.frame
-        bannerImageView.layer.insertSublayer(gradient, atIndex: 0)
+        bannerImageView.layer.insertSublayer(gradient, at: 0)
 
         updateStreamingButtonTitle()
 
@@ -100,55 +100,57 @@ class SideMenuViewController: UIViewController {
 
     func streamingStatusLabel() -> String {
         switch Twitter.connectionStatus {
-        case .CONNECTED:
+        case .connected:
             return "connected"
-        case .CONNECTING:
+        case .connecting:
             return "connecting..."
-        case .DISCONNECTED:
+        case .disconnected:
             if Twitter.enableStreaming {
                 return "disconnected"
             } else {
                 return "off"
             }
-        case .DISCONNECTING:
+        case .disconnecting:
             return "disconnecting..."
         }
     }
 
     func configureEvent() {
-        EventBox.onMainThread(self, name: "changeStreamingMode") { n in
+        _ = EventBox.onMainThread(self, name: eventChangeStreamingMode) { n in
             self.updateStreamingButtonTitle()
         }
     }
 
     func updateStreamingButtonTitle() {
-        self.streamingButton?.setTitle("Streaming: \(self.streamingModeLabel()) / \(self.streamingStatusLabel())", forState: UIControlState.Normal)
+        self.streamingButton?.setTitle("Streaming: \(self.streamingModeLabel()) / \(self.streamingStatusLabel())", for: UIControlState())
     }
 
     // MARK: -
 
-    func show(account: Account) {
+    func show(_ account: Account) {
         self.account = account
 
-        view.hidden = true
+        view.isHidden = true
         view.alpha = 1
-        overlayWindow?.hidden = false
+        overlayWindow?.isHidden = false
 
         displayNameLabel.text = account.name
         screenNameLabel.text = "@" + account.screenName
-        ImageLoaderClient.displaySideMenuUserIcon(account.profileImageBiggerURL, imageView: iconImageView)
-        disableSleepSwitch.on = GenericSettings.get().disableSleep
+        if let url = account.profileImageBiggerURL {
+            ImageLoaderClient.displaySideMenuUserIcon(url, imageView: iconImageView)
+        }
+        disableSleepSwitch.isOn = GenericSettings.get().disableSleep
 
-        if !account.profileBannerURL.absoluteString.isEmpty {
-            ImageLoaderClient.displayImage(account.profileBannerURL, imageView: bannerImageView)
+        if let url = account.profileBannerURL {
+            ImageLoaderClient.displayImage(url, imageView: bannerImageView)
         }
 
         EditorViewController.hide()
 
         Async.main(after: 0.1) { () -> Void in
-            self.view.hidden = false
+            self.view.isHidden = false
             self.sideViewLeftConstraint.constant = 0
-            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
                 self.view.layoutIfNeeded()
             }, completion: nil)
         }
@@ -165,57 +167,57 @@ class SideMenuViewController: UIViewController {
     func hide() {
         sideViewLeftConstraint.constant = -300
 
-        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
             self.view.alpha = 0
             self.view.layoutIfNeeded()
             }, completion: { _ in
-                self.overlayWindow?.hidden = true
+                self.overlayWindow?.isHidden = true
         })
     }
 
-    @IBAction func accountSettings(sender: UIButton) {
+    @IBAction func accountSettings(_ sender: UIButton) {
         AccountViewController.show()
         hide()
     }
 
-    @IBAction func openProfile(sender: UIButton) {
+    @IBAction func openProfile(_ sender: UIButton) {
         ProfileViewController.show(TwitterUser(account!))
         hide()
     }
 
-    @IBAction func disableSleep(sender: UISwitch) {
-        GenericSettings.update(sender.on)
-        UIApplication.sharedApplication().idleTimerDisabled = sender.on
+    @IBAction func disableSleep(_ sender: UISwitch) {
+        _ = GenericSettings.update(sender.isOn)
+        UIApplication.shared.isIdleTimerDisabled = sender.isOn
     }
 
-    @IBAction func disableSleepButton(sender: UIButton) {
-        disableSleepSwitch.on = disableSleepSwitch.on ? false : true
-        GenericSettings.update(disableSleepSwitch.on)
-        UIApplication.sharedApplication().idleTimerDisabled = disableSleepSwitch.on
+    @IBAction func disableSleepButton(_ sender: UIButton) {
+        disableSleepSwitch.isOn = disableSleepSwitch.isOn ? false : true
+        _ = GenericSettings.update(disableSleepSwitch.isOn)
+        UIApplication.shared.isIdleTimerDisabled = disableSleepSwitch.isOn
     }
 
-    @IBAction func streaming(sender: UIButton) {
+    @IBAction func streaming(_ sender: UIButton) {
         hide()
         StreamingAlert.show(sender)
     }
 
-    @IBAction func tabSettingsView(sender: UIButton) {
+    @IBAction func tabSettingsView(_ sender: UIButton) {
         TabSettingsViewController.show()
         hide()
     }
 
-    @IBAction func displaySettings(sender: UIButton) {
+    @IBAction func displaySettings(_ sender: UIButton) {
         settingsViewController?.show()
         settingsViewController?.showThemeSettingsView(sender)
         hide()
     }
 
-    @IBAction func feedback(sender: UIButton) {
+    @IBAction func feedback(_ sender: UIButton) {
         EditorViewController.show(" #justaway", range: NSRange(location: 0, length: 0), inReplyToStatus: nil)
         hide()
     }
 
-    @IBAction func about(sender: UIButton) {
+    @IBAction func about(_ sender: UIButton) {
         AboutViewController.show()
         hide()
     }

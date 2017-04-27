@@ -9,9 +9,9 @@
 import UIKit
 
 class MessageAlert {
-    class func show(title: String, message: String? = nil) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+    class func show(_ title: String, message: String? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         AlertController.showViewController(alert)
     }
 }

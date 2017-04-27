@@ -27,11 +27,11 @@ class AVPlayerView: UIView {
         }
     }
 
-    override class func layerClass() -> AnyClass {
+    override class var layerClass : AnyClass {
         return AVPlayerLayer.self
     }
 
-    func setVideoFillMode(mode: String) {
+    func setVideoFillMode(_ mode: String) {
         if let layer = self.layer as? AVPlayerLayer {
             layer.videoGravity = mode
         }

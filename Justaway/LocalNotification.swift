@@ -11,10 +11,10 @@ import UIKit
 class LocalNotification {
 
     struct Static {
-        private static let queue = NSOperationQueue.init().serial()
+        fileprivate static let queue = OperationQueue.init().serial()
     }
 
-    class func show(message: String) {
+    class func show(_ message: String) {
         let op = AsyncBlockOperation { (op) in
             ToastViewController.show(message, completion: {
                 op.finish()

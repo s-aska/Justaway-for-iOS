@@ -33,9 +33,9 @@ class AccountCell: BackgroundTableViewCell {
     // MARK: - Configuration
 
     func configureView() {
-        selectionStyle = .None
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
+        selectionStyle = .none
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
         preservesSuperviewLayoutMargins = false
         iconImageView.layer.cornerRadius = 6
         iconImageView.clipsToBounds = true
@@ -51,50 +51,50 @@ class AccountCell: BackgroundTableViewCell {
             clientNameLabel.text = "via iOS"
             messageLabel.text = "off"
             messageLabel.textColor = ThemeController.currentTheme.menuTextColor()
-            messageButton.setTitleColor(ThemeController.currentTheme.menuTextColor(), forState: .Normal)
+            messageButton.setTitleColor(ThemeController.currentTheme.menuTextColor(), for: UIControlState())
         } else {
             clientNameLabel.text = "via Justaway for iOS"
             messageLabel.text = "on"
             messageLabel.textColor = ThemeController.currentTheme.accountOptionEnabled()
-            messageButton.setTitleColor(ThemeController.currentTheme.accountOptionEnabled(), forState: .Normal)
+            messageButton.setTitleColor(ThemeController.currentTheme.accountOptionEnabled(), for: UIControlState())
         }
         if account.exToken.isEmpty {
             notificationLabel.text = "off"
             notificationLabel.textColor = ThemeController.currentTheme.menuTextColor()
-            notificationButton.setTitleColor(ThemeController.currentTheme.menuTextColor(), forState: .Normal)
+            notificationButton.setTitleColor(ThemeController.currentTheme.menuTextColor(), for: UIControlState())
         } else {
             notificationLabel.text = "on"
             notificationLabel.textColor = ThemeController.currentTheme.accountOptionEnabled()
-            notificationButton.setTitleColor(ThemeController.currentTheme.accountOptionEnabled(), forState: .Normal)
+            notificationButton.setTitleColor(ThemeController.currentTheme.accountOptionEnabled(), for: UIControlState())
         }
     }
 
-    @IBAction func message(sender: UIButton) {
+    @IBAction func message(_ sender: UIButton) {
         if messageLabel.text == "on" {
 
         } else {
-            let alert = UIAlertController(title: "Are you sure you want to use the DirectMessage?", message: "Additional authentication is required.", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
+            let alert = UIAlertController(title: "Are you sure you want to use the DirectMessage?", message: "Additional authentication is required.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
                 Twitter.addOAuthAccount()
             }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             AlertController.showViewController(alert)
         }
     }
 
-    @IBAction func notification(sender: UIButton) {
+    @IBAction func notification(_ sender: UIButton) {
         if notificationLabel.text == "on" {
-            let alert = UIAlertController(title: "Are you sure you want the notification to Off?", message: "Also no longer use notification tab.", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
+            let alert = UIAlertController(title: "Are you sure you want the notification to Off?", message: "Also no longer use notification tab.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
                 if let account = self.account {
-                    let url = NSURL(string: "https://justaway.info/api/revoke.json")!
-                    let req = NSMutableURLRequest.init(URL: url)
-                    req.HTTPMethod = "POST"
+                    let url = URL(string: "https://justaway.info/api/revoke.json")!
+                    var req = URLRequest.init(url: url)
+                    req.httpMethod = "POST"
                     req.setValue(account.exToken, forHTTPHeaderField: "X-Justaway-API-Token")
-                    NSURLSession.sharedSession().dataTaskWithRequest(req) { (data, response, error) in
+                    URLSession.shared.dataTask(with: req, completionHandler: { (data, response, error) in
                         if let error = error {
                             Async.main {
-                                ErrorAlert.show(error)
+                                ErrorAlert.show(error as NSError)
                             }
                         } else {
                             let newAccount = Account.init(account: account, exToken: "")
@@ -107,17 +107,17 @@ class AccountCell: BackgroundTableViewCell {
                                 self.setText()
                             }
                         }
-                    }.resume()
+                    }) .resume()
                 }
             }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             AlertController.showViewController(alert)
         } else {
-            let alert = UIAlertController(title: "Are you sure you want to use the Notification?", message: "Additional authentication is required.", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
+            let alert = UIAlertController(title: "Are you sure you want to use the Notification?", message: "Additional authentication is required.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
                 SafariExURLHandler.open()
             }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             AlertController.showViewController(alert)
         }
     }

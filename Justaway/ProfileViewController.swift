@@ -78,10 +78,10 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     let followerTableViewController = FollowerUserViewController()
     let listMemberOfViewController = ListMemberOfViewController()
     let favoritesTableViewController = FavoritesTableViewController()
-    let sinceDateFormatter: NSDateFormatter = {
-        let formatter = NSDateFormatter()
-        formatter.locale = NSLocale.currentLocale()
-        formatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+    let sinceDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         formatter.dateFormat = "yyyy.MM.dd"
         return formatter
     }()
@@ -101,7 +101,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureEvent()
         if !loaded {
@@ -110,7 +110,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         }
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         // EventBox.off(self)
     }
@@ -139,12 +139,12 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         scrollView.delegate = self
 
         coverImageView.clipsToBounds = true
-        coverImageView.contentMode = .ScaleAspectFill
+        coverImageView.contentMode = .scaleAspectFill
 
         let gradient = CAGradientLayer()
-        gradient.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0).CGColor, UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).CGColor]
+        gradient.colors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor, UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor]
         gradient.frame = coverImageView.frame
-        coverImageView.layer.insertSublayer(gradient, atIndex: 0)
+        coverImageView.layer.insertSublayer(gradient, at: 0)
 
         iconImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.showIcon(_:))))
         coverImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.showCover(_:))))
@@ -169,7 +169,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
 
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
-        scrollView.pagingEnabled = true
+        scrollView.isPagingEnabled = true
 
         configureUserTimelineTableView()
     }
@@ -204,7 +204,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: - UITableViewDataSource
 
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.x
         NSLog("offset \(offset)")
         if offset < -10 {
@@ -217,11 +217,11 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         loadData(page)
     }
 
-    func highlightUpdate(page: Int) {
+    func highlightUpdate(_ page: Int) {
         currentTabMaskLeftConstraint.constant = CGFloat(CGFloat(page) * self.view.frame.size.width / 5)
     }
 
-    func loadData(page: Int) {
+    func loadData(_ page: Int) {
         if !(tabLoaded[page] ?? false) {
             tabLoaded[page] = true
             tabViews[page].refresh()
@@ -248,7 +248,9 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             }
         }
         // followedByLabel.alpha = 0
-        ImageLoaderClient.displayUserIcon(user.profileImageURL, imageView: iconImageView)
+        if let url = user.profileImageURL {
+            ImageLoaderClient.displayUserIcon(url, imageView: iconImageView)
+        }
 
         headerViewTopContraint.constant = 0
         bottomContainerTopConstraint.constant = 100
@@ -307,7 +309,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         })
     }
 
-    func setUserFull(user: TwitterUserFull) {
+    func setUserFull(_ user: TwitterUserFull) {
         if !user.isProtected {
             protectedLabel?.removeFromSuperview()
         }
@@ -319,23 +321,23 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         descriptionLabel.text = user.description
         locationLabel.text = user.location
         siteLabel.text = user.displayURL
-        sinceLabel.text = sinceDateFormatter.stringFromDate(user.createdAt.date)
+        sinceLabel.text = sinceDateFormatter.string(from: user.createdAt.date as Date)
         ImageLoaderClient.displayImage(user.profileBannerURL, imageView: coverImageView)
     }
 
-    func showCover(sender: AnyObject) {
+    func showCover(_ sender: AnyObject) {
         if let imageURL = userFull?.profileBannerURL {
             ImageViewController.show([imageURL], initialPage: 0)
         }
     }
 
-    func showIcon(sender: AnyObject) {
+    func showIcon(_ sender: AnyObject) {
         if let imageURL = user?.profileOriginalImageURL {
             ImageViewController.show([imageURL], initialPage: 0)
         }
     }
 
-    func showPage(sender: UITapGestureRecognizer) {
+    func showPage(_ sender: UITapGestureRecognizer) {
         if let page = sender.view?.tag {
             let offset = view.frame.size.width * CGFloat(page)
             if offset == scrollView.contentOffset.x {
@@ -343,7 +345,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             } else {
                 headerViewLeftConstraint.constant = -offset
                 loadData(page)
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                UIView.animate(withDuration: 0.3, animations: { () -> Void in
                     self.scrollView.contentOffset = CGPoint.init(x: offset, y: 0)
                     self.view.layoutIfNeeded()
                     }, completion: { (flag) -> Void in
@@ -353,19 +355,19 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         }
     }
 
-    func openURL(sender: AnyObject) {
+    func openURL(_ sender: AnyObject) {
         if let expandedURL = userFull?.expandedURL {
             Safari.openURL(expandedURL)
         }
     }
 
-    @IBAction func menu(sender: UIButton) {
-        if let user = user, userFull = userFull, relationship = relationship {
+    @IBAction func menu(_ sender: UIButton) {
+        if let user = user, let userFull = userFull, let relationship = relationship {
             UserAlert.show(sender, user: user, userFull: userFull, relationship: relationship)
         }
     }
 
-    @IBAction func hide(sender: UIButton) {
+    @IBAction func hide(_ sender: UIButton) {
         hide()
     }
 
@@ -379,20 +381,20 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: - Class Methods
 
-    class func show(user: TwitterUser) {
+    class func show(_ user: TwitterUser) {
         let instance = ProfileViewController()
         instance.user = user
         ViewTools.slideIn(instance)
     }
 
-    class func show(user: TwitterUserFull) {
+    class func show(_ user: TwitterUserFull) {
         let instance = ProfileViewController()
         instance.user = TwitterUser(user)
         instance.userFull = user
         ViewTools.slideIn(instance)
     }
 
-    class func show(screenName: String) {
+    class func show(_ screenName: String) {
         let parameters = ["screen_name": screenName]
         let success: (([JSON]) -> Void) = { (rows) in
             if let row = rows.first {

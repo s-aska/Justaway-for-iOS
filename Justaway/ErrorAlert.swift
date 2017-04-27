@@ -9,26 +9,26 @@
 import UIKit
 
 class ErrorAlert {
-    class func show(title: String, message: String? = nil) {
-        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+    class func show(_ title: String, message: String? = nil) {
+        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .alert)
         actionSheet.addAction(UIAlertAction(
             title: "Close",
-            style: .Cancel,
+            style: .cancel,
             handler: { action in
-                actionSheet.dismissViewControllerAnimated(true, completion: nil)
+                actionSheet.dismiss(animated: true, completion: nil)
         }))
         AlertController.showViewController(actionSheet)
     }
 
-    class func show(error: NSError) {
+    class func show(_ error: NSError) {
         let title = error.localizedFailureReason ?? error.localizedDescription
         let message = error.localizedRecoverySuggestion
-        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .alert)
         actionSheet.addAction(UIAlertAction(
             title: "Close",
-            style: .Cancel,
+            style: .cancel,
             handler: { action in
-                actionSheet.dismissViewControllerAnimated(true, completion: nil)
+                actionSheet.dismiss(animated: true, completion: nil)
         }))
         AlertController.showViewController(actionSheet)
     }

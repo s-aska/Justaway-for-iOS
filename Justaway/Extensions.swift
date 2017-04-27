@@ -20,8 +20,8 @@ extension Int64 {
     }
 }
 
-extension NSOperationQueue {
-    func serial() -> NSOperationQueue {
+extension OperationQueue {
+    func serial() -> OperationQueue {
         self.maxConcurrentOperationCount = 1
         return self
     }

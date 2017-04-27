@@ -17,7 +17,7 @@ class Tab {
         static let arguments = "arguments"
     }
 
-    enum Type: String {
+    enum `Type`: String {
         case HomeTimline
         case UserTimline
         case Mentions

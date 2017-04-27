@@ -15,7 +15,7 @@ class Relationship {
 
     struct Static {
         static var users = [String: Data]()
-        private static let queue = NSOperationQueue().serial()
+        fileprivate static let queue = OperationQueue().serial()
     }
 
     struct Data {
@@ -26,11 +26,11 @@ class Relationship {
         var noRetweets = [String: Bool]()
     }
 
-    class func check(sourceUserID: String, targetUserID: String, retweetUserID: String?, quotedUserID: String?, callback: ((blocking: Bool, muting: Bool, noRetweets: Bool) -> Void)) {
+    class func check(_ sourceUserID: String, targetUserID: String, retweetUserID: String?, quotedUserID: String?, callback: @escaping ((_ blocking: Bool, _ muting: Bool, _ noRetweets: Bool) -> Void)) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             guard let data = Static.users[sourceUserID] else {
                 op.finish()
-                callback(blocking: false, muting: false, noRetweets: false)
+                callback(false, false, false)
                 return
             }
 
@@ -52,17 +52,17 @@ class Relationship {
             }
             op.finish()
             Async.main {
-                callback(blocking: blocking, muting: muting, noRetweets: noRetweets)
+                callback(blocking, muting, noRetweets)
             }
         }))
     }
 
-    class func checkUser(sourceUserID: String, targetUserID: String, callback: ((relationshop: TwitterRelationship) -> Void)) {
+    class func checkUser(_ sourceUserID: String, targetUserID: String, callback: @escaping ((_ relationshop: TwitterRelationship) -> Void)) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             guard let data = Static.users[sourceUserID] else {
                 op.finish()
                 Async.main {
-                    callback(relationshop: TwitterRelationship(following: false, followedBy: false, blocking: false, muting: false, wantRetweets: false))
+                    callback(TwitterRelationship(following: false, followedBy: false, blocking: false, muting: false, wantRetweets: false))
                 }
                 return
             }
@@ -75,75 +75,75 @@ class Relationship {
 
             op.finish()
             Async.main {
-                callback(relationshop: TwitterRelationship(following: following, followedBy: followedBy, blocking: blocking, muting: muting, wantRetweets: !noRetweets))
+                callback(TwitterRelationship(following: following, followedBy: followedBy, blocking: blocking, muting: muting, wantRetweets: !noRetweets))
             }
         }))
     }
 
-    class func follow(account: Account, targetUserID: String) {
+    class func follow(_ account: Account, targetUserID: String) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             Static.users[account.userID]?.friends[targetUserID] = true
             op.finish()
         }))
     }
 
-    class func unfollow(account: Account, targetUserID: String) {
+    class func unfollow(_ account: Account, targetUserID: String) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
-            Static.users[account.userID]?.friends.removeValueForKey(targetUserID)
+            Static.users[account.userID]?.friends.removeValue(forKey: targetUserID)
             op.finish()
         }))
     }
 
-    class func followed(account: Account, targetUserID: String) {
+    class func followed(_ account: Account, targetUserID: String) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             Static.users[account.userID]?.followers[targetUserID] = true
             op.finish()
         }))
     }
 
-    class func block(account: Account, targetUserID: String) {
+    class func block(_ account: Account, targetUserID: String) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             Static.users[account.userID]?.blocks[targetUserID] = true
             op.finish()
         }))
     }
 
-    class func unblock(account: Account, targetUserID: String) {
+    class func unblock(_ account: Account, targetUserID: String) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
-            Static.users[account.userID]?.blocks.removeValueForKey(targetUserID)
+            Static.users[account.userID]?.blocks.removeValue(forKey: targetUserID)
             op.finish()
         }))
     }
 
-    class func mute(account: Account, targetUserID: String) {
+    class func mute(_ account: Account, targetUserID: String) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             Static.users[account.userID]?.mutes[targetUserID] = true
             op.finish()
         }))
     }
 
-    class func unmute(account: Account, targetUserID: String) {
+    class func unmute(_ account: Account, targetUserID: String) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
-            Static.users[account.userID]?.mutes.removeValueForKey(targetUserID)
+            Static.users[account.userID]?.mutes.removeValue(forKey: targetUserID)
             op.finish()
         }))
     }
 
-    class func turnOffRetweets(account: Account, targetUserID: String) {
+    class func turnOffRetweets(_ account: Account, targetUserID: String) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             Static.users[account.userID]?.noRetweets[targetUserID] = true
             op.finish()
         }))
     }
 
-    class func turnOnRetweets(account: Account, targetUserID: String) {
+    class func turnOnRetweets(_ account: Account, targetUserID: String) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
-            Static.users[account.userID]?.noRetweets.removeValueForKey(targetUserID)
+            Static.users[account.userID]?.noRetweets.removeValue(forKey: targetUserID)
             op.finish()
         }))
     }
 
-    class func setup(account: Account) {
+    class func setup(_ account: Account) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             if Static.users[account.userID] != nil {
                 op.finish()
@@ -155,7 +155,7 @@ class Relationship {
         }))
     }
 
-    class func load(account: Account) {
+    class func load(_ account: Account) {
         loadFriends(account)
         loadFollowers(account)
         loadMutes(account)
@@ -163,14 +163,13 @@ class Relationship {
         loadBlocks(account)
     }
 
-    class func loadFriends(account: Account) {
+    class func loadFriends(_ account: Account) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             let cacheKey = "relationship-friends-\(account.userID)"
-            let now = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970
+            let now = Date(timeIntervalSinceNow: 0).timeIntervalSince1970
             if let cache = KeyClip.load(cacheKey) as NSDictionary?,
-                createdAt = cache["createdAt"] as? NSNumber,
-                ids = cache["ids"] as? [String]
-                where (now - createdAt.doubleValue) < 600 {
+                let createdAt = cache["createdAt"] as? NSNumber,
+                let ids = cache["ids"] as? [String], (now - createdAt.doubleValue) < 600 {
                 NSLog("[Relationship] load cache user:\(account.screenName) friends: \(ids.count) delta:\(now - createdAt.doubleValue)")
                 for id in ids {
                     Static.users[account.userID]?.friends[id] = true
@@ -188,7 +187,7 @@ class Relationship {
                     Static.users[account.userID]?.friends[id] = true
                 }
                 op.finish()
-                KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970)])
+                _ = KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(Date(timeIntervalSinceNow: 0).timeIntervalSince1970)])
             }
             account.client
                 .get("https://api.twitter.com/1.1/friends/ids.json", parameters: ["stringify_ids": "true"])
@@ -198,14 +197,13 @@ class Relationship {
         }))
     }
 
-    class func loadFollowers(account: Account) {
+    class func loadFollowers(_ account: Account) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             let cacheKey = "relationship-followers-\(account.userID)"
-            let now = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970
+            let now = Date(timeIntervalSinceNow: 0).timeIntervalSince1970
             if let cache = KeyClip.load(cacheKey) as NSDictionary?,
-                createdAt = cache["createdAt"] as? NSNumber,
-                ids = cache["ids"] as? [String]
-                where (now - createdAt.doubleValue) < 600 {
+                let createdAt = cache["createdAt"] as? NSNumber,
+                let ids = cache["ids"] as? [String], (now - createdAt.doubleValue) < 600 {
                 NSLog("[Relationship] load cache user:\(account.screenName) followers: \(ids.count) delta:\(now - createdAt.doubleValue)")
                 for id in ids {
                     Static.users[account.userID]?.followers[id] = true
@@ -223,7 +221,7 @@ class Relationship {
                     Static.users[account.userID]?.followers[id] = true
                 }
                 op.finish()
-                KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970)])
+                _ = KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(Date(timeIntervalSinceNow: 0).timeIntervalSince1970)])
             }
             account.client
                 .get("https://api.twitter.com/1.1/followers/ids.json", parameters: ["stringify_ids": "true"])
@@ -233,14 +231,13 @@ class Relationship {
         }))
     }
 
-    class func loadMutes(account: Account) {
+    class func loadMutes(_ account: Account) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             let cacheKey = "relationship-mutes-\(account.userID)"
-            let now = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970
+            let now = Date(timeIntervalSinceNow: 0).timeIntervalSince1970
             if let cache = KeyClip.load(cacheKey) as NSDictionary?,
-                createdAt = cache["createdAt"] as? NSNumber,
-                ids = cache["ids"] as? [String]
-                where (now - createdAt.doubleValue) < 600 {
+                let createdAt = cache["createdAt"] as? NSNumber,
+                let ids = cache["ids"] as? [String], (now - createdAt.doubleValue) < 600 {
                 NSLog("[Relationship] load cache user:\(account.screenName) mutes: \(ids.count) delta:\(now - createdAt.doubleValue)")
                 for id in ids {
                     Static.users[account.userID]?.mutes[id] = true
@@ -258,7 +255,7 @@ class Relationship {
                     Static.users[account.userID]?.mutes[id] = true
                 }
                 op.finish()
-                KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970)])
+                _ = KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(Date(timeIntervalSinceNow: 0).timeIntervalSince1970)])
             }
             account.client
                 .get("https://api.twitter.com/1.1/mutes/users/ids.json", parameters: ["stringify_ids": "true"])
@@ -268,14 +265,13 @@ class Relationship {
         }))
     }
 
-    class func loadNoRetweets(account: Account) {
+    class func loadNoRetweets(_ account: Account) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             let cacheKey = "relationship-noRetweets-\(account.userID)"
-            let now = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970
+            let now = Date(timeIntervalSinceNow: 0).timeIntervalSince1970
             if let cache = KeyClip.load(cacheKey) as NSDictionary?,
-                createdAt = cache["createdAt"] as? NSNumber,
-                ids = cache["ids"] as? [String]
-                where (now - createdAt.doubleValue) < 600 {
+                let createdAt = cache["createdAt"] as? NSNumber,
+                let ids = cache["ids"] as? [String], (now - createdAt.doubleValue) < 600 {
                 NSLog("[Relationship] load cache user:\(account.screenName) noRetweets: \(ids.count) delta:\(now - createdAt.doubleValue)")
                 for id in ids {
                     Static.users[account.userID]?.noRetweets[id] = true
@@ -290,7 +286,7 @@ class Relationship {
                     Static.users[account.userID]?.noRetweets[id] = true
                 }
                 op.finish()
-                KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970)])
+                _ = KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(Date(timeIntervalSinceNow: 0).timeIntervalSince1970)])
             }
             account.client
                 .get("https://api.twitter.com/1.1/friendships/no_retweets/ids.json", parameters: ["stringify_ids": "true"])
@@ -300,14 +296,13 @@ class Relationship {
         }))
     }
 
-    class func loadBlocks(account: Account) {
+    class func loadBlocks(_ account: Account) {
         Static.queue.addOperation(AsyncBlockOperation({ (op) in
             let cacheKey = "relationship-blocks-\(account.userID)"
-            let now = NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970
+            let now = Date(timeIntervalSinceNow: 0).timeIntervalSince1970
             if let cache = KeyClip.load(cacheKey) as NSDictionary?,
-                createdAt = cache["createdAt"] as? NSNumber,
-                ids = cache["ids"] as? [String]
-                where (now - createdAt.doubleValue) < 600 {
+                let createdAt = cache["createdAt"] as? NSNumber,
+                let ids = cache["ids"] as? [String], (now - createdAt.doubleValue) < 600 {
                 NSLog("[Relationship] load cache user:\(account.screenName) blocks: \(ids.count) delta:\(now - createdAt.doubleValue)")
                 for id in ids {
                     Static.users[account.userID]?.blocks[id] = true
@@ -325,7 +320,7 @@ class Relationship {
                     Static.users[account.userID]?.blocks[id] = true
                 }
                 op.finish()
-                KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(NSDate(timeIntervalSinceNow: 0).timeIntervalSince1970)])
+                _ = KeyClip.save(cacheKey, dictionary: ["ids": ids, "createdAt": Int(Date(timeIntervalSinceNow: 0).timeIntervalSince1970)])
             }
             account.client
                 .get("https://api.twitter.com/1.1/blocks/ids.json", parameters: ["stringify_ids": "true"])
