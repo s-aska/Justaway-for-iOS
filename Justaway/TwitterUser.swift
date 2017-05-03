@@ -52,7 +52,11 @@ struct TwitterUser {
         self.userID = dictionary["userID"] as? String ?? ""
         self.screenName = dictionary["screenName"] as? String ?? ""
         self.name = dictionary["name"] as? String ?? ""
-        self.profileImageURL = URL(string: dictionary["profileImageURL"] as? String ?? "")!
+        if let url = dictionary["profileImageURL"] as? String {
+            self.profileImageURL = URL(string: url)
+        } else {
+            self.profileImageURL = nil
+        }
         self.isProtected = dictionary["isProtected"] as? Bool ?? false
     }
 
