@@ -49,7 +49,7 @@ class StatusTableViewController: TimelineTableViewController, TwitterStatusAdapt
 
         adapter.didScrollToBottom = {
             if let status = self.adapter.statuses.last {
-                self.loadData(status.statusID.longLongValue - 1)
+                self.loadData(status.referenceOrStatusID.longLongValue - 1)
             }
         }
 

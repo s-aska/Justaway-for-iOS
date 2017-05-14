@@ -77,8 +77,8 @@ class Account {
         self.userID = user.userID
         self.screenName = user.screenName
         self.name = user.name
-        self.profileImageURL = user.profileImageURL as URL
-        self.profileBannerURL = user.profileBannerURL as URL
+        self.profileImageURL = user.profileImageURL
+        self.profileBannerURL = user.profileBannerURL
         self.tabs = account.tabs
         self.exToken = account.exToken
     }

@@ -32,8 +32,8 @@ class TwitterStatus {
     // swiftlint:disable cyclomatic_complexity
     // swiftlint:disable function_body_length
     init(_ json: JSON, connectionID: String = "") {
-        let targetJson = json["target_object"] != nil ? json["target_object"] : json
-        let statusJson = targetJson["retweeted_status"] != nil ? targetJson["retweeted_status"] : targetJson
+        let targetJson = json["target_object"] != JSON.null ? json["target_object"] : json
+        let statusJson = targetJson["retweeted_status"] != JSON.null ? targetJson["retweeted_status"] : targetJson
         self.connectionID = connectionID
         self.event = json["event"].string
         self.user = TwitterUser(statusJson["user"])
@@ -44,7 +44,7 @@ class TwitterStatus {
         self.retweetCount = statusJson["retweet_count"].int ?? 0
         self.favoriteCount = statusJson["favorite_count"].int ?? 0
         self.possiblySensitive = statusJson["possibly_sensitive"].boolValue
-        let entities = statusJson["extended_tweet"]["entities"] ?? statusJson["entities"]
+        let entities = statusJson["extended_tweet"]["entities"] != JSON.null ? statusJson["extended_tweet"]["entities"] : statusJson["entities"]
 
         if let urls = entities["urls"].array {
             self.urls = urls.map { TwitterURL($0) }
@@ -100,7 +100,7 @@ class TwitterStatus {
             self.type = .normal
             self.actionedBy = TwitterUser(json["source"])
             self.referenceStatusID = targetJson["id_str"].string
-        } else if targetJson["retweeted_status"] != nil {
+        } else if targetJson["retweeted_status"] != JSON.null {
             self.type = .normal
             self.actionedBy = TwitterUser(targetJson["user"])
             self.referenceStatusID = targetJson["id_str"].string
@@ -110,7 +110,7 @@ class TwitterStatus {
             self.referenceStatusID = nil
         }
 
-        if statusJson["quoted_status"] != nil {
+        if statusJson["quoted_status"] != JSON.null {
             self.quotedStatus = TwitterStatus(statusJson["quoted_status"])
         } else {
             self.quotedStatus = nil
@@ -231,9 +231,12 @@ class TwitterStatus {
     }
 
     var uniqueID: String {
-        if let actionedBy = actionedBy, let event = event {
-            return [statusID, event, actionedBy.userID].joined(separator: ":")
-        } else if self.inReplyToUserID != nil {
+        if let actionedBy = actionedBy {
+            if let event = event {
+                return [statusID, event, actionedBy.userID].joined(separator: ":")
+            }
+        }
+        if self.inReplyToUserID != nil {
             return [statusID, "reply", user.userID].joined(separator: ":")
         } else {
             return referenceOrStatusID

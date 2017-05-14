@@ -21,25 +21,40 @@ class ImageLoaderClient {
         static let optionInfo: KingfisherOptionsInfo = [.transition(ImageTransition.fade(0.5)), .requestModifier(modifier)]
     }
 
-    class func displayImage(_ url: URL, imageView: UIImageView) {
+    class func displayImage(_ url: URL?, imageView: UIImageView) {
+        guard let url = url else {
+            return
+        }
         imageView.kf.setImage(with: url, placeholder: nil, options: Static.optionInfo, progressBlock: nil, completionHandler: nil)
     }
 
-    class func displayImage(_ url: URL, imageView: UIImageView, callback: @escaping (() -> Void)) {
+    class func displayImage(_ url: URL?, imageView: UIImageView, callback: @escaping (() -> Void)) {
+        guard let url = url else {
+            return
+        }
         imageView.kf.setImage(with: url, placeholder: nil, options: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) -> () in
             callback()
         })
     }
 
-    class func displayThumbnailImage(_ url: URL, imageView: UIImageView) {
+    class func displayThumbnailImage(_ url: URL?, imageView: UIImageView) {
+        guard let url = url else {
+            return
+        }
         imageView.kf.setImage(with: url, placeholder: nil, options: Static.optionInfo, progressBlock: nil, completionHandler: nil)
     }
 
-    class func displayUserIcon(_ url: URL, imageView: UIImageView) {
+    class func displayUserIcon(_ url: URL?, imageView: UIImageView) {
+        guard let url = url else {
+            return
+        }
         imageView.kf.setImage(with: url, placeholder: nil, options: Static.optionInfo, progressBlock: nil, completionHandler: nil)
     }
 
-    class func displaySideMenuUserIcon(_ url: URL, imageView: UIImageView) {
+    class func displaySideMenuUserIcon(_ url: URL?, imageView: UIImageView) {
+        guard let url = url else {
+            return
+        }
         imageView.kf.setImage(with: url, placeholder: nil, options: Static.optionInfo, progressBlock: nil, completionHandler: nil)
     }
 }

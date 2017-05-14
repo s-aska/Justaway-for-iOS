@@ -16,7 +16,7 @@ struct TwitterUser {
         if let url = json["profile_image_url_https"].string {
             self.profileImageURL = URL(string: url.replacingOccurrences(of: "_normal", with: "_bigger", options: [], range: nil))!
         } else {
-            self.profileImageURL = URL(string: json["profile_image_url_https"].string ?? "")!
+            self.profileImageURL = nil
         }
     }
 
@@ -28,7 +28,7 @@ struct TwitterUser {
         if let url = json["profile_image_url_https"] as? String {
             self.profileImageURL = URL(string: url.replacingOccurrences(of: "_normal", with: "_bigger", options: [], range: nil))!
         } else {
-            self.profileImageURL = URL(string: json["profile_image_url_https"] as? String ?? "")!
+            self.profileImageURL = nil
         }
     }
 
@@ -83,7 +83,7 @@ struct TwitterUserFull {
     let userID: String
     let screenName: String
     let name: String
-    let profileImageURL: URL
+    let profileImageURL: URL?
     let isProtected: Bool
     let createdAt: TwitterDate
     let description: String
@@ -91,7 +91,7 @@ struct TwitterUserFull {
     let followRequestSent: Bool
     let following: Bool
     let location: String
-    let profileBannerURL: URL
+    let profileBannerURL: URL?
     let displayURL: String
     let expandedURL: URL?
     let favouritesCount: Int
@@ -108,12 +108,12 @@ struct TwitterUserFull {
         if let url = json["profile_image_url_https"].string {
             self.profileImageURL = URL(string: url.replacingOccurrences(of: "_normal", with: "_bigger", options: [], range: nil))!
         } else {
-            self.profileImageURL = URL(string: json["profile_image_url_https"].string ?? "")!
+            self.profileImageURL = nil
         }
         if let url = json["profile_banner_url"].string {
             self.profileBannerURL = URL(string: url + "/mobile_retina")!
         } else {
-            self.profileBannerURL = URL(string: json["profile_background_image_url_https"].string ?? "")!
+            self.profileBannerURL = nil
         }
         self.createdAt = TwitterDate(json["created_at"].string ?? "")
         self.description = json["description"].string ?? ""
